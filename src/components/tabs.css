@@ -1,0 +1,319 @@
+/* ============================================================
+   TABS — non-sequential navigation between sibling views
+   Underline (default) for primary panel nav · pill (segmented)
+   for compact filters/toolbars. Count badges, icons, keyboard
+   nav. All values from tokens.
+
+   Extracted from primitives.css (Nov 2025): Tabs is a stateful
+   navigation component, not a headless atom. See tabs.html.
+
+   Markup contract:
+     <div class="tabs" role="tablist" aria-label="…">
+       <button class="tab" role="tab" aria-selected="true">
+         <span class="tab-label" data-label="All">All</span>
+         <span class="tab-count">128</span>
+       </button>
+       <button class="tab" role="tab" aria-selected="false">…</button>
+     </div>
+   Pill variant: add .tabs-pill to the container.
+   The .tab-label wrapper (with a data-label matching its text)
+   reserves the bold width so the active/hover state never reflows.
+   ============================================================ */
+
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--color-border-default);
+  position: relative;
+}
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: var(--w-medium);
+  color: var(--color-foreground-secondary);
+  position: relative;
+  white-space: nowrap;
+  transition: var(--transition-fast);
+  margin-bottom: -1px;
+}
+.tab:hover { color: var(--color-foreground-default); }
+.tab[aria-selected="true"],
+.tab.is-active {
+  color: var(--color-brand-accent-700);
+  font-weight: var(--w-semibold);
+}
+.tab[aria-selected="true"]::after,
+.tab.is-active::after {
+  content: '';
+  position: absolute;
+  left: var(--space-3);
+  right: var(--space-3);
+  bottom: 0;
+  height: 2px;
+  background: var(--color-brand-accent-500);
+  border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+}
+.tab:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+  border-radius: var(--radius-sm);
+}
+.tab[disabled] { opacity: 0.45; color: var(--color-foreground-disabled); cursor: not-allowed; }
+
+.tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xxs);
+  font-weight: var(--w-bold);
+  background: var(--color-background-subtle);
+  color: var(--color-foreground-muted);
+  border-radius: var(--radius-pill);
+}
+.tab[aria-selected="true"] .tab-count,
+.tab.is-active .tab-count {
+  background: var(--color-brand-accent-50);
+  color: var(--color-brand-accent-700);
+}
+
+/* Pill tabs — alternative for compact, segmented contexts */
+.tabs-pill {
+  border-bottom: 0;
+  background: var(--color-background-subtle);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-pill);
+  padding: var(--space-1);
+  gap: 0;
+}
+.tabs-pill .tab {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  margin-bottom: 0;
+}
+.tabs-pill .tab::after { display: none; }
+.tabs-pill .tab[aria-selected="true"],
+.tabs-pill .tab.is-active {
+  background: var(--color-background-surface);
+  color: var(--color-foreground-default);
+  box-shadow: var(--shadow-xs);
+}
+
+/* ---- Pill layout options ----------------------------------- */
+/* Mobile: the segmented shell fills the row and scrolls internally when
+   its segments overflow (B1). The shell itself never wraps; tabs keep
+   their size and the user swipes horizontally inside the pill. */
+@media (max-width: 720px) {
+  .tabs-pill {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+  .tabs-pill::-webkit-scrollbar { display: none; }
+  .tabs-pill .tab { flex: 0 0 auto; scroll-snap-align: start; }
+}
+
+/* Equal-width segments: every tab the same width (good for 2–4
+   short, symmetric options like Day/Week/Month). */
+.tabs-pill.is-equal { display: inline-flex; }
+.tabs-pill.is-equal .tab { flex: 1 1 0; justify-content: center; }
+
+/* Full-width: the segmented control fills its container. */
+.tabs-pill.is-block { display: flex; width: 100%; }
+.tabs-pill.is-block .tab { flex: 1 1 0; justify-content: center; }
+
+/* Equal-width underline tabs: each item takes the same width with its
+   content horizontally centered. Use when tabs should read as a balanced row. */
+.tabs.is-block { display: flex; width: 100%; }
+.tabs.is-block .tab { flex: 1 1 0; justify-content: center; min-width: 0; }
+.tabs.is-block .tab-label { justify-items: center; min-width: 0; }
+.tabs.is-equal { display: flex; }
+.tabs.is-equal .tab { flex: 1 1 0; justify-content: center; min-width: 0; }
+.tabs.is-equal .tab-label { justify-items: center; min-width: 0; }
+/* Equal-width pill segments shouldn't overflow their labels either */
+.tabs-pill.is-equal .tab, .tabs-pill.is-block .tab { min-width: 0; }
+
+/* Icon-only pill: square segments, label provided via aria-label. */
+.tabs-pill .tab.is-icon { padding-left: var(--space-2); padding-right: var(--space-2); aspect-ratio: 1; justify-content: center; }
+.tabs-pill .tab.is-icon i, .tabs-pill .tab.is-icon svg { width: 16px; height: 16px; }
+
+/* ============================================================
+   SIZES — apply on the container; both variants honour them.
+     .tabs-sm  dense (toolbars, card headers, drawers)
+     (default) standard
+     .tabs-lg  spacious (page-level primary nav)
+   ============================================================ */
+.tabs-sm .tab {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--fs-xs);
+  gap: var(--space-1);
+}
+.tabs-sm .tab-count { min-width: 16px; height: 16px; font-size: 10px; padding: 0 var(--space-1); }
+.tabs-sm .tab i, .tabs-sm .tab svg { width: 13px; height: 13px; }
+.tabs-sm.tabs-pill .tab { padding: var(--space-1) var(--space-3); }
+
+.tabs-lg .tab {
+  padding: var(--space-4) var(--space-5);
+  font-size: var(--fs-md);
+  gap: var(--space-3);
+}
+.tabs-lg .tab-count { min-width: 22px; height: 22px; font-size: var(--fs-xs); }
+.tabs-lg .tab i, .tabs-lg .tab svg { width: 17px; height: 17px; }
+.tabs-lg.tabs-pill .tab { padding: var(--space-3) var(--space-5); }
+
+/* Mobile: tabs-lg steps down to the default size so page-level nav
+   isn't oversized on phones (C). */
+@media (max-width: 720px) {
+  .tabs-lg .tab { padding: var(--space-3) var(--space-4); font-size: var(--fs-sm); gap: var(--space-2); }
+  .tabs-lg .tab-count { min-width: 18px; height: 18px; font-size: var(--fs-xxs); }
+  .tabs-lg .tab i, .tabs-lg .tab svg { width: 15px; height: 15px; }
+  .tabs-lg.tabs-pill .tab { padding: var(--space-2) var(--space-4); }
+  .tabs-lg .tab[aria-selected="true"]::after,
+  .tabs-lg .tab.is-active::after { left: var(--space-3); right: var(--space-3); }
+}
+/* Keep the underline indicator inset consistent at each size */
+.tabs-sm .tab[aria-selected="true"]::after,
+.tabs-sm .tab.is-active::after { left: var(--space-2); right: var(--space-2); }
+.tabs-lg .tab[aria-selected="true"]::after,
+.tabs-lg .tab.is-active::after { left: var(--space-4); right: var(--space-4); }
+
+/* Tab icons inherit the size of the type they sit beside */
+.tab i, .tab svg { width: 15px; height: 15px; stroke-width: 2; }
+
+/* Label wrapper: reserves the SEMIBOLD width up front so toggling
+   weight between states never reflows the row. The hidden ::after
+   holds a bold copy of the text in a second (0-height) grid row, so
+   the column width = max(regular, bold) = bold. No layout shift. */
+.tab-label {
+  display: inline-grid;
+  grid-template-columns: max-content;
+}
+.tab-label::after {
+  content: attr(data-label);
+  font-weight: var(--w-semibold);
+  height: 0;
+  visibility: hidden;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ============================================================
+   ANIMATION — opt-in sliding indicator + panel fade
+   Add .is-animated to the .tabs container. A single
+   <span class="tab-indicator" aria-hidden="true"></span> is
+   placed as the LAST child of the tablist; the JS controller
+   sets --ind-x (translateX) and --ind-w (width) from the active
+   tab, and recomputes on resize. Without the controller the
+   indicator stays at 0 width — so .is-animated REQUIRES the JS.
+   ============================================================ */
+.tabs.is-animated { position: relative; }
+
+/* Underline: suppress the per-tab static bar, show one sliding bar */
+.tabs.is-animated .tab[aria-selected="true"]::after,
+.tabs.is-animated .tab.is-active::after { display: none; }
+
+.tab-indicator {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: var(--ind-w, 0);
+  transform: translateX(var(--ind-x, 0));
+  background: var(--color-brand-accent-500);
+  border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+  pointer-events: none;
+  transition: transform var(--duration-base) var(--ease-emphasis),
+              width var(--duration-base) var(--ease-emphasis);
+}
+
+/* Pill: the lifted white surface becomes a sliding element behind tabs */
+.tabs-pill.is-animated .tab { z-index: 1; }
+.tabs-pill.is-animated .tab[aria-selected="true"],
+.tabs-pill.is-animated .tab.is-active { background: transparent; box-shadow: none; }
+.tabs-pill.is-animated .tab-indicator {
+  top: var(--space-1);
+  bottom: var(--space-1);
+  height: auto;
+  background: var(--color-background-surface);
+  box-shadow: var(--shadow-xs);
+  border-radius: var(--radius-pill);
+  z-index: 0;
+}
+
+/* Panel fade — add .tab-panel-animated to each [role="tabpanel"] */
+@keyframes tab-panel-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.tab-panel-animated:not([hidden]) {
+  animation: tab-panel-in var(--duration-base) var(--ease-standard);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab { transition: none; }
+  .tab-indicator { transition: none; }
+  .tab-panel-animated:not([hidden]) { animation: none; }
+}
+
+/* ============================================================
+   MOBILE — horizontal scroll for overflowing underline tabs
+   Underline tabs scroll sideways by DEFAULT below 720px (A) so a
+   long row never overflows the page or wraps. `.is-scroll` forces
+   the same behaviour at any width. Pill tabs get their own mobile
+   scroll rule above (the shell scrolls internally, B1).
+   Note: overflow clips the box-shadow focus ring slightly at the
+   top edge — acceptable tradeoff; the underline still reads.
+   ============================================================ */
+@media (max-width: 720px) {
+  .tabs:not(.tabs-pill):not(.is-block):not(.is-equal) {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+  .tabs:not(.tabs-pill):not(.is-block):not(.is-equal)::-webkit-scrollbar { display: none; }
+  .tabs:not(.tabs-pill):not(.is-block):not(.is-equal) .tab { scroll-snap-align: start; flex: 0 0 auto; }
+}
+.tabs.is-scroll {
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+}
+.tabs.is-scroll::-webkit-scrollbar { display: none; }
+.tabs.is-scroll .tab { scroll-snap-align: start; flex: 0 0 auto; }
+/* In a scroll container the box-shadow ring is clipped at the top edge,
+   so swap to an inset outline that lives inside the tab. */
+.tabs.is-scroll .tab:focus-visible {
+  box-shadow: none;
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: -3px;
+}
+
+/* ============================================================
+   TOUCH TARGETS — guarantee ≥44px hit height on touch devices.
+   Tabs (esp. .tabs-sm) are visually short; on a coarse pointer
+   we pad the tap area up to the platform minimum without
+   changing the visual type size.
+   ============================================================ */
+@media (pointer: coarse) {
+  .tab { min-height: 44px; }
+  .tabs-pill .tab { min-height: 40px; }
+}

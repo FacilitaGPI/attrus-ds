@@ -1,0 +1,47 @@
+/* ============================================================
+   ATTRUS / Cabiros — SHADOWS (soft, blue-tinted, multi-layer)
+   ============================================================ */
+
+:root {
+  --shadow-xs:  0 1px 2px color-mix(in srgb, var(--color-shadow-tint) 5%, transparent);
+  --shadow-sm:  0 1px 2px color-mix(in srgb, var(--color-shadow-tint) 6%, transparent),
+                0 2px 6px color-mix(in srgb, var(--color-shadow-tint) 4%, transparent);
+  --shadow-md:  0 2px 4px  color-mix(in srgb, var(--color-shadow-tint) 6%, transparent),
+                0 8px 20px color-mix(in srgb, var(--color-shadow-tint) 6%, transparent);
+  --shadow-lg:  0 4px 8px   color-mix(in srgb, var(--color-shadow-tint) 6%,  transparent),
+                0 20px 40px color-mix(in srgb, var(--color-shadow-tint) 10%, transparent);
+  --shadow-xl:  0 12px 24px color-mix(in srgb, var(--color-shadow-tint) 10%, transparent),
+                0 32px 80px color-mix(in srgb, var(--color-shadow-tint) 18%, transparent);
+  --shadow-2xl: 0 24px 48px color-mix(in srgb, var(--color-shadow-tint) 14%, transparent),
+                0 48px 120px color-mix(in srgb, var(--color-shadow-tint) 24%, transparent); /* deepest — modals, drawers, floating overlays above scrim */
+  --shadow-focus:         0 0 0 4px color-mix(in srgb, var(--color-brand-accent-500)     22%, transparent);
+  --shadow-focus-sky:     0 0 0 4px color-mix(in srgb, var(--color-brand-accent-500)     25%, transparent);
+  --shadow-focus-success: 0 0 0 4px color-mix(in srgb, var(--color-success-500) 22%, transparent);
+  --shadow-focus-warning: 0 0 0 4px color-mix(in srgb, var(--color-warning-500) 22%, transparent);
+  --shadow-focus-danger:  0 0 0 4px color-mix(in srgb, var(--color-danger-500)  22%, transparent);
+  --shadow-focus-info:    0 0 0 4px color-mix(in srgb, var(--color-info-500)    22%, transparent);
+
+  /* Semantic elevation — for status cards, toasts, banners, action buttons */
+  --shadow-success-sm: 0 1px 2px  color-mix(in srgb, var(--shadow-tint-success-color)  8%, transparent),
+                       0 4px 12px color-mix(in srgb, var(--shadow-tint-success-color) 12%, transparent);
+  --shadow-success-md: 0 4px 8px   color-mix(in srgb, var(--shadow-tint-success-color) 10%, transparent),
+                       0 16px 32px color-mix(in srgb, var(--shadow-tint-success-color) 16%, transparent);
+  --shadow-warning-sm: 0 1px 2px  color-mix(in srgb, var(--shadow-tint-warning-color)  8%, transparent),
+                       0 4px 12px color-mix(in srgb, var(--shadow-tint-warning-color) 12%, transparent);
+  --shadow-warning-md: 0 4px 8px   color-mix(in srgb, var(--shadow-tint-warning-color) 10%, transparent),
+                       0 16px 32px color-mix(in srgb, var(--shadow-tint-warning-color) 16%, transparent);
+  --shadow-danger-sm:  0 1px 2px  color-mix(in srgb, var(--shadow-tint-danger-color)   8%, transparent),
+                       0 4px 12px color-mix(in srgb, var(--shadow-tint-danger-color)  14%, transparent);
+  --shadow-danger-md:  0 4px 8px   color-mix(in srgb, var(--shadow-tint-danger-color)  12%, transparent),
+                       0 16px 32px color-mix(in srgb, var(--shadow-tint-danger-color)  18%, transparent);
+  --shadow-info-sm:    0 1px 2px  color-mix(in srgb, var(--shadow-tint-info-color)     8%, transparent),
+                       0 4px 12px color-mix(in srgb, var(--shadow-tint-info-color)    12%, transparent);
+  --shadow-info-md:    0 4px 8px   color-mix(in srgb, var(--shadow-tint-info-color)    10%, transparent),
+                       0 16px 32px color-mix(in srgb, var(--shadow-tint-info-color)    16%, transparent);
+  --shadow-inset: inset 0  1px 0 color-mix(in srgb, var(--color-pure-white) 60%, transparent),
+                  inset 0 -1px 0 color-mix(in srgb, var(--color-shadow-tint) 4%, transparent);
+  --shadow-glass: 0 1px 0 color-mix(in srgb, var(--color-pure-white) 50%, transparent) inset,
+                  0 10px 30px color-mix(in srgb, var(--color-shadow-tint) 12%, transparent);
+  --shadow-glass-dark: 0 1px 0 color-mix(in srgb, var(--color-pure-white)  8%, transparent) inset,
+                       0 10px 40px color-mix(in srgb, var(--color-pure-black) 35%, transparent);
+}

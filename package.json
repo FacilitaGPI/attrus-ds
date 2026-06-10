@@ -1,0 +1,46 @@
+{
+  "name": "@attrus-ds/core",
+  "version": "0.1.0",
+  "description": "ATTRUS / Cabiros design system — design tokens, component styles, brand assets and fonts. Visual layer only (no framework components).",
+  "keywords": [
+    "design-system",
+    "design-tokens",
+    "attrus",
+    "cabiros",
+    "css",
+    "tokens",
+    "fonts",
+    "fintech"
+  ],
+  "license": "SEE LICENSE IN LICENSE",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": "./dist/css/index.css",
+    "./css": "./dist/css/index.css",
+    "./tokens.css": "./dist/css/tokens.css",
+    "./fonts.css": "./dist/css/fonts.css",
+    "./tokens.json": "./dist/tokens/attrus-tokens.json",
+    "./tokens.flat.json": "./dist/tokens/attrus-tokens.flat.json",
+    "./components/*": "./dist/css/components/*",
+    "./assets/*": "./dist/assets/*",
+    "./fonts/*": "./dist/fonts/*",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@fontsource/jetbrains-mono": "^5.0.0",
+    "@fontsource/lato": "^5.0.0"
+  }
+}

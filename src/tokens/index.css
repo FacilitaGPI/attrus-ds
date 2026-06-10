@@ -1,0 +1,20 @@
+/* ATTRUS / Cabiros — design tokens barrel.
+   Three-layer architecture, in cascade order:
+     1. palette        — raw, theme-agnostic primitives
+     2. color-semantic  — semantic color roles (what components consume)
+     3. effects/scales  — gradients, data-viz, glass, radius, elevation,
+                          spacing, iconography, motion, typography tokens
+     4. theme-dark      — [data-theme="dark"] semantic overrides (last) */
+
+@import "./palette.css";
+@import "./color-semantic.css";
+@import "./gradients.css";
+@import "./data-viz.css";
+@import "./glass.css";
+@import "./radius.css";
+@import "./elevation.css";
+@import "./spacing.css";
+@import "./iconography.css";
+@import "./motion.css";
+@import "./typography.css";
+@import "./theme-dark.css";

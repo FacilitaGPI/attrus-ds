@@ -1,0 +1,148 @@
+/* ============================================================
+   TOP BAR — ATTRUS Design System
+   Canonical component CSS. SINGLE SOURCE consumed by the live app
+   shell (ui_kits/dashboard/Shell.jsx) and the doc page
+   (preview/topbar.html). Token-driven → themes automatically.
+
+   Class map:
+     .topbar               component root (52px bar, surface)
+     .tb-control           unified 32px control (button/pill base)
+     .tb-control.icon      icon-only square 32×32
+     .tb-control.primary   high-contrast CTA (inverse layer)
+     .tb-live              live-session indicator (non-interactive)
+     .tb-live .dot         pulsing status dot
+     .tb-clock             mono elapsed-time readout
+     .tb-flag-label        ENG / lang label inside a control
+     .tb-bell              notification button wrapper (badge anchor)
+     .tb-bell .badge       unread red dot
+     .tb-avatar            user avatar chip (30px)
+     .tb-spacer            margin-left:auto group wrapper
+
+   Canonical control height: var(--tb-control-h) (default 36px). All bar
+   items (controls, search, account) read it, so they scale together.
+   ============================================================ */
+
+.topbar {
+  height: 60px; flex-shrink: 0;
+  --tb-control-h: 36px;
+  background: var(--color-background-surface);
+  border-bottom: 1px solid var(--color-border-default);
+  display: flex; align-items: center; gap: var(--space-2-5);
+  padding: 0 var(--space-4);
+}
+
+/* Unified control — every interactive pill/button in the bar */
+.tb-control {
+  height: var(--tb-control-h); min-height: var(--tb-control-h); box-sizing: border-box;
+  display: inline-flex; align-items: center; gap: var(--space-2-5);
+  padding: 0 var(--space-3-5);
+  border-radius: var(--radius-sm-md);
+  border: 1px solid var(--color-border-default);
+  background: var(--color-background-surface);
+  color: var(--color-foreground-secondary);
+  font-family: inherit; font-size: var(--fs-md); font-weight: var(--w-medium);
+  white-space: nowrap; cursor: pointer;
+  transition: var(--transition-fast);
+}
+.tb-control:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background: var(--color-background-hover); }
+.tb-control svg, .tb-control i { width: 14px; height: 14px; stroke-width: var(--icon-stroke); flex-shrink: 0; }
+
+/* Icon-only square */
+.tb-control.icon { width: var(--tb-control-h); padding: 0; justify-content: center; }
+
+/* The bar's primary action is the canonical button — use `.btn .btn-primary .btn-sm`
+   (buttons.css), NOT a topbar-local style. Kept out of here on purpose for single source. */
+
+/* Lang label inside a control */
+.tb-control .tb-flag-label { font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-secondary); }
+.tb-control .chev { opacity: .6; }
+.tb-control .chev svg, .tb-control .chev i { width: 11px; height: 11px; }
+
+/* Live indicator — looks like a control but is not interactive */
+.tb-live { cursor: default; color: var(--color-foreground-secondary); }
+.tb-live:hover { border-color: var(--color-border-default); background: var(--color-background-surface); color: var(--color-foreground-secondary); }
+.tb-live .dot {
+  width: 6px; height: 6px; border-radius: var(--radius-pill);
+  background: var(--color-success-500);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-success-500) 15%, transparent);
+}
+.tb-live .lbl { font-size: var(--fs-sm); font-weight: var(--w-semibold); }
+.tb-clock { font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-muted); margin-left: var(--space-1); }
+
+/* Notification button + unread badge */
+.tb-bell .badge-anchor { position: relative; display: inline-flex; }
+.tb-bell .badge {
+  position: absolute; top: -3px; right: -3px;
+  width: 6px; height: 6px; border-radius: var(--radius-pill);
+  background: var(--color-danger-500);
+}
+
+/* Avatar chip */
+.tb-avatar {
+  width: 30px; height: 30px; border-radius: var(--radius-pill);
+  background: var(--color-brand-secondary-500); color: var(--color-pure-white);
+  font-size: var(--fs-xs); font-weight: var(--w-bold);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-left: var(--space-1);
+}
+
+/* Right-aligned cluster */
+.tb-spacer { margin-left: auto; display: flex; align-items: center; gap: var(--space-3); }
+
+/* Search pill grows to fill the bar (component itself lives in inputs.css) */
+.topbar .pill-search { height: var(--tb-control-h); box-sizing: border-box; flex: 1; max-width: 520px; min-width: 0; }
+
+/* ===== Mobile ===== */
+@media (max-width: 720px) {
+  .topbar { gap: var(--space-2); padding: 0 var(--space-3); }
+}
+
+/* ===== Account menu (avatar + identity → dropdown) ===== */
+.tb-account-wrap { position: relative; margin-left: var(--space-1); }
+.tb-account {
+  height: var(--tb-control-h); min-height: var(--tb-control-h); box-sizing: border-box;
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  padding: 0 var(--space-3-5) 0 var(--space-2-5);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm-md);
+  background: var(--color-background-surface);
+  cursor: pointer; font-family: inherit;
+  transition: var(--transition-fast);
+}
+.tb-account:hover { border-color: var(--color-border-strong); background: var(--color-background-hover); }
+.tb-account.is-open { border-color: var(--color-border-strong); background: var(--color-background-hover); }
+.tb-account .tb-avatar { width: 24px; height: 24px; font-size: 9px; margin-left: 0; }
+.tb-account-id { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.1; min-width: 0; }
+.tb-account-id .nm { font-size: var(--fs-xs); font-weight: var(--w-semibold); color: var(--color-foreground-default); white-space: nowrap; }
+.tb-account-id .co { font-size: var(--fs-xxs); color: var(--color-foreground-muted); white-space: nowrap; }
+.tb-account .chev { display: inline-flex; color: var(--color-foreground-muted); margin-left: var(--space-1); }
+.tb-account .chev svg, .tb-account .chev i { width: 12px; height: 12px; }
+
+/* Dropdown */
+.tb-account-menu {
+  position: absolute; top: calc(100% + var(--space-2)); right: 0; z-index: 200;
+  min-width: 240px; padding: var(--space-2);
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
+}
+.tb-account-menu-head { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-2) var(--space-3); }
+.tb-account-menu .tb-avatar.lg { width: 36px; height: 36px; font-size: var(--fs-sm); margin-left: 0; }
+.tb-account-menu-id { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.tb-account-menu-id .nm { font-size: var(--fs-md); font-weight: var(--w-semibold); color: var(--color-foreground-default); white-space: nowrap; }
+.tb-account-menu-id .co { font-size: var(--fs-xs); color: var(--color-foreground-muted); white-space: nowrap; }
+.tb-account-menu-sep { height: 1px; background: var(--color-border-subtle); margin: var(--space-1) calc(-1 * var(--space-2)); }
+.tb-account-menu-item {
+  display: flex; align-items: center; gap: var(--space-3); width: 100%;
+  padding: var(--space-2-5) var(--space-2); margin: 1px 0;
+  border: 0; border-radius: var(--radius-sm); background: transparent; cursor: pointer;
+  font-family: inherit; font-size: var(--fs-sm); font-weight: var(--w-medium);
+  color: var(--color-foreground-secondary); text-align: left; white-space: nowrap;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.tb-account-menu-item:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+.tb-account-menu-item svg, .tb-account-menu-item i { width: 15px; height: 15px; stroke-width: var(--icon-stroke); color: var(--color-foreground-muted); flex-shrink: 0; }
+.tb-account-menu-item:hover svg, .tb-account-menu-item:hover i { color: var(--color-foreground-secondary); }
+.tb-account-menu-item.is-danger { color: var(--color-feedback-danger-foreground); }
+.tb-account-menu-item.is-danger svg, .tb-account-menu-item.is-danger i { color: var(--color-feedback-danger-foreground); }
+.tb-account-menu-item.is-danger:hover { background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); }

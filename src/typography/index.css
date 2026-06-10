@@ -1,0 +1,55 @@
+/* ============================================================
+   ATTRUS / Cabiros — SEMANTIC TYPE CLASSES (ready-to-use)
+   Base document styles + the display/heading/body/utility classes.
+   Consumes typography + color tokens (see ../tokens).
+   ============================================================ */
+
+html, body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  color: var(--color-foreground-default);
+  background: var(--color-background-canvas);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.display-xl { font-family: var(--font-display); font-weight: var(--w-black);    font-size: var(--fs-8xl); line-height: var(--lh-tight); letter-spacing: var(--ls-display); }
+.display-lg { font-family: var(--font-display); font-weight: var(--w-extrabold);font-size: var(--fs-7xl); line-height: var(--lh-tight); letter-spacing: var(--ls-display); }
+.display    { font-family: var(--font-display); font-weight: var(--w-bold);     font-size: var(--fs-6xl); line-height: var(--lh-tight); letter-spacing: var(--ls-display); }
+
+h1, .h1 { font-weight: var(--w-bold);     font-size: var(--fs-5xl); line-height: var(--lh-tight); letter-spacing: var(--ls-display); }
+h2, .h2 { font-weight: var(--w-bold);     font-size: var(--fs-4xl); line-height: var(--lh-snug);  letter-spacing: var(--ls-title); }
+h3, .h3 { font-weight: var(--w-bold);     font-size: var(--fs-3xl); line-height: var(--lh-snug);  letter-spacing: var(--ls-title); }
+h4, .h4 { font-weight: var(--w-semibold); font-size: var(--fs-2xl); line-height: var(--lh-snug);  letter-spacing: var(--ls-title); }
+h5, .h5 { font-weight: var(--w-semibold); font-size: var(--fs-xl);  line-height: var(--lh-snug);  letter-spacing: var(--ls-title); }
+h6, .h6 { font-weight: var(--w-semibold); font-size: var(--fs-lg);  line-height: var(--lh-snug);  letter-spacing: var(--ls-body);  }
+
+.body-lg  { font-size: var(--fs-lg);  line-height: var(--lh-relaxed); }
+.body     { font-size: var(--fs-base);line-height: var(--lh-normal);  }
+.body-sm  { font-size: var(--fs-md);  line-height: var(--lh-normal);  }
+.caption  { font-size: var(--fs-sm);  line-height: var(--lh-normal); color: var(--color-foreground-muted); }
+.overline { font-size: var(--fs-xs);  line-height: var(--lh-normal); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); font-weight: var(--w-semibold); }
+.label    { font-size: var(--fs-sm);  font-weight: var(--w-semibold); letter-spacing: var(--ls-label); }
+
+.mono, code, pre, kbd { font-family: var(--font-mono); font-size: .92em; }
+
+/* Numbers that must line up in tables */
+.tabular { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' on, 'lnum' on; }
+
+/* Utility text colors */
+.fg-default     { color: var(--color-foreground-default); }
+.fg-secondary   { color: var(--color-foreground-secondary); }
+.color-foreground-muted       { color: var(--color-foreground-muted); }
+.fg-accent      { color: var(--color-foreground-accent); }
+.fg-highlight   { color: var(--color-foreground-highlight); }
+.fg-placeholder { color: var(--color-foreground-placeholder); }
+
+/* Inverse layer helper — apply to any container to flip to dark */
+.inverse {
+  background: var(--color-background-inverse);
+  color: var(--color-foreground-inverse-default);
+}
+.inverse .fg-secondary { color: var(--color-foreground-inverse-secondary); }
+.inverse .color-foreground-muted     { color: var(--color-foreground-inverse-muted); }
+.inverse .fg-accent    { color: var(--color-foreground-inverse-accent); }

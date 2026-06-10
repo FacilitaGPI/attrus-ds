@@ -1,0 +1,30 @@
+/* ============================================================
+   ATTRUS / Cabiros — GRADIENTS (primary brand + layers)
+   ============================================================ */
+
+:root {
+  --grad-brand:       linear-gradient(135deg, #001A4D 0%, #003399 50%, #3399FF 100%);
+  --grad-brand-soft:  linear-gradient(135deg, #002A80 0%, #003399 100%);
+  --grad-ink:         linear-gradient(160deg, #0B1230 0%, #001A4D 55%, #002A80 100%);
+  --grad-hero:        linear-gradient(180deg, #001133 0%, #003399 100%);
+  --grad-sheen:       linear-gradient(120deg,
+                        color-mix(in srgb, var(--color-pure-white) 14%, transparent) 0%,
+                        color-mix(in srgb, var(--color-pure-white)  0%, transparent) 40%,
+                        color-mix(in srgb, var(--color-pure-white)  0%, transparent) 60%,
+                        color-mix(in srgb, var(--color-pure-white)  8%, transparent) 100%);
+  --grad-surface-top: linear-gradient(180deg,
+                        color-mix(in srgb, var(--color-pure-white) 65%, transparent) 0%,
+                        color-mix(in srgb, var(--color-pure-white)  0%, transparent) 100%);
+  --grad-radial-glow: radial-gradient(1200px 500px at 20% -10%,
+                        color-mix(in srgb, var(--color-brand-accent-500) 25%, transparent) 0%,
+                        color-mix(in srgb, var(--color-brand-accent-500)  0%, transparent) 60%);
+  --grad-data-pos:    linear-gradient(180deg,
+                        color-mix(in srgb, var(--color-success-500) 35%, transparent) 0%,
+                        color-mix(in srgb, var(--color-success-500)  0%, transparent) 100%);
+  --grad-data-neg:    linear-gradient(180deg,
+                        color-mix(in srgb, var(--color-danger-500) 35%, transparent) 0%,
+                        color-mix(in srgb, var(--color-danger-500)  0%, transparent) 100%);
+  --grad-data-brand:  linear-gradient(180deg,
+                        color-mix(in srgb, var(--color-brand-accent-500) 30%, transparent) 0%,
+                        color-mix(in srgb, var(--color-brand-accent-500)  0%, transparent) 100%);
+}

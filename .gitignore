@@ -1,0 +1,9 @@
+*.png
+*.pdf
+.thumbnail
+.tmp/
+uploads/
+node_modules/
+dist/
+*.tgz
+.npmrc

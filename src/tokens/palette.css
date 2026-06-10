@@ -1,0 +1,141 @@
+/* ============================================================
+   ATTRUS / Cabiros — BASE PALETTE (raw color tokens)
+   The primitive layer. Theme-agnostic. Referenced only by the
+   semantic layer (color-semantic.css) and effect layers — never
+   consumed directly by components.
+   ============================================================ */
+
+:root {
+  /* --- Brand (from manual: Lato + 4 HEX stops) --- */
+  --brand-attrus-ink:        #0F0F1A;   /* almost-black, blue-tinted */
+  --brand-attrus-navy:       #002142;   /* deep navy */
+  --brand-attrus-blue:       #003399;   /* PRIMARY brand blue */
+  --brand-attrus-sky:        #3399FF;   /* bright accent / highlight */
+  --brand-attrus-logo-ink:   #000033;   /* per logo SVG fills */
+
+  /* --- Neutrals (cool, with a subtle bluish tint — never pure) --- */
+  /* Pure achromatic primitives — referenced by transparency tokens */
+  --color-pure-white:  #FFFFFF;
+  --color-pure-black:  #000000;
+  --color-shadow-tint:         var(--color-neutral-900);   /* default — blue-tinted ink, aligned to neutral scale */
+  --shadow-tint-success-color: var(--color-success-900);  /* green-tinted ink */
+  --shadow-tint-warning-color: var(--color-warning-900);  /* amber-tinted ink */
+  --shadow-tint-danger-color:  var(--color-danger-900);   /* wine-tinted ink */
+  --shadow-tint-info-color:    var(--color-info-900);     /* steel-blue-tinted ink */
+
+  --color-neutral-0:   var(--color-pure-white);
+  --color-neutral-25:  #FAFBFD;  /* app canvas bg */
+  --color-neutral-50:  #F4F6FA;  /* rows, subdued surfaces */
+  --color-neutral-100: #EDF0F5;  /* hover, very soft chips */
+  --color-neutral-150: #E3E8F0;  /* dividers, borders */
+  --color-neutral-200: #D6DCE7;  /* stronger borders */
+  --color-neutral-300: #B8C1D1;  /* placeholder */
+  --color-neutral-400: #8A94A8;  /* muted text */
+  --color-neutral-500: #5E6A82;  /* secondary text */
+  --color-neutral-600: #3F4A61;  /* strong secondary */
+  --color-neutral-700: #27304A;  /* headings on light */
+  --color-neutral-800: #141B2E;  /* near-surface dark */
+  --color-neutral-900: #0A0F1F;  /* inverse surface (never pure black) */
+  --color-neutral-950: #05081A;  /* deepest inverse */
+
+  /* --- Inverse "ink" tones (variants of neutral-900/-950, used by inverse layer) --- */
+  --color-ink-base:    #0B1230;   /* near-black navy */
+  --color-ink-raised:  #111A3D;   /* card on inverse */
+  --color-ink-deep:    #0A1128;   /* deeper than base — wells, alt rows */
+  --color-ink-hover:   #15214A;   /* hover state on inverse */
+
+  /* --- Brand primary · Navy (institutional — logo, headings, primary surfaces)
+     10-stop scale anchored at -500: #002142 (ATTRUS Navy from brand book).
+     Interpolated in OKLCH from anchor for uniform perceptual distance.
+     Dominant brand colour — 40% of usage per brand book. */
+  --color-brand-primary-50:  #E5EBF2;
+  --color-brand-primary-100: #C2CDDB;
+  --color-brand-primary-200: #8E9FB8;
+  --color-brand-primary-300: #5F7596;
+  --color-brand-primary-400: #2F4F75;
+  --color-brand-primary-500: #002142;  /* ★ ATTRUS Navy — brand primary */
+  --color-brand-primary-600: #001D3A;
+  --color-brand-primary-700: #001830;
+  --color-brand-primary-800: #001226;
+  --color-brand-primary-900: #000C1A;
+
+  /* --- Brand secondary · Royal (support — highlights, secondary blocks)
+     10-stop scale anchored at -500: #003399 (ATTRUS Royal from brand book).
+     Used for accent surfaces with more presence than Sky but less than Navy.
+     10% of brand usage. */
+  --color-brand-secondary-50:  #EAF1FF;
+  --color-brand-secondary-100: #D1DEFF;
+  --color-brand-secondary-200: #A3BEFF;
+  --color-brand-secondary-300: #6B95FB;
+  --color-brand-secondary-400: #3F6DEF;
+  --color-brand-secondary-500: #003399;  /* brand */
+  --color-brand-secondary-600: #002A80;
+  --color-brand-secondary-700: #002166;
+  --color-brand-secondary-800: #001A4D;
+  --color-brand-secondary-900: #001133;
+
+  /* --- Brand accent · Sky (action — CTAs, links, highlights)
+     10-stop scale anchored at -500: #3399FF (ATTRUS Sky from brand book).
+     Used for primary actions and call-outs only — 3% of brand usage.
+     Stops 50/200/400/600/800/900 interpolated in OKLCH for uniform perceptual distance.
+     Dark stops (700-900) used as inverse surfaces in dark mode;
+     light stops (50-200) for foreground text on those surfaces. */
+  --color-brand-accent-50:  #ECF5FF;
+  --color-brand-accent-100: #D9ECFF;
+  --color-brand-accent-200: #ADD2FF;
+  --color-brand-accent-300: #7AB8FF;
+  --color-brand-accent-400: #549EFF;
+  --color-brand-accent-500: #3399FF;  /* accent */
+  --color-brand-accent-600: #2880DD;
+  --color-brand-accent-700: #1E6DC4;
+  --color-brand-accent-800: #155198;
+  --color-brand-accent-900: #0E3B70;
+
+  /* --- Semantic feedback (subdued, sober) — perceptually calibrated 10-stop scales (OKLCH) ---
+     Anchors at 50/100/500/700/900 are immutable (preserved from the original 5-stop palette).
+     Stops 200/300/400/600/800 are interpolated in OKLCH for uniform perceptual distance.
+     info-900 is derived from the average L/C trajectory of the other three families' 700→900. */
+  --color-success-50:  #E8F5EE;
+  --color-success-100: #CDEBD9;
+  --color-success-200: #9CCEAF;
+  --color-success-300: #74B68C;
+  --color-success-400: #499D69;
+  --color-success-500: #1F8A4C;
+  --color-success-600: #1A7A43;
+  --color-success-700: #136236;
+  --color-success-800: #0E4F2B;
+  --color-success-900: #0A3D21;
+
+  --color-warning-50:  #FDF5E3;
+  --color-warning-100: #FAE8BE;
+  --color-warning-200: #E4C790;
+  --color-warning-300: #D2AC69;
+  --color-warning-400: #C19040;
+  --color-warning-500: #B47A12;
+  --color-warning-600: #A16B0F;
+  --color-warning-700: #84560A;
+  --color-warning-800: #694307;
+  --color-warning-900: #4F3105;
+
+  --color-danger-50:  #FCEBEA;
+  --color-danger-100: #F7CFCD;
+  --color-danger-200: #EBA4A0;
+  --color-danger-300: #DE807A;
+  --color-danger-400: #CF5B54;
+  --color-danger-500: #C23934;
+  --color-danger-600: #AB312D;
+  --color-danger-700: #8A2622;
+  --color-danger-800: #6C1D1A;
+  --color-danger-900: #4F1512;
+
+  --color-info-50:  #E6F0FB;
+  --color-info-100: #C5DCF4;
+  --color-info-200: #93BBE8;
+  --color-info-300: #6B9FDD;
+  --color-info-400: #4383D1;
+  --color-info-500: #1F6BC7;
+  --color-info-600: #1A5EAF;
+  --color-info-700: #144B8C;
+  --color-info-800: #0D3A6E;
+  --color-info-900: #072951;
+}

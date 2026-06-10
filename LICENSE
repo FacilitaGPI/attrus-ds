@@ -1,0 +1,27 @@
+Copyright (c) 2026 FacilitaPay / ATTRUS
+
+All rights reserved.
+
+This package (@attrus/cabiros) and its contents — design tokens, component
+styles, and brand assets — are the proprietary property of FacilitaPay / ATTRUS.
+They are made available for use in building products and integrations for
+ATTRUS. The ATTRUS brand assets (logos, icons) may not be modified or used to
+represent any other product or organization.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+----------------------------------------------------------------------
+
+Bundled third-party fonts are licensed separately under the SIL Open Font
+License, Version 1.1:
+
+  - Lato — Copyright (c) Łukasz Dziedzic
+  - JetBrains Mono — Copyright (c) JetBrains s.r.o.
+
+The full OFL text for each is included alongside the font files in
+dist/fonts/LICENSE-Lato.txt and dist/fonts/LICENSE-JetBrainsMono.txt.

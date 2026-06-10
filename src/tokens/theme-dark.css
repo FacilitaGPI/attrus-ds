@@ -1,0 +1,75 @@
+/* ============================================================
+   ATTRUS / Cabiros — DARK THEME
+   [data-theme="dark"] remaps the AMBIENT semantic tokens to a dark
+   ink ramp. Components consume semantic tokens, so they flip
+   automatically — no per-component dark CSS needed.
+   Philosophy: the INVERSE layer stays a deliberate, brand-tinted
+   dark even here (see note in color-semantic.css), distinct from the
+   ambient surface. Raw palette + brand/accent scales are theme-agnostic.
+   Toggle via JS: set data-theme on <html>, persist to localStorage,
+   seed from prefers-color-scheme.
+   ============================================================ */
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Ambient surfaces — dark ink ramp (canvas deepest → surface raised) */
+  --color-background-canvas:   var(--color-ink-deep);     /* #0A1128 — app background */
+  --color-background-surface:  var(--color-ink-raised);   /* #111A3D — cards sit above canvas */
+  --color-background-subtle:   var(--color-ink-base);     /* #0B1230 — nested rows / wells-lite */
+  --color-background-raised:   var(--color-ink-raised);
+  --color-background-sunken:   color-mix(in srgb, var(--color-pure-black) 28%, var(--color-ink-deep)); /* inputs / wells — deeper */
+  --color-background-hover:    color-mix(in srgb, var(--color-pure-white) 6%,  var(--color-ink-raised));
+  --color-background-press:    color-mix(in srgb, var(--color-pure-white) 10%, var(--color-ink-raised));
+  --color-background-selected: var(--color-background-inverse-selected);
+
+  /* Inverse layer — stays distinct: a brand-tinted dark, lifted off the ambient ink */
+  --color-background-inverse:         color-mix(in srgb, var(--color-brand-primary-500) 24%, var(--color-ink-base));
+  --color-background-inverse-surface: color-mix(in srgb, var(--color-brand-primary-500) 30%, var(--color-ink-raised));
+  --color-background-inverse-subtle:  color-mix(in srgb, var(--color-brand-primary-500) 18%, var(--color-ink-deep));
+
+  /* Foreground — light on dark */
+  --color-foreground-default:     var(--color-neutral-50);
+  --color-foreground-secondary:   var(--color-neutral-300);
+  --color-foreground-muted:       var(--color-neutral-400);
+  --color-foreground-placeholder: var(--color-neutral-600);
+  --color-foreground-accent:      var(--color-brand-accent-400);   /* Sky lightens on dark for contrast (light used accent-700) */
+  --color-foreground-highlight:   var(--color-brand-accent-300);   /* links on dark */
+  --color-foreground-brand:       var(--color-brand-secondary-200);/* Navy is invisible on dark → light royal */
+  --color-foreground-disabled:    var(--color-neutral-600);
+  /* --color-foreground-on-solid stays neutral-0 (white text on Royal/accent fills) */
+
+  /* Borders — white-alpha hairlines */
+  --color-border-subtle:  color-mix(in srgb, var(--color-pure-white) 8%,  transparent);
+  --color-border-default: color-mix(in srgb, var(--color-pure-white) 12%, transparent);
+  --color-border-strong:  color-mix(in srgb, var(--color-pure-white) 20%, transparent);
+  /* focus / accent borders stay Sky-500 — reads well on dark */
+
+  /* Feedback pairs flip: light foreground + dark-tinted background */
+  --color-feedback-success-foreground: var(--color-success-300);
+  --color-feedback-success-background: color-mix(in srgb, var(--color-success-500) 18%, var(--color-ink-base));
+  --color-feedback-success-border:     color-mix(in srgb, var(--color-success-500) 34%, transparent);
+  --color-feedback-warning-foreground: var(--color-warning-300);
+  --color-feedback-warning-background: color-mix(in srgb, var(--color-warning-500) 18%, var(--color-ink-base));
+  --color-feedback-warning-border:     color-mix(in srgb, var(--color-warning-500) 34%, transparent);
+  --color-feedback-danger-foreground:  var(--color-danger-300);
+  --color-feedback-danger-background:  color-mix(in srgb, var(--color-danger-500) 18%, var(--color-ink-base));
+  --color-feedback-danger-border:      color-mix(in srgb, var(--color-danger-500) 34%, transparent);
+  --color-feedback-info-foreground:    var(--color-info-300);
+  --color-feedback-info-background:    color-mix(in srgb, var(--color-info-500) 18%, var(--color-ink-base));
+  --color-feedback-info-border:        color-mix(in srgb, var(--color-info-500) 34%, transparent);
+
+  /* Surface-top sheen reads wrong on dark → neutralize */
+  --grad-surface-top: linear-gradient(180deg, color-mix(in srgb, var(--color-pure-white) 6%, transparent) 0%, transparent 100%);
+
+  /* Data-viz categorical — lift the dark hues so every series reads on dark ink.
+     Ramps (seq/div) + structure follow the semantic tokens already remapped above. */
+  --dataviz-cat-1: #6B95FB;  /* Royal 300 — 500 is invisible on dark */
+  --dataviz-cat-2: #7AB8FF;  /* Sky, lightened */
+  --dataviz-cat-3: #2BC2B1;  /* Teal, lightened */
+  --dataviz-cat-4: #E0AC45;  /* Gold, lightened */
+  --dataviz-cat-5: #9385F2;  /* Violet, lightened */
+  --dataviz-cat-6: #E87BA1;  /* Rose, lightened */
+  --dataviz-cat-7: #3FC4DC;  /* Cyan, lightened */
+  --dataviz-cat-8: #A6B0C4;  /* Slate, lightened */
+}

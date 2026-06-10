@@ -1,0 +1,195 @@
+/* ============================================================
+   CALLOUT — note / aside / alert-bar for documentation & UI
+   ------------------------------------------------------------
+   An icon + message in a tinted, bordered box. Theme-aware: tint
+   is mixed against --color-background-surface so it adapts to
+   light & dark; the icon uses a theme-aware foreground token.
+
+   Scales from a one-line note up to a rich panel (title + body +
+   action buttons + dismiss) and a full-width alert bar.
+
+   Simple:
+     <div class="callout">                     (info — default)
+       <i data-lucide="info"></i>
+       <div class="callout-body">…<code>x</code>…</div>
+     </div>
+
+   Rich (vertical: title + body + actions + dismiss):
+     <div class="callout callout-warn">
+       <i data-lucide="alert-triangle"></i>
+       <div class="callout-content">
+         <div class="callout-title">Heading</div>
+         <div class="callout-body">Longer message…</div>
+         <div class="callout-actions">
+           <button class="btn btn-primary btn-sm">Confirm</button>
+           <button class="btn btn-ghost btn-sm">Later</button>
+         </div>
+       </div>
+       <button class="callout-dismiss" aria-label="Dismiss"><i data-lucide="x"></i></button>
+     </div>
+
+   Alert bar (full-width banner; actions + dismiss inline-right):
+     <div class="callout callout-bar callout-danger"> … </div>
+
+   Tonal: .callout-warn .callout-success .callout-danger .callout-neutral
+   Size:  .callout-sm (compact)
+   Two props drive every tone:
+     --callout-tint  raw family color → background + border mix
+     --callout-fg    theme-aware foreground → icon color
+   ============================================================ */
+.callout {
+  --callout-tint: var(--color-brand-secondary-500);  /* info / royal */
+  --callout-fg:   var(--color-foreground-accent);     /* sky, theme-aware */
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--callout-tint) 8%, var(--color-background-surface));
+  border: 1px solid color-mix(in srgb, var(--callout-tint) 22%, transparent);
+}
+
+.callout > i,
+.callout > svg,
+.callout-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--callout-fg);
+  stroke-width: var(--icon-stroke);
+}
+
+/* content column — wrap title + body + actions for rich callouts */
+.callout-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.callout-title {
+  font-size: var(--fs-md);
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--ls-title);
+  color: var(--color-foreground-default);
+  line-height: var(--lh-tight);
+}
+
+.callout-body {
+  font-size: var(--fs-sm);
+  color: var(--color-foreground-secondary);
+  line-height: var(--lh-snug);
+}
+.callout-body strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+.callout-body code {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--color-foreground-accent);
+}
+.callout-body a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+.callout-body p { margin: 0 0 var(--space-2); }
+.callout-body p:last-child { margin-bottom: 0; }
+.callout-body ul { margin: var(--space-2) 0 0; padding-left: var(--space-5); }
+.callout-body li { margin-bottom: var(--space-1); }
+
+/* action row — buttons use the canonical .btn system.
+   Convention: keep callout actions SMALL (.btn-xs). Use .btn-secondary
+   for the action — its border stays legible on the tinted box, where
+   borderless ghost/tertiary read as plain text. .btn-ghost for the
+   soft/secondary option; .btn-danger for destructive actions. */
+.callout-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2-5);
+  margin-top: var(--space-3);
+}
+
+/* Action buttons adopt the callout's TONE so they belong to the tinted box.
+   .btn-secondary → tonal soft button (tint fill + tint border + tint text);
+   .btn-ghost → picks up the tone for text/hover.
+   .btn-danger / .btn-primary stay canonical (solid) for strong/destructive. */
+.callout-actions .btn-secondary {
+  background: color-mix(in srgb, var(--callout-tint) 14%, var(--color-background-surface));
+  border-color: color-mix(in srgb, var(--callout-tint) 34%, transparent);
+  color: var(--callout-fg);
+}
+.callout-actions .btn-secondary:hover {
+  background: color-mix(in srgb, var(--callout-tint) 22%, var(--color-background-surface));
+  border-color: color-mix(in srgb, var(--callout-tint) 50%, transparent);
+}
+.callout-actions .btn-ghost { color: var(--callout-fg); }
+.callout-actions .btn-ghost:hover { background: color-mix(in srgb, var(--callout-tint) 12%, transparent); color: var(--callout-fg); }
+
+/* dismiss — ghost icon button, top-aligned */
+.callout-dismiss {
+  flex-shrink: 0;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin: -2px -2px 0 var(--space-2);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-foreground-muted);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+.callout-dismiss:hover { background: color-mix(in srgb, var(--callout-tint) 14%, transparent); color: var(--color-foreground-default); }
+.callout-dismiss > i, .callout-dismiss > svg { width: 16px; height: 16px; stroke-width: var(--icon-stroke); }
+
+/* ---- tonal variants ---- */
+.callout-warn    { --callout-tint: var(--color-warning-500); --callout-fg: var(--color-feedback-warning-foreground); }
+.callout-success { --callout-tint: var(--color-success-500); --callout-fg: var(--color-feedback-success-foreground); }
+.callout-danger  { --callout-tint: var(--color-danger-500);  --callout-fg: var(--color-feedback-danger-foreground); }
+.callout-neutral { --callout-tint: var(--color-neutral-500);  --callout-fg: var(--color-foreground-muted); }
+
+/* ---- compact size ---- */
+.callout-sm { padding: var(--space-3) var(--space-4); gap: var(--space-2-5); }
+.callout-sm > i, .callout-sm > svg, .callout-sm .callout-icon { width: 16px; height: 16px; }
+.callout-sm .callout-body { font-size: var(--fs-xs); }
+.callout-sm .callout-title { font-size: var(--fs-sm); }
+
+/* ---- alert bar — full-width banner, items centered, actions right ---- */
+.callout-bar {
+  align-items: center;
+  border-radius: 0;
+  border-left: 0;
+  border-right: 0;
+  padding: var(--space-3) var(--space-6);
+  border-left: 3px solid var(--callout-tint);   /* accent rule for scannability */
+}
+.callout-bar > i, .callout-bar > svg, .callout-bar .callout-icon { margin-top: 0; }
+.callout-bar .callout-content { flex-direction: row; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+.callout-bar .callout-actions { margin-top: 0; margin-left: auto; }
+.callout-bar .callout-dismiss { align-self: center; margin-top: 0; }
+.callout-bar .callout-title { font-size: var(--fs-sm); }
+
+/* rounded alert bar (when not edge-to-edge) */
+.callout-bar.callout-rounded { border-radius: var(--radius-md); border-left-width: 3px; border-top: 1px solid color-mix(in srgb, var(--callout-tint) 22%, transparent); border-right: 1px solid color-mix(in srgb, var(--callout-tint) 22%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--callout-tint) 22%, transparent); }
+
+/* ---- Inline: content-sized, single-line (badges, hero notices) ---- */
+.callout-inline { display: inline-flex; width: auto; align-items: center; }
+
+/* ---- On inverse: glassy translucent tint + light text, for dark
+   surfaces (hero, photo). Mirrors .pill.on-inverse. ---- */
+.callout.on-inverse {
+  background: color-mix(in srgb, var(--callout-tint) 20%, transparent);
+  border-color: color-mix(in srgb, var(--callout-tint) 38%, transparent);
+  color: var(--color-foreground-inverse-default);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+.callout.on-inverse > i, .callout.on-inverse > svg, .callout.on-inverse .callout-icon { color: var(--callout-fg-inv, currentColor); }
+.callout.on-inverse .callout-title { color: var(--color-foreground-inverse-default); }
+.callout.on-inverse .callout-body { color: var(--color-foreground-inverse-secondary); }
+.callout.on-inverse .callout-body strong { color: var(--color-foreground-inverse-default); }
+.callout-warn.on-inverse    { --callout-fg-inv: var(--color-warning-300); }
+.callout-success.on-inverse { --callout-fg-inv: var(--color-success-300); }
+.callout-danger.on-inverse  { --callout-fg-inv: var(--color-danger-300); }
+.callout-info.on-inverse    { --callout-fg-inv: var(--color-brand-accent-300); }
+.callout-neutral.on-inverse { --callout-fg-inv: var(--color-foreground-inverse-muted); }

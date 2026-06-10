@@ -1,0 +1,50 @@
+/* ============================================================
+   ATTRUS / Cabiros — DATA VISUALIZATION (chart palettes & structure)
+   Categorical = qualitative series (distinct, on-brand, cool).
+   Sequential  = single-hue magnitude ramp (Sky).
+   Diverging   = danger ← neutral → success (variance/heatmap).
+   Structure   = grid / axis / track / reference (semantic → theme).
+   Categorical gets dark-theme overrides (lift the dark hues, in
+   theme-dark.css); ramps + structure follow semantic tokens.
+   ============================================================ */
+
+:root {
+  /* Categorical — order chosen for max adjacent contrast */
+  --dataviz-cat-1: #003399;  /* Royal — brand-anchored series 1 */
+  --dataviz-cat-2: #3399FF;  /* Sky */
+  --dataviz-cat-3: #0F9A8C;  /* Teal */
+  --dataviz-cat-4: #C68A1A;  /* Gold */
+  --dataviz-cat-5: #6B5CE0;  /* Violet */
+  --dataviz-cat-6: #CC4F7A;  /* Rose */
+  --dataviz-cat-7: #18A0B8;  /* Cyan */
+  --dataviz-cat-8: #5E6A82;  /* Slate (neutral-500) */
+
+  /* Sequential — Sky single-hue ramp (low → high). Reuses accent stops. */
+  --dataviz-seq-1: var(--color-brand-accent-100);  /* #D9ECFF */
+  --dataviz-seq-2: var(--color-brand-accent-200);  /* #ADD2FF */
+  --dataviz-seq-3: var(--color-brand-accent-300);  /* #7AB8FF */
+  --dataviz-seq-4: var(--color-brand-accent-500);  /* #3399FF */
+  --dataviz-seq-5: var(--color-brand-accent-700);  /* #1E6DC4 */
+  --dataviz-seq-6: var(--color-brand-accent-900);  /* #0E3B70 */
+
+  /* Diverging — danger ← neutral mid → success (7 stops) */
+  --dataviz-div-1: var(--color-danger-500);   /* most negative */
+  --dataviz-div-2: var(--color-danger-300);
+  --dataviz-div-3: var(--color-danger-100);
+  --dataviz-div-mid: var(--color-neutral-100); /* neutral midpoint */
+  --dataviz-div-5: var(--color-success-100);
+  --dataviz-div-6: var(--color-success-300);
+  --dataviz-div-7: var(--color-success-500);  /* most positive */
+
+  /* Semantic data encodings */
+  --dataviz-positive: var(--color-success-500);
+  --dataviz-negative: var(--color-danger-500);
+  --dataviz-neutral:  var(--color-neutral-400);
+
+  /* Structure — grid, axis, track, reference lines */
+  --dataviz-grid:        var(--color-border-subtle);     /* gridlines */
+  --dataviz-axis:        var(--color-border-strong);     /* axis baseline */
+  --dataviz-axis-label:  var(--color-foreground-muted);  /* tick labels */
+  --dataviz-track:       var(--color-background-subtle);  /* empty bar / gauge track */
+  --dataviz-reference:   var(--color-foreground-muted);   /* dashed target/avg line */
+}

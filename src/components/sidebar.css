@@ -1,0 +1,179 @@
+/* ============================================================
+   SIDEBAR NAVIGATION — ATTRUS Design System
+   Canonical component CSS. SINGLE SOURCE consumed by BOTH the
+   live app shell (ui_kits/dashboard/Shell.jsx) and the doc page
+   (preview/sidebar-nav.html). Token-driven → themes automatically.
+
+   Class map:
+     .sb            component root (card framing — doc demos)
+     .sb.sb-app     app modifier: full-height rail, border-right only
+     .sb.collapsed  60px icon rail
+     .sb-head/-body/-section/-item/-foot
+     .sb-item.active · .ic · .label · .badge · .count
+     .sb-group / .sb-children / .sb-subitem (collapsible groups)
+
+   Canonical row height: 36px (comfortable — operational platform).
+   ============================================================ */
+
+.sb {
+  width: 216px;
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+/* App rail: full-height, no card framing, animates width */
+.sb.sb-app {
+  border: 0;
+  border-right: 1px solid var(--color-border-default);
+  border-radius: 0;
+  box-shadow: none;
+  height: 100%;
+  transition: width var(--duration-base) var(--ease-standard);
+}
+
+/* Header — matches TopBar (60px) so logos align */
+.sb-head {
+  height: 60px; padding: 0 var(--space-2-5) 0 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--color-border-subtle);
+  flex-shrink: 0;
+}
+.sb-head img { height: 14px; width: auto; }
+.sb-head .toggle {
+  width: 26px; height: 26px; border-radius: var(--radius-sm); border: 0; padding: 0;
+  background: transparent; color: var(--color-foreground-muted); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: var(--transition-fast);
+}
+.sb-head .toggle:hover { background: var(--color-background-hover); color: var(--color-foreground-secondary); }
+.sb-head .toggle svg, .sb-head .toggle i { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
+
+.sb-body { flex: 1; padding: var(--space-3) 0; overflow-y: auto; overflow-x: hidden; }
+
+.sb-section {
+  padding: var(--space-6) var(--space-5) var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+  color: var(--color-foreground-muted);
+  letter-spacing: var(--ls-caps); text-transform: uppercase;
+}
+
+.sb-item {
+  display: flex; align-items: center; gap: 11px;
+  padding: 8px 10px; margin: 3px 10px;
+  height: 36px; box-sizing: border-box;
+  border-radius: var(--radius-sm);
+  color: var(--color-foreground-secondary);
+  font-size: var(--fs-md); font-weight: var(--w-medium);
+  cursor: pointer; position: relative;
+  white-space: nowrap; overflow: hidden;
+  transition: background .15s, color .15s;
+}
+.sb-item:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+.sb-item.active {
+  background: var(--color-brand-secondary-50);
+  color: var(--color-brand-secondary-700);
+  font-weight: var(--w-semibold);
+}
+.sb-item.active::before {
+  content: ""; position: absolute; left: -10px; top: 9px; bottom: 9px;
+  width: 2px; border-radius: var(--radius-pill);
+  background: var(--color-brand-secondary-500);
+}
+.sb-item .ic { width: 15px; height: 15px; stroke-width: var(--icon-stroke); flex-shrink: 0; opacity: 0.85; }
+.sb-item.active .ic { color: var(--color-brand-secondary-500); opacity: 1; }
+.sb-item .label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sb-item.disabled { color: var(--color-foreground-placeholder); cursor: not-allowed; }
+.sb-item.disabled:hover { background: transparent; }
+
+/* Trailing decoration — badge (status) OR count (numeric), never both */
+.sb-badge {
+  font-family: var(--font-sans); font-size: 9px; font-weight: var(--w-bold);
+  letter-spacing: .06em; line-height: 1.4;
+  padding: 1px var(--space-2-5); border-radius: var(--radius-pill);
+  background: var(--color-brand-secondary-500); color: var(--color-pure-white);
+}
+.sb-badge.alert { background: var(--color-danger-500); }
+.sb-badge.warning { background: var(--color-warning-500); }
+.sb-count {
+  font-family: var(--font-mono); font-size: var(--fs-xxs);
+  color: var(--color-foreground-muted);
+  background: var(--color-background-subtle);
+  padding: 1px 6px; border-radius: var(--radius-xs);
+}
+.sb-item.active .sb-count { background: color-mix(in srgb, var(--color-brand-secondary-200) 70%, transparent); color: var(--color-brand-secondary-700); }
+
+/* Footer — user mini-card */
+.sb-foot {
+  border-top: 1px solid var(--color-border-subtle);
+  padding: var(--space-3);
+  display: flex; align-items: center; gap: var(--space-3);
+  flex-shrink: 0;
+}
+.sb-foot .avatar {
+  width: 26px; height: 26px; border-radius: var(--radius-pill);
+  background: var(--color-brand-secondary-500); color: var(--color-pure-white);
+  font-size: 10px; font-weight: var(--w-bold);
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.sb-foot .meta { flex: 1; min-width: 0; }
+.sb-foot .meta .name { font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sb-foot .meta .role { font-size: var(--fs-xxs); color: var(--color-foreground-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sb-foot .logout { color: var(--color-foreground-muted); cursor: pointer; flex-shrink: 0; display: inline-flex; }
+.sb-foot .logout svg, .sb-foot .logout i { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
+
+/* ===== Collapsed (60px icon rail) ===== */
+.sb.collapsed { width: 60px; }
+.sb.collapsed .sb-head { padding: 0 var(--space-3); justify-content: center; }
+.sb.collapsed .sb-section { padding: 0; margin: var(--space-3) var(--space-4); height: 1px; background: var(--color-border-subtle); font-size: 0; color: transparent; }
+.sb.collapsed .sb-item { justify-content: center; padding: 8px 0; gap: 0; margin: 1px 10px; }
+.sb.collapsed .sb-item .label, .sb.collapsed .sb-badge, .sb.collapsed .sb-count, .sb.collapsed .sb-item .chev { display: none; }
+.sb.collapsed .sb-item.active::before { display: none; }
+.sb.collapsed .sb-foot { justify-content: center; padding: var(--space-3) 0; }
+.sb.collapsed .sb-foot .meta, .sb.collapsed .sb-foot .logout { display: none; }
+
+/* ===== Groups & dropdowns ===== */
+.sb-group { position: relative; }
+.sb-group > .sb-item .chev {
+  width: 14px; height: 14px; stroke-width: var(--icon-stroke);
+  margin-left: auto; opacity: 0.7;
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+.sb-group[aria-expanded="true"] > .sb-item .chev { transform: rotate(90deg); opacity: 1; }
+.sb-children {
+  overflow: hidden; display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-base) var(--ease-standard);
+}
+.sb-children > .sb-children-inner { min-height: 0; }
+.sb-group[aria-expanded="true"] .sb-children { grid-template-rows: 1fr; }
+.sb-children-inner { padding: var(--space-1) 0; }
+.sb-children .sb-subitem {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px 8px 38px; margin: 2px 10px;
+  height: 38px; box-sizing: border-box;
+  border-radius: var(--radius-sm);
+  color: var(--color-foreground-secondary);
+  font-size: var(--fs-sm); font-weight: var(--w-medium);
+  cursor: pointer; position: relative;
+  transition: var(--transition-fast);
+}
+.sb-children .sb-subitem::before {
+  content: ""; position: absolute; left: 26px; top: 50%; transform: translateY(-50%);
+  width: 5px; height: 5px; border-radius: var(--radius-pill);
+  background: var(--color-border-strong); opacity: .55;
+  transition: var(--transition-fast);
+}
+.sb-children .sb-subitem:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+.sb-children .sb-subitem:hover::before { opacity: 1; background: var(--color-foreground-muted); }
+.sb-children .sb-subitem.active { color: var(--color-brand-secondary-700); font-weight: var(--w-semibold); background: var(--color-brand-secondary-50); }
+.sb-children .sb-subitem.active::before { background: var(--color-brand-secondary-500); opacity: 1; }
+.sb-children .sb-subitem .count, .sb-children .sb-subitem .sb-count {
+  margin-left: auto;
+  font-family: var(--font-mono); font-size: var(--fs-xxs);
+  color: var(--color-foreground-muted);
+  background: var(--color-background-subtle);
+  padding: 1px 6px; border-radius: var(--radius-xs);
+}

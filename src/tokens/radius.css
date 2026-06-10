@@ -1,0 +1,18 @@
+/* ============================================================
+   ATTRUS / Cabiros — RADII
+   Mostly softly rounded; buttons fully rounded.
+   ============================================================ */
+
+:root {
+  --radius-2xs: 2px;   /* never-square minimum — tiny chips, ticks, dividers */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-sm-md: 8px;  /* in-between — avatar tiles, square icon buttons */
+  --radius-md: 10px;   /* cards, inputs — softly rounded */
+  --radius-md-lg: 12px; /* in-between — medium cards, drawer rows */
+  --radius-lg: 14px;   /* containers */
+  --radius-lg-xl: 16px; /* in-between — hero / large panels */
+  --radius-xl: 20px;   /* hero / large panels */
+  --radius-2xl: 28px;
+  --radius-pill: 999px; /* BUTTONS — fully rounded */
+}

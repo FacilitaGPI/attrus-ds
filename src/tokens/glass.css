@@ -1,0 +1,19 @@
+/* ============================================================
+   ATTRUS / Cabiros — LIQUID GLASS (transparent / frosted layers)
+   Use with backdrop-filter: blur().
+   ============================================================ */
+
+:root {
+  --glass-white:     color-mix(in srgb, var(--color-pure-white) 58%, transparent);
+  --glass-white-hi:  color-mix(in srgb, var(--color-pure-white) 78%, transparent);
+  --glass-white-lo:  color-mix(in srgb, var(--color-pure-white) 38%, transparent);
+  --glass-tint:      color-mix(in srgb, var(--color-neutral-50) 55%, transparent);   /* bluish white */
+  --glass-ink:       color-mix(in srgb, var(--color-background-inverse) 55%, transparent);   /* dark navy */
+  --glass-ink-hi:    color-mix(in srgb, var(--color-background-inverse) 78%, transparent);
+  --glass-ink-lo:    color-mix(in srgb, var(--color-background-inverse) 35%, transparent);
+  --glass-blur:      saturate(140%) blur(18px);
+  --glass-blur-sm:   saturate(130%) blur(10px);
+  --glass-blur-lg:   saturate(160%) blur(28px);
+  --glass-border:      1px solid color-mix(in srgb, var(--color-pure-white) 45%, transparent);
+  --glass-border-dark: 1px solid color-mix(in srgb, var(--color-pure-white) 10%, transparent);
+}

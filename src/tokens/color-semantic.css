@@ -1,0 +1,131 @@
+/* ============================================================
+   ATTRUS / Cabiros — SEMANTIC COLOR TOKENS
+   Reference the base palette (palette.css). This is the layer
+   components consume.
+   Roles: default | secondary | muted | accent | placeholder
+   Contexts: fg (text/icon), bg (surface), br (border)
+   ============================================================ */
+
+:root {
+  /* Default (light) theme — the 60% whites/light grays */
+  --color-background-canvas:      var(--color-neutral-25);          /* app background */
+  --color-background-surface:     var(--color-neutral-0);           /* card / container */
+  --color-background-subtle:      var(--color-neutral-50);          /* row / nested */
+  --color-background-raised:      var(--color-neutral-0);           /* floating panels */
+  --color-background-sunken:      var(--color-neutral-100);         /* inputs, wells */
+  --color-background-hover:       var(--color-neutral-100);
+  --color-background-press:       var(--color-neutral-150);
+  --color-background-selected:    var(--color-brand-secondary-50);
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     INVERSE LAYER — contextual contrast surface, NOT dark theme
+     ─────────────────────────────────────────────────────────────────────────
+     Inverse is a deliberate high-contrast surface usable inside ANY theme.
+     Use it for: institutional sidebars, premium hero panels, KPI emphasis
+     cards, command palettes, modal overlays — surfaces where contrast is the
+     intent, not the ambient theme.
+
+     Key rule (ATTRUS): inverse is ALWAYS the dark "preto-azulado" — even when
+     dark theme arrives. In dark theme, surface becomes dark and inverse stays
+     dark too, but inverse keeps a deliberate, branded character (deeper navy,
+     brand-tinted) that distinguishes it from the ambient surface.
+
+     Decision matrix:
+       Use --color-background-surface  → ambient surface of current theme
+       Use --color-background-inverse  → deliberate contrast vs. ambient
+       Use --color-background-inverse-brand → premium brand emphasis on inverse
+
+     Anti-patterns:
+       ✗ Using inverse to fake dark mode (use a real theme switch)
+       ✗ Mixing inverse and surface tokens in the same component without intent
+       ✗ Hard-coding #0B1230 / white instead of inverse tokens
+     ───────────────────────────────────────────────────────────────────────── */
+  --color-background-inverse:          var(--color-ink-base);
+  --color-background-inverse-surface:  var(--color-ink-raised);
+  --color-background-inverse-subtle:   var(--color-ink-deep);
+  --color-background-inverse-hover:    var(--color-ink-hover);
+
+  /* Scrim — modal/drawer/sheet backdrop. Same in light and dark themes.
+     Pairs --color-scrim (tint) with --scrim-blur (depth via backdrop-filter).
+     The lower tint (0.32) works because blur alone separates focus from background;
+     fallback for browsers without backdrop-filter is in components/overlays.css. */
+  --color-scrim:                       rgba(10, 15, 31, 0.32);
+  --scrim-blur:                        6px;
+  --color-background-inverse-press:    color-mix(in srgb, var(--color-ink-hover) 70%, var(--color-pure-white));
+  --color-background-inverse-selected: color-mix(in srgb, var(--color-brand-secondary-500) 22%, var(--color-ink-base));
+  --color-background-inverse-brand:    var(--color-brand-primary-500);   /* CTA / hero with brand weight — Navy */
+
+  /* Foreground (text + icons) on LIGHT surfaces */
+  --color-foreground-default:     var(--color-neutral-800);   /* primary copy / headings */
+  --color-foreground-secondary:   var(--color-neutral-600);   /* hierarchy step 2 */
+  --color-foreground-muted:       var(--color-neutral-500);   /* captions, helper */
+  --color-foreground-placeholder: var(--color-neutral-300);   /* disabled + placeholder */
+  --color-foreground-accent:      var(--color-brand-accent-700);       /* accent / highlight TEXT — accent-700 #1E6DC4 (5.20:1 on white). NOT Sky-500: that fails AA as text (2.94:1). For decorative Sky fills use --color-brand-accent-500 directly. */
+  --color-foreground-brand:       var(--color-brand-primary-500);      /* institutional brand text/icon — Navy */
+  --color-foreground-highlight:   var(--color-brand-accent-700);       /* links, selected TEXT — accent-700 #1E6DC4 (legible on light). */
+  --color-foreground-on-solid:    var(--color-neutral-0);     /* text on any solid/strong fill (brand, ink, navy, dark hovers) */
+  --color-foreground-disabled:    var(--color-neutral-300);
+
+  /* Foreground on INVERSE (dark navy/ink) surfaces */
+  --color-foreground-inverse-default:     var(--color-neutral-50);
+  --color-foreground-inverse-secondary:   var(--color-neutral-300);
+  --color-foreground-inverse-muted:       var(--color-neutral-400);
+  --color-foreground-inverse-placeholder: var(--color-neutral-500);
+  --color-foreground-inverse-accent:      var(--color-brand-accent-500);
+  --color-foreground-inverse-highlight:   var(--color-brand-accent-300);
+  --color-foreground-inverse-disabled:    var(--color-neutral-600);
+
+  /* Borders */
+  --color-border-subtle:    var(--color-neutral-100);
+  --color-border-default:   var(--color-neutral-150);
+  --color-border-strong:    var(--color-neutral-200);
+  --color-border-focus:     var(--color-brand-accent-500);
+  --color-border-accent:    var(--color-brand-accent-500);
+  --color-border-success:   var(--color-success-500);
+  --color-border-warning:   var(--color-warning-500);
+  --color-border-danger:    var(--color-danger-500);
+  --color-border-info:      var(--color-info-500);
+  --color-border-inverse:        color-mix(in srgb, var(--color-pure-white) 10%, transparent);
+  --color-border-inverse-strong: color-mix(in srgb, var(--color-pure-white) 18%, transparent);
+
+  /* White-alpha overlays — for chips, ghost buttons, hairlines on dark/brand surfaces.
+     Use these instead of rgba(255,255,255,…) literals. */
+  --color-overlay-white-08:  color-mix(in srgb, var(--color-pure-white)  8%, transparent);
+  --color-overlay-white-12:  color-mix(in srgb, var(--color-pure-white) 12%, transparent);
+  --color-overlay-white-14:  color-mix(in srgb, var(--color-pure-white) 14%, transparent);
+  --color-overlay-white-16:  color-mix(in srgb, var(--color-pure-white) 16%, transparent);
+  --color-overlay-white-18:  color-mix(in srgb, var(--color-pure-white) 18%, transparent);
+  --color-overlay-white-22:  color-mix(in srgb, var(--color-pure-white) 22%, transparent);
+
+  /* Semantic fg/bg pairs (status chips, alerts) */
+  --color-feedback-success-foreground:        var(--color-success-700);
+  --color-feedback-success-foreground-muted:  var(--color-success-500);
+  --color-feedback-success-foreground-subtle: color-mix(in srgb, var(--color-success-500) 70%, var(--color-foreground-muted));
+  --color-feedback-success-background:        var(--color-success-50);
+  --color-feedback-success-border:        var(--color-success-100);
+  --color-feedback-warning-foreground:        var(--color-warning-700);
+  --color-feedback-warning-foreground-muted:  var(--color-warning-500);
+  --color-feedback-warning-foreground-subtle: color-mix(in srgb, var(--color-warning-500) 70%, var(--color-foreground-muted));
+  --color-feedback-warning-background:        var(--color-warning-50);
+  --color-feedback-warning-border:        var(--color-warning-100);
+  --color-feedback-danger-foreground:         var(--color-danger-700);
+  --color-feedback-danger-foreground-muted:   var(--color-danger-500);
+  --color-feedback-danger-foreground-subtle:  color-mix(in srgb, var(--color-danger-500) 70%, var(--color-foreground-muted));
+  --color-feedback-danger-background:         var(--color-danger-50);
+  --color-feedback-danger-border:         var(--color-danger-100);
+  --color-feedback-info-foreground:           var(--color-info-700);
+  --color-feedback-info-foreground-muted:     var(--color-info-500);
+  --color-feedback-info-foreground-subtle:    color-mix(in srgb, var(--color-info-500) 70%, var(--color-foreground-muted));
+  --color-feedback-info-background:           var(--color-info-50);
+  --color-feedback-info-border:           var(--color-info-100);
+
+  /* Semantic foregrounds on INVERSE surfaces (chips/banners over dark) */
+  --color-feedback-success-foreground-on-inverse:       var(--color-success-100);
+  --color-feedback-success-foreground-on-inverse-muted: color-mix(in srgb, var(--color-success-100) 70%, var(--color-foreground-inverse-muted));
+  --color-feedback-warning-foreground-on-inverse:       var(--color-warning-100);
+  --color-feedback-warning-foreground-on-inverse-muted: color-mix(in srgb, var(--color-warning-100) 70%, var(--color-foreground-inverse-muted));
+  --color-feedback-danger-foreground-on-inverse:        var(--color-danger-100);
+  --color-feedback-danger-foreground-on-inverse-muted:  color-mix(in srgb, var(--color-danger-100)  70%, var(--color-foreground-inverse-muted));
+  --color-feedback-info-foreground-on-inverse:          var(--color-info-100);
+  --color-feedback-info-foreground-on-inverse-muted:    color-mix(in srgb, var(--color-info-100)    70%, var(--color-foreground-inverse-muted));
+}

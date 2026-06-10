@@ -1,0 +1,24 @@
+/* ============================================================
+   ATTRUS / Cabiros — SPACING
+   4px base; dense, data-heavy layouts.
+   ============================================================ */
+
+:root {
+  --space-0:   0;
+  --space-1:   2px;
+  --space-2:   4px;
+  --space-2-5: 6px;   /* half-step — dense chips, tight icon gaps */
+  --space-3:   8px;
+  --space-3-5: 10px;  /* half-step — control padding, list-row gaps */
+  --space-4:   12px;
+  --space-4-5: 14px;  /* half-step — card padding, section gaps */
+  --space-5:   16px;
+  --space-6:   20px;
+  --space-7:   24px;
+  --space-8:   32px;
+  --space-9:   40px;
+  --space-10:  48px;
+  --space-12:  64px;
+  --space-14:  80px;
+  --space-16:  96px;
+}

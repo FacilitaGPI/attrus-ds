@@ -1,0 +1,19 @@
+/* ============================================================
+   CABIROS — ATTRUS Design System (source entry point)
+   ----
+   Sober, serious, professional. Dashboards for financial
+   operations across LATAM. Cool bluish grays. Deep navy.
+   Primary brand blue. Liquid-glass-friendly translucency.
+   ----
+   Source order: fonts -> tokens -> typography -> components.
+   For npm consumers, scripts/build.mjs assembles this into dist/
+   with self-hosted fonts (the CDN @imports below are stripped).
+   ============================================================ */
+
+/* Webfonts (dev only — replaced by self-hosted woff2 in dist) */
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,300;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@import "./tokens/index.css";
+@import "./typography/index.css";
+@import "./components/index.css";
