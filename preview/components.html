@@ -16,7 +16,9 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
-  /* ---- page-specific chrome (specimen cards) ---- */
+  body { background: var(--color-background-canvas); }
+
+  /* Theme toggle — fixed pill, top-right */
   .theme-toggle {
     position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100;
     display: inline-flex; align-items: center; gap: var(--space-2);
@@ -30,35 +32,136 @@
   .theme-toggle:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background: var(--color-background-hover); }
   .theme-toggle [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
 
-  .spec-head { padding: var(--space-4) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); }
-  .spec-head h3 { margin: 0; font-size: var(--fs-md); font-weight: var(--w-bold); letter-spacing: var(--ls-title); }
-  .spec-head .tag { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  /* ---------------- Hero ---------------- */
+  .ds-hero {
+    background: var(--color-background-inverse);
+    color: var(--color-foreground-inverse-default);
+    border-radius: var(--radius-xl);
+    padding: var(--space-10) var(--space-8);
+    margin: 0 0 var(--space-10);
+    position: relative;
+    overflow: hidden;
+  }
+  .ds-hero::after { content: ""; position: absolute; inset: 0; background: var(--grad-hero); opacity: .55; pointer-events: none; z-index: 0; }
+  .ds-hero > * { position: relative; z-index: 1; }
+  .ds-hero-eyebrow {
+    font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold);
+    text-transform: uppercase; letter-spacing: var(--ls-caps);
+    color: var(--color-foreground-inverse-secondary);
+    margin: 0 0 var(--space-3); display: flex; align-items: center; gap: var(--space-3);
+  }
+  .ds-hero-eyebrow .pill {
+    background: var(--color-overlay-white-14); border: 1px solid var(--color-overlay-white-18);
+    border-radius: var(--radius-pill); padding: var(--space-1) var(--space-2);
+    font-size: var(--fs-xxs); letter-spacing: var(--ls-caps);
+  }
+  .ds-hero h1 {
+    font-family: var(--font-display); font-weight: var(--w-bold);
+    font-size: clamp(40px, 5vw, 64px); letter-spacing: var(--ls-tight);
+    line-height: 1.04; margin: 0 0 var(--space-5); max-width: 20ch;
+  }
+  .ds-hero h1 em { font-style: normal; color: var(--color-brand-secondary-200); }
+  .ds-hero p.lead { font-size: var(--fs-lg); color: var(--color-foreground-inverse-secondary); max-width: 70ch; line-height: var(--lh-normal); margin: 0 0 var(--space-7); }
+  .ds-hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .ds-hero-btn {
+    display: inline-flex; align-items: center; gap: var(--space-2); height: 44px; padding: 0 var(--space-5);
+    border-radius: var(--radius-pill); font-family: var(--font-sans); font-weight: var(--w-semibold);
+    font-size: var(--fs-md); border: 1px solid transparent; cursor: pointer; transition: var(--transition-fast); text-decoration: none;
+  }
+  .ds-hero-btn-primary { background: var(--color-pure-white); color: var(--color-brand-secondary-700); }
+  .ds-hero-btn-primary:hover { background: var(--color-brand-secondary-50); }
+  .ds-hero-btn-ghost { background: var(--color-overlay-white-08); color: var(--color-foreground-inverse-default); border-color: var(--color-overlay-white-22); }
+  .ds-hero-btn-ghost:hover { background: var(--color-overlay-white-16); }
+  .ds-hero-btn i, .ds-hero-btn svg { width: var(--icon-md); height: var(--icon-md); stroke-width: var(--icon-stroke); }
+
+  /* ---------------- Stats strip ---------------- */
+  .ds-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--color-border-subtle); border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg); overflow: hidden; margin: 0 0 var(--space-10);
+  }
+  .ds-stat { background: var(--color-background-surface); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-1); }
+  .ds-stat .num { font-family: var(--font-display); font-weight: var(--w-bold); font-size: var(--fs-3xl); letter-spacing: var(--ls-title); color: var(--color-foreground-default); line-height: 1; }
+  .ds-stat .lbl { font-family: var(--font-mono); font-size: var(--fs-xxs); text-transform: uppercase; letter-spacing: var(--ls-caps); color: var(--color-foreground-muted); margin-top: var(--space-2); }
+
+  /* ---------------- Quick nav ---------------- */
+  .ds-nav {
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    padding: var(--space-4); margin: 0 0 var(--space-10);
+    background: color-mix(in srgb, var(--color-background-surface) 85%, transparent);
+    border: 1px solid var(--color-border-default); border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs); position: sticky; top: var(--space-4); z-index: 10;
+    backdrop-filter: var(--glass-blur-sm); -webkit-backdrop-filter: var(--glass-blur-sm);
+  }
+  .ds-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .ds-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  /* ---------------- Section ---------------- */
+  .ds-section { margin: 0 0 var(--space-12); scroll-margin-top: 88px; }
+  .ds-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); margin: 0 0 var(--space-4); padding: 0 0 var(--space-3); border-bottom: 1px solid var(--color-border-subtle); }
+  .ds-section-title { display: flex; align-items: baseline; gap: var(--space-4); }
+  .ds-section-title .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); }
+  .ds-section-title h2 { font-family: var(--font-display); font-weight: var(--w-bold); font-size: var(--fs-3xl); letter-spacing: var(--ls-title); margin: 0; }
+  .ds-section-meta { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); white-space: nowrap; }
+  .ds-section-blurb { font-size: var(--fs-md); color: var(--color-foreground-secondary); max-width: 78ch; line-height: var(--lh-normal); margin: 0 0 var(--space-6); }
+
+  /* ---------------- Specimen card (live demo) ---------------- */
+  .spec {
+    background: var(--color-background-surface); border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-5); box-shadow: var(--shadow-xs);
+    transition: var(--transition-fast);
+  }
+  .spec:hover { border-color: var(--color-border-strong); box-shadow: var(--shadow-md); }
+  .spec-head { padding: var(--space-4) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
+  .spec-head h3 { margin: 0; font-family: var(--font-display); font-size: var(--fs-md); font-weight: var(--w-bold); letter-spacing: var(--ls-tight); }
+  .spec-head .tag { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); padding: var(--space-1) var(--space-2); border-radius: var(--radius-pill); background: var(--color-background-sunken); }
   .spec-canvas { padding: var(--space-7) var(--space-6); background: var(--color-background-canvas); display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; }
   .spec-canvas.col { flex-direction: column; align-items: flex-start; }
   .spec-canvas.dark { background: var(--color-background-inverse); }
-  .specimen-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-5); }
+  .specimen-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-5); width: 100%; }
+
+  /* ---------------- Footer ---------------- */
+  .ds-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3); font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); }
+
+  @media (max-width: 720px) {
+    .ds-stats { grid-template-columns: repeat(2, 1fr); }
+    .ds-section-head { flex-direction: column; align-items: flex-start; }
+  }
 </style>
 </head>
 
 <body>
-<button class="theme-toggle" data-theme-toggle aria-pressed="false" title="Toggle theme">
-  <span data-theme-icon>&#9790;</span><span data-theme-label>Dark</span>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span><span data-theme-label>Dark</span>
 </button>
 
-<div class="doc">
-  <header class="doc-header">
-    <div>
-      <h1>Components</h1>
-      <p>Live specimens for <code>@attrus-ds/core</code> — every style rendered from the published
-        <code>dist/</code> bundle using the canonical class names. The same classes power the typed
-        React layer (<code>@attrus-ds/core/react</code>).</p>
-    </div>
-    <div class="doc-meta">
-      <span class="doc-meta-pill">v0.2.0</span>
-    </div>
-  </header>
+<main class="doc">
 
-  <nav class="doc-nav">
+  <!-- HERO -->
+  <section class="ds-hero">
+    <div class="ds-hero-eyebrow">
+      <span>@attrus-ds/core</span>
+      <span class="pill">v0.2.0</span>
+      <span class="pill">Components</span>
+    </div>
+    <h1>Live specimens for <em>ATTRUS</em> components.</h1>
+    <p class="lead">Every component style rendered straight from the published <code>dist/</code> bundle, using the canonical class names. The same classes power the typed React layer (<code>@attrus-ds/core/react</code>) — change a token, every specimen re-skins. Toggle the theme to verify dark mode.</p>
+    <div class="ds-hero-actions">
+      <a class="ds-hero-btn ds-hero-btn-primary" href="#buttons">Browse components<i data-lucide="arrow-right"></i></a>
+      <a class="ds-hero-btn ds-hero-btn-ghost" href="#smart-search">See SmartSearch<i data-lucide="command"></i></a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="ds-stats">
+    <div class="ds-stat"><span class="num">20</span><span class="lbl">React components</span></div>
+    <div class="ds-stat"><span class="num">18</span><span class="lbl">CSS component stylesheets</span></div>
+    <div class="ds-stat"><span class="num">334</span><span class="lbl">Design tokens</span></div>
+    <div class="ds-stat"><span class="num">100%</span><span class="lbl">Token-driven · zero hard-coded values</span></div>
+  </div>
+
+  <!-- QUICK NAV -->
+  <nav class="ds-nav" aria-label="Jump to component">
     <a href="#buttons">Buttons</a>
     <a href="#pills">Status pills</a>
     <a href="#callouts">Callouts</a>
@@ -78,9 +181,12 @@
   </nav>
 
   <!-- ============================== BUTTONS ============================== -->
-  <section class="doc-section" id="buttons">
-    <h2><span class="num">01</span> Buttons</h2>
-    <p class="lead">Pill-shaped (radius 999px) — the strongest visual tell of the system. Nine variants, four sizes.</p>
+  <section class="ds-section" id="buttons">
+    <div class="ds-section-head">
+      <div class="ds-section-title"><span class="num">01</span><h2>Buttons</h2></div>
+      <span class="ds-section-meta">9 variants · 4 sizes</span>
+    </div>
+    <p class="ds-section-blurb">Pill-shaped (radius 999px) — the strongest visual tell of the system. Nine variants across four sizes, with loading, disabled, icon-only and grouped forms.</p>
 
     <div class="spec">
       <div class="spec-head"><h3>Variants</h3><span class="tag">.btn .btn-*</span></div>
@@ -121,9 +227,12 @@
   </section>
 
   <!-- ============================== PILLS ============================== -->
-  <section class="doc-section" id="pills">
-    <h2><span class="num">02</span> Status pills</h2>
-    <p class="lead">Plain-language transaction states. Soft tints by default; solid and outline variants available.</p>
+  <section class="ds-section" id="pills">
+    <div class="ds-section-head">
+      <div class="ds-section-title"><span class="num">02</span><h2>Status pills</h2></div>
+      <span class="ds-section-meta">6 tones · solid / outline</span>
+    </div>
+    <p class="ds-section-blurb">Plain-language transaction states. Soft tints by default; solid and outline variants available, in three sizes.</p>
     <div class="spec">
       <div class="spec-head"><h3>Tones</h3><span class="tag">.pill .success/.warning/.danger/.info/.neutral/.brand</span></div>
       <div class="spec-canvas">
@@ -144,9 +253,12 @@
   </section>
 
   <!-- ============================== CALLOUTS ============================== -->
-  <section class="doc-section" id="callouts">
-    <h2><span class="num">03</span> Callouts</h2>
-    <p class="lead">Inline guidance and feedback. Four semantic tones plus neutral.</p>
+  <section class="ds-section" id="callouts">
+    <div class="ds-section-head">
+      <div class="ds-section-title"><span class="num">03</span><h2>Callouts</h2></div>
+      <span class="ds-section-meta">4 tones + neutral</span>
+    </div>
+    <p class="ds-section-blurb">Icon-led note boxes for inline guidance and feedback. Tints adapt to the theme.</p>
     <div class="spec">
       <div class="spec-head"><h3>Tones</h3><span class="tag">.callout .callout-*</span></div>
       <div class="spec-canvas col">
@@ -183,13 +295,16 @@
   </section>
 
   <!-- ============================== INPUTS ============================== -->
-  <section class="doc-section" id="inputs">
-    <h2><span class="num">04</span> Inputs &amp; fields</h2>
-    <p class="lead">Text inputs with labels, helper text and validation states.</p>
+  <section class="ds-section" id="inputs">
+    <div class="ds-section-head">
+      <div class="ds-section-title"><span class="num">04</span><h2>Inputs &amp; fields</h2></div>
+      <span class="ds-section-meta">5 states · labels + help</span>
+    </div>
+    <p class="ds-section-blurb">Text inputs with labels, helper text and validation states, plus checkboxes.</p>
     <div class="spec">
       <div class="spec-head"><h3>Fields</h3><span class="tag">.field · .input · .input.is-*</span></div>
       <div class="spec-canvas">
-        <div class="specimen-grid" style="width:100%">
+        <div class="specimen-grid">
           <div class="field">
             <label>Company name</label>
             <input class="input" type="text" placeholder="Acme Corp S.A.">
@@ -227,9 +342,12 @@
   </section>
 
   <!-- ============================== NUMBER INPUT ============================== -->
-  <section class="doc-section" id="number">
-    <h2><span class="num">05</span> Number input</h2>
-    <p class="lead">Stepper-style numeric control with monospace value.</p>
+  <section class="ds-section" id="number">
+    <div class="ds-section-head">
+      <div class="ds-section-title"><span class="num">05</span><h2>Number input</h2></div>
+      <span class="ds-section-meta">−/+ accelerators</span>
+    </div>
+    <p class="ds-section-blurb">Stepper-style numeric control with a monospace value — for bounded quantities.</p>
     <div class="spec">
       <div class="spec-head"><h3>Default</h3><span class="tag">.number-input</span></div>
       <div class="spec-canvas">
@@ -243,9 +361,12 @@
   </section>
 
   <!-- ============================== CARDS ============================== -->
-  <section class="doc-section" id="cards">
-    <h2><span class="num">06</span> Cards</h2>
-    <p class="lead">Containers at radius 10px. Header / body / footer slots compose automatically.</p>
+  <section class="ds-section" id="cards">
+    <div class="ds-section-head">
+      <div class="ds-section-title"><span class="num">06</span><h2>Cards</h2></div>
+      <span class="ds-section-meta">header / body / footer</span>
+    </div>
+    <p class="ds-section-blurb">Containers at radius 10px. Header, body and footer slots compose automatically.</p>
     <div class="spec">
       <div class="spec-head"><h3>Anatomy</h3><span class="tag">.card · .card-header/body/footer</span></div>
       <div class="spec-canvas">
@@ -269,9 +390,12 @@
   </section>
 
   <!-- ============================== ATOMS ============================== -->
-  <section class="doc-section" id="atoms">
-    <h2><span class="num">07</span> Atoms</h2>
-    <p class="lead">Money, metrics, avatars, eyebrows, stats, chips, progress and dividers.</p>
+  <section class="ds-section" id="atoms">
+    <div class="ds-section-head">
+      <div class="ds-section-title"><span class="num">07</span><h2>Atoms</h2></div>
+      <span class="ds-section-meta">money · metric · avatar · chip · progress</span>
+    </div>
+    <p class="ds-section-blurb">Headless primitives the rest of the system reuses — money, metrics, avatars, eyebrows, stats, chips, progress and dividers.</p>
     <div class="spec">
       <div class="spec-head"><h3>Money &amp; metric</h3><span class="tag">.money · .metric</span></div>
       <div class="spec-canvas">
@@ -307,9 +431,12 @@
   </section>
 
   <!-- ============================== TABS ============================== -->
-  <section class="doc-section" id="tabs">
-    <h2><span class="num">08</span> Tabs</h2>
-    <p class="lead">Underline tabs for page-level sections; pill tabs for compact, segmented filters.</p>
+  <section class="ds-section" id="tabs">
+    <div class="ds-section-head">
+      <div class="ds-section-title"><span class="num">08</span><h2>Tabs</h2></div>
+      <span class="ds-section-meta">underline + pill</span>
+    </div>
+    <p class="ds-section-blurb">Underline tabs for page-level sections; pill tabs for compact, segmented filters.</p>
     <div class="spec">
       <div class="spec-head"><h3>Underline</h3><span class="tag">.tabs · .tab[aria-selected]</span></div>
       <div class="spec-canvas col">
@@ -334,9 +461,12 @@
   </section>
 
   <!-- ============================== TABLE ============================== -->
-  <section class="doc-section" id="table">
-    <h2><span class="num">09</span> Data table</h2>
-    <p class="lead">Dense ledger table with tabular numerals and row states.</p>
+  <section class="ds-section" id="table">
+    <div class="ds-section-head">
+      <div class="ds-section-title"><span class="num">09</span><h2>Data table</h2></div>
+      <span class="ds-section-meta">tabular nums · row states</span>
+    </div>
+    <p class="ds-section-blurb">Dense ledger table with tabular numerals and semantic row states.</p>
     <div class="spec">
       <div class="spec-head"><h3>Ledger</h3><span class="tag">.dt</span></div>
       <div class="spec-canvas col">
@@ -373,9 +503,12 @@
   </section>
 
   <!-- ============================== SMART SEARCH ============================== -->
-  <section class="doc-section" id="smart-search">
-    <h2><span class="num">10</span> Smart search</h2>
-    <p class="lead">Global command palette (&#8984;K). The new 20th component — promoted to its own stylesheet.</p>
+  <section class="ds-section" id="smart-search">
+    <div class="ds-section-head">
+      <div class="ds-section-title"><span class="num">10</span><h2>Smart search</h2></div>
+      <span class="ds-section-meta">New in v0.2 · &#8984;K palette</span>
+    </div>
+    <p class="ds-section-blurb">Global command palette — the new 20th component, promoted to its own stylesheet. Eight canonical states (suggestions, grouped results, ID disambiguation, loading, error).</p>
     <div class="spec">
       <div class="spec-head"><h3>Active state</h3><span class="tag">.ss</span></div>
       <div class="spec-canvas">
@@ -410,9 +543,12 @@
   </section>
 
   <!-- ============================== TOAST ============================== -->
-  <section class="doc-section" id="toast">
-    <h2><span class="num">11</span> Toast</h2>
-    <p class="lead">Transient notifications. Auto-dismiss pauses on hover/focus (a11y contract).</p>
+  <section class="ds-section" id="toast">
+    <div class="ds-section-head">
+      <div class="ds-section-title"><span class="num">11</span><h2>Toast</h2></div>
+      <span class="ds-section-meta">transient · a11y pause</span>
+    </div>
+    <p class="ds-section-blurb">Transient notifications. Auto-dismiss pauses on hover/focus (accessibility contract).</p>
     <div class="spec">
       <div class="spec-head"><h3>Variants</h3><span class="tag">.toast .toast-*</span></div>
       <div class="spec-canvas col">
@@ -431,9 +567,12 @@
   </section>
 
   <!-- ============================== TOOLTIP ============================== -->
-  <section class="doc-section" id="tooltip">
-    <h2><span class="num">12</span> Tooltip</h2>
-    <p class="lead">Hover or focus a target. Four directions; rich variant supported.</p>
+  <section class="ds-section" id="tooltip">
+    <div class="ds-section-head">
+      <div class="ds-section-title"><span class="num">12</span><h2>Tooltip</h2></div>
+      <span class="ds-section-meta">4 directions</span>
+    </div>
+    <p class="ds-section-blurb">Hover or focus a target. Four directions; rich variant supported.</p>
     <div class="spec">
       <div class="spec-head"><h3>Directions</h3><span class="tag">.tooltip-target &gt; .tooltip-*</span></div>
       <div class="spec-canvas" style="gap:var(--space-8)">
@@ -446,9 +585,12 @@
   </section>
 
   <!-- ============================== STEPPER ============================== -->
-  <section class="doc-section" id="stepper">
-    <h2><span class="num">13</span> Stepper</h2>
-    <p class="lead">Multi-step flows — KYC, account opening. Marker + label + connector.</p>
+  <section class="ds-section" id="stepper">
+    <div class="ds-section-head">
+      <div class="ds-section-title"><span class="num">13</span><h2>Stepper</h2></div>
+      <span class="ds-section-meta">5 step states</span>
+    </div>
+    <p class="ds-section-blurb">Multi-step flows — KYC, account opening. Marker, label and connector per step.</p>
     <div class="spec">
       <div class="spec-head"><h3>Progress</h3><span class="tag">.stepper · .step</span></div>
       <div class="spec-canvas col">
@@ -475,9 +617,12 @@
   </section>
 
   <!-- ============================== EMPTY STATE ============================== -->
-  <section class="doc-section" id="empty">
-    <h2><span class="num">14</span> Empty state</h2>
-    <p class="lead">Content-less states with an illustration slot and guidance.</p>
+  <section class="ds-section" id="empty">
+    <div class="ds-section-head">
+      <div class="ds-section-title"><span class="num">14</span><h2>Empty state</h2></div>
+      <span class="ds-section-meta">illustration + guidance</span>
+    </div>
+    <p class="ds-section-blurb">Content-less states with an illustration slot, headline, body and 1–2 actions.</p>
     <div class="spec">
       <div class="spec-head"><h3>Zero results</h3><span class="tag">.empty</span></div>
       <div class="spec-canvas col">
@@ -492,9 +637,12 @@
   </section>
 
   <!-- ============================== OVERLAYS ============================== -->
-  <section class="doc-section" id="overlays">
-    <h2><span class="num">15</span> Overlays</h2>
-    <p class="lead">Modals center at ~560px; drawers slide in from the right. Shown statically below.</p>
+  <section class="ds-section" id="overlays">
+    <div class="ds-section-head">
+      <div class="ds-section-title"><span class="num">15</span><h2>Overlays</h2></div>
+      <span class="ds-section-meta">modal · drawer</span>
+    </div>
+    <p class="ds-section-blurb">Modals center at ~560px; drawers slide in from the right. Shown statically below.</p>
     <div class="spec">
       <div class="spec-head"><h3>Modal</h3><span class="tag">.modal</span></div>
       <div class="spec-canvas">
@@ -508,9 +656,12 @@
   </section>
 
   <!-- ============================== APP SHELL ============================== -->
-  <section class="doc-section" id="shell">
-    <h2><span class="num">16</span> App shell</h2>
-    <p class="lead">Sidebar navigation and top utility bar — the chrome of the operations dashboard.</p>
+  <section class="ds-section" id="shell">
+    <div class="ds-section-head">
+      <div class="ds-section-title"><span class="num">16</span><h2>App shell</h2></div>
+      <span class="ds-section-meta">sidebar · topbar</span>
+    </div>
+    <p class="ds-section-blurb">Sidebar navigation and top utility bar — the chrome of the operations dashboard.</p>
     <div class="spec">
       <div class="spec-head"><h3>Sidebar</h3><span class="tag">.sb · .sb-item</span></div>
       <div class="spec-canvas">
@@ -528,7 +679,12 @@
     </div>
   </section>
 
-</div>
+  <footer class="ds-foot">
+    <span>@attrus-ds/core · ATTRUS / Cabiros Design System · v0.2.0</span>
+    <span>Token-driven · CSS is the source of truth</span>
+  </footer>
+
+</main>
 
 <script>
   // Render lucide icons; re-render after a theme switch (icons are inline SVG).
