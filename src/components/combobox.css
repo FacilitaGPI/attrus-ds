@@ -171,7 +171,7 @@
   background: var(--color-background-hover);
 }
 .combobox-option.is-selected {
-  background: var(--color-brand-secondary-50);
+  background: var(--color-background-selected);
   color: var(--color-foreground-accent);
   font-weight: var(--w-semibold);
 }
@@ -295,6 +295,22 @@
 .combobox.is-invalid .combobox-trigger:focus-visible {
   box-shadow: 0 0 0 3px var(--color-feedback-danger-background);
 }
+
+
+/* ----------------------------------------------------------------
+   LISTING POPOVER EXTRAS — optional rows inside the popover:
+   filter-chip row (below search), results meta (above list),
+   foot meta (below list). Exposed via Combobox props
+   `filters` / `meta` / `footMeta`.
+   ---------------------------------------------------------------- */
+.combobox-filters { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-3); border-bottom: 1px solid var(--color-border-subtle); }
+.combobox-filter-chip { display: inline-flex; align-items: center; gap: var(--space-2); padding: 4px var(--space-3); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: var(--w-medium); color: var(--color-foreground-secondary); cursor: pointer; transition: var(--transition-fast); }
+.combobox-filter-chip:hover { background: var(--color-background-hover); border-color: var(--color-border-strong); color: var(--color-foreground-default); }
+.combobox-filter-chip.is-active { background: var(--color-background-selected); border-color: var(--color-brand-secondary-200); color: var(--color-foreground-brand); font-weight: var(--w-semibold); }
+.combobox-filter-chip .count { font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-muted); }
+.combobox-filter-chip.is-active .count { color: var(--color-brand-secondary-600); }
+.combobox-meta { padding: var(--space-2) var(--space-3) var(--space-1); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-subtle); }
+.combobox-foot-meta { padding: var(--space-2) var(--space-3); font-size: var(--fs-xs); color: var(--color-foreground-muted); border-top: 1px solid var(--color-border-subtle); }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {

@@ -206,7 +206,7 @@
   border-color: var(--color-feedback-danger-border);
 }
 .btn-danger-outline:hover  { background: var(--color-feedback-danger-background); border-color: var(--color-danger-500); }
-.btn-danger-outline:active { background: color-mix(in srgb, var(--color-feedback-danger-background) 60%, var(--color-danger-100)); }
+.btn-danger-outline:active { background: color-mix(in srgb, var(--color-feedback-danger-background) 85%, var(--color-danger-500)); }
 .btn-danger-outline:focus-visible { box-shadow: var(--shadow-focus-danger); }
 
 

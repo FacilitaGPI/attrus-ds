@@ -130,6 +130,10 @@
   to   { transform: scaleX(0); }
 }
 
+/* Auto-dismiss must pause while the user inspects (doc a11y contract) */
+.toast:hover .toast-progress::after,
+.toast:focus-within .toast-progress::after { animation-play-state: paused; }
+
 /* ============================================================
    VARIANTS — semantic
    ============================================================ */

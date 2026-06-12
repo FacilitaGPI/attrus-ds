@@ -83,8 +83,8 @@
 }
 .tab[aria-selected="true"] .tab-count,
 .tab.is-active .tab-count {
-  background: var(--color-brand-accent-50);
-  color: var(--color-brand-accent-700);
+  background: color-mix(in srgb, var(--color-brand-accent-500) 16%, transparent);
+  color: var(--color-foreground-accent);
 }
 
 /* Pill tabs — alternative for compact, segmented contexts */

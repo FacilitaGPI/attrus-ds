@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Components · @attrus-ds/core</title>
+
+<!-- Built design system: fonts + tokens + every component style.
+     Run `npm run build` first so ../dist exists. -->
+<link rel="stylesheet" href="../dist/css/index.css">
+<!-- Documentation-page chrome (not part of the package) -->
+<link rel="stylesheet" href="./components/tokens-doc.css">
+<!-- Seeds [data-theme] before first paint; wires [data-theme-toggle] -->
+<script src="./theme-toggle.js"></script>
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+  /* ---- page-specific chrome (specimen cards) ---- */
+  .theme-toggle {
+    position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100;
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    height: 40px; padding: 0 var(--space-4);
+    background: var(--color-background-surface); color: var(--color-foreground-secondary);
+    border: 1px solid var(--color-border-default); border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer;
+    box-shadow: var(--shadow-sm); transition: var(--transition-fast);
+  }
+  .theme-toggle:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background: var(--color-background-hover); }
+  .theme-toggle [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+
+  .spec-head { padding: var(--space-4) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); }
+  .spec-head h3 { margin: 0; font-size: var(--fs-md); font-weight: var(--w-bold); letter-spacing: var(--ls-title); }
+  .spec-head .tag { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .spec-canvas { padding: var(--space-7) var(--space-6); background: var(--color-background-canvas); display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; }
+  .spec-canvas.col { flex-direction: column; align-items: flex-start; }
+  .spec-canvas.dark { background: var(--color-background-inverse); }
+  .specimen-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-5); }
+</style>
+</head>
+
+<body>
+<button class="theme-toggle" data-theme-toggle aria-pressed="false" title="Toggle theme">
+  <span data-theme-icon>&#9790;</span><span data-theme-label>Dark</span>
+</button>
+
+<div class="doc">
+  <header class="doc-header">
+    <div>
+      <h1>Components</h1>
+      <p>Live specimens for <code>@attrus-ds/core</code> — every style rendered from the published
+        <code>dist/</code> bundle using the canonical class names. The same classes power the typed
+        React layer (<code>@attrus-ds/core/react</code>).</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill">v0.2.0</span>
+    </div>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#buttons">Buttons</a>
+    <a href="#pills">Status pills</a>
+    <a href="#callouts">Callouts</a>
+    <a href="#inputs">Inputs</a>
+    <a href="#number">Number input</a>
+    <a href="#cards">Cards</a>
+    <a href="#atoms">Atoms</a>
+    <a href="#tabs">Tabs</a>
+    <a href="#table">Table</a>
+    <a href="#smart-search">Smart search</a>
+    <a href="#toast">Toast</a>
+    <a href="#tooltip">Tooltip</a>
+    <a href="#stepper">Stepper</a>
+    <a href="#empty">Empty state</a>
+    <a href="#overlays">Overlays</a>
+    <a href="#shell">App shell</a>
+  </nav>
+
+  <!-- ============================== BUTTONS ============================== -->
+  <section class="doc-section" id="buttons">
+    <h2><span class="num">01</span> Buttons</h2>
+    <p class="lead">Pill-shaped (radius 999px) — the strongest visual tell of the system. Nine variants, four sizes.</p>
+
+    <div class="spec">
+      <div class="spec-head"><h3>Variants</h3><span class="tag">.btn .btn-*</span></div>
+      <div class="spec-canvas">
+        <button class="btn btn-primary">Primary</button>
+        <button class="btn btn-secondary">Secondary</button>
+        <button class="btn btn-tertiary">Tertiary</button>
+        <button class="btn btn-ghost">Ghost</button>
+        <button class="btn btn-danger">Danger</button>
+        <button class="btn btn-danger-outline">Danger outline</button>
+        <button class="btn btn-success">Success</button>
+        <button class="btn btn-link">Link</button>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><h3>Sizes, states &amp; group</h3><span class="tag">.btn-xs/sm/lg · .is-loading · .btn-group</span></div>
+      <div class="spec-canvas">
+        <button class="btn btn-primary btn-xs">XS</button>
+        <button class="btn btn-primary btn-sm">SM</button>
+        <button class="btn btn-primary">MD</button>
+        <button class="btn btn-primary btn-lg">LG</button>
+        <button class="btn btn-primary is-loading">Loading</button>
+        <button class="btn btn-primary" disabled>Disabled</button>
+        <button class="btn btn-secondary btn-icon" aria-label="Add"><i data-lucide="plus"></i></button>
+        <div class="btn-group">
+          <button class="btn btn-secondary">Day</button>
+          <button class="btn btn-secondary">Week</button>
+          <button class="btn btn-secondary">Month</button>
+        </div>
+      </div>
+      <div class="spec-canvas dark">
+        <button class="btn btn-inverse">Inverse</button>
+        <button class="btn btn-ghost on-inverse">Ghost on dark</button>
+        <button class="btn btn-secondary on-inverse">Secondary on dark</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== PILLS ============================== -->
+  <section class="doc-section" id="pills">
+    <h2><span class="num">02</span> Status pills</h2>
+    <p class="lead">Plain-language transaction states. Soft tints by default; solid and outline variants available.</p>
+    <div class="spec">
+      <div class="spec-head"><h3>Tones</h3><span class="tag">.pill .success/.warning/.danger/.info/.neutral/.brand</span></div>
+      <div class="spec-canvas">
+        <span class="pill success"><span class="dot"></span>Approved</span>
+        <span class="pill warning"><span class="dot"></span>Under review</span>
+        <span class="pill danger"><span class="dot"></span>Cancelled</span>
+        <span class="pill info"><span class="dot"></span>Identified</span>
+        <span class="pill neutral"><span class="dot"></span>Draft</span>
+        <span class="pill brand"><span class="dot"></span>Released</span>
+      </div>
+      <div class="spec-canvas">
+        <span class="pill solid success">Solid</span>
+        <span class="pill outline danger">Outline</span>
+        <span class="pill success sm">Small</span>
+        <span class="pill brand lg">Large</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== CALLOUTS ============================== -->
+  <section class="doc-section" id="callouts">
+    <h2><span class="num">03</span> Callouts</h2>
+    <p class="lead">Inline guidance and feedback. Four semantic tones plus neutral.</p>
+    <div class="spec">
+      <div class="spec-head"><h3>Tones</h3><span class="tag">.callout .callout-*</span></div>
+      <div class="spec-canvas col">
+        <div class="callout callout-info">
+          <div class="callout-icon"><i data-lucide="info"></i></div>
+          <div class="callout-content">
+            <div class="callout-title">Estimated total</div>
+            <div class="callout-body">This value is the sum of all up-to-period account balances.</div>
+          </div>
+        </div>
+        <div class="callout callout-success">
+          <div class="callout-icon"><i data-lucide="check-circle"></i></div>
+          <div class="callout-content">
+            <div class="callout-title">Review completed</div>
+            <div class="callout-body">The funds are now available in your balance.</div>
+          </div>
+        </div>
+        <div class="callout callout-warn">
+          <div class="callout-icon"><i data-lucide="alert-triangle"></i></div>
+          <div class="callout-content">
+            <div class="callout-title">Funds on hold</div>
+            <div class="callout-body">Upload the required documents to enable transactions.</div>
+          </div>
+        </div>
+        <div class="callout callout-danger">
+          <div class="callout-icon"><i data-lucide="x-circle"></i></div>
+          <div class="callout-content">
+            <div class="callout-title">Upload failed</div>
+            <div class="callout-body">Please try again.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== INPUTS ============================== -->
+  <section class="doc-section" id="inputs">
+    <h2><span class="num">04</span> Inputs &amp; fields</h2>
+    <p class="lead">Text inputs with labels, helper text and validation states.</p>
+    <div class="spec">
+      <div class="spec-head"><h3>Fields</h3><span class="tag">.field · .input · .input.is-*</span></div>
+      <div class="spec-canvas">
+        <div class="specimen-grid" style="width:100%">
+          <div class="field">
+            <label>Company name</label>
+            <input class="input" type="text" placeholder="Acme Corp S.A.">
+            <span class="help">As registered with the tax authority.</span>
+          </div>
+          <div class="field">
+            <label>Email <span class="opt">optional</span></label>
+            <input class="input" type="email" value="ops@acme.com">
+          </div>
+          <div class="field">
+            <label>Tax ID</label>
+            <input class="input is-error" type="text" value="12.345">
+            <span class="help is-error">Invalid CNPJ format.</span>
+          </div>
+          <div class="field">
+            <label>Account ID</label>
+            <input class="input is-success" type="text" value="ACC-90412">
+            <span class="help is-success">Verified.</span>
+          </div>
+          <div class="field">
+            <label>Disabled</label>
+            <input class="input is-disabled" type="text" value="Locked" disabled>
+          </div>
+          <div class="field">
+            <label>Notes</label>
+            <textarea class="input" rows="3" placeholder="Add a note..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <label class="check"><input type="checkbox" checked><span class="check-box"></span> Enable notifications</label>
+        <label class="check"><input type="checkbox"><span class="check-box"></span> Require 2FA</label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== NUMBER INPUT ============================== -->
+  <section class="doc-section" id="number">
+    <h2><span class="num">05</span> Number input</h2>
+    <p class="lead">Stepper-style numeric control with monospace value.</p>
+    <div class="spec">
+      <div class="spec-head"><h3>Default</h3><span class="tag">.number-input</span></div>
+      <div class="spec-canvas">
+        <div class="number-input">
+          <button class="minus" aria-label="Decrease">&minus;</button>
+          <input type="text" value="3" inputmode="numeric">
+          <button class="plus" aria-label="Increase">+</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== CARDS ============================== -->
+  <section class="doc-section" id="cards">
+    <h2><span class="num">06</span> Cards</h2>
+    <p class="lead">Containers at radius 10px. Header / body / footer slots compose automatically.</p>
+    <div class="spec">
+      <div class="spec-head"><h3>Anatomy</h3><span class="tag">.card · .card-header/body/footer</span></div>
+      <div class="spec-canvas">
+        <div class="card" style="max-width:360px">
+          <div class="card-header"><strong>Internal account</strong></div>
+          <div class="card-body">
+            <div class="stat-row">
+              <div class="stat is-bare">
+                <div class="stat-label">Balance</div>
+                <div class="stat-value"><span class="money money-lg"><span class="money-cur">USD</span>48,920<span class="money-frac">.56</span></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-ghost btn-sm">Details</button>
+            <button class="btn btn-primary btn-sm">Transfer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== ATOMS ============================== -->
+  <section class="doc-section" id="atoms">
+    <h2><span class="num">07</span> Atoms</h2>
+    <p class="lead">Money, metrics, avatars, eyebrows, stats, chips, progress and dividers.</p>
+    <div class="spec">
+      <div class="spec-head"><h3>Money &amp; metric</h3><span class="tag">.money · .metric</span></div>
+      <div class="spec-canvas">
+        <span class="money"><span class="money-cur">BRL</span>13,300<span class="money-frac">.00</span></span>
+        <span class="money money-pos"><span class="money-cur">USD</span>5,154<span class="money-frac">.74</span></span>
+        <span class="money money-neg"><span class="money-cur">USD</span>5,000<span class="money-frac">.00</span></span>
+        <span class="metric metric-lg"><span class="metric-cur">USD</span>48,920<span class="metric-frac">.56</span></span>
+      </div>
+    </div>
+    <div class="spec">
+      <div class="spec-head"><h3>Avatars, eyebrow, chips</h3><span class="tag">.av · .eyebrow · .filter-chip</span></div>
+      <div class="spec-canvas">
+        <span class="av av-sm av-brand">JD</span>
+        <span class="av av-md av-success">AC</span>
+        <span class="av av-lg av-warning">GL</span>
+        <span class="av-group">
+          <span class="av av-sm av-brand">JD</span>
+          <span class="av av-sm av-success">AC</span>
+          <span class="av av-sm av-more">+3</span>
+        </span>
+        <span class="eyebrow eyebrow-brand">Ledger</span>
+        <button class="filter-chip">Status <i data-lucide="chevron-down" class="chip-chevron"></i></button>
+        <button class="filter-chip" aria-pressed="true">Incoming</button>
+      </div>
+    </div>
+    <div class="spec">
+      <div class="spec-head"><h3>Progress &amp; divider</h3><span class="tag">.progress · .divider</span></div>
+      <div class="spec-canvas col">
+        <div class="progress" style="width:280px"><div class="progress-fill" style="width:64%"></div></div>
+        <div class="divider divider-labelled" style="width:280px">Reference</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== TABS ============================== -->
+  <section class="doc-section" id="tabs">
+    <h2><span class="num">08</span> Tabs</h2>
+    <p class="lead">Underline tabs for page-level sections; pill tabs for compact, segmented filters.</p>
+    <div class="spec">
+      <div class="spec-head"><h3>Underline</h3><span class="tag">.tabs · .tab[aria-selected]</span></div>
+      <div class="spec-canvas col">
+        <div class="tabs">
+          <button class="tab" aria-selected="true">All <span class="tab-count">128</span></button>
+          <button class="tab">Incoming <span class="tab-count">86</span></button>
+          <button class="tab">Outgoing <span class="tab-count">42</span></button>
+          <span class="tab-indicator"></span>
+        </div>
+      </div>
+    </div>
+    <div class="spec">
+      <div class="spec-head"><h3>Pill</h3><span class="tag">.tabs.tabs-pill</span></div>
+      <div class="spec-canvas">
+        <div class="tabs tabs-pill">
+          <button class="tab" aria-selected="true">Day</button>
+          <button class="tab">Week</button>
+          <button class="tab">Month</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== TABLE ============================== -->
+  <section class="doc-section" id="table">
+    <h2><span class="num">09</span> Data table</h2>
+    <p class="lead">Dense ledger table with tabular numerals and row states.</p>
+    <div class="spec">
+      <div class="spec-head"><h3>Ledger</h3><span class="tag">.dt</span></div>
+      <div class="spec-canvas col">
+        <table class="dt" style="width:100%">
+          <thead>
+            <tr><th>Date</th><th>Counterparty</th><th>Status</th><th class="num">Amount</th><th>Reference</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>06/10/2026</td>
+              <td>Acme Corp S.A.</td>
+              <td><span class="pill success sm"><span class="dot"></span>Settled</span></td>
+              <td class="num"><span class="money"><span class="money-cur">USD</span>5,154<span class="money-frac">.74</span></span></td>
+              <td>TX-90412</td>
+            </tr>
+            <tr>
+              <td>06/10/2026</td>
+              <td>Globex LATAM Ltda</td>
+              <td><span class="pill warning sm"><span class="dot"></span>In transit</span></td>
+              <td class="num"><span class="money"><span class="money-cur">MXN</span>91,120<span class="money-frac">.00</span></span></td>
+              <td>TX-90411</td>
+            </tr>
+            <tr class="is-error">
+              <td>06/09/2026</td>
+              <td>Umbrella Andina SAS</td>
+              <td><span class="pill danger sm"><span class="dot"></span>Failed</span></td>
+              <td class="num"><span class="money"><span class="money-cur">COP</span>20,513,500<span class="money-frac">.00</span></span></td>
+              <td>TX-90406</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== SMART SEARCH ============================== -->
+  <section class="doc-section" id="smart-search">
+    <h2><span class="num">10</span> Smart search</h2>
+    <p class="lead">Global command palette (&#8984;K). The new 20th component — promoted to its own stylesheet.</p>
+    <div class="spec">
+      <div class="spec-head"><h3>Active state</h3><span class="tag">.ss</span></div>
+      <div class="spec-canvas">
+        <div class="ss">
+          <div class="ss-input">
+            <i data-lucide="search"></i>
+            <input type="text" value="acme" placeholder="Search or ask something">
+            <button class="ss-clear" aria-label="Clear"><i data-lucide="x"></i></button>
+          </div>
+          <div class="ss-section">
+            <div class="ss-section-label">Results</div>
+            <ul class="ss-list">
+              <li class="ss-list-item is-active">
+                <span class="icon-leading brand"><i data-lucide="building-2"></i></span>
+                <span class="text"><span class="label">Acme Corp S.A.</span><span class="meta">CNPJ 12.345.678/0001-90</span></span>
+                <span class="icon-trailing"><i data-lucide="corner-down-left"></i></span>
+              </li>
+              <li class="ss-list-item">
+                <span class="icon-leading"><i data-lucide="receipt"></i></span>
+                <span class="text"><span class="label">TX-90412</span><span class="meta">BRL &rarr; USD · Settled</span></span>
+              </li>
+            </ul>
+          </div>
+          <div class="ss-foot">
+            <span class="kbd-group"><kbd class="ss-kbd">&uarr;</kbd><kbd class="ss-kbd">&darr;</kbd> navigate</span>
+            <span class="kbd-group"><kbd class="ss-kbd">&crarr;</kbd> open</span>
+            <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> close</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== TOAST ============================== -->
+  <section class="doc-section" id="toast">
+    <h2><span class="num">11</span> Toast</h2>
+    <p class="lead">Transient notifications. Auto-dismiss pauses on hover/focus (a11y contract).</p>
+    <div class="spec">
+      <div class="spec-head"><h3>Variants</h3><span class="tag">.toast .toast-*</span></div>
+      <div class="spec-canvas col">
+        <div class="toast toast-success" style="max-width:380px">
+          <div class="toast-icon"><i data-lucide="check-circle"></i></div>
+          <div class="toast-body"><div class="toast-title">Transfer sent</div><div class="toast-desc">USD 5,000.00 to Globex LATAM.</div></div>
+          <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
+        </div>
+        <div class="toast toast-danger" style="max-width:380px">
+          <div class="toast-icon"><i data-lucide="x-circle"></i></div>
+          <div class="toast-body"><div class="toast-title">Upload failed</div><div class="toast-desc">Please try again.</div></div>
+          <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== TOOLTIP ============================== -->
+  <section class="doc-section" id="tooltip">
+    <h2><span class="num">12</span> Tooltip</h2>
+    <p class="lead">Hover or focus a target. Four directions; rich variant supported.</p>
+    <div class="spec">
+      <div class="spec-head"><h3>Directions</h3><span class="tag">.tooltip-target &gt; .tooltip-*</span></div>
+      <div class="spec-canvas" style="gap:var(--space-8)">
+        <span class="tooltip-target"><button class="btn btn-secondary btn-sm">Top</button><span class="tooltip tooltip-top">Default tooltip</span></span>
+        <span class="tooltip-target"><button class="btn btn-secondary btn-sm">Right</button><span class="tooltip tooltip-right">On the right</span></span>
+        <span class="tooltip-target"><button class="btn btn-secondary btn-sm">Bottom</button><span class="tooltip tooltip-bottom">Below the target</span></span>
+        <span class="tooltip-target"><button class="btn btn-secondary btn-sm">Left</button><span class="tooltip tooltip-left">On the left</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== STEPPER ============================== -->
+  <section class="doc-section" id="stepper">
+    <h2><span class="num">13</span> Stepper</h2>
+    <p class="lead">Multi-step flows — KYC, account opening. Marker + label + connector.</p>
+    <div class="spec">
+      <div class="spec-head"><h3>Progress</h3><span class="tag">.stepper · .step</span></div>
+      <div class="spec-canvas col">
+        <div class="stepper">
+          <div class="step is-done">
+            <div class="step-marker"><i data-lucide="check"></i></div>
+            <div class="step-body"><div class="step-label">Identification</div></div>
+          </div>
+          <div class="step is-current">
+            <div class="step-marker">2</div>
+            <div class="step-body"><div class="step-label">Documents</div><div class="step-help">In progress</div></div>
+          </div>
+          <div class="step">
+            <div class="step-marker">3</div>
+            <div class="step-body"><div class="step-label">Bank accounts</div></div>
+          </div>
+          <div class="step">
+            <div class="step-marker">4</div>
+            <div class="step-body"><div class="step-label">Review</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== EMPTY STATE ============================== -->
+  <section class="doc-section" id="empty">
+    <h2><span class="num">14</span> Empty state</h2>
+    <p class="lead">Content-less states with an illustration slot and guidance.</p>
+    <div class="spec">
+      <div class="spec-head"><h3>Zero results</h3><span class="tag">.empty</span></div>
+      <div class="spec-canvas col">
+        <div class="empty empty-default">
+          <div class="empty-illo"><i data-lucide="search-x"></i></div>
+          <h4>No transactions match</h4>
+          <p>Try a different search or filter.</p>
+          <div class="empty-actions"><button class="btn btn-secondary btn-sm">Clear filters</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== OVERLAYS ============================== -->
+  <section class="doc-section" id="overlays">
+    <h2><span class="num">15</span> Overlays</h2>
+    <p class="lead">Modals center at ~560px; drawers slide in from the right. Shown statically below.</p>
+    <div class="spec">
+      <div class="spec-head"><h3>Modal</h3><span class="tag">.modal</span></div>
+      <div class="spec-canvas">
+        <div class="modal" style="position:static;transform:none;max-width:480px">
+          <div class="modal-header"><h3 class="modal-title">Add new counterparty</h3><button class="modal-close" aria-label="Close"><i data-lucide="x"></i></button></div>
+          <div class="modal-body">Start the KYC flow to enable transactions with this counterparty.</div>
+          <div class="modal-footer"><button class="btn btn-secondary btn-sm">Cancel</button><button class="btn btn-primary btn-sm">Continue &rarr;</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== APP SHELL ============================== -->
+  <section class="doc-section" id="shell">
+    <h2><span class="num">16</span> App shell</h2>
+    <p class="lead">Sidebar navigation and top utility bar — the chrome of the operations dashboard.</p>
+    <div class="spec">
+      <div class="spec-head"><h3>Sidebar</h3><span class="tag">.sb · .sb-item</span></div>
+      <div class="spec-canvas">
+        <nav class="sb" style="width:236px">
+          <div class="sb-body">
+            <div class="sb-section">
+              <a class="sb-item active" href="#shell"><i data-lucide="home"></i> Home</a>
+              <a class="sb-item" href="#shell"><i data-lucide="arrow-left-right"></i> Transactions <span class="sb-count">12</span></a>
+              <a class="sb-item" href="#shell"><i data-lucide="users"></i> Counterparties</a>
+              <a class="sb-item" href="#shell"><i data-lucide="wallet"></i> Accounts</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // Render lucide icons; re-render after a theme switch (icons are inline SVG).
+  if (window.lucide) lucide.createIcons();
+  window.addEventListener('attrus-theme', function () { if (window.lucide) lucide.createIcons(); });
+</script>
+</body>
+</html>

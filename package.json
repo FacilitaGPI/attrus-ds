@@ -1,7 +1,7 @@
 {
   "name": "@attrus-ds/core",
-  "version": "0.1.1",
-  "description": "ATTRUS / Cabiros design system — design tokens, component styles, brand assets and fonts. Visual layer only (no framework components).",
+  "version": "0.2.0",
+  "description": "ATTRUS / Cabiros design system — design tokens, component styles, brand assets, fonts and an optional typed React component layer.",
   "keywords": [
     "design-system",
     "design-tokens",
@@ -39,6 +39,8 @@
     "./tokens.json": "./dist/tokens/attrus-tokens.json",
     "./tokens.flat.json": "./dist/tokens/attrus-tokens.flat.json",
     "./components/*": "./dist/css/components/*",
+    "./react": "./dist/react/index.ts",
+    "./react/*": "./dist/react/*",
     "./assets/*": "./dist/assets/*",
     "./fonts/*": "./dist/fonts/*",
     "./package.json": "./package.json"
@@ -46,6 +48,14 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@fontsource/jetbrains-mono": "^5.0.0",

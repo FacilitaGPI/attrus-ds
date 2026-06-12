@@ -74,8 +74,8 @@
 }
 .sb-item:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
 .sb-item.active {
-  background: var(--color-brand-secondary-50);
-  color: var(--color-brand-secondary-700);
+  background: var(--color-background-selected);
+  color: var(--color-foreground-brand);
   font-weight: var(--w-semibold);
 }
 .sb-item.active::before {
@@ -168,7 +168,7 @@
 }
 .sb-children .sb-subitem:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
 .sb-children .sb-subitem:hover::before { opacity: 1; background: var(--color-foreground-muted); }
-.sb-children .sb-subitem.active { color: var(--color-brand-secondary-700); font-weight: var(--w-semibold); background: var(--color-brand-secondary-50); }
+.sb-children .sb-subitem.active { color: var(--color-foreground-brand); font-weight: var(--w-semibold); background: var(--color-background-selected); }
 .sb-children .sb-subitem.active::before { background: var(--color-brand-secondary-500); opacity: 1; }
 .sb-children .sb-subitem .count, .sb-children .sb-subitem .sb-count {
   margin-left: auto;

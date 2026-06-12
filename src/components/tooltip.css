@@ -220,6 +220,11 @@
   line-height: 1;
 }
 
+/* Esc suppression — hide while focus stays on the target (doc a11y contract).
+   The TSX toggles .is-suppressed on Escape; clears on blur / mouse re-enter. */
+.tooltip-target.is-suppressed > .tooltip,
+.tooltip-target.is-suppressed > .tooltip-rich { opacity: 0; pointer-events: none; }
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .tooltip { transition: opacity var(--duration-instant) linear; transform: none !important; transition-delay: 0s !important; }

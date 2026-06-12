@@ -177,6 +177,8 @@
   color: var(--color-foreground-secondary);
   margin-top: var(--space-1);
 }
+/* Bare stat — figure block without tile chrome, for use inside a Card */
+.stat.is-bare { background: none; border: 0; padding: 0; border-radius: 0; }
 
 /* Compact variant — for sidebars / dense headers */
 .stat-compact {
@@ -275,13 +277,20 @@
 }
 .filter-chip:hover { background: var(--color-background-hover); border-color: var(--color-border-strong); }
 .filter-chip:active { background: var(--color-background-press); }
+/* Selected (aria-pressed via FilterChip TSX) — same active treatment as combobox filter chips */
+.filter-chip[aria-pressed="true"] {
+  background: var(--color-background-selected);
+  border-color: var(--color-brand-secondary-200);
+  color: var(--color-foreground-brand);
+  font-weight: var(--w-semibold);
+}
 .filter-chip .chip-chevron { opacity: .55; }
 
 /* =================== PROGRESS BAR =================== */
 /* Slim track + fill. Width of fill is data-driven (set inline). */
 .progress {
   height: var(--progress-h, 6px);
-  background: var(--progress-track, var(--color-neutral-100));
+  background: var(--progress-track, var(--color-border-default));
   border-radius: var(--radius-pill);
   position: relative;
   overflow: hidden;

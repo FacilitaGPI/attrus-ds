@@ -1,15 +1,18 @@
 # @attrus-ds/core
 
-Visual layer of the **ATTRUS / Cabiros** design system, packaged for npm.
+The **ATTRUS / Cabiros** design system, packaged for npm.
 
-This package ships **only the visual foundation** — design tokens, component
-styles, brand assets and self-hosted fonts. It contains **no framework
-components** (no React/Vue/etc.) and no application screens.
+The CSS is the single visual source of truth — design tokens, component styles,
+brand assets and self-hosted fonts. On top of that, an **optional typed React
+layer** ships as source (TSX + `.d.ts`) under `@attrus-ds/core/react`; it only
+composes the canonical class names, so the CSS-only / markup path stays fully
+valid. No application screens are included.
 
 What's inside:
 
 - **Design tokens** — colors, typography, spacing, radii, shadows, motion, data-viz (CSS custom properties + JSON).
-- **Component styles** — ready-to-use CSS for buttons, inputs, tables, pills, tabs, cards, callouts, overlays and more.
+- **Component styles** — ready-to-use CSS for buttons, inputs, tables, pills, tabs, cards, callouts, overlays, smart-search and more.
+- **React components** — 20 typed wrappers (Button, Pill, Card, DataTable, Combobox, SmartSearch, Modal, Drawer, AppSidebar…), shipped as source under `@attrus-ds/core/react`. `react` is an optional peer dependency.
 - **Brand assets** — logos, icons and country flags (SVG).
 - **Fonts** — Lato and JetBrains Mono, self-hosted (`.woff2`, no CDN).
 
@@ -74,8 +77,38 @@ import "@attrus-ds/core/components/table.css";
 Available component stylesheets:
 
 `buttons` · `callout` · `cards` · `combobox` · `empty-states` · `inputs` ·
-`number-input` · `overlays` · `primitives` · `sidebar` · `status-pills` ·
-`stepper` · `table` · `tabs` · `toast` · `tooltip` · `topbar`
+`number-input` · `overlays` · `primitives` · `sidebar` · `smart-search` ·
+`status-pills` · `stepper` · `table` · `tabs` · `toast` · `tooltip` · `topbar`
+
+### React components
+
+The typed React layer is shipped as TSX source under `@attrus-ds/core/react`.
+Your bundler/toolchain compiles it; `react` (>= 18) is an optional peer
+dependency. Import the styles once at your app root, then the components:
+
+```js
+import "@attrus-ds/core/css";              // styles (once, at the root)
+import { Button, Pill, DataTable } from "@attrus-ds/core/react";
+
+export function Example() {
+  return <Button variant="primary" size="sm">New transaction</Button>;
+}
+```
+
+Each component is also importable on its own path:
+
+```js
+import { Button } from "@attrus-ds/core/react/Button/Button";
+```
+
+The CSS stays the single visual source of truth — these wrappers add a typed API
+and compose the same canonical classes (`.btn btn-primary`, `.pill success`, …),
+so plain HTML consumers and React consumers render identically.
+
+Component roster: `Button` · `Pill` · `Callout` · `Tabs` · `Input` ·
+`SearchPill` · `Card` · `DataTable` · `Atoms` (Money/Metric/Avatar/Eyebrow/Flag/
+Divider…) · `Stepper` · `NumberInput` · `Combobox` · `SmartSearch` · `Toast` ·
+`Tooltip` · `ZeroState` · `Modal` · `Drawer` · `AppSidebar` · `AppTopbar`.
 
 ### Fonts
 
@@ -122,17 +155,33 @@ src/
 │   ├── typography.css   #   type scale / weights / line-height / tracking tokens
 │   └── theme-dark.css   #   [data-theme="dark"] semantic overrides
 ├── typography/index.css # ready-to-use type classes + text utilities
-└── components/          # one stylesheet per component domain (+ index.css barrel)
+├── components/          # one stylesheet per component domain (+ index.css barrel)
+└── react/               # typed React layer — one folder per component
+    ├── index.ts         #   barrel re-exporting every component
+    └── <Name>/<Name>.tsx + <Name>.d.ts
 ```
 
 The published artifact is assembled into `dist/` by a dependency-free Node
 script (`scripts/build.mjs`). The token partials are concatenated into a single
-`dist/css/tokens.css`, so consumer import paths are unchanged.
+`dist/css/tokens.css`, the component CSS is copied per-file, and the React
+sources are copied verbatim to `dist/react/` (no compilation — consumers build
+them), so consumer import paths are unchanged.
 
 ```bash
 npm install
 npm run build      # writes dist/
 npm pack           # inspect the tarball before publishing
+```
+
+### Components showcase
+
+`preview/components.html` is a static, dependency-free showcase that renders
+every component from the built `dist/` bundle using the canonical classes, with
+a dark-mode toggle. Build first, then open it in a browser:
+
+```bash
+npm run build
+# then open preview/components.html
 ```
 
 ## License

@@ -138,9 +138,9 @@
 .dt-pagination .page-btn:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
 .dt-pagination .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .dt-pagination .page-btn.is-current {
-  background: var(--color-brand-accent-50);
-  border-color: var(--color-brand-accent-200);
-  color: var(--color-brand-accent-700);
+  background: color-mix(in srgb, var(--color-brand-accent-500) 14%, transparent);
+  border-color: color-mix(in srgb, var(--color-brand-accent-500) 36%, transparent);
+  color: var(--color-foreground-accent);
 }
 .dt-pagination .page-btn > i, .dt-pagination .page-btn > svg,
 .dt-pagination .page-btn > svg { width: 12px; height: 12px; stroke-width: var(--icon-stroke); }
@@ -218,8 +218,8 @@
 .dt tbody tr.is-muted td,
 .dt tbody tr.is-muted .dt-cell-stack > .sub { opacity: 0.55; }
 
-.dt tbody tr.is-error { background: color-mix(in srgb, var(--color-danger-50) 60%, transparent); }
-.dt tbody tr.is-error:hover { background: color-mix(in srgb, var(--color-danger-50) 100%, transparent); }
+.dt tbody tr.is-error { background: color-mix(in srgb, var(--color-feedback-danger-background) 60%, transparent); }
+.dt tbody tr.is-error:hover { background: var(--color-feedback-danger-background); }
 
 
 /* ----------------------------------------------------------------
@@ -437,11 +437,13 @@
   display: inline-block;
   height: 12px;
   border-radius: var(--radius-2xs);
+  /* theme-aware: border tokens are light-gray hairlines in light and
+     white-alpha in dark — raw neutral-50/100 read near-white on ink */
   background:
     linear-gradient(90deg,
-      var(--color-neutral-100) 0%,
-      var(--color-neutral-50) 40%,
-      var(--color-neutral-100) 80%);
+      var(--color-border-default) 0%,
+      var(--color-border-subtle) 40%,
+      var(--color-border-default) 80%);
   background-size: 480px 100%;
   animation: dt-shimmer 1.4s var(--ease-linear) infinite;
 }

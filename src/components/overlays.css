@@ -186,76 +186,27 @@
     opacity var(--duration-slower) var(--ease-standard);
 }
 
-/* Right (default).
-   --drawer-w drives both the width AND stack offsets so size variants
-   automatically scale the stacking math. --drawer-offset shifts the panel
-   inward when stacked behind another drawer. */
+/* Right (default). --drawer-w drives the width per size variant. */
 .drawer-right {
-  --drawer-w: min(440px, 90vw);
-  --drawer-offset: 0px;
+  --drawer-w: min(440px, 90vw);  /* @kind spacing */
   top: 0; right: 0; bottom: 0;
   width: var(--drawer-w);
   border-top-left-radius: var(--radius-xs);
   border-bottom-left-radius: var(--radius-xs);
   transform: translateX(100%);
 }
-.drawer-right.is-open { transform: translateX(calc(-1 * var(--drawer-offset))); }
+.drawer-right.is-open { transform: translateX(0); }
 
 /* Left */
 .drawer-left {
-  --drawer-w: min(320px, 85vw);
-  --drawer-offset: 0px;
+  --drawer-w: min(320px, 85vw);  /* @kind spacing */
   top: 0; left: 0; bottom: 0;
   width: var(--drawer-w);
   border-top-right-radius: var(--radius-xs);
   border-bottom-right-radius: var(--radius-xs);
   transform: translateX(-100%);
 }
-.drawer-left.is-open { transform: translateX(var(--drawer-offset)); }
-
-/* =================== STACKED DRAWERS ===================
-   Open a second drawer alongside the first instead of replacing it.
-   --drawer-stack = how many slots inward to shift; 0 = frontmost panel.
-   Slot width derived from --drawer-w so size variants stack correctly.
-   Cap at 3 stacked panels for screens ≥1280px; 2 below.
-   Usage: <aside class="drawer drawer-right drawer-md" data-stack="1"> */
-.drawer-right[data-stack="1"], .drawer-left[data-stack="1"] { --drawer-offset: var(--drawer-w); }
-.drawer-right[data-stack="2"], .drawer-left[data-stack="2"] { --drawer-offset: calc(var(--drawer-w) * 2); }
-.drawer-right[data-stack="3"], .drawer-left[data-stack="3"] { --drawer-offset: calc(var(--drawer-w) * 3); }
-
-/* Stacked panels lose their inner radius — they butt up against a sibling.
-   Separator is placed on the edge that TOUCHES the adjacent panel.
-   `:has(~)` only matches FOLLOWING siblings, so we apply rules from the
-   panel that comes EARLIER in the DOM (the back panel, which is rendered
-   before the front panel in modal-drawer.html). */
-
-/* Back panel (stack ≥ 1): when followed by an open front panel,
-   only flatten the INNER edge (right side) and add separator there.
-   Outer edge (left side) keeps the rounded corners. */
-.drawer-right[data-stack]:not([data-stack="0"]).is-open:has(~ .drawer-right[data-stack="0"].is-open) {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border-right: 2px solid var(--color-border-default);
-}
-.drawer-left[data-stack]:not([data-stack="0"]).is-open:has(~ .drawer-left[data-stack="0"].is-open) {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-left: 2px solid var(--color-border-default);
-}
-
-/* Front panel (stack=0): when PRECEDED by an open back panel, flatten
-   the inner-side radius and add the matching separator. Use the parent's
-   `:has` to detect the configuration, then target the front. */
-:has(> .drawer-right[data-stack]:not([data-stack="0"]).is-open) > .drawer-right[data-stack="0"].is-open {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-left: 2px solid var(--color-border-default);
-}
-:has(> .drawer-left[data-stack]:not([data-stack="0"]).is-open) > .drawer-left[data-stack="0"].is-open {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border-right: 2px solid var(--color-border-default);
-}
+.drawer-left.is-open { transform: translateX(0); }
 
 /* Bottom */
 .drawer-bottom {
@@ -267,11 +218,11 @@
 }
 .drawer-bottom.is-open { transform: translateY(0); }
 
-/* Drawer sizes (right/left) — feed --drawer-w so stacking math scales */
-.drawer-sm  { --drawer-w: min(360px, 90vw); width: var(--drawer-w); }
-.drawer-md  { --drawer-w: min(440px, 90vw); width: var(--drawer-w); }
-.drawer-lg  { --drawer-w: min(560px, 92vw); width: var(--drawer-w); }
-.drawer-xl  { --drawer-w: min(720px, 94vw); width: var(--drawer-w); }
+/* Drawer sizes (right/left) — feed --drawer-w so widths scale per variant */
+.drawer-sm  { --drawer-w: min(360px, 90vw);  /* @kind spacing */ width: var(--drawer-w); }
+.drawer-md  { --drawer-w: min(440px, 90vw);  /* @kind spacing */ width: var(--drawer-w); }
+.drawer-lg  { --drawer-w: min(560px, 92vw);  /* @kind spacing */ width: var(--drawer-w); }
+.drawer-xl  { --drawer-w: min(720px, 94vw);  /* @kind spacing */ width: var(--drawer-w); }
 
 /* Drawer parts (mirror modal vocabulary).
    Header and footer are STICKY with a liquid-glass background: body
@@ -326,6 +277,24 @@
   transition: var(--transition-fast);
 }
 .drawer-close:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+/* Footer aux — left-side total/note when the footer is space-between (footerAux prop) */
+.drawer-footer-aux { font-size: var(--fs-xs); color: var(--color-foreground-muted); min-width: 0; }
+
+/* Mobile: footer actions stack full-width (doc §Header & Footer, variant 7) */
+@media (max-width: 560px) {
+  .drawer-footer { flex-direction: column; align-items: stretch; gap: var(--space-2); padding-bottom: max(var(--space-4), env(safe-area-inset-bottom)); }
+  .drawer-footer .btn { width: 100%; justify-content: center; }
+  .drawer-footer-aux { text-align: center; margin-bottom: var(--space-1); }
+}
+
+/* Dense header — tight chrome for utility drawers (filters) */
+.drawer-header.is-dense { padding: var(--space-3) var(--space-4); }
+.drawer-header.is-dense .drawer-title { font-size: var(--fs-md); }
+
+/* Header with a second control row (search pill, tabs) */
+.drawer-header.has-extra { flex-wrap: wrap; }
+.drawer-header > .drawer-header-extra { flex-basis: 100%; min-width: 0; }
 .drawer-close:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
 .drawer-close i, .drawer-close svg { width: 18px; height: 18px; stroke-width: var(--icon-stroke); }
 

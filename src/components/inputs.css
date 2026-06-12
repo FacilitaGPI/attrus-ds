@@ -455,59 +455,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 }
 
 
-/* ----------------------------------------------------------------
-   10. NUMBER INPUT (with +/- buttons)
-   ---------------------------------------------------------------- */
-.number-input {
-  display: inline-flex;
-  align-items: stretch;
-  height: 40px;
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-sm);
-  background: var(--color-background-surface);
-  overflow: hidden;
-  transition:
-    border-color var(--transition-fast),
-    box-shadow var(--transition-fast);
-}
-.number-input:focus-within {
-  border-color: var(--color-border-focus);
-  box-shadow: var(--shadow-focus);
-}
-.number-input button {
-  width: 36px;
-  border: 0;
-  background: var(--color-background-subtle);
-  color: var(--color-foreground-default);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-sans);
-  font-size: var(--fs-md);
-  font-weight: var(--w-semibold);
-  transition: background var(--transition-fast);
-}
-.number-input button:hover { background: var(--color-background-hover); }
-.number-input button:active { background: var(--color-background-press); }
-.number-input button:disabled { opacity: 0.4; cursor: not-allowed; }
-.number-input button.minus { border-right: 1px solid var(--color-border-default); }
-.number-input button.plus  { border-left:  1px solid var(--color-border-default); }
-.number-input > input {
-  width: 64px;
-  border: 0;
-  outline: none;
-  text-align: center;
-  font-family: var(--font-mono);
-  font-size: var(--fs-md);
-  font-weight: var(--w-semibold);
-  background: transparent;
-  color: var(--color-foreground-default);
-  -moz-appearance: textfield;
-}
-.number-input > input::-webkit-outer-spin-button,
-.number-input > input::-webkit-inner-spin-button { appearance: none; margin: 0; }
-
+/* (NUMBER INPUT moved to number-input.css — canonical single source) */
 
 /* ----------------------------------------------------------------
    11. OTP — one-time password digit cells
@@ -927,12 +875,12 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 }
 .slider::-webkit-slider-runnable-track {
   height: 4px;
-  background: var(--color-neutral-150);
+  background: var(--color-border-default);
   border-radius: var(--radius-pill);
 }
 .slider::-moz-range-track {
   height: 4px;
-  background: var(--color-neutral-150);
+  background: var(--color-border-default);
   border-radius: var(--radius-pill);
 }
 .slider::-webkit-slider-thumb {

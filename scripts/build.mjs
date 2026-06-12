@@ -18,6 +18,7 @@
  *   dist/fonts/*.woff2         -> Lato + JetBrains Mono (from @fontsource)
  *   dist/tokens/*.json         -> machine-readable token export
  *   dist/assets/**             -> brand logos, icons, country flags (SVG)
+ *   dist/react/**              -> typed React components (TSX source + .d.ts)
  */
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -185,6 +186,27 @@ for (const file of fs.readdirSync(exportDir)) {
 const assetsSrc = path.join(root, "assets");
 copyDir(assetsSrc, path.join(dist, "assets"));
 
+/* ---------------------------------------------------------------- 7. react */
+// Typed React layer — shipped as source (TSX + .d.ts contracts + index
+// barrel). No compilation: the consumer's toolchain builds them. The CSS
+// stays the single visual source of truth; TSX only composes class names.
+const reactSrc = path.join(src, "react");
+let reactFiles = 0;
+let reactComponents = 0;
+if (fs.existsSync(reactSrc)) {
+  copyDir(reactSrc, path.join(dist, "react"));
+  for (const entry of fs.readdirSync(reactSrc, { withFileTypes: true })) {
+    if (entry.isDirectory()) reactComponents += 1;
+  }
+  const countFiles = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (entry.isDirectory()) countFiles(path.join(dir, entry.name));
+      else reactFiles += 1;
+    }
+  };
+  countFiles(reactSrc);
+}
+
 /* ------------------------------------------------------------------ report */
 const fontCount = FONTS.reduce((n, f) => n + f.faces.length, 0);
 console.log("Built dist/:");
@@ -195,3 +217,4 @@ console.log(`  css/index.css       (full bundle)`);
 console.log(`  fonts/              (${fontCount} woff2 + licenses)`);
 console.log(`  tokens/             (json export)`);
 console.log(`  assets/             (svg)`);
+console.log(`  react/              (${reactComponents} components, ${reactFiles} source files)`);
