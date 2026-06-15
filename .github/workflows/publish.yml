@@ -40,5 +40,14 @@ jobs:
       - name: Build package
         run: npm run build
 
+      - name: Check version is not already published
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          if npm view "@attrus-ds/core@$PKG_VERSION" version 2>/dev/null; then
+            echo "Version $PKG_VERSION is already on npm. Bump package.json before publishing."
+            exit 1
+          fi
+          echo "Version $PKG_VERSION is available to publish."
+
       - name: Publish to npm
         run: npm publish --provenance --access public
