@@ -3,22 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Components · @attrus-ds/core</title>
-
-<!-- Built design system: fonts + tokens + every component style.
-     Run `npm run build` first so ../dist exists. -->
+<title>@attrus-ds/core · ATTRUS Design System</title>
 <link rel="stylesheet" href="../dist/css/index.css">
-<!-- Documentation-page chrome (not part of the package) -->
-<link rel="stylesheet" href="./components/tokens-doc.css">
-<!-- Seeds [data-theme] before first paint; wires [data-theme-toggle] -->
 <script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="./components/tokens-doc.css">
 <link rel="icon" href="../assets/icon-attrus-dark.svg">
 <script src="https://unpkg.com/lucide@latest"></script>
-
 <style>
   body { background: var(--color-background-canvas); }
 
-  /* Theme toggle — fixed pill, top-right */
   .theme-toggle {
     position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100;
     display: inline-flex; align-items: center; gap: var(--space-2);
@@ -32,7 +25,6 @@
   .theme-toggle:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background: var(--color-background-hover); }
   .theme-toggle [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
 
-  /* ---------------- Hero ---------------- */
   .ds-hero {
     background: var(--color-background-inverse);
     color: var(--color-foreground-inverse-default);
@@ -42,654 +34,685 @@
     position: relative;
     overflow: hidden;
   }
-  .ds-hero::after { content: ""; position: absolute; inset: 0; background: var(--grad-hero); opacity: .55; pointer-events: none; z-index: 0; }
+  .ds-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--grad-hero);
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+  }
   .ds-hero > * { position: relative; z-index: 1; }
   .ds-hero-eyebrow {
-    font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold);
-    text-transform: uppercase; letter-spacing: var(--ls-caps);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    font-weight: var(--w-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-caps);
     color: var(--color-foreground-inverse-secondary);
-    margin: 0 0 var(--space-3); display: flex; align-items: center; gap: var(--space-3);
+    margin: 0 0 var(--space-3);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
   }
   .ds-hero-eyebrow .pill {
-    background: var(--color-overlay-white-14); border: 1px solid var(--color-overlay-white-18);
-    border-radius: var(--radius-pill); padding: var(--space-1) var(--space-2);
-    font-size: var(--fs-xxs); letter-spacing: var(--ls-caps);
+    background: var(--color-overlay-white-14);
+    border: 1px solid var(--color-overlay-white-18);
+    border-radius: var(--radius-pill);
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--fs-xxs);
+    letter-spacing: var(--ls-caps);
   }
   .ds-hero h1 {
-    font-family: var(--font-display); font-weight: var(--w-bold);
-    font-size: clamp(40px, 5vw, 64px); letter-spacing: var(--ls-tight);
-    line-height: 1.04; margin: 0 0 var(--space-5); max-width: 20ch;
+    font-family: var(--font-display);
+    font-weight: var(--w-bold);
+    font-size: clamp(48px, 6vw, 80px);
+    letter-spacing: var(--ls-tight);
+    line-height: 1.02;
+    margin: 0 0 var(--space-5);
+    max-width: 18ch;
   }
   .ds-hero h1 em { font-style: normal; color: var(--color-brand-secondary-200); }
-  .ds-hero p.lead { font-size: var(--fs-lg); color: var(--color-foreground-inverse-secondary); max-width: 70ch; line-height: var(--lh-normal); margin: 0 0 var(--space-7); }
+  .ds-hero p.lead {
+    font-size: var(--fs-lg);
+    color: var(--color-foreground-inverse-secondary);
+    max-width: 64ch;
+    line-height: var(--lh-normal);
+    margin: 0 0 var(--space-7);
+  }
   .ds-hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
   .ds-hero-btn {
-    display: inline-flex; align-items: center; gap: var(--space-2); height: 44px; padding: 0 var(--space-5);
-    border-radius: var(--radius-pill); font-family: var(--font-sans); font-weight: var(--w-semibold);
-    font-size: var(--fs-md); border: 1px solid transparent; cursor: pointer; transition: var(--transition-fast); text-decoration: none;
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    height: 44px; padding: 0 var(--space-5);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans); font-weight: var(--w-semibold); font-size: var(--fs-md);
+    border: 1px solid transparent; cursor: pointer; transition: var(--transition-fast); text-decoration: none;
   }
   .ds-hero-btn-primary { background: var(--color-pure-white); color: var(--color-brand-secondary-700); }
   .ds-hero-btn-primary:hover { background: var(--color-brand-secondary-50); }
-  .ds-hero-btn-ghost { background: var(--color-overlay-white-08); color: var(--color-foreground-inverse-default); border-color: var(--color-overlay-white-22); }
+  .ds-hero-btn-ghost {
+    background: var(--color-overlay-white-08);
+    color: var(--color-foreground-inverse-default);
+    border-color: var(--color-overlay-white-22);
+  }
   .ds-hero-btn-ghost:hover { background: var(--color-overlay-white-16); }
   .ds-hero-btn i, .ds-hero-btn svg { width: var(--icon-md); height: var(--icon-md); stroke-width: var(--icon-stroke); }
 
-  /* ---------------- Stats strip ---------------- */
+  .ds-section { margin: 0 0 var(--space-12); }
+  .ds-section-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4);
+    margin: 0 0 var(--space-5); padding: 0 0 var(--space-3);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .ds-section-title { display: flex; align-items: baseline; gap: var(--space-4); }
+  .ds-section-title .num {
+    font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular);
+    color: var(--color-foreground-muted); letter-spacing: var(--ls-caps);
+  }
+  .ds-section-title h2 {
+    font-family: var(--font-display); font-weight: var(--w-bold);
+    font-size: var(--fs-3xl); letter-spacing: var(--ls-title); margin: 0;
+  }
+  .ds-section-meta {
+    font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);
+    text-transform: uppercase; letter-spacing: var(--ls-caps); white-space: nowrap;
+  }
+  .ds-section-blurb {
+    font-size: var(--fs-md); color: var(--color-foreground-secondary);
+    max-width: 78ch; line-height: var(--lh-normal); margin: 0 0 var(--space-6);
+  }
+
+  .ds-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .ds-card {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    position: relative;
+    transition: var(--transition-fast);
+    min-height: 168px;
+  }
+  .ds-card:hover {
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .ds-card-top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  .ds-card-icon {
+    width: 36px; height: 36px; border-radius: var(--radius-md);
+    display: grid; place-items: center;
+    background: var(--color-background-sunken); color: var(--color-foreground-default);
+  }
+  .ds-card-icon i, .ds-card-icon svg { width: 18px; height: 18px; stroke-width: var(--icon-stroke); }
+  .ds-card-tag {
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    text-transform: uppercase; letter-spacing: var(--ls-caps);
+    color: var(--color-foreground-muted);
+    padding: var(--space-1) var(--space-2); border-radius: var(--radius-pill);
+    background: var(--color-background-sunken);
+  }
+  .ds-card-tag.is-new {
+    color: var(--color-foreground-brand);
+    background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
+  }
+  .ds-card h3 {
+    font-family: var(--font-display); font-weight: var(--w-bold);
+    font-size: var(--fs-lg); letter-spacing: var(--ls-tight);
+    margin: 0; color: var(--color-foreground-default);
+  }
+  .ds-card p {
+    font-size: var(--fs-sm); color: var(--color-foreground-secondary);
+    line-height: var(--lh-normal); margin: 0; flex: 1;
+  }
+  .ds-card-foot {
+    font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-muted);
+    text-transform: uppercase; letter-spacing: var(--ls-caps);
+    display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-1);
+  }
+  .ds-card-foot i, .ds-card-foot svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
   .ds-stats {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
     background: var(--color-border-subtle); border: 1px solid var(--color-border-subtle);
     border-radius: var(--radius-lg); overflow: hidden; margin: 0 0 var(--space-10);
   }
-  .ds-stat { background: var(--color-background-surface); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-1); }
-  .ds-stat .num { font-family: var(--font-display); font-weight: var(--w-bold); font-size: var(--fs-3xl); letter-spacing: var(--ls-title); color: var(--color-foreground-default); line-height: 1; }
-  .ds-stat .lbl { font-family: var(--font-mono); font-size: var(--fs-xxs); text-transform: uppercase; letter-spacing: var(--ls-caps); color: var(--color-foreground-muted); margin-top: var(--space-2); }
-
-  /* ---------------- Quick nav ---------------- */
-  .ds-nav {
-    display: flex; flex-wrap: wrap; gap: var(--space-2);
-    padding: var(--space-4); margin: 0 0 var(--space-10);
-    background: color-mix(in srgb, var(--color-background-surface) 85%, transparent);
-    border: 1px solid var(--color-border-default); border-radius: var(--radius-md);
-    box-shadow: var(--shadow-xs); position: sticky; top: var(--space-4); z-index: 10;
-    backdrop-filter: var(--glass-blur-sm); -webkit-backdrop-filter: var(--glass-blur-sm);
+  .ds-stat {
+    background: var(--color-background-surface); padding: var(--space-5);
+    display: flex; flex-direction: column; gap: var(--space-1);
   }
-  .ds-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
-  .ds-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
-
-  /* ---------------- Section ---------------- */
-  .ds-section { margin: 0 0 var(--space-12); scroll-margin-top: 88px; }
-  .ds-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); margin: 0 0 var(--space-4); padding: 0 0 var(--space-3); border-bottom: 1px solid var(--color-border-subtle); }
-  .ds-section-title { display: flex; align-items: baseline; gap: var(--space-4); }
-  .ds-section-title .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); }
-  .ds-section-title h2 { font-family: var(--font-display); font-weight: var(--w-bold); font-size: var(--fs-3xl); letter-spacing: var(--ls-title); margin: 0; }
-  .ds-section-meta { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); white-space: nowrap; }
-  .ds-section-blurb { font-size: var(--fs-md); color: var(--color-foreground-secondary); max-width: 78ch; line-height: var(--lh-normal); margin: 0 0 var(--space-6); }
-
-  /* ---------------- Specimen card (live demo) ---------------- */
-  .spec {
-    background: var(--color-background-surface); border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-5); box-shadow: var(--shadow-xs);
-    transition: var(--transition-fast);
+  .ds-stat .num {
+    font-family: var(--font-display); font-weight: var(--w-bold);
+    font-size: var(--fs-3xl); letter-spacing: var(--ls-title);
+    color: var(--color-foreground-default); line-height: 1;
   }
-  .spec:hover { border-color: var(--color-border-strong); box-shadow: var(--shadow-md); }
-  .spec-head { padding: var(--space-4) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
-  .spec-head h3 { margin: 0; font-family: var(--font-display); font-size: var(--fs-md); font-weight: var(--w-bold); letter-spacing: var(--ls-tight); }
-  .spec-head .tag { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); padding: var(--space-1) var(--space-2); border-radius: var(--radius-pill); background: var(--color-background-sunken); }
-  .spec-canvas { padding: var(--space-7) var(--space-6); background: var(--color-background-canvas); display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; }
-  .spec-canvas.col { flex-direction: column; align-items: flex-start; }
-  .spec-canvas.dark { background: var(--color-background-inverse); }
-  .specimen-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-5); width: 100%; }
-
-  /* ---------------- Footer ---------------- */
-  .ds-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3); font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); }
+  .ds-stat .lbl {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    text-transform: uppercase; letter-spacing: var(--ls-caps);
+    color: var(--color-foreground-muted); margin-top: var(--space-2);
+  }
 
   @media (max-width: 720px) {
     .ds-stats { grid-template-columns: repeat(2, 1fr); }
     .ds-section-head { flex-direction: column; align-items: flex-start; }
   }
+
+  .ds-legend {
+    display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5);
+    padding: var(--space-3) var(--space-4); margin: 0 0 var(--space-5);
+    background: var(--color-background-sunken); border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    font-size: var(--fs-xs); color: var(--color-foreground-secondary); line-height: var(--lh-normal);
+  }
+  .ds-legend-item { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .ds-legend-item strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+  .ds-legend .dot { width: 8px; height: 8px; border-radius: var(--radius-pill); flex: 0 0 auto; }
+  .ds-legend .dot-stable { background: var(--color-success-500); }
+  .ds-legend .dot-new { background: var(--color-brand-secondary-500); }
+  .ds-legend .dot-asset { background: var(--color-foreground-muted); }
+
+  .ds-templates {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-3);
+  }
+  .ds-template {
+    display: flex; align-items: center; gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    text-decoration: none; color: inherit; transition: var(--transition-fast);
+  }
+  .ds-template:hover { border-color: var(--color-border-strong); box-shadow: var(--shadow-sm); }
+  .ds-template-ic {
+    width: 32px; height: 32px; border-radius: var(--radius-sm);
+    background: var(--color-background-sunken);
+    display: grid; place-items: center; color: var(--color-foreground-default); flex: 0 0 auto;
+  }
+  .ds-template-ic i, .ds-template-ic svg { width: var(--icon-md); height: var(--icon-md); stroke-width: var(--icon-stroke); }
+  .ds-template-meta { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+  .ds-template-name { font-weight: var(--w-semibold); font-size: var(--fs-md); color: var(--color-foreground-default); }
+  .ds-template-sub {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    text-transform: uppercase; letter-spacing: var(--ls-caps); color: var(--color-foreground-muted);
+  }
+
+  .ds-foot {
+    margin-top: var(--space-12); padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border-subtle);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: var(--space-3);
+    font-family: var(--font-mono); font-size: var(--fs-xs);
+    color: var(--color-foreground-muted); letter-spacing: var(--ls-caps);
+  }
 </style>
 </head>
-
 <body>
+
 <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
-  <span data-theme-icon aria-hidden="true">&#9790;</span><span data-theme-label>Dark</span>
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
 </button>
 
 <main class="doc">
 
-  <!-- HERO -->
   <section class="ds-hero">
     <div class="ds-hero-eyebrow">
       <span>@attrus-ds/core</span>
       <span class="pill">v0.2.0</span>
-      <span class="pill">Components</span>
+      <span class="pill">Jun 2026</span>
     </div>
-    <h1>Live specimens for <em>ATTRUS</em> components.</h1>
-    <p class="lead">Every component style rendered straight from the published <code>dist/</code> bundle, using the canonical class names. The same classes power the typed React layer (<code>@attrus-ds/core/react</code>) — change a token, every specimen re-skins. Toggle the theme to verify dark mode.</p>
+    <h1>The design system that powers <em>ATTRUS</em>.</h1>
+    <p class="lead">A token-driven foundation for ATTRUS — the financial-operations platform for Latin American treasuries. Every colour, type ramp, spacing step, radius, shadow, and component lives here, in one canonical npm package. Change a token; every screen re-skins.</p>
     <div class="ds-hero-actions">
-      <a class="ds-hero-btn ds-hero-btn-primary" href="#buttons">Browse components<i data-lucide="arrow-right"></i></a>
-      <a class="ds-hero-btn ds-hero-btn-ghost" href="#smart-search">See SmartSearch<i data-lucide="command"></i></a>
+      <a class="ds-hero-btn ds-hero-btn-primary" href="#components">Browse components<i data-lucide="arrow-right"></i></a>
+      <a class="ds-hero-btn ds-hero-btn-ghost" href="#foundations">Read the foundations<i data-lucide="braces"></i></a>
     </div>
   </section>
 
-  <!-- STATS -->
   <div class="ds-stats">
+    <div class="ds-stat"><span class="num">3</span><span class="lbl">Layers — Raw · Semantic · Component</span></div>
     <div class="ds-stat"><span class="num">20</span><span class="lbl">React components</span></div>
-    <div class="ds-stat"><span class="num">18</span><span class="lbl">CSS component stylesheets</span></div>
-    <div class="ds-stat"><span class="num">334</span><span class="lbl">Design tokens</span></div>
+    <div class="ds-stat"><span class="num">334</span><span class="lbl">Tokens</span></div>
     <div class="ds-stat"><span class="num">100%</span><span class="lbl">Token-driven · zero hard-coded values</span></div>
   </div>
 
-  <!-- QUICK NAV -->
-  <nav class="ds-nav" aria-label="Jump to component">
-    <a href="#buttons">Buttons</a>
-    <a href="#pills">Status pills</a>
-    <a href="#callouts">Callouts</a>
-    <a href="#inputs">Inputs</a>
-    <a href="#number">Number input</a>
-    <a href="#cards">Cards</a>
-    <a href="#atoms">Atoms</a>
-    <a href="#tabs">Tabs</a>
-    <a href="#table">Table</a>
-    <a href="#smart-search">Smart search</a>
-    <a href="#toast">Toast</a>
-    <a href="#tooltip">Tooltip</a>
-    <a href="#stepper">Stepper</a>
-    <a href="#empty">Empty state</a>
-    <a href="#overlays">Overlays</a>
-    <a href="#shell">App shell</a>
-  </nav>
-
-  <!-- ============================== BUTTONS ============================== -->
-  <section class="ds-section" id="buttons">
+  <!-- 01 · FOUNDATIONS -->
+  <section class="ds-section" id="foundations">
     <div class="ds-section-head">
-      <div class="ds-section-title"><span class="num">01</span><h2>Buttons</h2></div>
-      <span class="ds-section-meta">9 variants · 4 sizes</span>
-    </div>
-    <p class="ds-section-blurb">Pill-shaped (radius 999px) — the strongest visual tell of the system. Nine variants across four sizes, with loading, disabled, icon-only and grouped forms.</p>
-
-    <div class="spec">
-      <div class="spec-head"><h3>Variants</h3><span class="tag">.btn .btn-*</span></div>
-      <div class="spec-canvas">
-        <button class="btn btn-primary">Primary</button>
-        <button class="btn btn-secondary">Secondary</button>
-        <button class="btn btn-tertiary">Tertiary</button>
-        <button class="btn btn-ghost">Ghost</button>
-        <button class="btn btn-danger">Danger</button>
-        <button class="btn btn-danger-outline">Danger outline</button>
-        <button class="btn btn-success">Success</button>
-        <button class="btn btn-link">Link</button>
+      <div class="ds-section-title">
+        <span class="num">01</span>
+        <h2>Foundations</h2>
       </div>
+      <span class="ds-section-meta">Layer 1 + 2 · raw values + semantic roles</span>
     </div>
+    <p class="ds-section-blurb">Brand-rooted decisions: the colour palette, the typographic system, the spacing rhythm, the corner softness, the elevation language. These are the smallest atoms — every component composes from them.</p>
 
-    <div class="spec">
-      <div class="spec-head"><h3>Sizes, states &amp; group</h3><span class="tag">.btn-xs/sm/lg · .is-loading · .btn-group</span></div>
-      <div class="spec-canvas">
-        <button class="btn btn-primary btn-xs">XS</button>
-        <button class="btn btn-primary btn-sm">SM</button>
-        <button class="btn btn-primary">MD</button>
-        <button class="btn btn-primary btn-lg">LG</button>
-        <button class="btn btn-primary is-loading">Loading</button>
-        <button class="btn btn-primary" disabled>Disabled</button>
-        <button class="btn btn-secondary btn-icon" aria-label="Add"><i data-lucide="plus"></i></button>
-        <div class="btn-group">
-          <button class="btn btn-secondary">Day</button>
-          <button class="btn btn-secondary">Week</button>
-          <button class="btn btn-secondary">Month</button>
+    <div class="ds-grid">
+      <a class="ds-card" href="../dist/css/tokens.css" target="_blank" rel="noopener">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="droplet"></i></span>
+          <span class="ds-card-tag">Color · raw</span>
         </div>
-      </div>
-      <div class="spec-canvas dark">
-        <button class="btn btn-inverse">Inverse</button>
-        <button class="btn btn-ghost on-inverse">Ghost on dark</button>
-        <button class="btn btn-secondary on-inverse">Secondary on dark</button>
-      </div>
+        <h3>Brand &amp; palette</h3>
+        <p>Brand stops, neutrals (13 steps), the brand blue scale 50→900, sky accent, and four semantic feedback hues — each at five stops.</p>
+        <span class="ds-card-foot">dist/css/tokens.css<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="../dist/css/tokens.css" target="_blank" rel="noopener">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="message-square-warning"></i></span>
+          <span class="ds-card-tag">Color · semantic</span>
+        </div>
+        <h3>Semantic roles</h3>
+        <p>Surfaces, foregrounds, borders, status pairs — light + inverse twins. Components consume only these, never raw values.</p>
+        <span class="ds-card-foot">dist/css/tokens.css<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="../dist/css/tokens.css" target="_blank" rel="noopener">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="palette"></i></span>
+          <span class="ds-card-tag">Color</span>
+        </div>
+        <h3>Gradients</h3>
+        <p>Nine brand-weighted blends for hero panels, marketing surfaces, data overlays. Used sparingly.</p>
+        <span class="ds-card-foot">dist/css/tokens.css<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="../dist/css/tokens.css" target="_blank" rel="noopener">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="bar-chart-3"></i></span>
+          <span class="ds-card-tag">Data</span>
+        </div>
+        <h3>Data visualization</h3>
+        <p>Chart tokens — categorical series, sequential &amp; diverging ramps, and structure. Reskins with the theme.</p>
+        <span class="ds-card-foot">dist/css/tokens.css<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="../dist/tokens/attrus-tokens.json" target="_blank" rel="noopener">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="braces"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Token export</h3>
+        <p>All 334 tokens as machine-readable JSON — flat &amp; Style-Dictionary nested, with dark values. For codegen &amp; native platforms.</p>
+        <span class="ds-card-foot">attrus-tokens.json<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="../dist/css/tokens.css" target="_blank" rel="noopener">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="square-dashed"></i></span>
+          <span class="ds-card-tag">Surface</span>
+        </div>
+        <h3>Liquid glass</h3>
+        <p>Translucent fills + three blur strengths × two tints. For floating chrome over imagery and dimmed canvas.</p>
+        <span class="ds-card-foot">dist/css/tokens.css<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="../dist/css/tokens.css" target="_blank" rel="noopener">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="type"></i></span>
+          <span class="ds-card-tag">Type</span>
+        </div>
+        <h3>Typography</h3>
+        <p>Lato + JetBrains Mono. Seven weights. Fourteen-stop scale from 10px caption micro through 72px hero display.</p>
+        <span class="ds-card-foot">dist/css/tokens.css<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="../dist/css/tokens.css" target="_blank" rel="noopener">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="ruler"></i></span>
+          <span class="ds-card-tag">Layout</span>
+        </div>
+        <h3>Spacing</h3>
+        <p>4px base. Fourteen canonical steps. Every padding, margin and gap snaps to one. No magic numbers.</p>
+        <span class="ds-card-foot">dist/css/tokens.css<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="../dist/css/tokens.css" target="_blank" rel="noopener">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="square-dashed-bottom-code"></i></span>
+          <span class="ds-card-tag">Layout</span>
+        </div>
+        <h3>Radii</h3>
+        <p>Mostly soft, never sharp. Eight steps from 2xs to pill. Buttons are uniformly pill-shaped.</p>
+        <span class="ds-card-foot">dist/css/tokens.css<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="../dist/css/tokens.css" target="_blank" rel="noopener">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="layers-2"></i></span>
+          <span class="ds-card-tag">Layout</span>
+        </div>
+        <h3>Shadows</h3>
+        <p>Soft, blue-tinted, multi-layer. Five neutral elevations + four semantic + six tinted focus rings.</p>
+        <span class="ds-card-foot">dist/css/tokens.css<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="../dist/css/tokens.css" target="_blank" rel="noopener">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="fast-forward"></i></span>
+          <span class="ds-card-tag">Motion</span>
+        </div>
+        <h3>Motion</h3>
+        <p>Five durations from 80ms tap-feedback to 480ms page transition. Out-expo as the default curve.</p>
+        <span class="ds-card-foot">dist/css/tokens.css<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="../README.md" target="_blank" rel="noopener" style="background: var(--color-background-inverse); color: var(--color-foreground-inverse-default); border-color: transparent;">
+        <div class="ds-card-top">
+          <span class="ds-card-icon" style="background: var(--color-overlay-white-12); color: var(--color-foreground-inverse-default);"><i data-lucide="braces"></i></span>
+          <span class="ds-card-tag" style="background: var(--color-overlay-white-12); color: var(--color-foreground-inverse-secondary);">Doctrine</span>
+        </div>
+        <h3 style="color: var(--color-foreground-inverse-default);">Naming &amp; how to consume</h3>
+        <p style="color: var(--color-foreground-inverse-secondary);">How tokens layer, how to import the package, and how a new component should consume semantic roles — not raw values.</p>
+        <span class="ds-card-foot" style="color: var(--color-foreground-inverse-secondary);">README.md<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html" style="background: var(--color-background-inverse); color: var(--color-foreground-inverse-default); border-color: transparent;">
+        <div class="ds-card-top">
+          <span class="ds-card-icon" style="background: var(--color-overlay-white-12); color: var(--color-foreground-inverse-default);"><i data-lucide="shield-check"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3 style="color: var(--color-foreground-inverse-default);">TypeScript layer</h3>
+        <p style="color: var(--color-foreground-inverse-secondary);">All 20 components ship as typed React under <code>@attrus-ds/core/react</code>. CSS stays the visual truth; TSX composes the same class names.</p>
+        <span class="ds-card-foot" style="color: var(--color-foreground-inverse-secondary);">gallery.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
     </div>
   </section>
 
-  <!-- ============================== PILLS ============================== -->
-  <section class="ds-section" id="pills">
+  <!-- 02 · COMPONENTS -->
+  <section class="ds-section" id="components">
     <div class="ds-section-head">
-      <div class="ds-section-title"><span class="num">02</span><h2>Status pills</h2></div>
-      <span class="ds-section-meta">6 tones · solid / outline</span>
+      <div class="ds-section-title">
+        <span class="num">02</span>
+        <h2>Components</h2>
+      </div>
+      <span class="ds-section-meta">Layer 3 · 20 components · typed</span>
     </div>
-    <p class="ds-section-blurb">Plain-language transaction states. Soft tints by default; solid and outline variants available, in three sizes.</p>
-    <div class="spec">
-      <div class="spec-head"><h3>Tones</h3><span class="tag">.pill .success/.warning/.danger/.info/.neutral/.brand</span></div>
-      <div class="spec-canvas">
-        <span class="pill success"><span class="dot"></span>Approved</span>
-        <span class="pill warning"><span class="dot"></span>Under review</span>
-        <span class="pill danger"><span class="dot"></span>Cancelled</span>
-        <span class="pill info"><span class="dot"></span>Identified</span>
-        <span class="pill neutral"><span class="dot"></span>Draft</span>
-        <span class="pill brand"><span class="dot"></span>Released</span>
-      </div>
-      <div class="spec-canvas">
-        <span class="pill solid success">Solid</span>
-        <span class="pill outline danger">Outline</span>
-        <span class="pill success sm">Small</span>
-        <span class="pill brand lg">Large</span>
-      </div>
+    <p class="ds-section-blurb">Every reusable building block in ATTRUS. Components read only from semantic tokens (Layer 2), never from raw values (Layer 1). They are responsible for shape, behaviour, and accessibility — not for picking colours, sizes, or motion curves.</p>
+
+    <div class="ds-legend" aria-label="Tag legend">
+      <span class="ds-legend-item"><span class="dot dot-stable"></span><strong>Stable</strong> — production-ready, gallery specimen available</span>
+      <span class="ds-legend-item"><span class="dot dot-new"></span><strong>New</strong> — landed in v0.2, behaviour locked</span>
+    </div>
+
+    <div class="ds-grid">
+      <a class="ds-card" href="gallery.html#buttons">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="mouse-pointer-click"></i></span>
+          <span class="ds-card-tag">Action</span>
+        </div>
+        <h3>Buttons</h3>
+        <p>Primary, secondary, tertiary, ghost, danger × four sizes. Pill-shaped by convention.</p>
+        <span class="ds-card-foot">gallery.html#buttons<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#inputs">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="text-cursor-input"></i></span>
+          <span class="ds-card-tag">Form</span>
+        </div>
+        <h3>Inputs &amp; Forms</h3>
+        <p>Text, select, checkbox, switch, radio, date, file. Five canonical states each.</p>
+        <span class="ds-card-foot">gallery.html#inputs<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#inputs">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="list-tree"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Combobox</h3>
+        <p>Type-ahead picker. Single or multi-select.</p>
+        <span class="ds-card-foot">gallery.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#smart-search">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="command"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Smart search</h3>
+        <p>⌘K command palette — 8 canonical states (suggestions, grouped results, ID disambiguation, loading, error). Typed as SmartSearch.</p>
+        <span class="ds-card-foot">gallery.html#smart-search<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#cards">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="square-stack"></i></span>
+          <span class="ds-card-tag">Surface</span>
+        </div>
+        <h3>Cards &amp; Surfaces</h3>
+        <p>Eight surface variants from quietest to loudest.</p>
+        <span class="ds-card-foot">gallery.html#cards<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#pills">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="circle-dot"></i></span>
+          <span class="ds-card-tag">Display</span>
+        </div>
+        <h3>Status pills</h3>
+        <p>Six tones for state communication. Always paired with text.</p>
+        <span class="ds-card-foot">gallery.html#pills<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#table">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="table"></i></span>
+          <span class="ds-card-tag">Display</span>
+        </div>
+        <h3>Table</h3>
+        <p>Dense tabular-numeric data. Toolbar, 3 sizes, zebra/sticky, cell patterns, row states.</p>
+        <span class="ds-card-foot">gallery.html#table<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#shell">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="panel-left"></i></span>
+          <span class="ds-card-tag">Nav</span>
+        </div>
+        <h3>Sidebar navigation</h3>
+        <p>Collapsible side panel with active-state token. Used as the app shell's primary nav.</p>
+        <span class="ds-card-foot">gallery.html#shell<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#shell">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="app-window"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Top bar</h3>
+        <p>App top edge: primary action, global search, and a 32px cluster of session controls.</p>
+        <span class="ds-card-foot">gallery.html#shell<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#stepper">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="list-ordered"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Stepper</h3>
+        <p>Multi-step flow indicator. Horizontal wizard or vertical sidebar; five step states.</p>
+        <span class="ds-card-foot">gallery.html#stepper<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#tabs">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="panel-top"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Tabs</h3>
+        <p>Non-sequential nav between sibling views. Underline + pill variants, counts, keyboard nav.</p>
+        <span class="ds-card-foot">gallery.html#tabs<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#number">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="diff"></i></span>
+          <span class="ds-card-tag">Form</span>
+        </div>
+        <h3>Number Input</h3>
+        <p>Numeric field with −/+ accelerator buttons. For bounded quantities — days, %, seats.</p>
+        <span class="ds-card-foot">gallery.html#number<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#overlays">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="square-arrow-out-up-right"></i></span>
+          <span class="ds-card-tag">Overlay</span>
+        </div>
+        <h3>Modal</h3>
+        <p>Blocking overlay for focused decisions — confirmations, short forms.</p>
+        <span class="ds-card-foot">gallery.html#overlays<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#overlays">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="panel-right-open"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Drawer</h3>
+        <p>Edge-anchored panel for detail &amp; editing. Right/left/bottom; sticky glass chrome.</p>
+        <span class="ds-card-foot">gallery.html#overlays<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#toast">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="bell"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Toast</h3>
+        <p>Transient feedback. Stacks bottom-right, max 3 visible.</p>
+        <span class="ds-card-foot">gallery.html#toast<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#tooltip">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="message-circle"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Tooltip</h3>
+        <p>Brief hover/focus help. Dark on light, light on dark.</p>
+        <span class="ds-card-foot">gallery.html#tooltip<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#callouts">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="message-square-warning"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Callout</h3>
+        <p>Icon-led note box — info, warning, success, danger, neutral. Tint adapts to the theme.</p>
+        <span class="ds-card-foot">gallery.html#callouts<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#empty">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="inbox"></i></span>
+          <span class="ds-card-tag">Display</span>
+        </div>
+        <h3>Empty states</h3>
+        <p>Six abstract illustrations + headline + body + 1–2 actions.</p>
+        <span class="ds-card-foot">gallery.html#empty<i data-lucide="arrow-up-right"></i></span>
+      </a>
     </div>
   </section>
 
-  <!-- ============================== CALLOUTS ============================== -->
-  <section class="ds-section" id="callouts">
+  <!-- 03 · BRAND & ASSETS -->
+  <section class="ds-section" id="brand">
     <div class="ds-section-head">
-      <div class="ds-section-title"><span class="num">03</span><h2>Callouts</h2></div>
-      <span class="ds-section-meta">4 tones + neutral</span>
-    </div>
-    <p class="ds-section-blurb">Icon-led note boxes for inline guidance and feedback. Tints adapt to the theme.</p>
-    <div class="spec">
-      <div class="spec-head"><h3>Tones</h3><span class="tag">.callout .callout-*</span></div>
-      <div class="spec-canvas col">
-        <div class="callout callout-info">
-          <div class="callout-icon"><i data-lucide="info"></i></div>
-          <div class="callout-content">
-            <div class="callout-title">Estimated total</div>
-            <div class="callout-body">This value is the sum of all up-to-period account balances.</div>
-          </div>
-        </div>
-        <div class="callout callout-success">
-          <div class="callout-icon"><i data-lucide="check-circle"></i></div>
-          <div class="callout-content">
-            <div class="callout-title">Review completed</div>
-            <div class="callout-body">The funds are now available in your balance.</div>
-          </div>
-        </div>
-        <div class="callout callout-warn">
-          <div class="callout-icon"><i data-lucide="alert-triangle"></i></div>
-          <div class="callout-content">
-            <div class="callout-title">Funds on hold</div>
-            <div class="callout-body">Upload the required documents to enable transactions.</div>
-          </div>
-        </div>
-        <div class="callout callout-danger">
-          <div class="callout-icon"><i data-lucide="x-circle"></i></div>
-          <div class="callout-content">
-            <div class="callout-title">Upload failed</div>
-            <div class="callout-body">Please try again.</div>
-          </div>
-        </div>
+      <div class="ds-section-title">
+        <span class="num">03</span>
+        <h2>Brand &amp; assets</h2>
       </div>
+      <span class="ds-section-meta">Static resources · iconography · primitives</span>
+    </div>
+    <p class="ds-section-blurb">The marks, glyphs and headless primitives that the rest of the system reuses. Not components — but every screen pulls from this shelf.</p>
+
+    <div class="ds-grid">
+      <a class="ds-card" href="logos.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="badge"></i></span>
+          <span class="ds-card-tag">Asset</span>
+        </div>
+        <h3>Logos</h3>
+        <p>Brand mark in two contrasts. Wordmark + symbol, light + dark.</p>
+        <span class="ds-card-foot">logos.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#atoms">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="shapes"></i></span>
+          <span class="ds-card-tag">Asset</span>
+        </div>
+        <h3>Iconography</h3>
+        <p>Lucide — outlined, 1.75 stroke. Five sizes paired with the type scale, three stroke weights.</p>
+        <span class="ds-card-foot">gallery.html#atoms<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gallery.html#atoms">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="atom"></i></span>
+          <span class="ds-card-tag">Primitive</span>
+        </div>
+        <h3>Primitives</h3>
+        <p>Headless building blocks — avatar, money, stat, divider, pill.</p>
+        <span class="ds-card-foot">gallery.html#atoms<i data-lucide="arrow-up-right"></i></span>
+      </a>
     </div>
   </section>
 
-  <!-- ============================== INPUTS ============================== -->
-  <section class="ds-section" id="inputs">
+  <!-- 04 · PACKAGE -->
+  <section class="ds-section" id="package">
     <div class="ds-section-head">
-      <div class="ds-section-title"><span class="num">04</span><h2>Inputs &amp; fields</h2></div>
-      <span class="ds-section-meta">5 states · labels + help</span>
-    </div>
-    <p class="ds-section-blurb">Text inputs with labels, helper text and validation states, plus checkboxes.</p>
-    <div class="spec">
-      <div class="spec-head"><h3>Fields</h3><span class="tag">.field · .input · .input.is-*</span></div>
-      <div class="spec-canvas">
-        <div class="specimen-grid">
-          <div class="field">
-            <label>Company name</label>
-            <input class="input" type="text" placeholder="Acme Corp S.A.">
-            <span class="help">As registered with the tax authority.</span>
-          </div>
-          <div class="field">
-            <label>Email <span class="opt">optional</span></label>
-            <input class="input" type="email" value="ops@acme.com">
-          </div>
-          <div class="field">
-            <label>Tax ID</label>
-            <input class="input is-error" type="text" value="12.345">
-            <span class="help is-error">Invalid CNPJ format.</span>
-          </div>
-          <div class="field">
-            <label>Account ID</label>
-            <input class="input is-success" type="text" value="ACC-90412">
-            <span class="help is-success">Verified.</span>
-          </div>
-          <div class="field">
-            <label>Disabled</label>
-            <input class="input is-disabled" type="text" value="Locked" disabled>
-          </div>
-          <div class="field">
-            <label>Notes</label>
-            <textarea class="input" rows="3" placeholder="Add a note..."></textarea>
-          </div>
-        </div>
+      <div class="ds-section-title">
+        <span class="num">04</span>
+        <h2>Package</h2>
       </div>
-      <div class="spec-canvas">
-        <label class="check"><input type="checkbox" checked><span class="check-box"></span> Enable notifications</label>
-        <label class="check"><input type="checkbox"><span class="check-box"></span> Require 2FA</label>
-      </div>
+      <span class="ds-section-meta">npm · dist · react</span>
     </div>
-  </section>
+    <p class="ds-section-blurb">How to consume <code>@attrus-ds/core</code> in your app — full CSS bundle, per-component stylesheets, token JSON, and the optional typed React layer.</p>
 
-  <!-- ============================== NUMBER INPUT ============================== -->
-  <section class="ds-section" id="number">
-    <div class="ds-section-head">
-      <div class="ds-section-title"><span class="num">05</span><h2>Number input</h2></div>
-      <span class="ds-section-meta">−/+ accelerators</span>
-    </div>
-    <p class="ds-section-blurb">Stepper-style numeric control with a monospace value — for bounded quantities.</p>
-    <div class="spec">
-      <div class="spec-head"><h3>Default</h3><span class="tag">.number-input</span></div>
-      <div class="spec-canvas">
-        <div class="number-input">
-          <button class="minus" aria-label="Decrease">&minus;</button>
-          <input type="text" value="3" inputmode="numeric">
-          <button class="plus" aria-label="Increase">+</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== CARDS ============================== -->
-  <section class="ds-section" id="cards">
-    <div class="ds-section-head">
-      <div class="ds-section-title"><span class="num">06</span><h2>Cards</h2></div>
-      <span class="ds-section-meta">header / body / footer</span>
-    </div>
-    <p class="ds-section-blurb">Containers at radius 10px. Header, body and footer slots compose automatically.</p>
-    <div class="spec">
-      <div class="spec-head"><h3>Anatomy</h3><span class="tag">.card · .card-header/body/footer</span></div>
-      <div class="spec-canvas">
-        <div class="card" style="max-width:360px">
-          <div class="card-header"><strong>Internal account</strong></div>
-          <div class="card-body">
-            <div class="stat-row">
-              <div class="stat is-bare">
-                <div class="stat-label">Balance</div>
-                <div class="stat-value"><span class="money money-lg"><span class="money-cur">USD</span>48,920<span class="money-frac">.56</span></span></div>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer">
-            <button class="btn btn-ghost btn-sm">Details</button>
-            <button class="btn btn-primary btn-sm">Transfer</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== ATOMS ============================== -->
-  <section class="ds-section" id="atoms">
-    <div class="ds-section-head">
-      <div class="ds-section-title"><span class="num">07</span><h2>Atoms</h2></div>
-      <span class="ds-section-meta">money · metric · avatar · chip · progress</span>
-    </div>
-    <p class="ds-section-blurb">Headless primitives the rest of the system reuses — money, metrics, avatars, eyebrows, stats, chips, progress and dividers.</p>
-    <div class="spec">
-      <div class="spec-head"><h3>Money &amp; metric</h3><span class="tag">.money · .metric</span></div>
-      <div class="spec-canvas">
-        <span class="money"><span class="money-cur">BRL</span>13,300<span class="money-frac">.00</span></span>
-        <span class="money money-pos"><span class="money-cur">USD</span>5,154<span class="money-frac">.74</span></span>
-        <span class="money money-neg"><span class="money-cur">USD</span>5,000<span class="money-frac">.00</span></span>
-        <span class="metric metric-lg"><span class="metric-cur">USD</span>48,920<span class="metric-frac">.56</span></span>
-      </div>
-    </div>
-    <div class="spec">
-      <div class="spec-head"><h3>Avatars, eyebrow, chips</h3><span class="tag">.av · .eyebrow · .filter-chip</span></div>
-      <div class="spec-canvas">
-        <span class="av av-sm av-brand">JD</span>
-        <span class="av av-md av-success">AC</span>
-        <span class="av av-lg av-warning">GL</span>
-        <span class="av-group">
-          <span class="av av-sm av-brand">JD</span>
-          <span class="av av-sm av-success">AC</span>
-          <span class="av av-sm av-more">+3</span>
-        </span>
-        <span class="eyebrow eyebrow-brand">Ledger</span>
-        <button class="filter-chip">Status <i data-lucide="chevron-down" class="chip-chevron"></i></button>
-        <button class="filter-chip" aria-pressed="true">Incoming</button>
-      </div>
-    </div>
-    <div class="spec">
-      <div class="spec-head"><h3>Progress &amp; divider</h3><span class="tag">.progress · .divider</span></div>
-      <div class="spec-canvas col">
-        <div class="progress" style="width:280px"><div class="progress-fill" style="width:64%"></div></div>
-        <div class="divider divider-labelled" style="width:280px">Reference</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== TABS ============================== -->
-  <section class="ds-section" id="tabs">
-    <div class="ds-section-head">
-      <div class="ds-section-title"><span class="num">08</span><h2>Tabs</h2></div>
-      <span class="ds-section-meta">underline + pill</span>
-    </div>
-    <p class="ds-section-blurb">Underline tabs for page-level sections; pill tabs for compact, segmented filters.</p>
-    <div class="spec">
-      <div class="spec-head"><h3>Underline</h3><span class="tag">.tabs · .tab[aria-selected]</span></div>
-      <div class="spec-canvas col">
-        <div class="tabs">
-          <button class="tab" aria-selected="true">All <span class="tab-count">128</span></button>
-          <button class="tab">Incoming <span class="tab-count">86</span></button>
-          <button class="tab">Outgoing <span class="tab-count">42</span></button>
-          <span class="tab-indicator"></span>
-        </div>
-      </div>
-    </div>
-    <div class="spec">
-      <div class="spec-head"><h3>Pill</h3><span class="tag">.tabs.tabs-pill</span></div>
-      <div class="spec-canvas">
-        <div class="tabs tabs-pill">
-          <button class="tab" aria-selected="true">Day</button>
-          <button class="tab">Week</button>
-          <button class="tab">Month</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== TABLE ============================== -->
-  <section class="ds-section" id="table">
-    <div class="ds-section-head">
-      <div class="ds-section-title"><span class="num">09</span><h2>Data table</h2></div>
-      <span class="ds-section-meta">tabular nums · row states</span>
-    </div>
-    <p class="ds-section-blurb">Dense ledger table with tabular numerals and semantic row states.</p>
-    <div class="spec">
-      <div class="spec-head"><h3>Ledger</h3><span class="tag">.dt</span></div>
-      <div class="spec-canvas col">
-        <table class="dt" style="width:100%">
-          <thead>
-            <tr><th>Date</th><th>Counterparty</th><th>Status</th><th class="num">Amount</th><th>Reference</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>06/10/2026</td>
-              <td>Acme Corp S.A.</td>
-              <td><span class="pill success sm"><span class="dot"></span>Settled</span></td>
-              <td class="num"><span class="money"><span class="money-cur">USD</span>5,154<span class="money-frac">.74</span></span></td>
-              <td>TX-90412</td>
-            </tr>
-            <tr>
-              <td>06/10/2026</td>
-              <td>Globex LATAM Ltda</td>
-              <td><span class="pill warning sm"><span class="dot"></span>In transit</span></td>
-              <td class="num"><span class="money"><span class="money-cur">MXN</span>91,120<span class="money-frac">.00</span></span></td>
-              <td>TX-90411</td>
-            </tr>
-            <tr class="is-error">
-              <td>06/09/2026</td>
-              <td>Umbrella Andina SAS</td>
-              <td><span class="pill danger sm"><span class="dot"></span>Failed</span></td>
-              <td class="num"><span class="money"><span class="money-cur">COP</span>20,513,500<span class="money-frac">.00</span></span></td>
-              <td>TX-90406</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== SMART SEARCH ============================== -->
-  <section class="ds-section" id="smart-search">
-    <div class="ds-section-head">
-      <div class="ds-section-title"><span class="num">10</span><h2>Smart search</h2></div>
-      <span class="ds-section-meta">New in v0.2 · &#8984;K palette</span>
-    </div>
-    <p class="ds-section-blurb">Global command palette — the new 20th component, promoted to its own stylesheet. Eight canonical states (suggestions, grouped results, ID disambiguation, loading, error).</p>
-    <div class="spec">
-      <div class="spec-head"><h3>Active state</h3><span class="tag">.ss</span></div>
-      <div class="spec-canvas">
-        <div class="ss">
-          <div class="ss-input">
-            <i data-lucide="search"></i>
-            <input type="text" value="acme" placeholder="Search or ask something">
-            <button class="ss-clear" aria-label="Clear"><i data-lucide="x"></i></button>
-          </div>
-          <div class="ss-section">
-            <div class="ss-section-label">Results</div>
-            <ul class="ss-list">
-              <li class="ss-list-item is-active">
-                <span class="icon-leading brand"><i data-lucide="building-2"></i></span>
-                <span class="text"><span class="label">Acme Corp S.A.</span><span class="meta">CNPJ 12.345.678/0001-90</span></span>
-                <span class="icon-trailing"><i data-lucide="corner-down-left"></i></span>
-              </li>
-              <li class="ss-list-item">
-                <span class="icon-leading"><i data-lucide="receipt"></i></span>
-                <span class="text"><span class="label">TX-90412</span><span class="meta">BRL &rarr; USD · Settled</span></span>
-              </li>
-            </ul>
-          </div>
-          <div class="ss-foot">
-            <span class="kbd-group"><kbd class="ss-kbd">&uarr;</kbd><kbd class="ss-kbd">&darr;</kbd> navigate</span>
-            <span class="kbd-group"><kbd class="ss-kbd">&crarr;</kbd> open</span>
-            <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> close</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== TOAST ============================== -->
-  <section class="ds-section" id="toast">
-    <div class="ds-section-head">
-      <div class="ds-section-title"><span class="num">11</span><h2>Toast</h2></div>
-      <span class="ds-section-meta">transient · a11y pause</span>
-    </div>
-    <p class="ds-section-blurb">Transient notifications. Auto-dismiss pauses on hover/focus (accessibility contract).</p>
-    <div class="spec">
-      <div class="spec-head"><h3>Variants</h3><span class="tag">.toast .toast-*</span></div>
-      <div class="spec-canvas col">
-        <div class="toast toast-success" style="max-width:380px">
-          <div class="toast-icon"><i data-lucide="check-circle"></i></div>
-          <div class="toast-body"><div class="toast-title">Transfer sent</div><div class="toast-desc">USD 5,000.00 to Globex LATAM.</div></div>
-          <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
-        </div>
-        <div class="toast toast-danger" style="max-width:380px">
-          <div class="toast-icon"><i data-lucide="x-circle"></i></div>
-          <div class="toast-body"><div class="toast-title">Upload failed</div><div class="toast-desc">Please try again.</div></div>
-          <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== TOOLTIP ============================== -->
-  <section class="ds-section" id="tooltip">
-    <div class="ds-section-head">
-      <div class="ds-section-title"><span class="num">12</span><h2>Tooltip</h2></div>
-      <span class="ds-section-meta">4 directions</span>
-    </div>
-    <p class="ds-section-blurb">Hover or focus a target. Four directions; rich variant supported.</p>
-    <div class="spec">
-      <div class="spec-head"><h3>Directions</h3><span class="tag">.tooltip-target &gt; .tooltip-*</span></div>
-      <div class="spec-canvas" style="gap:var(--space-8)">
-        <span class="tooltip-target"><button class="btn btn-secondary btn-sm">Top</button><span class="tooltip tooltip-top">Default tooltip</span></span>
-        <span class="tooltip-target"><button class="btn btn-secondary btn-sm">Right</button><span class="tooltip tooltip-right">On the right</span></span>
-        <span class="tooltip-target"><button class="btn btn-secondary btn-sm">Bottom</button><span class="tooltip tooltip-bottom">Below the target</span></span>
-        <span class="tooltip-target"><button class="btn btn-secondary btn-sm">Left</button><span class="tooltip tooltip-left">On the left</span></span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== STEPPER ============================== -->
-  <section class="ds-section" id="stepper">
-    <div class="ds-section-head">
-      <div class="ds-section-title"><span class="num">13</span><h2>Stepper</h2></div>
-      <span class="ds-section-meta">5 step states</span>
-    </div>
-    <p class="ds-section-blurb">Multi-step flows — KYC, account opening. Marker, label and connector per step.</p>
-    <div class="spec">
-      <div class="spec-head"><h3>Progress</h3><span class="tag">.stepper · .step</span></div>
-      <div class="spec-canvas col">
-        <div class="stepper">
-          <div class="step is-done">
-            <div class="step-marker"><i data-lucide="check"></i></div>
-            <div class="step-body"><div class="step-label">Identification</div></div>
-          </div>
-          <div class="step is-current">
-            <div class="step-marker">2</div>
-            <div class="step-body"><div class="step-label">Documents</div><div class="step-help">In progress</div></div>
-          </div>
-          <div class="step">
-            <div class="step-marker">3</div>
-            <div class="step-body"><div class="step-label">Bank accounts</div></div>
-          </div>
-          <div class="step">
-            <div class="step-marker">4</div>
-            <div class="step-body"><div class="step-label">Review</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== EMPTY STATE ============================== -->
-  <section class="ds-section" id="empty">
-    <div class="ds-section-head">
-      <div class="ds-section-title"><span class="num">14</span><h2>Empty state</h2></div>
-      <span class="ds-section-meta">illustration + guidance</span>
-    </div>
-    <p class="ds-section-blurb">Content-less states with an illustration slot, headline, body and 1–2 actions.</p>
-    <div class="spec">
-      <div class="spec-head"><h3>Zero results</h3><span class="tag">.empty</span></div>
-      <div class="spec-canvas col">
-        <div class="empty empty-default">
-          <div class="empty-illo"><i data-lucide="search-x"></i></div>
-          <h4>No transactions match</h4>
-          <p>Try a different search or filter.</p>
-          <div class="empty-actions"><button class="btn btn-secondary btn-sm">Clear filters</button></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== OVERLAYS ============================== -->
-  <section class="ds-section" id="overlays">
-    <div class="ds-section-head">
-      <div class="ds-section-title"><span class="num">15</span><h2>Overlays</h2></div>
-      <span class="ds-section-meta">modal · drawer</span>
-    </div>
-    <p class="ds-section-blurb">Modals center at ~560px; drawers slide in from the right. Shown statically below.</p>
-    <div class="spec">
-      <div class="spec-head"><h3>Modal</h3><span class="tag">.modal</span></div>
-      <div class="spec-canvas">
-        <div class="modal" style="position:static;transform:none;max-width:480px">
-          <div class="modal-header"><h3 class="modal-title">Add new counterparty</h3><button class="modal-close" aria-label="Close"><i data-lucide="x"></i></button></div>
-          <div class="modal-body">Start the KYC flow to enable transactions with this counterparty.</div>
-          <div class="modal-footer"><button class="btn btn-secondary btn-sm">Cancel</button><button class="btn btn-primary btn-sm">Continue &rarr;</button></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== APP SHELL ============================== -->
-  <section class="ds-section" id="shell">
-    <div class="ds-section-head">
-      <div class="ds-section-title"><span class="num">16</span><h2>App shell</h2></div>
-      <span class="ds-section-meta">sidebar · topbar</span>
-    </div>
-    <p class="ds-section-blurb">Sidebar navigation and top utility bar — the chrome of the operations dashboard.</p>
-    <div class="spec">
-      <div class="spec-head"><h3>Sidebar</h3><span class="tag">.sb · .sb-item</span></div>
-      <div class="spec-canvas">
-        <nav class="sb" style="width:236px">
-          <div class="sb-body">
-            <div class="sb-section">
-              <a class="sb-item active" href="#shell"><i data-lucide="home"></i> Home</a>
-              <a class="sb-item" href="#shell"><i data-lucide="arrow-left-right"></i> Transactions <span class="sb-count">12</span></a>
-              <a class="sb-item" href="#shell"><i data-lucide="users"></i> Counterparties</a>
-              <a class="sb-item" href="#shell"><i data-lucide="wallet"></i> Accounts</a>
-            </div>
-          </div>
-        </nav>
-      </div>
+    <div class="ds-templates">
+      <a class="ds-template" href="gallery.html">
+        <span class="ds-template-ic"><i data-lucide="layout-grid"></i></span>
+        <span class="ds-template-meta"><span class="ds-template-name">Component gallery</span><span class="ds-template-sub">gallery.html · live specimens</span></span>
+      </a>
+      <a class="ds-template" href="../dist/css/index.css" target="_blank" rel="noopener">
+        <span class="ds-template-ic"><i data-lucide="file-code"></i></span>
+        <span class="ds-template-meta"><span class="ds-template-name">Full CSS bundle</span><span class="ds-template-sub">dist/css/index.css</span></span>
+      </a>
+      <a class="ds-template" href="../dist/tokens/attrus-tokens.json" target="_blank" rel="noopener">
+        <span class="ds-template-ic"><i data-lucide="braces"></i></span>
+        <span class="ds-template-meta"><span class="ds-template-name">Token JSON</span><span class="ds-template-sub">dist/tokens/attrus-tokens.json</span></span>
+      </a>
+      <a class="ds-template" href="../dist/react/index.ts" target="_blank" rel="noopener">
+        <span class="ds-template-ic"><i data-lucide="shield-check"></i></span>
+        <span class="ds-template-meta"><span class="ds-template-name">React entry</span><span class="ds-template-sub">dist/react/index.ts</span></span>
+      </a>
     </div>
   </section>
 
   <footer class="ds-foot">
-    <span>@attrus-ds/core · ATTRUS / Cabiros Design System · v0.2.0</span>
-    <span>Token-driven · CSS is the source of truth</span>
+    <span>@attrus-ds/core · ATTRUS Design System · v0.2.0 · Jun 2026</span>
+    <span>Token-driven · WCAG AA</span>
   </footer>
 
 </main>
 
-<script>
-  // Render lucide icons; re-render after a theme switch (icons are inline SVG).
-  if (window.lucide) lucide.createIcons();
-  window.addEventListener('attrus-theme', function () { if (window.lucide) lucide.createIcons(); });
-</script>
+<script>lucide.createIcons();</script>
 </body>
 </html>

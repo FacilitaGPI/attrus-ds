@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logos · @attrus-ds/core</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="./components/tokens-doc.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<style>
+  .logo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-5); }
+  .logo-tile {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    display: flex; flex-direction: column; gap: var(--space-4);
+    box-shadow: var(--shadow-xs);
+  }
+  .logo-tile.dark { background: var(--color-background-inverse); border-color: transparent; }
+  .logo-tile img { max-width: 100%; height: 28px; width: auto; object-fit: contain; }
+  .logo-tile .lbl { font-family: var(--font-mono); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .logo-tile.dark .lbl { color: var(--color-foreground-inverse-muted); }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme" style="position:fixed;top:var(--space-5);right:var(--space-5);z-index:100;display:inline-flex;align-items:center;gap:var(--space-2);height:40px;padding:0 var(--space-4);background:var(--color-background-surface);border:1px solid var(--color-border-default);border-radius:var(--radius-pill);cursor:pointer;">
+  <span data-theme-icon>&#9790;</span><span data-theme-label>Dark</span>
+</button>
+<main class="doc">
+  <header class="doc-header">
+    <div>
+      <p style="margin:0 0 var(--space-3); font-family:var(--font-mono); font-size:var(--fs-xs); letter-spacing:var(--ls-caps); text-transform:uppercase;">
+        <a href="components.html" style="color:var(--color-foreground-accent); text-decoration:none;">&larr; Design system home</a>
+      </p>
+      <h1>Logos</h1>
+      <p>ATTRUS wordmark and icon in light and dark contrasts. Shipped under <code>dist/assets/</code> and importable as <code>@attrus-ds/core/assets/*</code>.</p>
+    </div>
+  </header>
+  <div class="logo-grid">
+    <div class="logo-tile">
+      <span class="lbl">logo-attrus-dark.svg · light surfaces</span>
+      <img src="../assets/logo-attrus-dark.svg" alt="ATTRUS dark wordmark">
+    </div>
+    <div class="logo-tile dark">
+      <span class="lbl">logo-attrus-light.svg · dark surfaces</span>
+      <img src="../assets/logo-attrus-light.svg" alt="ATTRUS light wordmark">
+    </div>
+    <div class="logo-tile">
+      <span class="lbl">icon-attrus-dark.svg</span>
+      <img src="../assets/icon-attrus-dark.svg" alt="ATTRUS dark icon" style="height:40px">
+    </div>
+    <div class="logo-tile dark">
+      <span class="lbl">icon-attrus-light.svg</span>
+      <img src="../assets/icon-attrus-light.svg" alt="ATTRUS light icon" style="height:40px">
+    </div>
+  </div>
+</main>
+</body>
+</html>

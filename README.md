@@ -175,9 +175,11 @@ npm pack           # inspect the tarball before publishing
 
 ### Components showcase
 
-`preview/components.html` is a static, dependency-free showcase that renders
-every component from the built `dist/` bundle using the canonical classes, with
-a dark-mode toggle. Build first, then open it in a browser:
+`preview/components.html` is the design-system home — a navigable index of foundations, components, brand assets and package entry points (same structure as the Cabiros `design-system.html`).
+
+`preview/gallery.html` holds live specimens for every component, rendered from the built `dist/` bundle using canonical classes, with a dark-mode toggle.
+
+Build first, then open the home page in a browser:
 
 ```bash
 npm run build
