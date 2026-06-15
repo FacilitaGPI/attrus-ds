@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Brand" name="Iconography" subtitle="Lucide outline · 5 tamanhos · 3 stroke weights" viewport="1280x900" -->
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<style>
+  body { margin:0; padding:20px; background: var(--color-background-surface); font-family: var(--font-sans); }
+  .grid { display: grid; grid-template-columns: repeat(9, 1fr); gap: 10px; }
+  .g { display: flex; flex-direction: column; align-items: center; gap: 5px;
+       padding: 10px 4px; border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md);
+       transition: background .18s ease, transform .18s ease, border-color .18s ease; }
+  .g:hover { background: var(--color-background-hover); border-color: var(--color-border-default); transform: translateY(-1px); }
+  .lbl { font-family: var(--font-mono); font-size: 9px; color: var(--color-foreground-muted); }
+  .ic { width: 20px; height: 20px; color: var(--color-foreground-default); stroke-width: 1.75; }
+  .note { margin-top: 14px; font-size: 11px; color: var(--color-foreground-secondary); line-height: 1.5; }
+  .note strong { color: var(--color-foreground-default); }
+  .tag { display:inline-block; padding: 1px 6px; border-radius: var(--radius-xs); font-family: var(--font-mono); font-size: 10px; background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-brand); border: 1px solid var(--color-brand-secondary-200); }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+<div class="grid">
+  <div class="g"><i data-lucide="home" class="ic"></i><span class="lbl">home</span></div>
+  <div class="g"><i data-lucide="arrow-left-right" class="ic"></i><span class="lbl">a-l-r</span></div>
+  <div class="g"><i data-lucide="wallet" class="ic"></i><span class="lbl">wallet</span></div>
+  <div class="g"><i data-lucide="user" class="ic"></i><span class="lbl">user</span></div>
+  <div class="g"><i data-lucide="contact-round" class="ic"></i><span class="lbl">contact</span></div>
+  <div class="g"><i data-lucide="repeat" class="ic"></i><span class="lbl">repeat</span></div>
+  <div class="g"><i data-lucide="inbox" class="ic"></i><span class="lbl">inbox</span></div>
+  <div class="g"><i data-lucide="building" class="ic"></i><span class="lbl">company</span></div>
+  <div class="g"><i data-lucide="users-round" class="ic"></i><span class="lbl">team</span></div>
+  <div class="g"><i data-lucide="file-text" class="ic"></i><span class="lbl">doc</span></div>
+
+  <div class="g"><i data-lucide="search" class="ic"></i><span class="lbl">search</span></div>
+  <div class="g"><i data-lucide="filter" class="ic"></i><span class="lbl">filter</span></div>
+  <div class="g"><i data-lucide="sliders-horizontal" class="ic"></i><span class="lbl">sliders</span></div>
+  <div class="g"><i data-lucide="plus" class="ic"></i><span class="lbl">plus</span></div>
+  <div class="g"><i data-lucide="x" class="ic"></i><span class="lbl">x</span></div>
+  <div class="g"><i data-lucide="check" class="ic"></i><span class="lbl">check</span></div>
+  <div class="g"><i data-lucide="chevron-down" class="ic"></i><span class="lbl">chev-d</span></div>
+  <div class="g"><i data-lucide="chevron-right" class="ic"></i><span class="lbl">chev-r</span></div>
+  <div class="g"><i data-lucide="ellipsis" class="ic"></i><span class="lbl">more</span></div>
+
+  <div class="g"><i data-lucide="arrow-up-right" class="ic"></i><span class="lbl">up-r</span></div>
+  <div class="g"><i data-lucide="arrow-down-left" class="ic"></i><span class="lbl">dn-l</span></div>
+  <div class="g"><i data-lucide="trending-up" class="ic"></i><span class="lbl">trend+</span></div>
+  <div class="g"><i data-lucide="trending-down" class="ic"></i><span class="lbl">trend-</span></div>
+  <div class="g"><i data-lucide="clock" class="ic"></i><span class="lbl">clock</span></div>
+  <div class="g"><i data-lucide="refresh-cw" class="ic"></i><span class="lbl">refresh</span></div>
+  <div class="g"><i data-lucide="download" class="ic"></i><span class="lbl">d/l</span></div>
+  <div class="g"><i data-lucide="upload" class="ic"></i><span class="lbl">u/l</span></div>
+  <div class="g"><i data-lucide="share-2" class="ic"></i><span class="lbl">share</span></div>
+
+  <div class="g"><i data-lucide="lock" class="ic"></i><span class="lbl">lock</span></div>
+  <div class="g"><i data-lucide="shield-check" class="ic"></i><span class="lbl">shield</span></div>
+  <div class="g"><i data-lucide="info" class="ic"></i><span class="lbl">info</span></div>
+  <div class="g"><i data-lucide="circle-alert" class="ic"></i><span class="lbl">alert</span></div>
+  <div class="g"><i data-lucide="circle-check" class="ic"></i><span class="lbl">ok</span></div>
+  <div class="g"><i data-lucide="circle-x" class="ic"></i><span class="lbl">err</span></div>
+  <div class="g"><i data-lucide="bell" class="ic"></i><span class="lbl">bell</span></div>
+  <div class="g"><i data-lucide="eye" class="ic"></i><span class="lbl">eye</span></div>
+  <div class="g"><i data-lucide="eye-off" class="ic"></i><span class="lbl">eye-off</span></div>
+
+  <div class="g"><i data-lucide="credit-card" class="ic"></i><span class="lbl">card</span></div>
+  <div class="g"><i data-lucide="banknote" class="ic"></i><span class="lbl">note</span></div>
+  <div class="g"><i data-lucide="landmark" class="ic"></i><span class="lbl">bank</span></div>
+  <div class="g"><i data-lucide="receipt" class="ic"></i><span class="lbl">receipt</span></div>
+  <div class="g"><i data-lucide="percent" class="ic"></i><span class="lbl">%</span></div>
+  <div class="g"><i data-lucide="chart-column" class="ic"></i><span class="lbl">bar</span></div>
+  <div class="g"><i data-lucide="chart-line" class="ic"></i><span class="lbl">line</span></div>
+  <div class="g"><i data-lucide="chart-pie" class="ic"></i><span class="lbl">pie</span></div>
+  <div class="g"><i data-lucide="activity" class="ic"></i><span class="lbl">activity</span></div>
+</div>
+<div class="note">
+  <strong>Library:</strong> <span class="tag">Lucide 0.469</span> via CDN · stroke-width <span class="tag">1.75</span> · default size <span class="tag">16–20 px</span>.<br>
+  Use <code>&lt;i data-lucide="{name}"&gt;</code> and call <code>lucide.createIcons()</code>. Do <strong>not</strong> hand-draw SVGs — the only exception is the country flags in <code>assets/flags/</code>.
+</div>
+<script>
+  if (window.lucide) lucide.createIcons();
+  window.addEventListener('attrus-theme', function () { if (window.lucide) lucide.createIcons(); });
+</script>
+</body></html>

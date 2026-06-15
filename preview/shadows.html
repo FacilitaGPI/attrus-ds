@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Effects" name="Shadows" subtitle="5 elevations + 4 semantic + 6 focus rings" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Shadows · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/tokens-doc.css">
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <header class="doc-header">
+    <div>
+      <h1>Shadows</h1>
+      <p>Soft, blue-tinted, multi-layer. Every shadow uses --color-shadow-tint instead of black. Five neutral elevations, four semantic elevations for status surfaces, six tinted focus rings.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="layers-2"></i>Layout</span>
+    </div>
+  </header>
+
+<section class="doc-section" id="shadows">
+    <h2><span class="num">09</span>Shadows</h2>
+    <p class="lead">Soft, blue-tinted, multi-layer. Every shadow uses <code>--color-shadow-tint</code> (a navy ink) instead of black so elevation reads as part of the system rather than as photographic. Five neutral elevations, four semantic elevations for status surfaces, and six tinted focus rings.</p>
+
+    <h3 class="sub">Neutral elevation</h3>
+    <div class="shadow-grid">
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-xs);"></div><div class="meta"><span class="key">--shadow-xs</span><span class="desc">Hairline lift — table cards, pills</span></div></div>
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-sm);"></div><div class="meta"><span class="key">--shadow-sm</span><span class="desc">Default card / dropdown</span></div></div>
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-md);"></div><div class="meta"><span class="key">--shadow-md</span><span class="desc">Popovers, hovered cards</span></div></div>
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-lg);"></div><div class="meta"><span class="key">--shadow-lg</span><span class="desc">Modals, sheets</span></div></div>
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-xl);"></div><div class="meta"><span class="key">--shadow-xl</span><span class="desc">Hero / floating notifications</span></div></div>
+    </div>
+
+    <h3 class="sub">Semantic elevation <span class="meta">— for status surfaces</span></h3>
+    <div class="shadow-grid">
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-success-sm); border-color: var(--color-feedback-success-border); background: var(--color-feedback-success-background);"></div><div class="meta"><span class="key">--shadow-success-sm / -md</span><span class="desc">Confirm toasts, success banners</span></div></div>
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-warning-sm); border-color: var(--color-feedback-warning-border); background: var(--color-feedback-warning-background);"></div><div class="meta"><span class="key">--shadow-warning-sm / -md</span><span class="desc">Pending dialogs, hold cards</span></div></div>
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-danger-sm); border-color: var(--color-feedback-danger-border); background: var(--color-feedback-danger-background);"></div><div class="meta"><span class="key">--shadow-danger-sm / -md</span><span class="desc">Error states, destructive prompts</span></div></div>
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-info-sm); border-color: var(--color-feedback-info-border); background: var(--color-feedback-info-background);"></div><div class="meta"><span class="key">--shadow-info-sm / -md</span><span class="desc">Informational cards</span></div></div>
+    </div>
+
+    <h3 class="sub">Inset &amp; glass <span class="meta">— surface treatments</span></h3>
+    <div class="shadow-grid">
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-inset);"></div><div class="meta"><span class="key">--shadow-inset</span><span class="desc">Top highlight + bottom shade — buttons, glass cards</span></div></div>
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-glass);"></div><div class="meta"><span class="key">--shadow-glass</span><span class="desc">Light-glass elevation</span></div></div>
+    </div>
+    <div class="shadow-grid dark">
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-glass-dark);"></div><div class="meta"><span class="key">--shadow-glass-dark</span><span class="desc">Dark-glass elevation — for inverse surfaces</span></div></div>
+    </div>
+
+    <h3 class="sub">Focus rings <span class="meta">— accessibility</span></h3>
+    <p class="intro">Every interactive control gets one of these rings on <code>:focus-visible</code>. The hue matches the action's semantic meaning so destructive vs. confirm vs. neutral actions feel different even before reading the label.</p>
+
+    <div class="focus-grid">
+      <div class="focus-cell"><div class="ring-demo r-blue"></div><span class="key">--shadow-focus</span></div>
+      <div class="focus-cell"><div class="ring-demo r-sky"></div><span class="key">--shadow-focus-sky</span></div>
+      <div class="focus-cell"><div class="ring-demo r-success"></div><span class="key">--shadow-focus-success</span></div>
+      <div class="focus-cell"><div class="ring-demo r-warning"></div><span class="key">--shadow-focus-warning</span></div>
+      <div class="focus-cell"><div class="ring-demo r-danger"></div><span class="key">--shadow-focus-danger</span></div>
+      <div class="focus-cell"><div class="ring-demo r-info"></div><span class="key">--shadow-focus-info</span></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+  document.querySelectorAll('.motion-cell').forEach(cell => {
+    cell.addEventListener('mouseleave', () => {
+      cell.classList.remove('is-running');
+    });
+  });
+</script>
+
+</body>
+</html>

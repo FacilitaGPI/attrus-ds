@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Colors" name="Gradients" subtitle="9 blends brand-weighted para hero, data, marketing" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Gradients · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/tokens-doc.css">
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <header class="doc-header">
+    <div>
+      <h1>Gradients</h1>
+      <p>Brand-weighted blends used sparingly — hero panels, marketing surfaces, data overlays. Components reference one of the canonical tokens; they never invent a gradient locally.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="palette"></i>Color</span>
+    </div>
+  </header>
+
+<section class="doc-section" id="gradients">
+    <h2><span class="num">04</span>Gradients</h2>
+    <p class="lead">Brand-weighted blends used sparingly — hero panels, marketing surfaces, data overlays. Components never invent a gradient locally; they reference one of the eight tokens below.</p>
+
+    <div class="grad-grid">
+      <div class="grad-card"><div class="fill" style="background: var(--grad-brand);"></div><div class="meta"><div class="key">--grad-brand</div><div class="desc">135° · ink → blue → sky · primary brand sweep</div></div></div>
+      <div class="grad-card"><div class="fill" style="background: var(--grad-brand-soft);"></div><div class="meta"><div class="key">--grad-brand-soft</div><div class="desc">135° · subtle blue-on-blue · CTA backdrops</div></div></div>
+      <div class="grad-card"><div class="fill" style="background: var(--grad-ink);"></div><div class="meta"><div class="key">--grad-ink</div><div class="desc">160° · near-black to brand · marketing hero</div></div></div>
+      <div class="grad-card"><div class="fill" style="background: var(--grad-hero);"></div><div class="meta"><div class="key">--grad-hero</div><div class="desc">180° · vertical brand fade</div></div></div>
+      <div class="grad-card"><div class="fill" style="background: var(--color-brand-secondary-700) var(--grad-sheen);"></div><div class="meta"><div class="key">--grad-sheen</div><div class="desc">120° · white-light overlay for glass / metal</div></div></div>
+      <div class="grad-card"><div class="fill" style="background: var(--color-background-subtle) var(--grad-surface-top);"></div><div class="meta"><div class="key">--grad-surface-top</div><div class="desc">180° · top-of-card highlight</div></div></div>
+      <div class="grad-card"><div class="fill" style="background: var(--color-background-subtle); background-image: var(--grad-data-pos);"></div><div class="meta"><div class="key">--grad-data-pos</div><div class="desc">Sparkline / area chart positive fill</div></div></div>
+      <div class="grad-card"><div class="fill" style="background: var(--color-background-subtle); background-image: var(--grad-data-neg);"></div><div class="meta"><div class="key">--grad-data-neg</div><div class="desc">Sparkline / area chart negative fill</div></div></div>
+      <div class="grad-card"><div class="fill" style="background-color: var(--color-brand-secondary-900); background-image: var(--grad-radial-glow);"></div><div class="meta"><div class="key">--grad-radial-glow</div><div class="desc">Radial sky glow — top-left highlight on dark hero surfaces</div></div></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+  document.querySelectorAll('.motion-cell').forEach(cell => {
+    cell.addEventListener('mouseleave', () => {
+      cell.classList.remove('is-running');
+    });
+  });
+</script>
+
+</body>
+</html>

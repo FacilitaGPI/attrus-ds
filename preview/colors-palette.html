@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Colors" name="Colors · Raw palette" subtitle="Neutrals, brand-primary, brand-secondary, semantic feedbacks (10 stops)" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Colors · Raw palette · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/tokens-doc.css">
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  h4.sub-row { font-size: 13px; font-weight: 600; color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: 0.08em; margin: var(--space-3) 0 var(--space-2); }
+  .overlay-demo { position: relative; }
+  .overlay-demo .overlay-layer { position: absolute; inset: 0; }
+  .overlay-demo .overlay-pin { position: relative; z-index: 2; }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <header class="doc-header">
+    <div>
+      <h1>Colors · Raw palette</h1>
+      <p>Eight families: cool blue-tinted neutrals, three brand scales (Navy primary, Royal secondary, Sky accent) and four semantic feedback hues. Every value below derives from the ATTRUS brand book.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="droplet"></i>Color</span>
+    </div>
+  </header>
+
+<section class="doc-section" id="color-raw">
+    <h2><span class="num">02</span>Color · raw palette</h2>
+    <p class="lead">Eight families anchored in the official brand book. Three brand scales (Navy primary, Royal secondary, Sky accent), thirteen neutrals, four feedback tones, and the white-alpha overlay set. All numbered <code>50 → 900</code> on a perceptually consistent OKLCH ramp.</p>
+
+    <h3 class="sub">Brand stops <span class="meta">— four anchors from the ATTRUS brand book</span></h3>
+    <p class="intro">Four hex anchors that everything else builds from. These are the only values that ever ship in marketing copy, business cards, or the logo SVG. Usage proportion below each card per brand book.</p>
+
+    <div class="brand-grid">
+      <div class="brand-card">
+        <div class="fill" data-hex="#0F0F1A" style="background: var(--brand-attrus-ink);"></div>
+        <div class="meta"><div class="name">Black · 25%</div><div class="var">--brand-attrus-ink</div></div>
+      </div>
+      <div class="brand-card">
+        <div class="fill" data-hex="#002142" style="background: var(--brand-attrus-navy);"></div>
+        <div class="meta"><div class="name">Navy · primary · 40%</div><div class="var">--brand-attrus-navy</div></div>
+      </div>
+      <div class="brand-card">
+        <div class="fill" data-hex="#003399" style="background: var(--brand-attrus-blue);"></div>
+        <div class="meta"><div class="name">Royal · secondary · 10%</div><div class="var">--brand-attrus-blue</div></div>
+      </div>
+      <div class="brand-card">
+        <div class="fill" data-hex="#3399FF" style="background: var(--brand-attrus-sky);"></div>
+        <div class="meta"><div class="name">Sky · accent · 3%</div><div class="var">--brand-attrus-sky</div></div>
+      </div>
+    </div>
+
+    <div class="proportion-bar" style="margin-top: var(--space-7); padding: var(--space-5); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md);">
+      <div style="font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3);">Usage proportion — 60/30/10 rule per brand book</div>
+      <div style="display: flex; height: 32px; border-radius: var(--radius-xs); overflow: hidden;">
+        <div style="width: 40%; background: var(--brand-attrus-navy); display: flex; align-items: center; justify-content: center; color: var(--color-foreground-on-solid); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);">Navy 40%</div>
+        <div style="width: 25%; background: var(--brand-attrus-ink); display: flex; align-items: center; justify-content: center; color: var(--color-foreground-on-solid); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);">Black 25%</div>
+        <div style="width: 22%; background: var(--color-neutral-0); display: flex; align-items: center; justify-content: center; color: var(--color-foreground-default); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); border-left: 1px solid var(--color-border-default); border-right: 1px solid var(--color-border-default);">White 22%</div>
+        <div style="width: 10%; background: var(--brand-attrus-blue); display: flex; align-items: center; justify-content: center; color: var(--color-foreground-on-solid); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);">Royal 10%</div>
+        <div style="width: 3%; background: var(--brand-attrus-sky);" title="Sky 3%"></div>
+      </div>
+      <p style="font-size: var(--fs-sm); color: var(--color-foreground-secondary); margin: var(--space-3) 0 0; line-height: var(--lh-relaxed);">Navy &amp; Black dominate high-impact pieces (covers, OOH, institutional social). White creates pause and reading rhythm. Royal appears in pieces with more energy than Navy. Sky always as highlight or action — never as a dominant background.</p>
+    </div>
+
+    <h3 class="sub">Neutrals <span class="meta">— cool, blue-tinted, never pure</span></h3>
+    <p class="intro">Thirteen steps from canvas-white through ink-black. Tinted slightly blue to feel cohesive with the brand; pure greys read as cold or sterile next to <code>--brand-attrus-blue</code>.</p>
+
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-neutral-0);"><span class="pin">0</span></div><div class="swatch-meta"><span class="key">--color-neutral-0</span><span class="hex">#FFFFFF</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-neutral-25);"><span class="pin">25</span></div><div class="swatch-meta"><span class="key">--color-neutral-25</span><span class="hex">#FAFBFD</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-neutral-50);"><span class="pin">50</span></div><div class="swatch-meta"><span class="key">--color-neutral-50</span><span class="hex">#F4F6FA</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-neutral-100);"><span class="pin">100</span></div><div class="swatch-meta"><span class="key">--color-neutral-100</span><span class="hex">#EDF0F5</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-neutral-150);"><span class="pin">150</span></div><div class="swatch-meta"><span class="key">--color-neutral-150</span><span class="hex">#E3E8F0</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-neutral-200);"><span class="pin">200</span></div><div class="swatch-meta"><span class="key">--color-neutral-200</span><span class="hex">#D6DCE7</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-neutral-300);"><span class="pin">300</span></div><div class="swatch-meta"><span class="key">--color-neutral-300</span><span class="hex">#B8C1D1</span></div></div>
+    </div>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-neutral-400);"><span class="pin">400</span></div><div class="swatch-meta"><span class="key">--color-neutral-400</span><span class="hex">#8A94A8</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-neutral-500);"><span class="pin">500</span></div><div class="swatch-meta"><span class="key">--color-neutral-500</span><span class="hex">#5E6A82</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-neutral-600);"><span class="pin">600</span></div><div class="swatch-meta"><span class="key">--color-neutral-600</span><span class="hex">#3F4A61</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-neutral-700);"><span class="pin">700</span></div><div class="swatch-meta"><span class="key">--color-neutral-700</span><span class="hex">#27304A</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-neutral-800);"><span class="pin">800</span></div><div class="swatch-meta"><span class="key">--color-neutral-800</span><span class="hex">#141B2E</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-neutral-900);"><span class="pin">900</span></div><div class="swatch-meta"><span class="key">--color-neutral-900</span><span class="hex">#0A0F1F</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-neutral-950);"><span class="pin">950</span></div><div class="swatch-meta"><span class="key">--color-neutral-950</span><span class="hex">#05081A</span></div></div>
+    </div>
+
+    <h3 class="sub">Brand primary · Navy <span class="meta">— anchored at <code>--color-brand-primary-500</code> (#002142). Institutional surfaces, logo fills, primary buttons, focus rings. 40% of brand usage.</span></h3>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-primary-50);"><span class="pin">50</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-50</span><span class="hex">#E5EBF2</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-primary-100);"><span class="pin">100</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-100</span><span class="hex">#C2CDDB</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-primary-200);"><span class="pin">200</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-200</span><span class="hex">#8E9FB8</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-primary-300);"><span class="pin">300</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-300</span><span class="hex">#5F7596</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-primary-400);"><span class="pin">400</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-400</span><span class="hex">#2F4F75</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-primary-500);"><span class="pin">500</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-500 ★</span><span class="hex">#002142</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-primary-600);"><span class="pin">600</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-600</span><span class="hex">#001D3A</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-primary-700);"><span class="pin">700</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-700</span><span class="hex">#001830</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-primary-800);"><span class="pin">800</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-800</span><span class="hex">#001226</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-primary-900);"><span class="pin">900</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-900</span><span class="hex">#000C1A</span></div></div>
+    </div>
+
+    <h3 class="sub">Brand secondary · Royal <span class="meta">— anchored at <code>--color-brand-secondary-500</code> (#003399). Highlight blocks, secondary surfaces, illustrations. 10% of brand usage.</span></h3>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-secondary-50);"><span class="pin">50</span></div><div class="swatch-meta"><span class="key">--color-brand-secondary-50</span><span class="hex">#EAF1FF</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-secondary-100);"><span class="pin">100</span></div><div class="swatch-meta"><span class="key">--color-brand-secondary-100</span><span class="hex">#D1DEFF</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-secondary-200);"><span class="pin">200</span></div><div class="swatch-meta"><span class="key">--color-brand-secondary-200</span><span class="hex">#A3BEFF</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-secondary-300);"><span class="pin">300</span></div><div class="swatch-meta"><span class="key">--color-brand-secondary-300</span><span class="hex">#6B95FB</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-secondary-400);"><span class="pin">400</span></div><div class="swatch-meta"><span class="key">--color-brand-secondary-400</span><span class="hex">#3F6DEF</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-secondary-500);"><span class="pin">500</span></div><div class="swatch-meta"><span class="key">--color-brand-secondary-500 ★</span><span class="hex">#003399</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-secondary-600);"><span class="pin">600</span></div><div class="swatch-meta"><span class="key">--color-brand-secondary-600</span><span class="hex">#002A80</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-secondary-700);"><span class="pin">700</span></div><div class="swatch-meta"><span class="key">--color-brand-secondary-700</span><span class="hex">#002166</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-secondary-800);"><span class="pin">800</span></div><div class="swatch-meta"><span class="key">--color-brand-secondary-800</span><span class="hex">#001A4D</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-secondary-900);"><span class="pin">900</span></div><div class="swatch-meta"><span class="key">--color-brand-secondary-900</span><span class="hex">#001133</span></div></div>
+    </div>
+
+    <h3 class="sub">Brand accent · Sky <span class="meta">— anchored at <code>--color-brand-accent-500</code> (#3399FF). Action color: CTAs, links, active charts. <strong>3% of brand usage</strong> — never a dominant background.</span></h3>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-accent-50);"><span class="pin">50</span></div><div class="swatch-meta"><span class="key">--color-brand-accent-50</span><span class="hex">#ECF5FF</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-accent-100);"><span class="pin">100</span></div><div class="swatch-meta"><span class="key">--color-brand-accent-100</span><span class="hex">#D9ECFF</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-accent-200);"><span class="pin">200</span></div><div class="swatch-meta"><span class="key">--color-brand-accent-200</span><span class="hex">#ADD2FF</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-accent-300);"><span class="pin">300</span></div><div class="swatch-meta"><span class="key">--color-brand-accent-300</span><span class="hex">#7AB8FF</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-accent-400);"><span class="pin">400</span></div><div class="swatch-meta"><span class="key">--color-brand-accent-400</span><span class="hex">#549EFF</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-accent-500);"><span class="pin">500</span></div><div class="swatch-meta"><span class="key">--color-brand-accent-500 ★</span><span class="hex">#3399FF</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-accent-600);"><span class="pin">600</span></div><div class="swatch-meta"><span class="key">--color-brand-accent-600</span><span class="hex">#2880DD</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-accent-700);"><span class="pin">700</span></div><div class="swatch-meta"><span class="key">--color-brand-accent-700</span><span class="hex">#1E6DC4</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-accent-800);"><span class="pin">800</span></div><div class="swatch-meta"><span class="key">--color-brand-accent-800</span><span class="hex">#155198</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-accent-900);"><span class="pin">900</span></div><div class="swatch-meta"><span class="key">--color-brand-accent-900</span><span class="hex">#0E3B70</span></div></div>
+    </div>
+
+    <h3 class="sub">Semantic feedback <span class="meta">— success, warning, danger, info</span></h3>
+    <p class="intro">Subdued, sober tones — never bright. Each family is a 10-stop scale that pairs predictably: <code>50</code> for backgrounds, <code>100</code> for borders, <code>500</code> for solids, <code>700</code> for foreground text on a <code>50</code> bg. The full scale supports dark-mode inversions — e.g. <code>300</code> text on <code>800</code> bg.</p>
+
+    <h4 class="sub-row">Success</h4>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-success-50);"><span class="pin">50</span></div><div class="swatch-meta"><span class="key">--color-success-50</span><span class="hex">#E8F5EE</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-success-100);"><span class="pin">100</span></div><div class="swatch-meta"><span class="key">--color-success-100</span><span class="hex">#CDEBD9</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-success-200);"><span class="pin">200</span></div><div class="swatch-meta"><span class="key">--color-success-200</span><span class="hex">#9CCEAF</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-success-300);"><span class="pin">300</span></div><div class="swatch-meta"><span class="key">--color-success-300</span><span class="hex">#74B68C</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-success-400);"><span class="pin">400</span></div><div class="swatch-meta"><span class="key">--color-success-400</span><span class="hex">#499D69</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-success-500);"><span class="pin">500</span></div><div class="swatch-meta"><span class="key">--color-success-500 ★</span><span class="hex">#1F8A4C</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-success-600);"><span class="pin">600</span></div><div class="swatch-meta"><span class="key">--color-success-600</span><span class="hex">#1A7A43</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-success-700);"><span class="pin">700</span></div><div class="swatch-meta"><span class="key">--color-success-700</span><span class="hex">#136236</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-success-800);"><span class="pin">800</span></div><div class="swatch-meta"><span class="key">--color-success-800</span><span class="hex">#0E4F2B</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-success-900);"><span class="pin">900</span></div><div class="swatch-meta"><span class="key">--color-success-900</span><span class="hex">#0A3D21</span></div></div>
+    </div>
+
+    <h4 class="sub-row">Warning</h4>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-warning-50);"><span class="pin">50</span></div><div class="swatch-meta"><span class="key">--color-warning-50</span><span class="hex">#FDF5E3</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-warning-100);"><span class="pin">100</span></div><div class="swatch-meta"><span class="key">--color-warning-100</span><span class="hex">#FAE8BE</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-warning-200);"><span class="pin">200</span></div><div class="swatch-meta"><span class="key">--color-warning-200</span><span class="hex">#E4C790</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-warning-300);"><span class="pin">300</span></div><div class="swatch-meta"><span class="key">--color-warning-300</span><span class="hex">#D2AC69</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-warning-400);"><span class="pin">400</span></div><div class="swatch-meta"><span class="key">--color-warning-400</span><span class="hex">#C19040</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-warning-500);"><span class="pin">500</span></div><div class="swatch-meta"><span class="key">--color-warning-500 ★</span><span class="hex">#B47A12</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-warning-600);"><span class="pin">600</span></div><div class="swatch-meta"><span class="key">--color-warning-600</span><span class="hex">#A16B0F</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-warning-700);"><span class="pin">700</span></div><div class="swatch-meta"><span class="key">--color-warning-700</span><span class="hex">#84560A</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-warning-800);"><span class="pin">800</span></div><div class="swatch-meta"><span class="key">--color-warning-800</span><span class="hex">#694307</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-warning-900);"><span class="pin">900</span></div><div class="swatch-meta"><span class="key">--color-warning-900</span><span class="hex">#4F3105</span></div></div>
+    </div>
+
+    <h4 class="sub-row">Danger</h4>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-danger-50);"><span class="pin">50</span></div><div class="swatch-meta"><span class="key">--color-danger-50</span><span class="hex">#FCEBEA</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-danger-100);"><span class="pin">100</span></div><div class="swatch-meta"><span class="key">--color-danger-100</span><span class="hex">#F7CFCD</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-danger-200);"><span class="pin">200</span></div><div class="swatch-meta"><span class="key">--color-danger-200</span><span class="hex">#EBA4A0</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-danger-300);"><span class="pin">300</span></div><div class="swatch-meta"><span class="key">--color-danger-300</span><span class="hex">#DE807A</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-danger-400);"><span class="pin">400</span></div><div class="swatch-meta"><span class="key">--color-danger-400</span><span class="hex">#CF5B54</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-danger-500);"><span class="pin">500</span></div><div class="swatch-meta"><span class="key">--color-danger-500 ★</span><span class="hex">#C23934</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-danger-600);"><span class="pin">600</span></div><div class="swatch-meta"><span class="key">--color-danger-600</span><span class="hex">#AB312D</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-danger-700);"><span class="pin">700</span></div><div class="swatch-meta"><span class="key">--color-danger-700</span><span class="hex">#8A2622</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-danger-800);"><span class="pin">800</span></div><div class="swatch-meta"><span class="key">--color-danger-800</span><span class="hex">#6C1D1A</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-danger-900);"><span class="pin">900</span></div><div class="swatch-meta"><span class="key">--color-danger-900</span><span class="hex">#4F1512</span></div></div>
+    </div>
+
+    <h4 class="sub-row">Info</h4>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-info-50);"><span class="pin">50</span></div><div class="swatch-meta"><span class="key">--color-info-50</span><span class="hex">#E6F0FB</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-info-100);"><span class="pin">100</span></div><div class="swatch-meta"><span class="key">--color-info-100</span><span class="hex">#C5DCF4</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-info-200);"><span class="pin">200</span></div><div class="swatch-meta"><span class="key">--color-info-200</span><span class="hex">#93BBE8</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-info-300);"><span class="pin">300</span></div><div class="swatch-meta"><span class="key">--color-info-300</span><span class="hex">#6B9FDD</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-info-400);"><span class="pin">400</span></div><div class="swatch-meta"><span class="key">--color-info-400</span><span class="hex">#4383D1</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-info-500);"><span class="pin">500</span></div><div class="swatch-meta"><span class="key">--color-info-500 ★</span><span class="hex">#1F6BC7</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-info-600);"><span class="pin">600</span></div><div class="swatch-meta"><span class="key">--color-info-600</span><span class="hex">#1A5EAF</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-info-700);"><span class="pin">700</span></div><div class="swatch-meta"><span class="key">--color-info-700</span><span class="hex">#144B8C</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-info-800);"><span class="pin">800</span></div><div class="swatch-meta"><span class="key">--color-info-800</span><span class="hex">#0D3A6E</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-info-900);"><span class="pin">900</span></div><div class="swatch-meta"><span class="key">--color-info-900</span><span class="hex">#072951</span></div></div>
+    </div>
+
+    <h3 class="sub">Overlay whites <span class="meta">— for hairlines, chips, and ghost buttons on dark / brand surfaces</span></h3>
+    <p class="intro">Six fixed white-alpha tokens. Use these instead of <code>rgba(255,255,255,…)</code> literals so dark surfaces stay tonally consistent.</p>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-fill dark overlay-demo" style="background: var(--brand-attrus-ink);"><div class="overlay-layer" style="background: var(--color-overlay-white-08);"></div><span class="pin overlay-pin">8%</span></div><div class="swatch-meta"><span class="key">--color-overlay-white-08</span><span class="hex">white @ 8%</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark overlay-demo" style="background: var(--brand-attrus-ink);"><div class="overlay-layer" style="background: var(--color-overlay-white-12);"></div><span class="pin overlay-pin">12%</span></div><div class="swatch-meta"><span class="key">--color-overlay-white-12</span><span class="hex">white @ 12%</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark overlay-demo" style="background: var(--brand-attrus-ink);"><div class="overlay-layer" style="background: var(--color-overlay-white-14);"></div><span class="pin overlay-pin">14%</span></div><div class="swatch-meta"><span class="key">--color-overlay-white-14</span><span class="hex">white @ 14%</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark overlay-demo" style="background: var(--brand-attrus-ink);"><div class="overlay-layer" style="background: var(--color-overlay-white-16);"></div><span class="pin overlay-pin">16%</span></div><div class="swatch-meta"><span class="key">--color-overlay-white-16</span><span class="hex">white @ 16%</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark overlay-demo" style="background: var(--brand-attrus-ink);"><div class="overlay-layer" style="background: var(--color-overlay-white-18);"></div><span class="pin overlay-pin">18%</span></div><div class="swatch-meta"><span class="key">--color-overlay-white-18</span><span class="hex">white @ 18%</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark overlay-demo" style="background: var(--brand-attrus-ink);"><div class="overlay-layer" style="background: var(--color-overlay-white-22);"></div><span class="pin overlay-pin">22%</span></div><div class="swatch-meta"><span class="key">--color-overlay-white-22</span><span class="hex">white @ 22%</span></div></div>
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+  document.querySelectorAll('.motion-cell').forEach(cell => {
+    cell.addEventListener('mouseleave', () => {
+      cell.classList.remove('is-running');
+    });
+  });
+</script>
+
+</body>
+</html>

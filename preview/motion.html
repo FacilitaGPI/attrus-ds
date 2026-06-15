@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Motion" name="Motion" subtitle="Motion patterns + durations + easings (fade, slide, scale, pulse, shake, pop, spin, skeleton)" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Motion · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/tokens-doc.css">
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  /* page-specific tweaks */
+  .pattern-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--space-4); }
+  .pattern { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .pattern-stage { padding: var(--space-8) var(--space-5); background: var(--color-background-canvas); display: flex; align-items: center; justify-content: center; min-height: 140px; position: relative; overflow: hidden; }
+  .pattern-meta { padding: var(--space-4) var(--space-5); border-top: 1px solid var(--color-border-subtle); }
+  .pattern-meta .name { font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); color: var(--color-foreground-accent); margin-bottom: var(--space-1); }
+  .pattern-meta .desc { font-size: var(--fs-xs); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+
+  /* sample tile */
+  .tile { width: 88px; height: 56px; border-radius: var(--radius-md); background: var(--color-brand-secondary-500); display: flex; align-items: center; justify-content: center; color: var(--color-pure-white); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); box-shadow: var(--shadow-md); }
+  .tile.success { background: var(--color-success-500); }
+  .tile.warning { background: var(--color-warning-500); }
+  .tile.danger  { background: var(--color-danger-500); }
+
+  /* === MOTION PATTERNS (loop on hover, paused at rest) === */
+  .pattern .tile { animation-duration: var(--duration-slower); animation-timing-function: var(--ease-standard); animation-iteration-count: 1; animation-fill-mode: forwards; }
+  .pattern:hover .tile { animation-iteration-count: infinite; animation-direction: alternate; animation-duration: 1.2s; }
+
+  /* Fade */
+  @keyframes mp-fade { 0% { opacity: 0; } 100% { opacity: 1; } }
+  .pattern.fade .tile { animation-name: mp-fade; }
+
+  /* Slide-up */
+  @keyframes mp-slide-up { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+  .pattern.slide-up .tile { animation-name: mp-slide-up; }
+
+  /* Slide-down */
+  @keyframes mp-slide-down { 0% { opacity: 0; transform: translateY(-20px); } 100% { opacity: 1; transform: translateY(0); } }
+  .pattern.slide-down .tile { animation-name: mp-slide-down; }
+
+  /* Slide-left / right (drawers) */
+  @keyframes mp-slide-left { 0% { opacity: .6; transform: translateX(60px); } 100% { opacity: 1; transform: translateX(0); } }
+  .pattern.slide-left .tile { animation-name: mp-slide-left; }
+
+  @keyframes mp-slide-right { 0% { opacity: .6; transform: translateX(-60px); } 100% { opacity: 1; transform: translateX(0); } }
+  .pattern.slide-right .tile { animation-name: mp-slide-right; }
+
+  /* Scale-in (modal) */
+  @keyframes mp-scale-in { 0% { opacity: 0; transform: scale(0.96); } 100% { opacity: 1; transform: scale(1); } }
+  .pattern.scale-in .tile { animation-name: mp-scale-in; }
+
+  /* Scale-down (dismiss) */
+  @keyframes mp-scale-down { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.94); } }
+  .pattern.scale-down .tile { animation-name: mp-scale-down; }
+
+  /* Pop (emphasis / overshoot) */
+  @keyframes mp-pop { 0% { opacity: 0; transform: scale(0.8); } 60% { opacity: 1; transform: scale(1.04); } 100% { transform: scale(1); } }
+  .pattern.pop .tile { animation-name: mp-pop; animation-timing-function: var(--ease-emphasis); }
+
+  /* Shake (validation error) */
+  @keyframes mp-shake { 0% { transform: translateX(0); } 25% { transform: translateX(-6px); } 50% { transform: translateX(6px); } 75% { transform: translateX(-4px); } 100% { transform: translateX(0); } }
+  .pattern.shake .tile { animation-name: mp-shake; animation-duration: 400ms; }
+
+  /* Pulse (live indicator) */
+  @keyframes mp-pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-success-500) 40%, transparent); } 50% { box-shadow: 0 0 0 14px color-mix(in srgb, var(--color-success-500) 0%, transparent); } }
+  .pattern.pulse .tile { animation-name: mp-pulse; animation-iteration-count: infinite; animation-duration: 1.6s; }
+  .pattern.pulse:hover .tile { animation-iteration-count: infinite; }
+
+  /* Spin (loading) */
+  @keyframes mp-spin { 100% { transform: rotate(360deg); } }
+  .pattern.spin .tile { animation-name: mp-spin; animation-duration: 1s; animation-timing-function: var(--ease-linear); animation-iteration-count: infinite; }
+
+  /* Skeleton (shimmer) */
+  .pattern.skeleton .tile { background: linear-gradient(90deg, var(--color-border-default) 0%, var(--color-border-subtle) 50%, var(--color-border-default) 100%); background-size: 200% 100%; color: transparent; box-shadow: none; animation-name: mp-shimmer; animation-duration: 1.4s; animation-timing-function: var(--ease-linear); animation-iteration-count: infinite; }
+  @keyframes mp-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+  /* Cross-fade (between two states) */
+  .pattern.cross-fade .stage-pair { display: flex; gap: var(--space-3); align-items: center; }
+  .pattern.cross-fade .tile { animation-duration: 1.2s; animation-iteration-count: infinite; animation-direction: alternate; animation-name: mp-fade; }
+  .pattern.cross-fade .tile:nth-child(2) { animation-delay: 0.6s; }
+
+  /* dir / use */
+  .pattern.hint:after { content: "hover to play"; position: absolute; bottom: var(--space-2); right: var(--space-3); font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+
+  /* direction matrix */
+  .dir-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .dir-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .dir-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .dir-table tr:last-child td { border-bottom: 0; }
+  .dir-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+  .dir-table .pattern-name { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+
+  /* don'ts */
+  .dont-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-4); }
+  .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
+  .dont-card svg, .dont-card i { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-card .body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .dont-card .body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+
+  /* recipe table */
+  .recipe { background: var(--color-background-subtle); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-4); font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .recipe .key { color: var(--color-foreground-accent); font-weight: var(--w-semibold); }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <header class="doc-header">
+    <div>
+      <h1>Motion</h1>
+      <p>Snappy, never bouncy. One curve and five durations compose every animation in the system — from a 80ms tap echo to a 480ms page transition. Motion <em>patterns</em> (fade, slide, scale, pulse, shake) are the verbs you reach for; <em>durations</em> and <em>easings</em> are the adverbs that tune them.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="fast-forward"></i>Motion</span>
+    </div>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#durations">01 Durations</a>
+    <a href="#easings">02 Easings</a>
+    <a href="#patterns">03 Patterns</a>
+    <a href="#direction">04 Where each pattern lives</a>
+    <a href="#a11y">05 Reduced motion &amp; a11y</a>
+    <a href="#donts">06 Don'ts</a>
+    <a href="#tokens">07 Tokens</a>
+  </nav>
+
+  <!-- 01 DURATIONS -->
+  <section class="doc-section" id="durations">
+    <h2><span class="num">01</span>Durations</h2>
+    <p class="lead">Six steps from <code>80ms</code> tap-feedback through <code>640ms</code> overlay entry. Pick the shortest one that still reads — most UI lands on <code>--duration-fast</code> or <code>--duration-base</code>. <em>Hover any cell to play.</em></p>
+
+    <div class="motion-grid">
+      <div class="motion-cell d-instant"><div class="track"><div class="ball"></div></div><div class="key">--duration-instant</div><div class="desc">80ms — micro feedback (tap echo)</div><div class="hint">Hover to play</div></div>
+      <div class="motion-cell d-fast"><div class="track"><div class="ball"></div></div><div class="key">--duration-fast</div><div class="desc">140ms — hover, focus, color</div><div class="hint">Hover to play</div></div>
+      <div class="motion-cell d-base"><div class="track"><div class="ball"></div></div><div class="key">--duration-base</div><div class="desc">200ms — default for most UI</div><div class="hint">Hover to play</div></div>
+      <div class="motion-cell d-slow"><div class="track"><div class="ball"></div></div><div class="key">--duration-slow</div><div class="desc">320ms — expansions, reveals</div><div class="hint">Hover to play</div></div>
+      <div class="motion-cell d-slower"><div class="track"><div class="ball"></div></div><div class="key">--duration-slower</div><div class="desc">480ms — page-level transitions</div><div class="hint">Hover to play</div></div>
+    </div>
+  </section>
+
+  <!-- 02 EASINGS -->
+  <section class="doc-section" id="easings">
+    <h2><span class="num">02</span>Easings</h2>
+    <p class="lead">Three curves cover every case. <code>--ease-standard</code> is the default — an out-expo that lands soft. <code>--ease-emphasis</code> adds a touch of overshoot for entries. <code>--ease-linear</code> only for loading indicators where the user needs steady rate.</p>
+
+    <div class="motion-grid">
+      <div class="motion-cell d-slower"><div class="track"><div class="ball"></div></div><div class="key">--ease-standard</div><div class="desc">cubic-bezier(.2, .8, .2, 1) — default</div><div class="hint">Hover to play</div></div>
+      <div class="motion-cell d-slower e-emphasis"><div class="track"><div class="ball"></div></div><div class="key">--ease-emphasis</div><div class="desc">cubic-bezier(.2, .9, .15, 1) — entries</div><div class="hint">Hover to play</div></div>
+      <div class="motion-cell d-slower e-linear"><div class="track"><div class="ball"></div></div><div class="key">--ease-linear</div><div class="desc">linear — loading bars, scrubbers</div><div class="hint">Hover to play</div></div>
+    </div>
+  </section>
+
+  <!-- 03 PATTERNS -->
+  <section class="doc-section" id="patterns">
+    <h2><span class="num">03</span>Patterns</h2>
+    <p class="lead">The animations the system uses. Each pattern is a composition of <em>duration + easing + transform/opacity changes</em> applied to specific surfaces. <em>Hover any card to loop the motion.</em></p>
+
+    <div class="pattern-grid">
+
+      <div class="pattern fade hint">
+        <div class="pattern-stage"><div class="tile">Aa</div></div>
+        <div class="pattern-meta">
+          <div class="name">fade</div>
+          <p class="desc">Opacity 0 → 1. The quietest entry. For tooltips, toast bodies, lazy-loaded content.</p>
+        </div>
+      </div>
+
+      <div class="pattern slide-up hint">
+        <div class="pattern-stage"><div class="tile">Aa</div></div>
+        <div class="pattern-meta">
+          <div class="name">slide-up</div>
+          <p class="desc">translateY(20→0) + fade. For toasts (bottom origin), inline confirmations, sticky bars rising into view.</p>
+        </div>
+      </div>
+
+      <div class="pattern slide-down hint">
+        <div class="pattern-stage"><div class="tile">Aa</div></div>
+        <div class="pattern-meta">
+          <div class="name">slide-down</div>
+          <p class="desc">translateY(-20→0) + fade. For dropdowns and popovers anchored to a trigger above.</p>
+        </div>
+      </div>
+
+      <div class="pattern slide-left hint">
+        <div class="pattern-stage"><div class="tile">Aa</div></div>
+        <div class="pattern-meta">
+          <div class="name">slide-left (in)</div>
+          <p class="desc">translateX(+→0). Drawer entering from the right; back-button flow forward.</p>
+        </div>
+      </div>
+
+      <div class="pattern slide-right hint">
+        <div class="pattern-stage"><div class="tile">Aa</div></div>
+        <div class="pattern-meta">
+          <div class="name">slide-right (in)</div>
+          <p class="desc">translateX(-→0). Drawer entering from the left; navigation flow back.</p>
+        </div>
+      </div>
+
+      <div class="pattern scale-in hint">
+        <div class="pattern-stage"><div class="tile">Aa</div></div>
+        <div class="pattern-meta">
+          <div class="name">scale-in</div>
+          <p class="desc">scale(0.96 → 1) + fade. For modals, command palettes, focused overlays.</p>
+        </div>
+      </div>
+
+      <div class="pattern scale-down hint">
+        <div class="pattern-stage"><div class="tile">Aa</div></div>
+        <div class="pattern-meta">
+          <div class="name">scale-down (out)</div>
+          <p class="desc">scale(1 → 0.94) + fade. The dismiss counterpart of scale-in.</p>
+        </div>
+      </div>
+
+      <div class="pattern pop hint">
+        <div class="pattern-stage"><div class="tile success">Aa</div></div>
+        <div class="pattern-meta">
+          <div class="name">pop</div>
+          <p class="desc">Scale 0.8 → 1.04 → 1, with <code>--ease-emphasis</code>. Use sparingly — confirmation badges, success states.</p>
+        </div>
+      </div>
+
+      <div class="pattern shake hint">
+        <div class="pattern-stage"><div class="tile danger">Aa</div></div>
+        <div class="pattern-meta">
+          <div class="name">shake</div>
+          <p class="desc">Quick lateral oscillation for validation errors. 400ms total, do not loop.</p>
+        </div>
+      </div>
+
+      <div class="pattern pulse">
+        <div class="pattern-stage"><div class="tile success">●</div></div>
+        <div class="pattern-meta">
+          <div class="name">pulse</div>
+          <p class="desc">Expanding ring of color-mix shadow. Live indicators, "recording" dots, pending payment markers.</p>
+        </div>
+      </div>
+
+      <div class="pattern spin">
+        <div class="pattern-stage"><div class="tile" style="border-radius: var(--radius-pill);"><i data-lucide="loader-2" style="width: 24px; height: 24px;"></i></div></div>
+        <div class="pattern-meta">
+          <div class="name">spin</div>
+          <p class="desc">360° rotation at <code>--ease-linear</code>. Inline loaders only — never for "saving" status (use skeleton).</p>
+        </div>
+      </div>
+
+      <div class="pattern skeleton">
+        <div class="pattern-stage"><div class="tile">Aa</div></div>
+        <div class="pattern-meta">
+          <div class="name">skeleton-shimmer</div>
+          <p class="desc">Gradient sweep across a placeholder shape. For content-loading states longer than 300ms.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 04 DIRECTION / WHERE -->
+  <section class="doc-section" id="direction">
+    <h2><span class="num">04</span>Where each pattern lives</h2>
+    <p class="lead">Pattern + duration + easing combinations the system already uses. Reach for these before composing your own.</p>
+
+    <table class="dir-table">
+      <thead>
+        <tr><th>Surface</th><th>Pattern</th><th>Recipe</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="pattern-name">Tooltip</td>
+          <td>fade-in / fade-out</td>
+          <td><code>--duration-fast</code> · <code>--ease-standard</code> · 140ms in, 100ms out</td>
+        </tr>
+        <tr>
+          <td class="pattern-name">Toast</td>
+          <td>slide-up + fade</td>
+          <td><code>--duration-base</code> · <code>--ease-standard</code> · translateY(16px → 0)</td>
+        </tr>
+        <tr>
+          <td class="pattern-name">Dropdown / Popover</td>
+          <td>slide-down + fade</td>
+          <td><code>--duration-base</code> · <code>--ease-standard</code> · translateY(-8px → 0)</td>
+        </tr>
+        <tr>
+          <td class="pattern-name">Drawer (right)</td>
+          <td>slide-left in / slide-right out</td>
+          <td><code>--duration-deliberate</code> · <code>--ease-standard</code> · translateX(100% → 0)</td>
+        </tr>
+        <tr>
+          <td class="pattern-name">Drawer (left)</td>
+          <td>slide-right in / slide-left out</td>
+          <td><code>--duration-deliberate</code> · <code>--ease-standard</code> · translateX(-100% → 0)</td>
+        </tr>
+        <tr>
+          <td class="pattern-name">Modal</td>
+          <td>scale-in + fade (with scrim blur)</td>
+          <td><code>--duration-deliberate</code> · <code>--ease-emphasis</code> · scale(0.96 → 1)</td>
+        </tr>
+        <tr>
+          <td class="pattern-name">Button hover</td>
+          <td>color / shadow shift</td>
+          <td><code>--transition-fast</code> · 140ms</td>
+        </tr>
+        <tr>
+          <td class="pattern-name">Form validation error</td>
+          <td>shake</td>
+          <td>400ms total · 4 oscillations · no easing token (custom keyframes)</td>
+        </tr>
+        <tr>
+          <td class="pattern-name">Success confirmation</td>
+          <td>pop</td>
+          <td><code>--duration-slow</code> · <code>--ease-emphasis</code> · scale(0.8 → 1.04 → 1)</td>
+        </tr>
+        <tr>
+          <td class="pattern-name">Live indicator (dot)</td>
+          <td>pulse</td>
+          <td>1600ms loop · color-mix expanding shadow</td>
+        </tr>
+        <tr>
+          <td class="pattern-name">Loading spinner</td>
+          <td>spin</td>
+          <td>1000ms loop · <code>--ease-linear</code> · 360°</td>
+        </tr>
+        <tr>
+          <td class="pattern-name">Skeleton state</td>
+          <td>skeleton-shimmer</td>
+          <td>1400ms loop · linear-gradient sweep across border-subtle/default (theme-aware)</td>
+        </tr>
+        <tr>
+          <td class="pattern-name">Page transition</td>
+          <td>fade or slide-up</td>
+          <td><code>--duration-slower</code> · <code>--ease-standard</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 05 A11Y -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">05</span>Reduced motion &amp; accessibility</h2>
+    <p class="lead">Vestibular sensitivity is real. Every animation in this system must short-circuit to its end state when <code>prefers-reduced-motion: reduce</code> is set.</p>
+
+    <div class="recipe">
+<span class="key">@media (prefers-reduced-motion: reduce)</span> {
+  *, *::before, *::after {
+    <span class="key">animation-duration</span>: 0.01ms !important;
+    <span class="key">animation-iteration-count</span>: 1 !important;
+    <span class="key">transition-duration</span>: 0.01ms !important;
+    <span class="key">scroll-behavior</span>: auto !important;
+  }
+}
+    </div>
+
+    <p style="font-size: var(--fs-sm); color: var(--color-foreground-secondary); margin-top: var(--space-4); line-height: var(--lh-relaxed);">
+      The system applies this rule globally in <code>dist/css/tokens.css</code>. Don't override it per-component — even for "essential" animations like pulse loading. A static state always remains legible.
+    </p>
+  </section>
+
+  <!-- 06 DON'TS -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">06</span>Don'ts</h2>
+    <p class="lead">Five anti-patterns that consistently appear in product mocks. Each one breaks the system's "snappy, never bouncy" rule.</p>
+
+    <div class="dont-grid">
+      <div class="dont-card">
+        <i data-lucide="x-circle"></i>
+        <div class="body">
+          <strong>Don't bounce</strong>
+          <p>No spring physics, no overshoot beyond <code>--ease-emphasis</code>. The system reads as institutional — bounces feel like a children's app.</p>
+        </div>
+      </div>
+      <div class="dont-card">
+        <i data-lucide="x-circle"></i>
+        <div class="body">
+          <strong>Don't animate everything</strong>
+          <p>Color shifts, opacity, transforms — yes. Page reflows, layout changes, scroll positions — no. Animating the layout costs more than it pays.</p>
+        </div>
+      </div>
+      <div class="dont-card">
+        <i data-lucide="x-circle"></i>
+        <div class="body">
+          <strong>Don't go over 480ms in-product</strong>
+          <p>Only modals and drawers reach <code>--duration-deliberate</code> (640ms). Everything else above 480ms feels sluggish.</p>
+        </div>
+      </div>
+      <div class="dont-card">
+        <i data-lucide="x-circle"></i>
+        <div class="body">
+          <strong>Don't invent easings</strong>
+          <p>Three curves: <code>standard</code>, <code>emphasis</code>, <code>linear</code>. Custom cubic-beziers fragment the system's feel.</p>
+        </div>
+      </div>
+      <div class="dont-card">
+        <i data-lucide="x-circle"></i>
+        <div class="body">
+          <strong>Don't loop without reason</strong>
+          <p>Looping animations (pulse, spin, skeleton) draw attention. Only use them when their job is to <em>indicate ongoing state</em> — never decoration.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 TOKENS -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">07</span>Tokens</h2>
+    <p class="lead">Every value below lives in <code>dist/css/tokens.css</code>. Reach for these before reaching for a literal <code>ms</code> or <code>cubic-bezier</code>.</p>
+
+    <table class="dir-table">
+      <thead>
+        <tr><th>Token</th><th>Value</th><th>Use</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>--duration-instant</code></td><td>80ms</td><td>Tap echo, focus ring</td></tr>
+        <tr><td><code>--duration-fast</code></td><td>140ms</td><td>Hover, color, focus</td></tr>
+        <tr><td><code>--duration-base</code></td><td>200ms</td><td>Default for most UI</td></tr>
+        <tr><td><code>--duration-slow</code></td><td>320ms</td><td>Expansions, reveals</td></tr>
+        <tr><td><code>--duration-slower</code></td><td>480ms</td><td>Page transitions</td></tr>
+        <tr><td><code>--duration-deliberate</code></td><td>640ms</td><td>Modal &amp; drawer entry only</td></tr>
+        <tr><td><code>--ease-standard</code></td><td>cubic-bezier(.2, .8, .2, 1)</td><td>Default for everything</td></tr>
+        <tr><td><code>--ease-emphasis</code></td><td>cubic-bezier(.2, .9, .15, 1)</td><td>Entries with slight overshoot</td></tr>
+        <tr><td><code>--ease-linear</code></td><td>linear</td><td>Loading bars, scrubbers, spinners</td></tr>
+        <tr><td><code>--transition-fast</code></td><td>140ms var(--ease-standard)</td><td>Buttons, inputs default</td></tr>
+        <tr><td><code>--transition-base</code></td><td>200ms var(--ease-standard)</td><td>Cards, surfaces</td></tr>
+        <tr><td><code>--transition-slow</code></td><td>320ms var(--ease-standard)</td><td>Expansions</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+
+</body>
+</html>

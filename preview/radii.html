@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Spacing" name="Radii" subtitle="8 radii · 2xs → pill" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Radii · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/tokens-doc.css">
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <header class="doc-header">
+    <div>
+      <h1>Radii</h1>
+      <p>Mostly soft, never sharp. Cards and inputs sit at md; containers grow to lg; hero panels reach xl. Buttons are unique — fully rounded with --radius-pill regardless of size.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="square-dashed-bottom-code"></i>Layout</span>
+    </div>
+  </header>
+
+<section class="doc-section" id="radii">
+    <h2><span class="num">08</span>Radii</h2>
+    <p class="lead">Mostly soft, never sharp. Cards and inputs sit at <code>--radius-md</code>; containers grow to <code>--radius-lg</code>; hero panels reach <code>--radius-xl</code>. Three in-between rungs (<code>--radius-sm-md</code> 8px, <code>--radius-md-lg</code> 12px, <code>--radius-lg-xl</code> 16px) fill the gaps for tiles and medium cards. Buttons are unique — fully rounded with <code>--radius-pill</code> regardless of size.</p>
+
+    <div class="radii-grid">
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-2xs);"></div><span class="key">--radius-2xs</span><span class="px">2px</span></div>
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-xs);"></div><span class="key">--radius-xs</span><span class="px">4px</span></div>
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-sm);"></div><span class="key">--radius-sm</span><span class="px">6px</span></div>
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-sm-md);"></div><span class="key">--radius-sm-md</span><span class="px">8px</span></div>
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-md);"></div><span class="key">--radius-md</span><span class="px">10px</span></div>
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-md-lg);"></div><span class="key">--radius-md-lg</span><span class="px">12px</span></div>
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-lg);"></div><span class="key">--radius-lg</span><span class="px">14px</span></div>
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-lg-xl);"></div><span class="key">--radius-lg-xl</span><span class="px">16px</span></div>
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-xl);"></div><span class="key">--radius-xl</span><span class="px">20px</span></div>
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-2xl);"></div><span class="key">--radius-2xl</span><span class="px">28px</span></div>
+      <div class="radii-cell pill"><div class="demo" style="border-radius: var(--radius-pill);"></div><span class="key">--radius-pill</span><span class="px">999px</span></div>
+    </div>
+
+    <p class="intro" style="margin-top: var(--space-6);"><strong style="color: var(--color-foreground-default);">Usage rule — slightly rounded everywhere, fully rounded for buttons.</strong> Cards &amp; tables <code>md</code> · Inputs &amp; chips <code>sm</code> · Modals &amp; drawers <code>md</code> · Receipts &amp; hero <code>md</code>–<code>lg</code> · Icon tiles <code>sm</code>–<code>md</code>. <strong style="color: var(--color-foreground-default);">All buttons &amp; pills use <code>--radius-pill</code></strong> regardless of size — the clearest brand tell.</p>
+  </section>
+
+</main>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+  document.querySelectorAll('.motion-cell').forEach(cell => {
+    cell.addEventListener('mouseleave', () => {
+      cell.classList.remove('is-running');
+    });
+  });
+</script>
+
+</body>
+</html>

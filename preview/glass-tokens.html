@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Colors" name="Liquid glass tokens" subtitle="Fills translucentes + 3 blur strengths" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Liquid glass · Tokens · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/tokens-doc.css">
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <header class="doc-header">
+    <div>
+      <h1>Liquid glass · Tokens</h1>
+      <p>Translucent layers used for floating chrome — toolbars over imagery, modals over a dimmed canvas, navigation that overlaps content. Translucent fills + backdrop-filter blurs + hairline borders.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="square-dashed"></i>Surface</span>
+    </div>
+  </header>
+
+<section class="doc-section" id="glass">
+    <h2><span class="num">05</span>Liquid glass</h2>
+    <p class="lead">Translucent layers used for floating chrome — toolbars over imagery, modals over a dimmed canvas, navigation that overlaps content. Every glass surface combines a translucent fill, a backdrop-filter blur, and a hairline border.</p>
+
+    <div class="glass-stage">
+      <div class="grid">
+        <div class="glass-card white">
+          <span class="key">--glass-white</span>
+          <span class="desc">58% white — default light glass over mid-bright bg</span>
+        </div>
+        <div class="glass-card white-hi">
+          <span class="key">--glass-white-hi</span>
+          <span class="desc">78% white — opaque-feeling, max readability</span>
+        </div>
+        <div class="glass-card white-lo">
+          <span class="key">--glass-white-lo</span>
+          <span class="desc">38% white — subtle frosted hint</span>
+        </div>
+        <div class="glass-card tint">
+          <span class="key">--glass-tint</span>
+          <span class="desc">Bluish-white tint — system flavor</span>
+        </div>
+        <div class="glass-card ink">
+          <span class="key">--glass-ink</span>
+          <span class="desc">55% navy — default dark glass</span>
+        </div>
+        <div class="glass-card ink-hi">
+          <span class="key">--glass-ink-hi</span>
+          <span class="desc">78% navy — opaque dark</span>
+        </div>
+        <div class="glass-card ink-lo">
+          <span class="key">--glass-ink-lo</span>
+          <span class="desc">35% navy — soft hint of dark</span>
+        </div>
+      </div>
+    </div>
+
+    <table class="token-table" style="width: 100%; border-collapse: collapse; background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-xs); font-size: var(--fs-sm);">
+      <thead>
+        <tr>
+          <th style="font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); padding: var(--space-3) var(--space-5); text-align: left; border-bottom: 1px solid var(--color-border-subtle);">Blur token</th>
+          <th style="font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); padding: var(--space-3) var(--space-5); text-align: left; border-bottom: 1px solid var(--color-border-subtle);">Value</th>
+          <th style="font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); padding: var(--space-3) var(--space-5); text-align: left; border-bottom: 1px solid var(--color-border-subtle);">When to use</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">--glass-blur-sm</td><td style="font-family: var(--font-mono); color: var(--color-foreground-secondary); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">saturate(130%) blur(10px)</td><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary);">Sticky nav, dropdowns, small overlays</td></tr>
+        <tr><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">--glass-blur</td><td style="font-family: var(--font-mono); color: var(--color-foreground-secondary); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">saturate(140%) blur(18px)</td><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary);">Default glass — toolbars, side panels</td></tr>
+        <tr><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5);">--glass-blur-lg</td><td style="font-family: var(--font-mono); color: var(--color-foreground-secondary); padding: var(--space-3) var(--space-5);">saturate(160%) blur(28px)</td><td style="padding: var(--space-3) var(--space-5); color: var(--color-foreground-secondary);">Modals, full-screen overlays</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+  document.querySelectorAll('.motion-cell').forEach(cell => {
+    cell.addEventListener('mouseleave', () => {
+      cell.classList.remove('is-running');
+    });
+  });
+</script>
+
+</body>
+</html>

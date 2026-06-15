@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Spacing" name="Spacing" subtitle="4px base · 14 stops canon" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Spacing · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/tokens-doc.css">
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <header class="doc-header">
+    <div>
+      <h1>Spacing</h1>
+      <p>A 4px base scale — dense enough for data tables, generous enough for marketing layouts. Every padding, margin, and gap snaps to one of the canonical steps. No magic numbers.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="ruler"></i>Layout</span>
+    </div>
+  </header>
+
+<section class="doc-section" id="spacing">
+    <h2><span class="num">07</span>Spacing</h2>
+    <p class="lead">A 4px base scale — dense enough for data tables, generous enough for marketing layouts. Every padding, margin, and gap in the system snaps to one of the canonical steps. The integer rungs carry the rhythm; three half-steps (<code>--space-2-5</code>, <code>--space-3-5</code>, <code>--space-4-5</code>) exist for dense control padding where a full step is too much. There is no <code>11px</code>, no <code>23px</code>; pick the nearest stop or, if the scale is genuinely lacking, propose a new token.</p>
+
+    <div class="scale-grid">
+      <div class="scale-row"><span class="key">--space-0</span><span class="px">0</span><span class="bar" style="width: 0;"></span><span class="use">Reset / collapse</span></div>
+      <div class="scale-row"><span class="key">--space-1</span><span class="px">2</span><span class="bar" style="width: 2px;"></span><span class="use">Hairline gaps inside small chips</span></div>
+      <div class="scale-row"><span class="key">--space-2</span><span class="px">4</span><span class="bar" style="width: 4px;"></span><span class="use">Icon ↔ label inside buttons / pills</span></div>
+      <div class="scale-row"><span class="key">--space-2-5</span><span class="px">6</span><span class="bar" style="width: 6px;"></span><span class="use">Half-step — dense chips, tight icon gaps</span></div>
+      <div class="scale-row"><span class="key">--space-3</span><span class="px">8</span><span class="bar" style="width: 8px;"></span><span class="use">Form row internal, dense inline</span></div>
+      <div class="scale-row"><span class="key">--space-3-5</span><span class="px">10</span><span class="bar" style="width: 10px;"></span><span class="use">Half-step — control padding, list-row gaps</span></div>
+      <div class="scale-row"><span class="key">--space-4</span><span class="px">12</span><span class="bar" style="width: 12px;"></span><span class="use">Default — most cells, list rows</span></div>
+      <div class="scale-row"><span class="key">--space-4-5</span><span class="px">14</span><span class="bar" style="width: 14px;"></span><span class="use">Half-step — card padding, section gaps</span></div>
+      <div class="scale-row"><span class="key">--space-5</span><span class="px">16</span><span class="bar" style="width: 16px;"></span><span class="use">Card body padding (sm)</span></div>
+      <div class="scale-row"><span class="key">--space-6</span><span class="px">20</span><span class="bar" style="width: 20px;"></span><span class="use">Default card padding, section gaps</span></div>
+      <div class="scale-row"><span class="key">--space-7</span><span class="px">24</span><span class="bar" style="width: 24px;"></span><span class="use">Section internal padding</span></div>
+      <div class="scale-row"><span class="key">--space-8</span><span class="px">32</span><span class="bar" style="width: 32px;"></span><span class="use">Between distinct page blocks</span></div>
+      <div class="scale-row"><span class="key">--space-9</span><span class="px">40</span><span class="bar" style="width: 40px;"></span><span class="use">Hero internal, page header</span></div>
+      <div class="scale-row"><span class="key">--space-10</span><span class="px">48</span><span class="bar" style="width: 48px;"></span><span class="use">Page-level top padding</span></div>
+      <div class="scale-row"><span class="key">--space-12</span><span class="px">64</span><span class="bar" style="width: 64px;"></span><span class="use">Section-to-section vertical rhythm</span></div>
+      <div class="scale-row"><span class="key">--space-14</span><span class="px">80</span><span class="bar" style="width: 80px;"></span><span class="use">Hero blocks, marketing landings</span></div>
+      <div class="scale-row"><span class="key">--space-16</span><span class="px">96</span><span class="bar" style="width: 96px;"></span><span class="use">Major section breaks</span></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+  document.querySelectorAll('.motion-cell').forEach(cell => {
+    cell.addEventListener('mouseleave', () => {
+      cell.classList.remove('is-running');
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Type" name="Typography" subtitle="Lato + JetBrains Mono · escala 14 stops · mono + metric" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Typography · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/tokens-doc.css">
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <header class="doc-header">
+    <div>
+      <h1>Typography</h1>
+      <p>Lato across the system — humanist sans with seven weights. JetBrains Mono for IDs, codes, and tabular numbers. The type scale runs from 10px caption micro through 72px hero display.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="type"></i>Type</span>
+    </div>
+  </header>
+
+<section class="doc-section" id="typography">
+    <h2><span class="num">06</span>Typography</h2>
+    <p class="lead">Lato across the system — humanist sans with seven weights. JetBrains Mono for IDs, codes, and tabular numbers where alignment matters. The type scale runs from <code>10px</code> caption micro through <code>72px</code> hero display.</p>
+
+    <h3 class="sub">Families</h3>
+    <div class="family-grid">
+      <div class="family">
+        <span class="label">Sans · default UI + display</span>
+        <span class="name">Lato</span>
+        <span class="demo" style="font-family: var(--font-sans); font-weight: var(--w-bold);">Aa Bb 1234 — €¥</span>
+        <span class="var">--font-sans · --font-display</span>
+      </div>
+      <div class="family mono">
+        <span class="label">Mono · IDs, codes, tabular</span>
+        <span class="name">JetBrains Mono</span>
+        <span class="demo">Aa Bb 1234 — €¥</span>
+        <span class="var">--font-mono</span>
+      </div>
+    </div>
+
+    <h3 class="sub">Weights</h3>
+    <div class="weight-grid">
+      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-light);">Aa</div><div class="key">--w-light</div><div class="num">300</div></div>
+      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-regular);">Aa</div><div class="key">--w-regular</div><div class="num">400</div></div>
+      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-medium);">Aa</div><div class="key">--w-medium</div><div class="num">500</div></div>
+      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-semibold);">Aa</div><div class="key">--w-semibold</div><div class="num">600</div></div>
+      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-bold);">Aa</div><div class="key">--w-bold</div><div class="num">700</div></div>
+      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-extrabold);">Aa</div><div class="key">--w-extrabold</div><div class="num">800</div></div>
+      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-black);">Aa</div><div class="key">--w-black</div><div class="num">900</div></div>
+    </div>
+
+    <h3 class="sub">Scale <span class="meta">— 14 stops</span></h3>
+    <div class="type-stack">
+      <div class="type-row">
+        <div class="label"><span class="ttl">Display XL</span><span class="px">72px / 900</span></div>
+        <div class="sample" style="font-family: var(--font-display); font-weight: var(--w-black); font-size: var(--fs-8xl); letter-spacing: var(--ls-display); line-height: var(--lh-tight);">Aa Hero</div>
+        <div class="tokens"><span class="k">--fs-8xl</span> · <span class="k">--w-black</span><br/><span class="k">--ls-display</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Display LG</span><span class="px">56px / 800</span></div>
+        <div class="sample" style="font-family: var(--font-display); font-weight: var(--w-extrabold); font-size: var(--fs-7xl); letter-spacing: var(--ls-display); line-height: var(--lh-tight);">Aa Headline</div>
+        <div class="tokens"><span class="k">--fs-7xl</span> · <span class="k">--w-extrabold</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Display</span><span class="px">40px / 700</span></div>
+        <div class="sample" style="font-family: var(--font-display); font-weight: var(--w-bold); font-size: var(--fs-6xl); letter-spacing: var(--ls-display); line-height: var(--lh-tight);">Aa Section</div>
+        <div class="tokens"><span class="k">--fs-6xl</span> · <span class="k">--w-bold</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">H1</span><span class="px">32px / 700</span></div>
+        <div class="sample" style="font-weight: var(--w-bold); font-size: var(--fs-5xl); letter-spacing: var(--ls-display); line-height: var(--lh-tight);">Heading 1</div>
+        <div class="tokens"><span class="k">--fs-5xl</span> · <span class="k">--w-bold</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">H2</span><span class="px">28px / 700</span></div>
+        <div class="sample" style="font-weight: var(--w-bold); font-size: var(--fs-4xl); letter-spacing: var(--ls-title); line-height: var(--lh-snug);">Heading 2</div>
+        <div class="tokens"><span class="k">--fs-4xl</span> · <span class="k">--ls-title</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">H3</span><span class="px">24px / 700</span></div>
+        <div class="sample" style="font-weight: var(--w-bold); font-size: var(--fs-3xl); letter-spacing: var(--ls-title); line-height: var(--lh-snug);">Heading 3</div>
+        <div class="tokens"><span class="k">--fs-3xl</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">H4</span><span class="px">20px / 600</span></div>
+        <div class="sample" style="font-weight: var(--w-semibold); font-size: var(--fs-2xl); letter-spacing: var(--ls-title); line-height: var(--lh-snug);">Heading 4</div>
+        <div class="tokens"><span class="k">--fs-2xl</span> · <span class="k">--w-semibold</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">H5</span><span class="px">18px / 600</span></div>
+        <div class="sample" style="font-weight: var(--w-semibold); font-size: var(--fs-xl); line-height: var(--lh-snug);">Heading 5</div>
+        <div class="tokens"><span class="k">--fs-xl</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">H6 / Body LG</span><span class="px">16px</span></div>
+        <div class="sample" style="font-size: var(--fs-lg); line-height: var(--lh-relaxed);">Body large — section intros, leads</div>
+        <div class="tokens"><span class="k">--fs-lg</span> · <span class="k">--lh-relaxed</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Body</span><span class="px">14px / default</span></div>
+        <div class="sample" style="font-size: var(--fs-base); line-height: var(--lh-normal);">Body — the default UI text size for paragraphs and form values.</div>
+        <div class="tokens"><span class="k">--fs-base</span> · <span class="k">--lh-normal</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Body SM / UI</span><span class="px">13px</span></div>
+        <div class="sample" style="font-size: var(--fs-md); line-height: var(--lh-normal);">UI default — buttons, labels, dense data tables, inputs.</div>
+        <div class="tokens"><span class="k">--fs-md</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Caption</span><span class="px">12px</span></div>
+        <div class="sample" style="font-size: var(--fs-sm); color: var(--color-foreground-muted); line-height: var(--lh-normal);">Caption — helper text, secondary metadata.</div>
+        <div class="tokens"><span class="k">--fs-sm</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Overline</span><span class="px">11px / caps</span></div>
+        <div class="sample" style="font-size: var(--fs-xs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-semibold);">Overline label</div>
+        <div class="tokens"><span class="k">--fs-xs</span> · <span class="k">--ls-caps</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Micro</span><span class="px">10px</span></div>
+        <div class="sample" style="font-size: var(--fs-xxs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-semibold);">Micro · table head</div>
+        <div class="tokens"><span class="k">--fs-xxs</span></div>
+      </div>
+    </div>
+
+    <h3 class="sub">Mono scale <span class="meta">— JetBrains Mono · IDs, codes, keycaps, tabular cells</span></h3>
+    <p class="intro">Used wherever alignment matters more than character density — confirmation IDs, hashes, currency rows, keycaps. Tracks the sans scale at major break points but uses tighter weights and tabular figures.</p>
+    <div class="type-stack">
+      <div class="type-row">
+        <div class="label"><span class="ttl">Mono XL</span><span class="px">28px / 500 · IDs hero</span></div>
+        <div class="sample" style="font-family: var(--font-mono); font-weight: var(--w-medium); font-size: var(--fs-4xl); letter-spacing: -.01em;">N-741469-0x1A4F</div>
+        <div class="tokens"><span class="k">--font-mono</span> · <span class="k">--fs-4xl</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Mono LG</span><span class="px">20px / 500 · metric tag</span></div>
+        <div class="sample" style="font-family: var(--font-mono); font-weight: var(--w-medium); font-size: var(--fs-2xl);">USD · 1,500.00</div>
+        <div class="tokens"><span class="k">--fs-2xl</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Mono MD</span><span class="px">16px / 500 · code, txid</span></div>
+        <div class="sample" style="font-family: var(--font-mono); font-weight: var(--w-medium); font-size: var(--fs-lg);">E10789035202604102003MIP45JG</div>
+        <div class="tokens"><span class="k">--fs-lg</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Mono</span><span class="px">14px / 500 · default</span></div>
+        <div class="sample" style="font-family: var(--font-mono); font-weight: var(--w-medium); font-size: var(--fs-base);">CP-847123  ·  BRL → USD  ·  6.38765</div>
+        <div class="tokens"><span class="k">--fs-base</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Mono SM</span><span class="px">12px · cell</span></div>
+        <div class="sample" style="font-family: var(--font-mono); font-size: var(--fs-sm);">dd/mm/aaaa · hh:mm:ss</div>
+        <div class="tokens"><span class="k">--fs-sm</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Mono XS</span><span class="px">11px · caption</span></div>
+        <div class="sample" style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);">{nationalIDType} · {nationalIDNumber}</div>
+        <div class="tokens"><span class="k">--fs-xs</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Mono KBD</span><span class="px">10px / 500 · keycap</span></div>
+        <div class="sample"><span style="font-family: var(--font-mono); font-weight: var(--w-medium); font-size: var(--fs-xxs); border:1px solid var(--color-border-default); padding:1px 6px; border-radius: var(--radius-2xs); color: var(--color-foreground-muted); margin-right: 6px;">⌘K</span><span style="font-family: var(--font-mono); font-weight: var(--w-medium); font-size: var(--fs-xxs); border:1px solid var(--color-border-default); padding:1px 6px; border-radius: var(--radius-2xs); color: var(--color-foreground-muted); margin-right: 6px;">ESC</span><span style="font-family: var(--font-mono); font-weight: var(--w-medium); font-size: var(--fs-xxs); border:1px solid var(--color-border-default); padding:1px 6px; border-radius: var(--radius-2xs); color: var(--color-foreground-muted);">↵</span></div>
+        <div class="tokens"><span class="k">--fs-xxs</span> · keycap</div>
+      </div>
+    </div>
+
+    <h3 class="sub">Display numerals <span class="meta">— hero figures, tabular</span></h3>
+    <p class="intro">For headline metrics — totals, balances, key figures. Uses Lato Black with negative tracking and tabular numerals so digits align column-to-column.</p>
+    <div class="type-stack">
+      <div class="type-row">
+        <div class="label"><span class="ttl">Metric</span><span class="px">32px / 900 · tabular</span></div>
+        <div class="sample" style="font-weight: var(--w-black); font-size: var(--fs-5xl); letter-spacing: -.02em; font-variant-numeric: tabular-nums;">1,250,000.00</div>
+        <div class="tokens"><span class="k">--fs-5xl</span> · <span class="k">--w-black</span> · tabular-nums</div>
+      </div>
+    </div>
+
+    <h3 class="sub">Line height &amp; letter spacing</h3>
+    <div class="metric-grid">
+      <div class="metric">
+        <div class="key">--lh-tight (1.15)</div>
+        <div class="demo" style="line-height: var(--lh-tight);">Used for display + H1 — tight vertical rhythm so multi-line headlines hold together as one shape.</div>
+      </div>
+      <div class="metric">
+        <div class="key">--lh-snug (1.3)</div>
+        <div class="demo" style="line-height: var(--lh-snug);">H2–H5 — comfortable but compact, lets adjacent headings sit close to their content without crowding.</div>
+      </div>
+      <div class="metric">
+        <div class="key">--lh-normal (1.5)</div>
+        <div class="demo" style="line-height: var(--lh-normal);">Body default — the standard for any continuous prose under 16px. Optimised for screen reading without feeling airy.</div>
+      </div>
+      <div class="metric">
+        <div class="key">--lh-relaxed (1.65)</div>
+        <div class="demo" style="line-height: var(--lh-relaxed);">Body LG and lead paragraphs — gives marketing copy and section intros space to breathe across longer line lengths.</div>
+      </div>
+      <div class="metric">
+        <div class="key">--ls-display (-3%)</div>
+        <div class="demo" style="font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display);">Aa Display</div>
+      </div>
+      <div class="metric">
+        <div class="key">--ls-title (-1.5%)</div>
+        <div class="demo" style="font-size: var(--fs-2xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title);">Aa Title</div>
+      </div>
+      <div class="metric">
+        <div class="key">--ls-body (0)</div>
+        <div class="demo" style="letter-spacing: var(--ls-body);">Aa body — default tracking</div>
+      </div>
+      <div class="metric">
+        <div class="key">--ls-caps (+8%)</div>
+        <div class="demo" style="text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-semibold);">Aa overline caps</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+  document.querySelectorAll('.motion-cell').forEach(cell => {
+    cell.addEventListener('mouseleave', () => {
+      cell.classList.remove('is-running');
+    });
+  });
+</script>
+
+</body>
+</html>

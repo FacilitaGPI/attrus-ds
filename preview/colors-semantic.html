@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Colors" name="Colors · Semantic roles" subtitle="Surfaces, foregrounds, borders, status pairs · light + inverse" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Colors · Semantic roles · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/tokens-doc.css">
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <header class="doc-header">
+    <div>
+      <h1>Colors · Semantic roles</h1>
+      <p>Components consume semantic roles named by purpose — never raw palette values. Each role has a light variant and an inverse twin so dark surfaces work without forks.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="message-square-warning"></i>Color</span>
+    </div>
+  </header>
+
+<section class="doc-section" id="color-semantic">
+    <h2><span class="num">03</span>Color · semantic roles</h2>
+    <p class="lead">Components never reach for raw palette values. They consume semantic roles named by purpose — <code>--color-background-canvas</code>, <code>--color-foreground-default</code>, <code>--color-border-focus</code>. Each role has a light variant and an inverse twin so dark surfaces work without forks.</p>
+
+    <h3 class="sub">Primitives <span class="meta">— absolute anchors used by the semantic layer; never consumed directly by components</span></h3>
+    <div class="chip-group">
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-pure-white); border-color: var(--color-border-default);"></div><div class="meta"><span class="key">--color-pure-white</span><span class="desc">Absolute white — neutral-0 anchor</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-pure-black);"></div><div class="meta"><span class="key">--color-pure-black</span><span class="desc">Absolute black — for logo / print only</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-shadow-tint);"></div><div class="meta"><span class="key">--color-shadow-tint</span><span class="desc">Default ink for box-shadow color-mix</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-scrim);"></div><div class="meta"><span class="key">--color-scrim</span><span class="desc">Modal / drawer backdrop</span></div></div>
+    </div>
+
+    <h3 class="sub">Ink tones <span class="meta">— inverse-surface variants used by sidebar, hero, dark popovers</span></h3>
+    <div class="chip-group">
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-ink-base);"></div><div class="meta"><span class="key">--color-ink-base</span><span class="desc">Default inverse surface</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-ink-raised);"></div><div class="meta"><span class="key">--color-ink-raised</span><span class="desc">Raised cards on inverse</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-ink-deep);"></div><div class="meta"><span class="key">--color-ink-deep</span><span class="desc">Deepest sunken — wells, recessed</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-ink-hover);"></div><div class="meta"><span class="key">--color-ink-hover</span><span class="desc">Hover layer on inverse</span></div></div>
+    </div>
+
+    <h3 class="sub">Surfaces · light</h3>
+    <div class="chip-group">
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas);"></div><div class="meta"><span class="key">--color-background-canvas</span><span class="desc">App background — outermost surface</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-surface);"></div><div class="meta"><span class="key">--color-background-surface</span><span class="desc">Cards, containers, panels</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-subtle);"></div><div class="meta"><span class="key">--color-background-subtle</span><span class="desc">Zebra rows, nested content</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-raised);"></div><div class="meta"><span class="key">--color-background-raised</span><span class="desc">Floating panels, popovers</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-sunken);"></div><div class="meta"><span class="key">--color-background-sunken</span><span class="desc">Inputs, wells, recessed</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-hover);"></div><div class="meta"><span class="key">--color-background-hover</span><span class="desc">Row / button hover</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-press);"></div><div class="meta"><span class="key">--color-background-press</span><span class="desc">Pressed / active</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-selected);"></div><div class="meta"><span class="key">--color-background-selected</span><span class="desc">Selected row, active filter</span></div></div>
+    </div>
+
+    <h3 class="sub">Surfaces · inverse</h3>
+    <div class="chip-group on-inverse">
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse);"></div><div class="meta"><span class="key">--color-background-inverse</span><span class="desc">Dark canvas — sidebar, hero</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface);"></div><div class="meta"><span class="key">--color-background-inverse-surface</span><span class="desc">Cards on inverse</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-subtle);"></div><div class="meta"><span class="key">--color-background-inverse-subtle</span><span class="desc">Recessed wells on inverse</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-hover);"></div><div class="meta"><span class="key">--color-background-inverse-hover</span><span class="desc">Hover on dark</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-press);"></div><div class="meta"><span class="key">--color-background-inverse-press</span><span class="desc">Press / active on dark</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-selected);"></div><div class="meta"><span class="key">--color-background-inverse-selected</span><span class="desc">Selected row on dark</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-brand);"></div><div class="meta"><span class="key">--color-background-inverse-brand</span><span class="desc">Brand-weight CTA / hero</span></div></div>
+    </div>
+
+    <h3 class="sub">Foregrounds · light</h3>
+    <div class="chip-group">
+      <div class="chip foreground-demo"><div class="demo" style="color: var(--color-foreground-default);">Aa primary</div><div class="meta"><span class="key">--color-foreground-default</span><span class="desc">Body, headings</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="color: var(--color-foreground-secondary);">Aa secondary</div><div class="meta"><span class="key">--color-foreground-secondary</span><span class="desc">Hierarchy step 2</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="color: var(--color-foreground-muted);">Aa muted</div><div class="meta"><span class="key">--color-foreground-muted</span><span class="desc">Captions, helper</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="color: var(--color-foreground-placeholder);">Aa placeholder</div><div class="meta"><span class="key">--color-foreground-placeholder</span><span class="desc">Disabled, placeholder</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="color: var(--color-foreground-accent);">Aa accent</div><div class="meta"><span class="key">--color-foreground-accent</span><span class="desc">Brand emphasis</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="color: var(--color-foreground-highlight);">Aa highlight</div><div class="meta"><span class="key">--color-foreground-highlight</span><span class="desc">Links, selected</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="background: var(--color-brand-primary-500); color: var(--color-foreground-on-solid);">Aa on solid</div><div class="meta"><span class="key">--color-foreground-on-solid</span><span class="desc">Text on brand fills</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="color: var(--color-foreground-disabled);">Aa disabled</div><div class="meta"><span class="key">--color-foreground-disabled</span><span class="desc">Disabled controls</span></div></div>
+    </div>
+
+    <h3 class="sub">Foregrounds · inverse</h3>
+    <div class="chip-group on-inverse">
+      <div class="chip foreground-demo"><div class="demo" style="background: var(--color-background-inverse-surface); color: var(--color-foreground-inverse-default); border-color: var(--color-border-inverse);">Aa primary</div><div class="meta"><span class="key">--color-foreground-inverse-default</span><span class="desc">Body on dark</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="background: var(--color-background-inverse-surface); color: var(--color-foreground-inverse-secondary); border-color: var(--color-border-inverse);">Aa secondary</div><div class="meta"><span class="key">--color-foreground-inverse-secondary</span><span class="desc">Step 2 on dark</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="background: var(--color-background-inverse-surface); color: var(--color-foreground-inverse-muted); border-color: var(--color-border-inverse);">Aa muted</div><div class="meta"><span class="key">--color-foreground-inverse-muted</span><span class="desc">Captions on dark</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="background: var(--color-background-inverse-surface); color: var(--color-foreground-inverse-placeholder); border-color: var(--color-border-inverse);">Aa placeholder</div><div class="meta"><span class="key">--color-foreground-inverse-placeholder</span><span class="desc">Disabled on dark</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="background: var(--color-background-inverse-surface); color: var(--color-foreground-inverse-accent); border-color: var(--color-border-inverse);">Aa accent</div><div class="meta"><span class="key">--color-foreground-inverse-accent</span><span class="desc">Brand emphasis on dark</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="background: var(--color-background-inverse-surface); color: var(--color-foreground-inverse-highlight); border-color: var(--color-border-inverse);">Aa highlight</div><div class="meta"><span class="key">--color-foreground-inverse-highlight</span><span class="desc">Links on dark</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="background: var(--color-background-inverse-surface); color: var(--color-foreground-inverse-disabled); border-color: var(--color-border-inverse);">Aa disabled</div><div class="meta"><span class="key">--color-foreground-inverse-disabled</span><span class="desc">Disabled controls on dark</span></div></div>
+    </div>
+
+    <h3 class="sub">Borders</h3>
+    <div class="chip-group">
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-subtle); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-subtle</span><span class="desc">Internal dividers, table rows</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-default); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-default</span><span class="desc">Cards, inputs, default rule</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-strong); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-strong</span><span class="desc">Pressed inputs, emphasis</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-focus); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-focus</span><span class="desc">Focus state on inputs</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-accent); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-accent</span><span class="desc">Accent emphasis (sky)</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-success); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-success</span><span class="desc">Validated, confirmed</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-warning); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-warning</span><span class="desc">Cautionary, pending</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-danger); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-danger</span><span class="desc">Error, destructive</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-info); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-info</span><span class="desc">Informational</span></div></div>
+    </div>
+
+    <h3 class="sub">Borders · inverse</h3>
+    <div class="chip-group on-inverse">
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse); border-color: var(--color-border-inverse); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-inverse</span><span class="desc">Hairline on dark surfaces</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse); border-color: var(--color-border-inverse-strong); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-inverse-strong</span><span class="desc">Emphasis border on dark</span></div></div>
+    </div>
+
+    <h3 class="sub">White-alpha overlays <span class="meta">— for chips, ghost buttons, hairlines on dark/brand surfaces</span></h3>
+    <div class="chip-group on-inverse">
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-overlay-white-08);"></div><div class="meta"><span class="key">--color-overlay-white-08</span><span class="desc">Subtle ghost-button rest fill</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-overlay-white-12);"></div><div class="meta"><span class="key">--color-overlay-white-12</span><span class="desc">Chip / icon-tile background</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-overlay-white-14);"></div><div class="meta"><span class="key">--color-overlay-white-14</span><span class="desc">Surface tint on hero panels</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-overlay-white-16);"></div><div class="meta"><span class="key">--color-overlay-white-16</span><span class="desc">Ghost-button hover fill</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-overlay-white-18);"></div><div class="meta"><span class="key">--color-overlay-white-18</span><span class="desc">Strong hairline / divider</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-overlay-white-22);"></div><div class="meta"><span class="key">--color-overlay-white-22</span><span class="desc">Outline border on dark glass</span></div></div>
+    </div>
+
+    <h3 class="sub">Status pairs <span class="meta">— fg / bg / br always travel together</span></h3>
+    <div class="chip-group">
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-success-background); border-color: var(--color-feedback-success-border); color: var(--color-feedback-success-foreground); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">✓</div><div class="meta"><span class="key">--color-feedback-success-foreground / -bg / -br</span><span class="desc">Approved, successful, paid</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-warning-background); border-color: var(--color-feedback-warning-border); color: var(--color-feedback-warning-foreground); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">!</div><div class="meta"><span class="key">--color-feedback-warning-foreground / -bg / -br</span><span class="desc">Pending, hold, attention</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-danger-background); border-color: var(--color-feedback-danger-border); color: var(--color-feedback-danger-foreground); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">×</div><div class="meta"><span class="key">--color-feedback-danger-foreground / -bg / -br</span><span class="desc">Failed, blocked, rejected</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-info-background); border-color: var(--color-feedback-info-border); color: var(--color-feedback-info-foreground); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">i</div><div class="meta"><span class="key">--color-feedback-info-foreground / -bg / -br</span><span class="desc">Informational, neutral fact</span></div></div>
+    </div>
+
+    <h3 class="sub">Status foreground hierarchy <span class="meta">— three weights for text/icons on a status background</span></h3>
+    <div class="chip-group">
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-success-background); border-color: var(--color-feedback-success-border); color: var(--color-feedback-success-foreground); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-success-foreground</span><span class="desc">Default — high-contrast label/icon</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-success-background); border-color: var(--color-feedback-success-border); color: var(--color-feedback-success-foreground-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-success-foreground-muted</span><span class="desc">Muted — secondary text in a chip</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-success-background); border-color: var(--color-feedback-success-border); color: var(--color-feedback-success-foreground-subtle); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-success-foreground-subtle</span><span class="desc">Subtle — captions, helper</span></div></div>
+
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-warning-background); border-color: var(--color-feedback-warning-border); color: var(--color-feedback-warning-foreground); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-warning-foreground</span><span class="desc">Default — high-contrast label/icon</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-warning-background); border-color: var(--color-feedback-warning-border); color: var(--color-feedback-warning-foreground-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-warning-foreground-muted</span><span class="desc">Muted — secondary text in a chip</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-warning-background); border-color: var(--color-feedback-warning-border); color: var(--color-feedback-warning-foreground-subtle); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-warning-foreground-subtle</span><span class="desc">Subtle — captions, helper</span></div></div>
+
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-danger-background); border-color: var(--color-feedback-danger-border); color: var(--color-feedback-danger-foreground); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-danger-foreground</span><span class="desc">Default — high-contrast label/icon</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-danger-background); border-color: var(--color-feedback-danger-border); color: var(--color-feedback-danger-foreground-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-danger-foreground-muted</span><span class="desc">Muted — secondary text in a chip</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-danger-background); border-color: var(--color-feedback-danger-border); color: var(--color-feedback-danger-foreground-subtle); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-danger-foreground-subtle</span><span class="desc">Subtle — captions, helper</span></div></div>
+
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-info-background); border-color: var(--color-feedback-info-border); color: var(--color-feedback-info-foreground); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-info-foreground</span><span class="desc">Default — high-contrast label/icon</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-info-background); border-color: var(--color-feedback-info-border); color: var(--color-feedback-info-foreground-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-info-foreground-muted</span><span class="desc">Muted — secondary text in a chip</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-info-background); border-color: var(--color-feedback-info-border); color: var(--color-feedback-info-foreground-subtle); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-info-foreground-subtle</span><span class="desc">Subtle — captions, helper</span></div></div>
+    </div>
+
+    <h3 class="sub">Status foreground on inverse <span class="meta">— for chips/banners that sit on dark surfaces</span></h3>
+    <div class="chip-group on-inverse">
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface); border-color: var(--color-border-inverse); color: var(--color-feedback-success-foreground-on-inverse); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-success-foreground-on-inverse</span><span class="desc">Approved/paid label on inverse</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface); border-color: var(--color-border-inverse); color: var(--color-feedback-success-foreground-on-inverse-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-success-foreground-on-inverse-muted</span><span class="desc">Secondary text in inverse chip</span></div></div>
+
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface); border-color: var(--color-border-inverse); color: var(--color-feedback-warning-foreground-on-inverse); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-warning-foreground-on-inverse</span><span class="desc">Pending/hold label on inverse</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface); border-color: var(--color-border-inverse); color: var(--color-feedback-warning-foreground-on-inverse-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-warning-foreground-on-inverse-muted</span><span class="desc">Secondary text in inverse chip</span></div></div>
+
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface); border-color: var(--color-border-inverse); color: var(--color-feedback-danger-foreground-on-inverse); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-danger-foreground-on-inverse</span><span class="desc">Failed/blocked label on inverse</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface); border-color: var(--color-border-inverse); color: var(--color-feedback-danger-foreground-on-inverse-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-danger-foreground-on-inverse-muted</span><span class="desc">Secondary text in inverse chip</span></div></div>
+
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface); border-color: var(--color-border-inverse); color: var(--color-feedback-info-foreground-on-inverse); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-info-foreground-on-inverse</span><span class="desc">Informational label on inverse</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface); border-color: var(--color-border-inverse); color: var(--color-feedback-info-foreground-on-inverse-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-info-foreground-on-inverse-muted</span><span class="desc">Secondary text in inverse chip</span></div></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+  document.querySelectorAll('.motion-cell').forEach(cell => {
+    cell.addEventListener('mouseleave', () => {
+      cell.classList.remove('is-running');
+    });
+  });
+</script>
+
+</body>
+</html>

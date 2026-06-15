@@ -12,6 +12,7 @@ const cabirosPreview = path.resolve(root, "..", "cabiros-attrus-design-system", 
 const outDir = path.join(root, "preview");
 
 const PAGES = [
+  // Components
   "buttons",
   "inputs",
   "status-pills",
@@ -31,6 +32,20 @@ const PAGES = [
   "combobox",
   "primitives",
   "logos",
+  // Foundations
+  "colors-palette",
+  "colors-semantic",
+  "typography",
+  "spacing",
+  "radii",
+  "shadows",
+  "motion",
+  "gradients",
+  "glass-tokens",
+  "data-viz",
+  "tokens-export",
+  "naming-and-consume",
+  "iconography",
 ];
 
 const THEME_TOGGLE = `<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
@@ -43,7 +58,10 @@ function transform(html) {
   let out = html
     .replaceAll("../colors_and_type.css", "../dist/css/index.css")
     .replaceAll("../theme-toggle.js", "./theme-toggle.js")
-    .replace(/<link rel="stylesheet" href="components\/[^"]+\.css"[^>]*>\s*/g, "")
+    // Remove per-component CSS files (now bundled in dist/css/index.css).
+    // Keep tokens-doc.css — it is the doc-page chrome stylesheet used by
+    // foundation pages (swatches, brand grids) and is not part of the bundle.
+    .replace(/<link rel="stylesheet" href="components\/(?!tokens-doc\.css)[^"]+\.css"[^>]*>\s*/g, "")
     .replaceAll("../ui_kits/dashboard/design-system.html", "components.html")
     .replaceAll("colors_and_type.css", "dist/css/tokens.css");
 

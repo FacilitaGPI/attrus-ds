@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Brand" name="Naming & how to consume" subtitle="Doutrina: layers, naming, regras de consumo" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Naming & how to consume · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/tokens-doc.css">
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <header class="doc-header">
+    <div>
+      <h1>Naming & how to consume</h1>
+      <p>How tokens are named, how they layer (raw → semantic → component), and how a new component should consume them. The doctrine that keeps the system rebrand-proof.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="braces"></i>Foundation</span>
+    </div>
+  </header>
+
+<section class="doc-section" id="overview">
+    <h2><span class="num">01</span>Overview</h2>
+    <p class="lead">A token is a named CSS custom property that holds a single design decision. Tokens flow through three layers — raw values become semantic roles, which components consume. Components never reach past their layer.</p>
+
+    <div class="hier">
+      <div class="hier-step">
+        <span class="stage">Layer 1</span>
+        <span class="name">Raw palette</span>
+        <code>--color-brand-secondary-500: #003399</code>
+        <span class="desc">Hex codes, px values, font names. The literal source. Defined once, never referenced from a component.</span>
+      </div>
+      <div class="hier-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="hier-step">
+        <span class="stage">Layer 2</span>
+        <span class="name">Semantic role</span>
+        <code>--color-foreground-accent: var(--color-brand-secondary-500)</code>
+        <span class="desc">Named by purpose, not by appearance. Maps a role to a raw value — the only level that may be re-themed.</span>
+      </div>
+      <div class="hier-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="hier-step">
+        <span class="stage">Layer 3</span>
+        <span class="name">Component</span>
+        <code>color: var(--color-foreground-accent)</code>
+        <span class="desc">Buttons, inputs, cards. Read semantic tokens; never read raw palette directly, never invent local values.</span>
+      </div>
+    </div>
+
+    <h3 class="sub">Principles</h3>
+
+    <div class="principles">
+      <div class="principle">
+        <span class="ic"><i data-lucide="link-2"></i></span>
+        <span class="ttl">Reference, don't repeat</span>
+        <p>If two places need the same value, they reference the same token. Duplicating a hex code is a bug.</p>
+      </div>
+      <div class="principle">
+        <span class="ic"><i data-lucide="layers"></i></span>
+        <span class="ttl">Semantic over raw</span>
+        <p>Components consume <code>--color-foreground-accent</code>, not <code>--color-brand-secondary-500</code>. Roles can be remapped; raw values cannot.</p>
+      </div>
+      <div class="principle">
+        <span class="ic"><i data-lucide="ruler"></i></span>
+        <span class="ttl">No magic numbers</span>
+        <p>Padding of 11px? Border-radius of 7px? It doesn't exist. Round to the nearest scale step or add a token.</p>
+      </div>
+      <div class="principle">
+        <span class="ic"><i data-lucide="moon"></i></span>
+        <span class="ttl">Light + inverse parity</span>
+        <p>Every foreground role on light has an <code>--color-foreground-inverse-*</code> twin for dark. Never improvise dark variants.</p>
+      </div>
+    </div>
+  </section>
+
+<section class="doc-section" id="naming">
+    <h2><span class="num">12</span>Naming</h2>
+    <p class="lead">Token names are predictable. Read left to right, the segments narrow from category to specific role. If you can't construct the name from the formula below, the token probably shouldn't exist.</p>
+
+    <div class="token-anatomy">
+      <div class="formula">
+        <span class="seg s1">--bg</span><span class="dash">-</span><span class="seg s2">inverse</span><span class="dash">-</span><span class="seg s3">brand</span>
+      </div>
+      <div class="legend">
+        <div class="l1">
+          <span class="name">Category</span>
+          <span class="desc">What kind of property is this?</span>
+          <span class="examples">bg · fg · br · radius · space · fs · w · ls · lh · shadow · icon · duration · ease</span>
+        </div>
+        <div class="l2">
+          <span class="name">Layer (optional)</span>
+          <span class="desc">Inverse surface? Status feedback?</span>
+          <span class="examples">inverse · success · warning · danger · info</span>
+        </div>
+        <div class="l3">
+          <span class="name">Role / variant</span>
+          <span class="desc">Default, accent, brand, hover, etc.</span>
+          <span class="examples">default · subtle · accent · brand · hover · press · selected</span>
+        </div>
+        <div class="l4" style="display:none;"></div>
+      </div>
+    </div>
+
+    <table class="token-table" style="width: 100%; border-collapse: collapse; background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-xs); font-size: var(--fs-sm);">
+      <thead>
+        <tr>
+          <th style="font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); padding: var(--space-3) var(--space-5); text-align: left; border-bottom: 1px solid var(--color-border-subtle);">Pattern</th>
+          <th style="font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); padding: var(--space-3) var(--space-5); text-align: left; border-bottom: 1px solid var(--color-border-subtle);">Example</th>
+          <th style="font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); padding: var(--space-3) var(--space-5); text-align: left; border-bottom: 1px solid var(--color-border-subtle);">Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);"><code>--{family}-{stop}</code></td><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">--color-brand-secondary-500</td><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary);">Raw palette stop</td></tr>
+        <tr><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);"><code>--{cat}-{role}</code></td><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">--color-foreground-default</td><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary);">Semantic role on light surface</td></tr>
+        <tr><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);"><code>--{cat}-inverse-{role}</code></td><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">--color-foreground-inverse-muted</td><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary);">Same role, dark surface</td></tr>
+        <tr><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);"><code>--{status}-{role}</code></td><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">--color-feedback-success-background</td><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary);">Status-paired bg / fg / br</td></tr>
+        <tr><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);"><code>--space-{n}</code></td><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">--space-6</td><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary);">Step number on the spacing scale</td></tr>
+        <tr><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);"><code>--fs-{stop}</code> / <code>--w-{name}</code></td><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">--fs-3xl · --w-bold</td><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary);">Typography scale + weight</td></tr>
+        <tr><td style="padding: var(--space-3) var(--space-5);"><code>--shadow-{level}</code></td><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5);">--shadow-lg</td><td style="padding: var(--space-3) var(--space-5); color: var(--color-foreground-secondary);">Elevation level</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+<section class="doc-section" id="consume">
+    <h2><span class="num">13</span>How to consume</h2>
+    <p class="lead">When you write a new component, the rule is simple: read semantic tokens, never raw values, never local hex codes. Below — the same button, two ways. Only one will survive a rebrand.</p>
+
+    <div class="code-pair">
+      <div class="code-block">
+        <div class="head do"><i data-lucide="check-circle-2"></i>Do — semantic tokens</div>
+<pre><span class="com">/* button.css */</span>
+<span class="key">.btn-primary</span> {
+  <span class="key">background</span>:    <span class="var">var(--color-brand-secondary-500)</span>;
+  <span class="key">color</span>:         <span class="var">var(--color-foreground-on-solid)</span>;
+  <span class="key">border-radius</span>: <span class="var">var(--radius-pill)</span>;
+  <span class="key">padding</span>:       <span class="var">var(--space-3)</span> <span class="var">var(--space-6)</span>;
+  <span class="key">font-size</span>:     <span class="var">var(--fs-md)</span>;
+  <span class="key">font-weight</span>:   <span class="var">var(--w-semibold)</span>;
+  <span class="key">box-shadow</span>:    <span class="var">var(--shadow-sm)</span>;
+  <span class="key">transition</span>:    <span class="var">var(--transition-fast)</span>;
+}
+<span class="key">.btn-primary:focus-visible</span> {
+  <span class="key">box-shadow</span>: <span class="var">var(--shadow-focus)</span>;
+}</pre>
+      </div>
+      <div class="code-block">
+        <div class="head dont"><i data-lucide="x-circle"></i>Don't — local values</div>
+<pre><span class="com">/* button.css */</span>
+<span class="key">.btn-primary</span> {
+  <span class="key">background</span>:    <span class="str">#003399</span>;
+  <span class="key">color</span>:         <span class="str">#FFFFFF</span>;
+  <span class="key">border-radius</span>: <span class="str">999px</span>;
+  <span class="key">padding</span>:       <span class="str">8px 20px</span>;
+  <span class="key">font-size</span>:     <span class="str">13px</span>;
+  <span class="key">font-weight</span>:   <span class="str">600</span>;
+  <span class="key">box-shadow</span>:    <span class="str">0 1px 2px rgba(0,0,0,.08)</span>;
+  <span class="key">transition</span>:    <span class="str">all 150ms ease</span>;
+}
+<span class="key">.btn-primary:focus-visible</span> {
+  <span class="key">outline</span>: <span class="str">2px solid #003399</span>;
+}</pre>
+      </div>
+    </div>
+
+    <h3 class="sub">Rules</h3>
+    <div class="principles">
+      <div class="principle">
+        <span class="ic"><i data-lucide="check"></i></span>
+        <span class="ttl">Always semantic</span>
+        <p>Components consume <code>--color-foreground-default</code>, <code>--color-background-surface</code>, <code>--color-border-focus</code>. Reaching for <code>--color-neutral-800</code> directly is a code smell.</p>
+      </div>
+      <div class="principle">
+        <span class="ic"><i data-lucide="alert-triangle"></i></span>
+        <span class="ttl">Raw is privileged</span>
+        <p>Raw palette tokens (<code>--color-brand-secondary-500</code>, <code>--color-success-100</code>) are referenced only inside <code>dist/css/tokens.css</code> when defining semantic roles.</p>
+      </div>
+      <div class="principle">
+        <span class="ic"><i data-lucide="git-branch"></i></span>
+        <span class="ttl">Add, don't override</span>
+        <p>Need a new shade? Add a token to the file. Never override a token's value inside a component stylesheet.</p>
+      </div>
+      <div class="principle">
+        <span class="ic"><i data-lucide="search"></i></span>
+        <span class="ttl">Audit before adding</span>
+        <p>Search the file before proposing a new token. The closest existing role is almost always the right answer.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+  document.querySelectorAll('.motion-cell').forEach(cell => {
+    cell.addEventListener('mouseleave', () => {
+      cell.classList.remove('is-running');
+    });
+  });
+</script>
+
+</body>
+</html>
