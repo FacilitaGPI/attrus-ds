@@ -24,6 +24,18 @@ jobs:
           node-version: 22
           registry-url: https://registry.npmjs.org
 
+      # Trusted publishing requires npm >= 11.5.1. Node 22 ships an older npm
+      # that can fail with misleading 404 even when OIDC/provenance is configured.
+      - name: Upgrade npm for OIDC trusted publishing
+        run: npm install -g npm@latest
+
+      - name: Prepare npm auth for OIDC
+        run: |
+          echo "npm version: $(npm --version)"
+          # setup-node writes //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}
+          # which blocks OIDC when NODE_AUTH_TOKEN is unset.
+          npm config delete //registry.npmjs.org/:_authToken --location=user || true
+
       - name: Install dependencies
         run: npm ci
 
