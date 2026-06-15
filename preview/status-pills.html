@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Status pills" subtitle="6 tones para state communication" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Status pills · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  /* ===== DOCUMENT CHROME — identical pattern to buttons.html / inputs.html ===== */
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  .doc-header { display:flex; align-items:flex-end; justify-content:space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p  { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta { display:flex; gap: var(--space-3); flex-shrink:0; }
+  .doc-meta-pill { display:inline-flex; align-items:center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border:1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  .doc-nav { display:flex; flex-wrap:wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration:none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+  .lead code, .spec-head p code, .copy code { font-family: var(--font-mono); font-size: 0.92em; color: var(--color-foreground-accent); background: var(--color-background-selected); padding: 1px var(--space-2); border-radius: var(--radius-2xs); }
+
+  /* spec card */
+  .spec { background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow:hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
+  .spec-head { display:flex; align-items:flex-start; justify-content:space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: var(--color-background-selected); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .spec-head .tag { display:inline-flex; align-items:center; gap: var(--space-2); padding: var(--space-1) var(--space-3); background: var(--color-background-subtle); color: var(--color-foreground-secondary); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; border-radius: var(--radius-pill); flex-shrink:0; }
+
+  .spec-canvas { padding: var(--space-7) var(--space-6); background: var(--color-background-canvas); display:flex; flex-wrap:wrap; gap: var(--space-5); align-items:center; border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-canvas.dense { gap: var(--space-3); }
+  .spec-canvas.col { flex-direction:column; align-items:flex-start; }
+  .spec-canvas.dark { background: var(--color-background-inverse); }
+  .spec-canvas.brand { background: var(--color-background-inverse-brand); }
+
+  .spec-foot { display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); padding: var(--space-5) var(--space-6); background: var(--color-background-surface); }
+  .spec-foot h4 { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); margin: 0 0 var(--space-3); }
+  .spec-foot ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap: var(--space-2); }
+  .spec-foot li { font-size: var(--fs-sm); color: var(--color-foreground-secondary); display:flex; gap: var(--space-2); align-items:flex-start; }
+  .spec-foot li i, .spec-foot li svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); flex-shrink:0; margin-top: 2px; }
+  .spec-foot li.do i, .spec-foot li.do svg    { color: var(--color-feedback-success-foreground); }
+  .spec-foot li.dont i, .spec-foot li.dont svg  { color: var(--color-feedback-danger-foreground); }
+
+  /* anatomy */
+  .anatomy { background: var(--color-background-canvas); padding: var(--space-10) var(--space-8); border-radius: var(--radius-lg); border: 1px solid var(--color-border-default); display:flex; flex-direction:column; align-items:center; gap: var(--space-8); margin-bottom: var(--space-5); box-shadow: var(--shadow-xs); }
+  .anatomy .pill.demo { transform: scale(2.6); transform-origin: center; }
+  .anatomy-callouts { display:flex; align-items:stretch; justify-content:center; gap: var(--space-8); width:100%; max-width:720px; margin-top: var(--space-6); }
+  .anatomy-callout { flex:1; display:flex; flex-direction:column; align-items:center; gap: var(--space-2); text-align:center; }
+  .anatomy-callout .num { width:22px; height:22px; border-radius: var(--radius-pill); background: var(--color-foreground-accent); color: var(--color-foreground-on-solid); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-bold); display:inline-flex; align-items:center; justify-content:center; }
+  .anatomy-callout .name { font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-default); text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-semibold); }
+  .anatomy-callout .desc { font-size: var(--fs-xs); color: var(--color-foreground-muted); line-height: var(--lh-snug); max-width: 22ch; }
+
+  /* token table */
+  .token-table { width:100%; border-collapse:collapse; background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-md); overflow:hidden; box-shadow: var(--shadow-xs); font-size: var(--fs-sm); }
+  .token-table th, .token-table td { padding: var(--space-3) var(--space-5); text-align:left; border-bottom: 1px solid var(--color-border-subtle); }
+  .token-table tr:last-child td { border-bottom: 0; }
+  .token-table th { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); }
+  .token-table td.k { font-family: var(--font-mono); color: var(--color-foreground-accent); white-space: nowrap; }
+  .token-table td.v { font-family: var(--font-mono); color: var(--color-foreground-secondary); white-space: nowrap; }
+
+  /* don'ts grid */
+  .dont-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-5); }
+  .dont-card { background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-md); overflow:hidden; box-shadow: var(--shadow-xs); }
+  .dont-card-canvas { padding: var(--space-6); background: var(--color-background-canvas); display:flex; align-items:center; justify-content:center; min-height: 96px; border-bottom:1px solid var(--color-border-subtle); gap: var(--space-3); flex-wrap:wrap; }
+  .dont-card-body { padding: var(--space-4) var(--space-5); display:flex; gap: var(--space-3); align-items:flex-start; }
+  .dont-card-body i, .dont-card-body svg { width: var(--icon-md); height: var(--icon-md); stroke-width: var(--icon-stroke); color: var(--color-feedback-danger-foreground); flex-shrink:0; margin-top:1px; }
+  .dont-card-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-normal); }
+  .dont-card-body strong { color: var(--color-foreground-default); display:block; margin-bottom: var(--space-1); font-weight: var(--w-semibold); }
+
+  /* matrix (sizes / states) */
+  .matrix { display:grid; grid-template-columns: 110px repeat(auto-fit, minmax(0, 1fr)); gap: var(--space-4) var(--space-5); width:100%; align-items:center; }
+  .matrix.cols-3 { grid-template-columns: 110px repeat(3, minmax(0,1fr)); }
+  .matrix.cols-4 { grid-template-columns: 110px repeat(4, minmax(0,1fr)); }
+  .matrix.cols-5 { grid-template-columns: 110px repeat(5, minmax(0,1fr)); }
+  .matrix .h, .matrix .rl { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); }
+  .matrix .h { padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border-subtle); }
+  .matrix .rl { color: var(--color-foreground-default); font-size: var(--fs-xs); }
+  .matrix .c { display:flex; justify-content:flex-start; }
+  .spec-canvas.dark .matrix .h, .spec-canvas.dark .matrix .rl { color: var(--color-foreground-inverse-muted); }
+  .spec-canvas.dark .matrix .rl { color: var(--color-foreground-inverse-default); }
+
+  /* taxonomy table — special */
+  .tax-table { width:100%; border-collapse:collapse; background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-md); overflow:hidden; box-shadow: var(--shadow-xs); font-size: var(--fs-sm); }
+  .tax-table th, .tax-table td { padding: var(--space-4) var(--space-5); text-align:left; border-bottom: 1px solid var(--color-border-subtle); vertical-align: middle; }
+  .tax-table tr:last-child td { border-bottom: 0; }
+  .tax-table th { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); }
+  .tax-table .domain { font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); }
+  .tax-table .ex { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-secondary); }
+  .tax-table tbody tr:hover { background: var(--color-background-hover); }
+
+  /* composition mock — table cell, list, filter bar */
+  .mock-table { width:100%; border-collapse: collapse; background: var(--color-background-surface); border-radius: var(--radius-sm); overflow:hidden; }
+  .mock-table th, .mock-table td { padding: var(--space-3) var(--space-4); text-align:left; font-size: var(--fs-sm); border-bottom: 1px solid var(--color-border-subtle); }
+  .mock-table tr:last-child td { border-bottom: 0; }
+  .mock-table th { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); }
+  .mock-table .mono { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-secondary); }
+  .mock-list { display:flex; flex-direction:column; width:100%; max-width: 480px; gap: var(--space-2); }
+  .mock-list-row { display:flex; align-items:center; justify-content:space-between; padding: var(--space-3) var(--space-4); background: var(--color-background-surface); border:1px solid var(--color-border-subtle); border-radius: var(--radius-sm); gap: var(--space-3); }
+  .mock-list-row .ttl { font-size: var(--fs-sm); color: var(--color-foreground-default); font-weight: var(--w-medium); }
+  .mock-filter-bar { display:flex; flex-wrap:wrap; align-items:center; gap: var(--space-2); padding: var(--space-3) var(--space-4); background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-md); width:100%; max-width: 640px; }
+  .mock-filter-bar .lbl { font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); margin-right: var(--space-2); }
+
+  /* small helpers */
+  .stack { display:flex; flex-direction:column; gap: var(--space-3); }
+  .row   { display:flex; flex-wrap:wrap; gap: var(--space-3); align-items:center; }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <!-- ========== HEADER ========== -->
+  <header class="doc-header">
+    <div>
+      <h1>Status pills</h1>
+      <p>Compact, label-first indicators that tell the user the <strong>state of a record</strong> — a transaction, a counterparty, a compliance check. Pills don't drive action; they classify. They're scannable in tables, scannable in lists, and never replace a button.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Stable</span>
+    </div>
+  </header>
+
+  <!-- ========== NAV ========== -->
+  <nav class="doc-nav">
+    <a href="#anatomy">Anatomy</a>
+    <a href="#variants">Variants</a>
+    <a href="#taxonomy">Status taxonomy</a>
+    <a href="#sizes">Sizes</a>
+    <a href="#styles">Styles</a>
+    <a href="#states">States</a>
+    <a href="#composition">Composition</a>
+    <a href="#on-inverse">On inverse</a>
+    <a href="#donts">Don'ts</a>
+    <a href="#a11y">Accessibility</a>
+    <a href="#tokens">Tokens</a>
+  </nav>
+
+  <!-- ========== 01 ANATOMY ========== -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">01</span>Anatomy</h2>
+    <p class="lead">A pill is built from up to three parts inside a rounded container. The <strong>label is required</strong>; the dot and trailing icon are optional reinforcement. Order is fixed: <strong>dot → label → icon</strong>. Never break it.</p>
+
+    <div class="anatomy">
+      <span class="pill success demo"><span class="dot"></span>Approved<i data-lucide="check"></i></span>
+
+      <div class="anatomy-callouts">
+        <div class="anatomy-callout">
+          <span class="num">1</span>
+          <span class="name">Leading dot</span>
+          <span class="desc">6px circle · variant fg · purely decorative reinforcement.</span>
+        </div>
+        <div class="anatomy-callout">
+          <span class="num">2</span>
+          <span class="name">Label</span>
+          <span class="desc">1–2 words · sentence case · the actual meaning. Always required.</span>
+        </div>
+        <div class="anatomy-callout">
+          <span class="num">3</span>
+          <span class="name">Trailing icon</span>
+          <span class="desc">Optional · 12px · reinforces the label, not a substitute for it.</span>
+        </div>
+        <div class="anatomy-callout">
+          <span class="num">4</span>
+          <span class="name">Pill container</span>
+          <span class="desc">radius-pill · 1px border · 20/24/28px tall depending on size.</span>
+        </div>
+      </div>
+    </div>
+
+    <table class="token-table">
+      <thead><tr><th>Part</th><th>Purpose</th><th>Tokens</th></tr></thead>
+      <tbody>
+        <tr><td>Container</td><td>Rounded shape — defines the visual envelope of the status</td><td class="k">--radius-pill · height: 20/24/28</td></tr>
+        <tr><td>Label</td><td>The actual status word — what the user reads</td><td class="k">--fs-xs · --w-semibold · --ls-caps</td></tr>
+        <tr><td>Leading dot</td><td>Decorative · reinforces variant by colour</td><td class="k">6px · currentColor</td></tr>
+        <tr><td>Trailing icon</td><td>Optional — pairs with directional / temporal states</td><td class="k">--icon-xs (12px) · --icon-stroke</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+
+  <!-- ========== 02 VARIANTS ========== -->
+  <section class="doc-section" id="variants">
+    <h2><span class="num">02</span>Variants</h2>
+    <p class="lead">Six semantic variants. Choose by <strong>what the status means</strong>, not by what colour you'd like. Variant gives the colour; the label gives the meaning. Both must agree.</p>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Success <code>.success</code></h3><p>The record is in a final, healthy state. Transaction released, counterparty approved, document validated. <strong>End-state of a happy path.</strong></p></div><span class="tag">success</span></header>
+      <div class="spec-canvas dense">
+        <span class="pill success"><span class="dot"></span>Approved</span>
+        <span class="pill success"><span class="dot"></span>Released</span>
+        <span class="pill success"><span class="dot"></span>Available</span>
+        <span class="pill success"><span class="dot"></span>Received</span>
+        <span class="pill success"><span class="dot"></span>Settled</span>
+      </div>
+      <div class="spec-foot">
+        <div><h4>Use for</h4><ul><li class="do"><i data-lucide="check"></i>Final, irreversible positive state</li><li class="do"><i data-lucide="check"></i>Funds available, KYC complete</li><li class="do"><i data-lucide="check"></i>Audit-ready, fully settled</li></ul></div>
+        <div><h4>Don't use for</h4><ul><li class="dont"><i data-lucide="x"></i>"In progress" — that's brand</li><li class="dont"><i data-lucide="x"></i>Confirmation messages — that's a toast</li></ul></div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Warning <code>.warning</code></h3><p>The record needs attention but isn't broken. Pending review, on hold, awaiting input. <strong>Action expected — but not urgent.</strong></p></div><span class="tag">warning</span></header>
+      <div class="spec-canvas dense">
+        <span class="pill warning"><span class="dot"></span>Pending</span>
+        <span class="pill warning"><span class="dot"></span>Under review</span>
+        <span class="pill warning"><span class="dot"></span>Funds on hold</span>
+        <span class="pill warning"><span class="dot"></span>To receive</span>
+        <span class="pill warning"><span class="dot"></span>Awaiting docs</span>
+      </div>
+      <div class="spec-foot">
+        <div><h4>Use for</h4><ul><li class="do"><i data-lucide="check"></i>Transient state requiring follow-up</li><li class="do"><i data-lucide="check"></i>Manual review queues</li><li class="do"><i data-lucide="check"></i>Time-bound holds &amp; checkpoints</li></ul></div>
+        <div><h4>Don't use for</h4><ul><li class="dont"><i data-lucide="x"></i>Hard failures — those are danger</li><li class="dont"><i data-lucide="x"></i>System errors — those are danger</li></ul></div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Danger <code>.danger</code></h3><p>The record is in a failed, blocked, or rejected state. Compliance reproved, payment bounced, deadline missed. <strong>Negative end-state.</strong></p></div><span class="tag">danger</span></header>
+      <div class="spec-canvas dense">
+        <span class="pill danger"><span class="dot"></span>Reproved</span>
+        <span class="pill danger"><span class="dot"></span>Failed</span>
+        <span class="pill danger"><span class="dot"></span>Bounced</span>
+        <span class="pill danger"><span class="dot"></span>Blocked</span>
+        <span class="pill danger"><span class="dot"></span>Overdue</span>
+      </div>
+      <div class="spec-foot">
+        <div><h4>Use for</h4><ul><li class="do"><i data-lucide="check"></i>Final negative outcome</li><li class="do"><i data-lucide="check"></i>Compliance / fraud rejections</li><li class="do"><i data-lucide="check"></i>Past SLA / deadline breaches</li></ul></div>
+        <div><h4>Don't use for</h4><ul><li class="dont"><i data-lucide="x"></i>Destructive actions — those are buttons</li><li class="dont"><i data-lucide="x"></i>Inline form errors — those are field help</li></ul></div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Info <code>.info</code></h3><p>Neutral, non-evaluative metadata. Tags, channels, regions, types. <strong>Says what something is, not how it's doing.</strong></p></div><span class="tag">info</span></header>
+      <div class="spec-canvas dense">
+        <span class="pill info">PIX</span>
+        <span class="pill info">TED</span>
+        <span class="pill info">Boleto</span>
+        <span class="pill info">USD</span>
+        <span class="pill info">Tier 1</span>
+      </div>
+      <div class="spec-foot">
+        <div><h4>Use for</h4><ul><li class="do"><i data-lucide="check"></i>Categorical metadata (channel, type, currency)</li><li class="do"><i data-lucide="check"></i>Tags &amp; filters</li><li class="do"><i data-lucide="check"></i>Read-only labels</li></ul></div>
+        <div><h4>Don't use for</h4><ul><li class="dont"><i data-lucide="x"></i>Evaluative status — pick a real semantic</li><li class="dont"><i data-lucide="x"></i>Counters — use a numeric badge</li></ul></div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Neutral <code>.neutral</code></h3><p>Inactive or deprioritised states. Cancelled, archived, draft, identified. <strong>The record exists but isn't part of the active flow.</strong></p></div><span class="tag">neutral</span></header>
+      <div class="spec-canvas dense">
+        <span class="pill neutral">Cancelled</span>
+        <span class="pill neutral">Archived</span>
+        <span class="pill neutral">Draft</span>
+        <span class="pill neutral">Identified</span>
+        <span class="pill neutral">Inactive</span>
+      </div>
+      <div class="spec-foot">
+        <div><h4>Use for</h4><ul><li class="do"><i data-lucide="check"></i>Records out of the active pipeline</li><li class="do"><i data-lucide="check"></i>Soft-deleted, draft, paused</li><li class="do"><i data-lucide="check"></i>"Known but not assessed yet"</li></ul></div>
+        <div><h4>Don't use for</h4><ul><li class="dont"><i data-lucide="x"></i>Default chip styling — that's info</li><li class="dont"><i data-lucide="x"></i>Disabled UI — use opacity instead</li></ul></div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Brand <code>.brand</code></h3><p>The record is currently being processed by Attrus systems. Specifically reserved for "in our hands" states. <strong>Use sparingly — it's a strong signal.</strong></p></div><span class="tag">brand</span></header>
+      <div class="spec-canvas dense">
+        <span class="pill brand"><span class="dot"></span>Processing</span>
+        <span class="pill brand"><span class="dot"></span>In analysis</span>
+        <span class="pill brand"><span class="dot"></span>Routing</span>
+        <span class="pill brand"><span class="dot"></span>Queued</span>
+      </div>
+      <div class="spec-foot">
+        <div><h4>Use for</h4><ul><li class="do"><i data-lucide="check"></i>Active processing inside Attrus</li><li class="do"><i data-lucide="check"></i>States the platform owns</li><li class="do"><i data-lucide="check"></i>Differentiate from external "pending"</li></ul></div>
+        <div><h4>Don't use for</h4><ul><li class="dont"><i data-lucide="x"></i>Generic in-progress — that's warning</li><li class="dont"><i data-lucide="x"></i>Marketing emphasis — pills aren't ads</li></ul></div>
+      </div>
+    </article>
+  </section>
+
+
+  <!-- ========== 03 STATUS TAXONOMY ========== -->
+  <section class="doc-section" id="taxonomy">
+    <h2><span class="num">03</span>Status taxonomy</h2>
+    <p class="lead">Every product status maps to exactly one variant. This table is the source of truth — when in doubt, look it up here, don't invent. New statuses must be added here before shipping.</p>
+
+    <table class="tax-table">
+      <thead><tr><th>Domain</th><th>Status</th><th>Variant</th><th>Example record</th></tr></thead>
+      <tbody>
+        <tr><td class="domain">Compliance</td><td><span class="pill success"><span class="dot"></span>Approved</span></td><td class="ex">success</td><td class="ex">KYC passed, counterparty cleared</td></tr>
+        <tr><td class="domain">Compliance</td><td><span class="pill warning"><span class="dot"></span>Under review</span></td><td class="ex">warning</td><td class="ex">Manual analyst queue</td></tr>
+        <tr><td class="domain">Compliance</td><td><span class="pill danger"><span class="dot"></span>Reproved</span></td><td class="ex">danger</td><td class="ex">Sanctions hit, document mismatch</td></tr>
+        <tr><td class="domain">Compliance</td><td><span class="pill neutral">Identified</span></td><td class="ex">neutral</td><td class="ex">Captured but not yet evaluated</td></tr>
+        <tr><td class="domain">Transactions</td><td><span class="pill success"><span class="dot"></span>Released</span></td><td class="ex">success</td><td class="ex">Outbound payment cleared</td></tr>
+        <tr><td class="domain">Transactions</td><td><span class="pill success"><span class="dot"></span>Received</span></td><td class="ex">success</td><td class="ex">Inbound payment settled</td></tr>
+        <tr><td class="domain">Transactions</td><td><span class="pill warning"><span class="dot"></span>Funds on hold</span></td><td class="ex">warning</td><td class="ex">Compliance lock pending review</td></tr>
+        <tr><td class="domain">Transactions</td><td><span class="pill brand"><span class="dot"></span>Processing</span></td><td class="ex">brand</td><td class="ex">Inside Attrus routing engine</td></tr>
+        <tr><td class="domain">Transactions</td><td><span class="pill danger"><span class="dot"></span>Bounced</span></td><td class="ex">danger</td><td class="ex">Beneficiary rejection</td></tr>
+        <tr><td class="domain">Transactions</td><td><span class="pill neutral">Cancelled</span></td><td class="ex">neutral</td><td class="ex">User-initiated cancel before send</td></tr>
+        <tr><td class="domain">Balances</td><td><span class="pill success"><span class="dot"></span>Available</span></td><td class="ex">success</td><td class="ex">Spendable balance</td></tr>
+        <tr><td class="domain">Balances</td><td><span class="pill warning"><span class="dot"></span>To receive</span></td><td class="ex">warning</td><td class="ex">Scheduled inbound</td></tr>
+        <tr><td class="domain">Documents</td><td><span class="pill success"><span class="dot"></span>Validated</span></td><td class="ex">success</td><td class="ex">OCR + signature pass</td></tr>
+        <tr><td class="domain">Documents</td><td><span class="pill warning"><span class="dot"></span>Awaiting docs</span></td><td class="ex">warning</td><td class="ex">User upload required</td></tr>
+        <tr><td class="domain">Documents</td><td><span class="pill neutral">Draft</span></td><td class="ex">neutral</td><td class="ex">Saved but not submitted</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+
+  <!-- ========== 04 SIZES ========== -->
+  <section class="doc-section" id="sizes">
+    <h2><span class="num">04</span>Sizes</h2>
+    <p class="lead">Three sizes — driven by container density. <strong>Default is <code>md</code> (24px tall)</strong>. <code>sm</code> belongs in dense table cells; <code>lg</code> in record headers and detail screens. Don't go smaller than <code>sm</code>.</p>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Side-by-side comparison</h3><p>Same variant + label across three sizes. Font stays at <code>--fs-xs</code> on both <code>md</code> and <code>lg</code> — only height, padding, dot and icon scale. Larger labels at <code>lg</code> would compete with body copy in headers.</p></div><span class="tag">sm · md · lg</span></header>
+      <div class="spec-canvas">
+        <div class="matrix cols-3">
+          <span class="rl">Success</span>
+          <span class="c"><span class="pill success sm"><span class="dot"></span>Approved</span></span>
+          <span class="c"><span class="pill success"><span class="dot"></span>Approved</span></span>
+          <span class="c"><span class="pill success lg"><span class="dot"></span>Approved</span></span>
+
+          <span class="rl">Warning</span>
+          <span class="c"><span class="pill warning sm"><span class="dot"></span>Pending</span></span>
+          <span class="c"><span class="pill warning"><span class="dot"></span>Pending</span></span>
+          <span class="c"><span class="pill warning lg"><span class="dot"></span>Pending</span></span>
+
+          <span class="rl">Danger</span>
+          <span class="c"><span class="pill danger sm"><span class="dot"></span>Reproved</span></span>
+          <span class="c"><span class="pill danger"><span class="dot"></span>Reproved</span></span>
+          <span class="c"><span class="pill danger lg"><span class="dot"></span>Reproved</span></span>
+
+          <span class="rl">Info</span>
+          <span class="c"><span class="pill info sm">PIX</span></span>
+          <span class="c"><span class="pill info">PIX</span></span>
+          <span class="c"><span class="pill info lg">PIX</span></span>
+
+          <span class="rl">Neutral</span>
+          <span class="c"><span class="pill neutral sm">Cancelled</span></span>
+          <span class="c"><span class="pill neutral">Cancelled</span></span>
+          <span class="c"><span class="pill neutral lg">Cancelled</span></span>
+
+          <span class="rl">Brand</span>
+          <span class="c"><span class="pill brand sm"><span class="dot"></span>Processing</span></span>
+          <span class="c"><span class="pill brand"><span class="dot"></span>Processing</span></span>
+          <span class="c"><span class="pill brand lg"><span class="dot"></span>Processing</span></span>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>With trailing icon</h3><p>All three sizes accept an optional trailing icon. The icon scales: 10px / 12px / 12px. <code>lg</code> intentionally keeps the same icon as <code>md</code> — the bigger surface is for breathing room, not for amplifying the icon.</p></div><span class="tag">icon variants</span></header>
+      <div class="spec-canvas">
+        <div class="matrix cols-3">
+          <span class="rl">Success</span>
+          <span class="c"><span class="pill success sm"><span class="dot"></span>Approved<i data-lucide="check"></i></span></span>
+          <span class="c"><span class="pill success"><span class="dot"></span>Approved<i data-lucide="check"></i></span></span>
+          <span class="c"><span class="pill success lg"><span class="dot"></span>Approved<i data-lucide="check"></i></span></span>
+
+          <span class="rl">Warning</span>
+          <span class="c"><span class="pill warning sm"><span class="dot"></span>Pending<i data-lucide="clock"></i></span></span>
+          <span class="c"><span class="pill warning"><span class="dot"></span>Pending<i data-lucide="clock"></i></span></span>
+          <span class="c"><span class="pill warning lg"><span class="dot"></span>Pending<i data-lucide="clock"></i></span></span>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Specs</h3><p>Token-anchored sizing. Padding tracks an intermediate <code>--space-*</code> value at <code>sm</code> and <code>lg</code> to keep horizontal balance.</p></div><span class="tag">spec sheet</span></header>
+      <div style="padding: var(--space-5) var(--space-6); background: var(--color-background-surface);">
+        <table class="token-table">
+          <thead><tr><th>Size</th><th>Height</th><th>H-padding</th><th>Font</th><th>Dot</th><th>Icon</th><th>Best for</th></tr></thead>
+          <tbody>
+            <tr><td class="k">.sm</td><td>20px</td><td>10px</td><td class="v">--fs-2xs (10px)</td><td>5px</td><td>10px</td><td>Dense table cells, filter chips</td></tr>
+            <tr><td class="k">md (default)</td><td>24px</td><td>12px</td><td class="v">--fs-xs (11px)</td><td>6px</td><td>12px</td><td>Cards, headers, side-by-side metadata</td></tr>
+            <tr><td class="k">.lg</td><td>28px</td><td>14px</td><td class="v">--fs-xs (11px)</td><td>6px</td><td>12px</td><td>Record detail headers, summaries</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>In context — each size where it lives</h3><p>The right size emerges from container density. Picking by aesthetic alone breaks the rhythm of the page.</p></div><span class="tag">in context</span></header>
+      <div class="spec-canvas col" style="background: var(--color-background-surface); gap: var(--space-6);">
+
+        <div class="stack" style="width: 100%;">
+          <span class="rl" style="font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps);">sm — in table</span>
+          <table class="mock-table">
+            <thead><tr><th>Counterparty</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Açai Brasil S.A.</td><td class="mono">R$ 184,200.00</td><td><span class="pill success sm"><span class="dot"></span>Released</span></td></tr>
+              <tr><td>Granjas do Vale Ltda.</td><td class="mono">R$ 42,800.00</td><td><span class="pill warning sm"><span class="dot"></span>Pending</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="stack" style="width: 100%;">
+          <span class="rl" style="font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps);">md — in card</span>
+          <div style="padding: var(--space-5); background: var(--color-background-canvas); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); display: flex; align-items: center; gap: var(--space-4);">
+            <div style="flex: 1;">
+              <div style="font-size: var(--fs-md); font-weight: var(--w-semibold);">Açai Brasil S.A.</div>
+              <div style="font-size: var(--fs-sm); color: var(--color-foreground-secondary); margin-top: 2px;">PIX · R$ 184,200.00</div>
+            </div>
+            <span class="pill success"><span class="dot"></span>Released</span>
+          </div>
+        </div>
+
+        <div class="stack" style="width: 100%;">
+          <span class="rl" style="font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps);">lg — in record header</span>
+          <div style="padding: var(--space-6); background: var(--color-background-canvas); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap;">
+            <h3 style="font-size: var(--fs-3xl); font-weight: var(--w-bold); margin: 0; letter-spacing: var(--ls-title);">TX-19847</h3>
+            <span class="pill warning lg"><span class="dot"></span>Funds on hold</span>
+            <span class="pill info lg">PIX</span>
+          </div>
+        </div>
+
+      </div>
+    </article>
+  </section>
+
+
+  <!-- ========== 05 STYLES ========== -->
+  <section class="doc-section" id="styles">
+    <h2><span class="num">05</span>Styles</h2>
+    <p class="lead">Three style modifiers control how loud the pill reads. <strong>Default (subtle)</strong> is correct for 95% of cases. Use <code>.solid</code> only for "look here" salience (a single critical row); <code>.outline</code> only on busy backgrounds.</p>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Subtle · default</h3><p>Tinted background, deep foreground, soft border. Reads quietly — works in tables and lists without competing with content.</p></div><span class="tag">default</span></header>
+      <div class="spec-canvas dense">
+        <span class="pill success"><span class="dot"></span>Approved</span>
+        <span class="pill warning"><span class="dot"></span>Pending</span>
+        <span class="pill danger"><span class="dot"></span>Reproved</span>
+        <span class="pill info">PIX</span>
+        <span class="pill neutral">Cancelled</span>
+        <span class="pill brand"><span class="dot"></span>Processing</span>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Solid <code>.solid</code></h3><p>Filled with the variant's primary tint. Highest salience — reserve for one or two row callouts (e.g. blocked transactions you want the eye to find first).</p></div><span class="tag">solid</span></header>
+      <div class="spec-canvas dense">
+        <span class="pill solid success"><span class="dot"></span>Approved</span>
+        <span class="pill solid warning"><span class="dot"></span>Pending</span>
+        <span class="pill solid danger"><span class="dot"></span>Reproved</span>
+        <span class="pill solid info">PIX</span>
+        <span class="pill solid neutral">Cancelled</span>
+        <span class="pill solid brand"><span class="dot"></span>Processing</span>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Outline <code>.outline</code></h3><p>Transparent fill, full-strength border. Useful on photographic / busy backgrounds where any tinted fill clashes.</p></div><span class="tag">outline</span></header>
+      <div class="spec-canvas dense">
+        <span class="pill outline success"><span class="dot"></span>Approved</span>
+        <span class="pill outline warning"><span class="dot"></span>Pending</span>
+        <span class="pill outline danger"><span class="dot"></span>Reproved</span>
+        <span class="pill outline info">PIX</span>
+        <span class="pill outline neutral">Cancelled</span>
+        <span class="pill outline brand"><span class="dot"></span>Processing</span>
+      </div>
+    </article>
+  </section>
+
+
+  <!-- ========== 06 STATES ========== -->
+  <section class="doc-section" id="states">
+    <h2><span class="num">06</span>States</h2>
+    <p class="lead">Status pills are <strong>read-only by default</strong>. The interactive states below apply only when the pill <em>is</em> the control — typically a filter chip or a removable tag.</p>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Read-only (base)</h3><p>The default. No hover, no focus, no cursor change. The pill is a label, not a button.</p></div><span class="tag">default</span></header>
+      <div class="spec-canvas dense">
+        <span class="pill success"><span class="dot"></span>Approved</span>
+        <span class="pill warning"><span class="dot"></span>Pending</span>
+        <span class="pill danger"><span class="dot"></span>Reproved</span>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Interactive — filter chip <code>.interactive</code></h3><p>Add <code>.interactive</code> + <code>aria-pressed</code> to make the pill a toggle. Hover thickens the border; focus draws the standard ring; pressed state inverts to brand.</p></div><span class="tag">interactive</span></header>
+      <div class="spec-canvas dense">
+        <button class="pill info interactive" aria-pressed="false">All</button>
+        <button class="pill info interactive" aria-pressed="true">Approved</button>
+        <button class="pill info interactive" aria-pressed="false">Pending</button>
+        <button class="pill info interactive" aria-pressed="false">Reproved</button>
+      </div>
+      <div class="spec-foot">
+        <div><h4>Triggers</h4><ul><li><strong>:hover</strong> — border tightens to a stronger tint</li><li><strong>:focus-visible</strong> — 4px focus ring (<code>--shadow-focus</code>)</li><li><strong>aria-pressed=true</strong> — solid brand fill, white text</li></ul></div>
+        <div><h4>Required wiring</h4><ul><li class="do"><i data-lucide="check"></i>Use <code>&lt;button&gt;</code>, never <code>&lt;span&gt;</code></li><li class="do"><i data-lucide="check"></i>Set <code>aria-pressed</code> on each chip</li><li class="do"><i data-lucide="check"></i>Group with <code>role="group"</code> + label</li></ul></div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Removable — tag</h3><p>Add a trailing <code>.pill-x</code> button when the user can clear the value (active filters, tokenised input).</p></div><span class="tag">removable</span></header>
+      <div class="spec-canvas dense">
+        <span class="pill info">PIX <button class="pill-x" aria-label="Remove PIX"><i data-lucide="x"></i></button></span>
+        <span class="pill info">USD <button class="pill-x" aria-label="Remove USD"><i data-lucide="x"></i></button></span>
+        <span class="pill info">Tier 1 <button class="pill-x" aria-label="Remove Tier 1"><i data-lucide="x"></i></button></span>
+        <span class="pill warning"><span class="dot"></span>Pending <button class="pill-x" aria-label="Remove pending filter"><i data-lucide="x"></i></button></span>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Disabled <code>aria-disabled="true"</code></h3><p>Opacity 0.5 + <code>not-allowed</code>. Use only on interactive pills you cannot toggle right now (e.g. a filter that has zero matching results).</p></div><span class="tag">disabled</span></header>
+      <div class="spec-canvas dense">
+        <button class="pill info interactive" aria-pressed="false" aria-disabled="true" disabled>All</button>
+        <button class="pill info interactive" aria-pressed="false" aria-disabled="true" disabled>Approved</button>
+        <button class="pill info interactive" aria-pressed="false" aria-disabled="true" disabled>Pending</button>
+      </div>
+    </article>
+  </section>
+
+
+  <!-- ========== 07 COMPOSITION ========== -->
+  <section class="doc-section" id="composition">
+    <h2><span class="num">07</span>Composition</h2>
+    <p class="lead">Where pills actually live in the product. Three established patterns: <strong>table cell</strong>, <strong>record header</strong>, and <strong>filter bar</strong>. Density and size shift per context — the variant doesn't.</p>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>In a transactions table</h3><p>One pill per row, <code>sm</code> size. Variant is the at-a-glance scannable signal. Domain context (currency, channel) goes in adjacent cells, not stacked into the pill.</p></div><span class="tag">table cell</span></header>
+      <div class="spec-canvas col" style="background: var(--color-background-surface);">
+        <table class="mock-table">
+          <thead><tr><th>Date</th><th>Counterparty</th><th>Amount</th><th>Channel</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">2026-04-12</td><td>Açai Brasil S.A.</td><td class="mono" style="text-align:right">R$ 184,200.00</td><td><span class="pill info sm">PIX</span></td><td><span class="pill success sm"><span class="dot"></span>Released</span></td></tr>
+            <tr><td class="mono">2026-04-12</td><td>Granjas do Vale Ltda.</td><td class="mono" style="text-align:right">R$ 42,800.00</td><td><span class="pill info sm">TED</span></td><td><span class="pill warning sm"><span class="dot"></span>Funds on hold</span></td></tr>
+            <tr><td class="mono">2026-04-11</td><td>Mineração Sertão MG</td><td class="mono" style="text-align:right">R$ 1,920,000.00</td><td><span class="pill info sm">SWIFT</span></td><td><span class="pill brand sm"><span class="dot"></span>Processing</span></td></tr>
+            <tr><td class="mono">2026-04-11</td><td>Comércio Litoral S.A.</td><td class="mono" style="text-align:right">R$ 8,400.00</td><td><span class="pill info sm">PIX</span></td><td><span class="pill danger sm"><span class="dot"></span>Bounced</span></td></tr>
+            <tr><td class="mono">2026-04-10</td><td>Supermercado Norte</td><td class="mono" style="text-align:right">R$ 76,500.00</td><td><span class="pill info sm">Boleto</span></td><td><span class="pill neutral sm">Cancelled</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Record header</h3><p>One <code>lg</code> pill next to the record title. The user is on a detail page and needs to know the state without scanning.</p></div><span class="tag">record header</span></header>
+      <div class="spec-canvas col" style="background: var(--color-background-surface); padding: var(--space-8) var(--space-6);">
+        <div style="display:flex; align-items:center; gap: var(--space-4); flex-wrap:wrap;">
+          <h2 style="font-size: var(--fs-3xl); font-weight: var(--w-bold); margin:0; letter-spacing: var(--ls-title);">TX-19847</h2>
+          <span class="pill warning lg"><span class="dot"></span>Funds on hold</span>
+          <span class="pill info lg">PIX</span>
+        </div>
+        <p style="font-size: var(--fs-md); color: var(--color-foreground-secondary); margin: var(--space-2) 0 0; line-height: var(--lh-relaxed);">R$ 184,200.00 to <strong>Açai Brasil S.A.</strong> — held pending compliance review. Expected release within 24h.</p>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Filter bar</h3><p>Interactive pills as toggle filters. Use <code>.info</code> base; pressed state inherits brand. The <em>label</em> is the filter name, never a status word.</p></div><span class="tag">filter bar</span></header>
+      <div class="spec-canvas col" style="background: var(--color-background-surface);">
+        <div class="mock-filter-bar" role="group" aria-label="Status filter">
+          <span class="lbl">Status</span>
+          <button class="pill info interactive" aria-pressed="true">All</button>
+          <button class="pill info interactive" aria-pressed="false">Approved</button>
+          <button class="pill info interactive" aria-pressed="false">Pending</button>
+          <button class="pill info interactive" aria-pressed="false">Reproved</button>
+          <button class="pill info interactive" aria-pressed="false">Cancelled</button>
+        </div>
+        <div class="mock-filter-bar" role="group" aria-label="Active filters" style="margin-top: var(--space-3);">
+          <span class="lbl">Active</span>
+          <span class="pill info">PIX <button class="pill-x" aria-label="Remove PIX"><i data-lucide="x"></i></button></span>
+          <span class="pill info">USD <button class="pill-x" aria-label="Remove USD"><i data-lucide="x"></i></button></span>
+          <span class="pill warning"><span class="dot"></span>Pending <button class="pill-x" aria-label="Remove pending"><i data-lucide="x"></i></button></span>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Counterparty list row</h3><p>Pill on the right; name on the left. Pill width is intrinsic — never stretch it to fill space.</p></div><span class="tag">list row</span></header>
+      <div class="spec-canvas col" style="background: var(--color-background-surface);">
+        <div class="mock-list">
+          <div class="mock-list-row"><span class="ttl">Açai Brasil S.A.</span><span class="pill success sm"><span class="dot"></span>Approved</span></div>
+          <div class="mock-list-row"><span class="ttl">Granjas do Vale Ltda.</span><span class="pill warning sm"><span class="dot"></span>Under review</span></div>
+          <div class="mock-list-row"><span class="ttl">Mineração Sertão MG</span><span class="pill neutral sm">Identified</span></div>
+          <div class="mock-list-row"><span class="ttl">Comércio Litoral S.A.</span><span class="pill danger sm"><span class="dot"></span>Reproved</span></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+
+  <!-- ========== 08 ON INVERSE ========== -->
+  <section class="doc-section" id="on-inverse">
+    <h2><span class="num">08</span>On inverse</h2>
+    <p class="lead">When pills sit on <code>--color-background-inverse</code> or <code>--color-background-inverse-brand</code>, default subtle pills wash out. Apply <code>.on-inverse</code> — bg becomes a translucent variant tint, fg lightens.</p>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>All variants on dark</h3><p>Background uses <code>color-mix</code> at 18% of the variant base; text uses the inverse foreground role.</p></div><span class="tag">on-inverse</span></header>
+      <div class="spec-canvas dark dense">
+        <span class="pill success on-inverse"><span class="dot"></span>Approved</span>
+        <span class="pill warning on-inverse"><span class="dot"></span>Pending</span>
+        <span class="pill danger on-inverse"><span class="dot"></span>Reproved</span>
+        <span class="pill info on-inverse">PIX</span>
+        <span class="pill neutral on-inverse">Cancelled</span>
+        <span class="pill brand on-inverse"><span class="dot"></span>Processing</span>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Hero / brand surface</h3><p>Same modifier — inherits well over <code>--color-background-inverse-brand</code> too. No extra class needed.</p></div><span class="tag">brand bg</span></header>
+      <div class="spec-canvas brand dense">
+        <span class="pill success on-inverse"><span class="dot"></span>Approved</span>
+        <span class="pill warning on-inverse"><span class="dot"></span>Pending</span>
+        <span class="pill danger on-inverse"><span class="dot"></span>Reproved</span>
+        <span class="pill info on-inverse">PIX</span>
+      </div>
+    </article>
+  </section>
+
+
+  <!-- ========== 09 DON'TS ========== -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">09</span>Don'ts</h2>
+    <p class="lead">Common pitfalls. Each undermines the contract that "variant + label = unambiguous status."</p>
+
+    <div class="dont-grid">
+      <div class="dont-card">
+        <div class="dont-card-canvas"><span class="pill success"><span class="dot"></span></span></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't ship a pill without a label.</strong> Colour alone fails for users with low colour vision and breaks screen-reader output.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><button class="pill success interactive" aria-pressed="false" style="text-decoration: underline;"><span class="dot"></span>Click to approve</button></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't use a pill as a primary action.</strong> Pills classify; buttons act. If clicking changes state, it must be a button.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><span class="pill solid success"><span class="dot"></span>Released</span><span class="pill solid warning"><span class="dot"></span>Pending</span><span class="pill solid danger"><span class="dot"></span>Bounced</span><span class="pill solid info">PIX</span></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't use solid as default.</strong> Five solid pills in one row is visual noise. Subtle is the default; solid is the exception.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><span class="pill info"><span class="dot"></span>RELEASED · 2024-04-12 · R$ 184,200.00</span></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't stuff metadata into the label.</strong> One status word. Domain data lives in adjacent table cells.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><span class="pill warning"><span class="dot"></span>Approved</span><span class="pill success"><span class="dot"></span>Reproved</span></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't mismatch variant and meaning.</strong> Approved is success; Reproved is danger. The taxonomy is the contract.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><span class="pill" style="background:#FCE7F3; color:#9D174D; border:1px solid #FBCFE8;"><span class="dot" style="background:#9D174D"></span>Custom state</span></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't invent new variants.</strong> If the existing six don't fit, the system is wrong — propose a new variant in the design system, don't hex-pick locally.</p></div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========== 10 ACCESSIBILITY ========== -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">10</span>Accessibility</h2>
+
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Rule</th><th>How we comply</th></tr></thead>
+      <tbody>
+        <tr><td>Colour ≠ meaning</td><td>WCAG 1.4.1</td><td>Variant is paired with a literal status word in every pill.</td></tr>
+        <tr><td>Contrast (text)</td><td>WCAG 1.4.3 — 4.5:1</td><td>All <code>--*-fg</code> on <code>--*-bg</code> pairs verified ≥ 4.7:1 in light mode.</td></tr>
+        <tr><td>Contrast (on inverse)</td><td>WCAG 1.4.3</td><td><code>--*-fg-on-inverse</code> tokens use <code>-100</code> tints over translucent backgrounds; verified ≥ 4.5:1.</td></tr>
+        <tr><td>Decorative dot</td><td>WCAG 1.1.1</td><td>Dot is purely visual; no <code>aria-label</code> needed because the label conveys the meaning.</td></tr>
+        <tr><td>Interactive role</td><td>WCAG 4.1.2</td><td>Filter chips use <code>&lt;button&gt;</code> + <code>aria-pressed</code>. Removable pills expose <code>&lt;button class="pill-x" aria-label&gt;</code>.</td></tr>
+        <tr><td>Focus visible</td><td>WCAG 2.4.7</td><td>Interactive pills receive <code>--shadow-focus</code> on <code>:focus-visible</code>; never <code>outline: none</code> alone.</td></tr>
+        <tr><td>Disabled communication</td><td>WCAG 4.1.2</td><td>Use <code>aria-disabled</code> + <code>disabled</code>; opacity alone is not enough.</td></tr>
+        <tr><td>Hit target (interactive)</td><td>WCAG 2.5.5 (AAA)</td><td><code>md</code> + is 24px tall; in compliant filter bars, pad surrounding click area to 44px or use <code>lg</code>.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+
+  <!-- ========== 11 TOKENS ========== -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">11</span>Tokens consumed</h2>
+    <p class="lead">Every value in <code>status-pills.css</code> traces back to a token defined in <code>dist/css/tokens.css</code>. Change it there, every pill updates.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Role</th><th>Token</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td>Container shape</td><td class="k">--radius-pill</td><td>Pill envelope</td></tr>
+        <tr><td>Container size</td><td class="k">20 / 24 / 28 px</td><td>sm / md / lg height</td></tr>
+        <tr><td>Padding</td><td class="k">--space-2-5 · --space-3 · --space-4</td><td>Horizontal padding per size</td></tr>
+        <tr><td>Type family</td><td class="k">--font-sans</td><td>Label</td></tr>
+        <tr><td>Type size</td><td class="k">--fs-2xs · --fs-xs · --fs-sm</td><td>sm / md / lg label</td></tr>
+        <tr><td>Type weight</td><td class="k">--w-semibold</td><td>Label</td></tr>
+        <tr><td>Letter-spacing</td><td class="k">--ls-caps</td><td>Label tracking</td></tr>
+        <tr><td>Success bg / fg / br</td><td class="k">--color-feedback-success-background / --color-feedback-success-foreground / --color-feedback-success-border</td><td>Success variant</td></tr>
+        <tr><td>Warning bg / fg / br</td><td class="k">--color-feedback-warning-background / --color-feedback-warning-foreground / --color-feedback-warning-border</td><td>Warning variant</td></tr>
+        <tr><td>Danger bg / fg / br</td><td class="k">--color-feedback-danger-background / --color-feedback-danger-foreground / --color-feedback-danger-border</td><td>Danger variant</td></tr>
+        <tr><td>Info bg / fg / br</td><td class="k">--color-feedback-info-background / --color-feedback-info-foreground / --color-feedback-info-border</td><td>Info variant</td></tr>
+        <tr><td>Neutral bg / fg / br</td><td class="k">--color-background-subtle / --color-foreground-secondary / --color-border-default</td><td>Neutral variant</td></tr>
+        <tr><td>Brand bg / fg</td><td class="k">--color-background-selected / --color-foreground-accent</td><td>Brand variant</td></tr>
+        <tr><td>Solid fills</td><td class="k">--color-success-500 · --color-warning-500 · --color-danger-500 · --color-info-500 · --color-neutral-700 · --color-brand-secondary-500</td><td><code>.solid</code> backgrounds</td></tr>
+        <tr><td>Outline borders</td><td class="k">--color-success-500 · --color-warning-500 · --color-danger-500 · --color-info-500 · --color-border-strong · --color-brand-secondary-500</td><td><code>.outline</code> borders</td></tr>
+        <tr><td>On-inverse fg</td><td class="k">--color-feedback-success-foreground-on-inverse · --color-feedback-warning-foreground-on-inverse · --color-feedback-danger-foreground-on-inverse · --color-feedback-info-foreground-on-inverse</td><td>Pills over dark surfaces</td></tr>
+        <tr><td>Focus ring</td><td class="k">--shadow-focus</td><td>Interactive pill focus</td></tr>
+        <tr><td>Transitions</td><td class="k">--transition-fast</td><td>Hover &amp; pressed motion</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script>
+  if (window.lucide && lucide.createIcons) lucide.createIcons();
+
+  /* Wrap each pill's text content in a .pill-label span so CSS can nudge
+     only the label (not the dot). Runs once on load; idempotent. */
+  document.querySelectorAll('.pill').forEach(pill => {
+    Array.from(pill.childNodes).forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+        const span = document.createElement('span');
+        span.className = 'pill-label';
+        span.textContent = node.textContent;
+        pill.replaceChild(span, node);
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

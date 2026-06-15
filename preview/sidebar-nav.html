@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Sidebar nav" subtitle="Spec doc — 3 variants (expanded/collapsed/mobile), 5 states, badges + counts, sections, keyboard a11y, don'ts, tokens" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sidebar navigation · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body {
+    margin: 0;
+    background: var(--color-background-canvas);
+    color: var(--color-foreground-default);
+    font-family: var(--font-sans);
+    font-size: var(--fs-base);
+    line-height: var(--lh-normal);
+  }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  /* header */
+  .doc-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: var(--space-8);
+    padding-bottom: var(--space-7);
+    border-bottom: 1px solid var(--color-border-default);
+    margin-bottom: var(--space-10);
+  }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta-pill {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-feedback-success-background);
+    color: var(--color-feedback-success-foreground);
+    border: 1px solid var(--color-feedback-success-border);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+  }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  /* nav */
+  .doc-nav {
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-10);
+    box-shadow: var(--shadow-xs);
+  }
+  .doc-nav a {
+    padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill);
+    color: var(--color-foreground-secondary); text-decoration: none;
+    font-size: var(--fs-sm); font-weight: var(--w-semibold);
+    transition: var(--transition-fast);
+  }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  /* sections */
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  /* spec card */
+  .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
+  .spec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .spec-tag { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
+  .spec-canvas { padding: var(--space-8); background: var(--color-background-canvas); background-image: linear-gradient(var(--color-border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; display: flex; justify-content: center; align-items: flex-start; min-height: 280px; }
+
+  /* Sidebar component rules now live in components/sidebar.css (single source) */
+
+  /* ===== Animation preview stages ===== */
+  .anim-stage {
+    position: relative;
+    padding: var(--space-7) var(--space-6) var(--space-5);
+    background: var(--color-background-canvas);
+    background-image:
+      linear-gradient(var(--color-border-subtle) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: -1px -1px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 280px;
+  }
+  .anim-replay {
+    position: absolute; top: var(--space-3); right: var(--space-3);
+    z-index: 5;
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-pill);
+    color: var(--color-foreground-default);
+    font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: var(--w-semibold);
+    cursor: pointer;
+    box-shadow: var(--shadow-xs);
+    transition: var(--transition-fast);
+  }
+  .anim-replay:hover { background: var(--color-background-hover); border-color: var(--color-border-strong); }
+  .anim-replay i, .anim-replay svg { width: 12px; height: 12px; stroke-width: var(--icon-stroke); }
+
+  /* Drawer enter/exit preview */
+  .demo-stage-window {
+    position: relative; width: 100%; max-width: 420px;
+    height: 280px;
+    background: var(--color-background-subtle);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .demo-scrim {
+    position: absolute; inset: 0;
+    background: var(--color-scrim);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-base) var(--ease-standard);
+  }
+  .demo-scrim.is-open { opacity: 1; }
+  .demo-drawer {
+    position: absolute; top: 0; left: 0; bottom: 0;
+    width: 220px;
+    background: var(--color-background-surface);
+    box-shadow: var(--shadow-xl);
+    transform: translateX(-100%);
+    transition: transform var(--duration-deliberate) var(--ease-emphasis);
+    padding: var(--space-4);
+  }
+  .demo-drawer.is-open { transform: translateX(0); }
+  .demo-drawer .row {
+    height: 30px; margin-bottom: var(--space-1);
+    border-radius: var(--radius-sm);
+    background: var(--color-background-subtle);
+  }
+  .demo-drawer .row.active { background: var(--color-background-selected); }
+
+  /* Rail width preview wrapper */
+  .demo-rail-wrap { display: flex; gap: var(--space-3); align-items: flex-start; }
+  .sb-children .sb-subitem .count {
+    margin-left: auto;
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    color: var(--color-foreground-muted);
+    background: var(--color-background-subtle);
+    padding: 1px 6px; border-radius: var(--radius-xs);
+  }
+  .sb-item.disabled { color: var(--color-foreground-placeholder); cursor: not-allowed; }
+  .sb-item.disabled:hover { background: transparent; }
+  .sb-item .ic { width: 15px; height: 15px; stroke-width: var(--icon-stroke); flex-shrink: 0; opacity: 0.85; }
+  .sb-item.active .ic { color: var(--color-brand-secondary-500); opacity: 1; }
+  .sb-item .label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sb-item .badge {
+    font-family: var(--font-sans); font-size: 9px; font-weight: var(--w-bold);
+    letter-spacing: .06em; line-height: 1.4;
+    padding: 1px 6px; border-radius: var(--radius-pill);
+    background: var(--color-brand-secondary-500); color: var(--color-pure-white);
+  }
+  .sb-item .badge.alert { background: var(--color-danger-500); }
+  .sb-item .badge.warning { background: var(--color-warning-500); }
+  .sb-item .count {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    color: var(--color-foreground-muted);
+    background: var(--color-background-subtle);
+    padding: 1px 6px; border-radius: var(--radius-xs);
+  }
+  .sb-item.active .count { background: color-mix(in srgb, var(--color-brand-secondary-200) 70%, transparent); color: var(--color-brand-secondary-700); }
+  .sb-foot {
+    border-top: 1px solid var(--color-border-subtle);
+    padding: var(--space-3);
+    display: flex; align-items: center; gap: var(--space-3);
+  }
+  .sb-foot .avatar {
+    width: 26px; height: 26px; border-radius: var(--radius-pill);
+    background: var(--color-brand-secondary-500); color: var(--color-pure-white);
+    font-size: 10px; font-weight: var(--w-bold);
+    display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sb-foot .meta { flex: 1; min-width: 0; }
+  .sb-foot .meta .name { font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sb-foot .meta .role { font-size: var(--fs-xxs); color: var(--color-foreground-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sb-foot .logout { color: var(--color-foreground-muted); cursor: pointer; flex-shrink: 0; }
+  .sb-foot .logout svg, .sb-foot .logout i { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
+
+  /* Collapsed variant */
+  .sb.collapsed { width: 60px; }
+  .sb.collapsed .sb-head { padding: 0 8px; justify-content: center; }
+  .sb.collapsed .sb-section { padding: 0; margin: var(--space-3) var(--space-4); height: 1px; background: var(--color-border-subtle); }
+  .sb.collapsed .sb-section { font-size: 0; color: transparent; }
+  .sb.collapsed .sb-item { justify-content: center; padding: 8px 0; gap: 0; margin: 1px 10px; }
+  .sb.collapsed .sb-item .label, .sb.collapsed .sb-item .badge, .sb.collapsed .sb-item .count { display: none; }
+  .sb.collapsed .sb-foot { justify-content: center; padding: var(--space-3) 0; }
+  .sb.collapsed .sb-foot .meta, .sb.collapsed .sb-foot .logout { display: none; }
+  /* Logo swap inside the rail demo (full ↔ icon) */
+  .sb.collapsed .sb-logo-full { display: none; }
+  .sb.collapsed .sb-logo-icon { display: block !important; }
+  .sb:not(.collapsed) .sb-logo-icon { display: none !important; }
+
+  /* anatomy */
+  .anatomy { display: grid; grid-template-columns: 1fr; gap: var(--space-6); padding: var(--space-7); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); margin-bottom: var(--space-8); }
+  @media (min-width: 880px) { .anatomy { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--space-8); padding: var(--space-8); } }
+  .anatomy-canvas { padding: var(--space-6); background: var(--color-background-canvas); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; min-height: 380px; }
+  .anatomy-list { min-width: 0; }
+  .anatomy-list ol { padding-left: 0; margin: 0; counter-reset: anat; list-style: none; }
+  .anatomy-list li { counter-increment: anat; margin-bottom: var(--space-4); padding-left: var(--space-8); position: relative; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-sm); }
+  .anatomy-list li:last-child { margin-bottom: 0; }
+  .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
+  .anatomy-list li code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  /* States row — show idle/hover/active/disabled side by side */
+  .states { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--space-3); padding: var(--space-7); background: var(--color-background-canvas); background-image: linear-gradient(var(--color-border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; }
+  .state-cell { display: flex; flex-direction: column; gap: var(--space-3); align-items: flex-start; }
+  .state-cell .label { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  /* Mini standalone row for state demos (no full sidebar around it) */
+  .row-demo {
+    width: 200px;
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 4px 0;
+  }
+  .row-demo .sb-item { margin: 0 6px; }
+
+  /* In context */
+  .ctx-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .ctx-canvas { display: flex; min-height: 320px; background: var(--color-background-canvas); }
+  .ctx-canvas .sb { border-radius: 0; border: 0; border-right: 1px solid var(--color-border-default); box-shadow: none; flex-shrink: 0; }
+  .ctx-canvas .content { flex: 1; padding: var(--space-6); }
+  .ctx-canvas .content h4 { font-size: var(--fs-md); font-weight: var(--w-bold); margin: 0 0 var(--space-3); color: var(--color-foreground-default); }
+  .ctx-canvas .content .skel { display: flex; flex-direction: column; gap: var(--space-2); }
+  .ctx-canvas .content .skel-bar { height: 10px; background: var(--color-background-subtle); border-radius: var(--radius-xs); }
+  .ctx-canvas .content .skel-bar.short { width: 40%; }
+  .ctx-canvas .content .skel-bar.long { width: 80%; }
+  .ctx-meta { padding: var(--space-4) var(--space-5); border-top: 1px solid var(--color-border-subtle); }
+  .ctx-meta strong { display: block; font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); margin-bottom: 2px; }
+  .ctx-meta p { font-size: var(--fs-xs); color: var(--color-foreground-muted); margin: 0; line-height: var(--lh-relaxed); }
+
+  /* don'ts */
+  .dont-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-4); }
+  .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
+  .dont-card svg, .dont-card i { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-card .body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .dont-card .body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+
+  /* token / a11y tables */
+  .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .token-table tr:last-child td { border-bottom: 0; }
+  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  /* recipe / code box */
+  .recipe { background: var(--color-background-subtle); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-sm); padding: var(--space-4) var(--space-5); font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-secondary); line-height: 1.7; white-space: pre; overflow-x: auto; }
+  .recipe .key { color: var(--color-foreground-accent); font-weight: var(--w-semibold); }
+  .recipe .var { color: var(--color-success-700); }
+  .recipe .muted { color: var(--color-foreground-muted); font-style: italic; }
+  .pattern-name { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<main class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Sidebar navigation</h1>
+      <p>The primary navigation surface in the ATTRUS app — a fixed-left rail that holds product surfaces, account settings and integration links. Collapses to a 60-px icon rail; on mobile it slides in as a drawer.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Ready</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#anatomy">01 Anatomy</a>
+    <a href="#variants">02 Variants</a>
+    <a href="#states">03 Item states</a>
+    <a href="#decoration">04 Decoration (badges &amp; counters)</a>
+    <a href="#sections">05 Sections &amp; structure</a>
+    <a href="#context">06 In context</a>
+    <a href="#groups">07 Groups &amp; dropdowns</a>
+    <a href="#motion">08 Motion</a>
+    <a href="#anim-previews">08b Animation previews</a>
+    <a href="#a11y">09 Keyboard &amp; a11y</a>
+    <a href="#donts">10 Don'ts</a>
+    <a href="#tokens">11 Tokens</a>
+  </nav>
+
+  <!-- 01 ANATOMY -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">01</span>Anatomy</h2>
+    <p class="lead">Four regions stacked vertically. The width is fixed at <code>244px</code> expanded, <code>60px</code> collapsed; height matches the viewport.</p>
+
+    <div class="anatomy">
+      <div class="anatomy-canvas">
+        <div class="sb">
+          <div class="sb-head">
+            <img src="../assets/logo-attrus-dark.svg" alt="ATTRUS">
+            <button class="toggle" aria-label="Collapse"><i data-lucide="panel-left"></i></button>
+          </div>
+          <div class="sb-body">
+            <div class="sb-item active"><i data-lucide="home" class="ic"></i><span class="label">Home</span></div>
+            <div class="sb-item"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transactions</span></div>
+            <div class="sb-item"><i data-lucide="wallet" class="ic"></i><span class="label">Accounts</span></div>
+            <div class="sb-section">My company</div>
+            <div class="sb-item"><i data-lucide="users-round" class="ic"></i><span class="label">Teams</span></div>
+          </div>
+          <div class="sb-foot">
+            <span class="avatar">JD</span>
+            <span class="meta"><span class="name">John Doe</span><span class="role">Acme · Admin</span></span>
+            <span class="logout"><i data-lucide="log-out"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="anatomy-list">
+        <ol>
+          <li><strong>Header (52px)</strong> Carries the wordmark and the collapse toggle. Height matches the top bar so logo + topbar baseline align.</li>
+          <li><strong>Body</strong> Scrollable region holding nav items and section labels. Padding <code>--space-3</code> top/bottom; items have 10px horizontal margin so the active-state left-rail bleeds outside.</li>
+          <li><strong>Section label</strong> Uppercase eyebrow that groups related items. Use sparingly — 2-3 sections max per sidebar.</li>
+          <li><strong>Item row</strong> 30px tall, icon + label + optional badge / count. Active row gets a 2-px brand-secondary-500 left-rail and a brand-secondary-50 background.</li>
+          <li><strong>Footer</strong> User mini-card (avatar + name + role + logout). The only persistent identity surface on the page.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 VARIANTS -->
+  <section class="doc-section" id="variants">
+    <h2><span class="num">02</span>Variants</h2>
+    <p class="lead">Three width modes. The expanded rail is the default; collapsed is for users who memorised the layout; mobile slides out from the left over a scrim.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Expanded <code>width: 244px</code></h3>
+          <p>The default. Use whenever the app is on screens ≥ 900px wide. Item labels visible, badges visible, full footer.</p>
+        </div>
+        <span class="spec-tag">default</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="sb">
+          <div class="sb-head">
+            <img src="../assets/logo-attrus-dark.svg" alt="ATTRUS">
+            <button class="toggle" aria-label="Collapse"><i data-lucide="panel-left"></i></button>
+          </div>
+          <div class="sb-body">
+            <div class="sb-item active"><i data-lucide="home" class="ic"></i><span class="label">Home</span></div>
+            <div class="sb-item"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transactions</span><span class="count">12</span></div>
+            <div class="sb-item"><i data-lucide="wallet" class="ic"></i><span class="label">Accounts</span></div>
+            <div class="sb-item"><i data-lucide="contact" class="ic"></i><span class="label">Counterparties</span></div>
+            <div class="sb-item"><i data-lucide="repeat" class="ic"></i><span class="label">Exchanges</span></div>
+            <div class="sb-item"><i data-lucide="inbox" class="ic"></i><span class="label">Receivables</span><span class="badge alert">3</span></div>
+            <div class="sb-item"><i data-lucide="sparkles" class="ic"></i><span class="label">Product Hub</span><span class="badge">NEW</span></div>
+            <div class="sb-section">My company</div>
+            <div class="sb-item"><i data-lucide="users-round" class="ic"></i><span class="label">Teams</span></div>
+            <div class="sb-item"><i data-lucide="building-2" class="ic"></i><span class="label">Company profile</span></div>
+            <div class="sb-section">Integration</div>
+            <div class="sb-item"><i data-lucide="file-text" class="ic"></i><span class="label">API Document</span></div>
+          </div>
+          <div class="sb-foot">
+            <span class="avatar">JD</span>
+            <span class="meta"><span class="name">John Doe</span><span class="role">Acme Corp · Admin</span></span>
+            <span class="logout"><i data-lucide="log-out"></i></span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Collapsed <code>width: 60px</code></h3>
+          <p>Icon-only rail. Sections collapse to a 1px hairline; badges and counts hide; the logo doubles as the expand affordance. State persisted in <code>localStorage</code>.</p>
+        </div>
+        <span class="spec-tag">user-toggled</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="sb collapsed">
+          <div class="sb-head">
+            <button class="toggle" aria-label="Expand sidebar" title="Expand sidebar"><i data-lucide="panel-left"></i></button>
+          </div>
+          <div class="sb-body">
+            <div class="sb-item active" title="Home"><i data-lucide="home" class="ic"></i></div>
+            <div class="sb-item" title="Transactions"><i data-lucide="arrow-left-right" class="ic"></i></div>
+            <div class="sb-item" title="Accounts"><i data-lucide="wallet" class="ic"></i></div>
+            <div class="sb-item" title="Counterparties"><i data-lucide="contact" class="ic"></i></div>
+            <div class="sb-item" title="Exchanges"><i data-lucide="repeat" class="ic"></i></div>
+            <div class="sb-item" title="Receivables"><i data-lucide="inbox" class="ic"></i></div>
+            <div class="sb-section">My company</div>
+            <div class="sb-item" title="Teams"><i data-lucide="users-round" class="ic"></i></div>
+            <div class="sb-item" title="Company profile"><i data-lucide="building-2" class="ic"></i></div>
+          </div>
+          <div class="sb-foot">
+            <span class="avatar">JD</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Mobile drawer <code>position: fixed</code></h3>
+          <p>Below 900px the sidebar is hidden by default and opens as a slide-in drawer over a scrim. Tap outside to close. Same item rendering as expanded.</p>
+        </div>
+        <span class="spec-tag">≤ 900px</span>
+      </header>
+      <div class="spec-canvas" style="background: var(--color-background-canvas); align-items: stretch; padding: 0;">
+        <div style="display: flex; flex: 1; position: relative; min-height: 360px;">
+          <div style="position: absolute; inset: 0; background: var(--color-scrim); backdrop-filter: blur(2px);"></div>
+          <div class="sb" style="position: relative; box-shadow: var(--shadow-xl); border-radius: 0; border: 0;">
+            <div class="sb-head">
+              <img src="../assets/logo-attrus-dark.svg" alt="ATTRUS">
+              <button class="toggle" aria-label="Close"><i data-lucide="x"></i></button>
+            </div>
+            <div class="sb-body">
+              <div class="sb-item active"><i data-lucide="home" class="ic"></i><span class="label">Home</span></div>
+              <div class="sb-item"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transactions</span></div>
+              <div class="sb-item"><i data-lucide="wallet" class="ic"></i><span class="label">Accounts</span></div>
+              <div class="sb-item"><i data-lucide="contact" class="ic"></i><span class="label">Counterparties</span></div>
+              <div class="sb-item"><i data-lucide="repeat" class="ic"></i><span class="label">Exchanges</span></div>
+            </div>
+            <div class="sb-foot">
+              <span class="avatar">JD</span>
+              <span class="meta"><span class="name">John Doe</span><span class="role">Acme · Admin</span></span>
+              <span class="logout"><i data-lucide="log-out"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 03 STATES -->
+  <section class="doc-section" id="states">
+    <h2><span class="num">03</span>Item states</h2>
+    <p class="lead">Five canonical states per item. Hover and active are colour shifts only — no layout movement, no padding-shift, no animations longer than <code>--duration-fast</code>.</p>
+
+    <div class="spec">
+      <div class="states">
+        <div class="state-cell">
+          <span class="label">Idle</span>
+          <div class="row-demo"><div class="sb-item"><i data-lucide="wallet" class="ic"></i><span class="label">Accounts</span></div></div>
+        </div>
+        <div class="state-cell">
+          <span class="label">Hover</span>
+          <div class="row-demo"><div class="sb-item" style="background: var(--color-background-hover); color: var(--color-foreground-default);"><i data-lucide="wallet" class="ic"></i><span class="label">Accounts</span></div></div>
+        </div>
+        <div class="state-cell">
+          <span class="label">Active</span>
+          <div class="row-demo" style="overflow: visible;"><div class="sb-item active"><i data-lucide="wallet" class="ic"></i><span class="label">Accounts</span></div></div>
+        </div>
+        <div class="state-cell">
+          <span class="label">Focus-visible</span>
+          <div class="row-demo"><div class="sb-item" style="box-shadow: var(--shadow-focus);"><i data-lucide="wallet" class="ic"></i><span class="label">Accounts</span></div></div>
+        </div>
+        <div class="state-cell">
+          <span class="label">Disabled</span>
+          <div class="row-demo"><div class="sb-item disabled"><i data-lucide="wallet" class="ic"></i><span class="label">Accounts</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 DECORATION -->
+  <section class="doc-section" id="decoration">
+    <h2><span class="num">04</span>Decoration — badges &amp; counters</h2>
+    <p class="lead">Two optional trailing slots: <strong>badge</strong> (text or status indicator) and <strong>count</strong> (numeric value). Use one or the other, never both on the same row.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Badges</h3>
+          <p>Tiny pill-shaped labels. Three tones: brand (announcements), danger (alerts), warning (attention). Keep label to 1-2 letters or 1 short word.</p>
+        </div>
+        <span class="spec-tag">trailing</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="sb" style="min-width: 220px;">
+          <div class="sb-body">
+            <div class="sb-item"><i data-lucide="sparkles" class="ic"></i><span class="label">Product Hub</span><span class="badge">NEW</span></div>
+            <div class="sb-item"><i data-lucide="inbox" class="ic"></i><span class="label">Receivables</span><span class="badge alert">3</span></div>
+            <div class="sb-item"><i data-lucide="zap" class="ic"></i><span class="label">Beta features</span><span class="badge warning">β</span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Counts</h3>
+          <p>Monospaced numeric value with subtle surface chip. Use for objective counts (pending items, queue length); do <em>not</em> use to indicate severity.</p>
+        </div>
+        <span class="spec-tag">trailing</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="sb" style="min-width: 220px;">
+          <div class="sb-body">
+            <div class="sb-item active"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transactions</span><span class="count">12</span></div>
+            <div class="sb-item"><i data-lucide="contact" class="ic"></i><span class="label">Counterparties</span><span class="count">847</span></div>
+            <div class="sb-item"><i data-lucide="inbox" class="ic"></i><span class="label">Receivables</span><span class="count">3</span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 05 SECTIONS / STRUCTURE -->
+  <section class="doc-section" id="sections">
+    <h2><span class="num">05</span>Sections &amp; structure</h2>
+    <p class="lead">Group items into 2-3 sections by purpose. Order is fixed: product surfaces first, account / org second, integration / docs last.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Section ordering</h3>
+          <p>Use this canonical order — users build muscle memory across products. Never reorder per-tenant.</p>
+        </div>
+      </header>
+      <div class="spec-canvas">
+        <div class="sb" style="min-width: 220px;">
+          <div class="sb-body">
+            <div class="sb-item active"><i data-lucide="home" class="ic"></i><span class="label">Home</span></div>
+            <div class="sb-item"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transactions</span></div>
+            <div class="sb-item"><i data-lucide="wallet" class="ic"></i><span class="label">Accounts</span></div>
+            <div class="sb-item"><i data-lucide="contact" class="ic"></i><span class="label">Counterparties</span></div>
+            <div class="sb-section">My company</div>
+            <div class="sb-item"><i data-lucide="users-round" class="ic"></i><span class="label">Teams</span></div>
+            <div class="sb-item"><i data-lucide="building-2" class="ic"></i><span class="label">Company profile</span></div>
+            <div class="sb-section">Integration</div>
+            <div class="sb-item"><i data-lucide="file-text" class="ic"></i><span class="label">API Document</span></div>
+            <div class="sb-item"><i data-lucide="plug" class="ic"></i><span class="label">Webhooks</span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 06 IN CONTEXT -->
+  <section class="doc-section" id="context">
+    <h2><span class="num">06</span>In context</h2>
+    <p class="lead">Sidebar paired with a content surface. Notice how the active state on the rail anchors the user's attention without dominating the page header.</p>
+
+    <div style="display: grid; grid-template-columns: 1fr; gap: var(--space-5);">
+      <div class="ctx-card">
+        <div class="ctx-canvas">
+          <div class="sb" style="width: 244px;">
+            <div class="sb-head">
+              <img src="../assets/logo-attrus-dark.svg" alt="ATTRUS">
+              <button class="toggle" aria-label="Collapse"><i data-lucide="panel-left"></i></button>
+            </div>
+            <div class="sb-body">
+              <div class="sb-item"><i data-lucide="home" class="ic"></i><span class="label">Home</span></div>
+              <div class="sb-item active"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transactions</span><span class="count">12</span></div>
+              <div class="sb-item"><i data-lucide="wallet" class="ic"></i><span class="label">Accounts</span></div>
+              <div class="sb-item"><i data-lucide="contact" class="ic"></i><span class="label">Counterparties</span></div>
+              <div class="sb-item"><i data-lucide="inbox" class="ic"></i><span class="label">Receivables</span><span class="badge alert">3</span></div>
+              <div class="sb-section">My company</div>
+              <div class="sb-item"><i data-lucide="users-round" class="ic"></i><span class="label">Teams</span></div>
+            </div>
+            <div class="sb-foot">
+              <span class="avatar">JD</span>
+              <span class="meta"><span class="name">John Doe</span><span class="role">Admin</span></span>
+              <span class="logout"><i data-lucide="log-out"></i></span>
+            </div>
+          </div>
+          <div class="content">
+            <h4>Transactions</h4>
+            <div class="skel">
+              <div class="skel-bar long"></div>
+              <div class="skel-bar short"></div>
+              <div class="skel-bar long"></div>
+              <div class="skel-bar long"></div>
+              <div class="skel-bar short"></div>
+              <div class="skel-bar long"></div>
+            </div>
+          </div>
+        </div>
+        <div class="ctx-meta">
+          <strong>Sidebar + content shell</strong>
+          <p>The active rail and the page title agree silently. The active row's brand-50 tile and 2-px brand-500 left-rail are the only "loud" elements on the chrome.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 GROUPS & DROPDOWNS -->
+  <section class="doc-section" id="groups">
+    <h2><span class="num">07</span>Groups &amp; dropdowns</h2>
+    <p class="lead">When a top-level destination contains 3+ sub-pages, promote it to a <strong>group</strong> — a parent row with a chevron that reveals nested rows on click. Groups are <em>navigational</em> (each child is a destination), never <em>actional</em> (no commands inside).</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Collapsed group <code>aria-expanded="false"</code></h3>
+          <p>Default state. Parent row looks identical to a regular nav row, with a trailing chevron pointing right. Children are hidden via <code>grid-template-rows: 0fr</code> (animatable).</p>
+        </div>
+        <span class="spec-tag">resting</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="sb">
+          <div class="sb-head">
+            <img src="../assets/logo-attrus-dark.svg" alt="ATTRUS">
+            <button class="toggle" aria-label="Collapse"><i data-lucide="panel-left"></i></button>
+          </div>
+          <div class="sb-body">
+            <div class="sb-item active"><i data-lucide="home" class="ic"></i><span class="label">Home</span></div>
+            <div class="sb-group" aria-expanded="false">
+              <div class="sb-item"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transactions</span><i data-lucide="chevron-right" class="chev"></i></div>
+              <div class="sb-children"><div class="sb-children-inner"></div></div>
+            </div>
+            <div class="sb-item"><i data-lucide="wallet" class="ic"></i><span class="label">Accounts</span></div>
+            <div class="sb-item"><i data-lucide="contact" class="ic"></i><span class="label">Counterparties</span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Expanded group <code>aria-expanded="true"</code></h3>
+          <p>Chevron rotates 90° (now pointing down). Children reveal with a height transition (<code>grid-template-rows</code> 0fr → 1fr at <code>--duration-base</code>). Each child has a 5-px dot at <code>left: 26px</code> simulating a vertical guide rail.</p>
+        </div>
+        <span class="spec-tag">open · interactive</span>
+      </header>
+      <div class="spec-canvas" id="dropdown-demo">
+        <div class="sb">
+          <div class="sb-head">
+            <img src="../assets/logo-attrus-dark.svg" alt="ATTRUS">
+            <button class="toggle" aria-label="Collapse"><i data-lucide="panel-left"></i></button>
+          </div>
+          <div class="sb-body">
+            <div class="sb-item"><i data-lucide="home" class="ic"></i><span class="label">Home</span></div>
+            <div class="sb-group" aria-expanded="true" data-toggle="group">
+              <div class="sb-item"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transactions</span><i data-lucide="chevron-right" class="chev"></i></div>
+              <div class="sb-children">
+                <div class="sb-children-inner">
+                  <div class="sb-subitem active"><span class="label">All transactions</span><span class="count">12</span></div>
+                  <div class="sb-subitem"><span class="label">Pay-ins</span></div>
+                  <div class="sb-subitem"><span class="label">Pay-outs</span></div>
+                  <div class="sb-subitem"><span class="label">Disputes</span><span class="count">2</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="sb-group" aria-expanded="false" data-toggle="group">
+              <div class="sb-item"><i data-lucide="wallet" class="ic"></i><span class="label">Accounts</span><i data-lucide="chevron-right" class="chev"></i></div>
+              <div class="sb-children">
+                <div class="sb-children-inner">
+                  <div class="sb-subitem"><span class="label">Internal accounts</span></div>
+                  <div class="sb-subitem"><span class="label">Fee accounts</span></div>
+                  <div class="sb-subitem"><span class="label">Wallet</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="sb-item"><i data-lucide="contact" class="ic"></i><span class="label">Counterparties</span></div>
+            <div class="sb-item"><i data-lucide="inbox" class="ic"></i><span class="label">Receivables</span><span class="badge alert">3</span></div>
+          </div>
+          <div class="sb-foot">
+            <span class="avatar">JD</span>
+            <span class="meta"><span class="name">John Doe</span><span class="role">Acme · Admin</span></span>
+            <span class="logout"><i data-lucide="log-out"></i></span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Collapsed rail — groups</h3>
+          <p>In the 60-px rail, groups collapse to their parent icon only. Children are unreachable from the rail; the user must expand the sidebar first. <em>Never</em> spawn a side-flyout popover from a collapsed icon — it fights the rail's calm posture.</p>
+        </div>
+        <span class="spec-tag">collapsed</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="sb collapsed">
+          <div class="sb-head">
+            <button class="toggle" aria-label="Expand sidebar"><i data-lucide="panel-left"></i></button>
+          </div>
+          <div class="sb-body">
+            <div class="sb-item active" title="Home"><i data-lucide="home" class="ic"></i></div>
+            <div class="sb-item" title="Transactions"><i data-lucide="arrow-left-right" class="ic"></i></div>
+            <div class="sb-item" title="Accounts"><i data-lucide="wallet" class="ic"></i></div>
+            <div class="sb-item" title="Counterparties"><i data-lucide="contact" class="ic"></i></div>
+          </div>
+          <div class="sb-foot">
+            <span class="avatar">JD</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>When NOT to use a group</h3>
+          <p>Groups add a layer of nesting and a click cost. Use the table below to decide.</p>
+        </div>
+      </header>
+      <div style="padding: var(--space-5) var(--space-6);">
+        <table class="token-table">
+          <thead><tr><th>Situation</th><th>Use</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>1-2 sub-pages</td><td class="pattern-name">Tabs inside the page</td><td>Not worth the extra click. Tabs surface siblings without re-navigating.</td></tr>
+            <tr><td>3-6 related destinations</td><td class="pattern-name">Group / dropdown</td><td>Sweet spot. Collapse keeps the rail short; expand reveals all options.</td></tr>
+            <tr><td>7+ destinations</td><td class="pattern-name">Dedicated landing page</td><td>Too many for a dropdown to read at a glance. Build a "Hub" page with cards.</td></tr>
+            <tr><td>Mixed destinations + commands</td><td class="pattern-name">Split: nav-only group + page action bar</td><td>Commands belong in page headers, not the sidebar. Don't mix.</td></tr>
+            <tr><td>Dynamic count (user-created)</td><td class="pattern-name">Dedicated section with overflow</td><td>Pin the most-recent or pinned ones; offer a "See all" link to a full index.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <!-- 08 MOTION -->
+  <section class="doc-section" id="motion">
+    <h2><span class="num">08</span>Motion</h2>
+    <p class="lead">The sidebar has three motion responsibilities — width transition (collapse / expand), dropdown reveal, mobile drawer slide. Each uses a duration that fits its travel.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Collapse / expand rail width</h3>
+          <p>The whole <code>&lt;aside&gt;</code> animates width from <code>244px</code> → <code>60px</code> (or back). Use <code>--duration-base</code> with <code>--ease-standard</code> — 200ms is long enough to feel intentional, short enough not to interrupt navigation.</p>
+        </div>
+        <span class="spec-tag">200ms · ease-standard</span>
+      </header>
+      <div style="padding: var(--space-5) var(--space-6);">
+        <div class="recipe">
+<span class="key">aside</span> {
+  <span class="key">width</span>: 244px; <span class="muted">/* or 60px when .collapsed */</span>
+  <span class="key">transition</span>: <span class="var">width var(--duration-base) var(--ease-standard)</span>;
+}
+        </div>
+        <p style="font-size: var(--fs-sm); color: var(--color-foreground-secondary); margin-top: var(--space-4); line-height: var(--lh-relaxed);">
+          Labels fade out independently (<code>opacity 1 → 0</code> at <code>--duration-fast</code>) so they disappear before the rail finishes shrinking — otherwise they'd be sliced mid-letter. Section labels collapse to a 1-px hairline divider via the same width transition.
+        </p>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Dropdown reveal (group expand)</h3>
+          <p>The children container uses <code>grid-template-rows: 0fr → 1fr</code> — the only height-animation technique that works without knowing the content's height in advance. Chevron rotates simultaneously.</p>
+        </div>
+        <span class="spec-tag">200ms · ease-standard</span>
+      </header>
+      <div style="padding: var(--space-5) var(--space-6);">
+        <div class="recipe">
+<span class="key">.sb-children</span> {
+  <span class="key">overflow</span>: hidden;
+  <span class="key">display</span>: grid;
+  <span class="key">grid-template-rows</span>: 0fr; <span class="muted">/* collapsed */</span>
+  <span class="key">transition</span>: <span class="var">grid-template-rows var(--duration-base) var(--ease-standard)</span>;
+}
+<span class="key">.sb-children &gt; .sb-children-inner</span> {
+  <span class="key">min-height</span>: 0;
+}
+<span class="key">.sb-group[aria-expanded="true"] .sb-children</span> {
+  <span class="key">grid-template-rows</span>: 1fr; <span class="muted">/* expanded */</span>
+}
+
+<span class="key">.chev</span> {
+  <span class="key">transition</span>: <span class="var">transform var(--duration-base) var(--ease-standard)</span>;
+}
+<span class="key">.sb-group[aria-expanded="true"] .chev</span> {
+  <span class="key">transform</span>: rotate(90deg);
+}
+        </div>
+        <p style="font-size: var(--fs-sm); color: var(--color-foreground-secondary); margin-top: var(--space-4); line-height: var(--lh-relaxed);">
+          <strong style="color: var(--color-foreground-default);">Why <code>grid-template-rows</code>?</strong> Because <code>height: auto</code> can't be animated. Setting an explicit <code>max-height</code> forces an arbitrary cap that breaks long lists. The grid trick lets the browser measure intrinsic height and animate to it cleanly.
+        </p>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Mobile drawer — enter / exit</h3>
+          <p>On viewports ≤ 900px the sidebar lives off-screen. It slides in from the left when the user opens the mobile menu, behind a blurred scrim that animates opacity in lockstep.</p>
+        </div>
+        <span class="spec-tag">320ms · ease-standard</span>
+      </header>
+      <div style="padding: var(--space-5) var(--space-6);">
+        <div class="recipe">
+<span class="key">aside.mobile</span> {
+  <span class="key">position</span>: fixed; top: 0; left: 0; bottom: 0;
+  <span class="key">transform</span>: translateX(-100%); <span class="muted">/* hidden */</span>
+  <span class="key">transition</span>: <span class="var">transform var(--duration-slow) var(--ease-standard)</span>;
+  <span class="key">box-shadow</span>: <span class="var">var(--shadow-xl)</span>; <span class="muted">/* when open */</span>
+}
+<span class="key">aside.mobile.is-open</span> {
+  <span class="key">transform</span>: translateX(0);
+}
+
+<span class="key">.scrim</span> {
+  <span class="key">position</span>: fixed; inset: 0;
+  <span class="key">background</span>: <span class="var">var(--color-scrim)</span>;
+  <span class="key">backdrop-filter</span>: blur(2px);
+  <span class="key">opacity</span>: 0;
+  <span class="key">transition</span>: <span class="var">opacity var(--duration-slow) var(--ease-standard)</span>;
+}
+<span class="key">.scrim.is-open</span> { <span class="key">opacity</span>: 1; }
+        </div>
+        <p style="font-size: var(--fs-sm); color: var(--color-foreground-secondary); margin-top: var(--space-4); line-height: var(--lh-relaxed);">
+          <strong style="color: var(--color-foreground-default);">Exit animation:</strong> when the scrim is clicked or the close affordance is tapped, the drawer translates back to <code>-100%</code> at the same 320ms duration. <em>Both</em> drawer and scrim animate together — they must arrive and leave in lockstep, or the scrim flashes empty for a frame.
+        </p>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Idle micro-transitions</h3>
+          <p>Per-item state changes use <code>--transition-fast</code> (140ms). No padding-shifts, no icon nudges, no scale. Sidebars are heavily visited — anything slower than 150ms reads as drag.</p>
+        </div>
+        <span class="spec-tag">140ms · ease-standard</span>
+      </header>
+      <div style="padding: var(--space-5) var(--space-6);">
+        <table class="token-table">
+          <thead><tr><th>Trigger</th><th>Property</th><th>Token</th></tr></thead>
+          <tbody>
+            <tr><td>Hover</td><td>background, color</td><td><code>var(--transition-fast)</code></td></tr>
+            <tr><td>Idle → active</td><td>background, color, font-weight</td><td><code>var(--transition-fast)</code></td></tr>
+            <tr><td>Focus ring appears</td><td>box-shadow</td><td><code>var(--transition-fast)</code></td></tr>
+            <tr><td>Chevron rotate</td><td>transform</td><td><code>var(--duration-base) var(--ease-standard)</code></td></tr>
+            <tr><td>Group expand/collapse</td><td>grid-template-rows</td><td><code>var(--duration-base) var(--ease-standard)</code></td></tr>
+            <tr><td>Rail width</td><td>width</td><td><code>var(--duration-base) var(--ease-standard)</code></td></tr>
+            <tr><td>Mobile drawer</td><td>transform, opacity</td><td><code>var(--duration-slow) var(--ease-standard)</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <!-- 09 A11Y -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">09</span>Keyboard &amp; accessibility</h2>
+    <p class="lead">The sidebar is a single navigation landmark. Every item is reachable by Tab; arrow keys move between items within the rail.</p>
+
+    <table class="token-table">
+      <thead>
+        <tr><th>Concern</th><th>Behaviour</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Landmark</td><td><code>&lt;nav aria-label="Primary"&gt;</code></td><td>Single landmark. The TopBar uses its own <code>&lt;header role="banner"&gt;</code>.</td></tr>
+        <tr><td>Tab order</td><td>Logo → toggle → each item → footer user → logout</td><td>Items follow source order; section headers are skipped (they have no tabindex).</td></tr>
+        <tr><td>Arrow keys</td><td><kbd>↑</kbd> / <kbd>↓</kbd> move between items inside the rail</td><td>Wrap at top/bottom. <kbd>Home</kbd> / <kbd>End</kbd> jump to first / last.</td></tr>
+        <tr><td>Active state</td><td><code>aria-current="page"</code> on the active item</td><td>Plus the visual brand-50 background — both signals required.</td></tr>
+        <tr><td>Collapsed labels</td><td>Native <code>title</code> tooltip on each row</td><td>Lucide icons must be paired with <code>aria-label</code>; <code>title</code> alone isn't enough for screen readers.</td></tr>
+        <tr><td>Mobile drawer</td><td><code>role="dialog" aria-modal="true"</code></td><td>Focus trap inside the drawer; Esc closes; scrim click closes; restore focus to trigger.</td></tr>
+        <tr><td>Contrast</td><td>4.5:1 minimum for label text vs background</td><td>Item label on hover (foreground-default on background-hover) and active (brand-secondary-700 on brand-secondary-50) both pass AA.</td></tr>
+        <tr><td>Reduced motion</td><td>No motion in idle → hover or hover → active</td><td>Only the collapse toggle itself animates (width transition). Items use colour-only transitions ≤ 150ms.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 08 DON'TS -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">10</span>Don'ts</h2>
+    <p class="lead">Six anti-patterns the sidebar consistently attracts. Each one breaks either muscle memory or readability.</p>
+
+    <div class="dont-grid">
+      <div class="dont-card">
+        <i data-lucide="x-circle"></i>
+        <div class="body">
+          <strong>Don't nest items deeper than one level</strong>
+          <p>The sidebar is a top-level surface. Sub-pages live inside the content area (tabs, breadcrumbs, drawers). Never indent rows inside the sidebar.</p>
+        </div>
+      </div>
+      <div class="dont-card">
+        <i data-lucide="x-circle"></i>
+        <div class="body">
+          <strong>Don't use coloured rows for status</strong>
+          <p>The active row owns the brand-50 background. Don't paint other rows red/yellow/green to signal urgency — use a badge or count instead.</p>
+        </div>
+      </div>
+      <div class="dont-card">
+        <i data-lucide="x-circle"></i>
+        <div class="body">
+          <strong>Don't reorder sections per tenant</strong>
+          <p>The canonical order (product → company → integration) is muscle memory across the platform. Drag-and-drop reordering breaks new-employee onboarding for no win.</p>
+        </div>
+      </div>
+      <div class="dont-card">
+        <i data-lucide="x-circle"></i>
+        <div class="body">
+          <strong>Don't combine badge and count</strong>
+          <p>One trailing slot. Either say "3 things need attention" (badge) or "847 items total" (count). Stacking both reads as visual clutter.</p>
+        </div>
+      </div>
+      <div class="dont-card">
+        <i data-lucide="x-circle"></i>
+        <div class="body">
+          <strong>Don't animate on idle → hover</strong>
+          <p>The sidebar is heavily visited. Padding-shifts, glow effects and icon nudges read as motion sickness over a long session. Colour-only transitions, max 150ms.</p>
+        </div>
+      </div>
+      <div class="dont-card">
+        <i data-lucide="x-circle"></i>
+        <div class="body">
+          <strong>Don't put primary CTAs in the sidebar</strong>
+          <p>"New transaction", "Add counterparty" — these belong in the TopBar or page-level header. Sidebar items are <em>destinations</em>, not commands.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08.5 ANIMATION PREVIEWS -->
+  <section class="doc-section" id="anim-previews">
+    <h2><span class="num">08b</span>Animation previews</h2>
+    <p class="lead">Interactive demos for each motion. Click the <strong>Replay</strong> button on any stage to retrigger.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Dropdown reveal — group expand / collapse</h3>
+          <p>Children container animates <code>grid-template-rows: 0fr → 1fr</code>. Chevron rotates 90°. Both at <code>--duration-base</code> with <code>--ease-standard</code>.</p>
+        </div>
+        <span class="spec-tag">200ms</span>
+      </header>
+      <div class="anim-stage" data-anim="dropdown">
+        <button class="anim-replay" type="button"><i data-lucide="play"></i>Toggle</button>
+        <div class="sb" style="width: 244px;">
+          <div class="sb-head">
+            <img src="../assets/logo-attrus-dark.svg" alt="ATTRUS">
+          </div>
+          <div class="sb-body">
+            <div class="sb-item"><i data-lucide="home" class="ic"></i><span class="label">Home</span></div>
+            <div class="sb-group" aria-expanded="false">
+              <div class="sb-item"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transactions</span><i data-lucide="chevron-right" class="chev"></i></div>
+              <div class="sb-children">
+                <div class="sb-children-inner">
+                  <div class="sb-subitem"><span class="label">All transactions</span><span class="count">12</span></div>
+                  <div class="sb-subitem"><span class="label">Pay-ins</span></div>
+                  <div class="sb-subitem"><span class="label">Pay-outs</span></div>
+                  <div class="sb-subitem"><span class="label">Drafts</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="sb-item"><i data-lucide="wallet" class="ic"></i><span class="label">Accounts</span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Rail collapse — expanded ↔ collapsed</h3>
+          <p>Width transitions from <code>244px → 60px</code>. Labels, badges and counts fade away. Section labels collapse to 1px hairlines.</p>
+        </div>
+        <span class="spec-tag">220ms</span>
+      </header>
+      <div class="anim-stage" data-anim="collapse-rail">
+        <button class="anim-replay" type="button"><i data-lucide="play"></i>Toggle</button>
+        <div class="sb" style="transition: width var(--duration-base) var(--ease-standard);">
+          <div class="sb-head">
+            <img class="sb-logo-full" src="../assets/logo-attrus-dark.svg" alt="ATTRUS">
+            <img class="sb-logo-icon" src="../assets/icon-attrus-dark.svg" alt="ATTRUS" style="display: none; height: 18px;">
+            <button class="toggle" aria-label="Toggle"><i data-lucide="panel-left"></i></button>
+          </div>
+          <div class="sb-body">
+            <div class="sb-item active"><i data-lucide="home" class="ic"></i><span class="label">Home</span></div>
+            <div class="sb-item"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transactions</span></div>
+            <div class="sb-item"><i data-lucide="wallet" class="ic"></i><span class="label">Accounts</span></div>
+            <div class="sb-section">My company</div>
+            <div class="sb-item"><i data-lucide="users-round" class="ic"></i><span class="label">Teams</span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Mobile drawer — enter / exit</h3>
+          <p>Slides in from the left with <code>transform: translateX</code>. Scrim fades in simultaneously. <code>--duration-deliberate</code> with <code>--ease-emphasis</code>.</p>
+        </div>
+        <span class="spec-tag">640ms · emphasis</span>
+      </header>
+      <div class="anim-stage" data-anim="drawer-enter">
+        <button class="anim-replay" type="button"><i data-lucide="play"></i>Replay</button>
+        <div class="demo-stage-window">
+          <div class="demo-scrim is-open"></div>
+          <div class="demo-drawer is-open">
+            <div class="row active"></div>
+            <div class="row"></div>
+            <div class="row"></div>
+            <div class="row"></div>
+            <div class="row"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 09 TOKENS -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">11</span>Tokens</h2>
+    <p class="lead">All values resolve through the design system. No magic numbers.</p>
+
+    <table class="token-table">
+      <thead>
+        <tr><th>Concept</th><th>Token</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Surface</td><td><code>var(--color-background-surface)</code></td><td>The rail itself</td></tr>
+        <tr><td>Border (right)</td><td><code>1px solid var(--color-border-default)</code></td><td>Separator with content area</td></tr>
+        <tr><td>Item · idle label</td><td><code>var(--color-foreground-secondary)</code></td><td>Default row colour</td></tr>
+        <tr><td>Item · idle icon</td><td><code>var(--color-foreground-secondary)</code> at 0.85 opacity</td><td>Slightly dimmer than label</td></tr>
+        <tr><td>Item · hover bg</td><td><code>var(--color-background-hover)</code></td><td>Neutral subtle wash</td></tr>
+        <tr><td>Item · hover label</td><td><code>var(--color-foreground-default)</code></td><td>Promoted to primary text</td></tr>
+        <tr><td>Item · active bg</td><td><code>var(--color-brand-secondary-50)</code></td><td>Brand-tinted, low intensity</td></tr>
+        <tr><td>Item · active label</td><td><code>var(--color-brand-secondary-700)</code> at <code>--w-semibold</code></td><td>Promoted to brand emphasis</td></tr>
+        <tr><td>Item · active rail</td><td><code>2px var(--color-brand-secondary-500)</code></td><td>Left edge, height = row minus 14px</td></tr>
+        <tr><td>Item · focus ring</td><td><code>var(--shadow-focus)</code></td><td>Keyboard navigation only</td></tr>
+        <tr><td>Item · disabled</td><td><code>var(--color-foreground-placeholder)</code></td><td>50% opacity is forbidden — use the placeholder token</td></tr>
+        <tr><td>Section label</td><td><code>var(--color-foreground-muted)</code> · <code>--fs-xxs</code> · <code>--ls-caps</code></td><td>Uppercase tracking</td></tr>
+        <tr><td>Badge · brand</td><td><code>var(--color-brand-secondary-500)</code> on <code>var(--color-pure-white)</code></td><td>Announcements (NEW)</td></tr>
+        <tr><td>Badge · alert</td><td><code>var(--color-danger-500)</code> on <code>var(--color-pure-white)</code></td><td>Urgent attention</td></tr>
+        <tr><td>Badge · warning</td><td><code>var(--color-warning-500)</code> on <code>var(--color-pure-white)</code></td><td>Beta / heads-up</td></tr>
+        <tr><td>Count chip</td><td><code>var(--color-background-subtle)</code> + <code>var(--color-foreground-muted)</code> · <code>--font-mono</code></td><td>Tabular figures</td></tr>
+        <tr><td>Width · expanded</td><td><code>244px</code></td><td>Fixed</td></tr>
+        <tr><td>Width · collapsed</td><td><code>60px</code></td><td>Fixed; sections collapse to 1px hairlines</td></tr>
+        <tr><td>Width transition</td><td><code>0.22s var(--ease-standard)</code></td><td>The only motion on the sidebar</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+
+  /* All .sb-group rows are clickable — toggle aria-expanded.
+     Click on parent row OR its chevron expands/collapses children. */
+  document.querySelectorAll('.sb-group').forEach(g => {
+    const trigger = g.querySelector(':scope > .sb-item');
+    if (!trigger) return;
+    trigger.style.cursor = 'pointer';
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = g.getAttribute('aria-expanded') === 'true';
+      g.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+  });
+
+  /* Replay buttons inside animation preview cards.
+     Toggling .replay-running off → on retriggers the CSS animation/transition. */
+  document.querySelectorAll('[data-anim]').forEach(stage => {
+    const btn = stage.querySelector('.anim-replay');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      const target = stage.querySelector('[data-anim-target]') || stage;
+      // For transition-based animations (grid-template-rows, width)
+      // we just toggle the aria-expanded / data-collapsed state.
+      const kind = stage.getAttribute('data-anim');
+
+      if (kind === 'dropdown') {
+        const g = stage.querySelector('.sb-group');
+        const open = g.getAttribute('aria-expanded') === 'true';
+        g.setAttribute('aria-expanded', open ? 'false' : 'true');
+        return;
+      }
+
+      if (kind === 'collapse-rail') {
+        const sb = stage.querySelector('.sb');
+        sb.classList.toggle('collapsed');
+        return;
+      }
+
+      if (kind === 'drawer-enter') {
+        const drawer = stage.querySelector('.demo-drawer');
+        const scrim = stage.querySelector('.demo-scrim');
+        // Slide out first
+        drawer.classList.remove('is-open');
+        scrim.classList.remove('is-open');
+        // Wait for exit transition to finish, then slide in
+        setTimeout(() => {
+          drawer.classList.add('is-open');
+          scrim.classList.add('is-open');
+        }, 700);
+        return;
+      }
+
+      // Default: keyframe-based — toggle .is-playing class with reflow
+      target.classList.remove('is-playing');
+      void target.offsetWidth;
+      target.classList.add('is-playing');
+    });
+  });
+</script>
+
+</body>
+</html>

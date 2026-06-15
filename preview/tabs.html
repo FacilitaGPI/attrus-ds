@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Brand" name="Tabs — docs page" subtitle="Standalone Tabs component documentation" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tabs · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 64ch; }
+  .doc-header p code { font-family: var(--font-mono); font-size: 0.85em; background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-accent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 72ch; margin: 0 0 var(--space-7); }
+
+  .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
+  .spec-head { padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-sm); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .spec-tag { display: inline-flex; align-items: center; padding: var(--space-1) var(--space-3); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); border-radius: var(--radius-pill); flex-shrink: 0; }
+  .spec-canvas { padding: var(--space-8) var(--space-6); background: var(--color-background-canvas); background-image: linear-gradient(var(--color-border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; display: flex; flex-wrap: wrap; gap: var(--space-8); align-items: center; }
+  .spec-canvas-stack { flex-direction: column; align-items: stretch; }
+  .spec-body { padding: var(--space-5) var(--space-6); }
+  .legend { display: block; font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin: 0 0 var(--space-3); }
+
+  .anatomy-list ol { padding-left: 0; margin: var(--space-6) 0 0; counter-reset: anat; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3) var(--space-8); }
+  .anatomy-list li { counter-increment: anat; padding-left: var(--space-7); position: relative; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-sm); }
+  .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+  .anatomy-list code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+
+  .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; margin-top: var(--space-4); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .token-table tr:last-child td { border-bottom: none; }
+  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  .dont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .dont-card-canvas { padding: var(--space-6) var(--space-5); background: var(--color-background-canvas); border-bottom: 1px solid var(--color-border-subtle); display: flex; justify-content: center; align-items: center; min-height: 96px; }
+  .dont-card-body { padding: var(--space-4) var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
+  .dont-card.do .dont-card-body i, .dont-card.do .dont-card-body svg { color: var(--color-feedback-success-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-card.dont .dont-card-body i, .dont-card.dont .dont-card-body svg { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-card-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .dont-card-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+
+  /* Interactive demo panel */
+  .demo-card { border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; background: var(--color-background-surface); max-width: 620px; box-shadow: var(--shadow-xs); }
+  .demo-panel { padding: var(--space-6); min-height: 132px; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .demo-panel h4 { margin: 0 0 var(--space-2); font-size: var(--fs-md); font-weight: var(--w-bold); color: var(--color-foreground-default); letter-spacing: var(--ls-title); }
+  .demo-panel .money { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: var(--w-semibold); color: var(--color-foreground-default); }
+
+  /* Phone frame for the mobile demo */
+  .resp-stage { display: flex; gap: var(--space-8); align-items: flex-start; flex-wrap: wrap; }
+  .resp-stage .resp-note { flex: 1; min-width: 240px; }
+  .resp-stage .resp-note h4 { font-size: var(--fs-md); font-weight: var(--w-bold); margin: 0 0 var(--space-2); letter-spacing: var(--ls-title); }
+  .resp-stage .resp-note p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-3); }
+  .resp-stage .resp-note code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+  .phone { width: 100%; max-width: 380px; flex: 0 1 380px; min-width: 0; box-sizing: border-box; background: var(--color-neutral-800); border-radius: 40px; padding: 12px; box-shadow: var(--shadow-lg); }
+  .phone-screen { background: var(--color-background-canvas); border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; }
+  .phone-statusbar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-2) var(--space-5) var(--space-1); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-secondary); flex-shrink: 0; }
+  .phone-statusbar .dots { display: inline-flex; gap: 4px; align-items: center; }
+  .phone-statusbar .dots i, .phone-statusbar .dots svg { width: 13px; height: 13px; }
+  .phone-appbar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-5); background: var(--color-background-surface); flex-shrink: 0; }
+  .phone-appbar .ttl { font-size: var(--fs-base); font-weight: var(--w-bold); letter-spacing: var(--ls-title); }
+  .phone-appbar i, .phone-appbar svg { width: 18px; height: 18px; color: var(--color-foreground-secondary); }
+  .phone-body { overflow-x: hidden; }
+  .phone-body .demo-panel { min-height: 88px; padding: var(--space-5); }
+  .phone-section { padding: var(--space-4) var(--space-4) 0; }
+  .phone-section .legend { margin-bottom: var(--space-3); }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<div class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Tabs</h1>
+      <p>Non-sequential navigation between sibling views that share one context. Two flavours: <code>.tabs</code> (underline) for primary panel navigation, <code>.tabs-pill</code> (segmented) for compact filters and toolbars. Count badges, icons and full keyboard support. For <em>sequential</em> flows use the <a href="stepper.html" style="color: var(--color-foreground-highlight); text-decoration: none; border-bottom: 1px dotted currentColor;">Stepper</a> instead.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Stable</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#anatomy">01 Anatomy</a>
+    <a href="#variants">02 Variants</a>
+    <a href="#pill">03 Pill / segmented</a>
+    <a href="#sizes">04 Sizes</a>
+    <a href="#counts">05 Counts &amp; icons</a>
+    <a href="#states">06 States</a>
+    <a href="#demo">07 Live demo</a>
+    <a href="#mobile">08 Mobile</a>
+    <a href="#usage">09 When to use</a>
+    <a href="#donts">10 Don'ts</a>
+    <a href="#a11y">11 Accessibility</a>
+    <a href="#tokens">12 Tokens</a>
+  </nav>
+
+  <!-- ─── 01 ANATOMY ─── -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">01</span>Anatomy</h2>
+    <p class="lead">A <code>.tabs</code> container holds a row of <code>.tab</code> buttons. The selected tab carries <code>aria-selected="true"</code>, which drives both the brand-coloured label and the 2px underline indicator. Optional <code>.tab-count</code> badges sit after the label.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>The parts</h3><p>One underline tab set with a count badge and a disabled tab.</p></div>
+        <span class="spec-tag">Underline</span>
+      </div>
+      <div class="spec-canvas spec-canvas-stack">
+        <div class="tabs" role="tablist" aria-label="Transactions" style="background: var(--color-background-surface); padding: 0 var(--space-4); border-radius: var(--radius-md) var(--radius-md) 0 0;">
+          <button class="tab" role="tab" aria-selected="true"><span class="tab-label" data-label="All">All</span> <span class="tab-count">128</span></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Pending">Pending</span> <span class="tab-count">12</span></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Settled">Settled</span> <span class="tab-count">98</span></button>
+          <button class="tab" role="tab" aria-selected="false" disabled><span class="tab-label" data-label="Archived">Archived</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="anatomy-list">
+      <ol>
+        <li><strong>Container <code>.tabs</code></strong> — <code>role="tablist"</code> with an <code>aria-label</code>. Owns the bottom hairline that the active underline sits on.</li>
+        <li><strong>Tab <code>.tab</code></strong> — a real <code>&lt;button role="tab"&gt;</code>. Selected state via <code>aria-selected="true"</code> (preferred) or <code>.is-active</code>.</li>
+        <li><strong>Indicator <code>::after</code></strong> — the 2px brand underline, inset from the label edges; drawn only on the active tab.</li>
+        <li><strong>Count <code>.tab-count</code></strong> — mono badge showing inventory; recolours to brand on the active tab.</li>
+        <li><strong>Disabled <code>[disabled]</code></strong> — dims via the disabled foreground token; never carries a count.</li>
+        <li><strong>Panel</strong> — the content region the tabs switch (your markup); associate with <code>role="tabpanel"</code> + <code>aria-labelledby</code>.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ─── 02 VARIANTS ─── -->
+  <section class="doc-section" id="variants">
+    <h2><span class="num">02</span>Variants</h2>
+    <p class="lead">Two variants share one markup — the only difference is <code>.tabs-pill</code> on the container. Underline is the default for view-level navigation; pill is for compact, in-component switching where an underline would compete with surrounding chrome.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Underline <code>.tabs</code></h3><p>Page- or panel-level navigation. Sits flush on a surface edge; the active underline ties the selected tab to the content below.</p></div>
+        <span class="spec-tag">Default</span>
+      </div>
+      <div class="spec-canvas spec-canvas-stack">
+        <div class="tabs" role="tablist" aria-label="Account sections" style="background: var(--color-background-surface); padding: 0 var(--space-4); border-radius: var(--radius-md) var(--radius-md) 0 0;">
+          <button class="tab" role="tab" aria-selected="true"><span class="tab-label" data-label="Overview">Overview</span></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Transactions">Transactions</span></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Counterparties">Counterparties</span></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Settings">Settings</span></button>
+        </div>
+      </div>
+    </div>
+
+    <table class="token-table">
+      <thead><tr><th></th><th>Underline <code>.tabs</code></th><th>Pill <code>.tabs-pill</code></th></tr></thead>
+      <tbody>
+        <tr><td>Active cue</td><td>2px brand underline + bold brand label</td><td>Lifted white surface + shadow, default-foreground label</td></tr>
+        <tr><td>Container</td><td>Open, bottom hairline only</td><td>Closed rounded shell with a subtle fill</td></tr>
+        <tr><td>Best for</td><td>Primary view navigation tied to a panel below</td><td>In-place filters / view toggles inside a card or toolbar</td></tr>
+        <tr><td>Sits on</td><td>A surface edge (flush, no margin)</td><td>Anywhere inline; self-contained</td></tr>
+        <tr><td>Typical count</td><td>3–6 tabs</td><td>2–4 short, symmetric options</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─── 03 PILL / SEGMENTED ─── -->
+  <section class="doc-section" id="pill">
+    <h2><span class="num">03</span>Pill / segmented</h2>
+    <p class="lead">The <code>.tabs-pill</code> control is a self-contained segmented switch: a rounded shell with a subtle fill, where the active segment lifts onto a white surface with a soft shadow — no underline. Use it for short, mutually-exclusive choices that act <em>in place</em> (a filter or view toggle) rather than navigating to a different panel.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Default <code>.tabs-pill</code></h3><p>Segments size to their content. Good when labels differ in length.</p></div>
+        <span class="spec-tag">Auto width</span>
+      </div>
+      <div class="spec-canvas">
+        <div class="tabs tabs-pill" role="tablist" aria-label="Range">
+          <button class="tab" role="tab" aria-selected="true"><span class="tab-label" data-label="Day">Day</span></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Week">Week</span></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Month">Month</span></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Year to date">Year to date</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Equal segments <code>.tabs-pill.is-equal</code></h3><p>Every segment the same width regardless of label. The classic symmetric control for 2–4 peer options.</p></div>
+        <span class="spec-tag">Equal width</span>
+      </div>
+      <div class="spec-canvas">
+        <div class="tabs tabs-pill is-equal" role="tablist" aria-label="Range equal" style="min-width: 320px;">
+          <button class="tab" role="tab" aria-selected="true"><span class="tab-label" data-label="Day">Day</span></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Week">Week</span></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Month">Month</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Full width <code>.tabs-pill.is-block</code></h3><p>Stretches to fill its container with equal segments — for narrow columns, drawers and mobile sheets.</p></div>
+        <span class="spec-tag">Block</span>
+      </div>
+      <div class="spec-canvas spec-canvas-stack">
+        <div class="tabs tabs-pill is-block" role="tablist" aria-label="Period" style="max-width: 460px;">
+          <button class="tab" role="tab" aria-selected="true"><span class="tab-label" data-label="Pay-in">Pay-in</span></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Pay-out">Pay-out</span></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="All">All</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Icon-only <code>.tab.is-icon</code></h3><p>Square segments for view toggles where the icon is self-explanatory. Always supply an <code>aria-label</code> — there's no visible text.</p></div>
+        <span class="spec-tag">Icon</span>
+      </div>
+      <div class="spec-canvas">
+        <div class="tabs tabs-pill" role="tablist" aria-label="Layout">
+          <button class="tab is-icon" role="tab" aria-selected="true" aria-label="List view"><i data-lucide="list"></i></button>
+          <button class="tab is-icon" role="tab" aria-selected="false" aria-label="Grid view"><i data-lucide="layout-grid"></i></button>
+          <button class="tab is-icon" role="tab" aria-selected="false" aria-label="Board view"><i data-lucide="columns-3"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <table class="token-table">
+      <thead><tr><th>Guideline</th><th>Detail</th></tr></thead>
+      <tbody>
+        <tr><td>Keep it short</td><td>2–4 segments, one or two words each. Longer sets belong in underline tabs or a select.</td></tr>
+        <tr><td>Symmetric options</td><td>Use for peer choices of the same kind (Day/Week/Month). Don't mix a destination tab with a filter.</td></tr>
+        <tr><td>Equal vs auto width</td><td>Prefer <code>.is-equal</code> when labels are similar length; auto width when one label is much longer.</td></tr>
+        <tr><td>Don't stack the shell</td><td>One row only. A pill control never wraps — switch to underline tabs if it would.</td></tr>
+        <tr><td>No counts</td><td>Count badges read poorly inside the tight pill shell; keep counts to underline tabs.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─── 04 SIZES ─── -->
+  <section class="doc-section" id="sizes">
+    <h2><span class="num">04</span>Sizes</h2>
+    <p class="lead">Three sizes, set on the container and honoured by both variants: <code>.tabs-sm</code>, default, and <code>.tabs-lg</code>. Match the size to the surface — small in dense toolbars and drawers, large for page-level primary navigation.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Underline sizes</h3><p>Padding, type scale, count badge and icon all step together. The active underline inset tracks the padding so it stays visually centred.</p></div>
+      </div>
+      <div class="spec-canvas spec-canvas-stack">
+        <div><span class="legend">small · .tabs-sm</span>
+          <div class="tabs tabs-sm" role="tablist" aria-label="Small underline" style="background: var(--color-background-surface); padding: 0 var(--space-3); border-radius: var(--radius-md) var(--radius-md) 0 0;">
+            <button class="tab" role="tab" aria-selected="true"><span class="tab-label" data-label="Overview">Overview</span></button>
+            <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Activity">Activity</span> <span class="tab-count">8</span></button>
+            <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Settings">Settings</span></button>
+          </div>
+        </div>
+        <div><span class="legend">default</span>
+          <div class="tabs" role="tablist" aria-label="Default underline" style="background: var(--color-background-surface); padding: 0 var(--space-4); border-radius: var(--radius-md) var(--radius-md) 0 0;">
+            <button class="tab" role="tab" aria-selected="true"><span class="tab-label" data-label="Overview">Overview</span></button>
+            <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Activity">Activity</span> <span class="tab-count">8</span></button>
+            <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Settings">Settings</span></button>
+          </div>
+        </div>
+        <div><span class="legend">large · .tabs-lg</span>
+          <div class="tabs tabs-lg" role="tablist" aria-label="Large underline" style="background: var(--color-background-surface); padding: 0 var(--space-5); border-radius: var(--radius-md) var(--radius-md) 0 0;">
+            <button class="tab" role="tab" aria-selected="true"><span class="tab-label" data-label="Overview">Overview</span></button>
+            <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Activity">Activity</span> <span class="tab-count">8</span></button>
+            <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Settings">Settings</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Pill sizes</h3><p>The same three sizes apply to <code>.tabs-pill</code> — combine the size class with <code>.tabs-pill</code> (e.g. <code>.tabs-pill.tabs-sm</code>).</p></div>
+      </div>
+      <div class="spec-canvas spec-canvas-stack">
+        <div><span class="legend">small</span>
+          <div class="tabs tabs-pill tabs-sm" role="tablist" aria-label="Small pill">
+            <button class="tab" role="tab" aria-selected="true"><span class="tab-label" data-label="Day">Day</span></button>
+            <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Week">Week</span></button>
+            <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Month">Month</span></button>
+          </div>
+        </div>
+        <div><span class="legend">default</span>
+          <div class="tabs tabs-pill" role="tablist" aria-label="Default pill">
+            <button class="tab" role="tab" aria-selected="true"><span class="tab-label" data-label="Day">Day</span></button>
+            <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Week">Week</span></button>
+            <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Month">Month</span></button>
+          </div>
+        </div>
+        <div><span class="legend">large</span>
+          <div class="tabs tabs-pill tabs-lg" role="tablist" aria-label="Large pill">
+            <button class="tab" role="tab" aria-selected="true"><span class="tab-label" data-label="Day">Day</span></button>
+            <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Week">Week</span></button>
+            <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Month">Month</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <table class="token-table">
+      <thead><tr><th>Size</th><th>Padding (underline)</th><th>Type</th><th>Use for</th></tr></thead>
+      <tbody>
+        <tr><td><code>.tabs-sm</code></td><td><code>space-2 space-3</code> (4·8)</td><td><code>--fs-xs</code></td><td>Toolbars, card headers, drawers, dense filters.</td></tr>
+        <tr><td>default</td><td><code>space-3 space-4</code> (8·12)</td><td><code>--fs-sm</code></td><td>Most panel and section navigation.</td></tr>
+        <tr><td><code>.tabs-lg</code></td><td><code>space-4 space-5</code> (12·16)</td><td><code>--fs-md</code></td><td>Page-level primary navigation, marketing surfaces.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─── 05 COUNTS & ICONS ─── -->
+  <section class="doc-section" id="counts">
+    <h2><span class="num">05</span>Counts &amp; icons</h2>
+    <p class="lead">Tabs can carry a leading icon, a trailing count, or both. Counts show inventory so users choose a tab knowing what's behind it; icons aid scanning in pill toolbars. Don't use both a count and an icon on the same tab — it crowds the label.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Count badges <code>.tab-count</code></h3><p>Right of the label. Inactive badges are neutral grey; the active tab's badge picks up the brand tint to stay legible against the bold label.</p></div>
+      </div>
+      <div class="spec-canvas spec-canvas-stack">
+        <div class="tabs" role="tablist" aria-label="Inbox" style="background: var(--color-background-surface); padding: 0 var(--space-4); border-radius: var(--radius-md) var(--radius-md) 0 0;">
+          <button class="tab" role="tab" aria-selected="true"><span class="tab-label" data-label="Inbox">Inbox</span> <span class="tab-count">24</span></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Flagged">Flagged</span> <span class="tab-count">3</span></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Sent">Sent</span> <span class="tab-count">1.2k</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Leading icons</h3><p>Icons sit before the label at 15px to match the type. Best in pill toolbars where labels are short.</p></div>
+      </div>
+      <div class="spec-canvas">
+        <div class="tabs tabs-pill" role="tablist" aria-label="View">
+          <button class="tab" role="tab" aria-selected="true"><i data-lucide="layout-dashboard"></i><span class="tab-label" data-label="Board">Board</span></button>
+          <button class="tab" role="tab" aria-selected="false"><i data-lucide="calendar"></i><span class="tab-label" data-label="Calendar">Calendar</span></button>
+          <button class="tab" role="tab" aria-selected="false"><i data-lucide="table-2"></i><span class="tab-label" data-label="Table">Table</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 06 STATES ─── -->
+  <section class="doc-section" id="states">
+    <h2><span class="num">06</span>States</h2>
+    <p class="lead">Default, hover, active and disabled — plus the keyboard focus ring shared with Buttons and Inputs. Exactly one tab is active at a time.</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>State reference</h3><p>The same tab set showing each state side by side. Tab into the set to see the focus ring.</p></div></div>
+      <div class="spec-canvas spec-canvas-stack">
+        <div class="tabs" role="tablist" aria-label="States" style="background: var(--color-background-surface); padding: 0 var(--space-4); border-radius: var(--radius-md) var(--radius-md) 0 0;">
+          <button class="tab" role="tab" aria-selected="true"><span class="tab-label" data-label="Active">Active</span></button>
+          <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Default">Default</span></button>
+          <button class="tab" role="tab" aria-selected="false" disabled><span class="tab-label" data-label="Disabled">Disabled</span></button>
+        </div>
+        <table class="token-table" style="margin-top: var(--space-2);">
+          <thead><tr><th>State</th><th>Treatment</th></tr></thead>
+          <tbody>
+            <tr><td>Default</td><td>Secondary-foreground label, medium weight, no underline.</td></tr>
+            <tr><td>Hover</td><td>Label darkens to default-foreground; no underline appears (avoids implying selection).</td></tr>
+            <tr><td>Active <code>aria-selected="true"</code></td><td>Brand-700 label, semibold, 2px brand-500 underline.</td></tr>
+            <tr><td>Focus-visible</td><td>2px focus ring inset around the tab; independent of selection.</td></tr>
+            <tr><td>Disabled <code>[disabled]</code></td><td>Dimmed via <code>--color-foreground-disabled</code> + reduced opacity; not focusable, not clickable.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 07 LIVE DEMO ─── -->
+  <section class="doc-section" id="demo">
+    <h2><span class="num">07</span>Live demo</h2>
+    <p class="lead">Click or use <code>← / →</code>, <code>Home / End</code> to move. Both demos use <code>.is-animated</code>: the indicator <strong>slides</strong> to the new tab and the panel fades in. The indicator recomputes on resize / rotation, so it stays aligned on mobile. Honours <code>prefers-reduced-motion</code>.</p>
+
+    <div class="demo-card">
+      <div class="tabs is-animated" role="tablist" aria-label="Account view" id="demo-tabs" style="padding: 0 var(--space-4);">
+        <button class="tab" role="tab" id="t-ov" aria-controls="p-ov" aria-selected="true" tabindex="0"><span class="tab-label" data-label="Overview">Overview</span></button>
+        <button class="tab" role="tab" id="t-tx" aria-controls="p-tx" aria-selected="false" tabindex="-1"><span class="tab-label" data-label="Transactions">Transactions</span> <span class="tab-count">128</span></button>
+        <button class="tab" role="tab" id="t-cp" aria-controls="p-cp" aria-selected="false" tabindex="-1"><span class="tab-label" data-label="Counterparties">Counterparties</span> <span class="tab-count">17</span></button>
+        <button class="tab" role="tab" id="t-st" aria-controls="p-st" aria-selected="false" tabindex="-1"><span class="tab-label" data-label="Settings">Settings</span></button>
+        <span class="tab-indicator" aria-hidden="true"></span>
+      </div>
+      <div class="demo-panel tab-panel-animated" role="tabpanel" id="p-ov" aria-labelledby="t-ov">
+        <h4>Overview</h4>
+        <p>Account balance <span class="money">USD 284,500.00</span> across 3 currencies. Net flow this month is positive. Switch tabs to drill into the records behind these numbers.</p>
+      </div>
+      <div class="demo-panel tab-panel-animated" role="tabpanel" id="p-tx" aria-labelledby="t-tx" hidden>
+        <h4>Transactions</h4>
+        <p>128 transactions in the selected period. The most recent is a <span class="money">BRL 1,000.00</span> pay-in from Aurora Logistics, settled 2 hours ago.</p>
+      </div>
+      <div class="demo-panel tab-panel-animated" role="tabpanel" id="p-cp" aria-labelledby="t-cp" hidden>
+        <h4>Counterparties</h4>
+        <p>17 active counterparties. Aurora Logistics and Belvo Pay LATAM account for 64% of 30-day volume.</p>
+      </div>
+      <div class="demo-panel tab-panel-animated" role="tabpanel" id="p-st" aria-labelledby="t-st" hidden>
+        <h4>Settings</h4>
+        <p>Notification rules, API keys and settlement defaults for this account. Changes apply to future transactions only.</p>
+      </div>
+    </div>
+
+    <p class="lead" style="margin-top: var(--space-8);">And the pill variant as an in-place filter — same roving-tabindex pattern, but instead of swapping a panel it re-filters the figure below.</p>
+
+    <div class="demo-card">
+      <div style="padding: var(--space-5) var(--space-6); display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap;">
+        <div>
+          <span class="legend" style="margin-bottom: var(--space-1);">Settled volume</span>
+          <div id="pill-figure" class="money" style="font-size: var(--fs-3xl); font-weight: var(--w-bold); color: var(--color-foreground-default); white-space: nowrap;">USD 48,200</div>
+          <div id="pill-sub" style="font-size: var(--fs-xs); color: var(--color-foreground-muted); margin-top: var(--space-1);">Today · 14 transactions</div>
+        </div>
+        <div class="tabs tabs-pill is-animated" role="tablist" aria-label="Period filter" id="pill-demo">
+          <button class="tab" role="tab" data-fig="USD 48,200" data-sub="Today · 14 transactions" aria-selected="true" tabindex="0"><span class="tab-label" data-label="Day">Day</span></button>
+          <button class="tab" role="tab" data-fig="USD 341,900" data-sub="This week · 96 transactions" aria-selected="false" tabindex="-1"><span class="tab-label" data-label="Week">Week</span></button>
+          <button class="tab" role="tab" data-fig="USD 1,284,500" data-sub="This month · 412 transactions" aria-selected="false" tabindex="-1"><span class="tab-label" data-label="Month">Month</span></button>
+          <button class="tab" role="tab" data-fig="USD 9,830,250" data-sub="Year to date · 3,118 transactions" aria-selected="false" tabindex="-1"><span class="tab-label" data-label="YTD">YTD</span></button>
+          <span class="tab-indicator" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 08 MOBILE ─── -->
+  <section class="doc-section" id="mobile">
+    <h2><span class="num">08</span>Mobile</h2>
+    <p class="lead">Tabs are dense, horizontal and tap-driven — three things that fight a narrow screen. Below is the same component on a phone, plus the rules that keep it usable. Resize this page narrow (or rotate a device) and the sliding indicator realigns automatically.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>On a phone</h3><p>Underline tabs that overflow use <code>.is-scroll</code> (swipe sideways); the filter uses a full-width pill <code>.is-block</code>. Both animate and meet the 44px touch target.</p></div>
+        <span class="spec-tag">Live</span>
+      </div>
+      <div class="spec-canvas">
+        <div class="resp-stage">
+          <div class="resp-note">
+            <h4>What changes on mobile</h4>
+            <p>Nothing about the markup — just three opt-in classes and the platform touch minimum kicking in:</p>
+            <ul style="margin: 0; padding-left: var(--space-5); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);">
+              <li>Overflowing underline tabs get <code>.is-scroll</code> → swipe, no page-wide horizontal scroll.</li>
+              <li>Filters become <code>.tabs-pill.is-block</code> → full-width, equal segments, thumb-friendly.</li>
+              <li>On a coarse pointer every tab is bumped to a <strong>≥44px</strong> hit height automatically.</li>
+              <li>The sliding indicator recomputes on resize / rotation, so it never drifts.</li>
+            </ul>
+          </div>
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="phone-statusbar">
+                <span>9:41</span>
+                <span class="dots"><i data-lucide="signal"></i><i data-lucide="wifi"></i><i data-lucide="battery-full"></i></span>
+              </div>
+              <div class="phone-appbar">
+                <span class="ttl">Account</span>
+                <i data-lucide="more-vertical"></i>
+              </div>
+              <div class="phone-body">
+                <div class="tabs is-animated is-scroll" role="tablist" aria-label="Account view (mobile)" id="m-tabs" style="background: var(--color-background-surface); padding: 0 var(--space-3);">
+                  <button class="tab" role="tab" aria-controls="mp-ov" aria-selected="true" tabindex="0"><span class="tab-label" data-label="Overview">Overview</span></button>
+                  <button class="tab" role="tab" aria-controls="mp-tx" aria-selected="false" tabindex="-1"><span class="tab-label" data-label="Transactions">Transactions</span> <span class="tab-count">128</span></button>
+                  <button class="tab" role="tab" aria-controls="mp-cp" aria-selected="false" tabindex="-1"><span class="tab-label" data-label="Counterparties">Counterparties</span></button>
+                  <button class="tab" role="tab" aria-controls="mp-se" aria-selected="false" tabindex="-1"><span class="tab-label" data-label="Statements">Statements</span></button>
+                  <button class="tab" role="tab" aria-controls="mp-st" aria-selected="false" tabindex="-1"><span class="tab-label" data-label="Settings">Settings</span></button>
+                  <span class="tab-indicator" aria-hidden="true"></span>
+                </div>
+                <div class="demo-panel tab-panel-animated" role="tabpanel" id="mp-ov" aria-labelledby="m-tabs">
+                  <h4 style="margin:0 0 var(--space-2); font-size: var(--fs-md); font-weight: var(--w-bold);">Overview</h4>
+                  <p style="margin:0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);">Balance <span class="money">USD 284,500.00</span> across 3 currencies. Swipe the tabs to reach Statements and Settings.</p>
+                </div>
+                <div class="demo-panel tab-panel-animated" role="tabpanel" id="mp-tx" hidden>
+                  <h4 style="margin:0 0 var(--space-2); font-size: var(--fs-md); font-weight: var(--w-bold);">Transactions</h4>
+                  <p style="margin:0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);">128 in the selected period. Latest: <span class="money">BRL 1,000.00</span> pay-in.</p>
+                </div>
+                <div class="demo-panel tab-panel-animated" role="tabpanel" id="mp-cp" hidden>
+                  <h4 style="margin:0 0 var(--space-2); font-size: var(--fs-md); font-weight: var(--w-bold);">Counterparties</h4>
+                  <p style="margin:0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);">17 active. Top two cover 64% of volume.</p>
+                </div>
+                <div class="demo-panel tab-panel-animated" role="tabpanel" id="mp-se" hidden>
+                  <h4 style="margin:0 0 var(--space-2); font-size: var(--fs-md); font-weight: var(--w-bold);">Statements</h4>
+                  <p style="margin:0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);">Monthly PDFs back to account opening.</p>
+                </div>
+                <div class="demo-panel tab-panel-animated" role="tabpanel" id="mp-st" hidden>
+                  <h4 style="margin:0 0 var(--space-2); font-size: var(--fs-md); font-weight: var(--w-bold);">Settings</h4>
+                  <p style="margin:0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);">Notifications, API keys, settlement defaults.</p>
+                </div>
+
+                <div class="phone-section">
+                  <span class="legend">Filter · full-width pill</span>
+                  <div class="tabs tabs-pill is-block is-animated" role="tablist" aria-label="Period (mobile)" id="m-pill">
+                    <button class="tab" role="tab" aria-selected="true" tabindex="0"><span class="tab-label" data-label="Pay-in">Pay-in</span></button>
+                    <button class="tab" role="tab" aria-selected="false" tabindex="-1"><span class="tab-label" data-label="Pay-out">Pay-out</span></button>
+                    <button class="tab" role="tab" aria-selected="false" tabindex="-1"><span class="tab-label" data-label="All">All</span></button>
+                    <span class="tab-indicator" aria-hidden="true"></span>
+                  </div>
+                </div>
+                <div style="height: var(--space-5);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <table class="token-table">
+      <thead><tr><th>Rule</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Underline that overflows → <code>.is-scroll</code></td><td>Lets the row swipe sideways instead of wrapping to two lines or pushing the page wider than the viewport.</td></tr>
+        <tr><td>Never scroll or wrap a pill shell</td><td>The segmented control must stay one solid row. If it can't fit, switch to underline <code>.is-scroll</code> or a select.</td></tr>
+        <tr><td>Filters → <code>.tabs-pill.is-block</code>, 2–3 segments</td><td>Full-width equal segments give big, predictable thumb targets. Keep labels to one word.</td></tr>
+        <tr><td>Avoid <code>.tabs-sm</code> for tap targets</td><td>Small tabs are for dense desktop surfaces. On touch, every tab is auto-bumped to ≥44px, but design for the default size.</td></tr>
+        <tr><td>Keep the active tab visible</td><td>When using <code>.is-scroll</code>, scroll the active tab into view on load so users see where they are.</td></tr>
+        <tr><td>Indicator realigns on resize</td><td>The controller recomputes <code>--ind-x/--ind-w</code> on resize &amp; orientation change, so animation stays aligned after rotation.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─── 09 WHEN TO USE ─── -->
+  <section class="doc-section" id="usage">
+    <h2><span class="num">09</span>When to use</h2>
+    <p class="lead">Tabs switch between <strong>peer views of one subject</strong> without leaving the page. If the choice is sequential, hierarchical, or changes the page, reach for a different pattern.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Situation</th><th>Use</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Peer views of one record (Overview / Transactions / Settings)</td><td><strong>Tabs</strong> · underline</td><td>Non-sequential, same context, no page change.</td></tr>
+        <tr><td>Compact filter inside a card or toolbar (Day / Week / Month)</td><td><strong>Tabs</strong> · pill</td><td>Segmented control reads as an in-place filter.</td></tr>
+        <tr><td>A step-by-step flow (verify → fund → sign)</td><td><a href="stepper.html" style="color: var(--color-foreground-highlight);">Stepper</a></td><td>Order matters and steps gate each other — tabs imply free movement.</td></tr>
+        <tr><td>Position in a hierarchy (Org › Project › Task)</td><td>Breadcrumbs</td><td>Tabs are flat; breadcrumbs show depth.</td></tr>
+        <tr><td>Picking one value to submit in a form</td><td>Radio / <a href="inputs.html" style="color: var(--color-foreground-highlight);">segmented input</a></td><td>Tabs navigate; they aren't a form field.</td></tr>
+        <tr><td>More than ~6 sections, or labels that wrap</td><td>Side nav or a select</td><td>Tabs crowd and lose their horizontal scan past ~6.</td></tr>
+        <tr><td>Independent sections all potentially open at once</td><td>Accordion</td><td>Tabs show one panel at a time by definition.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─── 10 DON'TS ─── -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">10</span>Don'ts</h2>
+    <div class="dont-grid">
+      <div class="dont-card dont">
+        <div class="dont-card-canvas">
+          <div class="tabs" style="border-bottom: 0;">
+            <button class="tab" aria-selected="true"><span class="tab-label" data-label="All">All</span></button>
+            <button class="tab" aria-selected="false"><span class="tab-label" data-label="Pending">Pending</span></button>
+            <button class="tab" aria-selected="false" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-radius: var(--radius-sm); margin: 0 var(--space-1);"><span class="tab-label" data-label="Failed">Failed</span></button>
+          </div>
+        </div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't tone individual tabs.</strong> The tab chrome is neutral; put colour in the count badge, not the tab body.</p></div>
+      </div>
+      <div class="dont-card dont">
+        <div class="dont-card-canvas">
+          <div class="tabs" style="border-bottom: 0; flex-wrap: wrap; max-width: 240px;">
+            <button class="tab" aria-selected="true"><span class="tab-label" data-label="Overview">Overview</span></button>
+            <button class="tab" aria-selected="false"><span class="tab-label" data-label="Transactions">Transactions</span></button>
+            <button class="tab" aria-selected="false"><span class="tab-label" data-label="Counterparties">Counterparties</span></button>
+            <button class="tab" aria-selected="false"><span class="tab-label" data-label="Statements">Statements</span></button>
+            <button class="tab" aria-selected="false"><span class="tab-label" data-label="Settings">Settings</span></button>
+          </div>
+        </div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't let tabs wrap to two rows.</strong> Past ~6 tabs the row breaks and the indicator gets confusing. Use a side nav or select.</p></div>
+      </div>
+      <div class="dont-card dont">
+        <div class="dont-card-canvas">
+          <div class="tabs">
+            <button class="tab" aria-selected="true"><span class="tab-label" data-label="Step 1">Step 1</span></button>
+            <button class="tab" aria-selected="false"><span class="tab-label" data-label="Step 2">Step 2</span></button>
+            <button class="tab" aria-selected="false"><span class="tab-label" data-label="Step 3">Step 3</span></button>
+          </div>
+        </div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't use tabs for a sequence.</strong> Numbered steps that gate each other are a <a href="stepper.html" style="color: var(--color-foreground-highlight);">Stepper</a>, not tabs.</p></div>
+      </div>
+      <div class="dont-card dont">
+        <div class="dont-card-canvas">
+          <div class="tabs" style="border-bottom: 0;">
+            <button class="tab" aria-selected="true"><span class="tab-label" data-label="Overview">Overview</span></button>
+            <button class="tab" aria-selected="true"><span class="tab-label" data-label="Transactions">Transactions</span></button>
+          </div>
+        </div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't mark two tabs active.</strong> Exactly one <code>aria-selected="true"</code> at a time — tabs show a single panel.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 11 A11Y ─── -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">11</span>Accessibility</h2>
+    <p class="lead">Tabs follow the WAI-ARIA tabs pattern: a <code>tablist</code> of <code>tab</code> buttons controlling <code>tabpanel</code> regions, with roving tabindex so the arrow keys (not Tab) move between tabs.</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Keyboard contract</h3></div></div>
+      <div class="spec-body">
+        <table class="token-table" style="margin-top: 0;">
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><code>Tab</code></td><td>Move focus into the tab list (lands on the active tab), then out to the panel.</td></tr>
+            <tr><td><code>← / →</code></td><td>Move focus to previous / next tab. Wraps at the ends.</td></tr>
+            <tr><td><code>Home / End</code></td><td>Jump to the first / last tab.</td></tr>
+            <tr><td><code>Enter / Space</code></td><td>Activate the focused tab (if not auto-activating on focus).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Requirement</th><th>How it's met</th></tr></thead>
+      <tbody>
+        <tr><td>Roles</td><td>Proper ARIA structure</td><td>Container <code>role="tablist"</code>; each tab <code>role="tab"</code> with <code>aria-controls</code>; each panel <code>role="tabpanel"</code> with <code>aria-labelledby</code>.</td></tr>
+        <tr><td>Selection</td><td>Programmatically exposed</td><td>Active tab is <code>aria-selected="true"</code>; inactive panels use <code>hidden</code>.</td></tr>
+        <tr><td>Roving tabindex</td><td>One stop in the tab order</td><td>Active tab <code>tabindex="0"</code>; the rest <code>tabindex="-1"</code>. Arrows move focus, Tab leaves the set.</td></tr>
+        <tr><td>State not colour-only</td><td>Active conveyed beyond hue</td><td>Active tab is bolder + underlined, not just brand-coloured.</td></tr>
+        <tr><td>Focus ring</td><td>Visible keyboard focus</td><td>Shared <code>--shadow-focus</code> ring, same as Buttons / Inputs.</td></tr>
+        <tr><td>Labels</td><td>Tab list is named</td><td><code>aria-label</code> on the tablist describes what's being switched.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─── 12 TOKENS ─── -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">12</span>Tokens consumed</h2>
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Tokens</th></tr></thead>
+      <tbody>
+        <tr><td>Tab label</td><td><code>--color-foreground-secondary</code> (default), <code>--color-foreground-default</code> (hover), <code>--color-brand-secondary-700</code> (active)</td></tr>
+        <tr><td>Active underline</td><td><code>--color-brand-secondary-500</code>, <code>--radius-xs</code></td></tr>
+        <tr><td>Container hairline</td><td><code>--color-border-default</code></td></tr>
+        <tr><td>Count badge</td><td><code>--color-background-subtle</code> / <code>--color-foreground-muted</code> (idle), <code>--color-brand-secondary-50</code> / <code>-700</code> (active), <code>--radius-pill</code>, <code>--font-mono</code></td></tr>
+        <tr><td>Pill shell</td><td><code>--color-background-subtle</code>, <code>--color-border-default</code>, <code>--radius-pill</code>; active lifts to <code>--color-background-surface</code> + <code>--shadow-xs</code></td></tr>
+        <tr><td>Focus ring</td><td><code>--shadow-focus</code> (shared with Buttons / Inputs)</td></tr>
+        <tr><td>Disabled</td><td><code>--color-foreground-disabled</code> + reduced opacity</td></tr>
+        <tr><td>Sizes</td><td>padding <code>--space-2…5</code>, type <code>--fs-xs</code> / <code>--fs-sm</code> / <code>--fs-md</code> per size class</td></tr>
+        <tr><td>Type</td><td><code>--font-sans</code>, <code>--fs-sm</code>, <code>--w-medium</code> / <code>--w-semibold</code></td></tr>
+        <tr><td>Motion</td><td><code>--transition-fast</code> (hover/color); sliding indicator + panel fade use <code>--duration-base</code> + <code>--ease-emphasis</code> / <code>--ease-standard</code> (honours <code>prefers-reduced-motion</code>)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<script>
+  if (window.lucide) lucide.createIcons({ attrs: { 'stroke-width': 1.75 } });
+
+  /* ─── Shared tablist controller: roving tabindex + sliding indicator ─── */
+  function initTabs(listId, onSelect) {
+    const list = document.getElementById(listId);
+    if (!list) return;
+    const tabs = [...list.querySelectorAll('[role="tab"]')];
+    const indicator = list.querySelector('.tab-indicator');
+
+    function moveIndicator(tab) {
+      if (!indicator) return;
+      list.style.setProperty('--ind-x', tab.offsetLeft + 'px');
+      list.style.setProperty('--ind-w', tab.offsetWidth + 'px');
+    }
+    function select(tab, focus) {
+      tabs.forEach(t => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+      });
+      moveIndicator(tab);
+      if (onSelect) onSelect(tab);
+      if (focus) tab.focus();
+    }
+    list.addEventListener('click', e => {
+      const tab = e.target.closest('[role="tab"]');
+      if (tab && !tab.disabled) select(tab, true);
+    });
+    list.addEventListener('keydown', e => {
+      const i = tabs.indexOf(document.activeElement);
+      if (i < 0) return;
+      let next = null;
+      if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+      else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+      else if (e.key === 'Home') next = tabs[0];
+      else if (e.key === 'End') next = tabs[tabs.length - 1];
+      if (next) { e.preventDefault(); select(next, true); }
+    });
+
+    // Position the indicator under the initially-active tab, and keep it
+    // correct on resize / orientation change / font load (mobile-safe).
+    const active = () => tabs.find(t => t.getAttribute('aria-selected') === 'true') || tabs[0];
+    moveIndicator(active());
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(() => moveIndicator(active())).observe(list);
+    } else {
+      window.addEventListener('resize', () => moveIndicator(active()));
+    }
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => moveIndicator(active()));
+    }
+  }
+
+  /* Underline demo — also swaps the panel below */
+  initTabs('demo-tabs', tab => {
+    document.querySelectorAll('#p-ov, #p-tx, #p-cp, #p-st').forEach(p => {
+      p.hidden = p.id.slice(2) !== tab.getAttribute('aria-controls').slice(2);
+    });
+  });
+
+  /* Pill demo — re-filters the figure in place */
+  (function () {
+    const figure = document.getElementById('pill-figure');
+    const sub = document.getElementById('pill-sub');
+    initTabs('pill-demo', tab => {
+      if (figure) figure.textContent = tab.dataset.fig;
+      if (sub) sub.textContent = tab.dataset.sub;
+    });
+  })();
+
+  /* Mobile demo — scrollable underline (swaps panel) + full-width pill */
+  initTabs('m-tabs', tab => {
+    const id = tab.getAttribute('aria-controls');
+    document.querySelectorAll('#mp-ov, #mp-tx, #mp-cp, #mp-se, #mp-st').forEach(p => {
+      p.hidden = p.id !== id;
+    });
+    // keep the active tab in view within the scroll container (no scrollIntoView)
+    const list = tab.parentElement;
+    if (list && list.scrollTo) {
+      const target = tab.offsetLeft - (list.clientWidth - tab.offsetWidth) / 2;
+      list.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+    }
+  });
+  initTabs('m-pill');
+</script>
+
+</body>
+</html>

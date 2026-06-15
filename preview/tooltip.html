@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Tooltip" subtitle="Placements, variants, hover/focus timing" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tooltip · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body {
+    margin: 0;
+    background: var(--color-background-canvas);
+    color: var(--color-foreground-default);
+    font-family: var(--font-sans);
+    font-size: var(--fs-base);
+    line-height: var(--lh-normal);
+  }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  /* header */
+  .doc-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: var(--space-8);
+    padding-bottom: var(--space-7);
+    border-bottom: 1px solid var(--color-border-default);
+    margin-bottom: var(--space-10);
+  }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta { display: flex; gap: var(--space-3); flex-shrink: 0; }
+  .doc-meta-pill {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-feedback-success-background);
+    color: var(--color-feedback-success-foreground);
+    border: 1px solid var(--color-feedback-success-border);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+  }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  /* nav */
+  .doc-nav {
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-10);
+    box-shadow: var(--shadow-xs);
+  }
+  .doc-nav a {
+    padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill);
+    color: var(--color-foreground-secondary); text-decoration: none;
+    font-size: var(--fs-sm); font-weight: var(--w-semibold);
+    transition: var(--transition-fast);
+  }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  /* sections */
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  /* spec card */
+  .spec {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: var(--space-6);
+    box-shadow: var(--shadow-xs);
+  }
+  .spec-head {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: var(--space-6);
+    padding: var(--space-5) var(--space-6);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code {
+    font-family: var(--font-mono); font-size: var(--fs-md);
+    font-weight: var(--w-medium); color: var(--color-foreground-accent);
+    background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px;
+  }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+
+  .spec-canvas {
+    padding: var(--space-12) var(--space-6);
+    background: var(--color-background-canvas);
+    background-image:
+      linear-gradient(var(--color-border-subtle) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: -1px -1px;
+  }
+
+  /* anatomy */
+  .anatomy {
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-8);
+    align-items: center; padding: var(--space-12) var(--space-8);
+    background: var(--color-background-canvas);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-8);
+  }
+  .anatomy-canvas { display: flex; align-items: center; justify-content: center; min-height: 200px; }
+  .anatomy-list ol { padding-left: 0; margin: 0; counter-reset: anat; list-style: none; }
+  .anatomy-list li {
+    counter-increment: anat;
+    margin-bottom: var(--space-3);
+    padding-left: var(--space-7);
+    position: relative;
+    color: var(--color-foreground-secondary);
+    line-height: var(--lh-relaxed);
+    font-size: var(--fs-sm);
+  }
+  .anatomy-list li::before {
+    content: counter(anat); position: absolute; left: 0; top: 1px;
+    width: 18px; height: 18px;
+    background: var(--color-foreground-default);
+    color: var(--color-foreground-on-solid);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
+
+  /* placements grid */
+  .placement-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-8);
+    padding: var(--space-12) var(--space-6) var(--space-10);
+  }
+  .placement-cell {
+    display: flex; flex-direction: column; align-items: center; gap: var(--space-4);
+    min-height: 120px;
+    justify-content: center;
+  }
+  .placement-cell .target {
+    width: 80px; height: 32px;
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-xs);
+    color: var(--color-foreground-secondary);
+  }
+  .placement-cell .label {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xxs);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-caps);
+    color: var(--color-foreground-muted);
+  }
+
+  /* target buttons (icon style) */
+  .icon-target {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px;
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    color: var(--color-foreground-default);
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+  .icon-target:hover {
+    background: var(--color-background-hover);
+    border-color: var(--color-border-strong);
+  }
+  .icon-target:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+  .icon-target i, .icon-target svg { width: 18px; height: 18px; stroke-width: var(--icon-stroke); }
+
+  /* token table */
+  .token-table {
+    width: 100%; border-collapse: collapse; font-size: var(--fs-sm);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md); overflow: hidden;
+    margin-top: var(--space-4);
+  }
+  .token-table th {
+    text-align: left; padding: var(--space-3) var(--space-4);
+    background: var(--color-background-subtle);
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps);
+    text-transform: uppercase; color: var(--color-foreground-muted);
+    border-bottom: 1px solid var(--color-border-default);
+  }
+  .token-table td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border-subtle);
+    vertical-align: top;
+  }
+  .token-table tr:last-child td { border-bottom: none; }
+  .token-table code {
+    font-family: var(--font-mono); font-size: var(--fs-xs);
+    color: var(--color-foreground-accent);
+    background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
+    padding: 1px var(--space-2); border-radius: var(--radius-xs);
+  }
+
+  /* don'ts */
+  .dont-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--space-4);
+  }
+  .dont-card {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md); overflow: hidden;
+  }
+  .dont-card-canvas {
+    padding: var(--space-10) var(--space-5);
+    background: var(--color-background-canvas);
+    border-bottom: 1px solid var(--color-border-subtle);
+    display: flex; justify-content: center; align-items: center;
+    min-height: 140px;
+  }
+  .dont-card-body {
+    padding: var(--space-4) var(--space-5);
+    display: flex; gap: var(--space-3); align-items: flex-start;
+  }
+  .dont-card-body i, .dont-card-body svg { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-card-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .dont-card-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<div class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Tooltip</h1>
+      <p>A small, transient label that names or briefly explains a target. Triggered by hover or keyboard focus, never carries critical information, never holds interactive content.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Ready</span>
+    </div>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#anatomy">01 Anatomy</a>
+    <a href="#placements">02 Placements</a>
+    <a href="#variants">03 Variants</a>
+    <a href="#triggers">04 Triggers & timing</a>
+    <a href="#whenuse">05 When to use</a>
+    <a href="#donts">06 Don'ts</a>
+    <a href="#a11y">07 Accessibility</a>
+    <a href="#tokens">08 Tokens</a>
+  </nav>
+
+  <!-- ========== ANATOMY ========== -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">01</span>Anatomy</h2>
+    <p class="lead">A tooltip has two parts: the target it names, and the floating label itself with a small caret pointing back to the target.</p>
+
+    <div class="anatomy">
+      <div class="anatomy-canvas">
+        <span class="tooltip-target" tabindex="0">
+          <button class="icon-target" aria-describedby="tt-anatomy">
+            <i data-lucide="settings"></i>
+          </button>
+          <span class="tooltip tooltip-top is-open" id="tt-anatomy" role="tooltip">Settings</span>
+        </span>
+      </div>
+      <div class="anatomy-list">
+        <ol>
+          <li><strong>Target</strong>The element being labeled. Must be focusable for keyboard users — typically a button, icon, or chip.</li>
+          <li><strong>Label surface</strong>Inverse-tinted, low-elevation pill. The visual contrast separates it from regular UI text.</li>
+          <li><strong>Caret</strong>3px arrow pointing at the target. Connects label to source visually.</li>
+          <li><strong>Offset</strong>8px gap between target and tooltip. Keeps the caret readable at small sizes.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PLACEMENTS ========== -->
+  <section class="doc-section" id="placements">
+    <h2><span class="num">02</span>Placements</h2>
+    <p class="lead">Four primary placements. <strong>Top</strong> is the default — tooltips below or to the side risk being clipped or covered by the cursor.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Four anchors</h3>
+          <p>Hover any target to see its tooltip. In production, placement should be auto-flipped if it would overflow the viewport.</p>
+        </div>
+      </div>
+      <div class="placement-grid">
+        <div class="placement-cell">
+          <span class="tooltip-target" tabindex="0">
+            <button class="icon-target"><i data-lucide="bell"></i></button>
+            <span class="tooltip tooltip-top" role="tooltip">Notifications</span>
+          </span>
+          <span class="label">Top — default</span>
+        </div>
+        <div class="placement-cell">
+          <span class="tooltip-target" tabindex="0">
+            <button class="icon-target"><i data-lucide="bell"></i></button>
+            <span class="tooltip tooltip-bottom" role="tooltip">Notifications</span>
+          </span>
+          <span class="label">Bottom</span>
+        </div>
+        <div class="placement-cell">
+          <span class="tooltip-target" tabindex="0">
+            <button class="icon-target"><i data-lucide="bell"></i></button>
+            <span class="tooltip tooltip-left" role="tooltip">Notifications</span>
+          </span>
+          <span class="label">Left</span>
+        </div>
+        <div class="placement-cell">
+          <span class="tooltip-target" tabindex="0">
+            <button class="icon-target"><i data-lucide="bell"></i></button>
+            <span class="tooltip tooltip-right" role="tooltip">Notifications</span>
+          </span>
+          <span class="label">Right</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== VARIANTS ========== -->
+  <section class="doc-section" id="variants">
+    <h2><span class="num">03</span>Variants</h2>
+    <p class="lead">Three flavors: simple label, with keyboard shortcut, and rich (title + description). Anything more belongs in a Popover.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Label<code>.tooltip</code></h3>
+          <p>The default. Short, single-line label. Use for icon buttons and any control whose meaning isn't obvious without text.</p>
+        </div>
+      </div>
+      <div class="spec-canvas" style="display: flex; justify-content: center; gap: var(--space-8);">
+        <span class="tooltip-target" tabindex="0"><button class="icon-target"><i data-lucide="search"></i></button><span class="tooltip tooltip-top is-open" role="tooltip">Search</span></span>
+        <span class="tooltip-target" tabindex="0"><button class="icon-target"><i data-lucide="filter"></i></button><span class="tooltip tooltip-top is-open" role="tooltip">Filter</span></span>
+        <span class="tooltip-target" tabindex="0"><button class="icon-target"><i data-lucide="archive"></i></button><span class="tooltip tooltip-top is-open" role="tooltip">Archive</span></span>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>With shortcut<code>.tooltip-kbd</code></h3>
+          <p>Inline keyboard hint. Surface accelerators next to the label so users learn them without leaving the canvas.</p>
+        </div>
+      </div>
+      <div class="spec-canvas" style="display: flex; justify-content: center; gap: var(--space-8);">
+        <span class="tooltip-target" tabindex="0"><button class="icon-target"><i data-lucide="search"></i></button><span class="tooltip tooltip-top tooltip-kbd is-open" role="tooltip">Search<kbd>⌘ K</kbd></span></span>
+        <span class="tooltip-target" tabindex="0"><button class="icon-target"><i data-lucide="save"></i></button><span class="tooltip tooltip-top tooltip-kbd is-open" role="tooltip">Save<kbd>⌘ S</kbd></span></span>
+        <span class="tooltip-target" tabindex="0"><button class="icon-target"><i data-lucide="undo-2"></i></button><span class="tooltip tooltip-top tooltip-kbd is-open" role="tooltip">Undo<kbd>⌘ Z</kbd></span></span>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Rich<code>.tooltip-rich</code></h3>
+          <p>Structured content up to 260px wide — eyebrow, titled header with icon, description, bullet list, key/value rows, divider and footer. For terms, fields, or a quick at-a-glance summary. Anything interactive belongs in a Popover.</p>
+        </div>
+      </div>
+      <div class="spec-canvas" style="display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-16); max-width: 760px; margin: 0 auto; padding-top: 280px; padding-bottom: var(--space-10);">
+        <span class="tooltip-target" tabindex="0">
+          <button class="icon-target"><i data-lucide="help-circle"></i></button>
+          <span class="tooltip tooltip-top tooltip-rich is-open" role="tooltip">
+            <span class="tooltip-meta">Glossary</span>
+            <span class="tooltip-header"><i data-lucide="clock"></i><strong class="tooltip-title">Settlement window</strong></span>
+            <span class="tooltip-desc">Time between funds leaving the source and clearing in the destination.</span>
+            <hr class="tooltip-divider"/>
+            <ul class="tooltip-list">
+              <li>Depends on the destination rail</li>
+              <li>Clearing-house cutoffs apply</li>
+              <li>Weekends &amp; holidays pause the clock</li>
+            </ul>
+            <span class="tooltip-footer"><i data-lucide="info"></i>Learn more in Help → Settlement</span>
+          </span>
+        </span>
+        <span class="tooltip-target" tabindex="0">
+          <button class="icon-target"><i data-lucide="percent"></i></button>
+          <span class="tooltip tooltip-top tooltip-rich is-open" role="tooltip">
+            <span class="tooltip-header"><i data-lucide="trending-up"></i><strong class="tooltip-title">FX spread</strong></span>
+            <span class="tooltip-desc">Difference between the rate ATTRUS receives and the rate quoted to you.</span>
+            <hr class="tooltip-divider"/>
+            <span class="tooltip-row"><span class="k">Mid-market</span><span class="v">5.1234</span></span>
+            <span class="tooltip-row"><span class="k">Your rate</span><span class="v">5.1389</span></span>
+            <span class="tooltip-row"><span class="k">Spread</span><span class="v">0.30%</span></span>
+            <span class="tooltip-footer"><i data-lucide="shield-check"></i>0% on inter-company transfers</span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TRIGGERS ========== -->
+  <section class="doc-section" id="triggers">
+    <h2><span class="num">04</span>Triggers & timing</h2>
+    <p class="lead">Show on hover after a small delay; show immediately on keyboard focus. Hide on leave, on Escape, and when the target loses focus.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Event</th><th>Behavior</th><th>Timing</th></tr></thead>
+      <tbody>
+        <tr><td>Mouse enter</td><td>Show with a smooth fade + slide</td><td>No delay — <code>--duration-base</code> (200ms) <code>--ease-emphasis</code></td></tr>
+        <tr><td>Mouse leave</td><td>Hide</td><td>Immediate</td></tr>
+        <tr><td>Keyboard focus</td><td>Show immediately</td><td>0ms — keyboard users want the label now</td></tr>
+        <tr><td>Keyboard blur</td><td>Hide</td><td>Immediate</td></tr>
+        <tr><td>Escape</td><td>Hide while focus stays on target</td><td>Immediate</td></tr>
+        <tr><td>Touch tap</td><td>Show, then hide on next tap or scroll</td><td>Long-press only — single tap activates the underlying control</td></tr>
+        <tr><td>Multiple targets in a row</td><td>If a tooltip is already open within ~300ms, others show without delay</td><td>"Warm-up" pattern — once a user is inspecting, follow-ups are instant</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========== WHEN TO USE ========== -->
+  <section class="doc-section" id="whenuse">
+    <h2><span class="num">05</span>Use it when…</h2>
+    <p class="lead">The decision tree: tooltip vs. popover vs. label.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Need</th><th>Use</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Naming an icon-only button</td><td><strong>Tooltip</strong></td><td>Short, on-demand, non-essential to read first.</td></tr>
+        <tr><td>Showing a keyboard shortcut</td><td><strong>Tooltip</strong> (with kbd)</td><td>Surfaces the shortcut without taking layout space.</td></tr>
+        <tr><td>Defining a financial term</td><td><strong>Tooltip rich</strong></td><td>One-sentence definition, no interaction needed.</td></tr>
+        <tr><td>Long explanation, multiple paragraphs</td><td><strong>Popover</strong> instead</td><td>Tooltips can't be tapped to keep open. Popovers can.</td></tr>
+        <tr><td>Information user MUST see</td><td><strong>Inline help text</strong> instead</td><td>Tooltips are missed by screen-only scanners. Hover ≠ visibility.</td></tr>
+        <tr><td>Confirming a successful action</td><td><strong>Toast</strong> instead</td><td>Tooltips don't appear without intent.</td></tr>
+        <tr><td>Linking to another page</td><td><strong>Popover</strong> or just a regular link</td><td>Tooltips can't hold interactive content.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========== DON'TS ========== -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">06</span>Don'ts</h2>
+    <p class="lead">Tooltips are easy to misuse. Each of these patterns degrades accessibility or breaks the contract that tooltips are quick, optional reminders.</p>
+
+    <div class="dont-grid">
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <span class="tooltip-target">
+            <button class="icon-target"><i data-lucide="bell"></i></button>
+            <span class="tooltip tooltip-top is-open" role="tooltip" style="white-space: normal; max-width: 200px;">Notifications<br>Click to view all unread alerts<br><a href="#" style="color: var(--color-foreground-on-solid); text-decoration: underline;">View all</a></span>
+          </span>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Interactive content inside</strong>Tooltips disappear on mouse leave. Links and buttons inside are unreachable for keyboard users. Use a Popover.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <span class="tooltip-target">
+            <button class="icon-target" style="width: auto; padding: 0 var(--space-3); gap: var(--space-2); display: inline-flex; align-items: center;"><i data-lucide="save"></i><span style="font-size: var(--fs-sm); font-weight: var(--w-semibold);">Save changes</span></button>
+            <span class="tooltip tooltip-top is-open" role="tooltip">Save changes</span>
+          </span>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Repeating the visible label</strong>If the button has a text label, the tooltip is noise. Reserve them for icon-only or genuinely cryptic targets.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <span class="tooltip-target">
+            <button class="icon-target" disabled style="opacity: .5;"><i data-lucide="trash-2"></i></button>
+            <span class="tooltip tooltip-top is-open" role="tooltip">Delete (disabled)</span>
+          </span>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Tooltip on a disabled button</strong><code>[disabled]</code> elements don't fire mouse events in most browsers — and aren't focusable. Wrap the button in the target span, or replace disabled with <code>aria-disabled</code>.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <span class="tooltip-target">
+            <button class="icon-target" style="background: var(--color-feedback-danger-background); border-color: var(--color-feedback-danger-border);"><i data-lucide="alert-triangle" style="color: var(--color-feedback-danger-foreground);"></i></button>
+            <span class="tooltip tooltip-top is-open" role="tooltip" style="white-space: normal; max-width: 220px;">Required: enter your tax ID before continuing.</span>
+          </span>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Critical info as tooltip</strong>Errors, requirements, validation messages must be visible without hover. Use inline help or an alert banner.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <span class="tooltip-target">
+            <button class="icon-target"><i data-lucide="info"></i></button>
+            <span class="tooltip tooltip-top is-open" role="tooltip" style="white-space: normal; max-width: 320px; padding: var(--space-4);">This is a long explanation that goes on and on, with multiple sentences trying to teach the user a concept they really need a help article for, not a hover tooltip that disappears the moment they move their mouse to take notes.</span>
+          </span>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Wall of text</strong>If the explanation needs more than ~30 words, link to the help center or use a Popover.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <span class="tooltip-target">
+            <button class="icon-target"><i data-lucide="check"></i></button>
+            <span class="tooltip tooltip-top is-open" role="tooltip" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); box-shadow: var(--shadow-xs);">Saved</span>
+          </span>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Recoloring per state</strong>Tooltips stay neutral inverse. Status communication belongs in Toasts, Pills, and Banners — not in floating labels.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== A11Y ========== -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">07</span>Accessibility</h2>
+
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Requirement</th><th>How it's met</th></tr></thead>
+      <tbody>
+        <tr><td>Keyboard accessibility</td><td>Tooltip shows on focus, hides on blur and Escape</td><td>Target is focusable; tooltip uses <code>:focus-visible</code> and <code>:focus-within</code> selectors. Escape handler in JS.</td></tr>
+        <tr><td>Role</td><td>WAI-ARIA <code>tooltip</code></td><td>Label has <code>role="tooltip"</code> and unique <code>id</code>; target references it via <code>aria-describedby</code>.</td></tr>
+        <tr><td>Hover persistence</td><td>WCAG 1.4.13 — content is dismissable, hoverable, persistent</td><td>Cursor can move from target onto tooltip without it disappearing (target span hosts both). Esc dismisses without removing focus.</td></tr>
+        <tr><td>Touch</td><td>No content reachable only by hover</td><td>All tooltip information has a text alternative (button label, inline help, or aria-label).</td></tr>
+        <tr><td>Color contrast</td><td>Label vs. surface ≥ 4.5:1 (AA)</td><td>Inverse foreground (<code>--color-foreground-inverse-default</code>) on inverse background (<code>--color-background-inverse</code>) — passes AAA.</td></tr>
+        <tr><td>Reduced motion</td><td>Respects <code>prefers-reduced-motion</code></td><td>Slide-in is removed; only a fast opacity fade remains.</td></tr>
+        <tr><td>Disabled targets</td><td>Tooltip still announceable</td><td>Wrap the disabled control in a <code>span.tooltip-target</code> with <code>tabindex="0"</code> so the wrapper carries focus and aria-describedby.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========== TOKENS ========== -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">08</span>Tokens consumed</h2>
+    <p class="lead">Every value in <code>tooltip.css</code> traces back to <code>dist/css/tokens.css</code>.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Tokens</th></tr></thead>
+      <tbody>
+        <tr><td>Surface</td><td><code>--color-background-inverse</code></td></tr>
+        <tr><td>Subtle inverse (kbd background)</td><td><code>--color-background-inverse-subtle</code></td></tr>
+        <tr><td>Foreground</td><td><code>--color-foreground-inverse-default</code>, <code>--color-foreground-inverse-muted</code> (description)</td></tr>
+        <tr><td>Border (kbd)</td><td><code>--color-border-inverse</code></td></tr>
+        <tr><td>Shadow</td><td><code>--shadow-md</code></td></tr>
+        <tr><td>Spacing</td><td><code>--space-1</code>, <code>--space-2</code>, <code>--space-3</code>, <code>--space-4</code></td></tr>
+        <tr><td>Radius</td><td><code>--radius-xs</code></td></tr>
+        <tr><td>Typography</td><td><code>--font-sans</code>, <code>--font-mono</code> (kbd), <code>--fs-xs</code>, <code>--fs-xxs</code> (kbd), <code>--fs-sm</code> (rich title), <code>--w-medium</code>, <code>--w-semibold</code>, <code>--lh-tight</code></td></tr>
+        <tr><td>Motion</td><td><code>--duration-base</code>, <code>--duration-instant</code> (reduced-motion), <code>--ease-standard</code>, <code>--ease-emphasis</code></td></tr>
+        <tr><td>Rich parts</td><td>meta/footer <code>--color-foreground-inverse-muted</code>, bullets <code>--color-foreground-inverse-accent</code>, divider/footer rule <code>--color-border-inverse</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+
+  // Escape closes any open tooltip (returns focus to target)
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.tooltip-target:focus-within').forEach(t => t.blur && t.blur());
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Combobox" subtitle="Smart searchbar — 8 canonical states (inactive · active · search by word · similar match · ID search · no results · loading · error) + listing combobox for accounts and counterparties" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Combobox · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill svg, .doc-meta-pill i { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  /* State grid — 8 stacked cards for the smart searchbar walkthrough */
+  .state-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: var(--space-5); }
+  .state-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-xs); display: flex; flex-direction: column; }
+  .state-head { padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: baseline; gap: var(--space-3); }
+  .state-head .num { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .state-head h3 { font-size: var(--fs-md); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0; }
+  .state-head p { font-size: var(--fs-sm); color: var(--color-foreground-muted); margin: 0 0 0 auto; }
+  .state-canvas { padding: var(--space-7) var(--space-5); background: var(--color-background-subtle); flex: 1; display: flex; justify-content: center; align-items: flex-start; }
+
+  /* Smart-search rules now live in components/smart-search.css (single source) */
+
+  /* Listing combobox card (general purpose) */
+  .listing-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); box-shadow: var(--shadow-xs); }
+  .listing-head { padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+  .listing-head h3 { font-size: var(--fs-lg); font-weight: var(--w-bold); margin: 0 0 var(--space-1); }
+  .listing-head p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); margin: 0; }
+  .listing-canvas { padding: var(--space-8) var(--space-6) var(--space-16); background: var(--color-background-subtle); display: flex; justify-content: center; align-items: flex-start; min-height: 460px; border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+  .listing-canvas .combobox.is-open { align-self: flex-start; }
+
+  .anatomy-list { padding: var(--space-6); }
+  .anatomy-list ol { padding-left: 0; margin: 0; counter-reset: anat; list-style: none; }
+  .anatomy-list li { counter-increment: anat; margin-bottom: var(--space-3); padding-left: var(--space-7); position: relative; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-sm); }
+  .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 2px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
+
+  .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; margin-top: var(--space-4); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .token-table tr:last-child td { border-bottom: none; }
+  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  .principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); }
+  .principle { padding: var(--space-5); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); }
+  .principle .ic { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-brand); margin-bottom: var(--space-3); }
+  .principle .ic svg, .principle .ic i { width: 15px; height: 15px; stroke-width: var(--icon-stroke); }
+  .principle strong { display: block; font-size: var(--fs-md); font-weight: var(--w-bold); color: var(--color-foreground-default); margin-bottom: var(--space-2); letter-spacing: var(--ls-title); }
+  .principle p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <header class="doc-header">
+    <div>
+      <h1>Combobox</h1>
+      <p>Searchable picker used in two roles: <strong>listing</strong> (pick one item from a large dataset — internal accounts, counterparties, currencies) and <strong>smart searchbar</strong> (a global command-palette that orients the user across actions, records, docs and IDs).</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Ready</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#purpose">01 Purpose</a>
+    <a href="#listing">02 Listing combobox</a>
+    <a href="#smart">03 Smart searchbar — 8 states</a>
+    <a href="#anatomy">04 Anatomy</a>
+    <a href="#a11y">05 Keyboard & a11y</a>
+    <a href="#tokens">06 Tokens</a>
+  </nav>
+
+  <!-- 01 PURPOSE -->
+  <section class="doc-section" id="purpose">
+    <h2><span class="num">01</span>When to use</h2>
+    <p class="lead">Two roles, same component. Choose based on what the user is trying to do.</p>
+
+    <div class="principles">
+      <div class="principle">
+        <span class="ic"><i data-lucide="list"></i></span>
+        <strong>Listing</strong>
+        <p>The user is picking <em>one item</em> from a known dataset — a counterparty, an internal account, a currency, a country. Replaces a Select when options &gt; ~10 or when fuzzy search matters.</p>
+      </div>
+      <div class="principle">
+        <span class="ic"><i data-lucide="sparkles"></i></span>
+        <strong>Smart searchbar</strong>
+        <p>The user is orienting themselves — they might want an action, a record, a doc, or to jump to a screen. The combobox <em>guides</em>: suggests, groups results, recognises IDs, recovers from typos.</p>
+      </div>
+      <div class="principle">
+        <span class="ic"><i data-lucide="alert-triangle"></i></span>
+        <strong>Don't use for…</strong>
+        <p>Multi-select (use multi-pick or chip-input), free-form text (use input), or yes/no decisions (use toggle / radio).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 LISTING -->
+  <section class="doc-section" id="listing">
+    <h2><span class="num">02</span>Listing combobox</h2>
+    <p class="lead">Single-select from a structured dataset. Trigger looks like a styled input; popover shows the filtered list with avatar + label + meta.</p>
+
+    <div class="listing-card">
+      <div class="listing-head">
+        <h3>Counterparties — typeahead picker</h3>
+        <p>Used to pick a beneficiary inside a transaction flow. Search by name, alias, ID or country.</p>
+      </div>
+      <div class="listing-canvas">
+        <div class="combobox is-open" style="max-width: 360px;">
+          <button class="combobox-trigger" type="button">
+            <span class="combobox-avatar">IT</span>
+            <span class="combobox-value">Banco Itaú · BR</span>
+            <i data-lucide="chevron-down" class="combobox-chevron"></i>
+          </button>
+          <div class="combobox-popover">
+            <div class="combobox-search">
+              <i data-lucide="search" class="combobox-search-icon"></i>
+              <input type="text" placeholder="Search counterparties…" value="san" />
+            </div>
+            <ul class="combobox-list" role="listbox">
+              <li class="combobox-option is-active" role="option">
+                <span class="combobox-avatar" style="background: var(--color-success-50); color: var(--color-success-700);">SA</span>
+                <span class="combobox-option-content">
+                  <span class="combobox-option-label">Santander · CL</span>
+                  <span class="combobox-option-meta">RUT 97.036.000-K</span>
+                </span>
+                  <i data-lucide="corner-down-left" class="combobox-option-check" style="opacity: 1; color: var(--color-foreground-muted);"></i>
+              </li>
+              <li class="combobox-option" role="option">
+                <span class="combobox-avatar" style="background: var(--color-warning-50); color: var(--color-warning-700);">SB</span>
+                <span class="combobox-option-content">
+                  <span class="combobox-option-label">Banco Santander Brasil</span>
+                  <span class="combobox-option-meta">CNPJ 90.400.888/0001-42</span>
+                </span>
+              </li>
+              <li class="combobox-option" role="option">
+                <span class="combobox-avatar" style="background: var(--color-info-50); color: var(--color-info-700);">SX</span>
+                <span class="combobox-option-content">
+                  <span class="combobox-option-label">Santander México</span>
+                  <span class="combobox-option-meta">RFC SAN-870101</span>
+                </span>
+              </li>
+            </ul>
+            <div class="combobox-footer">
+              <button class="combobox-footer-action" type="button"><i data-lucide="plus"></i> Add counterparty</button>
+              <div style="display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-3); border-top: 1px solid var(--color-border-subtle); font-size: var(--fs-xxs); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); text-transform: uppercase; font-weight: var(--w-semibold);">
+                <span style="display: inline-flex; align-items: center; gap: var(--space-2);"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+                <span style="width: 1px; height: 10px; background: var(--color-border-default);"></span>
+                <span style="display: inline-flex; align-items: center; gap: var(--space-2);"><kbd class="ss-kbd">↵</kbd> Select</span>
+                <span style="width: 1px; height: 10px; background: var(--color-border-default);"></span>
+                <span style="display: inline-flex; align-items: center; gap: var(--space-2);"><kbd class="ss-kbd">esc</kbd> Close</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="listing-card" style="margin-top: var(--space-5);">
+      <div class="listing-head">
+        <h3>Counterparties — with type filters &amp; result counter</h3>
+        <p>Optional filter chips above the list let the user narrow before scrolling. The counter at the bottom shows what's loaded vs. total.</p>
+      </div>
+      <div class="listing-canvas">
+        <div class="combobox is-open" style="max-width: 380px;">
+          <button class="combobox-trigger" type="button">
+            <span class="combobox-value">All counterparties</span>
+            <i data-lucide="chevron-down" class="combobox-chevron"></i>
+          </button>
+          <div class="combobox-popover">
+            <div class="combobox-filters">
+              <button type="button" class="combobox-filter-chip is-active">Individual <span class="count">8</span></button>
+              <button type="button" class="combobox-filter-chip">Corporate <span class="count">4</span></button>
+            </div>
+            <div class="combobox-meta">Results (21)</div>
+            <ul class="combobox-list" role="listbox">
+              <li class="combobox-option is-selected" role="option" aria-selected="true">
+                <span class="combobox-option-content">
+                  <span class="combobox-option-label">Ana Beatriz Gomes <span style="font-family: var(--font-mono); font-weight: var(--w-regular); color: var(--color-foreground-secondary); margin-left: var(--space-2);">CPF 456.789.012-34</span></span>
+                  <span class="combobox-option-meta">ana.beatriz@example.com</span>
+                </span>
+                <i data-lucide="check" class="combobox-option-check"></i>
+              </li>
+              <li class="combobox-option" role="option">
+                <span class="combobox-option-content">
+                  <span class="combobox-option-label">Aurora Payments Ltda <span style="font-family: var(--font-mono); font-weight: var(--w-regular); color: var(--color-foreground-secondary); margin-left: var(--space-2);">CNPJ 74.807.482/0001-22</span></span>
+                  <span class="combobox-option-meta">billing@aurorapaymentsltda.com</span>
+                </span>
+              </li>
+              <li class="combobox-option" role="option">
+                <span class="combobox-option-content">
+                  <span class="combobox-option-label">Felipe Rocha de Carvalho <span style="font-family: var(--font-mono); font-weight: var(--w-regular); color: var(--color-foreground-secondary); margin-left: var(--space-2);">CPF 567.890.123-45</span></span>
+                  <span class="combobox-option-meta">felipe.rocha@example.com</span>
+                </span>
+              </li>
+              <li class="combobox-option" role="option">
+                <span class="combobox-option-content">
+                  <span class="combobox-option-label">Mariana Costa Oliveira de Souza <span style="font-family: var(--font-mono); font-weight: var(--w-regular); color: var(--color-foreground-secondary); margin-left: var(--space-2);">CPF 234.567.890-12</span></span>
+                  <span class="combobox-option-meta">mariana@example.com</span>
+                </span>
+              </li>
+            </ul>
+            <div class="combobox-foot-meta">Showing 8 of 21 results</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="listing-card" style="margin-top: var(--space-5);">
+      <div class="listing-head">
+        <h3>Internal accounts — grouped by country</h3>
+        <p>Same combobox, different data. Group headers ride above the option rows; balance is right-aligned.</p>
+      </div>
+      <div class="listing-canvas">
+        <div class="combobox is-open" style="max-width: 360px;">
+          <button class="combobox-trigger" type="button">
+            <span class="combobox-avatar" style="background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-brand);">BR</span>
+            <span class="combobox-value">Acme S.A. · BRL 12,400.00</span>
+            <i data-lucide="chevron-down" class="combobox-chevron"></i>
+          </button>
+          <div class="combobox-popover">
+            <div class="combobox-search">
+              <i data-lucide="search" class="combobox-search-icon"></i>
+              <input type="text" placeholder="Search accounts…" />
+            </div>
+            <div class="combobox-group-label">Brazil</div>
+            <ul class="combobox-list" role="listbox">
+              <li class="combobox-option is-selected" role="option" aria-selected="true">
+                <span class="combobox-avatar" style="background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-brand);">BR</span>
+                <span class="combobox-option-content">
+                  <span class="combobox-option-label">Acme S.A.</span>
+                  <span class="combobox-option-meta">CNPJ 12.345.678/0001-90</span>
+                </span>
+                <span class="combobox-option-trailing">BRL 12,400.00</span>
+              </li>
+              <li class="combobox-option" role="option">
+                <span class="combobox-avatar" style="background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-brand);">BR</span>
+                <span class="combobox-option-content">
+                  <span class="combobox-option-label">FacilitaPay Tesouraria</span>
+                  <span class="combobox-option-meta">CNPJ 09.876.543/0001-11</span>
+                </span>
+                <span class="combobox-option-trailing">BRL 84,210.00</span>
+              </li>
+            </ul>
+            <div class="combobox-group-label">Mexico</div>
+            <ul class="combobox-list" role="listbox">
+              <li class="combobox-option" role="option">
+                <span class="combobox-avatar" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground);">MX</span>
+                <span class="combobox-option-content">
+                  <span class="combobox-option-label">Acme LATAM Servicios</span>
+                  <span class="combobox-option-meta">RFC ACM-851230</span>
+                </span>
+                <span class="combobox-option-trailing">MXN 2,100.00</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 SMART SEARCHBAR — THE 8 STATES -->
+  <section class="doc-section" id="smart">
+    <h2><span class="num">03</span>Smart searchbar — 8 canonical states</h2>
+    <p class="lead">A global command palette opened by <kbd class="ss-kbd">⌘K</kbd>. Every state below ships in the kit — the bar moves through them as the user types.</p>
+
+    <div class="state-grid">
+
+      <!-- 01 INACTIVE -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">01</span><h3>Inactive</h3><p>before focus</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input ss-input-flat">
+              <i data-lucide="search"></i>
+              <input type="text" placeholder="Search or run a command" disabled />
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 02 ACTIVE STATE -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">02</span><h3>Active</h3><p>empty input, suggestions visible</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input">
+              <i data-lucide="search"></i>
+              <input type="text" placeholder="Search or run a command" autofocus />
+            </div>
+            <div class="ss-section">
+              <div class="ss-section-label">Suggestions</div>
+              <div class="ss-chips">
+                <span class="ss-chip"><i data-lucide="search"></i>Find something by ID</span>
+                <span class="ss-chip"><i data-lucide="send"></i>Create a payout</span>
+                <span class="ss-chip"><i data-lucide="wallet"></i>Add funds</span>
+                <span class="ss-chip"><i data-lucide="file-plus"></i>Create a Settlement</span>
+                <span class="ss-chip"><i data-lucide="user-plus"></i>Add a new counterparty</span>
+              </div>
+            </div>
+            <div class="ss-section ss-recent">
+              <div class="ss-section-label">Recent searches</div>
+              <ul class="ss-list">
+                <li class="ss-list-item"><span class="icon-leading"><i data-lucide="clock"></i></span><span class="text"><span class="label">Acme S.A.</span></span></li>
+                <li class="ss-list-item"><span class="icon-leading"><i data-lucide="clock"></i></span><span class="text"><span class="label">Payout 2026-04</span></span></li>
+                <li class="ss-list-item"><span class="icon-leading"><i data-lucide="clock"></i></span><span class="text"><span class="label">CNPJ 12.345.678</span></span></li>
+              </ul>
+            </div>
+            <footer class="ss-foot">
+              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+      <!-- 03 SEARCH BY WORD -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">03</span><h3>Search by word</h3><p>matched a keyword → grouped results</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input">
+              <i data-lucide="search"></i>
+              <input type="text" value="payout" />
+              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
+            </div>
+            <div class="ss-section">
+              <div class="ss-section-label">Actions</div>
+              <ul class="ss-list">
+                <li class="ss-list-item is-active">
+                  <span class="icon-leading brand"><i data-lucide="send"></i></span>
+                  <span class="text">
+                    <span class="label">Create payout</span>
+                    <span class="meta">Send money to a recipient</span>
+                  </span>
+                  <span class="icon-trailing"><i data-lucide="arrow-right"></i></span>
+                </li>
+              </ul>
+            </div>
+            <div class="ss-section">
+              <div class="ss-section-label">API Documentation</div>
+              <ul class="ss-list">
+                <li class="ss-list-item">
+                  <span class="icon-leading"><i data-lucide="file-code"></i></span>
+                  <span class="text">
+                    <span class="label">Payout API reference</span>
+                    <span class="meta">Endpoints, authentication and webhooks</span>
+                  </span>
+                  <span class="icon-trailing"><i data-lucide="external-link"></i></span>
+                </li>
+              </ul>
+            </div>
+            <div class="ss-section">
+              <div class="ss-section-label">FAQ</div>
+              <ul class="ss-list">
+                <li class="ss-list-item">
+                  <span class="icon-leading"><i data-lucide="help-circle"></i></span>
+                  <span class="text">
+                    <span class="label">Criar Payout</span>
+                    <span class="meta">Nova transação de saída → Payment …</span>
+                  </span>
+                  <span class="icon-trailing"><i data-lucide="arrow-right"></i></span>
+                </li>
+                <li class="ss-list-item">
+                  <span class="icon-leading"><i data-lucide="help-circle"></i></span>
+                  <span class="text">
+                    <span class="label">Payout processing times</span>
+                    <span class="meta">Cut-off times and processing durations</span>
+                  </span>
+                  <span class="icon-trailing"><i data-lucide="external-link"></i></span>
+                </li>
+                <li class="ss-list-item">
+                  <span class="icon-leading"><i data-lucide="help-circle"></i></span>
+                  <span class="text">
+                    <span class="label">How to create a payout</span>
+                    <span class="meta">Step-by-step guide</span>
+                  </span>
+                  <span class="icon-trailing"><i data-lucide="external-link"></i></span>
+                </li>
+              </ul>
+            </div>
+            <footer class="ss-foot">
+              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+      <!-- 04 SIMILAR MATCH -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">04</span><h3>Similar match</h3><p>no exact hit → did-you-mean</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input">
+              <i data-lucide="search"></i>
+              <input type="text" value="sadasdsa" />
+              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
+            </div>
+            <div class="ss-section">
+              <div class="ss-result-label"><span class="l">Result (0)</span></div>
+              <div class="ss-no-result">No results for "<strong>sadasdsa</strong>".</div>
+              <div class="ss-hint">
+                <span class="icon-leading"><i data-lucide="help-circle"></i></span>
+                <span class="body">Are you looking for <strong>sandsa</strong>?</span>
+              </div>
+            </div>
+            <footer class="ss-foot">
+              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+      <!-- 05 ID SEARCH — DISAMBIGUATION -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">05</span><h3>ID search</h3><p>recognised UUID → asks what type</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input">
+              <i data-lucide="search"></i>
+              <input type="text" value="C5715326-BD84-45BF-8AD4-64B9E550A047" style="font-family: var(--font-mono); font-size: var(--fs-xs);" />
+              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
+            </div>
+            <div class="ss-section">
+              <div class="ss-result-label"><span class="l">Result</span></div>
+              <div class="ss-hint" style="margin-bottom: var(--space-3);">
+                <span class="icon-leading"><i data-lucide="info"></i></span>
+                <span class="body"><code>C5715326-…</code> is an <strong>ID</strong>. What are you looking for?</span>
+              </div>
+              <div class="ss-typebtns">
+                <button class="ss-typebtn" type="button"><i data-lucide="arrow-left-right"></i><span class="grow">Transaction</span><i data-lucide="chevron-right" class="chev"></i></button>
+                <button class="ss-typebtn" type="button"><i data-lucide="user"></i><span class="grow">Counterparty</span><i data-lucide="chevron-right" class="chev"></i></button>
+                <button class="ss-typebtn" type="button"><i data-lucide="wallet"></i><span class="grow">Account</span><i data-lucide="chevron-right" class="chev"></i></button>
+                <button class="ss-typebtn" type="button"><i data-lucide="zap"></i><span class="grow">Wire</span><i data-lucide="chevron-right" class="chev"></i></button>
+              </div>
+            </div>
+            <footer class="ss-foot">
+              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+      <!-- 06 ID SEARCH — INVALID -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">05b</span><h3>ID search · partial</h3><p>looks like an ID but is incomplete</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input">
+              <i data-lucide="search"></i>
+              <input type="text" value="C5715326" style="font-family: var(--font-mono);" />
+              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
+            </div>
+            <div class="ss-section">
+              <div class="ss-result-label"><span class="l">Result</span></div>
+              <div class="ss-no-result">No results for "<strong>C5715326</strong>".</div>
+              <div class="ss-hint">
+                <span class="icon-leading"><i data-lucide="info"></i></span>
+                <span class="body">If you're trying to find something by <strong>ID</strong>, insert the full ID following the type of the ID or just the ID.<br><br>Ex: <code>Transaction C123456-123131-1232131-13123131</code></span>
+              </div>
+            </div>
+            <footer class="ss-foot">
+              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+      <!-- 07 NO FOUND -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">06</span><h3>No results</h3><p>nothing — and nothing similar enough</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input">
+              <i data-lucide="search"></i>
+              <input type="text" value="sadasdsa" />
+              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
+            </div>
+            <div class="ss-section">
+              <div class="ss-result-label"><span class="l">Result</span></div>
+              <div class="ss-no-result">No results for "<strong>sadasdsa</strong>".</div>
+            </div>
+            <footer class="ss-foot">
+              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+      <!-- 08 LOADING -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">07</span><h3>Loading</h3><p>fetching results</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input">
+              <i data-lucide="loader-2" style="animation: spin 1s linear infinite;"></i>
+              <input type="text" value="sadasdsa" />
+              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
+            </div>
+            <div class="ss-section">
+              <div class="ss-illo">
+                <svg class="illustration" viewBox="0 0 120 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="14" y="14" width="38" height="48" rx="6" fill="var(--color-background-canvas)" stroke="var(--color-border-default)"/>
+                  <rect x="22" y="22" width="22" height="3" rx="1.5" fill="var(--color-neutral-200)"/>
+                  <rect x="22" y="30" width="16" height="3" rx="1.5" fill="var(--color-neutral-150)"/>
+                  <rect x="22" y="38" width="20" height="3" rx="1.5" fill="var(--color-neutral-150)"/>
+                  <rect x="68" y="14" width="38" height="48" rx="6" fill="var(--color-brand-secondary-50)" stroke="var(--color-brand-secondary-200)"/>
+                  <circle cx="87" cy="34" r="9" stroke="var(--color-brand-secondary-500)" stroke-width="2" fill="none"/>
+                  <path d="M94 41 L100 47" stroke="var(--color-brand-secondary-500)" stroke-width="2" stroke-linecap="round"/>
+                  <rect x="76" y="50" width="22" height="3" rx="1.5" fill="var(--color-brand-secondary-200)"/>
+                </svg>
+                <div class="title">Searching…</div>
+              </div>
+            </div>
+            <div class="ss-section">
+              <div class="ss-skeleton">
+                <div class="ss-skel-row"><div class="ss-skel-circle ss-skel-shimmer"></div><div class="ss-skel-bars"><div class="ss-skel-bar long ss-skel-shimmer"></div><div class="ss-skel-bar short ss-skel-shimmer"></div></div></div>
+                <div class="ss-skel-row"><div class="ss-skel-circle ss-skel-shimmer"></div><div class="ss-skel-bars"><div class="ss-skel-bar long ss-skel-shimmer"></div><div class="ss-skel-bar short ss-skel-shimmer"></div></div></div>
+                <div class="ss-skel-row"><div class="ss-skel-circle ss-skel-shimmer"></div><div class="ss-skel-bars"><div class="ss-skel-bar long ss-skel-shimmer"></div><div class="ss-skel-bar short ss-skel-shimmer"></div></div></div>
+              </div>
+            </div>
+            <footer class="ss-foot">
+              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+      <!-- 09 ERROR -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">08</span><h3>Error</h3><p>fetch failed — retry available</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input">
+              <i data-lucide="search"></i>
+              <input type="text" value="sadasdsa" />
+              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
+            </div>
+            <div class="ss-section">
+              <div class="ss-result-label"><span class="l">Result</span></div>
+              <div class="ss-illo">
+                <svg class="illustration" viewBox="0 0 120 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="20" y="20" width="80" height="48" rx="6" fill="var(--color-feedback-danger-background)" stroke="var(--color-feedback-danger-border)"/>
+                  <path d="M40 36 L48 44 M48 36 L40 44" stroke="var(--color-feedback-danger-foreground)" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M60 30 L80 30 M60 38 L74 38 M60 46 L72 46 M60 54 L70 54" stroke="var(--color-feedback-danger-foreground)" stroke-width="2" stroke-linecap="round" stroke-opacity="0.35"/>
+                </svg>
+                <div class="title">Something went wrong</div>
+                <div class="body">We couldn't complete your request right now. Please try again in a few seconds.</div>
+              </div>
+            </div>
+            <footer class="ss-foot">
+              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- 04 ANATOMY -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">04</span>Anatomy</h2>
+    <p class="lead">Both modes share the same six pieces — only the body content swaps.</p>
+
+    <div class="listing-card">
+      <div class="anatomy-list">
+        <ol>
+          <li><strong>Input row</strong> — leading icon (search / spinner), placeholder, optional clear (×) button. Always 36–40 px tall.</li>
+          <li><strong>Group label</strong> — uppercase tracking-wide eyebrow that introduces each section (Suggestions, Recent, Actions, API, FAQ, Result). Use <code>--color-foreground-muted</code>.</li>
+          <li><strong>Body content</strong> — chips (suggestions), list rows (results, recent searches), type-picker buttons (ID disambiguation), illustrations (empty / loading / error).</li>
+          <li><strong>Result-label slot</strong> — small eyebrow saying "Result (0)" or "Result" used in similar-match, no-results, ID search and error states. Separates "what we searched" from "what we got".</li>
+          <li><strong>Hint card</strong> — a translucent help block inside the body for did-you-mean copy, ID format reminders or contextual tips. Uses <code>--color-background-subtle</code> + a help-circle icon.</li>
+          <li><strong>Footer</strong> — sticky row with keyboard shortcuts: <kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate · <kbd class="ss-kbd">↵</kbd> Open · <kbd class="ss-kbd">esc</kbd> Close.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 KEYBOARD / A11Y -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">05</span>Keyboard &amp; accessibility</h2>
+    <p class="lead">Combobox is keyboard-first; the smart searchbar is a global command (<kbd class="ss-kbd">⌘K</kbd>) — it must be operable without a mouse.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Key</th><th>Behaviour</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><kbd class="ss-kbd">⌘</kbd>/<kbd class="ss-kbd">ctrl</kbd>+<kbd class="ss-kbd">K</kbd></td><td>Open the smart searchbar from anywhere</td><td>Hijacks; ignore inside text inputs.</td></tr>
+        <tr><td><kbd class="ss-kbd">↑</kbd> <kbd class="ss-kbd">↓</kbd></td><td>Move highlight up/down between rows</td><td>Wraps to top/bottom; skips group labels.</td></tr>
+        <tr><td><kbd class="ss-kbd">↵</kbd></td><td>Activate the highlighted row</td><td>For Actions → run command. For records → navigate. For docs → open external.</td></tr>
+        <tr><td><kbd class="ss-kbd">esc</kbd></td><td>Close the popover or clear the input</td><td>Two-step on listing combobox: first esc clears input, second closes.</td></tr>
+        <tr><td><kbd class="ss-kbd">tab</kbd></td><td>Move focus out of the combobox</td><td>Does not select.</td></tr>
+        <tr><td>Screen reader</td><td><code>role="combobox"</code> on the input, <code>aria-controls</code> pointing to the listbox, each row <code>role="option"</code> with <code>aria-selected</code>.</td><td>Live-region announces result count: "5 results" / "No results".</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 06 TOKENS -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">06</span>Tokens</h2>
+    <p class="lead">All values resolve through the design system. No magic numbers.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Concept</th><th>Token</th><th>Where</th></tr></thead>
+      <tbody>
+        <tr><td>Popover surface</td><td><code>var(--color-background-surface)</code></td><td>Card</td></tr>
+        <tr><td>Outer border</td><td><code>var(--color-border-default)</code></td><td>Card outline</td></tr>
+        <tr><td>Section divider</td><td><code>var(--color-border-subtle)</code></td><td>Between sections, between input and body</td></tr>
+        <tr><td>Section label</td><td><code>var(--color-foreground-muted)</code> · <code>--ls-caps</code></td><td>"Suggestions", "Recent", "Actions"…</td></tr>
+        <tr><td>Hovered row</td><td><code>var(--color-background-hover)</code></td><td>Background on <code>.is-active</code> / hover</td></tr>
+        <tr><td>Selected row</td><td><code>var(--color-background-selected)</code></td><td>Background on <code>.is-selected</code></td></tr>
+        <tr><td>Hint card</td><td><code>var(--color-background-subtle)</code> + <code>var(--color-border-subtle)</code></td><td>Did-you-mean, ID format reminder</td></tr>
+        <tr><td>Footer surface</td><td><code>var(--color-background-subtle)</code></td><td>Keyboard-shortcut row</td></tr>
+        <tr><td>Kbd chip</td><td><code>var(--color-background-surface)</code> on <code>var(--color-border-default)</code></td><td>Footer & inline kbd</td></tr>
+        <tr><td>Result eyebrow</td><td><code>var(--color-foreground-muted)</code> · <code>--fs-xxs</code> · <code>--w-semibold</code></td><td>"Result (0)"</td></tr>
+        <tr><td>Error illustration</td><td><code>var(--color-feedback-danger-background)</code> + <code>-border</code> + <code>-foreground</code></td><td>Error state SVG</td></tr>
+        <tr><td>Loading shimmer</td><td>linear-gradient · <code>var(--color-border-default)</code> → <code>var(--color-border-subtle)</code> (theme-aware)</td><td>Skeleton bars</td></tr>
+        <tr><td>Radius</td><td><code>var(--radius-md)</code> outer · <code>var(--radius-sm)</code> rows · <code>var(--radius-pill)</code> chips</td><td></td></tr>
+        <tr><td>Shadow</td><td><code>var(--shadow-sm)</code> resting · <code>var(--shadow-md)</code> open</td><td></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+<style>@keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }</style>
+
+</body>
+</html>

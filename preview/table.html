@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Table" subtitle="Full Table component documentation" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Table · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
+  .doc-header p code { font-family: var(--font-mono); font-size: 0.85em; background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-accent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 72ch; margin: 0 0 var(--space-7); }
+
+  .spec { border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); background: var(--color-background-surface); }
+  .spec-head { padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-sm); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 58ch; }
+  .spec-tag { display: inline-flex; align-items: center; padding: var(--space-1) var(--space-3); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); border-radius: var(--radius-pill); flex-shrink: 0; }
+  .spec-canvas { padding: var(--space-7) var(--space-6); background: var(--color-background-canvas); display: flex; flex-direction: column; gap: var(--space-6); }
+  .spec-canvas.is-flush { padding: 0; background: var(--color-background-surface); }
+  .canvas-label { display: block; font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+
+  /* Anatomy callout list */
+  .anatomy-list ol { padding-left: 0; margin: var(--space-6) 0 0; counter-reset: anat; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3) var(--space-8); }
+  .anatomy-list li { counter-increment: anat; padding-left: var(--space-7); position: relative; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-sm); }
+  .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+  .anatomy-list code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+
+  .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; margin-top: var(--space-4); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .token-table tr:last-child td { border-bottom: none; }
+  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  .dont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
+  .dont-card i, .dont-card svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-card.do i, .dont-card.do svg { color: var(--color-feedback-success-foreground); }
+  .dont-card.dont i, .dont-card.dont svg { color: var(--color-feedback-danger-foreground); }
+  .dont-card p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .dont-card strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: 2px; }
+
+  /* flag swatch reused from stub */
+  .flag { width: 20px; height: 15px; display: inline-block; vertical-align: middle; border-radius: var(--radius-2xs); flex-shrink: 0; box-shadow: 0 0 0 1px var(--color-border-subtle); }
+
+  .scroll-x { overflow-x: auto; }
+  .icon-btn { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--color-border-default); background: var(--color-background-surface); border-radius: var(--radius-sm); color: var(--color-foreground-secondary); cursor: pointer; }
+  .icon-btn:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+  .icon-btn i, .icon-btn svg { width: 14px; height: 14px; }
+  .doc-check { width: 16px; height: 16px; vertical-align: middle; border: 1.5px solid var(--color-border-strong); border-radius: var(--radius-2xs); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+  .doc-check.is-on { background: var(--color-brand-primary-500); border-color: var(--color-brand-primary-500); color: var(--color-foreground-on-solid); }
+  .doc-check i, .doc-check svg { width: 11px; height: 11px; }
+  .inverse-shell { background: var(--color-background-inverse); padding: var(--space-6); border-radius: var(--radius-md); }
+
+  /* Phone frame for the responsive demo */
+  .resp-stage { display: flex; gap: var(--space-8); align-items: flex-start; flex-wrap: wrap; }
+  .resp-stage .resp-note { flex: 1; min-width: 240px; }
+  .resp-stage .resp-note h4 { font-size: var(--fs-md); font-weight: var(--w-bold); margin: 0 0 var(--space-2); letter-spacing: var(--ls-title); }
+  .resp-stage .resp-note p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-4); }
+  .resp-stage .resp-note ul { margin: 0; padding-left: var(--space-5); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .resp-stage .resp-note code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+  .phone { width: 100%; max-width: 380px; flex: 0 1 380px; min-width: 0; box-sizing: border-box; background: var(--color-neutral-800); border-radius: 40px; padding: 12px; box-shadow: var(--shadow-lg); }
+  .phone-screen { background: var(--color-background-canvas); border-radius: 28px; overflow: hidden; height: 620px; display: flex; flex-direction: column; }
+  .phone-statusbar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-2) var(--space-5) var(--space-1); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-secondary); flex-shrink: 0; }
+  .phone-statusbar .dots { display: inline-flex; gap: 4px; align-items: center; }
+  .phone-statusbar .dots i, .phone-statusbar .dots svg { width: 13px; height: 13px; }
+  .phone-appbar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); flex-shrink: 0; background: var(--color-background-surface); }
+  .phone-appbar .ttl { font-size: var(--fs-base); font-weight: var(--w-bold); letter-spacing: var(--ls-title); }
+  .phone-appbar i, .phone-appbar svg { width: 18px; height: 18px; color: var(--color-foreground-secondary); }
+  .phone-body { flex: 1; overflow-y: auto; overflow-x: hidden; padding: var(--space-4); }
+  .phone-body .dt-toolbar { padding: 0 0 var(--space-3); border: 0; background: transparent; }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<div class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Table</h1>
+      <p>Dense tabular-numeric data — the workhorse of the dashboard. A <code>.dt-wrap</code> card stacks an optional toolbar, the <code>.dt</code> table itself, and a pagination footer. Three sizes, opt-in zebra / sticky / bordered density, and a full set of cell patterns and row states. Numbers align by default via <code>tabular-nums</code>.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Stable</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#anatomy">01 Anatomy</a>
+    <a href="#sizes">02 Sizes</a>
+    <a href="#cells">03 Cell patterns</a>
+    <a href="#states">04 Row states</a>
+    <a href="#density">05 Density</a>
+    <a href="#empty">06 Empty &amp; loading</a>
+    <a href="#pagination">07 Pagination</a>
+    <a href="#groups">08 Group rows</a>
+    <a href="#inverse">09 Dark surfaces</a>
+    <a href="#responsive">10 Responsive</a>
+    <a href="#usage">11 When to use</a>
+    <a href="#a11y">12 Accessibility</a>
+    <a href="#tokens">13 Tokens</a>
+  </nav>
+
+  <!-- ─── 01 ANATOMY ─── -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">01</span>Anatomy</h2>
+    <p class="lead">A complete data table is a vertical stack inside one card: toolbar (count + filters + bulk actions), the table, and pagination. Each layer is optional — a static reference table can be just <code>.dt-wrap</code> + <code>.dt</code>.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Full assembly <code>.dt-wrap</code></h3><p>Toolbar, table and pagination composed in one bordered card. This is the default dashboard pattern.</p></div>
+        <span class="spec-tag">Reference</span>
+      </div>
+      <div class="spec-canvas is-flush">
+        <div class="dt-wrap" style="border:0; border-radius:0; box-shadow:none;">
+          <div class="dt-toolbar">
+            <span class="count">6 transactions<span class="total">of 248</span></span>
+            <span class="spacer"></span>
+            <div class="group-actions">
+              <button class="icon-btn" aria-label="Filter"><i data-lucide="sliders-horizontal"></i></button>
+              <button class="icon-btn" aria-label="Export"><i data-lucide="download"></i></button>
+            </div>
+          </div>
+          <div class="scroll-x">
+          <table class="dt">
+            <thead><tr>
+              <th>Country</th><th>Currency</th><th>Type</th>
+              <th class="right">Balance</th><th>Account ID</th><th>Status</th>
+            </tr></thead>
+            <tbody>
+              <tr class="hov"><td><span style="display:inline-flex;align-items:center;gap:var(--space-3);"><img class="flag" src="../assets/flags/Brazil-square.svg" alt="">Brazil</span></td><td>BRL</td><td>Pay-in ↓</td><td class="dt-num bold"><span class="ccy">BRL</span>1,000.00</td><td class="dt-id">N-741469</td><td><span class="pill success sm">Approved</span></td></tr>
+              <tr class="hov"><td><span style="display:inline-flex;align-items:center;gap:var(--space-3);"><img class="flag" src="../assets/flags/EUA-square.svg" alt="">United States</span></td><td>USD</td><td>Pay-out ↑</td><td class="dt-num bold"><span class="ccy">USD</span>1,500.00</td><td class="dt-id">N-741470</td><td><span class="pill success sm">Approved</span></td></tr>
+              <tr class="hov"><td><span style="display:inline-flex;align-items:center;gap:var(--space-3);"><img class="flag" src="../assets/flags/EUR-square.svg" alt="">Eurozone</span></td><td>EUR</td><td>Pay-in ↓</td><td class="dt-num bold"><span class="ccy">EUR</span>1,000.00</td><td class="dt-id">N-741471</td><td><span class="pill warning sm">Pending</span></td></tr>
+              <tr class="hov"><td><span style="display:inline-flex;align-items:center;gap:var(--space-3);"><img class="flag" src="../assets/flags/Mexico-square.svg" alt="">Mexico</span></td><td>MXN</td><td>Pay-in ↓</td><td class="dt-num bold"><span class="ccy">MXN</span>25,400.00</td><td class="dt-id">N-741472</td><td><span class="pill success sm">Approved</span></td></tr>
+              <tr class="hov"><td><span style="display:inline-flex;align-items:center;gap:var(--space-3);"><img class="flag" src="../assets/flags/Colombia-square.svg" alt="">Colombia</span></td><td>COP</td><td>Pay-out ↑</td><td class="dt-num bold"><span class="ccy">COP</span>4,120,000.00</td><td class="dt-id">N-741473</td><td><span class="pill warning sm">Pending</span></td></tr>
+              <tr class="hov"><td><span style="display:inline-flex;align-items:center;gap:var(--space-3);"><img class="flag" src="../assets/flags/Chile-square.svg" alt="">Chile</span></td><td>CLP</td><td>Pay-in ↓</td><td class="dt-num bold"><span class="ccy">CLP</span>980,000.00</td><td class="dt-id">N-741474</td><td><span class="pill success sm">Approved</span></td></tr>
+            </tbody>
+          </table>
+          </div>
+          <div class="dt-pagination">
+            <span class="range">1–6 of 248</span>
+            <span class="pager">
+              <button class="page-btn" disabled><i data-lucide="chevron-left"></i></button>
+              <button class="page-btn is-current">1</button>
+              <button class="page-btn">2</button>
+              <button class="page-btn">3</button>
+              <button class="page-btn"><i data-lucide="chevron-right"></i></button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="anatomy-list">
+      <ol>
+        <li><strong>Wrapper <code>.dt-wrap</code></strong> — bordered surface card with hidden overflow; owns the radius and shadow.</li>
+        <li><strong>Toolbar <code>.dt-toolbar</code></strong> — <code>.count</code> (with <code>.total</code>), a <code>.spacer</code>, then <code>.group-actions</code>.</li>
+        <li><strong>Head <code>thead th</code></strong> — mono overline, uppercase, <code>.right</code>/<code>.center</code> align modifiers.</li>
+        <li><strong>Row <code>tbody tr.hov</code></strong> — add <code>.hov</code> (or <code>.is-clickable</code>) for hover affordance.</li>
+        <li><strong>Cell <code>td</code></strong> — pairs with helpers: <code>.dt-num</code>, <code>.dt-id</code>, <code>.dt-cell-stack</code>, <code>.dt-actions</code>.</li>
+        <li><strong>Pagination <code>.dt-pagination</code></strong> — <code>.range</code> + <code>.pager</code> with <code>.page-btn.is-current</code>.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ─── 02 SIZES ─── -->
+  <section class="doc-section" id="sizes">
+    <h2><span class="num">02</span>Sizes</h2>
+    <p class="lead">Match row height to data density. <code>.dt--sm</code> for log-like high-volume views, default for standard records, <code>.dt--lg</code> for spacious detail tables with lead avatars.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Compact <code>.dt--sm</code></h3><p>8 / 12 padding, <code>fs-sm</code> body. Maximum rows on screen — audit logs, ledgers.</p></div>
+        <span class="spec-tag">Dense</span>
+      </div>
+      <div class="spec-canvas is-flush">
+        <div class="scroll-x">
+        <table class="dt dt--sm">
+          <thead><tr><th>Timestamp</th><th>Event</th><th>Actor</th><th class="right">Amount</th></tr></thead>
+          <tbody>
+            <tr class="hov"><td class="dt-id">2026-05-28 09:14:02</td><td>transfer.created</td><td>api@attrus</td><td class="dt-num"><span class="ccy">USD</span>1,500.00</td></tr>
+            <tr class="hov"><td class="dt-id">2026-05-28 09:14:05</td><td>transfer.approved</td><td>m.silva</td><td class="dt-num"><span class="ccy">USD</span>1,500.00</td></tr>
+            <tr class="hov"><td class="dt-id">2026-05-28 09:18:41</td><td>transfer.settled</td><td>system</td><td class="dt-num"><span class="ccy">USD</span>1,500.00</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Spacious <code>.dt--lg</code></h3><p>16 / 20 padding, <code>fs-base</code> body. Pairs with <code>.dt-cell-lead</code> tiles for record-detail tables.</p></div>
+        <span class="spec-tag">Roomy</span>
+      </div>
+      <div class="spec-canvas is-flush">
+        <div class="scroll-x">
+        <table class="dt dt--lg">
+          <thead><tr><th>Counterparty</th><th>Method</th><th class="right">Volume (30d)</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr class="hov"><td><span class="dt-cell-lead"><span class="ic-tile tone-success"><i data-lucide="building-2"></i></span><span class="dt-cell-stack"><span class="pri">Aurora Logistics</span><span class="sub mono">acct_9f2a</span></span></span></td><td>Wire · SWIFT</td><td class="dt-num bold"><span class="ccy">USD</span>284,500.00</td><td><span class="pill success sm">Active</span></td></tr>
+            <tr class="hov"><td><span class="dt-cell-lead"><span class="ic-tile tone-info"><i data-lucide="globe"></i></span><span class="dt-cell-stack"><span class="pri">Belvo Pay LATAM</span><span class="sub mono">acct_3c71</span></span></span></td><td>Local rails</td><td class="dt-num bold"><span class="ccy">MXN</span>1,902,000.00</td><td><span class="pill success sm">Active</span></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 03 CELL PATTERNS ─── -->
+  <section class="doc-section" id="cells">
+    <h2><span class="num">03</span>Cell patterns</h2>
+    <p class="lead">Cells are composed, not styled ad-hoc. Reach for these helpers so alignment, type and colour stay consistent across every table in the product.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>The vocabulary</h3><p>One row exercising every cell helper at once: lead tile, stacked label, sortable header, tabular number with delta colour, mono ID, and a trailing action cluster.</p></div>
+        <span class="spec-tag">6 helpers</span>
+      </div>
+      <div class="spec-canvas is-flush">
+        <div class="scroll-x">
+        <table class="dt">
+          <thead><tr>
+            <th>Account</th>
+            <th class="dt-th-sort is-desc">Last activity <i class="chev" data-lucide="chevron-down"></i></th>
+            <th class="right dt-th-sort">Net flow <i class="chev" data-lucide="chevron-down"></i></th>
+            <th>Reference</th>
+            <th class="right">Actions</th>
+          </tr></thead>
+          <tbody>
+            <tr class="is-clickable"><td><span class="dt-cell-lead"><span class="ic-round tone-success"><i data-lucide="arrow-down-left"></i></span><span class="dt-cell-stack"><span class="pri">Aurora Logistics</span><span class="sub">Pay-in · BRL</span></span></span></td><td class="dt-cell-stack"><span class="pri" style="font-weight:var(--w-regular)">2 hours ago</span><span class="sub mono">2026-05-28</span></td><td class="dt-num delta-pos">+1,000.00</td><td class="dt-id">N-741469</td><td><span class="dt-actions"><button class="icon-btn" aria-label="More"><i data-lucide="more-horizontal"></i></button><i class="chev" data-lucide="chevron-right"></i></span></td></tr>
+            <tr class="is-clickable"><td><span class="dt-cell-lead"><span class="ic-round tone-danger"><i data-lucide="arrow-up-right"></i></span><span class="dt-cell-stack"><span class="pri">Northwind Co.</span><span class="sub">Pay-out · USD</span></span></span></td><td class="dt-cell-stack"><span class="pri" style="font-weight:var(--w-regular)">Yesterday</span><span class="sub mono">2026-05-27</span></td><td class="dt-num delta-neg">−1,500.00</td><td class="dt-id">N-741470</td><td><span class="dt-actions"><button class="icon-btn" aria-label="More"><i data-lucide="more-horizontal"></i></button><i class="chev" data-lucide="chevron-right"></i></span></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <table class="token-table">
+      <thead><tr><th>Helper</th><th>Use for</th></tr></thead>
+      <tbody>
+        <tr><td><code>.dt-cell-stack</code> + <code>.pri</code> / <code>.sub</code></td><td>Two-line cell — primary name over a muted secondary (ID, category, date).</td></tr>
+        <tr><td><code>.dt-cell-lead</code> + <code>.ic-tile</code> / <code>.ic-round</code></td><td>Leading avatar/icon (with <code>.tone-success|info|warning|danger</code>) before a label.</td></tr>
+        <tr><td><code>.dt-num</code> · <code>.bold</code> · <code>.delta-pos</code> / <code>.delta-neg</code></td><td>Right-aligned tabular figures; <code>.ccy</code> dims the currency code; deltas colour the value.</td></tr>
+        <tr><td><code>.dt-id</code></td><td>Monospace identifiers, hashes, timestamps.</td></tr>
+        <tr><td><code>.dt-th-sort</code> + <code>.is-asc</code> / <code>.is-desc</code></td><td>Sortable header — cursor, hover and a rotating chevron.</td></tr>
+        <tr><td><code>.dt-actions</code></td><td>Trailing right-aligned action cluster; the <code>.chev</code> nudges on row hover.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─── 04 ROW STATES ─── -->
+  <section class="doc-section" id="states">
+    <h2><span class="num">04</span>Row states</h2>
+    <p class="lead">State is set on the <code>&lt;tr&gt;</code>. Selection persists through hover; muted dims terminal rows; error tints rows needing attention. Try the live selection below.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Selectable rows <code>.is-selected</code></h3><p>Click a checkbox to select. The toolbar swaps to a bulk-action context while any row is selected.</p></div>
+        <span class="spec-tag">Interactive</span>
+      </div>
+      <div class="spec-canvas is-flush">
+        <div class="dt-toolbar" id="sel-toolbar">
+          <span class="count" id="sel-count">248 transactions</span>
+          <span class="spacer"></span>
+          <div class="group-actions" id="sel-actions" style="display:none;">
+            <button class="icon-btn" aria-label="Approve"><i data-lucide="check"></i></button>
+            <button class="icon-btn" aria-label="Export"><i data-lucide="download"></i></button>
+            <button class="icon-btn" aria-label="Delete"><i data-lucide="trash-2"></i></button>
+          </div>
+        </div>
+        <div class="scroll-x">
+        <table class="dt" id="sel-table">
+          <thead><tr>
+            <th class="col-select"><span class="doc-check" data-all aria-label="Select all"></span></th>
+            <th>Counterparty</th><th>Type</th><th class="right">Amount</th><th>Status</th>
+          </tr></thead>
+          <tbody>
+            <tr class="hov" data-row><td class="col-select"><span class="doc-check" aria-label="Select row"></span></td><td>Aurora Logistics</td><td>Pay-in ↓</td><td class="dt-num bold"><span class="ccy">BRL</span>1,000.00</td><td><span class="pill success sm">Approved</span></td></tr>
+            <tr class="hov" data-row><td class="col-select"><span class="doc-check" aria-label="Select row"></span></td><td>Northwind Co.</td><td>Pay-out ↑</td><td class="dt-num bold"><span class="ccy">USD</span>1,500.00</td><td><span class="pill warning sm">Pending</span></td></tr>
+            <tr class="hov" data-row><td class="col-select"><span class="doc-check" aria-label="Select row"></span></td><td>Belvo Pay LATAM</td><td>Pay-in ↓</td><td class="dt-num bold"><span class="ccy">MXN</span>25,400.00</td><td><span class="pill success sm">Approved</span></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Muted &amp; error <code>.is-muted</code> · <code>.is-error</code></h3><p>Muted for terminal/cancelled records; error tint for rows that failed validation or settlement.</p></div>
+        <span class="spec-tag">2 states</span>
+      </div>
+      <div class="spec-canvas is-flush">
+        <div class="scroll-x">
+        <table class="dt">
+          <thead><tr><th>Counterparty</th><th>Type</th><th class="right">Amount</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr class="hov"><td>Aurora Logistics</td><td>Pay-in ↓</td><td class="dt-num bold"><span class="ccy">BRL</span>1,000.00</td><td><span class="pill success sm">Approved</span></td></tr>
+            <tr class="is-error hov"><td>Globex Wire</td><td>Pay-out ↑</td><td class="dt-num bold"><span class="ccy">USD</span>9,900.00</td><td><span class="pill danger sm">Failed</span></td></tr>
+            <tr class="is-muted hov"><td>Initech Refund</td><td>Reversal ↺</td><td class="dt-num bold"><span class="ccy">USD</span>320.00</td><td><span class="pill neutral sm">Cancelled</span></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 05 DENSITY ─── -->
+  <section class="doc-section" id="density">
+    <h2><span class="num">05</span>Density helpers</h2>
+    <p class="lead">Three independent modifiers, combinable. Toggle them below on the same table.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Zebra · Sticky · Bordered</h3><p><code>.dt--zebra</code> alternates row backgrounds, <code>.dt--sticky</code> pins the head while the body scrolls, <code>.dt--bordered</code> adds vertical column rules.</p></div>
+        <div id="density-seg" style="display:flex; gap: var(--space-2);">
+          <button class="filter-chip" aria-pressed="false" data-mod="dt--zebra">Zebra</button>
+          <button class="filter-chip" aria-pressed="false" data-mod="dt--sticky">Sticky</button>
+          <button class="filter-chip" aria-pressed="false" data-mod="dt--bordered">Bordered</button>
+        </div>
+      </div>
+      <div class="spec-canvas is-flush">
+        <div class="scroll-x" style="max-height: 230px; overflow-y: auto;">
+        <table class="dt" id="density-table">
+          <thead><tr><th>Country</th><th>Currency</th><th class="right">Balance</th><th>Account ID</th></tr></thead>
+          <tbody>
+            <tr class="hov"><td><span style="display:inline-flex;align-items:center;gap:var(--space-3);"><img class="flag" src="../assets/flags/Brazil-square.svg" alt="">Brazil</span></td><td>BRL</td><td class="dt-num"><span class="ccy">BRL</span>1,000.00</td><td class="dt-id">N-741469</td></tr>
+            <tr class="hov"><td><span style="display:inline-flex;align-items:center;gap:var(--space-3);"><img class="flag" src="../assets/flags/EUA-square.svg" alt="">United States</span></td><td>USD</td><td class="dt-num"><span class="ccy">USD</span>1,500.00</td><td class="dt-id">N-741470</td></tr>
+            <tr class="hov"><td><span style="display:inline-flex;align-items:center;gap:var(--space-3);"><img class="flag" src="../assets/flags/EUR-square.svg" alt="">Eurozone</span></td><td>EUR</td><td class="dt-num"><span class="ccy">EUR</span>1,000.00</td><td class="dt-id">N-741471</td></tr>
+            <tr class="hov"><td><span style="display:inline-flex;align-items:center;gap:var(--space-3);"><img class="flag" src="../assets/flags/Mexico-square.svg" alt="">Mexico</span></td><td>MXN</td><td class="dt-num"><span class="ccy">MXN</span>25,400.00</td><td class="dt-id">N-741472</td></tr>
+            <tr class="hov"><td><span style="display:inline-flex;align-items:center;gap:var(--space-3);"><img class="flag" src="../assets/flags/Colombia-square.svg" alt="">Colombia</span></td><td>COP</td><td class="dt-num"><span class="ccy">COP</span>4,120,000.00</td><td class="dt-id">N-741473</td></tr>
+            <tr class="hov"><td><span style="display:inline-flex;align-items:center;gap:var(--space-3);"><img class="flag" src="../assets/flags/Chile-square.svg" alt="">Chile</span></td><td>CLP</td><td class="dt-num"><span class="ccy">CLP</span>980,000.00</td><td class="dt-id">N-741474</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 06 EMPTY & LOADING ─── -->
+  <section class="doc-section" id="empty">
+    <h2><span class="num">06</span>Empty &amp; loading</h2>
+    <p class="lead">Both states live inside <code>&lt;tbody&gt;</code> so the table chrome (head, toolbar) stays put. Never collapse the table to a blank card.</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Empty state <code>.dt-empty</code></h3><p>Zero results — icon, title, one helper line. Spans all columns.</p></div><span class="spec-tag">Zero-state</span></div>
+      <div class="spec-canvas is-flush">
+        <table class="dt">
+          <thead><tr><th>Counterparty</th><th>Type</th><th class="right">Amount</th><th>Status</th></tr></thead>
+          <tbody><tr class="dt-empty"><td colspan="4"><i class="ic" data-lucide="search-x"></i><span class="ttl">No transactions match your filters</span><span class="sub">Try widening the date range or clearing the status filter to see more results.</span></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Loading skeleton <code>.dt-skeleton</code></h3><p>Shimmer placeholders sized with <code>.w-sm</code> / <code>.w-md</code> / <code>.w-lg</code> matching real column widths.</p></div><span class="spec-tag">Loading</span></div>
+      <div class="spec-canvas is-flush">
+        <table class="dt">
+          <thead><tr><th>Counterparty</th><th>Type</th><th class="right">Amount</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr class="dt-skeleton"><td><span class="w-lg"></span></td><td><span class="w-sm"></span></td><td class="right"><span class="w-md"></span></td><td><span class="w-sm"></span></td></tr>
+            <tr class="dt-skeleton"><td><span class="w-md"></span></td><td><span class="w-sm"></span></td><td class="right"><span class="w-md"></span></td><td><span class="w-sm"></span></td></tr>
+            <tr class="dt-skeleton"><td><span class="w-lg"></span></td><td><span class="w-sm"></span></td><td class="right"><span class="w-md"></span></td><td><span class="w-sm"></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 07 PAGINATION ─── -->
+  <section class="doc-section" id="pagination">
+    <h2><span class="num">07</span>Pagination</h2>
+    <p class="lead">The footer that anchors a paged table. It answers two questions at a glance — <em>where am I</em> (<code>.range</code>) and <em>how do I move</em> (<code>.pager</code>). Lives at the bottom of <code>.dt-wrap</code>, mirroring the toolbar at the top.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Anatomy <code>.dt-pagination</code></h3><p>A left-aligned range readout and a right-aligned <code>.pager</code> cluster. The current page is <code>.page-btn.is-current</code>; the ends disable when there's nowhere to go.</p></div>
+        <span class="spec-tag">Footer</span>
+      </div>
+      <div class="spec-canvas is-flush">
+        <div class="dt-pagination">
+          <span class="range">1–6 of 248</span>
+          <span class="pager">
+            <button class="page-btn" disabled><i data-lucide="chevron-left"></i></button>
+            <button class="page-btn is-current">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">…</button>
+            <button class="page-btn">42</button>
+            <button class="page-btn"><i data-lucide="chevron-right"></i></button>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="anatomy-list">
+      <ol>
+        <li><strong>Range <code>.range</code></strong> — mono “X–Y of N”. Always show the total so users gauge depth before paging.</li>
+        <li><strong>Pager <code>.pager</code></strong> — right-aligned cluster of <code>.page-btn</code>; pushes to the edge via <code>margin-left:auto</code>.</li>
+        <li><strong>Prev / Next</strong> — chevron <code>.page-btn</code>; set <code>disabled</code> on the first/last page (greys to 40%).</li>
+        <li><strong>Current <code>.is-current</code></strong> — the active page, tinted brand-secondary. Exactly one at a time.</li>
+        <li><strong>Truncation “…”</strong> — a non-interactive <code>.page-btn</code> standing in for skipped page ranges on long sets.</li>
+        <li><strong>Rows per page</strong> — optional control on the left, paired with the range (see below).</li>
+      </ol>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>States &amp; edges</h3><p>How the bar reads at the first page, a middle page and the last page. Prev/Next disable at the respective boundary; the current page never shows a hover affordance.</p></div>
+        <span class="spec-tag">3 positions</span>
+      </div>
+      <div class="spec-canvas">
+        <div>
+          <span class="canvas-label">First page — prev disabled</span>
+          <div class="dt-pagination" style="border:1px solid var(--color-border-subtle); border-radius: var(--radius-md);">
+            <span class="range">1–25 of 1,204</span>
+            <span class="pager">
+              <button class="page-btn" disabled><i data-lucide="chevron-left"></i></button>
+              <button class="page-btn is-current">1</button>
+              <button class="page-btn">2</button>
+              <button class="page-btn">3</button>
+              <button class="page-btn">…</button>
+              <button class="page-btn">49</button>
+              <button class="page-btn"><i data-lucide="chevron-right"></i></button>
+            </span>
+          </div>
+        </div>
+        <div>
+          <span class="canvas-label">Middle page — both ends active</span>
+          <div class="dt-pagination" style="border:1px solid var(--color-border-subtle); border-radius: var(--radius-md);">
+            <span class="range">601–625 of 1,204</span>
+            <span class="pager">
+              <button class="page-btn"><i data-lucide="chevron-left"></i></button>
+              <button class="page-btn">1</button>
+              <button class="page-btn">…</button>
+              <button class="page-btn">24</button>
+              <button class="page-btn is-current">25</button>
+              <button class="page-btn">26</button>
+              <button class="page-btn">…</button>
+              <button class="page-btn">49</button>
+              <button class="page-btn"><i data-lucide="chevron-right"></i></button>
+            </span>
+          </div>
+        </div>
+        <div>
+          <span class="canvas-label">Last page — next disabled, partial range</span>
+          <div class="dt-pagination" style="border:1px solid var(--color-border-subtle); border-radius: var(--radius-md);">
+            <span class="range">1,201–1,204 of 1,204</span>
+            <span class="pager">
+              <button class="page-btn"><i data-lucide="chevron-left"></i></button>
+              <button class="page-btn">1</button>
+              <button class="page-btn">…</button>
+              <button class="page-btn">47</button>
+              <button class="page-btn">48</button>
+              <button class="page-btn is-current">49</button>
+              <button class="page-btn" disabled><i data-lucide="chevron-right"></i></button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Rows per page</h3><p>Pair a page-size selector with the range on the left. Changing it resets to page 1. Offer a short, fixed set — 25 / 50 / 100 — not a free input.</p></div>
+        <span class="spec-tag">Optional</span>
+      </div>
+      <div class="spec-canvas is-flush">
+        <div class="dt-pagination">
+          <span style="display:inline-flex; align-items:center; gap: var(--space-3);">
+            <span style="font-size: var(--fs-xs); color: var(--color-foreground-muted);">Rows per page</span>
+            <span class="tabs tabs-pill tabs-sm" id="pp-seg" role="tablist" aria-label="Rows per page">
+              <button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="25">25</span></button><button class="tab" role="tab" aria-selected="true"><span class="tab-label" data-label="50">50</span></button><button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="100">100</span></button>
+            </span>
+          </span>
+          <span class="range" style="margin-left: var(--space-5);">51–100 of 1,204</span>
+          <span class="pager">
+            <button class="page-btn"><i data-lucide="chevron-left"></i></button>
+            <button class="page-btn">1</button>
+            <button class="page-btn is-current">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">…</button>
+            <button class="page-btn">25</button>
+            <button class="page-btn"><i data-lucide="chevron-right"></i></button>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <table class="token-table">
+      <thead><tr><th>Decision</th><th>Guidance</th></tr></thead>
+      <tbody>
+        <tr><td>Numbered pages vs Prev/Next only</td><td>Use numbered pages when users jump around (search results, ledgers). Prev/Next-only suffices for linear review queues.</td></tr>
+        <tr><td>When to truncate with “…”</td><td>Past ~7 page buttons. Always keep first, last, current and current±1 reachable; collapse the rest.</td></tr>
+        <tr><td>Pagination vs infinite scroll</td><td>Paginate for data users act on, audit or cite a position in (page 3 of results). Infinite scroll only for exploratory feeds — never for financial records.</td></tr>
+        <tr><td>“Load more” button</td><td>A middle ground for mobile / append-style lists. Don't mix it with numbered pages in the same view.</td></tr>
+        <tr><td>Empty &amp; single-page</td><td>Hide the pager when there's one page; keep the range readout (“6 of 6”) for consistency.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─── 08 GROUP ROWS ─── -->
+  <section class="doc-section" id="groups">
+    <h2><span class="num">08</span>Group / section rows</h2>
+    <p class="lead">Use <code>.dt-row-divider</code> to break a long table into labelled sections — by date, currency or category — without leaving the single-table structure.</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Grouped by date <code>.dt-row-divider</code></h3><p>A full-width mono overline row separates each group.</p></div><span class="spec-tag">Grouping</span></div>
+      <div class="spec-canvas is-flush">
+        <div class="scroll-x">
+        <table class="dt">
+          <thead><tr><th>Counterparty</th><th>Type</th><th class="right">Amount</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr class="dt-row-divider"><td colspan="4">Today · 28 May 2026</td></tr>
+            <tr class="hov"><td>Aurora Logistics</td><td>Pay-in ↓</td><td class="dt-num bold"><span class="ccy">BRL</span>1,000.00</td><td><span class="pill success sm">Approved</span></td></tr>
+            <tr class="hov"><td>Northwind Co.</td><td>Pay-out ↑</td><td class="dt-num bold"><span class="ccy">USD</span>1,500.00</td><td><span class="pill warning sm">Pending</span></td></tr>
+            <tr class="dt-row-divider"><td colspan="4">Yesterday · 27 May 2026</td></tr>
+            <tr class="hov"><td>Belvo Pay LATAM</td><td>Pay-in ↓</td><td class="dt-num bold"><span class="ccy">MXN</span>25,400.00</td><td><span class="pill success sm">Approved</span></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 09 DARK ─── -->
+  <section class="doc-section" id="inverse">
+    <h2><span class="num">09</span>Dark surfaces</h2>
+    <p class="lead">Drop <code>.on-inverse</code> on the table (or wrap it in <code>.dark</code>) for tables on ink/navy panels — used in the marketing site and modal overlays.</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Inverse table <code>.dt.on-inverse</code></h3><p>Head, borders, hover and stacked sub-text all retune to the inverse foreground tokens.</p></div><span class="spec-tag">Inverse</span></div>
+      <div class="spec-canvas" style="background: var(--color-background-inverse);">
+        <div class="scroll-x">
+        <table class="dt on-inverse">
+          <thead><tr><th>Counterparty</th><th>Method</th><th class="right">Volume</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr class="hov"><td><span class="dt-cell-lead"><span class="ic-tile"><i data-lucide="building-2"></i></span><span class="dt-cell-stack"><span class="pri">Aurora Logistics</span><span class="sub mono">acct_9f2a</span></span></span></td><td>Wire · SWIFT</td><td class="dt-num bold"><span class="ccy">USD</span>284,500.00</td><td><span class="pill success sm">Active</span></td></tr>
+            <tr class="hov"><td><span class="dt-cell-lead"><span class="ic-tile"><i data-lucide="globe"></i></span><span class="dt-cell-stack"><span class="pri">Belvo Pay LATAM</span><span class="sub mono">acct_3c71</span></span></span></td><td>Local rails</td><td class="dt-num bold"><span class="ccy">MXN</span>1,902,000.00</td><td><span class="pill success sm">Active</span></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 10 RESPONSIVE ─── -->
+  <section class="doc-section" id="responsive">
+    <h2><span class="num">10</span>Responsive &amp; mobile</h2>
+    <p class="lead">A grid of columns can't survive a 390px screen intact. Pick one of two strategies per table — never let columns silently crush.</p>
+
+    <table class="token-table" style="margin-bottom: var(--space-7);">
+      <thead><tr><th>Strategy</th><th>How</th><th>Use when</th></tr></thead>
+      <tbody>
+        <tr><td><strong>A · Scroll</strong></td><td>Wrap <code>.dt</code> in an <code>overflow-x:auto</code> element. The grid stays whole and pans sideways.</td><td>Comparison-heavy / numeric tables where column alignment is the point — ledgers, FX rates, reconciliation.</td></tr>
+        <tr><td><strong>B · Stack</strong> <code>.dt-responsive</code></td><td>Below 560px the wrapper collapses each row into a label : value card. Driven by a <strong>container query</strong>, so it also reflows inside drawers &amp; split-panes.</td><td>Action-oriented record lists the user taps into — transactions, counterparties, requests.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Stacked cards <code>.dt-responsive</code></h3><p>The same transactions table inside a phone frame. Every <code>&lt;td&gt;</code> carries a <code>data-label</code> that becomes the inline field label; the lead cell gets <code>.dt-card-title</code> to read as the card heading.</p></div>
+        <span class="spec-tag">Strategy B</span>
+      </div>
+      <div class="spec-canvas">
+        <div class="resp-stage">
+          <div class="resp-note">
+            <h4>What changes at &lt;560px</h4>
+            <p>The container query (not the viewport) drives the switch — resize a desktop window or open this table in a drawer and it reflows the same way.</p>
+            <ul>
+              <li><code>thead</code> is hidden; column names move inline via <code>data-label</code>.</li>
+              <li>Each <code>tr</code> becomes a bordered card with the lead cell as its title.</li>
+              <li>Numbers stay right-aligned opposite their label for fast scanning.</li>
+              <li>Status pills, deltas and IDs keep their exact tokens — no restyle.</li>
+            </ul>
+          </div>
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="phone-statusbar">
+                <span>9:41</span>
+                <span class="dots"><i data-lucide="signal"></i><i data-lucide="wifi"></i><i data-lucide="battery-full"></i></span>
+              </div>
+              <div class="phone-appbar">
+                <span class="ttl">Transactions</span>
+                <i data-lucide="sliders-horizontal"></i>
+              </div>
+              <div class="phone-body">
+                <div class="dt-responsive">
+                  <div class="dt-toolbar"><span class="count">6 transactions<span class="total">of 248</span></span></div>
+                  <table class="dt">
+                    <thead><tr><th>Counterparty</th><th>Type</th><th class="right">Amount</th><th>Reference</th><th>Status</th></tr></thead>
+                    <tbody>
+                      <tr class="hov">
+                        <td class="dt-card-title"><span class="dt-cell-lead"><span class="ic-round tone-success"><i data-lucide="arrow-down-left"></i></span>Aurora Logistics</span></td>
+                        <td data-label="Type">Pay-in ↓</td>
+                        <td data-label="Amount" class="dt-num bold"><span class="ccy">BRL</span>1,000.00</td>
+                        <td data-label="Reference" class="dt-id">N-741469</td>
+                        <td data-label="Status"><span class="pill success sm">Approved</span></td>
+                      </tr>
+                      <tr class="hov">
+                        <td class="dt-card-title"><span class="dt-cell-lead"><span class="ic-round tone-danger"><i data-lucide="arrow-up-right"></i></span>Northwind Co.</span></td>
+                        <td data-label="Type">Pay-out ↑</td>
+                        <td data-label="Amount" class="dt-num bold"><span class="ccy">USD</span>1,500.00</td>
+                        <td data-label="Reference" class="dt-id">N-741470</td>
+                        <td data-label="Status"><span class="pill warning sm">Pending</span></td>
+                      </tr>
+                      <tr class="hov">
+                        <td class="dt-card-title"><span class="dt-cell-lead"><span class="ic-round tone-success"><i data-lucide="arrow-down-left"></i></span>Belvo Pay LATAM</span></td>
+                        <td data-label="Type">Pay-in ↓</td>
+                        <td data-label="Amount" class="dt-num bold"><span class="ccy">MXN</span>25,400.00</td>
+                        <td data-label="Reference" class="dt-id">N-741472</td>
+                        <td data-label="Status"><span class="pill success sm">Approved</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 11 WHEN TO USE ─── -->
+  <section class="doc-section" id="usage">
+    <h2><span class="num">11</span>When to use</h2>
+    <p class="lead">Tables are for comparing many records across the same set of attributes. If users scan down a single column to compare values, a table is right. If each record needs rich, varied layout, use Cards instead.</p>
+
+    <div class="dont-grid">
+      <div class="dont-card do"><i data-lucide="check-circle-2"></i><p><strong>Right-align all numbers</strong>Use <code>.dt-num</code> so decimals line up. Tabular figures are on by default at the <code>.dt</code> level.</p></div>
+      <div class="dont-card dont"><i data-lucide="x-circle"></i><p><strong>Don't center-align numeric columns</strong>Centered figures break vertical scanning and make magnitude impossible to compare.</p></div>
+      <div class="dont-card do"><i data-lucide="check-circle-2"></i><p><strong>Keep one primary action per row</strong>A trailing <code>.dt-actions</code> cluster or a clickable row — not a wall of buttons in every cell.</p></div>
+      <div class="dont-card dont"><i data-lucide="x-circle"></i><p><strong>Don't exceed ~7 columns on desktop</strong>Past that, move secondary attributes into a <code>.dt-cell-stack</code> sub-line or a detail drawer.</p></div>
+      <div class="dont-card do"><i data-lucide="check-circle-2"></i><p><strong>Always show count + pagination</strong>Users need to know the total and where they are. Pair <code>.count .total</code> with <code>.dt-pagination .range</code>.</p></div>
+      <div class="dont-card dont"><i data-lucide="x-circle"></i><p><strong>Don't tint rows per category</strong>Row colour means state (selected / error / muted) only. Use a status pill or lead tone for category.</p></div>
+    </div>
+  </section>
+
+  <!-- ─── 12 A11Y ─── -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">12</span>Accessibility</h2>
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Requirement</th><th>How it's met</th></tr></thead>
+      <tbody>
+        <tr><td>Semantics</td><td>Real table elements</td><td>Native <code>&lt;table&gt;&lt;thead&gt;&lt;tbody&gt;&lt;th&gt;&lt;td&gt;</code> — never <code>&lt;div&gt;</code> grids. Screen readers announce row/column position.</td></tr>
+        <tr><td>Header scope</td><td>Column headers associated</td><td>Add <code>scope="col"</code> on <code>&lt;th&gt;</code> (and <code>scope="row"</code> for row headers) in production markup.</td></tr>
+        <tr><td>Sort state</td><td>Announced, not colour-only</td><td>Sortable header gets <code>aria-sort="ascending|descending"</code>; the chevron rotation mirrors it visually.</td></tr>
+        <tr><td>Selection</td><td>Checkboxes are real inputs</td><td>Use a real <code>&lt;input type="checkbox"&gt;</code> with a label (the demo uses styled stand-ins). Bulk toolbar appears with <code>aria-live="polite"</code>.</td></tr>
+        <tr><td>Row actions</td><td>Reachable by keyboard</td><td>Icon buttons carry <code>aria-label</code>; clickable rows expose the same action via a focusable control, not just the row click.</td></tr>
+        <tr><td>Empty / loading</td><td>Communicated to AT</td><td>Skeleton rows are <code>aria-hidden</code> with an <code>aria-busy="true"</code> table; empty state uses real text, not just an icon.</td></tr>
+        <tr><td>Contrast</td><td>Text ≥ 4.5:1, borders ≥ 3:1</td><td>All token-driven. Zebra tint stays above 3:1 against body text; status pills carry text labels, not colour alone.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─── 13 TOKENS ─── -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">13</span>Tokens consumed</h2>
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Tokens</th></tr></thead>
+      <tbody>
+        <tr><td>Surface &amp; wrapper</td><td><code>--color-background-surface</code>, <code>--color-border-default</code>, <code>--radius-md</code>, <code>--shadow-xs</code></td></tr>
+        <tr><td>Head</td><td><code>--font-mono</code>, <code>--fs-xxs</code>, <code>--ls-caps</code>, <code>--color-foreground-muted</code>, <code>--color-border-subtle</code></td></tr>
+        <tr><td>Row hover / divider</td><td><code>--color-background-subtle</code>, <code>--color-border-subtle</code>, <code>--transition-fast</code></td></tr>
+        <tr><td>Selected row</td><td><code>--color-background-selected</code> (= brand-secondary-50)</td></tr>
+        <tr><td>Error row</td><td><code>--color-danger-50</code> via <code>color-mix</code></td></tr>
+        <tr><td>Numbers</td><td><code>tabular-nums</code>, <code>--color-feedback-success-foreground</code> / <code>danger-foreground</code> (deltas)</td></tr>
+        <tr><td>Lead tones</td><td><code>--color-feedback-{success,info,warning,danger}-{background,border,foreground}</code></td></tr>
+        <tr><td>Pagination</td><td><code>--color-brand-secondary-50</code> / <code>-200</code> / <code>-700</code> (current page), <code>--radius-sm</code></td></tr>
+        <tr><td>Skeleton</td><td><code>--color-border-subtle</code> / <code>-default</code> (theme-aware), <code>--ease-linear</code></td></tr>
+        <tr><td>Inverse</td><td><code>--color-background-inverse</code>, <code>--color-foreground-inverse-*</code>, <code>--color-border-inverse</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+
+  /* ─── Selection demo ─── */
+  (function () {
+    const table = document.getElementById('sel-table');
+    if (!table) return;
+    const rows = [...table.querySelectorAll('tr[data-row]')];
+    const allBox = table.querySelector('[data-all]');
+    const countEl = document.getElementById('sel-count');
+    const actionsEl = document.getElementById('sel-actions');
+
+    function tick(box, on) {
+      box.classList.toggle('is-on', on);
+      box.innerHTML = on ? '<i data-lucide="check"></i>' : '';
+    }
+    function refresh() {
+      const sel = rows.filter(r => r.classList.contains('is-selected'));
+      if (sel.length) {
+        countEl.textContent = sel.length + ' selected';
+        countEl.style.color = 'var(--color-foreground-accent)';
+        actionsEl.style.display = 'inline-flex';
+      } else {
+        countEl.textContent = '248 transactions';
+        countEl.style.color = '';
+        actionsEl.style.display = 'none';
+      }
+      tick(allBox, sel.length === rows.length);
+      if (window.lucide) lucide.createIcons();
+    }
+    rows.forEach(row => {
+      const box = row.querySelector('.doc-check');
+      box.addEventListener('click', () => {
+        const on = !row.classList.contains('is-selected');
+        row.classList.toggle('is-selected', on);
+        tick(box, on);
+        refresh();
+      });
+    });
+    allBox.addEventListener('click', () => {
+      const turnOn = rows.some(r => !r.classList.contains('is-selected'));
+      rows.forEach(r => {
+        r.classList.toggle('is-selected', turnOn);
+        tick(r.querySelector('.doc-check'), turnOn);
+      });
+      refresh();
+    });
+  })();
+
+  /* ─── Density toggle demo ─── */
+  (function () {
+    const seg = document.getElementById('density-seg');
+    const table = document.getElementById('density-table');
+    if (!seg || !table) return;
+    seg.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const mod = btn.dataset.mod;
+        const on = table.classList.toggle(mod);
+        btn.setAttribute('aria-pressed', String(on));
+      });
+    });
+  })();
+
+  /* ─── Rows-per-page seg (visual) ─── */
+  (function () {
+    const seg = document.getElementById('pp-seg');
+    if (!seg) return;
+    seg.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        seg.querySelectorAll('button').forEach(b => b.setAttribute('aria-selected', 'false'));
+        btn.setAttribute('aria-selected', 'true');
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

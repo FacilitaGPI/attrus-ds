@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stepper · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
+  .spec-head { padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .spec-tag { display: inline-flex; align-items: center; padding: var(--space-1) var(--space-3); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); border-radius: var(--radius-pill); flex-shrink: 0; }
+  .spec-canvas { padding: var(--space-10) var(--space-8); background: var(--color-background-canvas); background-image: linear-gradient(var(--color-border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; display: flex; flex-direction: column; gap: var(--space-7); align-items: stretch; }
+  .spec-canvas.is-center { align-items: center; }
+  .spec-canvas .canvas-row { display: flex; align-items: flex-start; gap: var(--space-8); flex-wrap: wrap; }
+  .spec-canvas .canvas-row > * { flex: 1; min-width: 280px; }
+
+  .anatomy { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-8); align-items: center; padding: var(--space-10) var(--space-8); background: var(--color-background-canvas); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); margin-bottom: var(--space-8); }
+  .anatomy-canvas { display: flex; align-items: center; justify-content: center; min-height: 160px; }
+  .anatomy-list ol { padding-left: 0; margin: 0; counter-reset: anat; list-style: none; }
+  .anatomy-list li { counter-increment: anat; margin-bottom: var(--space-3); padding-left: var(--space-7); position: relative; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-sm); }
+  .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
+
+  .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; margin-top: var(--space-4); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .token-table tr:last-child td { border-bottom: none; }
+  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  .canvas-label { display: block; font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-4); }
+
+  .dont-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--space-4); }
+  .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .dont-card-canvas { padding: var(--space-6) var(--space-5); background: var(--color-background-canvas); border-bottom: 1px solid var(--color-border-subtle); display: flex; justify-content: center; align-items: center; min-height: 120px; }
+  .dont-card-body { padding: var(--space-4) var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
+  .dont-card-body i, .dont-card-body svg { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-card-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .dont-card-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+
+  /* Live demo controls */
+  .demo-shell { display: grid; grid-template-columns: 320px 1fr; gap: var(--space-8); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-7) var(--space-7); }
+  .demo-form { padding-left: var(--space-7); border-left: 1px solid var(--color-border-subtle); }
+  .demo-form h4 { font-size: var(--fs-lg); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-3); }
+  .demo-form p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); margin: 0 0 var(--space-6); }
+  .demo-actions { display: flex; gap: var(--space-3); margin-top: var(--space-6); padding-top: var(--space-5); border-top: 1px solid var(--color-border-subtle); }
+  .demo-btn { font-family: var(--font-sans); font-size: var(--fs-sm); font-weight: var(--w-semibold); padding: var(--space-2) var(--space-4); border-radius: var(--radius-sm); border: 1px solid var(--color-border-default); background: var(--color-background-surface); color: var(--color-foreground-default); cursor: pointer; transition: var(--transition-fast); display: inline-flex; align-items: center; gap: var(--space-2); }
+  .demo-btn:hover { background: var(--color-background-hover); border-color: var(--color-border-strong); }
+  .demo-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .demo-btn.is-primary { background: var(--color-brand-primary-500); color: var(--color-foreground-on-solid); border-color: var(--color-brand-primary-500); }
+  .demo-btn.is-primary:hover { background: var(--color-brand-primary-600); }
+  .demo-btn i, .demo-btn svg { width: 14px; height: 14px; }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<div class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Stepper</h1>
+      <p>Multi-step flow indicator. Horizontal for wizards at the top of a form; vertical for long onboardings in a sidebar. Four states per step — <code>todo</code>, <code>current</code>, <code>done</code>, <code>error</code> — plus optional <code>skipped</code>. Not to be confused with <a href="number-input.html" style="color: var(--color-foreground-highlight); text-decoration: none; border-bottom: 1px dotted currentColor;">Number Input</a>, which is the numeric field with ± buttons.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Ready</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#anatomy">01 Anatomy</a>
+    <a href="#orientations">02 Orientations</a>
+    <a href="#states">03 States</a>
+    <a href="#variants">04 Variants</a>
+    <a href="#usage">05 When to use</a>
+    <a href="#live">06 Live demo</a>
+    <a href="#donts">07 Don'ts</a>
+    <a href="#a11y">08 Accessibility</a>
+    <a href="#tokens">09 Tokens</a>
+  </nav>
+
+  <!-- ─── 01 ANATOMY ─── -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">01</span>Anatomy</h2>
+    <p class="lead">Three parts per step — marker, label, connector — wired together by the parent <code>.stepper</code> container. Each step is a list item; semantic ordering belongs in markup, not just visuals.</p>
+
+    <div class="anatomy">
+      <div class="anatomy-canvas">
+        <ol class="stepper" style="max-width: 540px;" aria-label="Anatomy demo">
+          <li class="step is-done"><a class="step-marker" href="#"><i data-lucide="check"></i></a><div class="step-body"><span class="step-label">Counterparty</span></div></li>
+          <li class="step is-current" aria-current="step"><span class="step-marker">2</span><div class="step-body"><span class="step-label">Amount</span><span class="step-help">Set total &amp; currency</span></div></li>
+          <li class="step"><span class="step-marker">3</span><div class="step-body"><span class="step-label">Review</span></div></li>
+        </ol>
+      </div>
+      <div class="anatomy-list">
+        <ol>
+          <li><strong>Container <code>.stepper</code></strong>Semantic <code>&lt;ol&gt;</code>. Default is horizontal; add <code>.is-vertical</code> to stack. Always set <code>aria-label</code> describing the flow ("Account opening", "Wire transfer").</li>
+          <li><strong>Step <code>.step</code></strong>One <code>&lt;li&gt;</code> per stage. Carries the state modifier — <code>.is-done</code>, <code>.is-current</code>, <code>.is-error</code>, <code>.is-skipped</code>.</li>
+          <li><strong>Marker <code>.step-marker</code></strong>The circle. Number for todo / current, checkmark icon for done, alert icon for error. Use <code>&lt;a&gt;</code> if the step is jumpable, <code>&lt;span&gt;</code> if not.</li>
+          <li><strong>Body <code>.step-body</code></strong>Holds <code>.step-label</code> (always) and optional <code>.step-help</code> (one short line, vertical orientation only).</li>
+          <li><strong>Connector</strong>Drawn automatically with <code>::after</code> on every step except the last. Tints to the success token between done steps.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 02 ORIENTATIONS ─── -->
+  <section class="doc-section" id="orientations">
+    <h2><span class="num">02</span>Orientations</h2>
+    <p class="lead">Pick the orientation by where the stepper lives, not by step count. Top-of-form ≤ 5 steps → horizontal. Sidebar &amp; long onboardings ≥ 4 steps with helper copy → vertical.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Horizontal <code>.stepper</code></h3><p>Default. Lives above the form. Labels sit under markers, capped at ~16ch for compact alignment. Use this for transactional wizards (wire transfer, KYC quick-check).</p></div>
+        <span class="spec-tag">Default</span>
+      </div>
+      <div class="spec-canvas">
+        <ol class="stepper" aria-label="Wire transfer">
+          <li class="step is-done"><a class="step-marker" href="#"><i data-lucide="check"></i></a><div class="step-body"><span class="step-label">Counterparty</span></div></li>
+          <li class="step is-done"><a class="step-marker" href="#"><i data-lucide="check"></i></a><div class="step-body"><span class="step-label">Amount</span></div></li>
+          <li class="step is-current" aria-current="step"><span class="step-marker">3</span><div class="step-body"><span class="step-label">Review</span></div></li>
+          <li class="step"><span class="step-marker">4</span><div class="step-body"><span class="step-label">Confirm</span></div></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Vertical <code>.stepper.is-vertical</code></h3><p>Sidebar pattern. Labels and helper text sit to the right; connector runs down the column. Use this for onboardings where each step is a distinct task with its own description.</p></div>
+        <span class="spec-tag">Sidebar</span>
+      </div>
+      <div class="spec-canvas">
+        <ol class="stepper is-vertical" style="max-width: 320px;" aria-label="Account opening">
+          <li class="step is-done"><a class="step-marker" href="#"><i data-lucide="check"></i></a><div class="step-body"><span class="step-label">Verify identity</span><span class="step-help">Government ID + selfie</span></div></li>
+          <li class="step is-current" aria-current="step"><span class="step-marker">2</span><div class="step-body"><span class="step-label">Connect bank</span><span class="step-help">Plaid, Belvo or manual upload</span></div></li>
+          <li class="step is-error"><span class="step-marker"><i data-lucide="alert-triangle"></i></span><div class="step-body"><span class="step-label">Tax form</span><span class="step-help">Document rejected — please reupload</span></div></li>
+          <li class="step"><span class="step-marker">4</span><div class="step-body"><span class="step-label">Review &amp; sign</span><span class="step-help">Final agreement</span></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 03 STATES ─── -->
+  <section class="doc-section" id="states">
+    <h2><span class="num">03</span>States</h2>
+    <p class="lead">Exactly one step at a time is <code>current</code>. Multiple steps can be <code>done</code>; multiple can be <code>error</code>. Use <code>skipped</code> sparingly — only for genuinely optional steps the user deliberately bypassed.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>State matrix</h3><p>Same five states in both orientations. The marker carries the visual; the label colour reinforces it.</p></div>
+        <span class="spec-tag">5 states</span>
+      </div>
+      <div class="spec-canvas">
+        <div class="canvas-row">
+          <div>
+            <span class="canvas-label">todo</span>
+            <ol class="stepper is-vertical" aria-label="todo state">
+              <li class="step"><span class="step-marker">3</span><div class="step-body"><span class="step-label">Review</span><span class="step-help">Not yet started</span></div></li>
+            </ol>
+          </div>
+          <div>
+            <span class="canvas-label">current <code style="font-size: var(--fs-xxs);">.is-current</code></span>
+            <ol class="stepper is-vertical" aria-label="current state">
+              <li class="step is-current" aria-current="step"><span class="step-marker">2</span><div class="step-body"><span class="step-label">Connect bank</span><span class="step-help">In progress</span></div></li>
+            </ol>
+          </div>
+          <div>
+            <span class="canvas-label">done <code style="font-size: var(--fs-xxs);">.is-done</code></span>
+            <ol class="stepper is-vertical" aria-label="done state">
+              <li class="step is-done"><a class="step-marker" href="#"><i data-lucide="check"></i></a><div class="step-body"><span class="step-label">Identity verified</span><span class="step-help">Click to review</span></div></li>
+            </ol>
+          </div>
+        </div>
+        <div class="canvas-row">
+          <div>
+            <span class="canvas-label">error <code style="font-size: var(--fs-xxs);">.is-error</code></span>
+            <ol class="stepper is-vertical" aria-label="error state">
+              <li class="step is-error"><span class="step-marker"><i data-lucide="alert-triangle"></i></span><div class="step-body"><span class="step-label">Tax form</span><span class="step-help">Document rejected — reupload</span></div></li>
+            </ol>
+          </div>
+          <div>
+            <span class="canvas-label">skipped <code style="font-size: var(--fs-xxs);">.is-skipped</code></span>
+            <ol class="stepper is-vertical" aria-label="skipped state">
+              <li class="step is-skipped"><span class="step-marker">4</span><div class="step-body"><span class="step-label">Beneficial owner</span><span class="step-help">Not applicable — sole proprietor</span></div></li>
+            </ol>
+          </div>
+          <div>
+            <span class="canvas-label">disabled (visual only)</span>
+            <ol class="stepper is-vertical" aria-label="disabled state" style="opacity: 0.45; pointer-events: none;">
+              <li class="step"><span class="step-marker">5</span><div class="step-body"><span class="step-label">Sign agreement</span><span class="step-help">Available after step 4</span></div></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 04 VARIANTS ─── -->
+  <section class="doc-section" id="variants">
+    <h2><span class="num">04</span>Variants</h2>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Compact <code>.is-compact</code></h3><p>24px marker, smaller type. For dense surfaces — drawer headers, table-row mini-flows, inline checkout summaries.</p></div>
+        <span class="spec-tag">Dense</span>
+      </div>
+      <div class="spec-canvas">
+        <ol class="stepper is-compact" style="max-width: 560px;" aria-label="Compact horizontal">
+          <li class="step is-done"><a class="step-marker" href="#"><i data-lucide="check"></i></a><div class="step-body"><span class="step-label">Ship</span></div></li>
+          <li class="step is-done"><a class="step-marker" href="#"><i data-lucide="check"></i></a><div class="step-body"><span class="step-label">Customs</span></div></li>
+          <li class="step is-current" aria-current="step"><span class="step-marker">3</span><div class="step-body"><span class="step-label">Settle</span></div></li>
+          <li class="step"><span class="step-marker">4</span><div class="step-body"><span class="step-label">Reconcile</span></div></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Rule <code>.is-rule</code></h3><p>Replaces the circle with a 4px capsule rule. Minimal vertical footprint — use when the form already has its own numbered headings and the stepper is just a progress cue.</p></div>
+        <span class="spec-tag">Minimal</span>
+      </div>
+      <div class="spec-canvas">
+        <ol class="stepper is-rule" style="max-width: 720px; gap: var(--space-3);" aria-label="Rule variant">
+          <li class="step is-done"><span class="step-marker"></span><div class="step-body"><span class="step-label">01 · Counterparty</span></div></li>
+          <li class="step is-done"><span class="step-marker"></span><div class="step-body"><span class="step-label">02 · Amount</span></div></li>
+          <li class="step is-current" aria-current="step"><span class="step-marker"></span><div class="step-body"><span class="step-label">03 · Review</span></div></li>
+          <li class="step"><span class="step-marker"></span><div class="step-body"><span class="step-label">04 · Confirm</span></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 05 WHEN TO USE ─── -->
+  <section class="doc-section" id="usage">
+    <h2><span class="num">05</span>When to use</h2>
+    <p class="lead">Steppers are for <strong>sequential, finite, known</strong> flows where the user benefits from seeing where they are and what's left. They're not progress bars, not tabs, not breadcrumbs.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Situation</th><th>Use</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>3–6 step wizard at the top of a form</td><td><strong>Stepper</strong> · horizontal</td><td>Compact, scannable, sets expectation up front.</td></tr>
+        <tr><td>Long onboarding with side panel</td><td><strong>Stepper</strong> · vertical</td><td>Room for helper text per step; mirrors document outline.</td></tr>
+        <tr><td>Live status of an async process (transfer settling)</td><td><strong>Status pills</strong> or timeline, not stepper</td><td>Stepper implies user agency; status is observed, not driven.</td></tr>
+        <tr><td>Browsing between siblings (Overview, Members, Settings)</td><td><strong>Tabs</strong></td><td>Tabs are non-sequential.</td></tr>
+        <tr><td>Page hierarchy / context (Org &gt; Project &gt; Task)</td><td><strong>Breadcrumbs</strong></td><td>Position in a tree, not sequence.</td></tr>
+        <tr><td>Single page-load progress (percent complete)</td><td><strong>Progress bar</strong></td><td>Continuous, not discrete.</td></tr>
+        <tr><td>&gt; 7 steps</td><td>Re-think the flow first</td><td>If you can't get under 7, the form is likely two flows pretending to be one.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─── 06 LIVE DEMO ─── -->
+  <section class="doc-section" id="live">
+    <h2><span class="num">06</span>Live demo</h2>
+    <p class="lead">Walk through a four-step wire-transfer flow. Past steps are clickable; future steps aren't until reached. Submit on step 4 marks the flow complete.</p>
+
+    <div class="demo-shell">
+      <ol class="stepper is-vertical" id="live-stepper" aria-label="Wire transfer">
+        <li class="step is-current" data-step="0" aria-current="step">
+          <span class="step-marker">1</span>
+          <div class="step-body"><span class="step-label">Counterparty</span><span class="step-help">Who's receiving the funds</span></div>
+        </li>
+        <li class="step" data-step="1">
+          <span class="step-marker">2</span>
+          <div class="step-body"><span class="step-label">Amount</span><span class="step-help">Set total &amp; currency</span></div>
+        </li>
+        <li class="step" data-step="2">
+          <span class="step-marker">3</span>
+          <div class="step-body"><span class="step-label">Review</span><span class="step-help">Confirm details &amp; fees</span></div>
+        </li>
+        <li class="step" data-step="3">
+          <span class="step-marker">4</span>
+          <div class="step-body"><span class="step-label">Sign &amp; send</span><span class="step-help">Two-factor required</span></div>
+        </li>
+      </ol>
+      <div class="demo-form">
+        <h4 id="live-title">Counterparty</h4>
+        <p id="live-desc">Pick or add the recipient. The stepper highlights "Counterparty" as current.</p>
+        <div class="demo-actions">
+          <button type="button" class="demo-btn" id="live-back" disabled><i data-lucide="arrow-left"></i>Back</button>
+          <button type="button" class="demo-btn is-primary" id="live-next">Next<i data-lucide="arrow-right"></i></button>
+          <button type="button" class="demo-btn" id="live-error" style="margin-left: auto;"><i data-lucide="alert-triangle"></i>Simulate error</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 07 DON'TS ─── -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">07</span>Don'ts</h2>
+    <div class="dont-grid">
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <ol class="stepper" style="max-width: 540px;" aria-label="bad: two current">
+            <li class="step is-current" aria-current="step"><span class="step-marker">1</span><div class="step-body"><span class="step-label">A</span></div></li>
+            <li class="step is-current" aria-current="step"><span class="step-marker">2</span><div class="step-body"><span class="step-label">B</span></div></li>
+            <li class="step"><span class="step-marker">3</span><div class="step-body"><span class="step-label">C</span></div></li>
+          </ol>
+        </div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Two steps marked current</strong>Exactly one <code>.is-current</code> at a time. If the user is between stages, pick the one they'll act on next.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <ol class="stepper" style="max-width: 720px;" aria-label="bad: too many steps">
+            <li class="step is-done"><a class="step-marker" href="#"><i data-lucide="check"></i></a><div class="step-body"><span class="step-label">1</span></div></li>
+            <li class="step is-done"><a class="step-marker" href="#"><i data-lucide="check"></i></a><div class="step-body"><span class="step-label">2</span></div></li>
+            <li class="step is-current" aria-current="step"><span class="step-marker">3</span><div class="step-body"><span class="step-label">3</span></div></li>
+            <li class="step"><span class="step-marker">4</span><div class="step-body"><span class="step-label">4</span></div></li>
+            <li class="step"><span class="step-marker">5</span><div class="step-body"><span class="step-label">5</span></div></li>
+            <li class="step"><span class="step-marker">6</span><div class="step-body"><span class="step-label">6</span></div></li>
+            <li class="step"><span class="step-marker">7</span><div class="step-body"><span class="step-label">7</span></div></li>
+            <li class="step"><span class="step-marker">8</span><div class="step-body"><span class="step-label">8</span></div></li>
+          </ol>
+        </div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>More than 7 steps</strong>If the flow can't fit under 7, group sub-steps under a single label, or split into two flows.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <ol class="stepper" style="max-width: 460px;" aria-label="bad: paragraph in horizontal">
+            <li class="step is-current" aria-current="step"><span class="step-marker">1</span><div class="step-body"><span class="step-label">Verify identity using your government-issued photo ID and a live selfie capture</span></div></li>
+            <li class="step"><span class="step-marker">2</span><div class="step-body"><span class="step-label">Connect</span></div></li>
+          </ol>
+        </div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Long labels in horizontal</strong>Horizontal labels wrap at ~16ch and look chaotic past 3 words. Switch to vertical or shorten the label.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <ol class="stepper" style="max-width: 540px;" aria-label="bad: future clickable">
+            <li class="step is-current" aria-current="step"><span class="step-marker">1</span><div class="step-body"><span class="step-label">Now</span></div></li>
+            <li class="step"><a class="step-marker" href="#" style="background: var(--color-brand-accent-100); border-color: var(--color-brand-accent-500); color: var(--color-brand-accent-700);">2</a><div class="step-body"><span class="step-label">Future</span></div></li>
+            <li class="step"><span class="step-marker">3</span><div class="step-body"><span class="step-label">Later</span></div></li>
+          </ol>
+        </div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Linking forward to incomplete steps</strong>Only past (done) steps should be anchors. Future steps remain <code>&lt;span&gt;</code>.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <ol class="stepper is-vertical" style="max-width: 280px;" aria-label="bad: skipped overused">
+            <li class="step is-skipped"><span class="step-marker">1</span><div class="step-body"><span class="step-label">Identity</span></div></li>
+            <li class="step is-skipped"><span class="step-marker">2</span><div class="step-body"><span class="step-label">Bank</span></div></li>
+            <li class="step is-current" aria-current="step"><span class="step-marker">3</span><div class="step-body"><span class="step-label">Sign</span></div></li>
+          </ol>
+        </div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Skipped as "I'll do later"</strong><code>.is-skipped</code> is for optional steps the user consciously bypassed. For deferred work, leave the step as <code>todo</code>.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <ol class="stepper" style="max-width: 540px;" aria-label="bad: hue overload">
+            <li class="step is-done"><a class="step-marker" href="#" style="background: var(--color-brand-accent-500); border-color: var(--color-brand-accent-500);"><i data-lucide="check"></i></a><div class="step-body"><span class="step-label">A</span></div></li>
+            <li class="step is-current" aria-current="step"><span class="step-marker" style="background: var(--color-warning-500); border-color: var(--color-warning-500);">2</span><div class="step-body"><span class="step-label">B</span></div></li>
+            <li class="step"><span class="step-marker" style="background: var(--color-danger-100); border-color: var(--color-danger-200);">3</span><div class="step-body"><span class="step-label">C</span></div></li>
+          </ol>
+        </div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Custom hue per step</strong>State carries the colour. Don't tint per-step for "theme" — the stepper becomes unreadable as a status indicator.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 08 A11Y ─── -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">08</span>Accessibility</h2>
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Requirement</th><th>How it's met</th></tr></thead>
+      <tbody>
+        <tr><td>Semantics</td><td>Ordered, navigable list</td><td>Root is <code>&lt;ol&gt;</code> with <code>aria-label</code>. Each step is <code>&lt;li&gt;</code>. AT announces "list, N items".</td></tr>
+        <tr><td>Current step</td><td>Programmatically exposed</td><td>The current step's marker (or its wrapper) carries <code>aria-current="step"</code>.</td></tr>
+        <tr><td>Visited vs upcoming</td><td>Past steps are real links; future aren't</td><td>Done steps use <code>&lt;a&gt;</code> with real <code>href</code>. Todo steps use <code>&lt;span&gt;</code> so they're skipped in tab order.</td></tr>
+        <tr><td>Icon meaning</td><td>Not by colour alone</td><td>Done = checkmark icon. Error = triangle-alert icon. Both also carry a colour shift, but the icon is the primary cue.</td></tr>
+        <tr><td>Error context</td><td>Why &amp; how to recover</td><td>Error step uses <code>.step-help</code> with the recovery action. Pair with the form's inline error message.</td></tr>
+        <tr><td>Focus order</td><td>Match visual order</td><td>Markup order is also tab order. Don't reorder visually with CSS <code>order</code>.</td></tr>
+        <tr><td>Color contrast</td><td>Borders ≥ 3:1, text ≥ 4.5:1</td><td>All token-driven. Verified: muted on canvas = 4.6:1, success-fg on white = 4.8:1, danger-fg on white = 5.1:1.</td></tr>
+        <tr><td>Reduced motion</td><td>No transitions when requested</td><td><code>prefers-reduced-motion</code> kills marker transitions.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─── 09 TOKENS ─── -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">09</span>Tokens consumed</h2>
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Tokens</th></tr></thead>
+      <tbody>
+        <tr><td>Marker · default (todo)</td><td><code>--color-background-surface</code>, border <code>--color-border-default</code>, text <code>--color-foreground-muted</code></td></tr>
+        <tr><td>Marker · current</td><td><code>--color-brand-primary-500</code> (fill), <code>--color-foreground-on-solid</code> (text), <code>--shadow-focus</code> (halo)</td></tr>
+        <tr><td>Marker · done</td><td><code>--color-feedback-success-foreground</code> (fill)</td></tr>
+        <tr><td>Marker · error</td><td><code>--color-feedback-danger-background</code> (fill), <code>--color-feedback-danger-border</code> (border), <code>--color-feedback-danger-foreground</code> (icon)</td></tr>
+        <tr><td>Marker · skipped</td><td><code>--color-background-subtle</code>, dashed border, <code>--color-foreground-muted</code></td></tr>
+        <tr><td>Label</td><td><code>--color-foreground-secondary</code> (todo), <code>--color-foreground-default</code> (current/done), <code>--color-feedback-danger-foreground</code> (error)</td></tr>
+        <tr><td>Helper</td><td><code>--color-foreground-muted</code>, <code>--color-foreground-secondary</code> (current)</td></tr>
+        <tr><td>Connector</td><td><code>--color-border-default</code> (todo), <code>--color-feedback-success-foreground</code> (done)</td></tr>
+        <tr><td>Typography</td><td><code>--font-mono</code> (marker number), <code>--fs-sm</code> (label), <code>--fs-xs</code> (helper), <code>--w-semibold</code> / <code>--w-bold</code>, <code>--ls-title</code></td></tr>
+        <tr><td>Spacing</td><td><code>--space-1</code> through <code>--space-7</code> (orientation gaps)</td></tr>
+        <tr><td>Radius</td><td><code>--radius-pill</code> (marker), <code>--radius-pill</code> (rule variant)</td></tr>
+        <tr><td>Motion</td><td><code>--transition-fast</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+
+  /* ─── Live demo ────────────────────────────────────────────── */
+  const titles = [
+    { t: 'Counterparty', d: 'Pick or add the recipient. The stepper highlights "Counterparty" as current.' },
+    { t: 'Amount',       d: 'Enter the amount and currency. Once you click Next, step 1 becomes done and clickable.' },
+    { t: 'Review',       d: 'Read the summary, fees and ETA. You can click previous steps to edit.' },
+    { t: 'Sign & send',  d: 'Last step — two-factor confirmation. "Submit" completes the flow.' },
+    { t: 'Complete',     d: 'All steps done. In a real flow, the page would redirect to the transaction receipt.' },
+  ];
+
+  const steps   = [...document.querySelectorAll('#live-stepper .step')];
+  const titleEl = document.getElementById('live-title');
+  const descEl  = document.getElementById('live-desc');
+  const backBtn = document.getElementById('live-back');
+  const nextBtn = document.getElementById('live-next');
+  const errBtn  = document.getElementById('live-error');
+
+  let idx = 0;
+  let errorAt = -1;
+
+  function render() {
+    steps.forEach((step, i) => {
+      step.classList.remove('is-done', 'is-current', 'is-error');
+      step.removeAttribute('aria-current');
+
+      const marker = step.querySelector('.step-marker');
+      const oldHref = marker.getAttribute('href');
+
+      // Determine state
+      if (i === errorAt) {
+        step.classList.add('is-error');
+        marker.innerHTML = '<i data-lucide="alert-triangle"></i>';
+      } else if (i < idx) {
+        step.classList.add('is-done');
+        marker.innerHTML = '<i data-lucide="check"></i>';
+      } else if (i === idx) {
+        step.classList.add('is-current');
+        step.setAttribute('aria-current', 'step');
+        marker.textContent = String(i + 1);
+      } else {
+        marker.textContent = String(i + 1);
+      }
+    });
+
+    titleEl.textContent = titles[Math.min(idx, titles.length - 1)].t;
+    descEl.textContent  = titles[Math.min(idx, titles.length - 1)].d;
+
+    backBtn.disabled = idx === 0;
+    nextBtn.disabled = idx >= steps.length;
+    nextBtn.innerHTML = idx === steps.length - 1
+      ? 'Submit<i data-lucide="check"></i>'
+      : idx >= steps.length ? 'Done<i data-lucide="check"></i>' : 'Next<i data-lucide="arrow-right"></i>';
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  nextBtn.addEventListener('click', () => {
+    if (idx < steps.length) {
+      errorAt = -1; // clear error on advance
+      idx += 1;
+      render();
+    }
+  });
+  backBtn.addEventListener('click', () => {
+    if (idx > 0) {
+      errorAt = -1;
+      idx -= 1;
+      render();
+    }
+  });
+  errBtn.addEventListener('click', () => {
+    errorAt = idx;
+    render();
+  });
+
+  render();
+</script>
+
+</body>
+</html>

@@ -1,61 +1,947 @@
 <!DOCTYPE html>
+<!-- @dsCard group="Brand" name="Logos" subtitle="Spec doc — wordmark + symbol, anatomy, sizes, clear-space, backgrounds, in-context, don'ts, file downloads" viewport="1280x900" -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Logos · @attrus-ds/core</title>
+<title>Logos · ATTRUS Design System</title>
 <link rel="stylesheet" href="../dist/css/index.css">
 <script src="./theme-toggle.js"></script>
-<link rel="stylesheet" href="./components/tokens-doc.css">
+<link rel="stylesheet" href="components/spec-page.css">
 <link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
-  .logo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-5); }
-  .logo-tile {
+  body {
+    margin: 0;
+    background: var(--color-background-canvas);
+    color: var(--color-foreground-default);
+    font-family: var(--font-sans);
+    font-size: var(--fs-base);
+    line-height: var(--lh-normal);
+  }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  /* header */
+  .doc-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: var(--space-8);
+    padding-bottom: var(--space-7);
+    border-bottom: 1px solid var(--color-border-default);
+    margin-bottom: var(--space-10);
+  }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta-pill {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-feedback-success-background);
+    color: var(--color-feedback-success-foreground);
+    border: 1px solid var(--color-feedback-success-border);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+  }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  /* nav */
+  .doc-nav {
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-10);
+    box-shadow: var(--shadow-xs);
+  }
+  .doc-nav a {
+    padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill);
+    color: var(--color-foreground-secondary); text-decoration: none;
+    font-size: var(--fs-sm); font-weight: var(--w-semibold);
+    transition: var(--transition-fast);
+  }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  /* sections */
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  /* spec card */
+  .spec {
     background: var(--color-background-surface);
     border: 1px solid var(--color-border-default);
     border-radius: var(--radius-lg);
-    padding: var(--space-6);
-    display: flex; flex-direction: column; gap: var(--space-4);
+    overflow: hidden;
+    margin-bottom: var(--space-6);
     box-shadow: var(--shadow-xs);
   }
-  .logo-tile.dark { background: var(--color-background-inverse); border-color: transparent; }
-  .logo-tile img { max-width: 100%; height: 28px; width: auto; object-fit: contain; }
-  .logo-tile .lbl { font-family: var(--font-mono); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
-  .logo-tile.dark .lbl { color: var(--color-foreground-inverse-muted); }
+  .spec-head {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: var(--space-6);
+    padding: var(--space-5) var(--space-6);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code {
+    font-family: var(--font-mono); font-size: var(--fs-md);
+    font-weight: var(--w-medium); color: var(--color-foreground-accent);
+    background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px;
+  }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .spec-tag {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0;
+  }
+  .spec-canvas {
+    padding: var(--space-12) var(--space-6);
+    background: var(--color-background-canvas);
+    background-image:
+      linear-gradient(var(--color-border-subtle) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: -1px -1px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 200px;
+  }
+  .spec-canvas.dark {
+    background: var(--color-background-inverse);
+    background-image:
+      linear-gradient(var(--color-overlay-white-08) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-overlay-white-08) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: -1px -1px;
+  }
+  .spec-canvas.brand {
+    background: var(--grad-hero);
+    position: relative;
+  }
+  .spec-canvas.brand::before {
+    content: ""; position: absolute; inset: 0;
+    background: var(--grad-radial-glow);
+  }
+  .spec-canvas.brand > * { position: relative; z-index: 1; }
+
+  /* Mark display row */
+  .mark-row {
+    display: flex; gap: var(--space-10); align-items: center; justify-content: center;
+    flex-wrap: wrap;
+  }
+  .mark { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); }
+  .mark img { display: block; max-height: 56px; }
+  .mark .lbl {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-muted);
+  }
+  .dark .mark .lbl { color: var(--color-foreground-inverse-muted); }
+
+  /* Anatomy diagram */
+  .anatomy {
+    display: grid; grid-template-columns: 1fr; gap: var(--space-6);
+    align-items: stretch; padding: var(--space-7);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-8);
+  }
+  @media (min-width: 880px) { .anatomy { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--space-8); padding: var(--space-8); } }
+  .anatomy-canvas {
+    padding: var(--space-8);
+    background: var(--color-background-canvas);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    min-height: 300px;
+    position: relative;
+  }
+  /* SVG arrows for anatomy callouts — used inline */
+  .anat-wrap { position: relative; padding: var(--space-7); }
+  .anat-wrap .logo-img { display: block; height: 64px; width: auto; max-width: 100%; }
+  .anat-callout {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-accent);
+    padding: var(--space-1) var(--space-2);
+    background: var(--color-brand-secondary-50);
+    border: 1px solid var(--color-brand-secondary-100);
+    border-radius: var(--radius-xs);
+    white-space: nowrap;
+  }
+  .anat-line {
+    position: absolute;
+    background: var(--color-brand-secondary-300);
+  }
+
+  .anatomy-list { min-width: 0; }
+  .anatomy-list ol { padding-left: 0; margin: 0; counter-reset: anat; list-style: none; }
+  .anatomy-list li {
+    counter-increment: anat;
+    margin-bottom: var(--space-4);
+    padding-left: var(--space-8); position: relative;
+    color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);
+    font-size: var(--fs-sm);
+  }
+  .anatomy-list li:last-child { margin-bottom: 0; }
+  .anatomy-list li::before {
+    content: counter(anat); position: absolute; left: 0; top: 1px;
+    width: 18px; height: 18px;
+    background: var(--color-foreground-default); color: var(--color-foreground-on-solid);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
+  .anatomy-list li code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  /* size matrix */
+  .size-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  @media (max-width: 880px) { .size-grid { grid-template-columns: repeat(2, 1fr); } }
+  .size-cell {
+    padding: var(--space-7) var(--space-5);
+    border-right: 1px solid var(--color-border-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+    display: flex; flex-direction: column; gap: var(--space-3);
+    align-items: center; justify-content: flex-end;
+    min-height: 180px;
+  }
+  .size-cell:nth-child(4n) { border-right: 0; }
+  .size-cell:nth-last-child(-n+4) { border-bottom: 0; }
+  .size-cell .size-meta {
+    text-align: center; padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border-subtle);
+    width: 100%;
+  }
+  .size-cell .size-name {
+    font-size: var(--fs-sm); font-weight: var(--w-semibold);
+    color: var(--color-foreground-default);
+  }
+  .size-cell .size-px {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    color: var(--color-foreground-muted);
+    margin-top: 2px;
+  }
+  .size-cell .size-use {
+    font-size: var(--fs-xs); color: var(--color-foreground-muted);
+    margin-top: var(--space-2); line-height: var(--lh-normal);
+  }
+
+  /* Clear space diagram */
+  .clearspace {
+    position: relative;
+    padding: var(--space-12);
+    background: var(--color-background-canvas);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    display: flex; justify-content: center; align-items: center;
+  }
+  .clearspace-frame {
+    position: relative;
+    padding: 48px;
+    border: 1px dashed var(--color-brand-secondary-300);
+    background: color-mix(in srgb, var(--color-brand-secondary-50) 50%, transparent);
+  }
+  .clearspace-frame img { display: block; height: 40px; width: auto; }
+  .clearspace-label {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-accent);
+    padding: 2px var(--space-2);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-brand-secondary-200);
+    border-radius: var(--radius-xs);
+    white-space: nowrap;
+  }
+  .clearspace-label.top { top: 12px; left: 50%; transform: translateX(-50%); }
+  .clearspace-label.right { top: 50%; right: 12px; transform: translateY(-50%); }
+  .clearspace-label.bottom { bottom: 12px; left: 50%; transform: translateX(-50%); }
+  .clearspace-label.left { top: 50%; left: 12px; transform: translateY(-50%); }
+  .clearspace-x {
+    position: absolute;
+    background: var(--color-brand-secondary-300);
+  }
+
+  /* Background swatches */
+  .bg-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    background: var(--color-border-subtle);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .bg-cell {
+    padding: var(--space-7) var(--space-5);
+    display: flex; flex-direction: column; gap: var(--space-5);
+    align-items: center; justify-content: space-between;
+    min-height: 220px;
+    position: relative;
+    text-align: center;
+  }
+  .bg-cell.swatch-white  { background: var(--color-pure-white); }
+  .bg-cell.swatch-canvas { background: var(--color-background-canvas); }
+  .bg-cell.swatch-subtle { background: var(--color-background-subtle); }
+  .bg-cell.swatch-ink    { background: var(--color-background-inverse); }
+  .bg-cell.swatch-brand  { background: var(--grad-hero); }
+  .bg-cell.swatch-brand::before {
+    content: ""; position: absolute; inset: 0;
+    background: var(--grad-radial-glow);
+  }
+  .bg-cell.swatch-brand > * { position: relative; z-index: 1; }
+  .bg-cell img { height: 32px; width: auto; }
+  .bg-cell .bg-info { text-align: center; }
+  .bg-cell .bg-name {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-muted);
+  }
+  .bg-cell.swatch-ink .bg-name, .bg-cell.swatch-brand .bg-name { color: var(--color-foreground-inverse-muted); }
+  .bg-cell .bg-use {
+    font-size: var(--fs-xs); color: var(--color-foreground-secondary);
+    margin-top: var(--space-2); line-height: var(--lh-normal);
+  }
+  .bg-cell.swatch-ink .bg-use, .bg-cell.swatch-brand .bg-use { color: var(--color-foreground-inverse-secondary); }
+
+  /* In context demos */
+  .ctx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+  @media (max-width: 880px) { .ctx-grid { grid-template-columns: 1fr; } }
+  .ctx-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .ctx-meta { padding: var(--space-4) var(--space-5); border-top: 1px solid var(--color-border-subtle); }
+  .ctx-meta strong { display: block; font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); margin-bottom: 2px; }
+  .ctx-meta p { font-size: var(--fs-xs); color: var(--color-foreground-muted); margin: 0; line-height: var(--lh-relaxed); }
+  .ctx-canvas { padding: var(--space-5); min-height: 200px; position: relative; }
+
+  /* Topbar mock */
+  .ctx-topbar { background: var(--color-background-surface); }
+  .ctx-topbar .bar {
+    display: flex; align-items: center; gap: var(--space-5);
+    padding: var(--space-3) var(--space-5);
+    border: 1px solid var(--color-border-default); border-radius: var(--radius-md);
+    background: var(--color-background-canvas);
+    margin-bottom: var(--space-3);
+  }
+  .ctx-topbar .bar img { height: 20px; width: auto; }
+  .ctx-topbar .bar .nav-links { display: flex; gap: var(--space-4); margin-left: var(--space-3); font-size: var(--fs-sm); color: var(--color-foreground-muted); }
+  .ctx-topbar .bar .nav-links a { color: inherit; text-decoration: none; }
+  .ctx-topbar .bar .nav-links a.active { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+  .ctx-topbar .bar .cta { margin-left: auto; padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); background: var(--color-brand-secondary-500); color: var(--color-foreground-on-solid); font-size: var(--fs-xs); font-weight: var(--w-semibold); }
+
+  /* Favicon mock */
+  .ctx-favicon { background: var(--color-background-canvas); display: flex; align-items: center; justify-content: center; }
+  .ctx-favicon .browser-tab {
+    display: flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    max-width: 240px;
+  }
+  .ctx-favicon .browser-tab img { width: 16px; height: 16px; flex-shrink: 0; }
+  .ctx-favicon .browser-tab .title { font-size: var(--fs-xs); color: var(--color-foreground-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ctx-favicon .browser-tab .close { color: var(--color-foreground-muted); margin-left: auto; flex-shrink: 0; }
+  .ctx-favicon .browser-tab .close svg, .ctx-favicon .browser-tab .close i { width: 12px; height: 12px; stroke-width: var(--icon-stroke); }
+
+  /* Receipt mock */
+  .ctx-receipt { background: var(--color-background-subtle); display: flex; align-items: center; justify-content: center; }
+  .ctx-receipt .receipt {
+    width: 240px;
+    background: var(--color-background-surface);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-default);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-4);
+  }
+  .ctx-receipt .receipt-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-border-subtle); }
+  .ctx-receipt .receipt-head img { height: 14px; width: auto; }
+  .ctx-receipt .receipt-head .pill {
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    color: var(--color-feedback-success-foreground);
+    background: var(--color-feedback-success-background);
+    border: 1px solid var(--color-feedback-success-border);
+    padding: 2px var(--space-2); border-radius: var(--radius-pill);
+    text-transform: uppercase; letter-spacing: var(--ls-caps);
+  }
+  .ctx-receipt .receipt-amount { font-family: var(--font-display); font-size: var(--fs-2xl); font-weight: var(--w-bold); font-variant-numeric: tabular-nums; margin: var(--space-3) 0 var(--space-1); }
+  .ctx-receipt .receipt-meta { font-size: var(--fs-xs); color: var(--color-foreground-muted); }
+
+  /* App icon mock */
+  .ctx-app { background: var(--grad-hero); position: relative; display: flex; align-items: center; justify-content: center; min-height: 220px; }
+  .ctx-app::before { content: ""; position: absolute; inset: 0; background: var(--grad-radial-glow); }
+  .ctx-app .grid-tile {
+    position: relative; z-index: 1;
+    width: 88px; height: 88px;
+    background: var(--color-pure-white);
+    border-radius: 18px;
+    box-shadow: var(--shadow-lg);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ctx-app .grid-tile img { width: 56px; height: 56px; }
+
+  /* don'ts */
+  .dont-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-4); }
+  .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .dont-canvas { padding: var(--space-5); background: var(--color-background-canvas); border-bottom: 1px solid var(--color-border-subtle); display: flex; justify-content: center; align-items: center; min-height: 140px; }
+  .dont-canvas img { max-height: 32px; max-width: 100%; }
+  .dont-canvas.bg-light { background: var(--color-background-surface); }
+  .dont-canvas.bg-medium { background: var(--color-neutral-300); }
+  .dont-canvas.bg-photo { background: linear-gradient(120deg, #ffaa00, #ff5566); }
+  .dont-canvas.bg-brand { background: var(--color-brand-secondary-300); }
+  .dont-body { padding: var(--space-4) var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
+  .dont-body i, .dont-body svg { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .dont-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+
+  /* Download/files table */
+  .files-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .files-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .files-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: middle; }
+  .files-table tr:last-child td { border-bottom: 0; }
+  .files-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+  .files-table .thumb { width: 64px; }
+  .files-table .thumb-wrap { width: 56px; height: 32px; display: flex; align-items: center; justify-content: center; background: var(--color-background-canvas); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-xs); }
+  .files-table .thumb-wrap.dark { background: var(--color-background-inverse); border-color: var(--color-border-inverse); }
+  .files-table .thumb-wrap img { max-width: 80%; max-height: 20px; }
+  .files-table .download {
+    display: inline-flex; align-items: center; gap: var(--space-1);
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: var(--w-semibold);
+    color: var(--color-foreground-default); text-decoration: none;
+  }
+  .files-table .download:hover { background: var(--color-background-hover); border-color: var(--color-border-strong); }
+  .files-table .download svg, .files-table .download i { width: 11px; height: 11px; stroke-width: var(--icon-stroke); color: var(--color-foreground-muted); }
+
+  /* token table */
+  .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .token-table tr:last-child td { border-bottom: 0; }
+  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
 </style>
 </head>
 <body>
-<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme" style="position:fixed;top:var(--space-5);right:var(--space-5);z-index:100;display:inline-flex;align-items:center;gap:var(--space-2);height:40px;padding:0 var(--space-4);background:var(--color-background-surface);border:1px solid var(--color-border-default);border-radius:var(--radius-pill);cursor:pointer;">
-  <span data-theme-icon>&#9790;</span><span data-theme-label>Dark</span>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
 </button>
+
+<a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
 <main class="doc">
+
   <header class="doc-header">
     <div>
-      <p style="margin:0 0 var(--space-3); font-family:var(--font-mono); font-size:var(--fs-xs); letter-spacing:var(--ls-caps); text-transform:uppercase;">
-        <a href="components.html" style="color:var(--color-foreground-accent); text-decoration:none;">&larr; Design system home</a>
-      </p>
-      <h1>Logos</h1>
-      <p>ATTRUS wordmark and icon in light and dark contrasts. Shipped under <code>dist/assets/</code> and importable as <code>@attrus-ds/core/assets/*</code>.</p>
+      <h1>Logos &amp; marks</h1>
+      <p>The ATTRUS identity in its allowed forms. Two marks (wordmark + symbol), two contrasts (dark on light, light on dark) and a strict set of clear-space, background and proportion rules.</p>
     </div>
+    <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Ready</span>
   </header>
-  <div class="logo-grid">
-    <div class="logo-tile">
-      <span class="lbl">logo-attrus-dark.svg · light surfaces</span>
-      <img src="../assets/logo-attrus-dark.svg" alt="ATTRUS dark wordmark">
+
+  <nav class="doc-nav">
+    <a href="#marks">01 The marks</a>
+    <a href="#anatomy">02 Anatomy</a>
+    <a href="#variants">03 Variants</a>
+    <a href="#sizes">04 Sizes</a>
+    <a href="#clearspace">05 Clear space</a>
+    <a href="#backgrounds">06 Backgrounds</a>
+    <a href="#context">07 In context</a>
+    <a href="#donts">08 Don'ts</a>
+    <a href="#files">09 Files</a>
+  </nav>
+
+  <!-- 01 THE MARKS -->
+  <section class="doc-section" id="marks">
+    <h2><span class="num">01</span>The marks</h2>
+    <p class="lead">Two complementary marks. Always identify the asset before placing it — wordmark for primary branding, symbol for compact / iconographic use.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Wordmark</h3>
+          <p>The primary brand asset. The full word <em>ATTRUS</em> set in a custom geometric face. Use this any time the brand has at least 80px of horizontal room and identification is the goal.</p>
+        </div>
+        <span class="spec-tag">primary</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="mark-row">
+          <div class="mark">
+            <img src="../assets/logo-attrus-dark.svg" alt="ATTRUS wordmark · dark">
+            <span class="lbl">on light</span>
+          </div>
+        </div>
+      </div>
+      <div class="spec-canvas dark">
+        <div class="mark-row">
+          <div class="mark">
+            <img src="../assets/logo-attrus-light.svg" alt="ATTRUS wordmark · light">
+            <span class="lbl">on dark</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Symbol</h3>
+          <p>The apex glyph abstracted from the "A" in ATTRUS — reads as an upward arrow / mountain / convergence point. Reinforces the "unified platform" positioning. Use when the wordmark won't fit (favicon, app icon, compact nav, small badges).</p>
+        </div>
+        <span class="spec-tag">compact</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="mark-row">
+          <div class="mark">
+            <img src="../assets/icon-attrus-dark.svg" alt="ATTRUS symbol · dark">
+            <span class="lbl">on light</span>
+          </div>
+        </div>
+      </div>
+      <div class="spec-canvas dark">
+        <div class="mark-row">
+          <div class="mark">
+            <img src="../assets/icon-attrus-light.svg" alt="ATTRUS symbol · light">
+            <span class="lbl">on dark</span>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 02 ANATOMY -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">02</span>Anatomy</h2>
+    <p class="lead">Both marks are built around the same construction. The proportions are fixed — never recompose the parts.</p>
+
+    <div class="anatomy">
+      <div class="anatomy-canvas">
+        <div class="anat-wrap" style="position: relative;">
+          <img class="logo-img" src="../assets/logo-attrus-dark.svg" alt="ATTRUS anatomy">
+          <span class="anat-callout" style="top: -8px; left: 50%; transform: translateX(-50%);">apex glyph</span>
+          <span class="anat-callout" style="top: 50%; right: -100px; transform: translateY(-50%);">wordmark</span>
+          <span class="anat-callout" style="bottom: -28px; left: 50%; transform: translateX(-50%);">baseline</span>
+        </div>
+      </div>
+      <div class="anatomy-list">
+        <ol>
+          <li><strong>Apex glyph</strong> The triangle / upward arrow abstracted from the first "A". It declares the brand even at favicon scale and works alone as the <em>symbol</em> asset.</li>
+          <li><strong>Wordmark</strong> The full word <em>ATTRUS</em> set in the custom geometric face. Optical kerning and tracking are pre-baked into the SVG — never re-set the type.</li>
+          <li><strong>Baseline</strong> The bottom edge of the wordmark. Use it to align the mark with other text or surfaces; the apex glyph reaches above the cap-height but never crosses below.</li>
+          <li><strong>Inner counter</strong> The negative space inside the apex glyph is part of the logo. Backgrounds with imagery or noise should never bleed into this space — it must stay clean.</li>
+        </ol>
+      </div>
     </div>
-    <div class="logo-tile dark">
-      <span class="lbl">logo-attrus-light.svg · dark surfaces</span>
-      <img src="../assets/logo-attrus-light.svg" alt="ATTRUS light wordmark">
+  </section>
+
+  <!-- 03 VARIANTS -->
+  <section class="doc-section" id="variants">
+    <h2><span class="num">03</span>Variants</h2>
+    <p class="lead">Each mark exists in two contrasts. Pick by the background's lightness — never by personal preference.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Dark (ink) <code>logo-attrus-dark.svg</code></h3>
+          <p>The apex glyph and wordmark filled with <code>#000033</code> (brand ink). Use on light surfaces: white, neutral-25/50, and any background lighter than <code>--color-neutral-300</code>.</p>
+        </div>
+        <span class="spec-tag">on light</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="mark-row">
+          <div class="mark"><img src="../assets/logo-attrus-dark.svg" alt="wordmark dark"><span class="lbl">wordmark</span></div>
+          <div class="mark"><img src="../assets/icon-attrus-dark.svg" alt="symbol dark" style="max-height: 48px;"><span class="lbl">symbol</span></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Light <code>logo-attrus-light.svg</code></h3>
+          <p>The apex glyph and wordmark in pure white. Use on dark surfaces: brand gradient, ink backgrounds, photographs darker than <code>--color-neutral-600</code>, and any inverse-layer surface.</p>
+        </div>
+        <span class="spec-tag">on dark</span>
+      </header>
+      <div class="spec-canvas dark">
+        <div class="mark-row">
+          <div class="mark"><img src="../assets/logo-attrus-light.svg" alt="wordmark light"><span class="lbl">wordmark</span></div>
+          <div class="mark"><img src="../assets/icon-attrus-light.svg" alt="symbol light" style="max-height: 48px;"><span class="lbl">symbol</span></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 04 SIZES -->
+  <section class="doc-section" id="sizes">
+    <h2><span class="num">04</span>Sizes</h2>
+    <p class="lead">Minimum height by use. Below the minimum, switch to the symbol — never shrink the wordmark beyond legibility.</p>
+
+    <div class="size-grid">
+      <div class="size-cell">
+        <img src="../assets/logo-attrus-dark.svg" alt="wordmark 16" style="height: 16px;">
+        <div class="size-meta">
+          <div class="size-name">XS · 16px</div>
+          <div class="size-px">≥ 80px wide</div>
+          <div class="size-use">Email footers, signatures, fine print.</div>
+        </div>
+      </div>
+      <div class="size-cell">
+        <img src="../assets/logo-attrus-dark.svg" alt="wordmark 24" style="height: 24px;">
+        <div class="size-meta">
+          <div class="size-name">SM · 24px</div>
+          <div class="size-px">≥ 120px wide</div>
+          <div class="size-use">Receipts, PDFs, document headers.</div>
+        </div>
+      </div>
+      <div class="size-cell">
+        <img src="../assets/logo-attrus-dark.svg" alt="wordmark 32" style="height: 32px;">
+        <div class="size-meta">
+          <div class="size-name">MD · 32px</div>
+          <div class="size-px">≥ 160px wide</div>
+          <div class="size-use">Default for app top bars and login screens.</div>
+        </div>
+      </div>
+      <div class="size-cell">
+        <img src="../assets/logo-attrus-dark.svg" alt="wordmark 48" style="height: 48px;">
+        <div class="size-meta">
+          <div class="size-name">LG · 48px</div>
+          <div class="size-px">≥ 240px wide</div>
+          <div class="size-use">Marketing pages, hero placements.</div>
+        </div>
+      </div>
+      <div class="size-cell">
+        <img src="../assets/icon-attrus-dark.svg" alt="symbol 16" style="height: 16px;">
+        <div class="size-meta">
+          <div class="size-name">Symbol · 16px</div>
+          <div class="size-px">favicon · tab</div>
+          <div class="size-use">Browser tabs, OS notifications.</div>
+        </div>
+      </div>
+      <div class="size-cell">
+        <img src="../assets/icon-attrus-dark.svg" alt="symbol 24" style="height: 24px;">
+        <div class="size-meta">
+          <div class="size-name">Symbol · 24px</div>
+          <div class="size-px">badge · chip</div>
+          <div class="size-use">Compact nav, status pills with brand.</div>
+        </div>
+      </div>
+      <div class="size-cell">
+        <img src="../assets/icon-attrus-dark.svg" alt="symbol 40" style="height: 40px;">
+        <div class="size-meta">
+          <div class="size-name">Symbol · 40px</div>
+          <div class="size-px">avatar · header</div>
+          <div class="size-use">User avatar fallback, collapsed sidebar.</div>
+        </div>
+      </div>
+      <div class="size-cell">
+        <img src="../assets/icon-attrus-dark.svg" alt="symbol 64" style="height: 64px;">
+        <div class="size-meta">
+          <div class="size-name">Symbol · 64px+</div>
+          <div class="size-px">app icon · iOS / Android</div>
+          <div class="size-use">App store icon, marketing splash tiles.</div>
+        </div>
+      </div>
     </div>
-    <div class="logo-tile">
-      <span class="lbl">icon-attrus-dark.svg</span>
-      <img src="../assets/icon-attrus-dark.svg" alt="ATTRUS dark icon" style="height:40px">
+  </section>
+
+  <!-- 05 CLEAR SPACE -->
+  <section class="doc-section" id="clearspace">
+    <h2><span class="num">05</span>Clear space</h2>
+    <p class="lead">Every mark needs breathing room. <strong>X = height of the apex glyph</strong> — that's the minimum padding on all four sides. Never less, ever.</p>
+
+    <div class="clearspace">
+      <div class="clearspace-frame">
+        <img src="../assets/logo-attrus-dark.svg" alt="ATTRUS wordmark with clear space">
+        <span class="clearspace-label top">X</span>
+        <span class="clearspace-label right">X</span>
+        <span class="clearspace-label bottom">X</span>
+        <span class="clearspace-label left">X</span>
+      </div>
     </div>
-    <div class="logo-tile dark">
-      <span class="lbl">icon-attrus-light.svg</span>
-      <img src="../assets/icon-attrus-light.svg" alt="ATTRUS light icon" style="height:40px">
+
+    <p style="font-size: var(--fs-sm); color: var(--color-foreground-secondary); margin-top: var(--space-5); line-height: var(--lh-relaxed); max-width: 70ch;">
+      <strong style="color: var(--color-foreground-default);">Practical rule:</strong> if any other element (text, button, image edge, photo) enters this padded box, the layout is breaking the brand. Crop the surrounding content or push the mark to a less crowded position.
+    </p>
+  </section>
+
+  <!-- 06 BACKGROUNDS -->
+  <section class="doc-section" id="backgrounds">
+    <h2><span class="num">06</span>Backgrounds</h2>
+    <p class="lead">Five canonical backgrounds, three permitted, two forbidden. Stick to these — never improvise on a photograph or mid-value gradient.</p>
+
+    <div class="bg-grid">
+      <div class="bg-cell swatch-white">
+        <img src="../assets/logo-attrus-dark.svg" alt="">
+        <div class="bg-info">
+          <div class="bg-name">Pure white</div>
+          <div class="bg-use">Always use the dark mark</div>
+        </div>
+      </div>
+      <div class="bg-cell swatch-canvas">
+        <img src="../assets/logo-attrus-dark.svg" alt="">
+        <div class="bg-info">
+          <div class="bg-name">--color-background-canvas</div>
+          <div class="bg-use">Default UI canvas · dark mark</div>
+        </div>
+      </div>
+      <div class="bg-cell swatch-subtle">
+        <img src="../assets/logo-attrus-dark.svg" alt="">
+        <div class="bg-info">
+          <div class="bg-name">--color-background-subtle</div>
+          <div class="bg-use">Sections, cards · dark mark</div>
+        </div>
+      </div>
+      <div class="bg-cell swatch-ink">
+        <img src="../assets/logo-attrus-light.svg" alt="">
+        <div class="bg-info">
+          <div class="bg-name">--color-background-inverse</div>
+          <div class="bg-use">Sidebars, dark hero · light mark</div>
+        </div>
+      </div>
+      <div class="bg-cell swatch-brand">
+        <img src="../assets/logo-attrus-light.svg" alt="">
+        <div class="bg-info">
+          <div class="bg-name">--grad-hero</div>
+          <div class="bg-use">Brand gradient, light mark only</div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <!-- 07 IN CONTEXT -->
+  <section class="doc-section" id="context">
+    <h2><span class="num">07</span>In context</h2>
+    <p class="lead">Four canonical placements. Notice the same mark behaves differently by size and crop in each one.</p>
+
+    <div class="ctx-grid">
+      <div class="ctx-card">
+        <div class="ctx-canvas ctx-topbar">
+          <div class="bar">
+            <img src="../assets/logo-attrus-dark.svg" alt="ATTRUS">
+            <div class="nav-links">
+              <a class="active">Home</a>
+              <a>Transactions</a>
+              <a>Receivables</a>
+              <a>Counterparties</a>
+            </div>
+            <span class="cta">New transaction</span>
+          </div>
+        </div>
+        <div class="ctx-meta">
+          <strong>Top bar — 20px wordmark</strong>
+          <p>The default. Aligns vertically with nav links; clear-space rule pushes the first link far enough right.</p>
+        </div>
+      </div>
+
+      <div class="ctx-card">
+        <div class="ctx-canvas ctx-favicon">
+          <div class="browser-tab">
+            <img src="../assets/icon-attrus-dark.svg" alt="">
+            <span class="title">ATTRUS · Treasury</span>
+            <span class="close"><i data-lucide="x"></i></span>
+          </div>
+        </div>
+        <div class="ctx-meta">
+          <strong>Favicon — 16px symbol</strong>
+          <p>Below 80px wide, the wordmark would be illegible. Switch to the symbol.</p>
+        </div>
+      </div>
+
+      <div class="ctx-card">
+        <div class="ctx-canvas ctx-receipt">
+          <div class="receipt">
+            <div class="receipt-head">
+              <img src="../assets/logo-attrus-dark.svg" alt="ATTRUS">
+              <span class="pill">paid</span>
+            </div>
+            <div class="receipt-amount">USD 12,400.00</div>
+            <div class="receipt-meta">TX-9821 · 02 Feb 2026 14:32</div>
+          </div>
+        </div>
+        <div class="ctx-meta">
+          <strong>Receipt header — 14px wordmark</strong>
+          <p>Smallest allowed wordmark. Pairs left-aligned with a status pill right-aligned.</p>
+        </div>
+      </div>
+
+      <div class="ctx-card">
+        <div class="ctx-canvas ctx-app">
+          <div class="grid-tile">
+            <img src="../assets/icon-attrus-dark.svg" alt="ATTRUS app icon">
+          </div>
+        </div>
+        <div class="ctx-meta">
+          <strong>App icon — 56px symbol</strong>
+          <p>Rounded squircle tile (18px radius for iOS, 22% for Android). White surface only — the apex glyph contrasts the tile, not the background.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 DON'TS -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">08</span>Don'ts</h2>
+    <p class="lead">Six anti-patterns. Each one diminishes the mark — none of them belong in any ATTRUS surface, internal or external.</p>
+
+    <div class="dont-grid">
+      <div class="dont-card">
+        <div class="dont-canvas">
+          <img src="../assets/logo-attrus-dark.svg" alt="" style="transform: scaleX(1.4); max-height: 28px;">
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't stretch or squish.</strong> Always preserve aspect ratio. The wordmark's proportions are the brand.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas">
+          <img src="../assets/logo-attrus-dark.svg" alt="" style="transform: rotate(-12deg); max-height: 28px;">
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't rotate.</strong> The mark always sits on its baseline. No tilts, even for stylistic effect.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas">
+          <img src="../assets/logo-attrus-dark.svg" alt="" style="filter: hue-rotate(120deg); max-height: 28px;">
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't recolor.</strong> Only ink (<code>#000033</code>) on light and pure white on dark. No brand-blue wordmark, no rainbow.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas bg-medium">
+          <img src="../assets/logo-attrus-dark.svg" alt="" style="max-height: 28px;">
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't use the dark mark on mid-value backgrounds.</strong> If the background sits between neutral-300 and neutral-600, switch to a brand surface and use the light mark.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas bg-photo">
+          <img src="../assets/logo-attrus-dark.svg" alt="" style="max-height: 28px;">
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't place on busy photography.</strong> The mark needs a calm surface. If you must overlay imagery, add a brand-gradient panel or a glass layer first.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas">
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <img src="../assets/icon-attrus-dark.svg" alt="" style="height: 20px;">
+            <img src="../assets/logo-attrus-dark.svg" alt="" style="height: 18px;">
+          </div>
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't combine the symbol and wordmark.</strong> The wordmark already contains the apex glyph. Stacking them is redundant and visually heavy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 FILES -->
+  <section class="doc-section" id="files">
+    <h2><span class="num">09</span>Files</h2>
+    <p class="lead">Four assets live in <code>/assets</code>. Always use SVG when the surface supports it — PNG fallbacks exist for older email clients and OS app-icon pipelines.</p>
+
+    <table class="files-table">
+      <thead>
+        <tr><th class="thumb"></th><th>File</th><th>Format</th><th>Use</th><th></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="thumb"><div class="thumb-wrap"><img src="../assets/logo-attrus-dark.svg" alt=""></div></td>
+          <td><code>logo-attrus-dark.svg</code></td>
+          <td>SVG · vector</td>
+          <td>Wordmark · light surfaces</td>
+          <td><a class="download" href="../assets/logo-attrus-dark.svg" download><i data-lucide="download"></i>SVG</a></td>
+        </tr>
+        <tr>
+          <td class="thumb"><div class="thumb-wrap dark"><img src="../assets/logo-attrus-light.svg" alt=""></div></td>
+          <td><code>logo-attrus-light.svg</code></td>
+          <td>SVG · vector</td>
+          <td>Wordmark · dark / brand surfaces</td>
+          <td><a class="download" href="../assets/logo-attrus-light.svg" download><i data-lucide="download"></i>SVG</a></td>
+        </tr>
+        <tr>
+          <td class="thumb"><div class="thumb-wrap"><img src="../assets/icon-attrus-dark.svg" alt=""></div></td>
+          <td><code>icon-attrus-dark.svg</code></td>
+          <td>SVG · vector</td>
+          <td>Symbol · light surfaces</td>
+          <td><a class="download" href="../assets/icon-attrus-dark.svg" download><i data-lucide="download"></i>SVG</a></td>
+        </tr>
+        <tr>
+          <td class="thumb"><div class="thumb-wrap dark"><img src="../assets/icon-attrus-light.svg" alt=""></div></td>
+          <td><code>icon-attrus-light.svg</code></td>
+          <td>SVG · vector</td>
+          <td>Symbol · dark / brand surfaces</td>
+          <td><a class="download" href="../assets/icon-attrus-light.svg" download><i data-lucide="download"></i>SVG</a></td>
+        </tr>
+        <tr>
+          <td class="thumb"><div class="thumb-wrap"><img src="../assets/logo-attrus-dark.png" alt=""></div></td>
+          <td><code>logo-attrus-dark.png</code></td>
+          <td>PNG · 2× raster</td>
+          <td>Email clients, OS pipelines</td>
+          <td><a class="download" href="../assets/logo-attrus-dark.png" download><i data-lucide="download"></i>PNG</a></td>
+        </tr>
+        <tr>
+          <td class="thumb"><div class="thumb-wrap dark"><img src="../assets/logo-attrus-light.png" alt=""></div></td>
+          <td><code>logo-attrus-light.png</code></td>
+          <td>PNG · 2× raster</td>
+          <td>Email on dark backgrounds</td>
+          <td><a class="download" href="../assets/logo-attrus-light.png" download><i data-lucide="download"></i>PNG</a></td>
+        </tr>
+        <tr>
+          <td class="thumb"><div class="thumb-wrap"><img src="../assets/icon-attrus-dark.png" alt=""></div></td>
+          <td><code>icon-attrus-dark.png</code></td>
+          <td>PNG · 2× raster</td>
+          <td>App icon pipelines (iOS / Android)</td>
+          <td><a class="download" href="../assets/icon-attrus-dark.png" download><i data-lucide="download"></i>PNG</a></td>
+        </tr>
+        <tr>
+          <td class="thumb"><div class="thumb-wrap dark"><img src="../assets/icon-attrus-light.png" alt=""></div></td>
+          <td><code>icon-attrus-light.png</code></td>
+          <td>PNG · 2× raster</td>
+          <td>App icon · dark variants</td>
+          <td><a class="download" href="../assets/icon-attrus-light.png" download><i data-lucide="download"></i>PNG</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size: var(--fs-sm); color: var(--color-foreground-secondary); margin-top: var(--space-5); line-height: var(--lh-relaxed); max-width: 70ch;">
+      <strong style="color: var(--color-foreground-default);">Brand manual:</strong> the full source-of-truth document is <code>assets/brand-manual-KV-ATTRUS-v0.1.pdf</code>. Refer to it before improvising any new placement.
+    </p>
+  </section>
+
 </main>
+
+<script>if (window.lucide) lucide.createIcons();</script>
+
 </body>
 </html>

@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Toast" subtitle="Ephemeral feedback · 6 variants · 6 positions" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Toast · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  /* ============================================================
+     DOCUMENT CHROME — same vocabulary as buttons.html / inputs.html
+     ============================================================ */
+  body {
+    margin: 0;
+    background: var(--color-background-canvas);
+    color: var(--color-foreground-default);
+    font-family: var(--font-sans);
+    font-size: var(--fs-base);
+    line-height: var(--lh-normal);
+  }
+  .doc {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: var(--space-10) var(--space-8) var(--space-16);
+  }
+
+  /* header */
+  .doc-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: var(--space-8);
+    padding-bottom: var(--space-7);
+    border-bottom: 1px solid var(--color-border-default);
+    margin-bottom: var(--space-10);
+  }
+  .doc-header h1 {
+    font-size: var(--fs-6xl); font-weight: var(--w-bold);
+    letter-spacing: var(--ls-display); margin: 0 0 var(--space-3);
+  }
+  .doc-header p {
+    font-size: var(--fs-lg); color: var(--color-foreground-secondary);
+    line-height: var(--lh-relaxed); margin: 0; max-width: 60ch;
+  }
+  .doc-meta { display: flex; gap: var(--space-3); flex-shrink: 0; }
+  .doc-meta-pill {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-feedback-success-background);
+    color: var(--color-feedback-success-foreground);
+    border: 1px solid var(--color-feedback-success-border);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps);
+    text-transform: uppercase;
+  }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  /* nav */
+  .doc-nav {
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-10);
+    box-shadow: var(--shadow-xs);
+  }
+  .doc-nav a {
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-pill);
+    color: var(--color-foreground-secondary);
+    text-decoration: none;
+    font-size: var(--fs-sm); font-weight: var(--w-semibold);
+    transition: var(--transition-fast);
+  }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  /* sections */
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 {
+    font-size: var(--fs-3xl); font-weight: var(--w-bold);
+    letter-spacing: var(--ls-title); margin: 0 0 var(--space-2);
+  }
+  .doc-section h2 .num {
+    font-family: var(--font-mono); font-size: var(--fs-md);
+    font-weight: var(--w-regular); color: var(--color-foreground-muted);
+    letter-spacing: var(--ls-caps); margin-right: var(--space-3);
+    vertical-align: 0.25em;
+  }
+  .doc-section > p.lead {
+    font-size: var(--fs-lg); color: var(--color-foreground-secondary);
+    line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7);
+  }
+
+  /* spec card */
+  .spec {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: var(--space-6);
+    box-shadow: var(--shadow-xs);
+  }
+  .spec-head {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: var(--space-6);
+    padding: var(--space-5) var(--space-6);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .spec-head h3 {
+    font-size: var(--fs-xl); font-weight: var(--w-bold);
+    letter-spacing: var(--ls-title); margin: 0 0 var(--space-2);
+  }
+  .spec-head h3 code {
+    font-family: var(--font-mono); font-size: var(--fs-md);
+    font-weight: var(--w-medium); color: var(--color-foreground-accent);
+    background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-xs);
+    margin-left: var(--space-3); vertical-align: 2px;
+  }
+  .spec-head p {
+    font-size: var(--fs-md); color: var(--color-foreground-secondary);
+    line-height: var(--lh-relaxed); margin: 0; max-width: 56ch;
+  }
+  .spec-head .tag {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-background-subtle);
+    color: var(--color-foreground-secondary);
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps);
+    text-transform: uppercase;
+    border-radius: var(--radius-pill); flex-shrink: 0;
+  }
+
+  .spec-canvas {
+    padding: var(--space-8) var(--space-6);
+    background-color: var(--color-background-canvas);
+    background-image:
+      linear-gradient(var(--color-border-subtle) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px),
+      radial-gradient(circle at 16% 28%, color-mix(in srgb, var(--color-brand-secondary-300) 45%, transparent), transparent 42%),
+      radial-gradient(circle at 84% 72%, color-mix(in srgb, var(--color-brand-accent-300) 40%, transparent), transparent 46%);
+    background-size: 24px 24px, 24px 24px, auto, auto;
+    background-position: -1px -1px, -1px -1px, 0 0, 0 0;
+  }
+  .spec-canvas.dark {
+    background-color: var(--color-background-inverse);
+    background-image:
+      radial-gradient(circle at 18% 26%, color-mix(in srgb, var(--color-brand-accent-500) 32%, transparent), transparent 44%),
+      radial-gradient(circle at 82% 74%, color-mix(in srgb, var(--color-brand-secondary-400) 38%, transparent), transparent 48%);
+  }
+  .spec-canvas .row {
+    display: flex; flex-wrap: wrap;
+    gap: var(--space-4); align-items: flex-start;
+    justify-content: center;
+  }
+  .spec-canvas .col {
+    display: flex; flex-direction: column; gap: var(--space-3);
+    align-items: stretch;
+  }
+
+  /* anatomy */
+  .anatomy {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--space-8);
+    align-items: center;
+    padding: var(--space-8);
+    background: var(--color-background-canvas);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-8);
+  }
+  .anatomy-canvas { display: flex; align-items: center; justify-content: center; }
+  .anatomy-list { font-size: var(--fs-sm); }
+  .anatomy-list ol { padding-left: var(--space-5); margin: 0; counter-reset: anat; list-style: none; }
+  .anatomy-list li {
+    counter-increment: anat;
+    margin-bottom: var(--space-3);
+    padding-left: var(--space-6);
+    position: relative;
+    color: var(--color-foreground-secondary);
+    line-height: var(--lh-relaxed);
+  }
+  .anatomy-list li::before {
+    content: counter(anat);
+    position: absolute; left: 0; top: 1px;
+    width: 18px; height: 18px;
+    background: var(--color-foreground-default);
+    color: var(--color-foreground-on-solid);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xxs); font-weight: var(--w-bold);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .anatomy-list li strong {
+    color: var(--color-foreground-default);
+    font-weight: var(--w-semibold);
+    display: block;
+    margin-bottom: 1px;
+  }
+
+  /* token table */
+  .token-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-sm);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-top: var(--space-4);
+  }
+  .token-table th {
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-background-subtle);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps);
+    text-transform: uppercase;
+    color: var(--color-foreground-muted);
+    border-bottom: 1px solid var(--color-border-default);
+  }
+  .token-table td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border-subtle);
+    vertical-align: top;
+  }
+  .token-table tr:last-child td { border-bottom: none; }
+  .token-table code {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--color-foreground-accent);
+    background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
+    padding: 1px var(--space-2);
+    border-radius: var(--radius-xs);
+  }
+
+  /* don't grid */
+  .dont-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--space-4);
+  }
+  .dont-card {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .dont-card-canvas {
+    padding: var(--space-5);
+    background: var(--color-background-canvas);
+    border-bottom: 1px solid var(--color-border-subtle);
+    display: flex; justify-content: center;
+    min-height: 100px;
+    align-items: center;
+  }
+  .dont-card-body {
+    padding: var(--space-4) var(--space-5);
+    display: flex; gap: var(--space-3); align-items: flex-start;
+  }
+  .dont-card-body i, .dont-card-body svg {
+    color: var(--color-feedback-danger-foreground);
+    width: 18px; height: 18px;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .dont-card-body p {
+    margin: 0;
+    font-size: var(--fs-sm);
+    color: var(--color-foreground-secondary);
+    line-height: var(--lh-relaxed);
+  }
+  .dont-card-body strong {
+    display: block;
+    color: var(--color-foreground-default);
+    font-weight: var(--w-semibold);
+    margin-bottom: var(--space-1);
+  }
+
+  /* live demo controls */
+  .demo-controls {
+    display: flex; flex-wrap: wrap; gap: var(--space-3);
+    padding: var(--space-5) var(--space-6);
+    background: var(--color-background-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .demo-controls button {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: var(--fs-sm);
+    font-weight: var(--w-semibold);
+    color: var(--color-foreground-default);
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+  .demo-controls button:hover {
+    background: var(--color-background-hover);
+    border-color: var(--color-border-strong);
+  }
+  .demo-controls button:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+  .demo-controls button i, .demo-controls button svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  /* position picker */
+  .pos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2);
+    width: 240px;
+    aspect-ratio: 16 / 10;
+    background: var(--color-background-canvas);
+    border: 1px dashed var(--color-border-default);
+    border-radius: var(--radius-sm);
+    padding: var(--space-2);
+  }
+  .pos-grid button {
+    background: transparent;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-xs);
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+  .pos-grid button:hover { background: var(--color-background-hover); }
+  .pos-grid button.is-active {
+    background: var(--color-foreground-accent);
+    border-color: var(--color-foreground-accent);
+  }
+  .pos-grid button:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<div class="doc">
+
+  <!-- ========== HEADER ========== -->
+  <header class="doc-header">
+    <div>
+      <h1>Toast</h1>
+      <p>Ephemeral, non-blocking feedback that confirms the result of an action. Auto-dismisses after a short timeout, stacks vertically, never interrupts the user's flow.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Ready</span>
+    </div>
+  </header>
+
+  <!-- ========== NAV ========== -->
+  <nav class="doc-nav">
+    <a href="#anatomy">01 Anatomy</a>
+    <a href="#variants">02 Variants</a>
+    <a href="#positions">03 Positions</a>
+    <a href="#duration">04 Duration & dismissal</a>
+    <a href="#actions">05 Actions</a>
+    <a href="#inverse">06 Inverse</a>
+    <a href="#live">07 Live demo</a>
+    <a href="#donts">08 Don'ts</a>
+    <a href="#a11y">09 Accessibility</a>
+    <a href="#tokens">10 Tokens</a>
+  </nav>
+
+  <!-- ========== ANATOMY ========== -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">01</span>Anatomy</h2>
+    <p class="lead">A toast is a short, single-purpose surface. Every part is optional except the title — the simplest valid toast is one line of text.</p>
+
+    <div class="anatomy">
+      <div class="anatomy-canvas">
+        <div class="toast toast-success" style="animation: none;">
+          <span class="toast-icon"><i data-lucide="check-circle-2"></i></span>
+          <div class="toast-body">
+            <p class="toast-title">Transfer scheduled</p>
+            <p class="toast-desc">$ 12,400.00 to Banco Itaú will settle on Apr 18.</p>
+            <button class="toast-action">Undo</button>
+          </div>
+          <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
+          <div class="toast-progress"></div>
+        </div>
+      </div>
+      <div class="anatomy-list">
+        <ol>
+          <li><strong>Leading icon</strong>Semantic glyph reinforces the variant. Match icon to severity (check / alert-triangle / x-circle / info).</li>
+          <li><strong>Title</strong>One line, sentence case, action-oriented. Required.</li>
+          <li><strong>Description</strong>Optional second line for context, IDs, amounts. Stays under 2 lines.</li>
+          <li><strong>Action</strong>Optional inline link — Undo, View, Retry. Single button only.</li>
+          <li><strong>Close</strong>Always present. Lets users dismiss before timeout.</li>
+          <li><strong>Progress bar</strong>Visual countdown to auto-dismiss. Hides when <code>duration: 0</code>.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== VARIANTS ========== -->
+  <section class="doc-section" id="variants">
+    <h2><span class="num">02</span>Variants</h2>
+    <p class="lead">Six semantic variants. <strong>Default</strong> for plain confirmations, four feedback variants matched to severity, plus <strong>brand</strong> for product announcements.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Default<code>.toast</code></h3>
+          <p>Neutral surface. Use when the message is informational and doesn't carry severity (e.g. "Settings saved").</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="toast" style="animation: none;">
+          <span class="toast-icon" style="color: var(--color-foreground-secondary);"><i data-lucide="check"></i></span>
+          <div class="toast-body">
+            <p class="toast-title">Settings saved</p>
+            <p class="toast-desc">Your notification preferences are up to date.</p>
+          </div>
+          <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
+          <div class="toast-progress"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Success<code>.toast-success</code></h3>
+          <p>Confirms an action completed as expected — payment sent, document uploaded, user invited.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="toast toast-success" style="animation: none;">
+          <span class="toast-icon"><i data-lucide="check-circle-2"></i></span>
+          <div class="toast-body">
+            <p class="toast-title">Invoice paid</p>
+            <p class="toast-desc">INV-2304 marked as settled. Receipt sent to finance@cabiros.com.</p>
+          </div>
+          <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
+          <div class="toast-progress"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Warning<code>.toast-warning</code></h3>
+          <p>Action succeeded but with a caveat — partial sync, near-limit threshold, deprecated path.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="toast toast-warning" style="animation: none;">
+          <span class="toast-icon"><i data-lucide="alert-triangle"></i></span>
+          <div class="toast-body">
+            <p class="toast-title">Approaching daily limit</p>
+            <p class="toast-desc">You've used 87% of today's transfer cap. Increase limit in Settings.</p>
+            <button class="toast-action">Open settings</button>
+          </div>
+          <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
+          <div class="toast-progress"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Danger<code>.toast-danger</code></h3>
+          <p>Action failed or a destructive event happened. Always offers a recovery path (Retry, Undo, View error).</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="toast toast-danger" style="animation: none;">
+          <span class="toast-icon"><i data-lucide="x-circle"></i></span>
+          <div class="toast-body">
+            <p class="toast-title">Transfer rejected</p>
+            <p class="toast-desc">Insufficient balance in CHL-001. Required: $ 24,800.00.</p>
+            <button class="toast-action">Retry with another account</button>
+          </div>
+          <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
+          <div class="toast-progress"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Info<code>.toast-info</code></h3>
+          <p>System-initiated update. The user didn't ask but should know — a sync started, a new feature is live.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="toast toast-info" style="animation: none;">
+          <span class="toast-icon"><i data-lucide="info"></i></span>
+          <div class="toast-body">
+            <p class="toast-title">Sync in progress</p>
+            <p class="toast-desc">Pulling latest balances from Itaú · BR. This usually takes ~30s.</p>
+          </div>
+          <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
+          <div class="toast-progress"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Brand<code>.toast-brand</code></h3>
+          <p>Product announcements — new features, updates, tour entry points. Reserved for non-feedback messages.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="toast toast-brand" style="animation: none;">
+          <span class="toast-icon"><i data-lucide="sparkles"></i></span>
+          <div class="toast-body">
+            <p class="toast-title">Multi-currency view is live</p>
+            <p class="toast-desc">Switch between BRL, USD and CLP from the dashboard header.</p>
+            <button class="toast-action">Take the tour</button>
+          </div>
+          <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
+          <div class="toast-progress"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== POSITIONS ========== -->
+  <section class="doc-section" id="positions">
+    <h2><span class="num">03</span>Positions</h2>
+    <p class="lead">Six anchor points. The same app should pick <strong>one</strong> position and stick to it — moving toasts around teaches users to ignore them. ATTRUS default: <strong>top-right</strong>.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Anchor map</h3>
+          <p>Top-right is the default for desktop dashboards. Bottom-center for mobile (closer to thumb, doesn't block status bars). Top/bottom-center for global system events that should command attention.</p>
+        </div>
+      </div>
+      <div class="spec-canvas" style="display: flex; justify-content: center;">
+        <div class="pos-grid" style="width: 360px;">
+          <button class="is-active" aria-label="top-left"></button>
+          <button aria-label="top-center"></button>
+          <button aria-label="top-right"></button>
+          <button aria-label="bottom-left"></button>
+          <button aria-label="bottom-center"></button>
+          <button aria-label="bottom-right"></button>
+        </div>
+      </div>
+      <table class="token-table" style="margin: 0; border-radius: 0; border-left: none; border-right: none; border-bottom: none;">
+        <thead><tr><th>Position</th><th>Class</th><th>When to use</th></tr></thead>
+        <tbody>
+          <tr><td>Top-right <em>(default)</em></td><td><code>.toast-stack-tr</code></td><td>Desktop dashboards — out of the way, predictable.</td></tr>
+          <tr><td>Top-center</td><td><code>.toast-stack-tc</code></td><td>Global system events (maintenance, sync) that need to be seen.</td></tr>
+          <tr><td>Top-left</td><td><code>.toast-stack-tl</code></td><td>RTL layouts, or when the right side hosts persistent panels.</td></tr>
+          <tr><td>Bottom-right</td><td><code>.toast-stack-br</code></td><td>Apps with a prominent right rail (chat, properties).</td></tr>
+          <tr><td>Bottom-center</td><td><code>.toast-stack-bc</code></td><td>Mobile-first surfaces — closer to the thumb.</td></tr>
+          <tr><td>Bottom-left</td><td><code>.toast-stack-bl</code></td><td>Rare. Only when bottom-right is occupied by primary controls.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== DURATION ========== -->
+  <section class="doc-section" id="duration">
+    <h2><span class="num">04</span>Duration & dismissal</h2>
+    <p class="lead">Toasts auto-dismiss to stay non-blocking. Duration scales with severity — danger and actionable toasts stay longer.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Timing matrix</h3>
+          <p>Hard rules: any toast with an action must stay long enough to read it (≥ 5s). Danger never auto-dismisses if it has an action — the user must decide.</p>
+        </div>
+      </div>
+      <table class="token-table" style="margin: 0; border-radius: 0; border-left: none; border-right: none; border-bottom: none;">
+        <thead><tr><th>Variant</th><th>Default</th><th>With action</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Default / Brand</td><td>4s</td><td>6s</td><td>Pure confirmation — fastest dismissal.</td></tr>
+          <tr><td>Success</td><td>4s</td><td>6s</td><td>Action shouldn't punish a successful path.</td></tr>
+          <tr><td>Info</td><td>5s</td><td>7s</td><td>Slightly longer — system-initiated, user wasn't expecting it.</td></tr>
+          <tr><td>Warning</td><td>6s</td><td>8s</td><td>Caveat needs to be read.</td></tr>
+          <tr><td>Danger</td><td>8s</td><td><strong>Sticky</strong> (no auto-dismiss)</td><td>Failure recovery — never time out a Retry button.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Pause-on-hover</h3>
+          <p>The countdown pauses while the cursor is over the toast and resumes on leave. Lets users finish reading before dismissal kicks in.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="row">
+          <div class="toast toast-info" style="animation: none;" id="hover-demo">
+            <span class="toast-icon"><i data-lucide="mouse-pointer-click"></i></span>
+            <div class="toast-body">
+              <p class="toast-title">Hover this toast</p>
+              <p class="toast-desc">The progress bar will freeze until you move away.</p>
+            </div>
+            <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
+            <div class="toast-progress"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ACTIONS ========== -->
+  <section class="doc-section" id="actions">
+    <h2><span class="num">05</span>Actions</h2>
+    <p class="lead">A toast can carry <strong>one</strong> inline action. More than one and it should become a Modal or an Inline Banner instead.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Recovery actions</h3>
+          <p>Pair every danger and warning toast with a one-tap recovery — Retry, Undo, View. Verb-only labels, no "Click here".</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="col" style="max-width: 480px; margin: 0 auto;">
+          <div class="toast toast-success" style="animation: none;">
+            <span class="toast-icon"><i data-lucide="trash-2"></i></span>
+            <div class="toast-body">
+              <p class="toast-title">Counterparty archived</p>
+              <p class="toast-desc">Banco Itaú · BR moved to archive.</p>
+              <button class="toast-action">Undo</button>
+            </div>
+            <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
+            <div class="toast-progress"></div>
+          </div>
+          <div class="toast toast-danger" style="animation: none;">
+            <span class="toast-icon"><i data-lucide="wifi-off"></i></span>
+            <div class="toast-body">
+              <p class="toast-title">Connection lost</p>
+              <p class="toast-desc">Last 3 changes weren't saved. Check your network.</p>
+              <button class="toast-action">Retry sync</button>
+            </div>
+            <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
+            <div class="toast-progress"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== INVERSE ========== -->
+  <section class="doc-section" id="inverse">
+    <h2><span class="num">06</span>Inverse</h2>
+    <p class="lead">For toasts that appear over the dark hero, photo backgrounds, or the inverse navigation. Same structure, surface-swapped tokens.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>On dark surfaces<code>.toast-inverse</code></h3>
+          <p>The variant accent (left border) stays the same — only the surface, body text, and close button shift to the inverse layer.</p>
+        </div>
+      </div>
+      <div class="spec-canvas dark">
+        <div class="col" style="max-width: 480px; margin: 0 auto;">
+          <div class="toast toast-inverse toast-success" style="animation: none;">
+            <span class="toast-icon"><i data-lucide="check-circle-2"></i></span>
+            <div class="toast-body">
+              <p class="toast-title">Backup complete</p>
+              <p class="toast-desc">All transactions exported to your vault.</p>
+            </div>
+            <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
+            <div class="toast-progress"></div>
+          </div>
+          <div class="toast toast-inverse toast-warning" style="animation: none;">
+            <span class="toast-icon"><i data-lucide="alert-triangle"></i></span>
+            <div class="toast-body">
+              <p class="toast-title">Session expiring</p>
+              <p class="toast-desc">You'll be signed out in 2 minutes for inactivity.</p>
+              <button class="toast-action">Stay signed in</button>
+            </div>
+            <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
+            <div class="toast-progress"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== LIVE DEMO ========== -->
+  <section class="doc-section" id="live">
+    <h2><span class="num">07</span>Live demo</h2>
+    <p class="lead">Trigger toasts to see entry animation, stacking, auto-dismiss, and pause-on-hover behavior end-to-end.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Triggers</h3>
+          <p>Click any button. Toasts stack from the position selected on the right.</p>
+        </div>
+      </div>
+      <div class="demo-controls">
+        <button onclick="window.spawnToast('default')"><i data-lucide="plus"></i>Default</button>
+        <button onclick="window.spawnToast('success')"><i data-lucide="check-circle-2"></i>Success</button>
+        <button onclick="window.spawnToast('warning')"><i data-lucide="alert-triangle"></i>Warning</button>
+        <button onclick="window.spawnToast('danger')"><i data-lucide="x-circle"></i>Danger</button>
+        <button onclick="window.spawnToast('info')"><i data-lucide="info"></i>Info</button>
+        <button onclick="window.spawnToast('brand')"><i data-lucide="sparkles"></i>Brand</button>
+      </div>
+      <div class="demo-controls" style="border-top: 1px solid var(--color-border-subtle); border-bottom: 0;">
+        <span style="font-family: var(--font-mono); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); align-self: center;">Position →</span>
+        <button data-pos="tl" onclick="window.setPos('tl', this)">Top-left</button>
+        <button data-pos="tc" onclick="window.setPos('tc', this)">Top-center</button>
+        <button data-pos="tr" class="is-active" onclick="window.setPos('tr', this)" style="background: var(--color-foreground-default); color: var(--color-foreground-on-solid);">Top-right</button>
+        <button data-pos="bl" onclick="window.setPos('bl', this)">Bottom-left</button>
+        <button data-pos="bc" onclick="window.setPos('bc', this)">Bottom-center</button>
+        <button data-pos="br" onclick="window.setPos('br', this)">Bottom-right</button>
+      </div>
+    </div>
+
+    <!-- Live stack lives here, position swapped via JS -->
+    <div class="toast-stack toast-stack-tr" id="live-stack"></div>
+  </section>
+
+  <!-- ========== DON'TS ========== -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">08</span>Don'ts</h2>
+    <p class="lead">Common toast pitfalls that erode trust or block the user.</p>
+
+    <div class="dont-grid">
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <div class="toast toast-danger" style="animation: none; min-width: 260px;">
+            <span class="toast-icon"><i data-lucide="x-circle"></i></span>
+            <div class="toast-body">
+              <p class="toast-title">Are you sure you want to delete?</p>
+              <p class="toast-desc">This action is permanent.</p>
+              <button class="toast-action">Yes, delete</button>
+            </div>
+          </div>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Asking for decisions</strong>Toasts confirm, they don't ask. Anything destructive or with multiple options belongs in a Modal.</p>
+        </div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <div class="toast" style="animation: none; min-width: 260px;">
+            <span class="toast-icon" style="color: var(--color-foreground-secondary);"><i data-lucide="check"></i></span>
+            <div class="toast-body">
+              <p class="toast-title">Saved. Here is some context that goes on for several lines and starts to look like a paragraph because the writer wasn't ruthless about cutting words and that's a problem because toasts are read in passing not studied.</p>
+            </div>
+          </div>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Long copy</strong>Title ≤ 1 line, description ≤ 2 lines. If you need more, you need a different surface.</p>
+        </div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <div class="toast toast-success" style="animation: none; min-width: 260px;">
+            <span class="toast-icon"><i data-lucide="check-circle-2"></i></span>
+            <div class="toast-body">
+              <p class="toast-title">Saved</p>
+              <button class="toast-action">View</button>
+              <button class="toast-action" style="margin-left: var(--space-3);">Edit</button>
+              <button class="toast-action" style="margin-left: var(--space-3);">Share</button>
+            </div>
+          </div>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Multiple actions</strong>One action only. Multiple verbs scatter attention and inflate the timeout. Promote to a Banner or Modal.</p>
+        </div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <div class="col">
+            <div class="toast toast-success" style="animation: none; min-width: 240px;"><span class="toast-icon"><i data-lucide="check-circle-2"></i></span><div class="toast-body"><p class="toast-title">Saved</p></div></div>
+            <div class="toast toast-success" style="animation: none; min-width: 240px;"><span class="toast-icon"><i data-lucide="check-circle-2"></i></span><div class="toast-body"><p class="toast-title">Saved</p></div></div>
+            <div class="toast toast-success" style="animation: none; min-width: 240px;"><span class="toast-icon"><i data-lucide="check-circle-2"></i></span><div class="toast-body"><p class="toast-title">Saved</p></div></div>
+            <div class="toast toast-success" style="animation: none; min-width: 240px;"><span class="toast-icon"><i data-lucide="check-circle-2"></i></span><div class="toast-body"><p class="toast-title">Saved</p></div></div>
+          </div>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Stacking duplicates</strong>If the same toast fires repeatedly, debounce it or replace the existing one in place. Never stack identical messages.</p>
+        </div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <div class="toast toast-danger" style="animation: none; min-width: 260px;">
+            <span class="toast-icon"><i data-lucide="x-circle"></i></span>
+            <div class="toast-body">
+              <p class="toast-title">Error</p>
+              <p class="toast-desc">Something went wrong.</p>
+            </div>
+          </div>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Vague error copy</strong>Always name what failed and offer a recovery. "Something went wrong" leaves the user stuck.</p>
+        </div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <div class="toast toast-warning" style="animation: none; min-width: 260px; --toast-duration: 800ms;">
+            <span class="toast-icon"><i data-lucide="alert-triangle"></i></span>
+            <div class="toast-body">
+              <p class="toast-title">Limit nearly reached</p>
+              <p class="toast-desc">87% of daily cap used.</p>
+              <button class="toast-action">Upgrade plan</button>
+            </div>
+            <div class="toast-progress"></div>
+          </div>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Too-short timeouts with actions</strong>If there's a button to click, the toast must stay long enough to read it. Below 5s actions are unreachable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ACCESSIBILITY ========== -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">09</span>Accessibility</h2>
+
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Requirement</th><th>How it's met</th></tr></thead>
+      <tbody>
+        <tr><td>Live region</td><td>Toasts announce to AT without stealing focus</td><td>Stack container has <code>role="status"</code> + <code>aria-live="polite"</code>. Danger uses <code>aria-live="assertive"</code>.</td></tr>
+        <tr><td>Focus order</td><td>Toast does not steal focus from current task</td><td>Spawned toasts are added to the live region only. Focus stays where the user left it.</td></tr>
+        <tr><td>Dismissible</td><td>User can close before timeout</td><td>Close button is always present, keyboard-reachable via <code>Tab</code>, <code>aria-label="Dismiss"</code>.</td></tr>
+        <tr><td>Action keyboard</td><td>Inline action activatable via Space / Enter</td><td>Native <code>&lt;button&gt;</code> for both action and close. Never anchors.</td></tr>
+        <tr><td>Pause on focus</td><td>Auto-dismiss must pause when user interacts</td><td>Hover and focus-within freeze the progress animation. Resumes on leave.</td></tr>
+        <tr><td>Color ≠ meaning</td><td>WCAG 1.4.1 — variant communicated beyond color</td><td>Every variant pairs the left-border color with a semantic icon (check / alert-triangle / x-circle / info).</td></tr>
+        <tr><td>Reduced motion</td><td>Respects <code>prefers-reduced-motion</code></td><td>Entry animation and progress bar are removed under reduced-motion. Toasts still appear and dismiss, just without slide/fade.</td></tr>
+        <tr><td>Contrast</td><td>Title vs. surface ≥ 4.5:1 (AA)</td><td>All variants verified against light and inverse surfaces.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========== TOKENS ========== -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">10</span>Tokens consumed</h2>
+    <p class="lead">Every value in <code>toast.css</code> traces back to <code>dist/css/tokens.css</code>. No hexes, no magic numbers — change the token, every toast updates.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Tokens</th></tr></thead>
+      <tbody>
+        <tr><td>Surface</td><td><code>--color-background-surface</code>, <code>--color-background-inverse</code></td></tr>
+        <tr><td>Border (hairline)</td><td><code>--color-border-default</code>, <code>--color-border-inverse</code></td></tr>
+        <tr><td>Variant accent (left border)</td><td><code>--color-feedback-{success|warning|danger|info}-border</code>, <code>--color-brand-secondary-300</code></td></tr>
+        <tr><td>Variant icon</td><td><code>--color-feedback-{success|warning|danger|info}-foreground</code>, <code>--color-foreground-accent</code></td></tr>
+        <tr><td>Title color</td><td><code>--color-foreground-default</code>, <code>--color-foreground-inverse-default</code></td></tr>
+        <tr><td>Description color</td><td><code>--color-foreground-secondary</code>, <code>--color-foreground-inverse-muted</code></td></tr>
+        <tr><td>Action link</td><td><code>--color-foreground-accent</code>, <code>--color-brand-secondary-700</code> (hover)</td></tr>
+        <tr><td>Close button</td><td><code>--color-foreground-muted</code>, <code>--color-background-hover</code></td></tr>
+        <tr><td>Progress track</td><td><code>--color-border-subtle</code></td></tr>
+        <tr><td>Progress fill</td><td>Variant <code>foreground</code> + <code>--color-foreground-muted</code> (default)</td></tr>
+        <tr><td>Shadow</td><td><code>--shadow-lg</code> (light surface), <code>--shadow-2xl</code> (inverse)</td></tr>
+        <tr><td>Spacing</td><td><code>--space-{1,2,3,4,5,6}</code></td></tr>
+        <tr><td>Radius</td><td><code>--radius-md</code>, <code>--radius-xs</code>, <code>--radius-pill</code></td></tr>
+        <tr><td>Typography</td><td><code>--font-sans</code>, <code>--fs-sm</code>, <code>--w-semibold</code>, <code>--lh-relaxed</code>, <code>--ls-tight</code></td></tr>
+        <tr><td>Icon sizing</td><td><code>--icon-sm</code>, <code>--icon-md</code>, <code>--icon-stroke</code></td></tr>
+        <tr><td>Motion</td><td><code>--duration-fast</code>, <code>--ease-emphasized</code>, <code>--transition-fast</code></td></tr>
+        <tr><td>Focus ring</td><td><code>--shadow-focus</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<script>
+  // ============================================================
+  // LIVE DEMO — toast spawner
+  // ============================================================
+  (function() {
+    const stack = document.getElementById('live-stack');
+    let pos = 'tr';
+
+    const variants = {
+      default: { icon: 'check', title: 'Settings saved', desc: 'Your notification preferences are up to date.', cls: '' },
+      success: { icon: 'check-circle-2', title: 'Invoice paid', desc: 'INV-2304 marked as settled. Receipt sent to finance@cabiros.com.', cls: 'toast-success', action: 'View receipt' },
+      warning: { icon: 'alert-triangle', title: 'Approaching daily limit', desc: "You've used 87% of today's transfer cap.", cls: 'toast-warning', action: 'Open settings' },
+      danger:  { icon: 'x-circle', title: 'Transfer rejected', desc: 'Insufficient balance in CHL-001. Required: $ 24,800.00.', cls: 'toast-danger', action: 'Retry' },
+      info:    { icon: 'info', title: 'Sync in progress', desc: 'Pulling latest balances from Itaú · BR.', cls: 'toast-info' },
+      brand:   { icon: 'sparkles', title: 'Multi-currency view is live', desc: 'Switch between BRL, USD and CLP from the dashboard header.', cls: 'toast-brand', action: 'Take the tour' },
+    };
+
+    const durations = { default: 4000, success: 4000, info: 5000, warning: 6000, danger: 8000, brand: 5000 };
+
+    window.spawnToast = function(variant) {
+      const v = variants[variant];
+      const el = document.createElement('div');
+      el.className = 'toast ' + v.cls;
+      el.style.setProperty('--toast-duration', durations[variant] + 'ms');
+      el.setAttribute('role', variant === 'danger' ? 'alert' : 'status');
+      el.setAttribute('aria-live', variant === 'danger' ? 'assertive' : 'polite');
+
+      el.innerHTML = `
+        <span class="toast-icon"><i data-lucide="${v.icon}"></i></span>
+        <div class="toast-body">
+          <p class="toast-title">${v.title}</p>
+          <p class="toast-desc">${v.desc}</p>
+          ${v.action ? `<button class="toast-action">${v.action}</button>` : ''}
+        </div>
+        <button class="toast-close" aria-label="Dismiss"><i data-lucide="x"></i></button>
+        <div class="toast-progress"></div>
+      `;
+
+      stack.appendChild(el);
+      if (window.lucide) lucide.createIcons();
+
+      // Pause-on-hover (pause progress animation)
+      const progress = el.querySelector('.toast-progress::after');
+      el.addEventListener('mouseenter', () => {
+        const fill = el.querySelector('.toast-progress');
+        if (fill) fill.style.animationPlayState = 'paused';
+      });
+
+      // Manual dismiss
+      const close = el.querySelector('.toast-close');
+      close.addEventListener('click', () => dismiss(el));
+
+      // Auto dismiss
+      const timer = setTimeout(() => dismiss(el), durations[variant]);
+      el._timer = timer;
+    };
+
+    function dismiss(el) {
+      clearTimeout(el._timer);
+      el.style.transition = 'opacity 200ms, transform 200ms';
+      el.style.opacity = '0';
+      el.style.transform = 'translateX(16px)';
+      setTimeout(() => el.remove(), 200);
+    }
+
+    window.setPos = function(newPos, btn) {
+      pos = newPos;
+      stack.className = 'toast-stack toast-stack-' + pos;
+      // Swap active state
+      document.querySelectorAll('[data-pos]').forEach(b => {
+        b.classList.remove('is-active');
+        b.style.background = 'var(--color-background-surface)';
+        b.style.color = 'var(--color-foreground-default)';
+      });
+      btn.classList.add('is-active');
+      btn.style.background = 'var(--color-foreground-default)';
+      btn.style.color = 'var(--color-foreground-on-solid)';
+    };
+  })();
+
+  if (window.lucide) lucide.createIcons();
+</script>
+
+</body>
+</html>

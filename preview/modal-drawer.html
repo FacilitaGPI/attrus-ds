@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Modal & Drawer" subtitle="Overlays · scrim blur · stacked drawers" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Modal · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body {
+    margin: 0;
+    background: var(--color-background-canvas);
+    color: var(--color-foreground-default);
+    font-family: var(--font-sans);
+    font-size: var(--fs-base);
+    line-height: var(--lh-normal);
+  }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta { display: flex; gap: var(--space-3); flex-shrink: 0; }
+  .doc-meta-pill {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-feedback-success-background);
+    color: var(--color-feedback-success-foreground);
+    border: 1px solid var(--color-feedback-success-border);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+  }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  .doc-nav {
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-10);
+    box-shadow: var(--shadow-xs);
+  }
+  .doc-nav a {
+    padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill);
+    color: var(--color-foreground-secondary); text-decoration: none;
+    font-size: var(--fs-sm); font-weight: var(--w-semibold);
+    transition: var(--transition-fast);
+  }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  /* spec card */
+  .spec {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: var(--space-6);
+    box-shadow: var(--shadow-xs);
+  }
+  .spec-head {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: var(--space-6);
+    padding: var(--space-5) var(--space-6);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code {
+    font-family: var(--font-mono); font-size: var(--fs-md);
+    font-weight: var(--w-medium); color: var(--color-foreground-accent);
+    background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px;
+  }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .spec-canvas {
+    padding: var(--space-6);
+    background: var(--color-background-canvas);
+    background-image:
+      linear-gradient(var(--color-border-subtle) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: -1px -1px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+  }
+
+  /* preview frame — inline render of modal inside a fake viewport */
+  .preview-stage {
+    position: relative;
+    width: 100%;
+    height: 360px;
+    background: var(--color-background-canvas);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background-image:
+      linear-gradient(var(--color-border-subtle) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  /* Inline demo instances — overlays appear inside their wrapper, not as page-wide overlays.
+     Without this, their z-index: 9100 stacks ABOVE the live overlay scrim. */
+  .preview-stage .scrim,
+  .preview-stage .modal,
+  .preview-stage .drawer,
+  .anatomy-canvas .modal,
+  .anatomy-canvas .drawer,
+  .dont-card-canvas .scrim,
+  .dont-card-canvas .modal,
+  .dont-card-canvas .drawer,
+  .spec-canvas .scrim,
+  .spec-canvas .modal,
+  .spec-canvas .drawer {
+    position: absolute;
+    z-index: auto;
+  }
+  .preview-stage .scrim { inset: 0; }
+  .preview-stage .modal {
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1; pointer-events: auto;
+  }
+  .preview-stage .drawer { opacity: 1; pointer-events: auto; transform: none; }
+
+  /* token table */
+  .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; margin-top: var(--space-4); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .token-table tr:last-child td { border-bottom: none; }
+  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  /* anatomy */
+  .anatomy {
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-8);
+    align-items: center; padding: var(--space-8);
+    background: var(--color-background-canvas);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-8);
+  }
+  .anatomy-canvas { display: flex; align-items: center; justify-content: center; min-height: 320px; position: relative; padding: var(--space-6); background: var(--color-background-subtle); border-radius: var(--radius-md); }
+  .anatomy-list ol { padding-left: 0; margin: 0; counter-reset: anat; list-style: none; }
+  .anatomy-list li { counter-increment: anat; margin-bottom: var(--space-3); padding-left: var(--space-7); position: relative; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-sm); }
+  .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
+
+  .placement-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+
+  /* don'ts */
+  .dont-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--space-4); }
+  .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .dont-card-canvas { padding: var(--space-5); background: var(--color-background-canvas); border-bottom: 1px solid var(--color-border-subtle); display: flex; justify-content: center; align-items: center; min-height: 160px; position: relative; }
+  .dont-card-body { padding: var(--space-4) var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
+  .dont-card-body i, .dont-card-body svg { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-card-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .dont-card-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<div class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Modal</h1>
+      <p>The overlay system. Modals interrupt the user with a focused decision; drawers slide in from an edge for tasks that complement (rather than replace) the underlying view. Both share scrim, focus trap, and dismissal mechanics. <strong>Drawers now have a <a href="drawer.html" style="color: var(--color-foreground-highlight);">dedicated page</a></strong> with positions, platform rules and the sticky glass chrome.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Ready</span>
+    </div>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#whichone">01 Which one?</a>
+    <a href="#anatomy">02 Anatomy</a>
+    <a href="#modal-sizes">03 Modal sizes</a>
+    <a href="#modal-variants">04 Modal variants</a>
+    <a href="#dismissal">05 Dismissal</a>
+    <a href="#live">06 Live demo</a>
+    <a href="#donts">07 Don'ts</a>
+    <a href="#a11y">08 Accessibility</a>
+    <a href="#tokens">09 Tokens</a>
+  </nav>
+
+  <!-- ========== WHICH ONE ========== -->
+  <section class="doc-section" id="whichone">
+    <h2><span class="num">01</span>Which one?</h2>
+    <p class="lead">Both interrupt the page with a scrim. The difference is intent: <strong>Modal</strong> is a focused decision, <strong>Drawer</strong> is a task panel.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Use</th><th>Modal</th><th>Drawer</th></tr></thead>
+      <tbody>
+        <tr><td>Confirm a destructive action</td><td>✓ Yes — interrupt is the point</td><td>—</td></tr>
+        <tr><td>Edit a complex record (10+ fields)</td><td>—</td><td>✓ Yes — keeps record context</td></tr>
+        <tr><td>Quick form (≤ 6 fields)</td><td>✓ Yes — dialog</td><td>—</td></tr>
+        <tr><td>Show full record details</td><td>—</td><td>✓ Yes — side panel</td></tr>
+        <tr><td>Filter / settings panel</td><td>—</td><td>✓ Yes — right or bottom</td></tr>
+        <tr><td>System-blocking decision (delete, sign-out, payment)</td><td>✓ Yes</td><td>—</td></tr>
+        <tr><td>Walkthrough / multi-step task</td><td>✓ Yes — full attention</td><td>—</td></tr>
+        <tr><td>Mobile filter / sort</td><td>—</td><td>✓ Yes — bottom drawer</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========== ANATOMY ========== -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">02</span>Anatomy</h2>
+    <p class="lead">Match the surface to the shape of the data: scrim, surface, header, body, footer — modal sizes change the width only.</p>
+
+    <div class="anatomy">
+      <div class="anatomy-canvas">
+        <div class="modal" style="position: relative; transform: none; top: auto; left: auto; opacity: 1; pointer-events: auto; width: 100%; max-width: 380px;">
+          <div class="modal-header">
+            <div class="modal-header-text">
+              <h2 class="modal-title">Archive counterparty?</h2>
+              <p class="modal-subtitle">Banco Itaú · BR · 4 active receivables</p>
+            </div>
+            <button class="modal-close" aria-label="Close"><i data-lucide="x"></i></button>
+          </div>
+          <div class="modal-body">
+            <p>Archived counterparties stop appearing in transaction forms but their history stays intact. You can restore them anytime from Settings.</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-ghost">Cancel</button>
+            <button class="btn btn-primary">Archive</button>
+          </div>
+        </div>
+      </div>
+      <div class="anatomy-list">
+        <ol>
+          <li><strong>Scrim</strong>Fixed inset overlay, dims the page. Click closes the overlay (unless flagged blocking).</li>
+          <li><strong>Surface</strong>Light surface with large radius and 2xl shadow, centered in the viewport.</li>
+          <li><strong>Header</strong>Title + optional subtitle + close button. Title uses sentence case, action-oriented.</li>
+          <li><strong>Body</strong>Scrollable region. Padding stays consistent with header/footer; content can grow beyond viewport.</li>
+          <li><strong>Footer</strong>Trailing-aligned actions. Primary action on the right, secondary/cancel to its left. Auxiliary info (counts, hints) can sit on the left with <code>.modal-footer-spread</code>.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== MODAL SIZES ========== -->
+  <section class="doc-section" id="modal-sizes">
+    <h2><span class="num">03</span>Modal sizes</h2>
+    <p class="lead">Four widths. The body always scrolls if content exceeds viewport — never grow the modal taller than <code>100vh - 48px</code>.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Size</th><th>Class</th><th>Width</th><th>Use for</th></tr></thead>
+      <tbody>
+        <tr><td>Small</td><td><code>.modal-sm</code></td><td>420px</td><td>Confirmations, single-question dialogs (delete, sign-out)</td></tr>
+        <tr><td>Medium <em>(default)</em></td><td><code>.modal-md</code></td><td>560px</td><td>Quick forms (3–6 fields), invitations, simple flows</td></tr>
+        <tr><td>Large</td><td><code>.modal-lg</code></td><td>720px</td><td>Forms with grouped sections, side-by-side comparison</td></tr>
+        <tr><td>Extra-large</td><td><code>.modal-xl</code></td><td>960px</td><td>Reserved for full editing experiences (ATTRUS prefers a <a href="drawer.html" style="color: var(--color-foreground-highlight);">Drawer</a> for these)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========== MODAL VARIANTS ========== -->
+  <section class="doc-section" id="modal-variants">
+    <h2><span class="num">04</span>Modal variants</h2>
+    <p class="lead">Three flavors: default, destructive (with danger accent), and form. Variants change visual emphasis and footer composition — never the structure.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Default<code>.modal</code></h3>
+          <p>Title + body + 2 footer actions. The most common shape — confirmations, simple forms, info dialogs.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="preview-stage">
+          <div class="scrim is-open" style="position: absolute;"></div>
+          <div class="modal modal-md is-open">
+            <div class="modal-header">
+              <div class="modal-header-text">
+                <h2 class="modal-title">Invite team member</h2>
+                <p class="modal-subtitle">They'll get access to the Cabiros workspace.</p>
+              </div>
+              <button class="modal-close" aria-label="Close"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+              <div class="field" style="margin-bottom: var(--space-4);">
+                <label class="field-label">Email address</label>
+                <input class="input" placeholder="name@cabiros.com" />
+              </div>
+              <div class="field">
+                <label class="field-label">Role</label>
+                <select class="input"><option>Operator</option><option>Approver</option><option>Admin</option></select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-ghost">Cancel</button>
+              <button class="btn btn-primary">Send invitation</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Destructive<code>.modal-destructive</code></h3>
+          <p>Adds a 3px danger accent strip on top + an icon badge in the body. The primary action uses <code>.btn-danger</code>. Use for delete, archive-with-loss, sign-out-everywhere.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="preview-stage">
+          <div class="scrim is-open"></div>
+          <div class="modal modal-sm modal-destructive is-open">
+            <div class="modal-header">
+              <div class="modal-header-text">
+                <span class="modal-icon"><i data-lucide="alert-triangle"></i></span>
+                <h2 class="modal-title">Delete this transaction?</h2>
+                <p class="modal-subtitle">INV-2304 · $ 12,400.00 · Banco Itaú · BR</p>
+              </div>
+              <button class="modal-close" aria-label="Close"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+              <p>This action can't be undone. The receivable will be removed from your books and the counterparty will be notified.</p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-ghost">Cancel</button>
+              <button class="btn btn-danger">Delete transaction</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Form (lg)<code>.modal-lg</code></h3>
+          <p>Wider surface for grouped fields. Footer can include an auxiliary slot on the left (autosave indicator, step counter) using <code>.modal-footer-spread</code>.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="preview-stage" style="height: 460px;">
+          <div class="scrim is-open"></div>
+          <div class="modal modal-lg is-open">
+            <div class="modal-header">
+              <div class="modal-header-text">
+                <h2 class="modal-title">New receivable</h2>
+                <p class="modal-subtitle">Step 1 of 3 — Counterparty & amount</p>
+              </div>
+              <button class="modal-close" aria-label="Close"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+                <div class="field"><label class="field-label">Counterparty</label><input class="input" value="Banco Itaú · BR" /></div>
+                <div class="field"><label class="field-label">Reference</label><input class="input" placeholder="INV-XXXX" /></div>
+                <div class="field"><label class="field-label">Amount (BRL)</label><input class="input" placeholder="0,00" /></div>
+                <div class="field"><label class="field-label">Due date</label><input class="input" type="date" /></div>
+              </div>
+            </div>
+            <div class="modal-footer modal-footer-spread">
+              <span class="modal-footer-aux"><i data-lucide="check" style="width: 14px; height: 14px;"></i>Autosaved</span>
+              <div style="display: flex; gap: var(--space-3);">
+                <button class="btn btn-ghost">Cancel</button>
+                <button class="btn btn-primary">Continue</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DISMISSAL ========== -->
+  <section class="doc-section" id="dismissal">
+    <h2><span class="num">05</span>Dismissal</h2>
+    <p class="lead">All overlays dismiss the same four ways — except destructive flows, which strip backdrop-click to force an explicit choice.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Trigger</th><th>Default modal</th><th>Destructive modal</th></tr></thead>
+      <tbody>
+        <tr><td>Close button</td><td>✓ Closes</td><td>✓ Closes</td></tr>
+        <tr><td>Cancel button</td><td>✓ Closes</td><td>✓ Closes</td></tr>
+        <tr><td>Escape key</td><td>✓ Closes</td><td>✓ Closes</td></tr>
+        <tr><td>Click on scrim</td><td>✓ Closes</td><td><strong>✗ Locked</strong> — must explicitly cancel</td></tr>
+        <tr><td>Primary action</td><td>Closes after async resolves</td><td>Closes after async resolves</td></tr>
+        <tr><td>Route change</td><td>Closes</td><td>Prompt before close</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========== LIVE DEMO ========== -->
+  <section class="doc-section" id="live">
+    <h2><span class="num">06</span>Live demo</h2>
+    <p class="lead">Trigger real overlays — escape, click outside, focus trap all work end to end.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Open one</h3>
+          <p>Buttons spawn the overlay against the page. Tab cycles through focusable elements inside; Escape closes.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <button class="btn btn-primary" onclick="openOverlay('default')"><i data-lucide="square"></i>Default modal</button>
+        <button class="btn btn-danger" onclick="openOverlay('destructive')"><i data-lucide="trash-2"></i>Destructive modal</button>
+        <button class="btn btn-secondary" onclick="openOverlay('form')"><i data-lucide="edit-3"></i>Form modal (lg)</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DON'TS ========== -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">07</span>Don'ts</h2>
+    <p class="lead">Common overlay traps.</p>
+
+    <div class="dont-grid">
+      <div class="dont-card">
+        <div class="dont-card-canvas" style="background: var(--color-scrim); position: relative;">
+          <div class="modal modal-sm" style="position: relative; transform: none; top: auto; left: auto; opacity: 1; pointer-events: auto;">
+            <div class="modal-header">
+              <div class="modal-header-text"><h2 class="modal-title">Confirm</h2></div>
+            </div>
+            <div class="modal-body" style="padding-bottom: var(--space-6);">
+              <p>Are you sure?</p>
+              <button class="btn btn-secondary" style="margin-top: var(--space-4);" onclick="this.parentElement.innerHTML += '<div class=&quot;scrim is-open&quot; style=&quot;position: absolute; inset: 0;&quot;></div><div class=&quot;modal&quot; style=&quot;position: absolute;&quot;>nested</div>'">Open another modal</button>
+            </div>
+          </div>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Stacking modals</strong>One overlay at a time. If you need a sub-decision, use an inline confirmation strip or a popover — never modal-on-modal.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <div class="modal modal-md" style="position: relative; transform: none; top: auto; left: auto; opacity: 1; pointer-events: auto;">
+            <div class="modal-header"><div class="modal-header-text"><h2 class="modal-title">Read this entire policy</h2></div></div>
+            <div class="modal-body" style="max-height: 80px; overflow-y: auto; font-size: var(--fs-xs);"><p>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum.</p></div>
+            <div class="modal-footer"><button class="btn btn-primary">Accept</button></div>
+          </div>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Long content in a modal</strong>Modals are for decisions, not reading. Long forms or content belong in a Drawer or a dedicated page.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <div class="modal modal-sm" style="position: relative; transform: none; top: auto; left: auto; opacity: 1; pointer-events: auto;">
+            <div class="modal-header"><div class="modal-header-text"><h2 class="modal-title">Saved successfully</h2></div></div>
+            <div class="modal-body"><p>Your changes have been saved.</p></div>
+            <div class="modal-footer"><button class="btn btn-primary">OK</button></div>
+          </div>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Modal for confirmations</strong>"Saved" is a Toast, not a modal. Reserve modals for decisions, not status announcements.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <div class="modal modal-md modal-destructive" style="position: relative; transform: none; top: auto; left: auto; opacity: 1; pointer-events: auto;">
+            <div class="modal-header"><div class="modal-header-text"><h2 class="modal-title">Permanently delete account?</h2></div></div>
+            <div class="modal-body"><p>This is irreversible.</p></div>
+            <div class="modal-footer"><button class="btn btn-primary">Delete</button></div>
+          </div>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>No cancel path</strong>Destructive flows must offer Cancel + an explicit confirmation. Never single-button.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <div class="modal modal-xl" style="position: relative; transform: none; top: auto; left: auto; opacity: 1; pointer-events: auto; width: 100%;">
+            <div class="modal-header"><div class="modal-header-text"><h2 class="modal-title">Full settings</h2></div></div>
+            <div class="modal-body"><p style="font-size: var(--fs-xs);">A whole settings surface crammed into a dialog.</p></div>
+          </div>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Modal as a full page</strong>If the content is a whole screen of settings or editing, use a dedicated route or a <a href="drawer.html" style="color: var(--color-foreground-highlight);">Drawer</a> — not a giant modal.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <div class="modal modal-md" style="position: relative; transform: none; top: auto; left: auto; opacity: 1; pointer-events: auto;">
+            <div class="modal-header"><div class="modal-header-text"><h2 class="modal-title">Edit transaction</h2></div></div>
+            <div class="modal-body"><p style="font-size: var(--fs-xs);">22 fields…</p></div>
+            <div class="modal-footer"><button class="btn btn-ghost">Cancel</button><button class="btn btn-primary">Save</button></div>
+          </div>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Heavy editing in a modal</strong>Anything beyond ~6 fields belongs in a <a href="drawer.html" style="color: var(--color-foreground-highlight);">Drawer</a> (preserves list context) or a full route.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== A11Y ========== -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">08</span>Accessibility</h2>
+
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Requirement</th><th>How it's met</th></tr></thead>
+      <tbody>
+        <tr><td>Focus trap</td><td>Tab and Shift+Tab cycle inside the overlay</td><td>JS focus-trap on open; first focusable element receives focus immediately.</td></tr>
+        <tr><td>Focus restoration</td><td>Focus returns to the trigger on close</td><td><code>previouslyFocused.focus()</code> after close transition completes.</td></tr>
+        <tr><td>Role</td><td>Modal: <code>dialog</code> or <code>alertdialog</code> (destructive)</td><td><code>role</code> + <code>aria-modal="true"</code> + <code>aria-labelledby</code> pointing at the title id.</td></tr>
+        <tr><td>Escape</td><td>Closes overlay (unless explicitly blocked)</td><td>Document-level keydown handler; checks the topmost overlay only.</td></tr>
+        <tr><td>Body scroll lock</td><td>Background must not scroll while overlay is open</td><td><code>document.body.style.overflow = 'hidden'</code> on open; restored on close.</td></tr>
+        <tr><td>Scrim click</td><td>Closes (unless destructive)</td><td>Scrim has its own click handler; destructive variants strip it.</td></tr>
+        <tr><td>Reduced motion</td><td>Respects <code>prefers-reduced-motion</code></td><td>Slide and scale removed; only opacity fade remains.</td></tr>
+        <tr><td>Inert background</td><td>Background tree should be inert</td><td>Use the <code>inert</code> attribute on root siblings while open (or aria-hidden=true on outside content).</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========== TOKENS ========== -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">09</span>Tokens consumed</h2>
+    <p class="lead">Modal surfaces resolve every value to a token.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Tokens</th></tr></thead>
+      <tbody>
+        <tr><td>Scrim</td><td><code>--color-scrim</code></td></tr>
+        <tr><td>Surface</td><td><code>--color-background-surface</code></td></tr>
+        <tr><td>Border (footer divider)</td><td><code>--color-border-subtle</code></td></tr>
+        <tr><td>Title</td><td><code>--color-foreground-default</code>, <code>--fs-xl</code>, <code>--w-bold</code>, <code>--ls-title</code></td></tr>
+        <tr><td>Subtitle</td><td><code>--color-foreground-secondary</code>, <code>--fs-sm</code>, <code>--lh-normal</code></td></tr>
+        <tr><td>Body</td><td><code>--color-foreground-default</code>, <code>--fs-sm</code>, <code>--lh-relaxed</code></td></tr>
+        <tr><td>Close button</td><td><code>--color-foreground-muted</code>, <code>--color-background-hover</code></td></tr>
+        <tr><td>Destructive accent</td><td><code>--color-feedback-danger-foreground</code>, <code>--color-feedback-danger-background</code></td></tr>
+        <tr><td>Shadow</td><td><code>--shadow-2xl</code></td></tr>
+        <tr><td>Radius</td><td><code>--radius-lg</code> (surface), <code>--radius-sm</code> (close button)</td></tr>
+        <tr><td>Spacing</td><td><code>--space-1</code> – <code>--space-6</code></td></tr>
+        <tr><td>Motion (open)</td><td><code>--duration-base</code>, <code>--ease-emphasized</code></td></tr>
+        <tr><td>Motion (scrim fade)</td><td><code>--duration-base</code>, <code>--ease-standard</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<!-- LIVE OVERLAYS — rendered at body root, controlled via JS -->
+<div id="live-scrim" class="scrim"></div>
+
+<div id="live-modal-default" class="modal modal-md" role="dialog" aria-modal="true" aria-labelledby="lm-d-title">
+  <div class="modal-header">
+    <div class="modal-header-text">
+      <h2 class="modal-title" id="lm-d-title">Invite team member</h2>
+      <p class="modal-subtitle">They'll get access to the Cabiros workspace.</p>
+    </div>
+    <button class="modal-close" aria-label="Close" onclick="closeOverlay()"><i data-lucide="x"></i></button>
+  </div>
+  <div class="modal-body">
+    <div class="field" style="margin-bottom: var(--space-4);"><label class="field-label">Email</label><input class="input" placeholder="name@cabiros.com" autofocus /></div>
+    <div class="field"><label class="field-label">Role</label><select class="input"><option>Operator</option><option>Approver</option></select></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-ghost" onclick="closeOverlay()">Cancel</button>
+    <button class="btn btn-primary" onclick="closeOverlay()">Send invitation</button>
+  </div>
+</div>
+
+<div id="live-modal-destructive" class="modal modal-sm modal-destructive" role="alertdialog" aria-modal="true" aria-labelledby="lm-x-title">
+  <div class="modal-header">
+    <div class="modal-header-text">
+      <span class="modal-icon"><i data-lucide="alert-triangle"></i></span>
+      <h2 class="modal-title" id="lm-x-title">Delete this transaction?</h2>
+      <p class="modal-subtitle">INV-2304 · $ 12,400.00</p>
+    </div>
+    <button class="modal-close" aria-label="Close" onclick="closeOverlay()"><i data-lucide="x"></i></button>
+  </div>
+  <div class="modal-body">
+    <p>This action can't be undone. The receivable will be removed from your books and the counterparty will be notified.</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-ghost" onclick="closeOverlay()">Cancel</button>
+    <button class="btn btn-danger" onclick="closeOverlay()">Delete transaction</button>
+  </div>
+</div>
+
+<div id="live-modal-form" class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="lm-f-title">
+  <div class="modal-header">
+    <div class="modal-header-text">
+      <h2 class="modal-title" id="lm-f-title">New receivable</h2>
+      <p class="modal-subtitle">Step 1 of 3 — Counterparty & amount</p>
+    </div>
+    <button class="modal-close" aria-label="Close" onclick="closeOverlay()"><i data-lucide="x"></i></button>
+  </div>
+  <div class="modal-body">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+      <div class="field"><label class="field-label">Counterparty</label><input class="input" value="Banco Itaú · BR" /></div>
+      <div class="field"><label class="field-label">Reference</label><input class="input" placeholder="INV-XXXX" /></div>
+      <div class="field"><label class="field-label">Amount</label><input class="input" placeholder="0,00" /></div>
+      <div class="field"><label class="field-label">Due date</label><input class="input" type="date" /></div>
+    </div>
+  </div>
+  <div class="modal-footer modal-footer-spread">
+    <span class="modal-footer-aux"><i data-lucide="check" style="width: 14px; height: 14px;"></i>Autosaved</span>
+    <div style="display: flex; gap: var(--space-3);">
+      <button class="btn btn-ghost" onclick="closeOverlay()">Cancel</button>
+      <button class="btn btn-primary" onclick="closeOverlay()">Continue</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+
+  const scrim = document.getElementById('live-scrim');
+  const overlays = {
+    'default':     document.getElementById('live-modal-default'),
+    'destructive': document.getElementById('live-modal-destructive'),
+    'form':        document.getElementById('live-modal-form'),
+  };
+  let currentOpen = null;
+  let prevFocus = null;
+
+  window.openOverlay = function(key) {
+    if (currentOpen) closeOverlay();
+    const el = overlays[key];
+    if (!el) return;
+    prevFocus = document.activeElement;
+    scrim.classList.add('is-open');
+    el.classList.add('is-open');
+    currentOpen = { el, key };
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+      const f = el.querySelector('input, button:not([aria-label="Close"]), select, textarea, a');
+      if (f) f.focus();
+    }, 100);
+  };
+
+  window.closeOverlay = function() {
+    if (!currentOpen) return;
+    scrim.classList.remove('is-open');
+    currentOpen.el.classList.remove('is-open');
+    document.body.style.overflow = '';
+    if (prevFocus) prevFocus.focus();
+    currentOpen = null;
+  };
+
+  scrim.addEventListener('click', () => {
+    if (currentOpen && currentOpen.key !== 'destructive') closeOverlay();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && currentOpen) closeOverlay();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (!currentOpen || e.key !== 'Tab') return;
+    const focusables = currentOpen.el.querySelectorAll('input, button, select, textarea, a[href], [tabindex]:not([tabindex="-1"])');
+    if (!focusables.length) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+</script>
+
+</body>
+</html>

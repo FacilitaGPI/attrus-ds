@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Brand" name="Drawer — docs page" subtitle="Dedicated Drawer documentation" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Drawer · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 64ch; }
+  .doc-header p code { font-family: var(--font-mono); font-size: 0.85em; background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-accent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 72ch; margin: 0 0 var(--space-7); }
+
+  .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
+  .spec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .spec-tag { display: inline-flex; align-items: center; padding: var(--space-1) var(--space-3); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; border-radius: var(--radius-pill); flex-shrink: 0; white-space: nowrap; }
+  .spec-tag.ok { color: var(--color-feedback-success-foreground); background: var(--color-feedback-success-background); border: 1px solid var(--color-feedback-success-border); }
+  .spec-tag.avoid { color: var(--color-feedback-warning-foreground); background: var(--color-feedback-warning-background); border: 1px solid var(--color-feedback-warning-border); }
+
+  .spec-canvas { padding: var(--space-6); background: var(--color-background-canvas); background-image: linear-gradient(var(--color-border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; }
+
+  /* preview frame — inline render of a drawer inside a fake viewport */
+  .preview-stage { position: relative; width: 100%; height: 380px; background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  /* simulated app content behind the drawer so the glass header/footer read */
+  .stage-bg { position: absolute; inset: 0; padding: var(--space-5); display: grid; gap: var(--space-3); align-content: start; }
+  .stage-bg .bar { height: 10px; border-radius: var(--radius-pill); background: var(--color-background-subtle); }
+  .stage-bg .bar.s { width: 40%; } .stage-bg .bar.m { width: 65%; } .stage-bg .bar.l { width: 85%; }
+  .stage-bg .blob { position: absolute; border-radius: var(--radius-pill); filter: blur(2px); opacity: .5; }
+  .preview-stage .scrim { position: absolute; inset: 0; z-index: 1; }
+  .preview-stage .drawer { position: absolute; z-index: 2; opacity: 1; pointer-events: auto; transform: none; }
+
+  .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; margin-top: var(--space-4); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .token-table tr:last-child td { border-bottom: none; }
+  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+  .token-table .yes { color: var(--color-feedback-success-foreground); font-weight: var(--w-semibold); }
+  .token-table .no { color: var(--color-feedback-warning-foreground); font-weight: var(--w-semibold); }
+
+  .anatomy { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: center; padding: var(--space-8); background: var(--color-background-canvas); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); margin-bottom: var(--space-8); }
+  .anatomy-list ol { padding-left: 0; margin: 0; counter-reset: anat; list-style: none; }
+  .anatomy-list li { counter-increment: anat; margin-bottom: var(--space-3); padding-left: var(--space-7); position: relative; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-sm); }
+  .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
+
+  .dont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
+  .dont-card.do i, .dont-card.do svg { color: var(--color-feedback-success-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-card.dont i, .dont-card.dont svg { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-card p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .dont-card strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: 2px; }
+
+  .demo-row { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .kv { display: grid; gap: var(--space-3); font-size: var(--fs-sm); }
+  .kv .k { color: var(--color-foreground-muted); font-size: var(--fs-xs); }
+
+  /* ---- template helpers ---- */
+  .tpl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  @media (max-width: 900px) { .tpl-grid { grid-template-columns: 1fr; } }
+
+
+  .tpl-amount { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: var(--fs-3xl); font-weight: var(--w-bold); color: var(--color-foreground-default); letter-spacing: var(--ls-tight); }
+
+  /* timeline */
+  .tl { list-style: none; margin: var(--space-5) 0 0; padding: 0; display: grid; gap: 0; }
+  .tl li { position: relative; padding: 0 0 var(--space-5) var(--space-6); }
+  .tl li:last-child { padding-bottom: 0; }
+  .tl li::before { content: ""; position: absolute; left: 4px; top: 3px; width: 9px; height: 9px; border-radius: var(--radius-pill); background: var(--color-feedback-success-foreground); }
+  .tl li:not(:last-child)::after { content: ""; position: absolute; left: 8px; top: 12px; bottom: 0; width: 1px; background: var(--color-border-default); }
+  .tl .t { font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); }
+  .tl .d { font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono); }
+
+  /* hub list */
+  .hub-row { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3); border-radius: var(--radius-sm); text-decoration: none; color: var(--color-foreground-default); cursor: pointer; }
+  .hub-row:hover { background: var(--color-background-hover); }
+  .hub-tile { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: var(--radius-sm); flex-shrink: 0; }
+  .hub-tile i, .hub-tile svg { width: 18px; height: 18px; }
+  .hub-row .nm { font-size: var(--fs-sm); font-weight: var(--w-semibold); }
+  .hub-row .ds { font-size: var(--fs-xs); color: var(--color-foreground-muted); }
+  .hub-row .chev { margin-left: auto; color: var(--color-foreground-muted); width: 16px; height: 16px; }
+
+  /* FAQ accordion */
+  .faq { display: grid; gap: var(--space-2); }
+  .faq details { border: 1px solid var(--color-border-subtle); border-radius: var(--radius-sm); background: var(--color-background-surface); }
+  .faq summary { list-style: none; cursor: pointer; padding: var(--space-3) var(--space-4); font-size: var(--fs-sm); font-weight: var(--w-semibold); display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; font-family: var(--font-mono); color: var(--color-foreground-muted); font-size: var(--fs-md); }
+  .faq details[open] summary::after { content: "–"; }
+  .faq .a { padding: 0 var(--space-4) var(--space-3); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .faq-search { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); border: 1px solid var(--color-border-default); border-radius: var(--radius-sm); margin-bottom: var(--space-4); color: var(--color-foreground-muted); }
+  .faq-search i, .faq-search svg { width: 15px; height: 15px; }
+  .faq-search input { border: 0; outline: 0; background: transparent; font-family: var(--font-sans); font-size: var(--fs-sm); width: 100%; color: var(--color-foreground-default); }
+  .faq-search-lg { padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); }
+  .faq-search-lg i, .faq-search-lg svg { width: 18px; height: 18px; }
+  .faq-search-lg input { font-size: var(--fs-md); }
+
+  /* Tabs inside a drawer header: pull left so the first tab's LABEL aligns
+     with the title (tabs have internal padding). Keeps the row flush-left. */
+  .drawer-header .tabs { margin-left: calc(-1 * var(--space-4)); margin-right: calc(-1 * var(--space-4)); }
+  .drawer-header .tabs-sm { margin-left: calc(-1 * var(--space-3)); margin-right: calc(-1 * var(--space-3)); }
+
+  /* Header-scaled flags + pills/chips — larger standard inside header chrome */
+  .dh-flag { width: 22px; height: 16px; border-radius: 3px; box-shadow: 0 0 0 1px var(--color-border-subtle); flex-shrink: 0; }
+  .pd-hero .pd-chip { font-size: var(--fs-xs); padding: 3px var(--space-3); }
+
+  /* template segmentation — titled sections + clustered cards */
+  .tpl-sec { margin-top: var(--space-6); }
+  .tpl-sec:first-child { margin-top: 0; }
+  .tpl-sec-label { display: block; font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin: 0 0 var(--space-3); }
+  .tpl-card { border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); padding: var(--space-4); background: var(--color-background-surface); }
+  .tpl-card.is-pad-0 { padding: 0; overflow: hidden; }
+  .tpl-card + .tpl-card { margin-top: var(--space-3); }
+  .tpl-card .hub-row { border-radius: 0; }
+  .tpl-card .hub-row + .hub-row { border-top: 1px solid var(--color-border-subtle); }
+
+  /* product-detail drawer (ProductsHub style) — branded ink hero + activation footer */
+  .pd-hero { position: sticky; top: 0; z-index: 2; flex-shrink: 0; padding: var(--space-6); background: var(--color-background-inverse); color: var(--color-foreground-inverse-default); overflow: hidden; }
+  .pd-hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(420px 180px at 100% 0%, color-mix(in srgb, var(--color-brand-accent-500) 22%, transparent), transparent 62%); }
+  .pd-hero-row { display: flex; align-items: flex-start; gap: var(--space-4); position: relative; }
+  .pd-tile { width: 40px; height: 40px; align-self: flex-start; border-radius: var(--radius-md); flex-shrink: 0; background: color-mix(in srgb, var(--color-pure-white) 12%, transparent); border: 1px solid color-mix(in srgb, var(--color-pure-white) 16%, transparent); color: var(--color-brand-accent-300); display: inline-flex; align-items: center; justify-content: center; }
+  .pd-tile i, .pd-tile svg { width: 20px; height: 20px; }
+  .pd-eyebrow { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; opacity: .65; }
+  .pd-title { margin: var(--space-1) 0 0; font-size: var(--fs-2xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); }
+  .pd-chips { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-top: var(--space-3); }
+  .pd-chip { font-size: var(--fs-xxs); font-weight: var(--w-semibold); padding: 2px var(--space-2); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-pure-white) 12%, transparent); border: 1px solid color-mix(in srgb, var(--color-pure-white) 16%, transparent); color: var(--color-foreground-inverse-secondary); }
+  .pd-close { margin-left: auto; align-self: flex-start; width: 32px; height: 32px; border-radius: var(--radius-sm); flex-shrink: 0; background: color-mix(in srgb, var(--color-pure-white) 8%, transparent); border: 1px solid color-mix(in srgb, var(--color-pure-white) 16%, transparent); color: var(--color-foreground-inverse-default); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+  .pd-close i, .pd-close svg { width: 18px; height: 18px; }
+  .pd-benefit { display: flex; align-items: flex-start; gap: var(--space-3); font-size: var(--fs-sm); line-height: var(--lh-snug); }
+  .pd-benefit + .pd-benefit { margin-top: var(--space-2); }
+  .pd-benefit .ck { width: 18px; height: 18px; border-radius: var(--radius-pill); flex-shrink: 0; margin-top: 1px; background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); display: inline-flex; align-items: center; justify-content: center; }
+  .pd-benefit .ck i, .pd-benefit .ck svg { width: 11px; height: 11px; }
+  .pd-usecase { padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm); background: var(--color-background-subtle); border: 1px solid var(--color-border-subtle); font-size: var(--fs-sm); display: flex; align-items: center; gap: var(--space-3); }
+  .pd-usecase + .pd-usecase { margin-top: var(--space-2); }
+  .pd-usecase i, .pd-usecase svg { width: 14px; height: 14px; color: var(--color-foreground-muted); flex-shrink: 0; }
+
+  /* header/footer detail helpers */
+  .hf-demo { width: 100%; max-width: 460px; }
+  .hf-demo .legend { display:block; margin-bottom: var(--space-2); }
+  .hf-box { border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .hf-box .drawer-header, .hf-box .drawer-footer, .hf-box .pd-hero { position: static; }
+  .dh-meta { font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-muted); margin-top: 2px; }
+  /* .drawer-header.is-dense agora é canônico (overlays.css) */
+  .hf-truncate .drawer-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px; }
+  .hf-total { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: var(--w-bold); font-size: var(--fs-md); color: var(--color-foreground-default); }
+  .hf-total .k { display:block; font-family: var(--font-sans); font-size: var(--fs-xxs); font-weight: var(--w-regular); color: var(--color-foreground-muted); }
+  .hf-check { width:16px; height:16px; border-radius: var(--radius-2xs); background: var(--color-brand-primary-500); color: var(--color-foreground-on-solid); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .hf-check i, .hf-check svg { width:11px; height:11px; }
+  .grad-spin { width:14px; height:14px; border-radius:var(--radius-pill); border:2px solid color-mix(in srgb, var(--color-foreground-on-solid) 40%, transparent); border-top-color: var(--color-foreground-on-solid); animation: hfspin .7s linear infinite; }
+  @keyframes hfspin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<div class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Drawer</h1>
+      <p>An edge-anchored panel that slides in over the page for tasks that <em>complement</em> the current view instead of replacing it — record detail, editing, filters. The most-used overlay in ATTRUS. For a blocking decision use a <a href="modal-drawer.html" style="color: var(--color-foreground-highlight); text-decoration: none; border-bottom: 1px dotted currentColor;">Modal</a> instead.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Ready</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#positions">01 Positions &amp; platform</a>
+    <a href="#anatomy">02 Anatomy</a>
+    <a href="#chrome">03 Sticky glass header &amp; footer</a>
+    <a href="#headerfooter">04 Header &amp; Footer</a>
+    <a href="#sizes">05 Sizes</a>
+    <a href="#dismissal">06 Dismissal</a>
+    <a href="#live">07 Live demo</a>
+    <a href="#templates">08 Templates</a>
+    <a href="#donts">09 Don'ts</a>
+    <a href="#a11y">10 Accessibility</a>
+    <a href="#tokens">11 Tokens</a>
+  </nav>
+
+  <!-- ===== 01 POSITIONS & PLATFORM ===== -->
+  <section class="doc-section" id="positions">
+    <h2><span class="num">01</span>Positions &amp; platform</h2>
+    <p class="lead">Three anchors — but they are <strong>not interchangeable</strong>. Each has a platform where it belongs and platforms where it should be avoided. Pick by the rules below, not by taste.</p>
+
+    <table class="token-table" style="margin-bottom: var(--space-7);">
+      <thead><tr><th>Position</th><th>Desktop</th><th>Mobile</th><th>Use for</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Right</strong> <code>.drawer-right</code></td><td class="yes">✓ Preferred</td><td class="yes">✓ OK</td><td>Record detail, editing, side panels — the ATTRUS default.</td></tr>
+        <tr><td><strong>Left</strong> <code>.drawer-left</code></td><td class="no">✗ Avoid</td><td class="yes">✓ Nav only</td><td>Mobile navigation menu. On desktop the sidebar is already persistent.</td></tr>
+        <tr><td><strong>Bottom</strong> <code>.drawer-bottom</code></td><td class="no">✗ Avoid</td><td class="yes">✓ Preferred</td><td>Mobile filters, sort, quick actions — the thumb-reachable sheet.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Right <code>.drawer-right</code></h3><p>Slides in from the right edge. Default for "Open in detail" on every list — counterparties, receivables, transactions. Keeps the list visible as context.</p></div>
+        <span class="spec-tag ok">Desktop · preferred</span>
+      </div>
+      <div class="spec-canvas">
+        <div class="preview-stage">
+          <div class="stage-bg">
+            <div class="blob" style="width:120px;height:120px;background:var(--color-brand-secondary-300);left:24px;top:40px;"></div>
+            <div class="blob" style="width:90px;height:90px;background:var(--color-brand-accent-300);left:160px;top:150px;"></div>
+            <div class="bar l"></div><div class="bar m"></div><div class="bar s"></div><div class="bar m"></div><div class="bar l"></div>
+          </div>
+          <div class="scrim is-open"></div>
+          <aside class="drawer drawer-right drawer-md is-open" style="top:0;right:0;bottom:0;">
+            <div class="drawer-header">
+              <div class="drawer-header-text"><h2 class="drawer-title">Banco Itaú · BR</h2><p class="drawer-subtitle">Counterparty · Active</p></div>
+              <button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button>
+            </div>
+            <div class="drawer-body">
+              <div class="kv">
+                <div><span class="k">CNPJ</span><br>60.701.190/0001-04</div>
+                <div><span class="k">Currency</span><br>BRL · USD</div>
+                <div><span class="k">Active receivables</span><br>4 · $ 124,800.00 outstanding</div>
+                <div><span class="k">Last activity</span><br>2 hours ago — payment received</div>
+                <div><span class="k">Rails</span><br>PIX · SWIFT · ACH</div>
+                <div><span class="k">Onboarded</span><br>14 Mar 2024</div>
+              </div>
+            </div>
+            <div class="drawer-footer">
+              <button class="btn btn-ghost">Archive</button>
+              <button class="btn btn-primary">Edit</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Left <code>.drawer-left</code></h3><p>Reserved for the <strong>mobile</strong> navigation menu (&lt; 768px). On desktop the sidebar is persistent, so a left drawer duplicates it — avoid it there.</p></div>
+        <span class="spec-tag avoid">Avoid on desktop</span>
+      </div>
+      <div class="spec-canvas">
+        <div class="preview-stage">
+          <div class="stage-bg">
+            <div class="bar l"></div><div class="bar m"></div><div class="bar s"></div><div class="bar m"></div>
+          </div>
+          <div class="scrim is-open"></div>
+          <aside class="drawer drawer-left drawer-sm is-open" style="top:0;left:0;bottom:0;">
+            <div class="drawer-header">
+              <div class="drawer-header-text"><h2 class="drawer-title">Cabiros</h2><p class="drawer-subtitle">workspace</p></div>
+              <button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button>
+            </div>
+            <div class="drawer-body" style="padding-top: var(--space-3);">
+              <div style="display: grid; gap: var(--space-1); font-size: var(--fs-sm); font-weight: var(--w-medium);">
+                <a href="#" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);color: var(--color-foreground-accent);background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);border-radius:var(--radius-sm);text-decoration:none;"><i data-lucide="layout-dashboard" style="width:18px;height:18px;"></i>Home</a>
+                <a href="#" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);color:var(--color-foreground-default);border-radius:var(--radius-sm);text-decoration:none;"><i data-lucide="users" style="width:18px;height:18px;"></i>Counterparties</a>
+                <a href="#" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);color:var(--color-foreground-default);border-radius:var(--radius-sm);text-decoration:none;"><i data-lucide="receipt" style="width:18px;height:18px;"></i>Receivables</a>
+                <a href="#" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);color:var(--color-foreground-default);border-radius:var(--radius-sm);text-decoration:none;"><i data-lucide="arrow-left-right" style="width:18px;height:18px;"></i>Transactions</a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Bottom <code>.drawer-bottom</code></h3><p>A thumb-reachable sheet with a drag handle. For <strong>mobile</strong> filters, sort and quick actions. On desktop, use a right drawer or popover instead.</p></div>
+        <span class="spec-tag avoid">Mobile only</span>
+      </div>
+      <div class="spec-canvas">
+        <div class="preview-stage">
+          <div class="stage-bg">
+            <div class="bar l"></div><div class="bar m"></div><div class="bar s"></div><div class="bar m"></div><div class="bar l"></div>
+          </div>
+          <div class="scrim is-open"></div>
+          <aside class="drawer drawer-bottom is-open" style="left:0;right:0;bottom:0;max-height:78%;">
+            <div class="drawer-handle"></div>
+            <div class="drawer-header">
+              <div class="drawer-header-text"><h2 class="drawer-title">Filter receivables</h2><p class="drawer-subtitle">3 active filters</p></div>
+              <button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button>
+            </div>
+            <div class="drawer-body">
+              <div style="display: grid; gap: var(--space-4);">
+                <div class="field"><label class="field-label">Status</label><div class="select"><select class="input"><option>All</option><option>Pending</option></select><i data-lucide="chevron-down" class="chev"></i></div></div>
+                <div class="field"><label class="field-label">Currency</label><div class="select"><select class="input"><option>All</option><option>BRL</option></select><i data-lucide="chevron-down" class="chev"></i></div></div>
+              </div>
+            </div>
+            <div class="drawer-footer">
+              <button class="btn btn-ghost">Clear all</button>
+              <button class="btn btn-primary">Apply</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 02 ANATOMY ===== -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">02</span>Anatomy</h2>
+    <p class="lead">A scrim dims the page; the panel anchors to an edge. Inside: a sticky header, a scrolling body, and a sticky footer. The drawer itself is the scroll container.</p>
+
+    <div class="anatomy">
+      <div class="preview-stage" style="height: 320px;">
+        <div class="stage-bg"><div class="bar l"></div><div class="bar m"></div><div class="bar s"></div></div>
+        <div class="scrim is-open"></div>
+        <aside class="drawer drawer-right drawer-md is-open" style="top:0;right:0;bottom:0;">
+          <div class="drawer-header">
+            <div class="drawer-header-text"><h2 class="drawer-title">Receivable · INV-2304</h2><p class="drawer-subtitle">$ 12,400.00 · Pending</p></div>
+            <button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button>
+          </div>
+          <div class="drawer-body"><div class="kv"><div><span class="k">Counterparty</span><br>Banco Itaú · BR</div><div><span class="k">Due</span><br>30 May 2026</div><div><span class="k">Rail</span><br>PIX</div></div></div>
+          <div class="drawer-footer"><button class="btn btn-ghost">Void</button><button class="btn btn-primary">Mark paid</button></div>
+        </aside>
+      </div>
+      <div class="anatomy-list">
+        <ol>
+          <li><strong>Scrim</strong>Fixed overlay dimming the page. Click closes the drawer.</li>
+          <li><strong>Surface &amp; anchor</strong>Edge-anchored panel (right / left / bottom). Slides in; the page stays behind as context.</li>
+          <li><strong>Sticky header</strong>Title + subtitle + close. Frosted glass — body scrolls under it. Stays pinned.</li>
+          <li><strong>Body</strong>The scrolling region. Grows to push the footer to the bottom when content is short.</li>
+          <li><strong>Sticky footer</strong>Trailing actions on frosted glass, pinned to the bottom edge.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 03 STICKY GLASS CHROME ===== -->
+  <section class="doc-section" id="chrome">
+    <h2><span class="num">03</span>Sticky glass header &amp; footer</h2>
+    <p class="lead">The header and footer are <strong>always fixed</strong> and use a liquid-glass background — translucent <code>--glass-white</code> with a <code>--glass-blur</code> backdrop filter. As the body scrolls, content passes beneath them with a frosted blur, keeping the title and actions reachable at all times. <strong>Scroll the panel below to see it.</strong></p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Frosted chrome <code>.drawer-header</code> · <code>.drawer-footer</code></h3><p>Header is <code>position: sticky; top: 0</code>; footer is <code>position: sticky; bottom: 0</code>. Both carry the glass background + blur. A solid fallback applies where <code>backdrop-filter</code> is unsupported.</p></div>
+        <span class="spec-tag ok">Scroll me</span>
+      </div>
+      <div class="spec-canvas">
+        <div class="preview-stage" style="height: 420px;">
+          <div class="scrim is-open"></div>
+          <aside class="drawer drawer-right drawer-md is-open" style="top:0;right:0;bottom:0;">
+            <div class="drawer-header">
+              <div class="drawer-header-text"><h2 class="drawer-title">Transaction · #4821</h2><p class="drawer-subtitle">Scroll — watch the chrome frost</p></div>
+              <button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button>
+            </div>
+            <div class="drawer-body">
+              <div class="kv">
+                <div><span class="k">Amount</span><br><span style="font-family: var(--font-mono); font-weight: var(--w-semibold);">USD 1,500.00</span></div>
+                <div><span class="k">Counterparty</span><br>Aurora Logistics</div>
+                <div><span class="k">Rail</span><br>SWIFT</div>
+                <div><span class="k">Value date</span><br>28 May 2026</div>
+                <div><span class="k">Reference</span><br>N-741470</div>
+                <div><span class="k">FX rate</span><br>5.1389</div>
+                <div><span class="k">Fee</span><br>USD 12.00</div>
+                <div><span class="k">Status</span><br>Settled</div>
+                <div><span class="k">Created by</span><br>m.silva@cabiros</div>
+                <div><span class="k">Approved by</span><br>api@attrus</div>
+                <div><span class="k">Settled at</span><br>28 May 2026 · 09:18</div>
+                <div><span class="k">Notes</span><br>Monthly logistics retainer, net-30 terms agreed with counterparty.</div>
+              </div>
+            </div>
+            <div class="drawer-footer">
+              <button class="btn btn-ghost">Export</button>
+              <button class="btn btn-primary">Open full record</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+    </section>
+
+  <!-- ===== 04 HEADER & FOOTER ===== -->
+  <section class="doc-section" id="headerfooter">
+    <h2><span class="num">04</span>Header &amp; Footer</h2>
+    <p class="lead">The drawer's chrome carries identity (header) and commitment (footer). Both are sticky and frosted; below are their properties and every variant for the scenarios ATTRUS runs into. A few are openable live at the end.</p>
+
+    <!-- HEADER properties -->
+    <div class="spec">
+      <div class="spec-head"><div><h3>Header — anatomy &amp; properties</h3><p>Title block + close, on a sticky glass bar. Optional eyebrow, status, metadata, secondary action, search or tabs.</p></div></div>
+      <div class="spec-body">
+        <table class="token-table" style="margin-top:0;">
+          <thead><tr><th>Property</th><th>Value / token</th></tr></thead>
+          <tbody>
+            <tr><td>Position / elevation</td><td><code>position: sticky; top: 0; z-index: 2</code> — body scrolls under it</td></tr>
+            <tr><td>Background</td><td><code>--glass-white</code> (58%) + <code>backdrop-filter: var(--glass-blur)</code>; solid <code>--color-background-surface</code> fallback</td></tr>
+            <tr><td>Padding</td><td><code>var(--space-6)</code>; dense variant <code>--space-3 --space-4</code></td></tr>
+            <tr><td>Divider</td><td>1px bottom <code>--color-border-subtle</code></td></tr>
+            <tr><td>Title</td><td><code>--fs-lg</code> · <code>--w-bold</code> · <code>--ls-title</code>; truncates to 1 line</td></tr>
+            <tr><td>Subtitle</td><td><code>--fs-sm</code> · <code>--color-foreground-secondary</code>; 1 line</td></tr>
+            <tr><td>Close</td><td><code>.drawer-close</code> 32px · <code>--color-foreground-muted</code> · hover <code>--color-background-hover</code> · focus <code>--shadow-focus</code></td></tr>
+            <tr><td>Icons</td><td><code>--icon-stroke</code>; close/kebab 18px, lead tile 18–22px</td></tr>
+            <tr><td>Variants</td><td>entity · status · metadata · secondary action · search · tabs · dense · ink hero</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="spec-canvas spec-canvas-stack" style="gap: var(--space-5);">
+        <div class="hf-demo"><span class="legend">1 · Entity (avatar + flag)</span>
+          <div class="hf-box"><div class="drawer-header"><div style="display:flex;align-items:center;gap:var(--space-3);flex:1;min-width:0;"><span class="drawer-lead" style="background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);color: var(--color-foreground-accent);"><i data-lucide="building-2"></i></span><div class="drawer-header-text"><h2 class="drawer-title" style="display:inline-flex;align-items:center;gap:var(--space-2);">Banco Itaú · BR <img src="../assets/flags/Brazil-square.svg" alt="" class="dh-flag"></h2><p class="drawer-subtitle">Counterparty · Active</p></div></div><button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button></div></div>
+        </div>
+        <div class="hf-demo"><span class="legend">2 · Status inline</span>
+          <div class="hf-box"><div class="drawer-header"><div class="drawer-header-text"><h2 class="drawer-title" style="display:inline-flex;align-items:center;gap:var(--space-3);">Transaction · #4821 <span class="pill success sm"><i data-lucide="check" style="width:11px;height:11px;"></i>Settled</span></h2><p class="drawer-subtitle">Pay-in · Aurora Logistics</p></div><button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button></div></div>
+        </div>
+        <div class="hf-demo"><span class="legend">3 · Metadata row</span>
+          <div class="hf-box"><div class="drawer-header"><div class="drawer-header-text"><h2 class="drawer-title">Receivable · INV-2304</h2><p class="drawer-subtitle">$ 12,400.00 · Pending</p><span class="dh-meta">N-741469 · 28 May 2026 · 09:18</span></div><button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button></div></div>
+        </div>
+        <div class="hf-demo"><span class="legend">4 · Secondary action (overflow)</span>
+          <div class="hf-box"><div class="drawer-header" style="gap:var(--space-2);"><div class="drawer-header-text"><h2 class="drawer-title">Banco Itaú · BR</h2><p class="drawer-subtitle">Counterparty</p></div><button class="drawer-close" aria-label="More actions"><i data-lucide="more-horizontal"></i></button><button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button></div></div>
+        </div>
+        <div class="hf-demo"><span class="legend">5 · With search</span>
+          <div class="hf-box"><div class="drawer-header" style="flex-direction:column; align-items:stretch; gap:var(--space-3);"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-4);"><div class="drawer-header-text"><h2 class="drawer-title">Select counterparty</h2></div><button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button></div><div class="faq-search faq-search-lg" style="margin:0;"><i data-lucide="search"></i><input placeholder="Search counterparties…" /></div></div></div>
+        </div>
+        <div class="hf-demo"><span class="legend">6 · With tabs</span>
+          <div class="hf-box"><div class="drawer-header" style="flex-direction:column; align-items:stretch; gap:var(--space-3); padding-bottom:0;"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-4);"><div class="drawer-header-text"><h2 class="drawer-title">Banco Itaú · BR</h2></div><button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button></div><div class="tabs" role="tablist" aria-label="Sections" style="border-bottom:0;"><button class="tab" role="tab" aria-selected="true"><span class="tab-label" data-label="Overview">Overview</span></button><button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Activity">Activity</span></button><button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Docs">Docs</span></button></div></div></div>
+        </div>
+        <div class="hf-demo"><span class="legend">7 · Dense <code style="font-size:var(--fs-xxs);">.is-dense</code></span>
+          <div class="hf-box"><div class="drawer-header is-dense"><div class="drawer-header-text"><h2 class="drawer-title">Filters</h2></div><button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button></div></div>
+        </div>
+        <div class="hf-demo"><span class="legend">8 · Long title truncates</span>
+          <div class="hf-box hf-truncate"><div class="drawer-header"><div class="drawer-header-text"><h2 class="drawer-title">Aurora Logistics International Holdings S.A. — Brazil</h2><p class="drawer-subtitle">Counterparty</p></div><button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button></div></div>
+        </div>
+        <div class="hf-demo"><span class="legend">9 · Ink hero (branded)</span>
+          <div class="hf-box"><div class="pd-hero"><div class="pd-hero-row"><span class="pd-tile"><i data-lucide="zap"></i></span><div style="flex:1;min-width:0;"><span class="pd-eyebrow">Brazil · Local rail</span><h2 class="pd-title">PIX</h2></div><button class="pd-close" aria-label="Close"><i data-lucide="x"></i></button></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER properties -->
+    <div class="spec">
+      <div class="spec-head"><div><h3>Footer — anatomy &amp; properties</h3><p>Sticky glass action bar. Trailing alignment by default; layout adapts per scenario.</p></div></div>
+      <div class="spec-body">
+        <table class="token-table" style="margin-top:0;">
+          <thead><tr><th>Property</th><th>Value / token</th></tr></thead>
+          <tbody>
+            <tr><td>Position / elevation</td><td><code>position: sticky; bottom: 0; z-index: 2</code></td></tr>
+            <tr><td>Background</td><td><code>--glass-white</code> (58%) + <code>--glass-blur</code>; solid fallback</td></tr>
+            <tr><td>Padding</td><td><code>var(--space-5) var(--space-6)</code></td></tr>
+            <tr><td>Divider</td><td>1px top <code>--color-border-subtle</code></td></tr>
+            <tr><td>Default layout</td><td><code>justify-content: flex-end</code>; primary right, secondary to its left; <code>gap: var(--space-3)</code></td></tr>
+            <tr><td>Aux info</td><td><code>justify-content: space-between</code> — info/total on the left, action on the right</td></tr>
+            <tr><td>Mobile</td><td>full-width stacked buttons; <code>padding-bottom</code> respects <code>env(safe-area-inset-bottom)</code></td></tr>
+            <tr><td>Max actions</td><td>≤ 3 — beyond that, move overflow into the header or body</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="spec-canvas spec-canvas-stack" style="gap: var(--space-5);">
+        <div class="hf-demo"><span class="legend">1 · Dual action (default)</span>
+          <div class="hf-box"><div class="drawer-footer"><button class="btn btn-ghost">Cancel</button><button class="btn btn-primary">Save</button></div></div>
+        </div>
+        <div class="hf-demo"><span class="legend">2 · Destructive</span>
+          <div class="hf-box"><div class="drawer-footer"><button class="btn btn-ghost">Cancel</button><button class="btn btn-danger"><i data-lucide="trash-2"></i>Delete</button></div></div>
+        </div>
+        <div class="hf-demo"><span class="legend">3 · Aux info / total (space-between)</span>
+          <div class="hf-box"><div class="drawer-footer" style="justify-content:space-between;"><span class="hf-total">USD 1,500.00<span class="k">Total incl. fee</span></span><button class="btn btn-primary">Confirm transfer</button></div></div>
+        </div>
+        <div class="hf-demo"><span class="legend">4 · Agreement + CTA</span>
+          <div class="hf-box"><div class="drawer-footer" style="justify-content:space-between;"><span style="display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--fs-xs);color:var(--color-foreground-secondary);"><span class="hf-check"><i data-lucide="check"></i></span>I authorize this payout</span><button class="btn btn-primary">Sign &amp; send</button></div></div>
+        </div>
+        <div class="hf-demo"><span class="legend">5 · Loading (async)</span>
+          <div class="hf-box"><div class="drawer-footer"><button class="btn btn-ghost" disabled>Cancel</button><button class="btn btn-primary" disabled><span class="grad-spin"></span>Processing…</button></div></div>
+        </div>
+        <div class="hf-demo"><span class="legend">6 · Single, full-width</span>
+          <div class="hf-box"><div class="drawer-footer"><button class="btn btn-primary" style="width:100%;"><i data-lucide="messages-square"></i>Contact support</button></div></div>
+        </div>
+        <div class="hf-demo"><span class="legend">7 · Full-width stacked (mobile)</span>
+          <div class="hf-box"><div class="drawer-footer" style="flex-direction:column; align-items:stretch; gap:var(--space-2);"><button class="btn btn-primary" style="width:100%;">Apply filters</button><button class="btn btn-ghost" style="width:100%;">Clear all</button></div></div>
+        </div>
+        <div class="hf-demo"><span class="legend">8 · Multi-action with trailing link</span>
+          <div class="hf-box"><div class="drawer-footer" style="gap:var(--space-2);"><button class="btn btn-primary">Open in portal</button><button class="btn btn-secondary"><i data-lucide="book"></i>Docs</button><button class="btn btn-ghost" style="margin-left:auto;">Contact sales</button></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- A11Y + DO/DON'T -->
+    <div class="spec">
+      <div class="spec-head"><div><h3>Accessibility &amp; rules</h3></div></div>
+      <div class="spec-body">
+        <table class="token-table" style="margin-top:0; margin-bottom: var(--space-6);">
+          <thead><tr><th>Concern</th><th>Requirement</th></tr></thead>
+          <tbody>
+            <tr><td>Close button</td><td>Always an icon-button with <code>aria-label="Close"</code>; never icon-only without a label.</td></tr>
+            <tr><td>Focus order</td><td>Header → body → footer. Initial focus lands on the first interactive element (or the close).</td></tr>
+            <tr><td>Title association</td><td><code>aria-labelledby</code> on the drawer points at the title id.</td></tr>
+            <tr><td>Sticky contrast</td><td>Glass uses <code>--glass-white</code> 58%; title/actions keep AA as content scrolls beneath.</td></tr>
+            <tr><td>Ink hero</td><td>Inverse foreground tokens for AA on the dark surface; close button uses an overlay-white fill.</td></tr>
+            <tr><td>Footer actions</td><td>Primary is the affirmative; destructive uses <code>.btn-danger</code> + a cancel path.</td></tr>
+          </tbody>
+        </table>
+        <div class="dont-grid">
+          <div class="dont-card do"><i data-lucide="check-circle-2"></i><p><strong>One primary per footer</strong>Lead with a single affirmative action; demote the rest to ghost/secondary.</p></div>
+          <div class="dont-card dont"><i data-lucide="x-circle"></i><p><strong>Don't stack search + tabs + metadata</strong>Pick one header enhancement — piling them on buries the title.</p></div>
+          <div class="dont-card do"><i data-lucide="check-circle-2"></i><p><strong>Put totals on the left</strong>Use <code>space-between</code> so the amount reads before the commit action.</p></div>
+          <div class="dont-card dont"><i data-lucide="x-circle"></i><p><strong>Don't exceed 3 footer actions</strong>More than three competes with the primary. Move extras into the header overflow.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 05 SIZES ===== -->
+  <section class="doc-section" id="sizes">
+    <h2><span class="num">05</span>Sizes</h2>
+    <p class="lead">Four widths for right/left drawers. Bottom drawers size to content up to 80vh. Never exceed 720px — past that, use a full route, not a drawer.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Size</th><th>Class</th><th>Width (right/left)</th><th>Use for</th></tr></thead>
+      <tbody>
+        <tr><td>Small</td><td><code>.drawer-sm</code></td><td>360px</td><td>Mobile nav, short filter lists</td></tr>
+        <tr><td>Medium <em>(default)</em></td><td><code>.drawer-md</code></td><td>440px</td><td>Record detail, the everyday side panel</td></tr>
+        <tr><td>Large</td><td><code>.drawer-lg</code></td><td>560px</td><td>Editing with grouped fields</td></tr>
+        <tr><td>Extra-large</td><td><code>.drawer-xl</code></td><td>720px (cap)</td><td>Dense editing; beyond this use a full page</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===== 06 DISMISSAL ===== -->
+  <section class="doc-section" id="dismissal">
+    <h2><span class="num">06</span>Dismissal</h2>
+    <p class="lead">Drawers are non-blocking, so they dismiss freely — there is no "locked" drawer. If a drawer holds unsaved edits, prompt before discarding.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Trigger</th><th>Behavior</th></tr></thead>
+      <tbody>
+        <tr><td>Close button</td><td>Closes</td></tr>
+        <tr><td>Cancel / footer secondary</td><td>Closes</td></tr>
+        <tr><td>Escape key</td><td>Closes</td></tr>
+        <tr><td>Click on scrim</td><td>Closes</td></tr>
+        <tr><td>Swipe down (bottom drawer)</td><td>Closes on threshold velocity</td></tr>
+        <tr><td>Unsaved changes</td><td>Prompt before closing — never silently discard</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===== 07 LIVE DEMO ===== -->
+  <section class="doc-section" id="live">
+    <h2><span class="num">07</span>Live demo</h2>
+    <p class="lead">Real drawers against the page. Escape, scrim-click, focus trap and body-scroll-lock all work end to end.</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Open one</h3><p>Tab cycles focusable elements inside; Escape closes. The right drawer's content is long enough to scroll under the frosted header/footer.</p></div></div>
+      <div class="spec-canvas" style="display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: center; background: var(--color-background-surface); background-image: none;">
+        <button class="btn btn-primary" onclick="openDrawer('right')"><i data-lucide="panel-right-open"></i>Right (desktop)</button>
+        <button class="btn btn-secondary" onclick="openDrawer('hub')"><i data-lucide="layout-grid"></i>Product hub</button>
+        <button class="btn btn-secondary" onclick="openDrawer('left')"><i data-lucide="panel-left-open"></i>Left (mobile nav)</button>
+        <button class="btn btn-secondary" onclick="openDrawer('bottom')"><i data-lucide="panel-bottom-open"></i>Bottom (mobile)</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 08 TEMPLATES ===== -->
+  <section class="doc-section" id="templates">
+    <h2><span class="num">08</span>Templates</h2>
+    <p class="lead">Filled-out drawers for the patterns ATTRUS reaches for most. All are right drawers (the desktop default) and reuse the sticky glass chrome; swap the body, keep the shell.</p>
+
+    <div class="tpl-grid">
+
+      <!-- A · Transaction detail -->
+      <div class="spec">
+        <div class="spec-head"><div><h3>Transaction detail</h3><p>Record drawer opened from a list row — grouped into summary, details and activity.</p></div><span class="spec-tag ok">Detail</span></div>
+        <div class="spec-canvas" style="padding:0;">
+          <div class="preview-stage" style="height: 560px;">
+            <div class="scrim is-open"></div>
+            <aside class="drawer drawer-right drawer-md is-open" style="top:0;right:0;bottom:0;width:100%;">
+              <div class="drawer-header">
+                <div class="drawer-header-text"><h2 class="drawer-title">Transaction · #4821</h2><p class="drawer-subtitle">Pay-in · Aurora Logistics</p></div>
+                <button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button>
+              </div>
+              <div class="drawer-body">
+                <div class="tpl-sec">
+                  <div class="tpl-card" style="display:flex; align-items:center; justify-content:space-between; gap: var(--space-3);">
+                    <div><div class="tpl-amount">USD 1,500.00</div><span class="k" style="font-size: var(--fs-xs); color: var(--color-foreground-muted);">Monthly logistics retainer</span></div>
+                    <span class="pill success sm"><i data-lucide="check" style="width:11px;height:11px;"></i>Settled</span>
+                  </div>
+                </div>
+                <div class="tpl-sec">
+                  <span class="tpl-sec-label">Details</span>
+                  <div class="tpl-card">
+                    <div class="kv" style="grid-template-columns: 1fr 1fr;">
+                      <div><span class="k">Rail</span><br>SWIFT</div>
+                      <div><span class="k">Value date</span><br>28 May 2026</div>
+                      <div><span class="k">FX rate</span><br>5.1389</div>
+                      <div><span class="k">Fee</span><br>USD 12.00</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tpl-sec">
+                  <span class="tpl-sec-label">Activity</span>
+                  <div class="tpl-card">
+                    <ul class="tl" style="margin:0;">
+                      <li><span class="t">Created</span><br><span class="d">09:14 · api@attrus</span></li>
+                      <li><span class="t">Approved</span><br><span class="d">09:14 · m.silva</span></li>
+                      <li><span class="t">Settled</span><br><span class="d">09:18 · system</span></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="drawer-footer"><button class="btn btn-ghost">Export</button><button class="btn btn-primary">Open full record</button></div>
+            </aside>
+          </div>
+        </div>
+      </div>
+
+      <!-- B · Product hub -->
+      <div class="spec">
+        <div class="spec-head"><div><h3>Product hub</h3><p>A launcher drawer — modules clustered by context (money, insights, directory).</p></div><span class="spec-tag ok">Hub</span></div>
+        <div class="spec-canvas" style="padding:0;">
+          <div class="preview-stage" style="height: 560px;">
+            <div class="scrim is-open"></div>
+            <aside class="drawer drawer-right drawer-md is-open" style="top:0;right:0;bottom:0;width:100%;">
+              <div class="drawer-header">
+                <div class="drawer-header-text"><h2 class="drawer-title">Cabiros</h2><p class="drawer-subtitle">Switch product</p></div>
+                <button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button>
+              </div>
+              <div class="drawer-body">
+                <div class="tpl-sec">
+                  <span class="tpl-sec-label">Money</span>
+                  <div class="tpl-card is-pad-0">
+                    <a class="hub-row"><span class="hub-tile" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground);"><i data-lucide="arrow-down-left"></i></span><span><span class="nm">Receivables</span><br><span class="ds">4 pending · $124.8k</span></span><i class="chev" data-lucide="chevron-right"></i></a>
+                    <a class="hub-row"><span class="hub-tile" style="background: var(--color-feedback-info-background); color: var(--color-feedback-info-foreground);"><i data-lucide="arrow-left-right"></i></span><span><span class="nm">Transactions</span><br><span class="ds">248 this month</span></span><i class="chev" data-lucide="chevron-right"></i></a>
+                    <a class="hub-row"><span class="hub-tile" style="background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-accent);"><i data-lucide="percent"></i></span><span><span class="nm">FX</span><br><span class="ds">Rates &amp; conversions</span></span><i class="chev" data-lucide="chevron-right"></i></a>
+                  </div>
+                </div>
+                <div class="tpl-sec">
+                  <span class="tpl-sec-label">Insights</span>
+                  <div class="tpl-card is-pad-0">
+                    <a class="hub-row"><span class="hub-tile" style="background: var(--color-background-subtle); color: var(--color-foreground-secondary);"><i data-lucide="bar-chart-3"></i></span><span><span class="nm">Reports</span><br><span class="ds">Statements &amp; exports</span></span><i class="chev" data-lucide="chevron-right"></i></a>
+                  </div>
+                </div>
+                <div class="tpl-sec">
+                  <span class="tpl-sec-label">Directory</span>
+                  <div class="tpl-card is-pad-0">
+                    <a class="hub-row"><span class="hub-tile" style="background: var(--color-background-subtle); color: var(--color-foreground-secondary);"><i data-lucide="users"></i></span><span><span class="nm">Counterparties</span><br><span class="ds">17 active</span></span><i class="chev" data-lucide="chevron-right"></i></a>
+                  </div>
+                </div>
+              </div>
+              <div class="drawer-footer"><button class="btn btn-ghost" style="width:100%;"><i data-lucide="settings"></i>Workspace settings</button></div>
+            </aside>
+          </div>
+        </div>
+      </div>
+
+      <!-- C · FAQ / Help -->
+      <div class="spec">
+        <div class="spec-head"><div><h3>FAQ / Help</h3><p>Contextual help drawer — searchable, answers grouped into topic sections.</p></div><span class="spec-tag ok">Help</span></div>
+        <div class="spec-canvas" style="padding:0;">
+          <div class="preview-stage" style="height: 560px;">
+            <div class="scrim is-open"></div>
+            <aside class="drawer drawer-right drawer-md is-open" style="top:0;right:0;bottom:0;width:100%;">
+              <div class="drawer-header">
+                <div class="drawer-header-text"><h2 class="drawer-title">Help</h2><p class="drawer-subtitle">Settlement &amp; transfers</p></div>
+                <button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button>
+              </div>
+              <div class="drawer-body">
+                <div class="faq-search"><i data-lucide="search"></i><input placeholder="Search help…" /></div>
+                <div class="tpl-sec">
+                  <span class="tpl-sec-label">Settlement</span>
+                  <div class="faq">
+                    <details open><summary>How long does settlement take?</summary><div class="a">Local rails clear same-day; SWIFT typically 1–2 business days depending on clearing-house cutoffs.</div></details>
+                    <details><summary>Which currencies are supported?</summary><div class="a">BRL, USD, EUR, MXN, COP and CLP, with more LATAM rails rolling out.</div></details>
+                  </div>
+                </div>
+                <div class="tpl-sec">
+                  <span class="tpl-sec-label">Transfers</span>
+                  <div class="faq">
+                    <details><summary>What is the FX spread?</summary><div class="a">The difference between the mid-market rate and your quoted rate. It's 0% on inter-company transfers.</div></details>
+                    <details><summary>Can I cancel a pending transfer?</summary><div class="a">Yes, while a transfer is Pending. Once Settled it can only be reversed via a new transaction.</div></details>
+                  </div>
+                </div>
+              </div>
+              <div class="drawer-footer"><button class="btn btn-primary" style="width:100%;"><i data-lucide="messages-square"></i>Contact support</button></div>
+            </aside>
+          </div>
+        </div>
+      </div>
+
+      <!-- D · Wizard -->
+      <div class="spec">
+        <div class="spec-head"><div><h3>Wizard — add counterparty</h3><p>Multi-step task with the <a href="stepper.html" style="color: var(--color-foreground-highlight);">Stepper</a> on top and fields grouped by context.</p></div><span class="spec-tag ok">Wizard</span></div>
+        <div class="spec-canvas" style="padding:0;">
+          <div class="preview-stage" style="height: 560px;">
+            <div class="scrim is-open"></div>
+            <aside class="drawer drawer-right drawer-lg is-open" style="top:0;right:0;bottom:0;width:100%;">
+              <div class="drawer-header">
+                <div class="drawer-header-text"><h2 class="drawer-title">Add counterparty</h2><p class="drawer-subtitle">Step 2 of 4 · Tax &amp; banking</p></div>
+                <button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button>
+              </div>
+              <div class="drawer-body">
+                <ol class="stepper is-compact" aria-label="Add counterparty" style="margin-bottom: var(--space-2);">
+                  <li class="step is-done"><span class="step-marker"><i data-lucide="check"></i></span><div class="step-body"><span class="step-label">Identity</span></div></li>
+                  <li class="step is-current" aria-current="step"><span class="step-marker">2</span><div class="step-body"><span class="step-label">Tax &amp; bank</span></div></li>
+                  <li class="step"><span class="step-marker">3</span><div class="step-body"><span class="step-label">Review</span></div></li>
+                  <li class="step"><span class="step-marker">4</span><div class="step-body"><span class="step-label">Done</span></div></li>
+                </ol>
+                <div class="tpl-sec">
+                  <span class="tpl-sec-label">Legal entity</span>
+                  <div class="tpl-card" style="display: grid; gap: var(--space-4);">
+                    <div class="field"><label class="field-label">Legal name</label><input class="input" value="FACILITA IP S.A." /></div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+                      <div class="field"><label class="field-label">Country</label><div class="select"><select class="input"><option>Brazil</option><option>Mexico</option></select><i data-lucide="chevron-down" class="chev"></i></div></div>
+                      <div class="field"><label class="field-label">Tax ID (CNPJ)</label><input class="input" placeholder="00.000.000/0000-00" /></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tpl-sec">
+                  <span class="tpl-sec-label">Banking</span>
+                  <div class="tpl-card" style="display: grid; gap: var(--space-4);">
+                    <div class="field"><label class="field-label">Settlement currency</label><div class="select"><select class="input"><option>BRL</option><option>USD</option></select><i data-lucide="chevron-down" class="chev"></i></div></div>
+                    <div class="field"><label class="field-label">Default rail</label><div class="select"><select class="input"><option>PIX</option><option>SWIFT</option></select><i data-lucide="chevron-down" class="chev"></i></div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="drawer-footer" style="justify-content: space-between;"><button class="btn btn-ghost"><i data-lucide="arrow-left"></i>Back</button><button class="btn btn-primary">Continue<i data-lucide="arrow-right"></i></button></div>
+            </aside>
+          </div>
+        </div>
+      </div>
+
+      <!-- E · Product detail (ProductsHub style) -->
+      <div class="spec" style="grid-column: 1 / -1;">
+        <div class="spec-head"><div><h3>Product detail</h3><p>The ProductsHub discovery drawer — a branded ink hero header, sectioned body (overview, benefits, use cases, coverage) and an activation footer.</p></div><span class="spec-tag ok">Discovery</span></div>
+        <div class="spec-canvas" style="padding:0;">
+          <div class="preview-stage" style="height: 600px;">
+            <div class="scrim is-open"></div>
+            <aside class="drawer drawer-right drawer-lg is-open" style="top:0;right:0;bottom:0; width: min(560px, 100%);">
+              <div class="pd-hero">
+                <div class="pd-hero-row">
+                  <span class="pd-tile"><i data-lucide="zap"></i></span>
+                  <div style="flex:1; min-width:0;">
+                    <span class="pd-eyebrow">Brazil · Local rail</span>
+                    <h2 class="pd-title">PIX</h2>
+                    <div class="pd-chips">
+                      <span class="pill success sm"><i data-lucide="check" style="width:11px;height:11px;"></i>Active</span>
+                      <span class="pd-chip">Portal</span>
+                      <span class="pd-chip">API</span>
+                    </div>
+                  </div>
+                  <button class="pd-close" aria-label="Close"><i data-lucide="x"></i></button>
+                </div>
+              </div>
+              <div class="drawer-body">
+                <div class="tpl-sec">
+                  <span class="tpl-sec-label">Overview</span>
+                  <p style="margin:0; font-size: var(--fs-sm); line-height: var(--lh-relaxed); color: var(--color-foreground-default);">Instant 24/7 settlement on Brazil's national rail — pay-in and pay-out, via QR or keys. ATTRUS handles compliance, routing and reconciliation so your team focuses on the operation.</p>
+                </div>
+                <div class="tpl-sec">
+                  <span class="tpl-sec-label">Operational benefits</span>
+                  <div class="pd-benefit"><span class="ck"><i data-lucide="check"></i></span>Single API surface — no per-bank integrations</div>
+                  <div class="pd-benefit"><span class="ck"><i data-lucide="check"></i></span>Reconciliation events streamed via webhooks</div>
+                  <div class="pd-benefit"><span class="ck"><i data-lucide="check"></i></span>Instant settlement, 24/7 including weekends</div>
+                </div>
+                <div class="tpl-sec">
+                  <span class="tpl-sec-label">Use cases</span>
+                  <div class="pd-usecase"><i data-lucide="target"></i>Marketplace pay-ins from Brazilian customers</div>
+                  <div class="pd-usecase"><i data-lucide="target"></i>Supplier payouts with instant confirmation</div>
+                </div>
+                <div class="tpl-sec">
+                  <span class="tpl-sec-label">Coverage &amp; onboarding</span>
+                  <div class="tpl-card">
+                    <div class="kv" style="grid-template-columns: 1fr 1fr;">
+                      <div><span class="k">Coverage</span><br>Brazil</div>
+                      <div><span class="k">Onboarding</span><br>Already enabled</div>
+                      <div><span class="k">Settlement</span><br>Instant · 24/7</div>
+                      <div><span class="k">Integration</span><br>Portal · API</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="drawer-footer" style="gap: var(--space-2);"><button class="btn btn-primary">Open in portal<i data-lucide="arrow-right"></i></button><button class="btn btn-secondary"><i data-lucide="book"></i>Read docs</button><button class="btn btn-ghost" style="margin-left:auto;">Contact sales</button></div>
+            </aside>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="spec" style="margin-top: var(--space-6);">
+      <div class="spec-head"><div><h3>Try them live</h3><p>Open each template as a real drawer — Escape or scrim-click closes.</p></div><span class="spec-tag ok">Live</span></div>
+      <div class="spec-canvas" style="display:flex; flex-wrap:wrap; gap:var(--space-3); justify-content:center; background:var(--color-background-surface); background-image:none;">
+        <button class="btn btn-primary" onclick="openDrawer('txn')"><i data-lucide="arrow-left-right"></i>Transaction detail</button>
+        <button class="btn btn-secondary" onclick="openDrawer('hub')"><i data-lucide="layout-grid"></i>Product hub</button>
+        <button class="btn btn-secondary" onclick="openDrawer('faq')"><i data-lucide="help-circle"></i>FAQ / Help</button>
+        <button class="btn btn-secondary" onclick="openDrawer('wizard')"><i data-lucide="list-ordered"></i>Wizard</button>
+        <button class="btn btn-secondary" onclick="openDrawer('pd')"><i data-lucide="zap"></i>Product detail</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 09 DON'TS ===== -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">09</span>Don'ts</h2>
+    <div class="dont-grid">
+      <div class="dont-card dont"><i data-lucide="x-circle"></i><p><strong>Left drawer on desktop</strong>The desktop sidebar is already persistent — a left drawer duplicates navigation. Reserve <code>.drawer-left</code> for mobile.</p></div>
+      <div class="dont-card dont"><i data-lucide="x-circle"></i><p><strong>Bottom drawer on desktop</strong>Bottom sheets are a thumb pattern. On desktop use a right drawer or a popover.</p></div>
+      <div class="dont-card dont"><i data-lucide="x-circle"></i><p><strong>Drawer wider than 720px</strong>It stops being a side panel and starts hiding the context it's meant to preserve. Use a full route.</p></div>
+      <div class="dont-card dont"><i data-lucide="x-circle"></i><p><strong>Blocking decisions in a drawer</strong>Destructive or system-blocking choices belong in a <a href="modal-drawer.html" style="color: var(--color-foreground-highlight);">Modal</a> — drawers are dismissable by design.</p></div>
+      <div class="dont-card dont"><i data-lucide="x-circle"></i><p><strong>Solid, opaque header that hides scroll</strong>Keep the frosted glass chrome — it signals there's more content beneath and keeps actions reachable.</p></div>
+      
+    </div>
+  </section>
+
+  <!-- ===== 10 A11Y ===== -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">10</span>Accessibility</h2>
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Requirement</th><th>How it's met</th></tr></thead>
+      <tbody>
+        <tr><td>Role</td><td>Dialog semantics</td><td><code>role="dialog"</code> + <code>aria-modal="true"</code> + <code>aria-labelledby</code> on the title.</td></tr>
+        <tr><td>Focus trap</td><td>Tab cycles inside</td><td>Focus moves into the drawer on open; first focusable element receives focus.</td></tr>
+        <tr><td>Focus restoration</td><td>Returns to trigger on close</td><td>The opener is re-focused after the close transition.</td></tr>
+        <tr><td>Escape</td><td>Closes frontmost</td><td>Document-level handler checks the topmost drawer only.</td></tr>
+        <tr><td>Body scroll lock</td><td>Page can't scroll behind</td><td><code>overflow: hidden</code> on body while any drawer is open.</td></tr>
+        <tr><td>Sticky chrome contrast</td><td>Title/actions stay legible over scrolling content</td><td>Glass uses <code>--glass-white</code> (78%) so text keeps AA contrast as content passes beneath.</td></tr>
+        <tr><td>Reduced motion</td><td>Respects preference</td><td>Slide transform removed; only a fast opacity fade remains.</td></tr>
+        <tr><td>Touch dismissal</td><td>Bottom sheet swipe-down</td><td>Visible drag handle; gesture drops the drawer past a velocity threshold.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===== 11 TOKENS ===== -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">11</span>Tokens consumed</h2>
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Tokens</th></tr></thead>
+      <tbody>
+        <tr><td>Scrim</td><td><code>--color-scrim</code>, <code>--scrim-blur</code></td></tr>
+        <tr><td>Surface</td><td><code>--color-background-surface</code>, <code>--shadow-2xl</code></td></tr>
+        <tr><td>Glass header / footer</td><td><code>--glass-white</code>, <code>--glass-blur</code>, fallback <code>--color-background-surface</code></td></tr>
+        <tr><td>Divider</td><td><code>--color-border-subtle</code></td></tr>
+        <tr><td>Title / subtitle</td><td><code>--color-foreground-default</code>, <code>--fs-lg</code>, <code>--w-bold</code>; subtitle <code>--color-foreground-secondary</code>, <code>--fs-sm</code></td></tr>
+        <tr><td>Close button</td><td><code>--color-foreground-muted</code>, <code>--color-background-hover</code>, <code>--shadow-focus</code></td></tr>
+        <tr><td>Drag handle</td><td><code>--color-border-strong</code>, <code>--radius-pill</code></td></tr>
+        <tr><td>Width</td><td><code>--drawer-w</code> (drives size variants)</td></tr>
+        <tr><td>Radius</td><td><code>--radius-xs</code> (inner edge), <code>--radius-sm</code> (bottom top corners)</td></tr>
+        <tr><td>Motion</td><td><code>--duration-deliberate</code> / <code>--duration-slower</code> (enter), <code>--duration-slow</code> / <code>--duration-base</code> (exit), <code>--ease-emphasis</code> / <code>--ease-standard</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<!-- ===== LIVE OVERLAYS (body root) ===== -->
+<div id="live-scrim" class="scrim"></div>
+
+<aside id="live-drawer-right" class="drawer drawer-right drawer-md" role="dialog" aria-modal="true" aria-labelledby="ld-r-title">
+  <div class="drawer-header">
+    <div class="drawer-header-text"><h2 class="drawer-title" id="ld-r-title">Transaction · #4821</h2><p class="drawer-subtitle">Settled · USD 1,500.00</p></div>
+    <button class="drawer-close" aria-label="Close" onclick="closeDrawer()"><i data-lucide="x"></i></button>
+  </div>
+  <div class="drawer-body">
+    <div class="kv">
+      <div><span class="k">Amount</span><br><span style="font-family: var(--font-mono); font-weight: var(--w-semibold);">USD 1,500.00</span></div>
+      <div><span class="k">Counterparty</span><br>Aurora Logistics</div>
+      <div><span class="k">Rail</span><br>SWIFT</div>
+      <div><span class="k">Value date</span><br>28 May 2026</div>
+      <div><span class="k">Reference</span><br>N-741470</div>
+      <div><span class="k">FX rate</span><br>5.1389</div>
+      <div><span class="k">Fee</span><br>USD 12.00</div>
+      <div><span class="k">Created by</span><br>m.silva@cabiros</div>
+      <div><span class="k">Approved by</span><br>api@attrus</div>
+      <div><span class="k">Settled at</span><br>28 May 2026 · 09:18</div>
+      <div><span class="k">Notes</span><br>Monthly logistics retainer, net-30 terms agreed with counterparty.</div>
+    </div>
+  </div>
+  <div class="drawer-footer"><button class="btn btn-ghost" onclick="closeDrawer()">Export</button><button class="btn btn-primary" onclick="closeDrawer()">Open full record</button></div>
+</aside>
+
+<aside id="live-drawer-left" class="drawer drawer-left drawer-sm" role="dialog" aria-modal="true" aria-labelledby="ld-l-title">
+  <div class="drawer-header">
+    <div class="drawer-header-text"><h2 class="drawer-title" id="ld-l-title">Cabiros</h2><p class="drawer-subtitle">workspace</p></div>
+    <button class="drawer-close" aria-label="Close" onclick="closeDrawer()"><i data-lucide="x"></i></button>
+  </div>
+  <div class="drawer-body">
+    <div style="display: grid; gap: var(--space-1); font-size: var(--fs-sm); font-weight: var(--w-medium);">
+      <a href="#" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);color: var(--color-foreground-accent);background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);border-radius:var(--radius-sm);text-decoration:none;"><i data-lucide="layout-dashboard" style="width:18px;height:18px;"></i>Home</a>
+      <a href="#" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);color:var(--color-foreground-default);border-radius:var(--radius-sm);text-decoration:none;"><i data-lucide="users" style="width:18px;height:18px;"></i>Counterparties</a>
+      <a href="#" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);color:var(--color-foreground-default);border-radius:var(--radius-sm);text-decoration:none;"><i data-lucide="receipt" style="width:18px;height:18px;"></i>Receivables</a>
+    </div>
+  </div>
+</aside>
+
+<aside id="live-drawer-bottom" class="drawer drawer-bottom" role="dialog" aria-modal="true" aria-labelledby="ld-b-title">
+  <div class="drawer-handle"></div>
+  <div class="drawer-header">
+    <div class="drawer-header-text"><h2 class="drawer-title" id="ld-b-title">Filter receivables</h2><p class="drawer-subtitle">3 active filters</p></div>
+    <button class="drawer-close" aria-label="Close" onclick="closeDrawer()"><i data-lucide="x"></i></button>
+  </div>
+  <div class="drawer-body">
+    <div style="display: grid; gap: var(--space-4);">
+      <div class="field"><label class="field-label">Status</label><div class="select"><select class="input"><option>All</option><option>Pending</option><option>Settled</option></select><i data-lucide="chevron-down" class="chev"></i></div></div>
+      <div class="field"><label class="field-label">Currency</label><div class="select"><select class="input"><option>All</option><option>BRL</option><option>USD</option></select><i data-lucide="chevron-down" class="chev"></i></div></div>
+    </div>
+  </div>
+  <div class="drawer-footer"><button class="btn btn-ghost" onclick="closeDrawer()">Clear all</button><button class="btn btn-primary" onclick="closeDrawer()">Apply</button></div>
+</aside>
+
+<aside id="live-drawer-txn" class="drawer drawer-right drawer-md" role="dialog" aria-modal="true" aria-labelledby="ld-txn-title">
+  <div class="drawer-header">
+    <div class="drawer-header-text"><h2 class="drawer-title" id="ld-txn-title">Transaction · #4821</h2><p class="drawer-subtitle">Pay-in · Aurora Logistics</p></div>
+    <button class="drawer-close" aria-label="Close" onclick="closeDrawer()"><i data-lucide="x"></i></button>
+  </div>
+  <div class="drawer-body">
+    <div class="tpl-sec"><div class="tpl-card" style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);"><div><div class="tpl-amount">USD 1,500.00</div><span class="k" style="font-size:var(--fs-xs);color:var(--color-foreground-muted);">Monthly logistics retainer</span></div><span class="pill success sm"><i data-lucide="check" style="width:11px;height:11px;"></i>Settled</span></div></div>
+    <div class="tpl-sec"><span class="tpl-sec-label">Details</span><div class="tpl-card"><div class="kv" style="grid-template-columns:1fr 1fr;"><div><span class="k">Rail</span><br>SWIFT</div><div><span class="k">Value date</span><br>28 May 2026</div><div><span class="k">FX rate</span><br>5.1389</div><div><span class="k">Fee</span><br>USD 12.00</div></div></div></div>
+    <div class="tpl-sec"><span class="tpl-sec-label">Activity</span><div class="tpl-card"><ul class="tl" style="margin:0;"><li><span class="t">Created</span><br><span class="d">09:14 · api@attrus</span></li><li><span class="t">Approved</span><br><span class="d">09:14 · m.silva</span></li><li><span class="t">Settled</span><br><span class="d">09:18 · system</span></li></ul></div></div>
+  </div>
+  <div class="drawer-footer"><button class="btn btn-ghost" onclick="closeDrawer()">Export</button><button class="btn btn-primary" onclick="closeDrawer()">Open full record</button></div>
+</aside>
+
+<aside id="live-drawer-faq" class="drawer drawer-right drawer-md" role="dialog" aria-modal="true" aria-labelledby="ld-faq-title">
+  <div class="drawer-header" style="flex-direction:column; align-items:stretch; gap:var(--space-3);">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-4);">
+      <div class="drawer-header-text"><h2 class="drawer-title" id="ld-faq-title">Help</h2><p class="drawer-subtitle">Settlement &amp; transfers</p></div>
+      <button class="drawer-close" aria-label="Close" onclick="closeDrawer()"><i data-lucide="x"></i></button>
+    </div>
+    <div class="faq-search faq-search-lg" style="margin:0;"><i data-lucide="search"></i><input placeholder="Search help…" /></div>
+  </div>
+  <div class="drawer-body">
+    <div class="tpl-sec"><span class="tpl-sec-label">Settlement</span><div class="faq"><details open><summary>How long does settlement take?</summary><div class="a">Local rails clear same-day; SWIFT typically 1–2 business days.</div></details><details><summary>Which currencies are supported?</summary><div class="a">BRL, USD, EUR, MXN, COP and CLP.</div></details></div></div>
+    <div class="tpl-sec"><span class="tpl-sec-label">Transfers</span><div class="faq"><details><summary>What is the FX spread?</summary><div class="a">The difference between mid-market and your quoted rate. 0% inter-company.</div></details><details><summary>Can I cancel a pending transfer?</summary><div class="a">Yes, while Pending. Once Settled it can only be reversed.</div></details></div></div>
+  </div>
+  <div class="drawer-footer"><button class="btn btn-primary" style="width:100%;" onclick="closeDrawer()"><i data-lucide="messages-square"></i>Contact support</button></div>
+</aside>
+
+<aside id="live-drawer-wizard" class="drawer drawer-right drawer-lg" role="dialog" aria-modal="true" aria-labelledby="ld-wiz-title">
+  <div class="drawer-header">
+    <div class="drawer-header-text"><h2 class="drawer-title" id="ld-wiz-title">Add counterparty</h2><p class="drawer-subtitle">Step 2 of 4 · Tax &amp; banking</p></div>
+    <button class="drawer-close" aria-label="Close" onclick="closeDrawer()"><i data-lucide="x"></i></button>
+  </div>
+  <div class="drawer-body">
+    <ol class="stepper is-compact" aria-label="Add counterparty" style="margin-bottom: var(--space-2);">
+      <li class="step is-done"><span class="step-marker"><i data-lucide="check"></i></span><div class="step-body"><span class="step-label">Identity</span></div></li>
+      <li class="step is-current" aria-current="step"><span class="step-marker">2</span><div class="step-body"><span class="step-label">Tax &amp; bank</span></div></li>
+      <li class="step"><span class="step-marker">3</span><div class="step-body"><span class="step-label">Review</span></div></li>
+      <li class="step"><span class="step-marker">4</span><div class="step-body"><span class="step-label">Done</span></div></li>
+    </ol>
+    <div class="tpl-sec"><span class="tpl-sec-label">Legal entity</span><div class="tpl-card" style="display:grid;gap:var(--space-4);"><div class="field"><label class="field-label">Legal name</label><input class="input" value="FACILITA IP S.A." /></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);"><div class="field"><label class="field-label">Country</label><div class="select"><select class="input"><option>Brazil</option><option>Mexico</option></select><i data-lucide="chevron-down" class="chev"></i></div></div><div class="field"><label class="field-label">Tax ID (CNPJ)</label><input class="input" placeholder="00.000.000/0000-00" /></div></div></div></div>
+    <div class="tpl-sec"><span class="tpl-sec-label">Banking</span><div class="tpl-card" style="display:grid;gap:var(--space-4);"><div class="field"><label class="field-label">Settlement currency</label><div class="select"><select class="input"><option>BRL</option><option>USD</option></select><i data-lucide="chevron-down" class="chev"></i></div></div></div></div>
+  </div>
+  <div class="drawer-footer" style="justify-content:space-between;"><button class="btn btn-ghost" onclick="closeDrawer()"><i data-lucide="arrow-left"></i>Back</button><button class="btn btn-primary" onclick="closeDrawer()">Continue<i data-lucide="arrow-right"></i></button></div>
+</aside>
+
+<aside id="live-drawer-pd" class="drawer drawer-right drawer-lg" role="dialog" aria-modal="true" aria-labelledby="ld-pd-title" style="width: min(560px, 100%);">
+  <div class="pd-hero">
+    <div class="pd-hero-row">
+      <span class="pd-tile"><i data-lucide="zap"></i></span>
+      <div style="flex:1;min-width:0;"><span class="pd-eyebrow">Brazil · Local rail</span><h2 class="pd-title" id="ld-pd-title">PIX</h2><div class="pd-chips"><span class="pill success sm"><i data-lucide="check" style="width:11px;height:11px;"></i>Active</span><span class="pd-chip">Portal</span><span class="pd-chip">API</span></div></div>
+      <button class="pd-close" aria-label="Close" onclick="closeDrawer()"><i data-lucide="x"></i></button>
+    </div>
+  </div>
+  <div class="drawer-body">
+    <div class="tpl-sec"><span class="tpl-sec-label">Overview</span><p style="margin:0;font-size:var(--fs-sm);line-height:var(--lh-relaxed);color:var(--color-foreground-default);">Instant 24/7 settlement on Brazil's national rail — pay-in and pay-out, via QR or keys.</p></div>
+    <div class="tpl-sec"><span class="tpl-sec-label">Operational benefits</span><div class="pd-benefit"><span class="ck"><i data-lucide="check"></i></span>Single API surface — no per-bank integrations</div><div class="pd-benefit"><span class="ck"><i data-lucide="check"></i></span>Reconciliation events via webhooks</div><div class="pd-benefit"><span class="ck"><i data-lucide="check"></i></span>Instant settlement, 24/7</div></div>
+    <div class="tpl-sec"><span class="tpl-sec-label">Coverage &amp; onboarding</span><div class="tpl-card"><div class="kv" style="grid-template-columns:1fr 1fr;"><div><span class="k">Coverage</span><br>Brazil</div><div><span class="k">Onboarding</span><br>Already enabled</div><div><span class="k">Settlement</span><br>Instant · 24/7</div><div><span class="k">Integration</span><br>Portal · API</div></div></div></div>
+  </div>
+  <div class="drawer-footer" style="gap:var(--space-2);"><button class="btn btn-primary" onclick="closeDrawer()">Open in portal<i data-lucide="arrow-right"></i></button><button class="btn btn-secondary" onclick="closeDrawer()"><i data-lucide="book"></i>Read docs</button><button class="btn btn-ghost" style="margin-left:auto;" onclick="closeDrawer()">Contact sales</button></div>
+</aside>
+
+<aside id="live-drawer-hub" class="drawer drawer-right drawer-md" role="dialog" aria-modal="true" aria-labelledby="ld-h-title">
+  <div class="drawer-header">
+    <div class="drawer-header-text"><h2 class="drawer-title" id="ld-h-title">Cabiros</h2><p class="drawer-subtitle">Switch product</p></div>
+    <button class="drawer-close" aria-label="Close" onclick="closeDrawer()"><i data-lucide="x"></i></button>
+  </div>
+  <div class="drawer-body">
+    <div class="tpl-sec">
+      <span class="tpl-sec-label">Money</span>
+      <div class="tpl-card is-pad-0">
+        <a class="hub-row"><span class="hub-tile" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground);"><i data-lucide="arrow-down-left"></i></span><span><span class="nm">Receivables</span><br><span class="ds">4 pending · $124.8k</span></span><i class="chev" data-lucide="chevron-right"></i></a>
+        <a class="hub-row"><span class="hub-tile" style="background: var(--color-feedback-info-background); color: var(--color-feedback-info-foreground);"><i data-lucide="arrow-left-right"></i></span><span><span class="nm">Transactions</span><br><span class="ds">248 this month</span></span><i class="chev" data-lucide="chevron-right"></i></a>
+        <a class="hub-row"><span class="hub-tile" style="background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-accent);"><i data-lucide="percent"></i></span><span><span class="nm">FX</span><br><span class="ds">Rates &amp; conversions</span></span><i class="chev" data-lucide="chevron-right"></i></a>
+      </div>
+    </div>
+    <div class="tpl-sec">
+      <span class="tpl-sec-label">Insights</span>
+      <div class="tpl-card is-pad-0">
+        <a class="hub-row"><span class="hub-tile" style="background: var(--color-background-subtle); color: var(--color-foreground-secondary);"><i data-lucide="bar-chart-3"></i></span><span><span class="nm">Reports</span><br><span class="ds">Statements &amp; exports</span></span><i class="chev" data-lucide="chevron-right"></i></a>
+      </div>
+    </div>
+    <div class="tpl-sec">
+      <span class="tpl-sec-label">Directory</span>
+      <div class="tpl-card is-pad-0">
+        <a class="hub-row"><span class="hub-tile" style="background: var(--color-background-subtle); color: var(--color-foreground-secondary);"><i data-lucide="users"></i></span><span><span class="nm">Counterparties</span><br><span class="ds">17 active</span></span><i class="chev" data-lucide="chevron-right"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="drawer-footer"><button class="btn btn-ghost" style="width:100%;" onclick="closeDrawer()"><i data-lucide="settings"></i>Workspace settings</button></div>
+</aside>
+
+<aside id="live-drawer-search" class="drawer drawer-right drawer-md" role="dialog" aria-modal="true" aria-labelledby="ld-s-title">
+  <div class="drawer-header" style="flex-direction:column; align-items:stretch; gap:var(--space-3);">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-4);">
+      <div class="drawer-header-text"><h2 class="drawer-title" id="ld-s-title">Select counterparty</h2><p class="drawer-subtitle">17 active</p></div>
+      <button class="drawer-close" aria-label="Close" onclick="closeDrawer()"><i data-lucide="x"></i></button>
+    </div>
+    <div class="faq-search faq-search-lg" style="margin:0;"><i data-lucide="search"></i><input placeholder="Search counterparties…" /></div>
+  </div>
+  <div class="drawer-body">
+    <div class="tpl-card is-pad-0">
+      <a class="hub-row"><span class="hub-tile" style="background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);color: var(--color-foreground-accent);"><i data-lucide="building-2"></i></span><span><span class="nm">Banco Itaú · BR</span><br><span class="ds">4 receivables</span></span><i class="chev" data-lucide="chevron-right"></i></a>
+      <a class="hub-row"><span class="hub-tile" style="background:var(--color-background-subtle);color:var(--color-foreground-secondary);"><i data-lucide="building-2"></i></span><span><span class="nm">Aurora Logistics</span><br><span class="ds">Pay-in · BRL</span></span><i class="chev" data-lucide="chevron-right"></i></a>
+      <a class="hub-row"><span class="hub-tile" style="background:var(--color-background-subtle);color:var(--color-foreground-secondary);"><i data-lucide="building-2"></i></span><span><span class="nm">Belvo Pay LATAM</span><br><span class="ds">Local rails</span></span><i class="chev" data-lucide="chevron-right"></i></a>
+    </div>
+  </div>
+  <div class="drawer-footer"><button class="btn btn-primary" style="width:100%;">Add new counterparty</button></div>
+</aside>
+
+<aside id="live-drawer-tabs" class="drawer drawer-right drawer-md" role="dialog" aria-modal="true" aria-labelledby="ld-t-title">
+  <div class="drawer-header" style="flex-direction:column; align-items:stretch; gap:var(--space-3); padding-bottom:0;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-4);">
+      <div class="drawer-header-text"><h2 class="drawer-title" id="ld-t-title">Banco Itaú · BR</h2><p class="drawer-subtitle">Counterparty</p></div>
+      <button class="drawer-close" aria-label="Close" onclick="closeDrawer()"><i data-lucide="x"></i></button>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Sections" style="border-bottom:0;"><button class="tab" role="tab" aria-selected="true"><span class="tab-label" data-label="Overview">Overview</span></button><button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Activity">Activity</span></button><button class="tab" role="tab" aria-selected="false"><span class="tab-label" data-label="Docs">Docs</span></button></div>
+  </div>
+  <div class="drawer-body"><div class="kv"><div><span class="k">CNPJ</span><br>60.701.190/0001-04</div><div><span class="k">Currency</span><br>BRL · USD</div><div><span class="k">Active receivables</span><br>4 · $124,800.00</div></div></div>
+  <div class="drawer-footer"><button class="btn btn-ghost">Archive</button><button class="btn btn-primary">Edit</button></div>
+</aside>
+
+<aside id="live-drawer-destructive" class="drawer drawer-right drawer-sm" role="dialog" aria-modal="true" aria-labelledby="ld-x-title">
+  <div class="drawer-header">
+    <div class="drawer-header-text"><h2 class="drawer-title" id="ld-x-title">Delete counterparty?</h2><p class="drawer-subtitle">Banco Itaú · BR</p></div>
+    <button class="drawer-close" aria-label="Close" onclick="closeDrawer()"><i data-lucide="x"></i></button>
+  </div>
+  <div class="drawer-body"><p style="font-size:var(--fs-sm); color:var(--color-foreground-secondary); margin:0;">This removes the counterparty from transaction forms. Its history stays intact and it can be restored from Settings.</p></div>
+  <div class="drawer-footer"><button class="btn btn-ghost" onclick="closeDrawer()">Cancel</button><button class="btn btn-danger" onclick="closeDrawer()"><i data-lucide="trash-2"></i>Delete</button></div>
+</aside>
+
+<aside id="live-drawer-total" class="drawer drawer-right drawer-md" role="dialog" aria-modal="true" aria-labelledby="ld-tot-title">
+  <div class="drawer-header">
+    <div class="drawer-header-text"><h2 class="drawer-title" id="ld-tot-title">Confirm transfer</h2><p class="drawer-subtitle">Aurora Logistics · SWIFT</p></div>
+    <button class="drawer-close" aria-label="Close" onclick="closeDrawer()"><i data-lucide="x"></i></button>
+  </div>
+  <div class="drawer-body"><div class="kv"><div><span class="k">Amount</span><br>USD 1,488.00</div><div><span class="k">Fee</span><br>USD 12.00</div><div><span class="k">Value date</span><br>28 May 2026</div></div></div>
+  <div class="drawer-footer" style="justify-content:space-between;"><span class="hf-total">USD 1,500.00<span class="k">Total incl. fee</span></span><button class="btn btn-primary" onclick="closeDrawer()">Confirm transfer</button></div>
+</aside>
+
+
+
+<script>
+  if (window.lucide) lucide.createIcons();
+
+  const scrim = document.getElementById('live-scrim');
+  let openIds = [];
+  let lastFocus = null;
+
+  function openEls(ids) {
+    lastFocus = document.activeElement;
+    openIds = ids;
+    scrim.classList.add('is-open');
+    ids.forEach(id => document.getElementById(id).classList.add('is-open'));
+    document.body.style.overflow = 'hidden';
+    // focus first focusable in the frontmost drawer
+    const front = document.getElementById(ids[ids.length - 1]);
+    const f = front.querySelector('button, a, input, select, textarea');
+    if (f) f.focus();
+  }
+  function openDrawer(pos) { openEls(['live-drawer-' + pos]); }
+  function closeDrawer() {
+    scrim.classList.remove('is-open');
+    openIds.forEach(id => document.getElementById(id).classList.remove('is-open'));
+    openIds = [];
+    document.body.style.overflow = '';
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  scrim.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && openIds.length) closeDrawer(); });
+  window.openDrawer = openDrawer; window.closeDrawer = closeDrawer;
+</script>
+
+</body>
+</html>

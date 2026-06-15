@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Buttons" subtitle="5 variantes × 4 tamanhos · estados, anatomia, a11y" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Buttons · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  /* ============================================================
+     DOCUMENT CHROME  —  styling for the spec page itself, not the
+     component. All values come from tokens.
+     ============================================================ */
+  body {
+    margin: 0;
+    background: var(--color-background-canvas);
+    color: var(--color-foreground-default);
+    font-family: var(--font-sans);
+    font-size: var(--fs-base);
+    line-height: var(--lh-normal);
+  }
+
+  /* ---------- layout ---------- */
+  .doc {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: var(--space-10) var(--space-8) var(--space-16);
+  }
+
+  /* ---------- header ---------- */
+  .doc-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-8);
+    padding-bottom: var(--space-7);
+    border-bottom: 1px solid var(--color-border-default);
+    margin-bottom: var(--space-10);
+  }
+  .doc-header h1 {
+    font-size: var(--fs-6xl);
+    font-weight: var(--w-bold);
+    letter-spacing: var(--ls-display);
+    margin: 0 0 var(--space-3);
+  }
+  .doc-header p {
+    font-size: var(--fs-lg);
+    color: var(--color-foreground-secondary);
+    line-height: var(--lh-relaxed);
+    margin: 0;
+    max-width: 60ch;
+  }
+  .doc-meta {
+    display: flex;
+    gap: var(--space-3);
+    flex-shrink: 0;
+  }
+  .doc-meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-feedback-success-background);
+    color: var(--color-feedback-success-foreground);
+    border: 1px solid var(--color-feedback-success-border);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps);
+    text-transform: uppercase;
+  }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  /* ---------- nav (anchor jump) ---------- */
+  .doc-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-10);
+    box-shadow: var(--shadow-xs);
+  }
+  .doc-nav a {
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-pill);
+    color: var(--color-foreground-secondary);
+    text-decoration: none;
+    font-size: var(--fs-sm);
+    font-weight: var(--w-semibold);
+    transition: var(--transition-fast);
+  }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  /* ---------- sections ---------- */
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 {
+    font-size: var(--fs-3xl);
+    font-weight: var(--w-bold);
+    letter-spacing: var(--ls-title);
+    margin: 0 0 var(--space-2);
+  }
+  .doc-section h2 .num {
+    font-family: var(--font-mono);
+    font-size: var(--fs-md);
+    font-weight: var(--w-regular);
+    color: var(--color-foreground-muted);
+    letter-spacing: var(--ls-caps);
+    margin-right: var(--space-3);
+    vertical-align: 0.25em;
+  }
+  .doc-section > p.lead {
+    font-size: var(--fs-lg);
+    color: var(--color-foreground-secondary);
+    line-height: var(--lh-relaxed);
+    max-width: 70ch;
+    margin: 0 0 var(--space-7);
+  }
+
+  /* ---------- spec card ---------- */
+  .spec {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: var(--space-6);
+    box-shadow: var(--shadow-xs);
+  }
+  .spec-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding: var(--space-5) var(--space-6);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .spec-head h3 {
+    font-size: var(--fs-xl);
+    font-weight: var(--w-bold);
+    letter-spacing: var(--ls-title);
+    margin: 0 0 var(--space-2);
+  }
+  .spec-head h3 code {
+    font-family: var(--font-mono);
+    font-size: var(--fs-md);
+    font-weight: var(--w-medium);
+    color: var(--color-foreground-accent);
+    background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-xs);
+    margin-left: var(--space-3);
+    vertical-align: 2px;
+  }
+  .spec-head p {
+    font-size: var(--fs-md);
+    color: var(--color-foreground-secondary);
+    line-height: var(--lh-relaxed);
+    margin: 0;
+    max-width: 56ch;
+  }
+  .spec-head .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-background-subtle);
+    color: var(--color-foreground-secondary);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps);
+    text-transform: uppercase;
+    border-radius: var(--radius-pill);
+    flex-shrink: 0;
+  }
+
+  .spec-canvas {
+    padding: var(--space-7) var(--space-6);
+    background: var(--color-background-canvas);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    align-items: center;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .spec-canvas.dense { gap: var(--space-3); }
+  .spec-canvas.col { flex-direction: column; align-items: flex-start; }
+  .spec-canvas.dark { background: var(--color-background-inverse); }
+  .spec-canvas.brand { background: var(--color-background-inverse-brand); }
+
+  .state-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--space-5);
+    width: 100%;
+  }
+  .state-cell { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); }
+  .state-cell .lbl {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xxs);
+    color: var(--color-foreground-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-caps);
+  }
+  .spec-canvas.dark .state-cell .lbl { color: var(--color-foreground-inverse-muted); }
+
+  .spec-foot {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+    padding: var(--space-5) var(--space-6);
+    background: var(--color-background-surface);
+  }
+  .spec-foot h4 {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold);
+    color: var(--color-foreground-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-caps);
+    margin: 0 0 var(--space-3);
+  }
+  .spec-foot ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+  .spec-foot li { font-size: var(--fs-sm); color: var(--color-foreground-secondary); display: flex; gap: var(--space-2); align-items: flex-start; }
+  .spec-foot li i, .spec-foot li svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); flex-shrink: 0; margin-top: 2px; }
+  .spec-foot li.do i, .spec-foot li.do svg    { color: var(--color-success-500); }
+  .spec-foot li.dont i, .spec-foot li.dont svg  { color: var(--color-danger-500); }
+  .spec-foot li.dont    { color: var(--color-foreground-secondary); }
+
+  /* ---------- anatomy figure ---------- */
+  .anatomy {
+    background: var(--color-background-canvas);
+    padding: var(--space-10) var(--space-8);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border-default);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-8);
+    margin-bottom: var(--space-5);
+    box-shadow: var(--shadow-xs);
+  }
+  /* Scaled-up demo button so the anatomy is legible */
+  .anatomy .btn { transform: scale(1.6); transform-origin: center; }
+  .anatomy-callouts {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: var(--space-8);
+    width: 100%;
+    max-width: 720px;
+  }
+  .anatomy-callout {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    text-align: center;
+  }
+  .anatomy-callout .num {
+    width: 22px;
+    height: 22px;
+    border-radius: var(--radius-pill);
+    background: var(--color-brand-secondary-500);
+    color: var(--color-foreground-on-solid);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    font-weight: var(--w-bold);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .anatomy-callout .name {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xxs);
+    color: var(--color-foreground-default);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-caps);
+    font-weight: var(--w-semibold);
+  }
+  .anatomy-callout .desc {
+    font-size: var(--fs-xs);
+    color: var(--color-foreground-muted);
+    line-height: var(--lh-snug);
+    max-width: 18ch;
+  }
+
+  /* ---------- token table ---------- */
+  .token-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-xs);
+    font-size: var(--fs-sm);
+  }
+  .token-table th, .token-table td {
+    padding: var(--space-3) var(--space-5);
+    text-align: left;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .token-table tr:last-child td { border-bottom: 0; }
+  .token-table th {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold);
+    color: var(--color-foreground-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-caps);
+    background: var(--color-background-subtle);
+  }
+  .token-table td.k { font-family: var(--font-mono); color: var(--color-foreground-accent); }
+  .token-table td.v { font-family: var(--font-mono); color: var(--color-foreground-secondary); }
+
+  /* ---------- don't grid ---------- */
+  .dont-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-5);
+  }
+  .dont-card {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-xs);
+  }
+  .dont-card-canvas {
+    padding: var(--space-6);
+    background: var(--color-background-canvas);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 96px;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .dont-card-body {
+    padding: var(--space-4) var(--space-5);
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+  }
+  .dont-card-body i, .dont-card-body svg { width: var(--icon-md); height: var(--icon-md); stroke-width: var(--icon-stroke); color: var(--color-danger-500); flex-shrink: 0; margin-top: 1px; }
+  .dont-card-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-normal); }
+  .dont-card-body strong { color: var(--color-foreground-default); display: block; margin-bottom: var(--space-1); font-weight: var(--w-semibold); }
+
+  /* small helpers */
+  .stack { display: flex; flex-direction: column; gap: var(--space-3); }
+  .row   { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+
+  /* ---------- states matrix (grid 7 cols: label + 6 states) ---------- */
+  .matrix {
+    display: grid;
+    grid-template-columns: 110px repeat(6, minmax(0, 1fr));
+    gap: var(--space-4) var(--space-3);
+    width: 100%;
+    align-items: center;
+  }
+  .matrix .h, .matrix .rl {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold);
+    color: var(--color-foreground-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-caps);
+  }
+  .matrix .h { padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border-subtle); }
+  .matrix .rl { color: var(--color-foreground-default); font-size: var(--fs-xs); }
+  .matrix .c { display: flex; justify-content: center; }
+  .spec-canvas.dark .matrix .h,
+  .spec-canvas.dark .matrix .rl { color: var(--color-foreground-inverse-muted); }
+  .spec-canvas.dark .matrix .rl { color: var(--color-foreground-inverse-default); }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <!-- ========== HEADER ========== -->
+  <header class="doc-header">
+    <div>
+      <h1>Buttons</h1>
+      <p>Pill-shaped, action-driving controls. Triggers a single, immediate action — submit a form, confirm a destructive change, navigate to a flow. For navigation that should look passive (in-page anchors, footer links), use a plain link.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Stable</span>
+    </div>
+  </header>
+
+  <!-- ========== NAV ========== -->
+  <nav class="doc-nav">
+    <a href="#anatomy">Anatomy</a>
+    <a href="#variants">Variants</a>
+    <a href="#sizes">Sizes</a>
+    <a href="#states">States</a>
+    <a href="#composition">Composition</a>
+    <a href="#on-inverse">On inverse</a>
+    <a href="#donts">Don'ts</a>
+    <a href="#a11y">Accessibility</a>
+    <a href="#tokens">Tokens</a>
+  </nav>
+
+  <!-- ========== ANATOMY ========== -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">01</span>Anatomy</h2>
+    <p class="lead">A button is built from three optional parts inside a pill container. Order is <strong>leading icon → label → trailing icon</strong>; never break this order. Icons are optional but the label is mandatory unless the button is in <code>.btn-icon</code> mode.</p>
+
+    <div class="anatomy">
+      <button class="btn btn-primary" tabindex="-1"><i data-lucide="plus"></i>New transaction<i data-lucide="arrow-right"></i></button>
+      <div class="anatomy-callouts">
+        <div class="anatomy-callout">
+          <span class="num">1</span>
+          <span class="name">Leading icon</span>
+          <span class="desc">Reinforces the action's meaning before the label is read.</span>
+        </div>
+        <div class="anatomy-callout">
+          <span class="num">2</span>
+          <span class="name">Label</span>
+          <span class="desc">Action verb in sentence case. 1–3 words.</span>
+        </div>
+        <div class="anatomy-callout">
+          <span class="num">3</span>
+          <span class="name">Trailing icon</span>
+          <span class="desc">Hints at progression — arrow, chevron, external link.</span>
+        </div>
+        <div class="anatomy-callout">
+          <span class="num">4</span>
+          <span class="name">Pill container</span>
+          <span class="desc">radius-pill · ring on focus · 24/32/40/48px tall.</span>
+        </div>
+      </div>
+    </div>
+
+    <table class="token-table">
+      <thead><tr><th>Part</th><th>Purpose</th><th>Tokens</th></tr></thead>
+      <tbody>
+        <tr><td>Container</td><td>Pill shape — defines hit area &amp; visual weight</td><td class="k">--radius-pill · height: 24/32/40/48</td></tr>
+        <tr><td>Label</td><td>Action verb (1–3 words, sentence case)</td><td class="k">--fs-md · --w-semibold · --ls-body</td></tr>
+        <tr><td>Leading icon</td><td>Reinforces meaning before reading the label</td><td class="k">--icon-sm · --icon-stroke</td></tr>
+        <tr><td>Trailing icon</td><td>Hints at navigation or progression (arrow, chevron)</td><td class="k">--icon-sm · --icon-stroke</td></tr>
+        <tr><td>Internal gap</td><td>Spacing between icon and label</td><td class="k">--space-2 (4px) · --space-3 in lg</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========== VARIANTS ========== -->
+  <section class="doc-section" id="variants">
+    <h2><span class="num">02</span>Variants</h2>
+    <p class="lead">Nine semantic variants form a clear hierarchy. Use only one Primary per view; surround it with Secondary, Tertiary or Ghost. Reserve Danger / Success for irreversible or strongly affirmative actions.</p>
+
+    <!-- Primary -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Primary <code>.btn-primary</code></h3>
+          <p>The single most important action on a view. One per context. Brand-blue solid.</p>
+        </div>
+        <span class="tag">Hierarchy 1</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="state-grid">
+          <div class="state-cell"><button class="btn btn-primary">New transaction</button><span class="lbl">Default</span></div>
+          <div class="state-cell"><button class="btn btn-primary" style="background: var(--color-brand-secondary-600);">New transaction</button><span class="lbl">Hover</span></div>
+          <div class="state-cell"><button class="btn btn-primary" style="background: var(--color-brand-secondary-700);">New transaction</button><span class="lbl">Active</span></div>
+          <div class="state-cell"><button class="btn btn-primary" style="box-shadow: var(--shadow-focus);">New transaction</button><span class="lbl">Focus</span></div>
+          <div class="state-cell"><button class="btn btn-primary" disabled>New transaction</button><span class="lbl">Disabled</span></div>
+          <div class="state-cell"><button class="btn btn-primary is-loading">New transaction</button><span class="lbl">Loading</span></div>
+        </div>
+      </div>
+      <div class="spec-canvas dense">
+        <button class="btn btn-primary"><i data-lucide="plus"></i>New transaction</button>
+        <button class="btn btn-primary">Continue<i data-lucide="arrow-right"></i></button>
+        <button class="btn btn-primary"><i data-lucide="download"></i>Export<i data-lucide="chevron-down"></i></button>
+        <button class="btn btn-primary btn-icon" aria-label="Add"><i data-lucide="plus"></i></button>
+      </div>
+      <div class="spec-foot">
+        <div>
+          <h4>Use when</h4>
+          <ul>
+            <li class="do"><i data-lucide="check"></i>Submitting a form, advancing a flow, confirming.</li>
+            <li class="do"><i data-lucide="check"></i>You can guarantee only one primary per view.</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Avoid when</h4>
+          <ul>
+            <li class="dont"><i data-lucide="x"></i>Two competing actions in the same area — demote one.</li>
+            <li class="dont"><i data-lucide="x"></i>The action is destructive — use Danger instead.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- Secondary -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Secondary <code>.btn-secondary</code></h3>
+          <p>Soft neutral fill with a hairline border. Pairs with Primary as the lower-emphasis alternative. Cancel, dismiss, secondary export.</p>
+        </div>
+        <span class="tag">Hierarchy 2</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="state-grid">
+          <div class="state-cell"><button class="btn btn-secondary">Clear filters</button><span class="lbl">Default</span></div>
+          <div class="state-cell"><button class="btn btn-secondary" style="background: var(--color-background-hover); border-color: var(--color-border-strong);">Clear filters</button><span class="lbl">Hover</span></div>
+          <div class="state-cell"><button class="btn btn-secondary" style="background: var(--color-background-press);">Clear filters</button><span class="lbl">Active</span></div>
+          <div class="state-cell"><button class="btn btn-secondary" style="box-shadow: var(--shadow-focus);">Clear filters</button><span class="lbl">Focus</span></div>
+          <div class="state-cell"><button class="btn btn-secondary" disabled>Clear filters</button><span class="lbl">Disabled</span></div>
+          <div class="state-cell"><button class="btn btn-secondary is-loading">Clear filters</button><span class="lbl">Loading</span></div>
+        </div>
+      </div>
+      <div class="spec-canvas dense">
+        <button class="btn btn-secondary"><i data-lucide="filter"></i>Filters</button>
+        <button class="btn btn-secondary"><i data-lucide="download"></i>Download CSV</button>
+        <button class="btn btn-secondary btn-icon" aria-label="More"><i data-lucide="more-horizontal"></i></button>
+      </div>
+      <div class="spec-foot">
+        <div>
+          <h4>Use when</h4>
+          <ul>
+            <li class="do"><i data-lucide="check"></i>You need 2–3 ungrouped actions of similar weight.</li>
+            <li class="do"><i data-lucide="check"></i>Toolbars, table headers, filter rows.</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Avoid when</h4>
+          <ul>
+            <li class="dont"><i data-lucide="x"></i>The action is the most important on the view (use Primary).</li>
+            <li class="dont"><i data-lucide="x"></i>You're inside a brand-blue panel (use Inverse).</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- Tertiary -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Tertiary <code>.btn-tertiary</code></h3>
+          <p>Soft neutral fill, borderless — quieter than Secondary. A low-emphasis affirmative; “Save draft” next to “Publish”.</p>
+        </div>
+        <span class="tag">Hierarchy 2.5</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="state-grid">
+          <div class="state-cell"><button class="btn btn-tertiary">Save draft</button><span class="lbl">Default</span></div>
+          <div class="state-cell"><button class="btn btn-tertiary" style="background: color-mix(in srgb, var(--color-foreground-default) 12%, transparent);">Save draft</button><span class="lbl">Hover</span></div>
+          <div class="state-cell"><button class="btn btn-tertiary" style="background: color-mix(in srgb, var(--color-foreground-default) 16%, transparent);">Save draft</button><span class="lbl">Active</span></div>
+          <div class="state-cell"><button class="btn btn-tertiary" style="box-shadow: var(--shadow-focus);">Save draft</button><span class="lbl">Focus</span></div>
+          <div class="state-cell"><button class="btn btn-tertiary" disabled>Save draft</button><span class="lbl">Disabled</span></div>
+          <div class="state-cell"><button class="btn btn-tertiary is-loading">Save draft</button><span class="lbl">Loading</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Ghost -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Ghost <code>.btn-ghost</code></h3>
+          <p>No chrome until hover. For low-priority controls embedded in dense surfaces — toolbars, list rows, dialogs.</p>
+        </div>
+        <span class="tag">Hierarchy 3</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="state-grid">
+          <div class="state-cell"><button class="btn btn-ghost">Cancel</button><span class="lbl">Default</span></div>
+          <div class="state-cell"><button class="btn btn-ghost" style="background: var(--color-background-hover); color: var(--color-foreground-default);">Cancel</button><span class="lbl">Hover</span></div>
+          <div class="state-cell"><button class="btn btn-ghost" style="background: var(--color-background-press); color: var(--color-foreground-default);">Cancel</button><span class="lbl">Active</span></div>
+          <div class="state-cell"><button class="btn btn-ghost" style="box-shadow: var(--shadow-focus);">Cancel</button><span class="lbl">Focus</span></div>
+          <div class="state-cell"><button class="btn btn-ghost" disabled>Cancel</button><span class="lbl">Disabled</span></div>
+        </div>
+      </div>
+      <div class="spec-canvas dense">
+        <button class="btn btn-ghost"><i data-lucide="x"></i>Dismiss</button>
+        <button class="btn btn-ghost btn-icon" aria-label="Close"><i data-lucide="x"></i></button>
+        <button class="btn btn-ghost btn-icon" aria-label="More options"><i data-lucide="more-horizontal"></i></button>
+        <button class="btn btn-ghost btn-icon" aria-label="Refresh"><i data-lucide="refresh-cw"></i></button>
+      </div>
+    </article>
+
+    <!-- Link -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Link <code>.btn-link</code></h3>
+          <p>A button styled as inline text. For "Learn more", "Read docs", inline help. No padding, no chrome.</p>
+        </div>
+        <span class="tag">Hierarchy 4</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="state-grid">
+          <div class="state-cell"><button class="btn btn-link">Learn more</button><span class="lbl">Default</span></div>
+          <div class="state-cell"><button class="btn btn-link" style="color: var(--color-brand-secondary-700); text-decoration: underline; text-underline-offset: 2px;">Learn more</button><span class="lbl">Hover</span></div>
+          <div class="state-cell"><button class="btn btn-link" style="color: var(--color-brand-secondary-800);">Learn more</button><span class="lbl">Active</span></div>
+          <div class="state-cell"><button class="btn btn-link" style="box-shadow: var(--shadow-focus);">Learn more</button><span class="lbl">Focus</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Danger -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Danger <code>.btn-danger</code></h3>
+          <p>Destructive solid. Reserve for irreversible actions — Delete account, Wipe data. Always pair with a confirm step.</p>
+        </div>
+        <span class="tag">Destructive</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="state-grid">
+          <div class="state-cell"><button class="btn btn-danger">Delete account</button><span class="lbl">Default</span></div>
+          <div class="state-cell"><button class="btn btn-danger" style="background: var(--color-danger-700);">Delete account</button><span class="lbl">Hover</span></div>
+          <div class="state-cell"><button class="btn btn-danger" style="background: var(--color-danger-900);">Delete account</button><span class="lbl">Active</span></div>
+          <div class="state-cell"><button class="btn btn-danger" style="box-shadow: var(--shadow-focus-danger);">Delete account</button><span class="lbl">Focus</span></div>
+          <div class="state-cell"><button class="btn btn-danger" disabled>Delete account</button><span class="lbl">Disabled</span></div>
+          <div class="state-cell"><button class="btn btn-danger is-loading">Delete account</button><span class="lbl">Loading</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Danger outline -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Danger outline <code>.btn-danger-outline</code></h3>
+          <p>Destructive but contextual. Inline "Remove from list", "Revoke access" — actions that don't carry account-level weight.</p>
+        </div>
+        <span class="tag">Destructive · 2</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="state-grid">
+          <div class="state-cell"><button class="btn btn-danger-outline">Remove</button><span class="lbl">Default</span></div>
+          <div class="state-cell"><button class="btn btn-danger-outline" style="background: var(--color-feedback-danger-background); border-color: var(--color-danger-500);">Remove</button><span class="lbl">Hover</span></div>
+          <div class="state-cell"><button class="btn btn-danger-outline" style="background: var(--color-danger-100); border-color: var(--color-danger-500);">Remove</button><span class="lbl">Active</span></div>
+          <div class="state-cell"><button class="btn btn-danger-outline" style="box-shadow: var(--shadow-focus-danger);">Remove</button><span class="lbl">Focus</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Success -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Success <code>.btn-success</code></h3>
+          <p>Strong positive — Approve, Confirm payment. Rare. Most positive actions should be Primary; reserve this for high-stakes approvals.</p>
+        </div>
+        <span class="tag">Affirmative</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="state-grid">
+          <div class="state-cell"><button class="btn btn-success">Approve</button><span class="lbl">Default</span></div>
+          <div class="state-cell"><button class="btn btn-success" style="background: var(--color-success-700);">Approve</button><span class="lbl">Hover</span></div>
+          <div class="state-cell"><button class="btn btn-success" style="background: var(--color-success-900);">Approve</button><span class="lbl">Active</span></div>
+          <div class="state-cell"><button class="btn btn-success" style="box-shadow: var(--shadow-focus-success);">Approve</button><span class="lbl">Focus</span></div>
+          <div class="state-cell"><button class="btn btn-success" disabled>Approve</button><span class="lbl">Disabled</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Inverse -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Inverse <code>.btn-inverse</code></h3>
+          <p>White pill on dark or brand surfaces. The Primary equivalent when the surface is navy/inverse.</p>
+        </div>
+        <span class="tag">Inverse · 1</span>
+      </header>
+      <div class="spec-canvas dark">
+        <div class="state-grid">
+          <div class="state-cell"><button class="btn btn-inverse">Get started</button><span class="lbl">Default</span></div>
+          <div class="state-cell"><button class="btn btn-inverse" style="background: var(--color-neutral-100); color: var(--color-brand-secondary-800);">Get started</button><span class="lbl">Hover</span></div>
+          <div class="state-cell"><button class="btn btn-inverse" style="background: var(--color-neutral-150);">Get started</button><span class="lbl">Active</span></div>
+          <div class="state-cell"><button class="btn btn-inverse" style="box-shadow: var(--shadow-focus-sky);">Get started</button><span class="lbl">Focus</span></div>
+          <div class="state-cell"><button class="btn btn-inverse" disabled>Get started</button><span class="lbl">Disabled</span></div>
+          <div class="state-cell"><button class="btn btn-inverse is-loading">Get started</button><span class="lbl">Loading</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Secondary on inverse -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Secondary on inverse <code>.btn-secondary.on-inverse</code></h3>
+          <p>Outline pill for dark/brand surfaces. The Secondary equivalent when the surface is inverse — pairs with <code>.btn-inverse</code>.</p>
+        </div>
+        <span class="tag">Inverse · 2</span>
+      </header>
+      <div class="spec-canvas dark">
+        <div class="state-grid">
+          <div class="state-cell"><button class="btn btn-secondary on-inverse">Talk to sales</button><span class="lbl">Default</span></div>
+          <div class="state-cell"><button class="btn btn-secondary on-inverse" style="background: var(--color-background-inverse-hover); border-color: var(--color-foreground-inverse-secondary);">Talk to sales</button><span class="lbl">Hover</span></div>
+          <div class="state-cell"><button class="btn btn-secondary on-inverse" style="background: var(--color-background-inverse-press);">Talk to sales</button><span class="lbl">Active</span></div>
+          <div class="state-cell"><button class="btn btn-secondary on-inverse" style="box-shadow: var(--shadow-focus-sky);">Talk to sales</button><span class="lbl">Focus</span></div>
+          <div class="state-cell"><button class="btn btn-secondary on-inverse" disabled>Talk to sales</button><span class="lbl">Disabled</span></div>
+          <div class="state-cell"><button class="btn btn-secondary on-inverse is-loading">Talk to sales</button><span class="lbl">Loading</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Ghost on inverse -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Ghost on inverse <code>.btn-ghost.on-inverse</code></h3>
+          <p>Invisible until hover, on dark/brand surfaces. For toolbars and low-priority actions inside inverse panels.</p>
+        </div>
+        <span class="tag">Inverse · 3</span>
+      </header>
+      <div class="spec-canvas dark">
+        <div class="state-grid">
+          <div class="state-cell"><button class="btn btn-ghost on-inverse">Learn more</button><span class="lbl">Default</span></div>
+          <div class="state-cell"><button class="btn btn-ghost on-inverse" style="background: var(--color-background-inverse-hover); color: var(--color-foreground-inverse-default);">Learn more</button><span class="lbl">Hover</span></div>
+          <div class="state-cell"><button class="btn btn-ghost on-inverse" style="background: var(--color-background-inverse-press); color: var(--color-foreground-inverse-default);">Learn more</button><span class="lbl">Active</span></div>
+          <div class="state-cell"><button class="btn btn-ghost on-inverse" style="box-shadow: var(--shadow-focus-sky);">Learn more</button><span class="lbl">Focus</span></div>
+          <div class="state-cell"><button class="btn btn-ghost on-inverse" disabled>Learn more</button><span class="lbl">Disabled</span></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ========== SIZES ========== -->
+  <section class="doc-section" id="sizes">
+    <h2><span class="num">03</span>Sizes</h2>
+    <p class="lead">Four sizes — driven by container density. <strong>Default is <code>md</code> (40px tall)</strong>. Use <code>xs</code> only inside chips/dense tables. Reserve <code>lg</code> for hero CTAs.</p>
+
+    <div class="spec">
+      <div class="spec-canvas col" style="align-items: center;">
+        <div class="row">
+          <button class="btn btn-primary btn-xs"><i data-lucide="plus"></i>XS · 24px</button>
+          <button class="btn btn-primary btn-sm"><i data-lucide="plus"></i>SM · 32px</button>
+          <button class="btn btn-primary"><i data-lucide="plus"></i>MD · 40px (default)</button>
+          <button class="btn btn-primary btn-lg"><i data-lucide="plus"></i>LG · 48px</button>
+        </div>
+        <div class="row">
+          <button class="btn btn-primary btn-icon btn-xs" aria-label="Add"><i data-lucide="plus"></i></button>
+          <button class="btn btn-primary btn-icon btn-sm" aria-label="Add"><i data-lucide="plus"></i></button>
+          <button class="btn btn-primary btn-icon" aria-label="Add"><i data-lucide="plus"></i></button>
+          <button class="btn btn-primary btn-icon btn-lg" aria-label="Add"><i data-lucide="plus"></i></button>
+        </div>
+      </div>
+
+      <table class="token-table" style="margin: 0; border-radius: 0; box-shadow: none; border-left: 0; border-right: 0; border-bottom: 0;">
+        <thead><tr><th>Size</th><th>Class</th><th>Height</th><th>Padding-x</th><th>Font</th><th>Icon</th><th>Use for</th></tr></thead>
+        <tbody>
+          <tr><td>XS</td><td class="k">.btn-xs</td><td class="v">24px</td><td class="k">--space-3 (8)</td><td class="k">--fs-sm</td><td class="k">--icon-xs</td><td>Inline within chips, dense table rows</td></tr>
+          <tr><td>SM</td><td class="k">.btn-sm</td><td class="v">32px</td><td class="k">--space-4 (12)</td><td class="k">--fs-md</td><td class="k">--icon-xs</td><td>Toolbars, secondary toolbars, filters</td></tr>
+          <tr><td>MD</td><td class="k">— (default)</td><td class="v">40px</td><td class="k">--space-5 (16)</td><td class="k">--fs-md</td><td class="k">--icon-sm</td><td>Forms, dialogs, page actions — default</td></tr>
+          <tr><td>LG</td><td class="k">.btn-lg</td><td class="v">48px</td><td class="k">--space-6 (20)</td><td class="k">--fs-base</td><td class="k">--icon-md</td><td>Hero CTAs, marketing surfaces</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== STATES ========== -->
+  <section class="doc-section" id="states">
+    <h2><span class="num">04</span>States matrix</h2>
+    <p class="lead">Every variant supports the same six states. <code>:hover</code> brightens or fills, <code>:active</code> deepens further, <code>:focus-visible</code> projects a 4px focus ring tinted by the variant's semantic family, <code>[disabled]</code> drops to 50% opacity, <code>.is-loading</code> hides content and shows a spinner without changing width.</p>
+
+    <!-- Light-surface variants -->
+    <div class="spec">
+      <header class="spec-head">
+        <div><h3>On light surfaces</h3><p>All variants designed for <code>--color-background-canvas</code> / <code>--color-background-surface</code>.</p></div>
+        <span class="tag">Light</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="matrix">
+          <span class="h">Variant</span>
+          <span class="h">Default</span>
+          <span class="h">Hover</span>
+          <span class="h">Active</span>
+          <span class="h">Focus</span>
+          <span class="h">Disabled</span>
+          <span class="h">Loading</span>
+
+          <span class="rl">Primary</span>
+          <span class="c"><button class="btn btn-primary">Action</button></span>
+          <span class="c"><button class="btn btn-primary" style="background: var(--color-brand-secondary-600);">Action</button></span>
+          <span class="c"><button class="btn btn-primary" style="background: var(--color-brand-secondary-700);">Action</button></span>
+          <span class="c"><button class="btn btn-primary" style="box-shadow: var(--shadow-focus);">Action</button></span>
+          <span class="c"><button class="btn btn-primary" disabled>Action</button></span>
+          <span class="c"><button class="btn btn-primary is-loading">Action</button></span>
+
+          <span class="rl">Secondary</span>
+          <span class="c"><button class="btn btn-secondary">Action</button></span>
+          <span class="c"><button class="btn btn-secondary" style="background: var(--color-background-hover); border-color: var(--color-border-strong);">Action</button></span>
+          <span class="c"><button class="btn btn-secondary" style="background: var(--color-background-press);">Action</button></span>
+          <span class="c"><button class="btn btn-secondary" style="box-shadow: var(--shadow-focus);">Action</button></span>
+          <span class="c"><button class="btn btn-secondary" disabled>Action</button></span>
+          <span class="c"><button class="btn btn-secondary is-loading">Action</button></span>
+
+          <span class="rl">Tertiary</span>
+          <span class="c"><button class="btn btn-tertiary">Action</button></span>
+          <span class="c"><button class="btn btn-tertiary" style="background: color-mix(in srgb, var(--color-foreground-default) 12%, transparent);">Action</button></span>
+          <span class="c"><button class="btn btn-tertiary" style="background: color-mix(in srgb, var(--color-foreground-default) 16%, transparent);">Action</button></span>
+          <span class="c"><button class="btn btn-tertiary" style="box-shadow: var(--shadow-focus);">Action</button></span>
+          <span class="c"><button class="btn btn-tertiary" disabled>Action</button></span>
+          <span class="c"><button class="btn btn-tertiary is-loading">Action</button></span>
+
+          <span class="rl">Ghost</span>
+          <span class="c"><button class="btn btn-ghost">Action</button></span>
+          <span class="c"><button class="btn btn-ghost" style="background: var(--color-background-hover); color: var(--color-foreground-default);">Action</button></span>
+          <span class="c"><button class="btn btn-ghost" style="background: var(--color-background-press); color: var(--color-foreground-default);">Action</button></span>
+          <span class="c"><button class="btn btn-ghost" style="box-shadow: var(--shadow-focus);">Action</button></span>
+          <span class="c"><button class="btn btn-ghost" disabled>Action</button></span>
+          <span class="c"><button class="btn btn-ghost is-loading">Action</button></span>
+
+          <span class="rl">Link</span>
+          <span class="c"><button class="btn btn-link">Action</button></span>
+          <span class="c"><button class="btn btn-link" style="color: var(--color-brand-secondary-700); text-decoration: underline; text-underline-offset: 2px;">Action</button></span>
+          <span class="c"><button class="btn btn-link" style="color: var(--color-brand-secondary-800);">Action</button></span>
+          <span class="c"><button class="btn btn-link" style="box-shadow: var(--shadow-focus);">Action</button></span>
+          <span class="c"><button class="btn btn-link" disabled>Action</button></span>
+          <span class="c"><span style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono);">n/a</span></span>
+
+          <span class="rl">Danger</span>
+          <span class="c"><button class="btn btn-danger">Delete</button></span>
+          <span class="c"><button class="btn btn-danger" style="background: var(--color-danger-700);">Delete</button></span>
+          <span class="c"><button class="btn btn-danger" style="background: var(--color-danger-900);">Delete</button></span>
+          <span class="c"><button class="btn btn-danger" style="box-shadow: var(--shadow-focus-danger);">Delete</button></span>
+          <span class="c"><button class="btn btn-danger" disabled>Delete</button></span>
+          <span class="c"><button class="btn btn-danger is-loading">Delete</button></span>
+
+          <span class="rl">Danger&nbsp;outline</span>
+          <span class="c"><button class="btn btn-danger-outline">Remove</button></span>
+          <span class="c"><button class="btn btn-danger-outline" style="background: var(--color-feedback-danger-background); border-color: var(--color-danger-500);">Remove</button></span>
+          <span class="c"><button class="btn btn-danger-outline" style="background: var(--color-danger-100); border-color: var(--color-danger-500);">Remove</button></span>
+          <span class="c"><button class="btn btn-danger-outline" style="box-shadow: var(--shadow-focus-danger);">Remove</button></span>
+          <span class="c"><button class="btn btn-danger-outline" disabled>Remove</button></span>
+          <span class="c"><button class="btn btn-danger-outline is-loading">Remove</button></span>
+
+          <span class="rl">Success</span>
+          <span class="c"><button class="btn btn-success">Approve</button></span>
+          <span class="c"><button class="btn btn-success" style="background: var(--color-success-700);">Approve</button></span>
+          <span class="c"><button class="btn btn-success" style="background: var(--color-success-900);">Approve</button></span>
+          <span class="c"><button class="btn btn-success" style="box-shadow: var(--shadow-focus-success);">Approve</button></span>
+          <span class="c"><button class="btn btn-success" disabled>Approve</button></span>
+          <span class="c"><button class="btn btn-success is-loading">Approve</button></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inverse-surface variants -->
+    <div class="spec">
+      <header class="spec-head">
+        <div><h3>On inverse / brand surfaces</h3><p>Variants designed for <code>--color-background-inverse</code> / <code>--color-background-inverse-brand</code>.</p></div>
+        <span class="tag">Inverse</span>
+      </header>
+      <div class="spec-canvas col dark">
+        <div class="matrix">
+          <span class="h">Variant</span>
+          <span class="h">Default</span>
+          <span class="h">Hover</span>
+          <span class="h">Active</span>
+          <span class="h">Focus</span>
+          <span class="h">Disabled</span>
+          <span class="h">Loading</span>
+
+          <span class="rl">Inverse</span>
+          <span class="c"><button class="btn btn-inverse">Get started</button></span>
+          <span class="c"><button class="btn btn-inverse" style="background: var(--color-neutral-100); color: var(--color-brand-secondary-800);">Get started</button></span>
+          <span class="c"><button class="btn btn-inverse" style="background: var(--color-neutral-150);">Get started</button></span>
+          <span class="c"><button class="btn btn-inverse" style="box-shadow: var(--shadow-focus-sky);">Get started</button></span>
+          <span class="c"><button class="btn btn-inverse" disabled>Get started</button></span>
+          <span class="c"><button class="btn btn-inverse is-loading">Get started</button></span>
+
+          <span class="rl">Secondary&nbsp;inv.</span>
+          <span class="c"><button class="btn btn-secondary on-inverse">Talk to sales</button></span>
+          <span class="c"><button class="btn btn-secondary on-inverse" style="background: var(--color-background-inverse-hover); border-color: var(--color-foreground-inverse-secondary);">Talk to sales</button></span>
+          <span class="c"><button class="btn btn-secondary on-inverse" style="background: var(--color-background-inverse-press);">Talk to sales</button></span>
+          <span class="c"><button class="btn btn-secondary on-inverse" style="box-shadow: var(--shadow-focus-sky);">Talk to sales</button></span>
+          <span class="c"><button class="btn btn-secondary on-inverse" disabled>Talk to sales</button></span>
+          <span class="c"><button class="btn btn-secondary on-inverse is-loading">Talk to sales</button></span>
+
+          <span class="rl">Ghost&nbsp;inv.</span>
+          <span class="c"><button class="btn btn-ghost on-inverse">Learn more</button></span>
+          <span class="c"><button class="btn btn-ghost on-inverse" style="background: var(--color-background-inverse-hover); color: var(--color-foreground-inverse-default);">Learn more</button></span>
+          <span class="c"><button class="btn btn-ghost on-inverse" style="background: var(--color-background-inverse-press); color: var(--color-foreground-inverse-default);">Learn more</button></span>
+          <span class="c"><button class="btn btn-ghost on-inverse" style="box-shadow: var(--shadow-focus-sky);">Learn more</button></span>
+          <span class="c"><button class="btn btn-ghost on-inverse" disabled>Learn more</button></span>
+          <span class="c"><button class="btn btn-ghost on-inverse is-loading">Learn more</button></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== COMPOSITION ========== -->
+  <section class="doc-section" id="composition">
+    <h2><span class="num">05</span>Composition</h2>
+    <p class="lead">Buttons rarely live alone. Three established patterns: <strong>action pairs</strong> (form footer), <strong>toolbars</strong> (mixed ghost/secondary), and <strong>segmented groups</strong> (one logical control split into mutually-exclusive options).</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div><h3>Form footer</h3><p>Right-aligned. Cancel as Ghost on the left, Primary on the right. Never reverse the order.</p></div>
+      </header>
+      <div class="spec-canvas" style="justify-content: flex-end;">
+        <button class="btn btn-ghost">Cancel</button>
+        <button class="btn btn-primary">Save changes</button>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div><h3>Destructive confirmation</h3><p>Cancel as Ghost. Destructive action solid, focus-ring tinted danger.</p></div>
+      </header>
+      <div class="spec-canvas" style="justify-content: flex-end;">
+        <button class="btn btn-ghost">Cancel</button>
+        <button class="btn btn-danger"><i data-lucide="trash-2"></i>Delete account</button>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div><h3>Toolbar</h3><p>Ghost icon-only buttons grouped tightly with secondary text actions for context.</p></div>
+      </header>
+      <div class="spec-canvas dense">
+        <button class="btn btn-secondary"><i data-lucide="filter"></i>Filters</button>
+        <button class="btn btn-secondary"><i data-lucide="calendar"></i>Last 30 days</button>
+        <button class="btn btn-ghost btn-icon" aria-label="Refresh"><i data-lucide="refresh-cw"></i></button>
+        <button class="btn btn-ghost btn-icon" aria-label="More options"><i data-lucide="more-horizontal"></i></button>
+        <span style="flex: 1;"></span>
+        <button class="btn btn-primary"><i data-lucide="plus"></i>New transaction</button>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div><h3>Segmented group <code>.btn-group</code></h3><p>One logical control with mutually-exclusive options. Use Secondary as base.</p></div>
+      </header>
+      <div class="spec-canvas">
+        <div class="btn-group">
+          <button class="btn btn-secondary">Day</button>
+          <button class="btn btn-secondary" style="background: var(--color-background-press);">Week</button>
+          <button class="btn btn-secondary">Month</button>
+          <button class="btn btn-secondary">Year</button>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ========== ON INVERSE ========== -->
+  <section class="doc-section" id="on-inverse">
+    <h2><span class="num">06</span>On inverse — composition examples</h2>
+    <p class="lead">When buttons sit on <code>--color-background-inverse</code> or <code>--color-background-inverse-brand</code>, default Secondary and Ghost become invisible — apply <code>.on-inverse</code>. Full state details for each inverse variant live in <a href="#variants" style="color: var(--color-foreground-highlight);">Variants</a> and <a href="#states" style="color: var(--color-foreground-highlight);">States matrix</a>; this section shows them composed together.</p>
+
+    <div class="spec">
+      <header class="spec-head">
+        <div><h3>Inverse panel</h3><p>Three-tier hierarchy on a dark surface. Inverse → Secondary on inverse → Ghost on inverse.</p></div>
+      </header>
+      <div class="spec-canvas dark">
+        <div class="row">
+          <button class="btn btn-inverse">Primary</button>
+          <button class="btn btn-secondary on-inverse">Secondary</button>
+          <button class="btn btn-ghost on-inverse">Ghost</button>
+          <button class="btn btn-ghost on-inverse btn-icon" aria-label="Close"><i data-lucide="x"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <header class="spec-head">
+        <div><h3>Brand hero</h3><p>Same hierarchy on the brand-blue surface (<code>--color-background-inverse-brand</code>).</p></div>
+      </header>
+      <div class="spec-canvas brand">
+        <div class="row">
+          <button class="btn btn-inverse">Get started</button>
+          <button class="btn btn-secondary on-inverse">Talk to sales</button>
+          <button class="btn btn-ghost on-inverse">Learn more</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DON'TS ========== -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">07</span>Don'ts</h2>
+    <p class="lead">Common pitfalls. Each undermines the visual hierarchy or the accessibility contract the component depends on.</p>
+
+    <div class="dont-grid">
+      <div class="dont-card">
+        <div class="dont-card-canvas"><div class="row"><button class="btn btn-primary">Save</button><button class="btn btn-primary">Cancel</button></div></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Two Primaries side-by-side</strong>The user can't tell which is the recommended path. Demote one to Secondary or Ghost.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><button class="btn btn-danger">Save changes</button></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Danger for non-destructive actions</strong>Red is a strong signal — reserve it for irreversible deletions. Save is Primary.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><button class="btn btn-primary" style="border-radius: var(--radius-sm);">Continue</button></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Square corners</strong>All buttons in this system are pill-shaped. Don't override <code>--radius-pill</code>.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><button class="btn btn-primary" style="text-transform: uppercase; letter-spacing: var(--ls-caps);">Submit form</button></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>ALL CAPS labels</strong>Sentence case only. ALL CAPS is reserved for overlines and labels — not interactive controls.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><div class="row"><button class="btn btn-primary"><i data-lucide="plus"></i></button><button class="btn btn-primary btn-xs" style="height: 18px; padding: 0 var(--space-2); font-size: 9px;">tiny</button></div></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Hit areas under 24px</strong>Below the XS minimum, buttons fail touch targets. Always pick a defined size.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><button class="btn btn-primary"><i data-lucide="arrow-right"></i>Continue<i data-lucide="check"></i></button></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Two trailing-meaningful icons</strong>Pick one — leading reinforces meaning, trailing hints at progression. Never both.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ACCESSIBILITY ========== -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">08</span>Accessibility</h2>
+
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Requirement</th><th>How it's met</th></tr></thead>
+      <tbody>
+        <tr><td>Hit area</td><td>≥ 24×24 (WCAG 2.5.8 AA)</td><td>Smallest size <code>.btn-xs</code> = 24×24</td></tr>
+        <tr><td>Focus indicator</td><td>3:1 against adjacent colors, visible without hover</td><td><code>--shadow-focus</code> = 4px ring at 18% opacity, semantic-tinted on Danger/Success</td></tr>
+        <tr><td>Color contrast</td><td>Label vs. background ≥ 4.5:1 (AA)</td><td>All variant pairings tested; <code>--color-foreground-on-solid</code> on brand fills passes AA</td></tr>
+        <tr><td>Disabled state</td><td>Not interactive, indicated visually + via attribute</td><td><code>[disabled]</code> sets <code>opacity: .5</code> + <code>pointer-events: none</code></td></tr>
+        <tr><td>Loading state</td><td>Width preserved; assistive tech notified</td><td><code>.is-loading</code> hides label/icons, spinner via <code>::after</code>. Pair with <code>aria-busy="true"</code></td></tr>
+        <tr><td>Icon-only buttons</td><td>Accessible name required</td><td>Always include <code>aria-label</code> on <code>.btn-icon</code></td></tr>
+        <tr><td>Keyboard</td><td>Activate on Space and Enter</td><td>Native <code>&lt;button&gt;</code> behavior — never use <code>&lt;div&gt;</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========== TOKENS ========== -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">09</span>Tokens consumed</h2>
+    <p class="lead">Every value in <code>buttons.css</code> traces back to a token defined in <code>dist/css/tokens.css</code>. Change it there, every button updates.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Tokens</th></tr></thead>
+      <tbody>
+        <tr><td>Shape</td><td class="k">--radius-pill · --radius-2xs (link only)</td></tr>
+        <tr><td>Spacing</td><td class="k">--space-1 · --space-2 · --space-3 · --space-4 · --space-5 · --space-6</td></tr>
+        <tr><td>Typography</td><td class="k">--font-sans · --fs-sm · --fs-md · --fs-base · --w-semibold · --ls-body</td></tr>
+        <tr><td>Iconography</td><td class="k">--icon-xs · --icon-sm · --icon-md · --icon-stroke</td></tr>
+        <tr><td>Motion</td><td class="k">--transition-fast · --duration-slower · --ease-standard (linear via var)</td></tr>
+        <tr><td>Brand colors</td><td class="k">--color-brand-secondary-50/100/200/500/600/700/800 · --color-pure-white</td></tr>
+        <tr><td>Semantic colors</td><td class="k">--color-background-surface · --color-background-hover · --color-background-press · --color-background-inverse · --color-background-inverse-hover · --color-background-inverse-press · --color-background-inverse-brand</td></tr>
+        <tr><td>Foreground</td><td class="k">--color-foreground-default · --color-foreground-secondary · --color-foreground-on-solid · --color-foreground-highlight · --color-foreground-inverse-default · --color-foreground-inverse-secondary</td></tr>
+        <tr><td>Borders</td><td class="k">--color-border-default · --color-border-strong · --color-border-inverse-strong</td></tr>
+        <tr><td>Status</td><td class="k">--color-danger-500/700/900 · --color-feedback-danger-background · --color-feedback-danger-border · --color-danger-100 · --color-success-500/700/900</td></tr>
+        <tr><td>Focus</td><td class="k">--shadow-focus · --shadow-focus-danger · --shadow-focus-success · --shadow-focus-sky</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+  window.addEventListener('attrus-theme', function () { if (window.lucide) lucide.createIcons(); });
+</script>
+</body>
+</html>

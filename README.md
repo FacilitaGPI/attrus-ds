@@ -177,12 +177,15 @@ npm pack           # inspect the tarball before publishing
 
 `preview/components.html` is the design-system home — a navigable index of foundations, components, brand assets and package entry points (same structure as the Cabiros `design-system.html`).
 
-`preview/gallery.html` holds live specimens for every component, rendered from the built `dist/` bundle using canonical classes, with a dark-mode toggle.
+Each component has a dedicated spec page under `preview/` (e.g. `buttons.html`, `inputs.html`) with anatomy, variants, states, composition, don'ts, accessibility and token tables.
+
+`preview/gallery.html` is a compact live-specimen reference — useful for quick visual checks, but not the full documentation.
 
 Build first, then open the home page in a browser:
 
 ```bash
 npm run build
+node scripts/port-preview.mjs   # re-sync spec pages from cabiros when upstream changes
 # then open preview/components.html
 ```
 

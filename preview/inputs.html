@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Inputs" subtitle="Text, select, checkbox, switch, radio, date, file" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Inputs · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  /* ============================================================
+     DOCUMENT CHROME — same shell as buttons.html
+     ============================================================ */
+  body {
+    margin: 0;
+    background: var(--color-background-canvas);
+    color: var(--color-foreground-default);
+    font-family: var(--font-sans);
+    font-size: var(--fs-base);
+    line-height: var(--lh-normal);
+  }
+
+  /* layout */
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  /* header */
+  .doc-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: var(--space-8); padding-bottom: var(--space-7);
+    border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10);
+  }
+  .doc-header h1 {
+    font-size: var(--fs-6xl); font-weight: var(--w-bold);
+    letter-spacing: var(--ls-display); margin: 0 0 var(--space-3);
+  }
+  .doc-header p {
+    font-size: var(--fs-lg); color: var(--color-foreground-secondary);
+    line-height: var(--lh-relaxed); margin: 0; max-width: 60ch;
+  }
+  .doc-meta { display: flex; gap: var(--space-3); flex-shrink: 0; }
+  .doc-meta-pill {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground);
+    border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps);
+    text-transform: uppercase;
+  }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  /* nav */
+  .doc-nav {
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    padding: var(--space-4); background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default); border-radius: var(--radius-md);
+    margin-bottom: var(--space-10); box-shadow: var(--shadow-xs);
+  }
+  .doc-nav a {
+    padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill);
+    color: var(--color-foreground-secondary); text-decoration: none;
+    font-size: var(--fs-sm); font-weight: var(--w-semibold);
+    transition: var(--transition-fast);
+  }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  /* sections */
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 {
+    font-size: var(--fs-3xl); font-weight: var(--w-bold);
+    letter-spacing: var(--ls-title); margin: 0 0 var(--space-2);
+  }
+  .doc-section h2 .num {
+    font-family: var(--font-mono); font-size: var(--fs-md);
+    font-weight: var(--w-regular); color: var(--color-foreground-muted);
+    letter-spacing: var(--ls-caps); margin-right: var(--space-3);
+    vertical-align: 0.25em;
+  }
+  .doc-section > p.lead {
+    font-size: var(--fs-lg); color: var(--color-foreground-secondary);
+    line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7);
+  }
+  .doc-section > p.lead code,
+  .lead code, .spec-head p code, .copy code {
+    font-family: var(--font-mono); font-size: 0.92em;
+    color: var(--color-foreground-accent); background: var(--color-background-selected);
+    padding: 1px var(--space-2); border-radius: var(--radius-2xs);
+  }
+
+  /* spec card */
+  .spec {
+    background: var(--color-background-surface); border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg); overflow: hidden;
+    margin-bottom: var(--space-6); box-shadow: var(--shadow-xs);
+  }
+  .spec-head {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: var(--space-6); padding: var(--space-5) var(--space-6);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .spec-head h3 {
+    font-size: var(--fs-xl); font-weight: var(--w-bold);
+    letter-spacing: var(--ls-title); margin: 0 0 var(--space-2);
+  }
+  .spec-head h3 code {
+    font-family: var(--font-mono); font-size: var(--fs-md);
+    font-weight: var(--w-medium); color: var(--color-foreground-accent);
+    background: var(--color-background-selected); padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-xs); margin-left: var(--space-3);
+    vertical-align: 2px;
+  }
+  .spec-head p {
+    font-size: var(--fs-md); color: var(--color-foreground-secondary);
+    line-height: var(--lh-relaxed); margin: 0; max-width: 56ch;
+  }
+  .spec-head .tag {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-background-subtle); color: var(--color-foreground-secondary);
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps);
+    text-transform: uppercase; border-radius: var(--radius-pill);
+    flex-shrink: 0;
+  }
+
+  .spec-canvas {
+    padding: var(--space-7) var(--space-6);
+    background: var(--color-background-canvas);
+    display: flex; flex-wrap: wrap; gap: var(--space-5);
+    align-items: flex-start;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .spec-canvas.dense { gap: var(--space-3); }
+  .spec-canvas.col { flex-direction: column; align-items: stretch; }
+  .spec-canvas.center { align-items: center; justify-content: center; }
+  .spec-canvas.dark { background: var(--color-background-inverse); }
+  .spec-canvas.brand { background: var(--color-background-inverse-brand); }
+
+  /* state grid for input variants */
+  .state-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-5);
+    width: 100%;
+  }
+  .state-cell {
+    display: flex; flex-direction: column; gap: var(--space-2);
+    min-width: 0;
+  }
+  .state-cell .lbl {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    color: var(--color-foreground-muted); text-transform: uppercase;
+    letter-spacing: var(--ls-caps);
+  }
+  .spec-canvas.dark .state-cell .lbl { color: var(--color-foreground-inverse-muted); }
+
+  .spec-foot {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: var(--space-6); padding: var(--space-5) var(--space-6);
+    background: var(--color-background-surface);
+  }
+  .spec-foot h4 {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold); color: var(--color-foreground-muted);
+    text-transform: uppercase; letter-spacing: var(--ls-caps);
+    margin: 0 0 var(--space-3);
+  }
+  .spec-foot ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+  .spec-foot li { font-size: var(--fs-sm); color: var(--color-foreground-secondary); display: flex; gap: var(--space-2); align-items: flex-start; }
+  .spec-foot li i, .spec-foot li svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); flex-shrink: 0; margin-top: 2px; }
+  .spec-foot li.do i, .spec-foot li.do svg    { color: var(--color-feedback-success-foreground); }
+  .spec-foot li.dont i, .spec-foot li.dont svg  { color: var(--color-feedback-danger-foreground); }
+
+  /* anatomy */
+  .anatomy {
+    background: var(--color-background-canvas);
+    padding: var(--space-10) var(--space-8);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border-default);
+    display: flex; flex-direction: column;
+    align-items: center; gap: var(--space-8);
+    margin-bottom: var(--space-5); box-shadow: var(--shadow-xs);
+  }
+  /* scaled-up demo field for anatomy */
+  .anatomy-demo {
+    width: 480px;
+    transform: scale(1.25);
+    transform-origin: top center;
+    padding-bottom: var(--space-7);
+  }
+  .anatomy-callouts {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-5);
+    width: 100%;
+    max-width: 880px;
+  }
+  .anatomy-callout {
+    display: flex; flex-direction: column;
+    align-items: center; gap: var(--space-2);
+    text-align: center;
+  }
+  .anatomy-callout .num {
+    width: 22px; height: 22px; border-radius: var(--radius-pill);
+    background: var(--color-foreground-accent); color: var(--color-foreground-on-solid);
+    font-family: var(--font-mono); font-size: var(--fs-xs);
+    font-weight: var(--w-bold);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .anatomy-callout .name {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    color: var(--color-foreground-default); text-transform: uppercase;
+    letter-spacing: var(--ls-caps); font-weight: var(--w-semibold);
+  }
+  .anatomy-callout .desc {
+    font-size: var(--fs-xs); color: var(--color-foreground-muted);
+    line-height: var(--lh-snug); max-width: 18ch;
+  }
+
+  /* token / spec tables */
+  .token-table {
+    width: 100%; border-collapse: collapse;
+    background: var(--color-background-surface); border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md); overflow: hidden;
+    box-shadow: var(--shadow-xs); font-size: var(--fs-sm);
+  }
+  .token-table th, .token-table td {
+    padding: var(--space-3) var(--space-5);
+    text-align: left; border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .token-table tr:last-child td { border-bottom: 0; }
+  .token-table th {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold); color: var(--color-foreground-muted);
+    text-transform: uppercase; letter-spacing: var(--ls-caps);
+    background: var(--color-background-subtle);
+  }
+  .token-table td.k { font-family: var(--font-mono); color: var(--color-foreground-accent); }
+  .token-table td.v { font-family: var(--font-mono); color: var(--color-foreground-secondary); }
+
+  /* don't grid */
+  .dont-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-5);
+  }
+  .dont-card {
+    background: var(--color-background-surface); border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md); overflow: hidden;
+    box-shadow: var(--shadow-xs);
+  }
+  .dont-card-canvas {
+    padding: var(--space-6); background: var(--color-background-canvas);
+    display: flex; align-items: center; justify-content: center;
+    min-height: 120px; border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .dont-card-body {
+    padding: var(--space-4) var(--space-5);
+    display: flex; gap: var(--space-3); align-items: flex-start;
+  }
+  .dont-card-body i, .dont-card-body svg {
+    width: var(--icon-md); height: var(--icon-md);
+    stroke-width: var(--icon-stroke); color: var(--color-feedback-danger-foreground);
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .dont-card-body p {
+    margin: 0; font-size: var(--fs-sm);
+    color: var(--color-foreground-secondary); line-height: var(--lh-normal);
+  }
+  .dont-card-body strong {
+    color: var(--color-foreground-default); display: block;
+    margin-bottom: var(--space-1); font-weight: var(--w-semibold);
+  }
+
+  /* helpers */
+  .stack { display: flex; flex-direction: column; gap: var(--space-4); }
+  .row   { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); width: 100%; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-4); width: 100%; }
+
+  /* states matrix */
+  .matrix {
+    display: grid;
+    grid-template-columns: 130px repeat(5, minmax(0, 1fr));
+    gap: var(--space-5) var(--space-4);
+    width: 100%;
+    align-items: center;
+  }
+  .matrix .h, .matrix .rl {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold); color: var(--color-foreground-muted);
+    text-transform: uppercase; letter-spacing: var(--ls-caps);
+  }
+  .matrix .h { padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border-subtle); }
+  .matrix .rl { color: var(--color-foreground-default); font-size: var(--fs-xs); }
+  .spec-canvas.dark .matrix .h { color: var(--color-foreground-inverse-muted); }
+  .spec-canvas.dark .matrix .rl { color: var(--color-foreground-inverse-default); }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <!-- ========== HEADER ========== -->
+  <header class="doc-header">
+    <div>
+      <h1>Inputs</h1>
+      <p>Form controls — the entry points for user data. Each control captures a single piece of information; together they compose forms, search bars, settings panes, and onboarding flows. Built around a shared <code>.input</code> base with consistent sizing, focus, validation, and inverse rules.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Stable</span>
+    </div>
+  </header>
+
+  <!-- ========== NAV ========== -->
+  <nav class="doc-nav">
+    <a href="#anatomy">Anatomy</a>
+    <a href="#variants">Variants</a>
+    <a href="#sizes">Sizes</a>
+    <a href="#states">States</a>
+    <a href="#composition">Composition</a>
+    <a href="#on-inverse">On inverse</a>
+    <a href="#donts">Don'ts</a>
+    <a href="#a11y">Accessibility</a>
+    <a href="#tokens">Tokens</a>
+  </nav>
+
+  <!-- ========== ANATOMY ========== -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">01</span>Anatomy</h2>
+    <p class="lead">Every field is a vertical stack: <strong>label</strong>, <strong>field row</strong>, <strong>helper or error</strong>. The field row holds the input plus optional affixes (icons, prefix/suffix, trailing buttons). Spacing between rows is <code>--space-2</code>; between fields, <code>--space-5</code>.</p>
+
+    <div class="anatomy">
+      <!-- Scaled-up demo field -->
+      <div class="anatomy-demo">
+        <div class="field">
+          <label>Email address <span class="opt">required</span></label>
+          <div class="affix lead-pad trail-pad">
+            <i data-lucide="mail" class="lead"></i>
+            <input class="input" placeholder="you@company.com" value="maria@" />
+            <button type="button" class="trail-btn" aria-label="Clear"><i data-lucide="x"></i></button>
+          </div>
+          <div class="help"><i data-lucide="info"></i>We'll send a confirmation link.</div>
+        </div>
+      </div>
+
+      <div class="anatomy-callouts">
+        <div class="anatomy-callout">
+          <span class="num">1</span>
+          <span class="name">Label</span>
+          <span class="desc">Short noun, sentence case</span>
+        </div>
+        <div class="anatomy-callout">
+          <span class="num">2</span>
+          <span class="name">Leading icon</span>
+          <span class="desc">Reinforces field type</span>
+        </div>
+        <div class="anatomy-callout">
+          <span class="num">3</span>
+          <span class="name">Field</span>
+          <span class="desc">The input element itself</span>
+        </div>
+        <div class="anatomy-callout">
+          <span class="num">4</span>
+          <span class="name">Trailing button</span>
+          <span class="desc">Clear, reveal, action</span>
+        </div>
+        <div class="anatomy-callout">
+          <span class="num">5</span>
+          <span class="name">Helper / error</span>
+          <span class="desc">One short sentence</span>
+        </div>
+      </div>
+
+      <table class="token-table" style="max-width: 880px;">
+        <thead><tr><th>Part</th><th>Purpose</th><th>Tokens</th></tr></thead>
+        <tbody>
+          <tr><td>Label</td><td>Names the field — concise, sentence case, no colon</td><td class="k">--fs-sm · --w-semibold · --color-foreground-default</td></tr>
+          <tr><td>Leading icon</td><td>Affordance hint — search, mail, lock; left-aligned</td><td class="k">--icon-sm · --color-foreground-muted</td></tr>
+          <tr><td>Field</td><td>40px tall (md), 6px radius, 1px border</td><td class="k">height: 40px · --radius-sm · --color-border-default</td></tr>
+          <tr><td>Trailing button</td><td>Clear (×), reveal (eye), or context action</td><td class="k">28px · --color-background-hover on hover</td></tr>
+          <tr><td>Helper / error</td><td>One short sentence; switches color on validation</td><td class="k">--fs-xs · --color-foreground-muted | --color-feedback-danger-foreground</td></tr>
+          <tr><td>Vertical gap</td><td>Inside the field stack (label → input → help)</td><td class="k">--space-2 (4px)</td></tr>
+          <tr><td>Field gap</td><td>Between sibling fields in a form</td><td class="k">--space-5 (16px)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== VARIANTS ========== -->
+  <section class="doc-section" id="variants">
+    <h2><span class="num">02</span>Variants</h2>
+    <p class="lead">Twenty variants, organised in five families: <strong>text fields</strong> (the <code>.input</code> base + affixes), <strong>structured fields</strong> (group, select, number-input, date), <strong>specialised fields</strong> (chips, OTP, file, slider), <strong>boolean</strong> (switch, checkbox, radio), and <strong>quiet</strong> (underline, pill search). All consume the same focus, error, disabled tokens.</p>
+
+    <!-- ─────────── 1. Text · default ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Text <code>.input</code></h3>
+          <p>The base text input. Use for any single-line free text — names, titles, descriptions. All other text-flavour variants (email, search, password) inherit its sizing and states.</p>
+        </div>
+        <span class="tag">Text · 1</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="state-grid">
+          <div class="state-cell"><span class="lbl">Default</span><input class="input" placeholder="e.g. Maria Fernanda Costa" /></div>
+          <div class="state-cell"><span class="lbl">Hover</span><input class="input" placeholder="e.g. Maria Fernanda Costa" style="border-color: var(--color-border-strong);" /></div>
+          <div class="state-cell"><span class="lbl">Focus</span><input class="input" placeholder="e.g. Maria Fernanda Costa" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);" /></div>
+          <div class="state-cell"><span class="lbl">Filled</span><input class="input" value="Maria Fernanda Costa" /></div>
+          <div class="state-cell"><span class="lbl">Error</span><input class="input is-error" value="M" /></div>
+          <div class="state-cell"><span class="lbl">Disabled</span><input class="input" value="Read-only value" disabled /></div>
+        </div>
+      </div>
+      <div class="spec-foot">
+        <div><h4>Use for</h4><ul>
+          <li class="do"><i data-lucide="check"></i>Free-form single-line text — names, titles, references.</li>
+          <li class="do"><i data-lucide="check"></i>Any field where the user types unconstrained.</li>
+        </ul></div>
+        <div><h4>Avoid when</h4><ul>
+          <li class="dont"><i data-lucide="x"></i>Choosing from a fixed set — use Select or Radio.</li>
+          <li class="dont"><i data-lucide="x"></i>Multi-line content — use Textarea.</li>
+        </ul></div>
+      </div>
+    </article>
+
+    <!-- ─────────── 2. Email — pattern ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Email <code>type="email"</code></h3>
+          <p>Same as Text but with semantic typing — triggers email keyboard on mobile, enables browser validation, and adds a <code>mail</code> leading icon by convention.</p>
+        </div>
+        <span class="tag">Text · 2</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="state-grid">
+          <div class="state-cell"><span class="lbl">Default</span>
+            <div class="affix lead-pad"><i data-lucide="mail" class="lead"></i>
+              <input class="input" type="email" placeholder="you@company.com" /></div>
+          </div>
+          <div class="state-cell"><span class="lbl">Filled · valid</span>
+            <div class="affix lead-pad"><i data-lucide="mail" class="lead"></i>
+              <input class="input is-success" type="email" value="maria@company.com" /></div>
+          </div>
+          <div class="state-cell"><span class="lbl">Error</span>
+            <div class="affix lead-pad"><i data-lucide="mail" class="lead"></i>
+              <input class="input is-error" type="email" value="maria@" /></div>
+          </div>
+          <div class="state-cell"><span class="lbl">Disabled</span>
+            <div class="affix lead-pad"><i data-lucide="mail" class="lead"></i>
+              <input class="input" type="email" value="locked@company.com" disabled /></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─────────── 3. Password — trailing reveal ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Password <code>type="password"</code></h3>
+          <p>Masked input with a trailing reveal toggle. The reveal button is keyboard-focusable; clicking it switches the type between <code>password</code> and <code>text</code>.</p>
+        </div>
+        <span class="tag">Text · 3</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="state-grid">
+          <div class="state-cell"><span class="lbl">Default</span>
+            <div class="affix lead-pad trail-pad"><i data-lucide="lock" class="lead"></i>
+              <input class="input" type="password" placeholder="Enter password" />
+              <button type="button" class="trail-btn" aria-label="Show password"><i data-lucide="eye"></i></button></div>
+          </div>
+          <div class="state-cell"><span class="lbl">Filled · masked</span>
+            <div class="affix lead-pad trail-pad"><i data-lucide="lock" class="lead"></i>
+              <input class="input" type="password" value="••••••••••••" />
+              <button type="button" class="trail-btn" aria-label="Show password"><i data-lucide="eye"></i></button></div>
+          </div>
+          <div class="state-cell"><span class="lbl">Revealed</span>
+            <div class="affix lead-pad trail-pad"><i data-lucide="lock" class="lead"></i>
+              <input class="input" type="text" value="hunter2-password" />
+              <button type="button" class="trail-btn" aria-label="Hide password"><i data-lucide="eye-off"></i></button></div>
+          </div>
+          <div class="state-cell"><span class="lbl">Error</span>
+            <div class="affix lead-pad trail-pad"><i data-lucide="lock" class="lead"></i>
+              <input class="input is-error" type="password" value="••••" />
+              <button type="button" class="trail-btn" aria-label="Show password"><i data-lucide="eye"></i></button></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─────────── 4. Search ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Search <code>type="search"</code></h3>
+          <p>Leading <code>search</code> icon, optional trailing clear button. The square-corner version pairs with toolbars; for global app search use the Pill variant below.</p>
+        </div>
+        <span class="tag">Text · 4</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="state-grid">
+          <div class="state-cell"><span class="lbl">Default</span>
+            <div class="affix lead-pad"><i data-lucide="search" class="lead"></i>
+              <input class="input" type="search" placeholder="Search transactions, IDs…" /></div>
+          </div>
+          <div class="state-cell"><span class="lbl">With value</span>
+            <div class="affix lead-pad trail-pad"><i data-lucide="search" class="lead"></i>
+              <input class="input" type="search" value="invoice 47821" />
+              <button type="button" class="trail-btn" aria-label="Clear"><i data-lucide="x"></i></button></div>
+          </div>
+          <div class="state-cell"><span class="lbl">Focus</span>
+            <div class="affix lead-pad"><i data-lucide="search" class="lead"></i>
+              <input class="input" type="search" placeholder="Search transactions, IDs…" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);" /></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─────────── 5. Prefix / suffix group ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Prefix / suffix <code>.group</code></h3>
+          <p>Attached units that name what's being entered: currency, units, domain. The fix segments share the field's border but sit on <code>--color-background-subtle</code> to read as ornament, not input.</p>
+        </div>
+        <span class="tag">Structured · 1</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="state-grid">
+          <div class="state-cell"><span class="lbl">Prefix only</span>
+            <div class="group">
+              <span class="fix l">USD</span>
+              <input placeholder="0.00" />
+            </div>
+          </div>
+          <div class="state-cell"><span class="lbl">Suffix only</span>
+            <div class="group">
+              <input value="78.5" />
+              <span class="fix r">kg</span>
+            </div>
+          </div>
+          <div class="state-cell"><span class="lbl">Both</span>
+            <div class="group">
+              <span class="fix l">https://</span>
+              <input placeholder="acme.com" />
+              <span class="fix r">/api</span>
+            </div>
+          </div>
+          <div class="state-cell"><span class="lbl">Focus</span>
+            <div class="group" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);">
+              <span class="fix l">USD</span>
+              <input value="2,400.00" />
+            </div>
+          </div>
+          <div class="state-cell"><span class="lbl">Error</span>
+            <div class="group is-error">
+              <span class="fix l">USD</span>
+              <input value="-50" />
+            </div>
+          </div>
+          <div class="state-cell"><span class="lbl">Icon prefix</span>
+            <div class="group">
+              <span class="fix l"><i data-lucide="at-sign" style="width:14px;height:14px;"></i></span>
+              <input placeholder="username" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─────────── 6. Select ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Select <code>.select</code></h3>
+          <p>Native <code>&lt;select&gt;</code> styled to match the Text input. Trailing chevron rotates on open. Use for short, mutually exclusive lists (≤ 8 options); larger sets call for a Combobox.</p>
+        </div>
+        <span class="tag">Structured · 2</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="state-grid">
+          <div class="state-cell"><span class="lbl">Default</span>
+            <div class="select"><select class="input">
+              <option>Choose currency…</option><option>BRL — Brazilian Real</option><option>USD — US Dollar</option>
+            </select><i data-lucide="chevron-down" class="chev"></i></div>
+          </div>
+          <div class="state-cell"><span class="lbl">Selected</span>
+            <div class="select"><select class="input">
+              <option>USD — US Dollar</option><option>BRL — Brazilian Real</option>
+            </select><i data-lucide="chevron-down" class="chev"></i></div>
+          </div>
+          <div class="state-cell"><span class="lbl">Focus</span>
+            <div class="select"><select class="input" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);">
+              <option>USD — US Dollar</option>
+            </select><i data-lucide="chevron-down" class="chev"></i></div>
+          </div>
+          <div class="state-cell"><span class="lbl">Disabled</span>
+            <div class="select"><select class="input" disabled>
+              <option>Locked to USD</option>
+            </select><i data-lucide="chevron-down" class="chev"></i></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─────────── 7. Number Input ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Number Input <code>.number-input</code></h3>
+          <p>Numeric field with attached <code>−</code> / <code>+</code> buttons. Use for small, discrete quantities (count of users, days, items). Hide buttons at the boundaries via <code>disabled</code>. See the <a href="number-input.html" style="color: var(--color-foreground-highlight);">full Number Input spec</a> — and don't confuse with the navigation <a href="stepper.html" style="color: var(--color-foreground-highlight);">Stepper</a>.</p>
+        </div>
+        <span class="tag">Structured · 3</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="stack">
+          <span class="lbl" style="font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps);">Default</span>
+          <div class="number-input">
+            <button type="button" class="minus" aria-label="Decrease"><i data-lucide="minus" style="width:14px;height:14px;"></i></button>
+            <input type="number" value="3" />
+            <button type="button" class="plus" aria-label="Increase"><i data-lucide="plus" style="width:14px;height:14px;"></i></button>
+          </div>
+        </div>
+        <div class="stack">
+          <span class="lbl" style="font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps);">At minimum</span>
+          <div class="number-input">
+            <button type="button" class="minus" aria-label="Decrease" disabled><i data-lucide="minus" style="width:14px;height:14px;"></i></button>
+            <input type="number" value="0" />
+            <button type="button" class="plus" aria-label="Increase"><i data-lucide="plus" style="width:14px;height:14px;"></i></button>
+          </div>
+        </div>
+        <div class="stack">
+          <span class="lbl" style="font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps);">Focus</span>
+          <div class="number-input" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);">
+            <button type="button" class="minus" aria-label="Decrease"><i data-lucide="minus" style="width:14px;height:14px;"></i></button>
+            <input type="number" value="12" />
+            <button type="button" class="plus" aria-label="Increase"><i data-lucide="plus" style="width:14px;height:14px;"></i></button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─────────── 8. Date / time trigger ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Date &amp; time trigger <code>.date-trigger</code></h3>
+          <p>A button that opens a calendar or time picker (the picker itself isn't part of the input system). Mirrors text-input height &amp; states for visual continuity in form rows.</p>
+        </div>
+        <span class="tag">Structured · 4</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="state-grid">
+          <div class="state-cell"><span class="lbl">Date · empty</span>
+            <button type="button" class="date-trigger">
+              <span><i data-lucide="calendar" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;"></i><span class="placeholder">Select a date…</span></span>
+              <i data-lucide="chevron-down"></i>
+            </button>
+          </div>
+          <div class="state-cell"><span class="lbl">Date · filled</span>
+            <button type="button" class="date-trigger">
+              <span><i data-lucide="calendar" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;"></i>April 17, 2026</span>
+              <i data-lucide="chevron-down"></i>
+            </button>
+          </div>
+          <div class="state-cell"><span class="lbl">Date range</span>
+            <button type="button" class="date-trigger">
+              <span><i data-lucide="calendar-range" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;"></i>Apr 1 – Apr 30</span>
+              <i data-lucide="chevron-down"></i>
+            </button>
+          </div>
+          <div class="state-cell"><span class="lbl">Time</span>
+            <button type="button" class="date-trigger">
+              <span><i data-lucide="clock" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;"></i>14:30</span>
+              <i data-lucide="chevron-down"></i>
+            </button>
+          </div>
+          <div class="state-cell"><span class="lbl">Focus</span>
+            <button type="button" class="date-trigger" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);">
+              <span><i data-lucide="calendar" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;"></i>April 17, 2026</span>
+              <i data-lucide="chevron-down"></i>
+            </button>
+          </div>
+          <div class="state-cell"><span class="lbl">Disabled</span>
+            <button type="button" class="date-trigger" disabled style="opacity:0.5;cursor:not-allowed;">
+              <span><i data-lucide="calendar" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;"></i>Locked</span>
+              <i data-lucide="chevron-down"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─────────── 9. Textarea ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Textarea <code>textarea.input</code></h3>
+          <p>Multi-line free text. Min-height 88px, vertically resizable. Use for memos, notes, descriptions — anything that may run over a single line.</p>
+        </div>
+        <span class="tag">Text · 5</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="grid-2">
+          <div class="state-cell"><span class="lbl">Default</span>
+            <textarea class="input" placeholder="Short description for your records…"></textarea>
+          </div>
+          <div class="state-cell"><span class="lbl">Filled</span>
+            <textarea class="input">Wire transfer for Q1 services. Reference: INV-47821. Cleared 2 days early; remaining balance applies to retainer.</textarea>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─────────── 10. Chips / multi-select ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Chips multi-select <code>.chips</code></h3>
+          <p>Token input — selected values render as removable chips, an embedded text input lets the user add more. Good for tags, recipients, counterparties.</p>
+        </div>
+        <span class="tag">Specialised · 1</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="state-grid">
+          <div class="state-cell"><span class="lbl">Empty</span>
+            <div class="chips">
+              <input placeholder="Add tag…" />
+            </div>
+          </div>
+          <div class="state-cell"><span class="lbl">Populated</span>
+            <div class="chips">
+              <span class="chip">Acme Corp <button type="button" class="chip-x" aria-label="Remove"><i data-lucide="x"></i></button></span>
+              <span class="chip">Globex Ltda <button type="button" class="chip-x" aria-label="Remove"><i data-lucide="x"></i></button></span>
+              <span class="chip">Initech <button type="button" class="chip-x" aria-label="Remove"><i data-lucide="x"></i></button></span>
+              <input placeholder="Add…" />
+            </div>
+          </div>
+          <div class="state-cell"><span class="lbl">Focus</span>
+            <div class="chips" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);">
+              <span class="chip">Acme Corp <button type="button" class="chip-x" aria-label="Remove"><i data-lucide="x"></i></button></span>
+              <input placeholder="Add…" autofocus />
+            </div>
+          </div>
+          <div class="state-cell"><span class="lbl">Many</span>
+            <div class="chips">
+              <span class="chip">Operations <button type="button" class="chip-x" aria-label="Remove"><i data-lucide="x"></i></button></span>
+              <span class="chip">Legal <button type="button" class="chip-x" aria-label="Remove"><i data-lucide="x"></i></button></span>
+              <span class="chip">Finance <button type="button" class="chip-x" aria-label="Remove"><i data-lucide="x"></i></button></span>
+              <span class="chip">Compliance <button type="button" class="chip-x" aria-label="Remove"><i data-lucide="x"></i></button></span>
+              <span class="chip">Treasury <button type="button" class="chip-x" aria-label="Remove"><i data-lucide="x"></i></button></span>
+              <input placeholder="…" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─────────── 11. OTP ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>OTP <code>.otp</code></h3>
+          <p>One cell per digit, monospaced, large type. Used for verification codes — usually 4 or 6 cells. Auto-advance focus on each digit; paste fills all cells.</p>
+        </div>
+        <span class="tag">Specialised · 2</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="stack">
+          <span class="lbl" style="font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps);">Empty</span>
+          <div class="otp">
+            <input maxlength="1" /><input maxlength="1" /><input maxlength="1" /><input maxlength="1" /><input maxlength="1" /><input maxlength="1" />
+          </div>
+        </div>
+        <div class="stack">
+          <span class="lbl" style="font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps);">In progress</span>
+          <div class="otp">
+            <input maxlength="1" value="4" /><input maxlength="1" value="7" /><input maxlength="1" value="2" /><input maxlength="1" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);" /><input maxlength="1" /><input maxlength="1" />
+          </div>
+        </div>
+        <div class="stack">
+          <span class="lbl" style="font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps);">Error</span>
+          <div class="otp">
+            <input maxlength="1" value="4" class="is-error" /><input maxlength="1" value="7" class="is-error" /><input maxlength="1" value="2" class="is-error" /><input maxlength="1" value="9" class="is-error" /><input maxlength="1" value="1" class="is-error" /><input maxlength="1" value="3" class="is-error" />
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─────────── 12. File dropzone ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>File upload <code>.file-drop</code></h3>
+          <p>Dashed-border dropzone with click-to-browse and drag-and-drop. Shows uploaded files as chips below; supports multi-file when allowed.</p>
+        </div>
+        <span class="tag">Specialised · 3</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="grid-2">
+          <div class="state-cell"><span class="lbl">Empty</span>
+            <div class="file-drop">
+              <i data-lucide="upload-cloud"></i>
+              <span class="ttl">Drop files here</span>
+              <span class="sub">or <span class="anchor">browse from computer</span> · PDF, JPG, PNG up to 10 MB</span>
+            </div>
+          </div>
+          <div class="state-cell"><span class="lbl">Dragging</span>
+            <div class="file-drop is-dragging">
+              <i data-lucide="upload-cloud" style="color: var(--color-foreground-accent);"></i>
+              <span class="ttl" style="color: var(--color-foreground-accent);">Release to upload</span>
+              <span class="sub">3 files queued</span>
+            </div>
+          </div>
+        </div>
+        <div class="state-cell" style="width:100%;"><span class="lbl">With uploaded files</span>
+          <div class="file-list">
+            <div class="file-list-head">
+              <span>3 files · 8.7 MB total</span>
+              <button type="button" class="file-list-action"><i data-lucide="plus" style="width:13px;height:13px;"></i>Add file</button>
+            </div>
+            <ul class="file-rows">
+              <li class="file-row">
+                <span class="file-icon" data-kind="pdf">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+                  <span class="file-icon-tag">PDF</span>
+                </span>
+                <div class="file-meta">
+                  <span class="file-name">Contract — Q1 2026 services agreement.pdf</span>
+                  <span class="file-sub">2.4 MB · uploaded 2 min ago</span>
+                </div>
+                <span class="file-status ok"><i data-lucide="check" style="width:11px;height:11px;"></i>Done</span>
+                <button type="button" class="file-remove" aria-label="Remove file"><i data-lucide="trash-2"></i></button>
+              </li>
+              <li class="file-row">
+                <span class="file-icon" data-kind="img">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                  <span class="file-icon-tag">JPG</span>
+                </span>
+                <div class="file-meta">
+                  <span class="file-name">signature-page.jpg</span>
+                  <span class="file-sub">5.1 MB · uploading…</span>
+                  <div class="file-progress"><span style="width: 68%;"></span></div>
+                </div>
+                <span class="file-status pending">68%</span>
+                <button type="button" class="file-remove" aria-label="Cancel upload"><i data-lucide="x"></i></button>
+              </li>
+              <li class="file-row">
+                <span class="file-icon" data-kind="csv">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h2"/><path d="M8 17h6"/></svg>
+                  <span class="file-icon-tag">CSV</span>
+                </span>
+                <div class="file-meta">
+                  <span class="file-name">transactions-export.csv</span>
+                  <span class="file-sub err">1.2 MB · upload failed — file too large</span>
+                </div>
+                <span class="file-status err"><i data-lucide="alert-circle" style="width:11px;height:11px;"></i>Retry</span>
+                <button type="button" class="file-remove" aria-label="Remove file"><i data-lucide="trash-2"></i></button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─────────── 13. Slider ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Slider <code>.slider</code></h3>
+          <p>Range input — a thumb sliding along a track. Use for continuous numeric values where exact precision isn't required (volume, opacity, rough thresholds). Pair with a numeric label that reflects the live value.</p>
+        </div>
+        <span class="tag">Specialised · 4</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="state-cell" style="width:100%; max-width: 420px;">
+          <div style="display:flex; justify-content: space-between;">
+            <span class="lbl">Default</span>
+            <span class="lbl" style="color: var(--color-foreground-default); font-weight: var(--w-semibold);">62</span>
+          </div>
+          <input type="range" class="slider" min="0" max="100" value="62" />
+        </div>
+        <div class="state-cell" style="width:100%; max-width: 420px;">
+          <div style="display:flex; justify-content: space-between;">
+            <span class="lbl">With ticks</span>
+            <span class="lbl" style="color: var(--color-foreground-default); font-weight: var(--w-semibold);">$ 2,400</span>
+          </div>
+          <input type="range" class="slider" min="0" max="10000" step="100" value="2400" />
+          <div style="display:flex; justify-content: space-between; font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-muted);">
+            <span>$0</span><span>$2.5k</span><span>$5k</span><span>$7.5k</span><span>$10k</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─────────── 14. Switch ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Switch <code>.switch</code></h3>
+          <p>Boolean toggle for an immediate on/off setting. Use only when the change takes effect <em>right away</em>; for booleans inside a form that the user submits later, use Checkbox.</p>
+        </div>
+        <span class="tag">Boolean · 1</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="state-cell"><span class="lbl">Off</span>
+          <label class="switch"><input type="checkbox" /><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-label">Auto-convert BRL</span></label>
+        </div>
+        <div class="state-cell"><span class="lbl">On</span>
+          <label class="switch"><input type="checkbox" checked /><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-label">Auto-convert BRL</span></label>
+        </div>
+        <div class="state-cell"><span class="lbl">Disabled · off</span>
+          <label class="switch" style="opacity: 0.5;"><input type="checkbox" disabled /><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-label">Premium feature</span></label>
+        </div>
+        <div class="state-cell"><span class="lbl">Disabled · on</span>
+          <label class="switch" style="opacity: 0.5;"><input type="checkbox" checked disabled /><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-label">Locked by admin</span></label>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─────────── 15. Checkbox ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Checkbox <code>.check</code></h3>
+          <p>Multi-select boolean. Use in lists where users pick zero, one, or many items, and inside forms for "I agree" type fields. Supports indeterminate state for parent rows in nested lists.</p>
+        </div>
+        <span class="tag">Boolean · 2</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="state-cell"><span class="lbl">Unchecked</span>
+          <label class="check"><input type="checkbox" /><span class="check-box"><i data-lucide="check"></i></span>I agree to the terms</label>
+        </div>
+        <div class="state-cell"><span class="lbl">Checked</span>
+          <label class="check"><input type="checkbox" checked /><span class="check-box"><i data-lucide="check"></i></span>I agree to the terms</label>
+        </div>
+        <div class="state-cell"><span class="lbl">Indeterminate</span>
+          <label class="check"><input type="checkbox" id="indet-cb" /><span class="check-box"><i data-lucide="check"></i></span>Select all (3 of 5)</label>
+        </div>
+        <div class="state-cell"><span class="lbl">Disabled</span>
+          <label class="check" style="opacity: 0.5;"><input type="checkbox" disabled /><span class="check-box"><i data-lucide="check"></i></span>Premium only</label>
+        </div>
+        <div class="state-cell"><span class="lbl">Error</span>
+          <label class="check is-error" style="color: var(--color-feedback-danger-foreground);"><input type="checkbox" /><span class="check-box"><i data-lucide="check"></i></span>Required field</label>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─────────── 16. Radio ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Radio <code>.radio</code></h3>
+          <p>Mutually exclusive single-select. Use when 2–5 options need to be visible side-by-side; with more options use a Select. Always group inside a <code>fieldset</code> with a <code>legend</code>.</p>
+        </div>
+        <span class="tag">Boolean · 3</span>
+      </header>
+      <div class="spec-canvas col">
+        <fieldset style="border:0; padding:0; margin:0; display:flex; flex-direction:column; gap: var(--space-3);">
+          <legend style="font-family: var(--font-sans); font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); margin-bottom: var(--space-2);">Settlement speed</legend>
+          <label class="radio"><input type="radio" name="r-demo" /><span class="radio-dot"></span>Instant — within 30 seconds, fee 0.5%</label>
+          <label class="radio"><input type="radio" name="r-demo" checked /><span class="radio-dot"></span>Same-day — by 18:00, fee 0.2%</label>
+          <label class="radio"><input type="radio" name="r-demo" /><span class="radio-dot"></span>T+1 — next business day, no fee</label>
+          <label class="radio" style="opacity: 0.5;"><input type="radio" name="r-demo" disabled /><span class="radio-dot"></span>T+2 — no longer offered</label>
+        </fieldset>
+      </div>
+    </article>
+
+    <!-- ─────────── 17. Pill search ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Pill search <code>.pill-search</code></h3>
+          <p>Fully-rounded search bar for global app search (⌘K / Ctrl-K). Use in the top nav or as a command palette trigger. Visually distinct from form fields so users recognise it as "search anywhere".</p>
+        </div>
+        <span class="tag">Quiet · 1</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="state-cell" style="width:100%; max-width: 480px;">
+          <span class="lbl">Default</span>
+          <div class="pill-search">
+            <i data-lucide="search"></i>
+            <input placeholder="Search or ask something…" />
+            <span class="kbd">⌘K</span>
+          </div>
+        </div>
+        <div class="state-cell" style="width:100%; max-width: 480px;">
+          <span class="lbl">Focus</span>
+          <div class="pill-search" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);">
+            <i data-lucide="search"></i>
+            <input placeholder="Search or ask something…" />
+            <span class="kbd">⌘K</span>
+          </div>
+        </div>
+        <div class="state-cell" style="width:100%; max-width: 480px;">
+          <span class="lbl">With value</span>
+          <div class="pill-search">
+            <i data-lucide="search"></i>
+            <input value="Q1 invoices over $10k" />
+            <span class="kbd">⌘K</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─────────── 18. Underline (ghost) ─────────── -->
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Underline <code>.input.underline</code></h3>
+          <p>Quiet variant — only a bottom rule. Use in dense data tables for inline editing, or in writing-focused interfaces (notes, titles) where the input shouldn't read as a "form field".</p>
+        </div>
+        <span class="tag">Quiet · 2</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="state-grid">
+          <div class="state-cell"><span class="lbl">Default</span>
+            <input class="input underline" placeholder="Add a reference…" />
+          </div>
+          <div class="state-cell"><span class="lbl">Filled</span>
+            <input class="input underline" value="Reference INV-47821" />
+          </div>
+          <div class="state-cell"><span class="lbl">Focus</span>
+            <input class="input underline" value="Reference INV-47821" style="border-bottom-color: var(--color-border-focus);" />
+          </div>
+          <div class="state-cell"><span class="lbl">Error</span>
+            <input class="input underline is-error" value="Invalid reference" />
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ========== SIZES ========== -->
+  <section class="doc-section" id="sizes">
+    <h2><span class="num">03</span>Sizes</h2>
+    <p class="lead">Three sizes — pick by surface density. <strong>Default</strong> (40px) for most product surfaces. <strong>Small</strong> (32px) for dense data tables and toolbars. <strong>Large</strong> (48px) for hero forms (sign-up, onboarding) and mobile-first contexts where touch targets must be generous.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div><h3>Side-by-side comparison</h3><p>All three sizes share the same focus, error, and disabled rules. Internal padding and font-size shift in lockstep so the visual rhythm stays clean.</p></div>
+      </header>
+      <div class="spec-canvas col">
+        <div class="grid-3">
+          <div class="state-cell"><span class="lbl">Small · 32px <code style="font-family: var(--font-mono); color: var(--color-foreground-accent);">.input-sm</code></span>
+            <input class="input input-sm" placeholder="Small" />
+            <input class="input input-sm" value="Filled small" />
+            <div class="select"><select class="input input-sm"><option>Choose…</option></select><i data-lucide="chevron-down" class="chev" style="right: var(--space-3);"></i></div>
+          </div>
+          <div class="state-cell"><span class="lbl">Default · 40px</span>
+            <input class="input" placeholder="Default" />
+            <input class="input" value="Filled default" />
+            <div class="select"><select class="input"><option>Choose…</option></select><i data-lucide="chevron-down" class="chev"></i></div>
+          </div>
+          <div class="state-cell"><span class="lbl">Large · 48px <code style="font-family: var(--font-mono); color: var(--color-foreground-accent);">.input-lg</code></span>
+            <input class="input input-lg" placeholder="Large" />
+            <input class="input input-lg" value="Filled large" />
+            <div class="select"><select class="input input-lg"><option>Choose…</option></select><i data-lucide="chevron-down" class="chev" style="right: var(--space-5);"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="spec-foot" style="grid-template-columns: 1fr;">
+        <table class="token-table">
+          <thead><tr><th>Size</th><th>Height</th><th>Padding-x</th><th>Font-size</th><th>Radius</th><th>Use for</th></tr></thead>
+          <tbody>
+            <tr><td><code>.input-sm</code></td><td class="k">32px</td><td class="k">--space-3 (8px)</td><td class="k">--fs-sm (13)</td><td class="k">--radius-xs (4px)</td><td class="v">Tables, toolbars, dense panels</td></tr>
+            <tr><td><strong>default</strong></td><td class="k">40px</td><td class="k">--space-4 (12px)</td><td class="k">--fs-md (15)</td><td class="k">--radius-sm (6px)</td><td class="v">Most product forms — settings, modals, side panels</td></tr>
+            <tr><td><code>.input-lg</code></td><td class="k">48px</td><td class="k">--space-5 (16px)</td><td class="k">--fs-lg (17)</td><td class="k">--radius-md (10px)</td><td class="v">Sign-up, onboarding, mobile</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <!-- ========== STATES MATRIX ========== -->
+  <section class="doc-section" id="states">
+    <h2><span class="num">04</span>States matrix</h2>
+    <p class="lead">Five canonical states for every text-flavour field: <code>default</code>, <code>:hover</code> (border darkens), <code>:focus</code> (border becomes brand blue + 4px focus ring), <code>filled</code> (value present, neutral border), and validation <code>.is-error</code>. Disabled is universal — opacity 0.5, no interaction. Selection &amp; boolean controls collapse this to <em>off</em> / <em>on</em> / <em>focus</em> / <em>disabled</em>.</p>
+
+    <!-- Light surfaces -->
+    <div class="spec">
+      <header class="spec-head">
+        <div><h3>On light surfaces</h3><p>All variants used on <code>--color-background-canvas</code> / <code>--color-background-surface</code>.</p></div>
+        <span class="tag">Light</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="matrix">
+          <span class="h">Variant</span>
+          <span class="h">Default</span>
+          <span class="h">Hover</span>
+          <span class="h">Focus</span>
+          <span class="h">Filled</span>
+          <span class="h">Error</span>
+
+          <span class="rl">Text</span>
+          <span><input class="input" placeholder="Type…" /></span>
+          <span><input class="input" placeholder="Type…" style="border-color: var(--color-border-strong);" /></span>
+          <span><input class="input" placeholder="Type…" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);" /></span>
+          <span><input class="input" value="Hello" /></span>
+          <span><input class="input is-error" value="x" /></span>
+
+          <span class="rl">Search</span>
+          <span><div class="affix lead-pad"><i data-lucide="search" class="lead"></i><input class="input" placeholder="Search…" /></div></span>
+          <span><div class="affix lead-pad"><i data-lucide="search" class="lead"></i><input class="input" placeholder="Search…" style="border-color: var(--color-border-strong);" /></div></span>
+          <span><div class="affix lead-pad"><i data-lucide="search" class="lead"></i><input class="input" placeholder="Search…" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);" /></div></span>
+          <span><div class="affix lead-pad"><i data-lucide="search" class="lead"></i><input class="input" value="Q1 invoices" /></div></span>
+          <span><div class="affix lead-pad"><i data-lucide="search" class="lead"></i><input class="input is-error" value="???" /></div></span>
+
+          <span class="rl">Select</span>
+          <span><div class="select"><select class="input"><option>Choose…</option></select><i data-lucide="chevron-down" class="chev"></i></div></span>
+          <span><div class="select"><select class="input" style="border-color: var(--color-border-strong);"><option>Choose…</option></select><i data-lucide="chevron-down" class="chev"></i></div></span>
+          <span><div class="select"><select class="input" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);"><option>Choose…</option></select><i data-lucide="chevron-down" class="chev"></i></div></span>
+          <span><div class="select"><select class="input"><option>USD</option></select><i data-lucide="chevron-down" class="chev"></i></div></span>
+          <span><div class="select"><select class="input is-error"><option>Required</option></select><i data-lucide="chevron-down" class="chev"></i></div></span>
+
+          <span class="rl">Group</span>
+          <span><div class="group"><span class="fix l">USD</span><input placeholder="0.00" /></div></span>
+          <span><div class="group" style="border-color: var(--color-border-strong);"><span class="fix l">USD</span><input placeholder="0.00" /></div></span>
+          <span><div class="group" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);"><span class="fix l">USD</span><input placeholder="0.00" /></div></span>
+          <span><div class="group"><span class="fix l">USD</span><input value="2,400.00" /></div></span>
+          <span><div class="group is-error"><span class="fix l">USD</span><input value="-50" /></div></span>
+
+          <span class="rl">Number Input</span>
+          <span><div class="number-input"><button type="button" class="minus"><i data-lucide="minus" style="width:14px;height:14px;"></i></button><input value="0" /><button type="button" class="plus"><i data-lucide="plus" style="width:14px;height:14px;"></i></button></div></span>
+          <span><div class="number-input" style="border-color: var(--color-border-strong);"><button type="button" class="minus"><i data-lucide="minus" style="width:14px;height:14px;"></i></button><input value="0" /><button type="button" class="plus"><i data-lucide="plus" style="width:14px;height:14px;"></i></button></div></span>
+          <span><div class="number-input" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);"><button type="button" class="minus"><i data-lucide="minus" style="width:14px;height:14px;"></i></button><input value="0" /><button type="button" class="plus"><i data-lucide="plus" style="width:14px;height:14px;"></i></button></div></span>
+          <span><div class="number-input"><button type="button" class="minus"><i data-lucide="minus" style="width:14px;height:14px;"></i></button><input value="12" /><button type="button" class="plus"><i data-lucide="plus" style="width:14px;height:14px;"></i></button></div></span>
+          <span><span style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);">— n/a</span></span>
+
+          <span class="rl">Date</span>
+          <span><button type="button" class="date-trigger"><span class="placeholder">Select…</span><i data-lucide="chevron-down"></i></button></span>
+          <span><button type="button" class="date-trigger" style="border-color: var(--color-border-strong);"><span class="placeholder">Select…</span><i data-lucide="chevron-down"></i></button></span>
+          <span><button type="button" class="date-trigger" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);"><span class="placeholder">Select…</span><i data-lucide="chevron-down"></i></button></span>
+          <span><button type="button" class="date-trigger"><span>Apr 17, 2026</span><i data-lucide="chevron-down"></i></button></span>
+          <span><button type="button" class="date-trigger is-error"><span>Past date</span><i data-lucide="chevron-down"></i></button></span>
+
+          <span class="rl">Underline</span>
+          <span><input class="input underline" placeholder="Quick note…" /></span>
+          <span><input class="input underline" placeholder="Quick note…" style="border-bottom-color: var(--color-border-strong);" /></span>
+          <span><input class="input underline" placeholder="Quick note…" style="border-bottom-color: var(--color-border-focus);" /></span>
+          <span><input class="input underline" value="Reference 47821" /></span>
+          <span><input class="input underline is-error" value="Invalid" /></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Boolean controls -->
+    <div class="spec">
+      <header class="spec-head">
+        <div><h3>Boolean controls</h3><p>Switch / Checkbox / Radio compress the matrix to <em>off</em>, <em>on</em>, <em>focus</em>, <em>disabled</em>. There's no "filled" because the control <em>is</em> the value.</p></div>
+        <span class="tag">Boolean</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="matrix" style="grid-template-columns: 130px repeat(4, minmax(0, 1fr));">
+          <span class="h">Variant</span>
+          <span class="h">Off</span>
+          <span class="h">On</span>
+          <span class="h">Focus</span>
+          <span class="h">Disabled</span>
+
+          <span class="rl">Switch</span>
+          <span><label class="switch"><input type="checkbox" /><span class="switch-track"><span class="switch-thumb"></span></span></label></span>
+          <span><label class="switch"><input type="checkbox" checked /><span class="switch-track"><span class="switch-thumb"></span></span></label></span>
+          <span><label class="switch"><input type="checkbox" checked /><span class="switch-track" style="box-shadow: var(--shadow-focus);"><span class="switch-thumb"></span></span></label></span>
+          <span><label class="switch" style="opacity: 0.5;"><input type="checkbox" disabled /><span class="switch-track"><span class="switch-thumb"></span></span></label></span>
+
+          <span class="rl">Checkbox</span>
+          <span><label class="check"><input type="checkbox" /><span class="check-box"><i data-lucide="check"></i></span></label></span>
+          <span><label class="check"><input type="checkbox" checked /><span class="check-box"><i data-lucide="check"></i></span></label></span>
+          <span><label class="check"><input type="checkbox" checked /><span class="check-box" style="box-shadow: var(--shadow-focus);"><i data-lucide="check"></i></span></label></span>
+          <span><label class="check" style="opacity: 0.5;"><input type="checkbox" disabled /><span class="check-box"><i data-lucide="check"></i></span></label></span>
+
+          <span class="rl">Radio</span>
+          <span><label class="radio"><input type="radio" name="m-r1" /><span class="radio-dot"></span></label></span>
+          <span><label class="radio"><input type="radio" name="m-r2" checked /><span class="radio-dot"></span></label></span>
+          <span><label class="radio"><input type="radio" name="m-r3" checked /><span class="radio-dot" style="box-shadow: var(--shadow-focus);"></span></label></span>
+          <span><label class="radio" style="opacity: 0.5;"><input type="radio" name="m-r4" disabled /><span class="radio-dot"></span></label></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== COMPOSITION ========== -->
+  <section class="doc-section" id="composition">
+    <h2><span class="num">05</span>Composition</h2>
+    <p class="lead">How fields combine into real forms. The atomic unit is the <strong>field</strong> — a label, the input itself, an optional helper or error message. Fields stack vertically inside a <strong>fieldset</strong>; fieldsets stack inside a <strong>form</strong>. Use grid for multi-column layouts (1 column on mobile, 2–3 on desktop), but never split a single logical field across columns.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div><h3>Field anatomy</h3><p>The smallest composable unit. <code>&lt;label&gt;</code> always sits above the input; helper or error text sits below. Required marker is a non-decorative asterisk in <code>--color-feedback-danger-foreground</code>.</p></div>
+        <span class="tag">Field</span>
+      </header>
+      <div class="spec-canvas col">
+        <div class="grid-3">
+          <div class="state-cell" style="max-width: 320px;">
+            <span class="lbl">With helper</span>
+            <div class="field">
+              <label for="f-1">Tax ID <span style="color: var(--color-feedback-danger-foreground);">*</span></label>
+              <input class="input" id="f-1" placeholder="00.000.000/0001-00" />
+              <span class="help">Format: 14 digits, dots and slash optional.</span>
+            </div>
+          </div>
+          <div class="state-cell" style="max-width: 320px;">
+            <span class="lbl">With error</span>
+            <div class="field">
+              <label for="f-2">Tax ID <span style="color: var(--color-feedback-danger-foreground);">*</span></label>
+              <input class="input is-error" id="f-2" value="00.000" aria-describedby="f-2-err" />
+              <span class="help err" id="f-2-err"><i data-lucide="alert-circle" style="width:12px;height:12px;vertical-align:-2px;margin-right:4px;"></i>Must be exactly 14 digits.</span>
+            </div>
+          </div>
+          <div class="state-cell" style="max-width: 320px;">
+            <span class="lbl">With success</span>
+            <div class="field">
+              <label for="f-3">Tax ID <span style="color: var(--color-feedback-danger-foreground);">*</span></label>
+              <input class="input is-success" id="f-3" value="12.345.678/0001-90" />
+              <span class="help" style="color: var(--color-feedback-success-foreground);"><i data-lucide="check-circle-2" style="width:12px;height:12px;vertical-align:-2px;margin-right:4px;"></i>Valid CNPJ.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div><h3>Form layouts</h3><p>Single column for narrow surfaces (modals, side panels, mobile). Two columns at ≥ 720px when fields are short and related. Span full width for free-text and textareas.</p></div>
+        <span class="tag">Form</span>
+      </header>
+      <div class="spec-canvas col">
+        <div style="width:100%; max-width: 760px; background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-7);">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5);">
+            <div class="field"><label for="c-fn">First name</label><input class="input" id="c-fn" value="Maria" /></div>
+            <div class="field"><label for="c-ln">Last name</label><input class="input" id="c-ln" value="Costa" /></div>
+            <div class="field" style="grid-column: 1 / -1;"><label for="c-em">Work email</label>
+              <div class="affix lead-pad"><i data-lucide="mail" class="lead"></i><input class="input" id="c-em" type="email" value="maria@company.com" /></div>
+            </div>
+            <div class="field"><label for="c-cur">Currency</label>
+              <div class="select"><select class="input" id="c-cur"><option>USD — US Dollar</option><option>BRL — Brazilian Real</option></select><i data-lucide="chevron-down" class="chev"></i></div>
+            </div>
+            <div class="field"><label for="c-amt">Amount</label>
+              <div class="group"><span class="fix l">USD</span><input id="c-amt" value="2,400.00" /></div>
+            </div>
+            <div class="field" style="grid-column: 1 / -1;"><label for="c-note">Internal note</label>
+              <textarea class="input" id="c-note" placeholder="Optional — visible only to your team."></textarea>
+              <span class="help">Max 280 characters.</span>
+            </div>
+          </div>
+          <div style="display:flex; justify-content: flex-end; gap: var(--space-3); margin-top: var(--space-7); padding-top: var(--space-5); border-top: 1px solid var(--color-border-subtle);">
+            <button type="button" class="btn btn-ghost">Cancel</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div><h3>Inline filter bar</h3><p>Horizontal arrangement for table filters and toolbars. Use <code>.input-sm</code> sizing, no labels above — placeholder + leading icon convey purpose.</p></div>
+        <span class="tag">Toolbar</span>
+      </header>
+      <div class="spec-canvas col">
+        <div style="width:100%; display:flex; flex-wrap: wrap; gap: var(--space-3); padding: var(--space-3); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-sm);">
+          <div class="affix lead-pad" style="flex: 1 1 240px;"><i data-lucide="search" class="lead"></i><input class="input input-sm" type="search" placeholder="Search by ID, counterparty…" /></div>
+          <div class="select" style="width: 160px;"><select class="input input-sm"><option>All statuses</option><option>Settled</option><option>Pending</option></select><i data-lucide="chevron-down" class="chev" style="right: var(--space-3);"></i></div>
+          <button type="button" class="date-trigger" style="width: 200px; height: 32px; padding: 0 var(--space-3); font-size: var(--fs-sm);"><span><i data-lucide="calendar" style="width:13px;height:13px;vertical-align:-2px;margin-right:6px;"></i>Apr 1 – Apr 30</span><i data-lucide="chevron-down"></i></button>
+          <button type="button" class="btn btn-ghost btn-sm"><i data-lucide="filter"></i>More filters</button>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ========== ON INVERSE ========== -->
+  <section class="doc-section" id="on-inverse">
+    <h2><span class="num">06</span>On inverse</h2>
+    <p class="lead">Inputs on dark surfaces — sign-in screens, marketing forms, dashboards in dark mode. Border, background, and label colours flip to inverse tokens; focus colour stays brand blue (it has enough lightness to read on both). Validation colours don't change — error red and success green are tuned for both surfaces in the colour system.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div><h3>Dark surface — text fields</h3><p>Border switches to <code>--color-border-inverse</code>, background to <code>--color-background-inverse-subtle</code>, text to <code>--color-foreground-inverse-default</code>.</p></div>
+        <span class="tag">Inverse</span>
+      </header>
+      <div class="spec-canvas col dark">
+        <div class="state-grid">
+          <div class="state-cell"><span class="lbl">Default</span>
+            <input class="input on-inverse" placeholder="Type something…" />
+          </div>
+          <div class="state-cell"><span class="lbl">Filled</span>
+            <input class="input on-inverse" value="maria@company.com" />
+          </div>
+          <div class="state-cell"><span class="lbl">Focus</span>
+            <input class="input on-inverse" value="maria@company.com" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);" />
+          </div>
+          <div class="state-cell"><span class="lbl">Error</span>
+            <input class="input on-inverse is-error" value="invalid" />
+          </div>
+          <div class="state-cell"><span class="lbl">With icon</span>
+            <div class="affix lead-pad"><i data-lucide="search" class="lead" style="color: var(--color-foreground-inverse-muted);"></i>
+              <input class="input on-inverse" placeholder="Search…" /></div>
+          </div>
+          <div class="state-cell"><span class="lbl">Disabled</span>
+            <input class="input on-inverse" value="Locked" disabled />
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div><h3>Dark surface — sign-in form</h3><p>A complete realistic example: hero form on inverse background. Label colour shifts to <code>--color-foreground-inverse-default</code>, helper to <code>--color-foreground-inverse-muted</code>.</p></div>
+        <span class="tag">Inverse · Form</span>
+      </header>
+      <div class="spec-canvas col dark center">
+        <div style="width:100%; max-width: 380px; padding: var(--space-7); background: var(--color-background-inverse-subtle); border: 1px solid var(--color-border-inverse); border-radius: var(--radius-md); display:flex; flex-direction:column; gap: var(--space-5);">
+          <div>
+            <div style="font-family: var(--font-display); font-size: var(--fs-xxl); font-weight: var(--w-semibold); color: var(--color-foreground-inverse-default); letter-spacing: var(--ls-tight);">Welcome back</div>
+            <div style="font-size: var(--fs-sm); color: var(--color-foreground-inverse-muted); margin-top: var(--space-2);">Sign in to your account</div>
+          </div>
+          <div class="field on-inverse">
+            <label for="i-em" style="color: var(--color-foreground-inverse-default);">Email</label>
+            <input class="input on-inverse" id="i-em" type="email" value="maria@company.com" />
+          </div>
+          <div class="field on-inverse">
+            <label for="i-pw" style="color: var(--color-foreground-inverse-default); display:flex; justify-content: space-between;">Password <a href="#" style="color: var(--color-foreground-inverse-highlight); font-weight: var(--w-regular); text-decoration: none;">Forgot?</a></label>
+            <div class="affix trail-pad">
+              <input class="input on-inverse" id="i-pw" type="password" value="••••••••••" />
+              <button type="button" class="trail-btn" aria-label="Show password" style="color: var(--color-foreground-inverse-muted);"><i data-lucide="eye"></i></button>
+            </div>
+          </div>
+          <label class="check on-inverse" style="color: var(--color-foreground-inverse-default);"><input type="checkbox" checked /><span class="check-box"><i data-lucide="check"></i></span>Keep me signed in for 30 days</label>
+          <button type="button" class="btn btn-primary" style="width:100%; height: 44px;">Sign in</button>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ========== DONT'S ========== -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">07</span>Don'ts</h2>
+    <p class="lead">Patterns that look reasonable in isolation but break the system. Each example pairs the wrong with the right.</p>
+
+    <div class="grid-2">
+      <article class="spec">
+        <header class="spec-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · placeholder as label</h3><p>Placeholder disappears on type. Users forget what the field was for, and screen readers don't always announce it.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
+        <div class="spec-canvas col" style="background: var(--color-feedback-danger-background);">
+          <div class="state-cell"><input class="input" placeholder="Tax ID" value="00.000.000/0001-00" /></div>
+        </div>
+      </article>
+      <article class="spec">
+        <header class="spec-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · always label above</h3><p>Label persists. Placeholder shows format hint.</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
+        <div class="spec-canvas col" style="background: var(--color-feedback-success-background);">
+          <div class="field"><label>Tax ID</label><input class="input" placeholder="00.000.000/0001-00" value="00.000.000/0001-00" /></div>
+        </div>
+      </article>
+
+      <article class="spec">
+        <header class="spec-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · red borders without text</h3><p>Colour alone fails for users with low colour vision. Error must be paired with a message.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
+        <div class="spec-canvas col" style="background: var(--color-feedback-danger-background);">
+          <div class="field"><label>Email</label><input class="input is-error" value="maria@" /></div>
+        </div>
+      </article>
+      <article class="spec">
+        <header class="spec-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · pair colour with text</h3><p>Specific, actionable error message. Icon reinforces the state non-redundantly.</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
+        <div class="spec-canvas col" style="background: var(--color-feedback-success-background);">
+          <div class="field"><label>Email</label><input class="input is-error" value="maria@" /><span class="help err"><i data-lucide="alert-circle" style="width:12px;height:12px;vertical-align:-2px;margin-right:4px;"></i>Email must include a domain.</span></div>
+        </div>
+      </article>
+
+      <article class="spec">
+        <header class="spec-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · split a field across columns</h3><p>The label belongs to the input. Splitting them across columns confuses scanning and breaks responsive flow.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
+        <div class="spec-canvas col" style="background: var(--color-feedback-danger-background);">
+          <div style="display:grid; grid-template-columns: 120px 1fr; gap: var(--space-4); align-items: center; width:100%; max-width:400px;">
+            <label style="font-size: var(--fs-sm); color: var(--color-foreground-default);">Amount</label>
+            <input class="input" placeholder="0.00" />
+          </div>
+        </div>
+      </article>
+      <article class="spec">
+        <header class="spec-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · stack label above input</h3><p>Vertical pair — scans top-to-bottom, works at any width, accessible to AT.</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
+        <div class="spec-canvas col" style="background: var(--color-feedback-success-background);">
+          <div class="field" style="max-width: 280px;"><label>Amount</label><input class="input" placeholder="0.00" /></div>
+        </div>
+      </article>
+
+      <article class="spec">
+        <header class="spec-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · disabled looks like filled</h3><p>If a disabled input is too similar to a filled one, users try to edit it and get frustrated.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
+        <div class="spec-canvas col" style="background: var(--color-feedback-danger-background);">
+          <input class="input" value="Locked value" style="background: var(--color-background-surface); color: var(--color-foreground-default);" />
+        </div>
+      </article>
+      <article class="spec">
+        <header class="spec-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · disabled has reduced opacity</h3><p>0.5 opacity + <code>not-allowed</code> cursor + <code>--color-background-subtle</code> read clearly as inactive.</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
+        <div class="spec-canvas col" style="background: var(--color-feedback-success-background);">
+          <input class="input" value="Locked value" disabled />
+        </div>
+      </article>
+
+      <article class="spec">
+        <header class="spec-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · use Switch for forms</h3><p>Switches imply immediate effect. In a form (where the user must press Save), they mislead the user into thinking the change has applied.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
+        <div class="spec-canvas col" style="background: var(--color-feedback-danger-background);">
+          <label class="switch"><input type="checkbox" checked /><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-label">I agree to the terms</span></label>
+        </div>
+      </article>
+      <article class="spec">
+        <header class="spec-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · use Checkbox for forms</h3><p>Checkbox state is captured on submit — matches the mental model of "I'll review and confirm".</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
+        <div class="spec-canvas col" style="background: var(--color-feedback-success-background);">
+          <label class="check"><input type="checkbox" checked /><span class="check-box"><i data-lucide="check"></i></span>I agree to the terms</label>
+        </div>
+      </article>
+
+      <article class="spec">
+        <header class="spec-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · radio for boolean</h3><p>Two radio buttons for yes/no waste space and read as a setting in flux.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
+        <div class="spec-canvas col" style="background: var(--color-feedback-danger-background);">
+          <fieldset style="border:0; padding:0; margin:0; display:flex; gap: var(--space-5);"><legend style="font-size: var(--fs-sm); color: var(--color-foreground-default); margin-bottom: var(--space-3);">Email me updates?</legend><label class="radio"><input type="radio" name="dn" /><span class="radio-dot"></span>Yes</label><label class="radio"><input type="radio" name="dn" /><span class="radio-dot"></span>No</label></fieldset>
+        </div>
+      </article>
+      <article class="spec">
+        <header class="spec-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · single checkbox</h3><p>One checkbox = one boolean. The label asks the question.</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
+        <div class="spec-canvas col" style="background: var(--color-feedback-success-background);">
+          <label class="check"><input type="checkbox" /><span class="check-box"><i data-lucide="check"></i></span>Email me product updates</label>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ========== ACCESSIBILITY ========== -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">08</span>Accessibility</h2>
+    <p class="lead">Inputs are the most-touched control type in any product. They must work flawlessly with keyboard, screen readers, voice control, and touch. The rules below are non-negotiable — every variant in this document already complies.</p>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Requirements</h3><p>Mapped to WCAG 2.2 AA. Each rule has a concrete implementation.</p></div></header>
+      <div class="spec-foot" style="grid-template-columns: 1fr;">
+        <table class="token-table">
+          <thead><tr><th>Requirement</th><th>How we meet it</th><th>WCAG</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Visible label</strong></td><td class="v">Every input has a <code>&lt;label for="…"&gt;</code> above it. Placeholder is supplemental, never a replacement.</td><td class="k">3.3.2</td></tr>
+            <tr><td><strong>Associated label</strong></td><td class="v">Either wrap the input or use <code>for</code>+<code>id</code>. Boolean controls wrap (<code>&lt;label&gt;&lt;input&gt;…&lt;/label&gt;</code>).</td><td class="k">1.3.1, 4.1.2</td></tr>
+            <tr><td><strong>Visible focus</strong></td><td class="v">4px <code>--shadow-focus</code> ring on every focusable element. Never <code>outline: none</code> without an alternative.</td><td class="k">2.4.7, 2.4.11</td></tr>
+            <tr><td><strong>Touch target</strong></td><td class="v">≥ 32px on all sides for default size. Boolean controls have a 32px clickable label even when the visual is smaller.</td><td class="k">2.5.8</td></tr>
+            <tr><td><strong>Colour + text for state</strong></td><td class="v">Error state always pairs <code>--color-danger-500</code> border with a text message. Success likewise. Never colour-only.</td><td class="k">1.4.1</td></tr>
+            <tr><td><strong>Contrast</strong></td><td class="v">Text 4.5:1 minimum. Borders 3:1 against background. Tested on light &amp; inverse surfaces.</td><td class="k">1.4.3, 1.4.11</td></tr>
+            <tr><td><strong>Error association</strong></td><td class="v">Helper / error message has <code>id</code>; input has <code>aria-describedby</code> pointing to it. Errors also set <code>aria-invalid="true"</code>.</td><td class="k">3.3.1, 4.1.3</td></tr>
+            <tr><td><strong>Required marker</strong></td><td class="v">Visual asterisk in <code>--color-feedback-danger-foreground</code> + <code>aria-required="true"</code>. Never asterisk-only.</td><td class="k">3.3.2</td></tr>
+            <tr><td><strong>Autocomplete</strong></td><td class="v"><code>autocomplete</code> hint on personal-data fields (email, name, postal-code, cc-number…) so password managers and AT can pre-fill.</td><td class="k">1.3.5</td></tr>
+            <tr><td><strong>Disabled vs read-only</strong></td><td class="v"><code>disabled</code> when the field is non-applicable. <code>readonly</code> when the value matters but can't be changed (still focusable, still in tab order).</td><td class="k">1.3.1</td></tr>
+            <tr><td><strong>Group naming</strong></td><td class="v">Radio &amp; checkbox groups always wrap in <code>&lt;fieldset&gt;</code> with a <code>&lt;legend&gt;</code>. Never a free-floating heading.</td><td class="k">1.3.1</td></tr>
+            <tr><td><strong>Switch role</strong></td><td class="v">Switch markup is <code>&lt;input type="checkbox" role="switch"&gt;</code>. AT announces "switch, on/off" rather than "checked/unchecked".</td><td class="k">4.1.2</td></tr>
+            <tr><td><strong>Mobile keyboards</strong></td><td class="v">Use <code>type="email"</code>, <code>type="tel"</code>, <code>inputmode="numeric"</code>, <code>inputmode="decimal"</code> for numeric and currency fields.</td><td class="k">1.3.5</td></tr>
+            <tr><td><strong>Motion</strong></td><td class="v">All transitions ≤ 160ms, no spinning or strobing. Honors <code>prefers-reduced-motion</code>.</td><td class="k">2.3.3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Keyboard cheat sheet</h3><p>Standard browser bindings — we don't override them. Custom controls (Combobox, Date picker) follow the WAI-ARIA APG patterns.</p></div></header>
+      <div class="spec-foot" style="grid-template-columns: 1fr;">
+        <table class="token-table">
+          <thead><tr><th>Key</th><th>Action</th><th>Where</th></tr></thead>
+          <tbody>
+            <tr><td><kbd style="font-family: var(--font-mono); padding: 2px 6px; background: var(--color-background-subtle); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); font-size: var(--fs-xxs);">Tab</kbd></td><td class="v">Move to next focusable input</td><td class="k">Everywhere</td></tr>
+            <tr><td><kbd style="font-family: var(--font-mono); padding: 2px 6px; background: var(--color-background-subtle); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); font-size: var(--fs-xxs);">Shift + Tab</kbd></td><td class="v">Move to previous focusable input</td><td class="k">Everywhere</td></tr>
+            <tr><td><kbd style="font-family: var(--font-mono); padding: 2px 6px; background: var(--color-background-subtle); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); font-size: var(--fs-xxs);">Space</kbd></td><td class="v">Toggle on/off</td><td class="k">Switch, Checkbox</td></tr>
+            <tr><td><kbd style="font-family: var(--font-mono); padding: 2px 6px; background: var(--color-background-subtle); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); font-size: var(--fs-xxs);">↑ / ↓</kbd></td><td class="v">Increment / decrement value</td><td class="k">Number Input, Slider, Number</td></tr>
+            <tr><td><kbd style="font-family: var(--font-mono); padding: 2px 6px; background: var(--color-background-subtle); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); font-size: var(--fs-xxs);">← / →</kbd></td><td class="v">Move radio selection / slider value</td><td class="k">Radio, Slider</td></tr>
+            <tr><td><kbd style="font-family: var(--font-mono); padding: 2px 6px; background: var(--color-background-subtle); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); font-size: var(--fs-xxs);">Enter</kbd></td><td class="v">Submit enclosing form</td><td class="k">Text inputs</td></tr>
+            <tr><td><kbd style="font-family: var(--font-mono); padding: 2px 6px; background: var(--color-background-subtle); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); font-size: var(--fs-xxs);">Esc</kbd></td><td class="v">Close picker / dismiss popover</td><td class="k">Date, Combobox</td></tr>
+            <tr><td><kbd style="font-family: var(--font-mono); padding: 2px 6px; background: var(--color-background-subtle); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); font-size: var(--fs-xxs);">Backspace</kbd></td><td class="v">When empty, removes last chip</td><td class="k">Chips</td></tr>
+            <tr><td><kbd style="font-family: var(--font-mono); padding: 2px 6px; background: var(--color-background-subtle); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); font-size: var(--fs-xxs);">⌘K / Ctrl-K</kbd></td><td class="v">Focus pill search (global)</td><td class="k">Pill search</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <!-- ========== TOKENS ========== -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">09</span>Tokens</h2>
+    <p class="lead">Every value in this document resolves to a token from <code>dist/css/tokens.css</code>. Components contain zero hard-coded colours, sizes, or fonts. To rebrand the input system, change tokens — not selectors.</p>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Colour</h3></div><span class="tag">Surface · Border · Text</span></header>
+      <div class="spec-foot" style="grid-template-columns: 1fr;">
+        <table class="token-table">
+          <thead><tr><th>Role</th><th>Token</th><th>Used in</th></tr></thead>
+          <tbody>
+            <tr><td class="v">Field background, default</td><td class="k">--color-background-surface</td><td class="v">Text, Email, Password, Search, Select, Textarea, Date trigger, Number Input cell</td></tr>
+            <tr><td class="v">Field background, prefix/suffix &amp; number-input buttons</td><td class="k">--color-background-subtle</td><td class="v">Group <code>.fix</code>, Number Input <code>+ / −</code>, Disabled fill</td></tr>
+            <tr><td class="v">Border, default</td><td class="k">--color-border-default</td><td class="v">All field outlines at rest</td></tr>
+            <tr><td class="v">Border, hover</td><td class="k">--color-border-strong</td><td class="v">All fields on <code>:hover</code></td></tr>
+            <tr><td class="v">Border, focus</td><td class="k">--color-border-focus</td><td class="v">All fields on <code>:focus</code></td></tr>
+            <tr><td class="v">Focus ring</td><td class="k">--shadow-focus</td><td class="v">All fields on <code>:focus</code> (4px outer)</td></tr>
+            <tr><td class="v">Border, error</td><td class="k">--color-danger-500</td><td class="v"><code>.is-error</code> on every field</td></tr>
+            <tr><td class="v">Border, success</td><td class="k">--color-success-500</td><td class="v"><code>.is-success</code> on every field</td></tr>
+            <tr><td class="v">Text, value</td><td class="k">--color-foreground-default</td><td class="v">Filled text in every input</td></tr>
+            <tr><td class="v">Text, placeholder</td><td class="k">--color-foreground-muted</td><td class="v"><code>::placeholder</code>, helper text, prefix/suffix</td></tr>
+            <tr><td class="v">Text, label</td><td class="k">--color-foreground-default</td><td class="v">Field <code>&lt;label&gt;</code></td></tr>
+            <tr><td class="v">Text, error message</td><td class="k">--color-feedback-danger-foreground</td><td class="v"><code>.help.err</code>, required marker</td></tr>
+            <tr><td class="v">Brand accent (toggle on)</td><td class="k">--color-brand-secondary-500</td><td class="v">Switch on, Radio dot, Checkbox check, Slider track filled, Chip background</td></tr>
+            <tr><td class="v">Inverse field background</td><td class="k">--color-background-inverse-subtle</td><td class="v"><code>.input.on-inverse</code></td></tr>
+            <tr><td class="v">Inverse border</td><td class="k">--color-border-inverse</td><td class="v"><code>.on-inverse</code> outlines</td></tr>
+            <tr><td class="v">Inverse text</td><td class="k">--color-foreground-inverse-default</td><td class="v"><code>.on-inverse</code> values, labels</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Type</h3></div><span class="tag">Family · Size · Weight</span></header>
+      <div class="spec-foot" style="grid-template-columns: 1fr;">
+        <table class="token-table">
+          <thead><tr><th>Role</th><th>Token</th><th>Computed</th></tr></thead>
+          <tbody>
+            <tr><td class="v">Input value (default)</td><td class="k">--font-sans / --fs-md / --w-regular</td><td class="v">15px Inter, regular</td></tr>
+            <tr><td class="v">Input value (small)</td><td class="k">--font-sans / --fs-sm</td><td class="v">13px Inter, regular</td></tr>
+            <tr><td class="v">Input value (large)</td><td class="k">--font-sans / --fs-lg</td><td class="v">17px Inter, regular</td></tr>
+            <tr><td class="v">Label</td><td class="k">--font-sans / --fs-sm / --w-semibold</td><td class="v">13px Inter, 600</td></tr>
+            <tr><td class="v">Helper / error</td><td class="k">--font-sans / --fs-xs</td><td class="v">12px Inter, regular</td></tr>
+            <tr><td class="v">Numeric (Number Input, OTP, Slider, Group prefix)</td><td class="k">--font-mono</td><td class="v">JetBrains Mono</td></tr>
+            <tr><td class="v">Section caps in this doc</td><td class="k">--font-mono / --fs-xxs / --ls-caps</td><td class="v">11px JetBrains, +0.08em</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Spacing &amp; radii</h3></div><span class="tag">Layout</span></header>
+      <div class="spec-foot" style="grid-template-columns: 1fr;">
+        <table class="token-table">
+          <thead><tr><th>Role</th><th>Token</th><th>Px</th></tr></thead>
+          <tbody>
+            <tr><td class="v">Field height (sm / default / lg)</td><td class="k">— / — / —</td><td class="v">32 / 40 / 48</td></tr>
+            <tr><td class="v">Field padding-x (sm / default / lg)</td><td class="k">--space-3 / --space-4 / --space-5</td><td class="v">8 / 12 / 16</td></tr>
+            <tr><td class="v">Gap between label and field</td><td class="k">--space-2</td><td class="v">6</td></tr>
+            <tr><td class="v">Gap between field and helper</td><td class="k">--space-2</td><td class="v">6</td></tr>
+            <tr><td class="v">Gap between fields in a form</td><td class="k">--space-5</td><td class="v">16</td></tr>
+            <tr><td class="v">Radius (sm / default / lg)</td><td class="k">--radius-xs / --radius-sm / --radius-md</td><td class="v">4 / 6 / 10</td></tr>
+            <tr><td class="v">Radius — pill search, switch, slider thumb</td><td class="k">--radius-pill</td><td class="v">999</td></tr>
+            <tr><td class="v">Focus ring offset</td><td class="k">— (built into --shadow-focus)</td><td class="v">4</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Motion</h3></div><span class="tag">Transitions</span></header>
+      <div class="spec-foot" style="grid-template-columns: 1fr;">
+        <table class="token-table">
+          <thead><tr><th>Property</th><th>Duration · Easing</th><th>Where</th></tr></thead>
+          <tbody>
+            <tr><td class="v"><code>border-color</code>, <code>box-shadow</code></td><td class="k">120ms ease-out</td><td class="v">All fields, hover &amp; focus</td></tr>
+            <tr><td class="v"><code>transform</code> (Switch thumb)</td><td class="k">160ms cubic-bezier(0.4, 0, 0.2, 1)</td><td class="v">Switch on/off</td></tr>
+            <tr><td class="v"><code>opacity</code> (Checkbox / Radio mark)</td><td class="k">100ms ease-out</td><td class="v">Toggle</td></tr>
+            <tr><td class="v"><code>transform</code> (Chevron rotate)</td><td class="k">160ms ease-out</td><td class="v">Select on open</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+</main>
+<script>
+  lucide.createIcons();
+  const indet = document.getElementById('indet-cb');
+  if (indet) indet.indeterminate = true;
+</script>
+</body>
+</html>

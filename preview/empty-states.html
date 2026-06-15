@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Empty states" subtitle="First-run, zero results, errors" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Empty States · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .doc-header { display:flex; align-items:flex-end; justify-content:space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p  { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta { display:flex; gap: var(--space-3); flex-shrink:0; }
+  .doc-meta-pill { display:inline-flex; align-items:center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border:1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+  .doc-nav { display:flex; flex-wrap:wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration:none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+  .lead code, .spec-head p code { font-family: var(--font-mono); font-size: 0.92em; color: var(--color-foreground-accent); background: var(--color-background-selected); padding: 1px var(--space-2); border-radius: var(--radius-2xs); }
+
+  .spec { background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow:hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
+  .spec-head { display:flex; align-items:flex-start; justify-content:space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: var(--color-background-selected); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .spec-head .tag { display:inline-flex; align-items:center; gap: var(--space-2); padding: var(--space-1) var(--space-3); background: var(--color-background-subtle); color: var(--color-foreground-secondary); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; border-radius: var(--radius-pill); flex-shrink:0; }
+  .spec-canvas { padding: var(--space-7) var(--space-6); background: var(--color-background-canvas); display:flex; flex-wrap:wrap; gap: var(--space-5); align-items:center; justify-content:center; border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-canvas.grid-2 { display:grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: var(--space-5); }
+  .spec-foot { display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); padding: var(--space-5) var(--space-6); background: var(--color-background-surface); }
+  .spec-foot h4 { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); margin: 0 0 var(--space-3); }
+  .spec-foot ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap: var(--space-2); }
+  .spec-foot li { font-size: var(--fs-sm); color: var(--color-foreground-secondary); display:flex; gap: var(--space-2); align-items:flex-start; }
+  .spec-foot li i, .spec-foot li svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); flex-shrink:0; margin-top: 2px; }
+  .spec-foot li.do i, .spec-foot li.do svg { color: var(--color-feedback-success-foreground); }
+  .spec-foot li.dont i, .spec-foot li.dont svg { color: var(--color-feedback-danger-foreground); }
+
+  .anatomy { background: var(--color-background-canvas); padding: var(--space-10) var(--space-8); border-radius: var(--radius-lg); border: 1px solid var(--color-border-default); display:flex; flex-direction:column; align-items:center; gap: var(--space-8); margin-bottom: var(--space-5); box-shadow: var(--shadow-xs); }
+  .anatomy-callouts { display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--space-6); width:100%; max-width:880px; }
+  .anatomy-callout { display:flex; flex-direction:column; align-items:center; gap: var(--space-2); text-align:center; }
+  .anatomy-callout .num { width:22px; height:22px; border-radius: var(--radius-pill); background: var(--color-foreground-accent); color: var(--color-foreground-on-solid); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-bold); display:inline-flex; align-items:center; justify-content:center; }
+  .anatomy-callout .name { font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-default); text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-semibold); }
+  .anatomy-callout .desc { font-size: var(--fs-xs); color: var(--color-foreground-muted); line-height: var(--lh-snug); max-width: 22ch; }
+
+  .token-table { width:100%; border-collapse:collapse; background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-md); overflow:hidden; box-shadow: var(--shadow-xs); font-size: var(--fs-sm); }
+  .token-table th, .token-table td { padding: var(--space-3) var(--space-5); text-align:left; border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .token-table tr:last-child td { border-bottom: 0; }
+  .token-table th { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); }
+  .token-table td.k { font-family: var(--font-mono); color: var(--color-foreground-accent); white-space: nowrap; }
+  .token-table td.v { font-family: var(--font-mono); color: var(--color-foreground-secondary); white-space: nowrap; }
+
+  /* sample frame to host an empty state in the wild */
+  .frame { background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-md); overflow:hidden; width: 100%; max-width: 540px; box-shadow: var(--shadow-xs); }
+  .frame-head { padding: var(--space-3) var(--space-4); border-bottom:1px solid var(--color-border-subtle); display:flex; gap: var(--space-2); align-items:center; }
+  .frame-head .dot { width:10px; height:10px; border-radius: 50%; background: var(--color-neutral-300); }
+  .frame-head .ttl { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-left: var(--space-2); }
+  .frame-body { padding: 0; }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <header class="doc-header">
+    <div>
+      <h1>Empty states</h1>
+      <p>The zero-data surface. When a page, section, or list has nothing to show, the empty state replaces it with an illustration, a one-line headline, optional copy, and a primary call-to-action that gets the user past the void.</p>
+    </div>
+    <div class="doc-meta"><span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Ready</span></div>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#overview">Overview</a>
+    <a href="#anatomy">Anatomy</a>
+    <a href="#kinds">Illustrations</a>
+    <a href="#sizes">Sizes</a>
+    <a href="#tones">Tones</a>
+    <a href="#actions">Actions</a>
+    <a href="#in-context">In context</a>
+    <a href="#tokens">Tokens</a>
+    <a href="#donts">Don'ts</a>
+    <a href="index.html#components">← Components</a>
+  </nav>
+
+  <!-- 01 OVERVIEW -->
+  <section class="doc-section" id="overview">
+    <h2><span class="num">01</span>Overview</h2>
+    <p class="lead">An empty state is the most important screen in a feature you've never used. It's the user's first impression of what something does and why they should care. Six illustration kinds — <code>counterparties</code>, <code>receivables</code>, <code>transactions</code>, <code>search</code>, <code>error</code>, <code>default</code> — cover every zero-data scenario in ATTRUS.</p>
+  </section>
+
+  <!-- 02 ANATOMY -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">02</span>Anatomy</h2>
+    <p class="lead">Every empty state stacks the same five pieces vertically, center-aligned: <strong>illustration</strong>, <strong>title</strong>, <strong>description</strong>, <strong>action row</strong> (one or two buttons). The optional <strong>tone</strong> wraps the whole composition in a colored panel.</p>
+    <div class="anatomy">
+      <svg viewBox="0 0 120 120" width="104" height="104" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="anat-g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--color-brand-secondary-200)"/><stop offset="1" stop-color="var(--color-brand-secondary-400)"/></linearGradient>
+          <linearGradient id="anat-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--color-brand-secondary-200)"/><stop offset="1" stop-color="var(--color-brand-secondary-400)"/></linearGradient>
+        </defs>
+        <circle cx="60" cy="60" r="54" fill="url(#anat-g1)" opacity=".5"/>
+        <rect x="14" y="42" width="42" height="52" rx="6" fill="var(--color-background-surface)" stroke="var(--color-border-strong)"/>
+        <rect x="64" y="42" width="42" height="52" rx="6" fill="var(--color-background-surface)" stroke="var(--color-border-strong)"/>
+        <circle cx="35" cy="60" r="10" fill="url(#anat-g2)"/>
+        <circle cx="85" cy="60" r="10" fill="var(--color-brand-accent-500)"/>
+        <path d="M48 60 L72 60" stroke="var(--color-brand-secondary-500)" stroke-width="2" stroke-dasharray="3 3"/>
+      </svg>
+      <div style="display:flex; flex-direction:column; align-items:center; gap: var(--space-2); text-align:center;">
+        <div style="font-size: var(--fs-lg); font-weight: var(--w-bold); letter-spacing:-.01em; color: var(--color-foreground-default);">No counterparties yet</div>
+        <div style="font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 360px;">Add a counterparty to start sending transfers. You can import from a CSV or create one manually.</div>
+      </div>
+      <div style="display:flex; gap: var(--space-2);">
+        <button class="btn btn-secondary btn-sm">Import CSV</button>
+        <button class="btn btn-primary btn-sm">Add counterparty</button>
+      </div>
+      <div class="anatomy-callouts">
+        <div class="anatomy-callout"><span class="num">1</span><span class="name">Illustration</span><span class="desc">96–104 px abstract SVG. One of six kinds.</span></div>
+        <div class="anatomy-callout"><span class="num">2</span><span class="name">Title</span><span class="desc">Single line. States what's missing.</span></div>
+        <div class="anatomy-callout"><span class="num">3</span><span class="name">Description</span><span class="desc">≤ 2 lines. Tells the user what to do next.</span></div>
+        <div class="anatomy-callout"><span class="num">4</span><span class="name">Primary action</span><span class="desc">The single most-likely next step.</span></div>
+        <div class="anatomy-callout"><span class="num">5</span><span class="name">Secondary action</span><span class="desc">Optional. Import, learn-more, etc.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 KINDS -->
+  <section class="doc-section" id="kinds">
+    <h2><span class="num">03</span>Illustration kinds</h2>
+    <p class="lead">Six abstract, geometric illustrations — never literal photography or characters. Pick the one whose metaphor matches the missing data type.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div><h3>counterparties <code>kind="counterparties"</code></h3><p>Two account avatars connected by a dashed line, a "+" badge above. Use when no recipients/payees exist.</p></div>
+        <span class="tag">Connection</span>
+      </header>
+      <div class="spec-canvas"><div class="empty"><div class="empty-illo">
+        <svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="k1-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--color-brand-secondary-100)"/><stop offset="1" stop-color="var(--color-brand-secondary-200)"/></linearGradient><linearGradient id="k1-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--color-brand-secondary-300)"/><stop offset="1" stop-color="var(--color-brand-secondary-500)"/></linearGradient></defs>
+          <circle cx="60" cy="60" r="54" fill="url(#k1-a)" opacity=".5"/>
+          <rect x="14" y="42" width="42" height="52" rx="6" fill="var(--color-background-surface)" stroke="var(--color-border-strong)"/>
+          <rect x="64" y="42" width="42" height="52" rx="6" fill="var(--color-background-surface)" stroke="var(--color-border-strong)"/>
+          <circle cx="35" cy="60" r="10" fill="url(#k1-b)"/>
+          <circle cx="85" cy="60" r="10" fill="var(--color-brand-accent-500)"/>
+          <path d="M48 60 L72 60" stroke="var(--color-brand-secondary-500)" stroke-width="2" stroke-dasharray="3 3"/>
+          <rect x="20" y="78" width="30" height="3" rx="1.5" fill="var(--color-border-default)"/>
+          <rect x="20" y="85" width="18" height="3" rx="1.5" fill="var(--color-border-default)"/>
+          <rect x="70" y="78" width="30" height="3" rx="1.5" fill="var(--color-border-default)"/>
+          <rect x="70" y="85" width="18" height="3" rx="1.5" fill="var(--color-border-default)"/>
+          <circle cx="60" cy="30" r="13" fill="url(#k1-b)"/>
+          <path d="M54 30h12 M60 24v12" stroke="var(--color-neutral-500)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div><h4>No counterparties yet</h4><p>Add a counterparty to start sending transfers.</p><div class="empty-actions"><button class="btn btn-secondary btn-sm">Import CSV</button><button class="btn btn-primary btn-sm">Add counterparty</button></div></div></div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div><h3>receivables <code>kind="receivables"</code></h3><p>An open inbox with an arrow descending into it. Use when no incoming items, payments, or invoices exist yet.</p></div>
+        <span class="tag">Inbox</span>
+      </header>
+      <div class="spec-canvas"><div class="empty"><div class="empty-illo">
+        <svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="k2-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--color-brand-secondary-100)"/><stop offset="1" stop-color="var(--color-brand-secondary-200)"/></linearGradient></defs>
+          <circle cx="60" cy="60" r="54" fill="url(#k2-a)" opacity=".5"/>
+          <path d="M22 70v20a4 4 0 0 0 4 4h68a4 4 0 0 0 4-4V70" fill="var(--color-background-surface)" stroke="var(--color-brand-secondary-500)" stroke-width="1.5"/>
+          <path d="M22 70l10-22a4 4 0 0 1 3.6-2.4h48.8A4 4 0 0 1 88 48l10 22" fill="var(--color-background-surface)" stroke="var(--color-brand-secondary-500)" stroke-width="1.5"/>
+          <path d="M22 70h20l4 8h28l4-8h20" fill="none" stroke="var(--color-brand-secondary-500)" stroke-width="1.5"/>
+          <path d="M60 20v26 M52 38l8 8 8-8" fill="none" stroke="var(--color-brand-accent-500)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div><h4>No receivables this month</h4><p>Once a counterparty pays you, it shows up here automatically.</p><div class="empty-actions"><button class="btn btn-secondary btn-sm">Learn how</button><button class="btn btn-primary btn-sm">Send invoice</button></div></div></div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div><h3>transactions <code>kind="transactions"</code></h3><p>Two arrows in opposite directions inside a card — the exchange motif. Use for empty transaction lists, transfer histories, FX logs.</p></div>
+        <span class="tag">Exchange</span>
+      </header>
+      <div class="spec-canvas"><div class="empty"><div class="empty-illo">
+        <svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="k3-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--color-brand-secondary-100)"/><stop offset="1" stop-color="var(--color-brand-secondary-200)"/></linearGradient></defs>
+          <circle cx="60" cy="60" r="54" fill="url(#k3-a)" opacity=".5"/>
+          <rect x="24" y="36" width="72" height="48" rx="8" fill="var(--color-background-surface)" stroke="var(--color-border-strong)"/>
+          <path d="M36 52h44 M72 44l8 8-8 8" fill="none" stroke="var(--color-brand-secondary-500)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M84 68H40 M48 76l-8-8 8-8" fill="none" stroke="var(--color-brand-accent-500)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div><h4>No transactions yet</h4><p>Send your first transfer to see it here.</p><div class="empty-actions"><button class="btn btn-primary btn-sm">New transfer</button></div></div></div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div><h3>search <code>kind="search"</code></h3><p>A magnifying glass over a "no results" pattern. Use when a filter, search query, or date range produced zero matches — the data exists, just not for this query.</p></div>
+        <span class="tag">No results</span>
+      </header>
+      <div class="spec-canvas"><div class="empty"><div class="empty-illo">
+        <svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="k4-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--color-brand-secondary-100)"/><stop offset="1" stop-color="var(--color-brand-secondary-200)"/></linearGradient></defs>
+          <circle cx="60" cy="60" r="54" fill="url(#k4-a)" opacity=".5"/>
+          <circle cx="54" cy="54" r="22" fill="var(--color-background-surface)" stroke="var(--color-brand-secondary-500)" stroke-width="2"/>
+          <path d="M70 70l16 16" stroke="var(--color-brand-secondary-500)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M46 54h16 M54 46v16" stroke="var(--color-neutral-500)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div><h4>No matches for "acme"</h4><p>Try a different keyword, or clear filters to see all results.</p><div class="empty-actions"><button class="btn btn-secondary btn-sm">Clear filters</button></div></div></div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div><h3>error <code>kind="error"</code></h3><p>A warning triangle inside a danger-tinted halo. Use only for genuine error states — load failed, request timed out — never for empty data.</p></div>
+        <span class="tag">Error</span>
+      </header>
+      <div class="spec-canvas"><div class="empty"><div class="empty-illo">
+        <svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="60" r="54" fill="var(--color-feedback-danger-background)" opacity=".6"/>
+          <path d="M60 22l44 76H16z" fill="var(--color-background-surface)" stroke="var(--color-danger-500)" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M60 50v22" stroke="var(--color-danger-500)" stroke-width="3.5" stroke-linecap="round"/>
+          <circle cx="60" cy="82" r="3" fill="var(--color-danger-500)"/>
+        </svg>
+      </div><h4>Couldn't load transactions</h4><p>The server didn't respond in time. Check your connection and retry.</p><div class="empty-actions"><button class="btn btn-primary btn-sm">Retry</button></div></div></div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div><h3>default <code>kind="default"</code></h3><p>A blank document. The fallback when no other kind fits — use sparingly.</p></div>
+        <span class="tag">Fallback</span>
+      </header>
+      <div class="spec-canvas"><div class="empty"><div class="empty-illo">
+        <svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="k6-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--color-brand-secondary-100)"/><stop offset="1" stop-color="var(--color-brand-secondary-200)"/></linearGradient></defs>
+          <circle cx="60" cy="60" r="54" fill="url(#k6-a)" opacity=".5"/>
+          <rect x="34" y="26" width="52" height="68" rx="6" fill="var(--color-background-surface)" stroke="var(--color-border-strong)"/>
+          <rect x="42" y="40" width="36" height="3" rx="1.5" fill="var(--color-border-default)"/>
+          <rect x="42" y="50" width="28" height="3" rx="1.5" fill="var(--color-border-default)"/>
+          <rect x="42" y="60" width="32" height="3" rx="1.5" fill="var(--color-border-default)"/>
+          <rect x="42" y="70" width="20" height="3" rx="1.5" fill="var(--color-border-default)"/>
+        </svg>
+      </div><h4>Nothing here yet</h4><p>This section is empty. Once data is available, it will appear here.</p></div></div>
+    </article>
+  </section>
+
+  <!-- 04 SIZES -->
+  <section class="doc-section" id="sizes">
+    <h2><span class="num">04</span>Sizes</h2>
+    <p class="lead">Two sizes. <code>compact</code> is for empty states inside cards, drawers, or tight surfaces. The default is for full-page or full-section voids.</p>
+    <article class="spec">
+      <header class="spec-head"><div><h3>Default <code>compact={false}</code></h3><p>Illustration 104 px, padding 56 px / 24 px. Use for full-screen and large-section empty states.</p></div></header>
+      <div class="spec-canvas"><div class="empty empty-default"><div class="empty-illo"><svg viewBox="0 0 120 120" width="104" height="104" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sz1-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--color-brand-secondary-100)"/><stop offset="1" stop-color="var(--color-brand-secondary-200)"/></linearGradient></defs><circle cx="60" cy="60" r="54" fill="url(#sz1-a)" opacity=".5"/><rect x="34" y="26" width="52" height="68" rx="6" fill="var(--color-background-surface)" stroke="var(--color-border-strong)"/><rect x="42" y="40" width="36" height="3" rx="1.5" fill="var(--color-border-default)"/><rect x="42" y="50" width="28" height="3" rx="1.5" fill="var(--color-border-default)"/><rect x="42" y="60" width="32" height="3" rx="1.5" fill="var(--color-border-default)"/></svg></div><h4>Default size</h4><p>Use for primary surfaces — full-page voids, dashboards, route-level zero states.</p><div class="empty-actions"><button class="btn btn-primary btn-sm">Get started</button></div></div></div>
+    </article>
+    <article class="spec">
+      <header class="spec-head"><div><h3>Compact <code>compact={true}</code></h3><p>Illustration 76 px, padding 28 px / 20 px. Use inside cards, table empties, drawer panels.</p></div></header>
+      <div class="spec-canvas"><div class="empty empty-compact"><div class="empty-illo"><svg viewBox="0 0 120 120" width="76" height="76" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sz2-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--color-brand-secondary-100)"/><stop offset="1" stop-color="var(--color-brand-secondary-200)"/></linearGradient></defs><circle cx="60" cy="60" r="54" fill="url(#sz2-a)" opacity=".5"/><rect x="34" y="26" width="52" height="68" rx="6" fill="var(--color-background-surface)" stroke="var(--color-border-strong)"/><rect x="42" y="40" width="36" height="3" rx="1.5" fill="var(--color-border-default)"/><rect x="42" y="50" width="28" height="3" rx="1.5" fill="var(--color-border-default)"/></svg></div><h4>Compact size</h4><p>Use inside cards or tight panels.</p></div></div>
+    </article>
+  </section>
+
+  <!-- 05 TONES -->
+  <section class="doc-section" id="tones">
+    <h2><span class="num">05</span>Tones</h2>
+    <p class="lead">Two tones. <code>default</code> is transparent — sits naturally on any surface. <code>warning</code> wraps the composition in an amber panel — use only when the absence of data is itself a problem (overdue, expired, missing).</p>
+    <div class="spec-canvas grid-2" style="background: var(--color-background-canvas); border:1px solid var(--color-border-default); border-radius: var(--radius-lg);">
+      <div class="empty empty-compact"><div class="empty-illo"><svg viewBox="0 0 120 120" width="76" height="76" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="tn1-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--color-brand-secondary-100)"/><stop offset="1" stop-color="var(--color-brand-secondary-200)"/></linearGradient></defs><circle cx="60" cy="60" r="54" fill="url(#tn1-a)" opacity=".5"/><rect x="24" y="36" width="72" height="48" rx="8" fill="var(--color-background-surface)" stroke="var(--color-border-strong)"/><path d="M36 52h44 M72 44l8 8-8 8" fill="none" stroke="var(--color-brand-secondary-500)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h4>No transactions</h4><p>This week is clear.</p></div>
+      <div class="empty empty-compact empty-warning"><div class="empty-illo"><svg viewBox="0 0 120 120" width="76" height="76" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="60" r="54" fill="var(--color-feedback-warning-background)" opacity=".6"/><path d="M60 22l44 76H16z" fill="var(--color-background-surface)" stroke="var(--color-warning-500)" stroke-width="2" stroke-linejoin="round"/><path d="M60 50v22" stroke="var(--color-warning-500)" stroke-width="3.5" stroke-linecap="round"/><circle cx="60" cy="82" r="3" fill="var(--color-warning-500)"/></svg></div><h4>3 invoices overdue</h4><p>Action required — review and remind.</p><div class="empty-actions"><button class="btn btn-primary btn-sm">Review overdue</button></div></div>
+    </div>
+  </section>
+
+  <!-- 06 ACTIONS -->
+  <section class="doc-section" id="actions">
+    <h2><span class="num">06</span>Action configurations</h2>
+    <p class="lead">Three action patterns. The right pattern depends on whether the user has zero, one, or two reasonable next steps.</p>
+    <article class="spec">
+      <header class="spec-head"><div><h3>No actions</h3><p>For empty states the user can't immediately resolve — a search with no results inside a filter the user already controls. The empty state explains <em>why</em>, not <em>what to do</em>.</p></div></header>
+      <div class="spec-canvas"><div class="empty empty-compact"><div class="empty-illo"><svg viewBox="0 0 120 120" width="76" height="76" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="60" r="54" fill="var(--color-brand-secondary-500)" opacity=".5"/><circle cx="54" cy="54" r="22" fill="var(--color-background-surface)" stroke="var(--color-brand-secondary-500)" stroke-width="2"/><path d="M70 70l16 16" stroke="var(--color-brand-secondary-500)" stroke-width="3" stroke-linecap="round"/></svg></div><h4>No matches in this date range</h4><p>Adjust the date filter above to widen the search.</p></div></div>
+    </article>
+    <article class="spec">
+      <header class="spec-head"><div><h3>Primary only</h3><p>The most common pattern. One unmistakable next step.</p></div></header>
+      <div class="spec-canvas"><div class="empty empty-compact"><div class="empty-illo"><svg viewBox="0 0 120 120" width="76" height="76" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="60" r="54" fill="var(--color-brand-secondary-500)" opacity=".5"/><rect x="24" y="36" width="72" height="48" rx="8" fill="var(--color-background-surface)" stroke="var(--color-border-strong)"/><path d="M36 52h44 M72 44l8 8-8 8" fill="none" stroke="var(--color-brand-secondary-500)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h4>No transactions yet</h4><p>Send your first transfer to see it here.</p><div class="empty-actions"><button class="btn btn-primary btn-sm">New transfer</button></div></div></div>
+    </article>
+    <article class="spec">
+      <header class="spec-head"><div><h3>Primary + Secondary</h3><p>Use when there are two equally legitimate next steps — usually "create" + "import", or "do it" + "learn how".</p></div></header>
+      <div class="spec-canvas"><div class="empty empty-compact"><div class="empty-illo"><svg viewBox="0 0 120 120" width="76" height="76" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ac3-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--color-brand-secondary-100)"/><stop offset="1" stop-color="var(--color-brand-secondary-200)"/></linearGradient></defs><circle cx="60" cy="60" r="54" fill="url(#ac3-a)" opacity=".5"/><rect x="14" y="42" width="42" height="52" rx="6" fill="var(--color-background-surface)" stroke="var(--color-border-strong)"/><rect x="64" y="42" width="42" height="52" rx="6" fill="var(--color-background-surface)" stroke="var(--color-border-strong)"/><circle cx="35" cy="60" r="10" fill="var(--color-brand-secondary-500)"/><circle cx="85" cy="60" r="10" fill="var(--color-brand-accent-500)"/></svg></div><h4>No counterparties</h4><p>Add one manually or import a list.</p><div class="empty-actions"><button class="btn btn-secondary btn-sm">Import CSV</button><button class="btn btn-primary btn-sm">Add counterparty</button></div></div></div>
+    </article>
+  </section>
+
+  <!-- 07 IN CONTEXT -->
+  <section class="doc-section" id="in-context">
+    <h2><span class="num">07</span>In context</h2>
+    <p class="lead">How empty states sit inside real product surfaces.</p>
+    <article class="spec">
+      <header class="spec-head"><div><h3>Inside a card</h3><p>Compact size, no surface tone — the host card already provides background and border.</p></div></header>
+      <div class="spec-canvas"><div class="frame"><div class="frame-head"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="ttl">Receivables · This month</span></div><div class="frame-body"><div class="empty empty-compact"><div class="empty-illo"><svg viewBox="0 0 120 120" width="76" height="76" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="60" r="54" fill="var(--color-brand-secondary-500)" opacity=".5"/><path d="M22 70v20a4 4 0 0 0 4 4h68a4 4 0 0 0 4-4V70" fill="var(--color-background-surface)" stroke="var(--color-brand-secondary-500)" stroke-width="1.5"/><path d="M22 70l10-22a4 4 0 0 1 3.6-2.4h48.8A4 4 0 0 1 88 48l10 22" fill="var(--color-background-surface)" stroke="var(--color-brand-secondary-500)" stroke-width="1.5"/></svg></div><h4>No incoming this month</h4><p>Once a payment lands, it'll show up here.</p></div></div></div></div>
+    </article>
+    <article class="spec">
+      <header class="spec-head"><div><h3>Replacing a table</h3><p>Default size, full-section. Replace the entire table — header, rows, pagination — with a single empty state.</p></div></header>
+      <div class="spec-canvas" style="padding: 0;"><div class="frame" style="max-width: 720px;"><div class="frame-head"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="ttl">Counterparties</span></div><div class="frame-body"><div class="empty empty-default"><div class="empty-illo"><svg viewBox="0 0 120 120" width="104" height="104" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ic2-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--color-brand-secondary-100)"/><stop offset="1" stop-color="var(--color-brand-secondary-200)"/></linearGradient></defs><circle cx="60" cy="60" r="54" fill="url(#ic2-a)" opacity=".5"/><rect x="14" y="42" width="42" height="52" rx="6" fill="var(--color-background-surface)" stroke="var(--color-border-strong)"/><rect x="64" y="42" width="42" height="52" rx="6" fill="var(--color-background-surface)" stroke="var(--color-border-strong)"/><circle cx="35" cy="60" r="10" fill="var(--color-brand-secondary-500)"/><circle cx="85" cy="60" r="10" fill="var(--color-brand-accent-500)"/><path d="M48 60 L72 60" stroke="var(--color-brand-secondary-500)" stroke-width="2" stroke-dasharray="3 3"/></svg></div><h4>No counterparties yet</h4><p>Add a counterparty to start sending transfers. You can import from a CSV or create one manually.</p><div class="empty-actions"><button class="btn btn-secondary btn-sm">Import CSV</button><button class="btn btn-primary btn-sm">Add counterparty</button></div></div></div></div></div>
+    </article>
+  </section>
+
+  <!-- 08 TOKENS -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">08</span>Tokens</h2>
+    <p class="lead">Every dimension, color, and weight resolves to a token. No magic numbers.</p>
+    <table class="token-table">
+      <thead><tr><th>Element</th><th>Property</th><th>Token</th></tr></thead>
+      <tbody>
+        <tr><td>Container</td><td>gap (default)</td><td class="k">14 px</td></tr>
+        <tr><td>Container</td><td>gap (compact)</td><td class="k">10 px</td></tr>
+        <tr><td>Container</td><td>padding (default)</td><td class="k">56 px / 24 px</td></tr>
+        <tr><td>Container</td><td>padding (compact)</td><td class="k">28 px / 20 px</td></tr>
+        <tr><td>Container</td><td>border-radius</td><td class="k">var(--radius-md)</td></tr>
+        <tr><td>Title</td><td>font-size (default)</td><td class="k">var(--fs-lg) · 17 px</td></tr>
+        <tr><td>Title</td><td>font-size (compact)</td><td class="k">var(--fs-md) · 15 px</td></tr>
+        <tr><td>Title</td><td>color</td><td class="k">var(--color-foreground-default)</td></tr>
+        <tr><td>Title</td><td>weight</td><td class="k">var(--w-bold)</td></tr>
+        <tr><td>Description</td><td>font-size</td><td class="k">var(--fs-sm) · 13 px</td></tr>
+        <tr><td>Description</td><td>color</td><td class="k">var(--color-foreground-secondary)</td></tr>
+        <tr><td>Description</td><td>line-height</td><td class="k">var(--lh-relaxed)</td></tr>
+        <tr><td>Illustration</td><td>size (default)</td><td class="k">104 px</td></tr>
+        <tr><td>Illustration</td><td>size (compact)</td><td class="k">76 px</td></tr>
+        <tr><td>Illustration · halo</td><td>fill</td><td class="k">var(--color-brand-secondary-500/50) · α 50%</td></tr>
+        <tr><td>Illustration · accent</td><td>stroke / fill</td><td class="k">var(--color-brand-secondary-500)</td></tr>
+        <tr><td>Illustration · accent 2</td><td>stroke / fill</td><td class="k">var(--color-brand-accent-500)</td></tr>
+        <tr><td>Tone · warning</td><td>background</td><td class="k">var(--color-feedback-warning-background)</td></tr>
+        <tr><td>Tone · warning</td><td>border</td><td class="k">var(--color-feedback-warning-border)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 09 DON'TS -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">09</span>Do &amp; Don't</h2>
+    <p class="lead">Empty states fail the same way over and over. Avoid these.</p>
+    <div class="spec-foot" style="grid-template-columns: 1fr 1fr; padding:0;">
+      <div>
+        <h4>Do</h4>
+        <ul>
+          <li class="do"><i data-lucide="check"></i>State what's missing in plain language ("No counterparties yet").</li>
+          <li class="do"><i data-lucide="check"></i>Tell the user the next step in the description.</li>
+          <li class="do"><i data-lucide="check"></i>Use one primary action — the most-likely path forward.</li>
+          <li class="do"><i data-lucide="check"></i>Pick the illustration kind that matches the data type.</li>
+          <li class="do"><i data-lucide="check"></i>Use <code>compact</code> inside cards and drawers.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Don't</h4>
+        <ul>
+          <li class="dont"><i data-lucide="x"></i>Don't leave a section blank — every empty state is a chance to teach.</li>
+          <li class="dont"><i data-lucide="x"></i>Don't use a clever or jokey headline ("Oops, looks empty here!").</li>
+          <li class="dont"><i data-lucide="x"></i>Don't stack three or more buttons — pick the one most-likely action.</li>
+          <li class="dont"><i data-lucide="x"></i>Don't use the <code>error</code> illustration for empty data — only for actual errors.</li>
+          <li class="dont"><i data-lucide="x"></i>Don't use the <code>warning</code> tone for normal empty states — reserve it for problems.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+  window.addEventListener('attrus-theme', function () { if (window.lucide) lucide.createIcons(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Primitives" subtitle="Avatar, Money, Stat, Tabs, Divider, Pill" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Primitives · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
+  .spec-head { padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .spec-canvas { padding: var(--space-8) var(--space-6); background: var(--color-background-canvas); background-image: linear-gradient(var(--color-border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; display: flex; flex-wrap: wrap; gap: var(--space-6); align-items: center; justify-content: center; }
+  .spec-canvas-stack { flex-direction: column; align-items: stretch; }
+  .spec-body { padding: var(--space-5) var(--space-6); }
+
+  .row { display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; }
+  .col { display: flex; flex-direction: column; gap: var(--space-3); align-items: flex-start; }
+
+  .legend { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin: 0 0 var(--space-2); }
+
+  .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .token-table tr:last-child td { border-bottom: none; }
+  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  .dont-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-4); }
+  .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .dont-card-canvas { padding: var(--space-6) var(--space-5); background: var(--color-background-canvas); border-bottom: 1px solid var(--color-border-subtle); display: flex; justify-content: center; align-items: center; min-height: 100px; }
+  .dont-card-body { padding: var(--space-4) var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
+  .dont-card-body i, .dont-card-body svg { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-card-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .dont-card-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+
+  .index-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-3); margin-bottom: var(--space-8); }
+  .index-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-5); text-decoration: none; color: var(--color-foreground-default); transition: var(--transition-fast); display: flex; flex-direction: column; gap: var(--space-3); min-height: 120px; }
+  .index-card:hover { border-color: var(--color-brand-secondary-300); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+  .index-card-name { font-size: var(--fs-md); font-weight: var(--w-semibold); letter-spacing: var(--ls-title); }
+  .index-card-desc { font-size: var(--fs-xs); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .index-card-preview { display: flex; align-items: center; justify-content: center; min-height: 32px; }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<div class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Primitives</h1>
+      <p>Five small atoms that show up everywhere — Avatar, Money, Stat, Divider, Pill. Each is a thin wrapper over tokens; together they account for ~60% of all UI surface area in Cabiros. Get these right and every screen inherits the polish. (Looking for Tabs? It moved to its own <a href="tabs.html" style="color: var(--color-foreground-highlight);">component page</a>.)</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Ready</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#index">00 Index</a>
+    <a href="#avatar">01 Avatar</a>
+    <a href="#money">02 Money</a>
+    <a href="#stat">03 Stat</a>
+    <a href="#divider">04 Divider</a>
+    <a href="#pill">05 Pill</a>
+    <a href="#donts">06 Don'ts</a>
+    <a href="#tokens">07 Tokens</a>
+  </nav>
+
+  <!-- INDEX -->
+  <section class="doc-section" id="index">
+    <h2><span class="num">00</span>What's in this page</h2>
+    <p class="lead">Each primitive lives on its own and follows the same anatomy: variants → sizes → tones → composition examples → don'ts.</p>
+    <div class="index-grid">
+      <a class="index-card" href="#avatar">
+        <div class="index-card-preview"><span class="av av-brand">JD</span></div>
+        <span class="index-card-name">Avatar</span>
+        <span class="index-card-desc">Circular identity badge. 5 sizes, 6 tones, presence dot, group stack.</span>
+      </a>
+      <a class="index-card" href="#money">
+        <div class="index-card-preview"><span class="money money-md"><span class="money-cur">BRL</span>125,400.00</span></div>
+        <span class="index-card-name">Money</span>
+        <span class="index-card-desc">Tabular currency display. 5 sizes, signed tones, paired currency code.</span>
+      </a>
+      <a class="index-card" href="#stat">
+        <div class="index-card-preview"><span class="stat-value mono" style="font-size: var(--fs-md);">4.81M</span></div>
+        <span class="index-card-name">Stat</span>
+        <span class="index-card-desc">KPI tile: label + value + delta. Up / down / flat sentiment.</span>
+      </a>
+      <a class="index-card" href="#divider">
+        <div class="index-card-preview" style="width: 100%;"><hr class="divider" style="margin: 0; width: 100%;"/></div>
+        <span class="index-card-name">Divider</span>
+        <span class="index-card-desc">Horizontal, vertical, dashed, labelled. Three weights.</span>
+      </a>
+      <a class="index-card" href="#pill">
+        <div class="index-card-preview"><span class="pill success"><span class="dot"></span>Settled</span></div>
+        <span class="index-card-name">Pill</span>
+        <span class="index-card-desc">Compact status badge. 6 tones, 3 sizes, dot + icon variants.</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       01 · AVATAR
+       ===================================================== -->
+  <section class="doc-section" id="avatar">
+    <h2><span class="num">01</span>Avatar</h2>
+    <p class="lead">A small round container for an image, initials, or an icon. Used in lists, comments, presence indicators, and counterparty references throughout Cabiros.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Sizes <code>.av-xs · .av-sm · .av-md · .av-lg · .av-xl</code></h3>
+          <p>20 / 28 / 36 / 48 / 64 px. <strong>md</strong> is default — used in tables and lists. <strong>lg/xl</strong> for profile headers and detail panes only.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <span class="av av-xs av-brand">JD</span>
+        <span class="av av-sm av-brand">JD</span>
+        <span class="av av-md av-brand">JD</span>
+        <span class="av av-lg av-brand">JD</span>
+        <span class="av av-xl av-brand">JD</span>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Tones <code>.av-{brand|success|warning|danger|info|neutral}</code></h3>
+          <p>Tone signals what the avatar represents — brand for users, semantic tones for entities tied to a status (e.g. a counterparty pinned to "verified" reads green; a flagged one reads red). Do not pick tone for visual variety; let data drive it.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="col"><span class="legend">brand</span><span class="av av-md av-brand">JD</span></div>
+        <div class="col"><span class="legend">success</span><span class="av av-md av-success">FA</span></div>
+        <div class="col"><span class="legend">warning</span><span class="av av-md av-warning">ST</span></div>
+        <div class="col"><span class="legend">danger</span><span class="av av-md av-danger">XP</span></div>
+        <div class="col"><span class="legend">info</span><span class="av av-md av-info">NU</span></div>
+        <div class="col"><span class="legend">neutral</span><span class="av av-md av-neutral">??</span></div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Presence dot</h3>
+          <p>Tiny status overlay — online (default green), busy, away, offline. Add <code>&lt;span class="av-dot"&gt;</code> as a child of <code>.av</code>.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="col"><span class="legend">online</span><span class="av av-lg av-brand">JD<span class="av-dot"></span></span></div>
+        <div class="col"><span class="legend">busy</span><span class="av av-lg av-brand">FA<span class="av-dot av-dot-busy"></span></span></div>
+        <div class="col"><span class="legend">away</span><span class="av av-lg av-brand">ST<span class="av-dot av-dot-away"></span></span></div>
+        <div class="col"><span class="legend">offline</span><span class="av av-lg av-brand">XP<span class="av-dot av-dot-off"></span></span></div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Group stack</h3>
+          <p>Overlapping avatars to show shared ownership or recent collaborators. Cap visible count at 4; remainder collapses into a dashed "+N" tile.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="av-group">
+          <span class="av av-md av-brand">JD</span>
+          <span class="av av-md av-info">FA</span>
+          <span class="av av-md av-success">ST</span>
+          <span class="av av-md av-warning">XP</span>
+          <span class="av av-md av-more">+3</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       02 · MONEY
+       ===================================================== -->
+  <section class="doc-section" id="money">
+    <h2><span class="num">02</span>Money</h2>
+    <p class="lead">Currency display with tabular numbers, paired currency code, and consistent baseline alignment. Always mono — every digit is the same width so amounts in a column line up regardless of value.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Sizes <code>.money-{sm|md|lg|xl|display}</code></h3>
+          <p>Use <strong>md</strong> in tables, <strong>lg</strong> in card heroes, <strong>xl</strong> in detail summaries, <strong>display</strong> only for one big number per page (e.g. the wire amount on a confirmation modal).</p>
+        </div>
+      </div>
+      <div class="spec-canvas spec-canvas-stack">
+        <div class="row"><span class="legend" style="width: 80px; margin: 0;">sm</span><span class="money money-sm"><span class="money-cur">BRL</span>125,400.00</span></div>
+        <div class="row"><span class="legend" style="width: 80px; margin: 0;">md</span><span class="money money-md"><span class="money-cur">BRL</span>125,400.00</span></div>
+        <div class="row"><span class="legend" style="width: 80px; margin: 0;">lg</span><span class="money money-lg"><span class="money-cur">BRL</span>125,400.00</span></div>
+        <div class="row"><span class="legend" style="width: 80px; margin: 0;">xl</span><span class="money money-xl"><span class="money-cur">BRL</span>125,400.00</span></div>
+        <div class="row"><span class="legend" style="width: 80px; margin: 0;">display</span><span class="money money-display"><span class="money-cur">BRL</span>125,400.<span class="money-frac">00</span></span></div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Sentiment</h3>
+          <p>Use a tone class only when the sign carries semantic weight — credits (incoming) green, debits (outgoing) red, projections muted. <strong>Do not</strong> color every transfer green just because it succeeded; success is conveyed by the row's status pill, not the amount.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="col"><span class="legend">positive</span><span class="money money-lg money-pos"><span class="money-cur">BRL</span>+12,500.00</span></div>
+        <div class="col"><span class="legend">negative</span><span class="money money-lg money-neg"><span class="money-cur">BRL</span>−4,820.50</span></div>
+        <div class="col"><span class="legend">muted (projection)</span><span class="money money-lg money-muted"><span class="money-cur">BRL</span>~ 308,000</span></div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Multi-currency, table-aligned</h3>
+          <p>Tabular numerals + right-aligned column = perfect digit columns regardless of magnitude or currency code length.</p>
+        </div>
+      </div>
+      <div class="spec-body">
+        <table class="token-table" style="font-variant-numeric: tabular-nums;">
+          <thead><tr><th>Counterparty</th><th style="text-align: right;">Amount</th></tr></thead>
+          <tbody>
+            <tr><td>FACILITA IP S.A.</td><td style="text-align: right;"><span class="money money-md"><span class="money-cur">BRL</span>125,400.00</span></td></tr>
+            <tr><td>Banco Sabadell</td><td style="text-align: right;"><span class="money money-md"><span class="money-cur">EUR</span>41,200.00</span></td></tr>
+            <tr><td>Citi NA</td><td style="text-align: right;"><span class="money money-md"><span class="money-cur">USD</span>82,910.50</span></td></tr>
+            <tr><td>BBVA México</td><td style="text-align: right;"><span class="money money-md"><span class="money-cur">MXN</span>308,001.20</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       03 · STAT
+       ===================================================== -->
+  <section class="doc-section" id="stat">
+    <h2><span class="num">03</span>Stat</h2>
+    <p class="lead">A KPI tile — three lines: label, value, delta. The whole grammar of a Cabiros dashboard is built from these. Stats appear in rows of 2–4; never alone (a single stat reads as decoration).</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Anatomy</h3>
+          <p>Mono uppercase label → big tabular value → optional signed delta with arrow. Optional foot line for context (timeframe, comparison).</p>
+        </div>
+      </div>
+      <div class="spec-canvas spec-canvas-stack">
+        <div class="stat-row">
+          <div class="stat">
+            <span class="stat-label">Volume · 30d</span>
+            <span class="stat-value">BRL 4.81M</span>
+            <span class="stat-delta stat-delta-up"><i data-lucide="trending-up"></i>12.4%</span>
+            <span class="stat-foot">vs. previous 30 days</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Counterparties</span>
+            <span class="stat-value">128</span>
+            <span class="stat-delta stat-delta-flat"><i data-lucide="minus"></i>flat</span>
+            <span class="stat-foot">no change this week</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Failed transfers</span>
+            <span class="stat-value">2</span>
+            <span class="stat-delta stat-delta-down"><i data-lucide="trending-down"></i>0.4%</span>
+            <span class="stat-foot">2 of 487 settlements</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Compact <code>.stat-compact</code></h3>
+          <p>Borderless, transparent — for sidebars or page headers where the row already lives inside a card.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="stat-row" style="--stat-cols: 4; width: 100%;">
+          <div class="stat stat-compact">
+            <span class="stat-label">Pending</span>
+            <span class="stat-value">12</span>
+          </div>
+          <div class="stat stat-compact">
+            <span class="stat-label">Settled · 24h</span>
+            <span class="stat-value">98</span>
+          </div>
+          <div class="stat stat-compact">
+            <span class="stat-label">Avg. settle</span>
+            <span class="stat-value">2.1s</span>
+          </div>
+          <div class="stat stat-compact">
+            <span class="stat-label">Live rails</span>
+            <span class="stat-value">7</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Delta direction is sentiment, not value</h3>
+          <p>"Failed transfers ↓" is <strong>good</strong> — fewer failures. So the delta arrow points down but the tone is success-leaning. Choose the tone class by what the change means, not by the sign of the number.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <div class="stat-row">
+          <div class="stat">
+            <span class="stat-label">Errors · today</span>
+            <span class="stat-value">2</span>
+            <span class="stat-delta stat-delta-up" style="color: var(--color-feedback-success-foreground);"><i data-lucide="trending-down"></i>↓ 0.4% · good</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Latency p99</span>
+            <span class="stat-value">2.4s</span>
+            <span class="stat-delta stat-delta-up" style="color: var(--color-feedback-danger-foreground);"><i data-lucide="trending-up"></i>↑ 18% · bad</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       04 · DIVIDER
+       ===================================================== -->
+  <section class="doc-section" id="divider">
+    <h2><span class="num">04</span>Divider</h2>
+    <p class="lead">A 1px line that separates content. Three weights (subtle / default / strong), an optional dashed style, plus a labelled variant for splitting long forms into named sections.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Weights</h3>
+          <p>Match the divider weight to the content it separates: subtle inside cards, default between sections, strong between major page regions.</p>
+        </div>
+      </div>
+      <div class="spec-canvas spec-canvas-stack">
+        <div style="width: 100%;"><span class="legend">subtle</span><hr class="divider divider-subtle"/></div>
+        <div style="width: 100%;"><span class="legend">default</span><hr class="divider"/></div>
+        <div style="width: 100%;"><span class="legend">strong</span><hr class="divider divider-strong"/></div>
+        <div style="width: 100%;"><span class="legend">dashed</span><hr class="divider divider-dashed"/></div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Vertical</h3>
+          <p>Inline separator inside a row of meta — between breadcrumbs, between toolbar buttons grouped by purpose. Inherits the parent's line-height.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <span style="display: inline-flex; align-items: center; font-size: var(--fs-sm); color: var(--color-foreground-secondary);">
+          Created 2h ago
+          <span class="divider-vertical"></span>
+          By Daniel S.
+          <span class="divider-vertical"></span>
+          Last edit 4m ago
+        </span>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Labelled <code>.divider-labelled</code></h3>
+          <p>Splits a long form or stacked layout with a midline section name. Mono uppercase to read as structural scaffolding, not content.</p>
+        </div>
+      </div>
+      <div class="spec-canvas spec-canvas-stack">
+        <div style="width: 100%; max-width: 480px; margin: 0 auto;">
+          <p style="margin: 0; color: var(--color-foreground-secondary); font-size: var(--fs-sm);">Counterparty information above…</p>
+          <div class="divider-labelled">Settlement details</div>
+          <p style="margin: 0; color: var(--color-foreground-secondary); font-size: var(--fs-sm);">Rail, value date, instructions below…</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       05 · PILL
+       ===================================================== -->
+  <section class="doc-section" id="pill">
+    <h2><span class="num">05</span>Pill</h2>
+    <p class="lead">A compact, rounded badge that names a status, category, or metadata. Used in tables, cards, breadcrumbs, drawer summaries — anywhere a one-word label needs to read as <em>data</em>, not <em>copy</em>.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Tones <code>.pill.{success|warning|danger|info|neutral|brand}</code></h3>
+          <p>Tone is semantic — pick by the meaning of the status, never by visual variety. Tied to the same feedback color tokens that drive Toasts and Empty States, so a "Failed" pill reads identical wherever it appears.</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <span class="pill success"><span class="dot"></span>Settled</span>
+        <span class="pill warning"><span class="dot"></span>Pending</span>
+        <span class="pill danger"><span class="dot"></span>Failed</span>
+        <span class="pill info"><span class="dot"></span>Processing</span>
+        <span class="pill neutral"><span class="dot"></span>Draft</span>
+        <span class="pill brand"><span class="dot"></span>Live</span>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Sizes <code>.pill.sm · .pill (default) · .pill.lg</code></h3>
+          <p><strong>sm</strong> in dense tables, default in cards and headers, <strong>lg</strong> reserved for hero contexts where the pill is a primary signal (e.g. "Live · 7 rails" badge).</p>
+        </div>
+      </div>
+      <div class="spec-canvas">
+        <span class="pill success sm">Settled</span>
+        <span class="pill success">Settled</span>
+        <span class="pill success lg">Settled</span>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Decorators</h3>
+          <p>Three options: dot (default — neutral, calm), icon (more visual weight, used in dashboards), bare text (most minimal — for category labels, not statuses). Pick one per context and stay consistent.</p>
+        </div>
+      </div>
+      <div class="spec-canvas spec-canvas-stack">
+        <div class="row"><span class="legend" style="width: 100px; margin: 0;">dot</span><span class="pill success"><span class="dot"></span>Settled</span><span class="pill warning"><span class="dot"></span>Pending</span><span class="pill danger"><span class="dot"></span>Failed</span></div>
+        <div class="row"><span class="legend" style="width: 100px; margin: 0;">icon</span><span class="pill success"><i data-lucide="check"></i>Approved</span><span class="pill warning"><i data-lucide="clock"></i>Awaiting</span><span class="pill danger"><i data-lucide="x"></i>Failed</span></div>
+        <div class="row"><span class="legend" style="width: 100px; margin: 0;">bare</span><span class="pill neutral">PIX</span><span class="pill neutral">SWIFT</span><span class="pill neutral">ACH</span><span class="pill neutral">WIRE</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       06 · DON'TS
+       ===================================================== -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">06</span>Don'ts</h2>
+    <p class="lead">Easy ways to break the rhythm these primitives create.</p>
+    <div class="dont-grid">
+
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <span class="av av-md" style="background: oklch(0.78 0.15 60); color: white;">JD</span>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't invent avatar tones.</strong> Stick to the six tokenised tones. Custom hex breaks the link between an avatar and the entity's status pill.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <span style="font-family: var(--font-sans); font-size: var(--fs-md); font-weight: var(--w-bold);">BRL 125.400,00</span>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't render money in sans.</strong> Sans loses tabular alignment — digits drift across rows. Always wrap in <code>.money</code>.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <div class="stat" style="width: 220px;">
+            <span class="stat-label">Volume</span>
+            <span class="stat-value">4.81M</span>
+            <span class="stat-delta stat-delta-up"><i data-lucide="trending-up"></i>12.4%</span>
+          </div>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't ship a single Stat.</strong> Stats are comparative. One alone reads as decoration; ship in rows of 2–4.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-card-canvas" style="flex-direction: column; gap: var(--space-2);">
+          <span style="font-size: var(--fs-sm);">Section A</span>
+          <hr class="divider" style="margin: 0;"/>
+          <hr class="divider" style="margin: 0;"/>
+          <span style="font-size: var(--fs-sm);">Section B</span>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't double dividers.</strong> One line is enough. Double dividers signal "this card has a bug," not "this is more separated."</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-card-canvas">
+          <span class="pill" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); text-transform: none; font-family: var(--font-sans); font-weight: var(--w-medium); letter-spacing: 0;">Settled successfully</span>
+        </div>
+        <div class="dont-card-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't write sentences in pills.</strong> Pills are tags, not microcopy. One word, two max. Use Toast for transient sentences.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =====================================================
+       07 · TOKENS
+       ===================================================== -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">07</span>Tokens</h2>
+    <p class="lead">Every property of every primitive resolves to a token. Override at the token layer to retheme; never edit primitive CSS directly.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Property</th><th>Token</th><th>Where it lands</th></tr></thead>
+      <tbody>
+        <tr><td>Avatar size</td><td><code>--av-size</code> (local)</td><td>20 / 28 / 36 / 48 / 64 px via size classes.</td></tr>
+        <tr><td>Avatar / Pill radius</td><td><code>--radius-pill</code></td><td>Full circle / capsule.</td></tr>
+        <tr><td>Money font</td><td><code>--font-mono</code> + <code>tabular-nums</code></td><td>Locks digit columns across rows.</td></tr>
+        <tr><td>Money currency code</td><td><code>--color-foreground-muted</code></td><td>Greyer than the amount; reads as label.</td></tr>
+        <tr><td>Stat label</td><td><code>--font-mono</code> · <code>--fs-xxs</code> · <code>--ls-caps</code></td><td>Mono + caps = "data heading" pattern.</td></tr>
+        <tr><td>Stat value</td><td><code>--fs-3xl</code> · <code>--w-bold</code> · <code>--ls-tight</code></td><td>The dominant element of any KPI row.</td></tr>
+        <tr><td>Stat delta tones</td><td><code>--color-feedback-{success,danger}-foreground</code></td><td>Same tokens as Pill / Toast.</td></tr>
+        <tr><td>Divider</td><td><code>--color-border-{subtle,default,strong}</code></td><td>Three weights map to the border scale.</td></tr>
+        <tr><td>Pill tones</td><td><code>--color-feedback-*-background / -foreground / -border</code></td><td>Same triplet as Toast and Empty State.</td></tr>
+        <tr><td>Pill caps style</td><td><code>--font-mono</code> · <code>--ls-caps</code> · <code>uppercase</code></td><td>Reads as data, not copy.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<script>
+  if (window.lucide) lucide.createIcons({ attrs: { 'stroke-width': 1.75 } });
+</script>
+
+</body>
+</html>

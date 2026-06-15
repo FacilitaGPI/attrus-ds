@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Top bar · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body {
+    margin: 0;
+    background: var(--color-background-canvas);
+    color: var(--color-foreground-default);
+    font-family: var(--font-sans);
+    font-size: var(--fs-base);
+    line-height: var(--lh-normal);
+  }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  /* theme toggle (page chrome) */
+  .page-theme {
+    position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100;
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    height: 40px; padding: 0 var(--space-4);
+    background: var(--color-background-surface); color: var(--color-foreground-secondary);
+    border: 1px solid var(--color-border-default); border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer;
+    box-shadow: var(--shadow-sm); transition: var(--transition-fast);
+  }
+  .page-theme:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background: var(--color-background-hover); }
+  .page-theme [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+
+  /* header */
+  .doc-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: var(--space-8);
+    padding-bottom: var(--space-7);
+    border-bottom: 1px solid var(--color-border-default);
+    margin-bottom: var(--space-10);
+  }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta-pill {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-feedback-success-background);
+    color: var(--color-feedback-success-foreground);
+    border: 1px solid var(--color-feedback-success-border);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  /* nav */
+  .doc-nav {
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-10);
+    box-shadow: var(--shadow-xs);
+  }
+  .doc-nav a {
+    padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill);
+    color: var(--color-foreground-secondary); text-decoration: none;
+    font-size: var(--fs-sm); font-weight: var(--w-semibold);
+    transition: var(--transition-fast);
+  }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  /* sections */
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  /* spec card */
+  .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
+  .spec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .spec-tag { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
+  .spec-canvas { padding: var(--space-8); background: var(--color-background-canvas); background-image: linear-gradient(var(--color-border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; }
+  .spec-canvas.col { display: flex; flex-direction: column; gap: var(--space-6); align-items: flex-start; }
+  .spec-canvas.center { display: flex; flex-wrap: wrap; gap: var(--space-5); align-items: center; }
+
+  .demo-label { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+
+  /* full-bar frame — clip the bar so it reads as a real app top edge */
+  .bar-frame { width: 100%; border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); background: var(--color-background-surface); }
+  /* shrink the search so the whole bar fits the doc width nicely */
+  .bar-frame .pill-search { max-width: 360px; }
+
+  /* class-map table */
+  .map { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  .map th, .map td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .map th { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .map td code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .map td:last-child { color: var(--color-foreground-secondary); }
+
+  /* note */
+
+
+  .doc-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+</style>
+</head>
+<body>
+
+<button class="page-theme" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">☾</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Top bar</h1>
+      <p>The application's top edge: primary action, global search, and a right-aligned cluster of session controls. One 32px control rhythm holds it all together.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="git-merge"></i> Single source</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#anatomy">01 Anatomy</a>
+    <a href="#controls">02 Controls</a>
+    <a href="#live">03 Live indicator</a>
+    <a href="#mobile">04 Mobile</a>
+    <a href="#map">05 Class map</a>
+  </nav>
+
+  <!-- 01 ANATOMY -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">01</span>Anatomy</h2>
+    <p class="lead">Left to right: the high-contrast primary action, then the search pill that grows to fill the gap, then a right-aligned cluster (<code>.tb-spacer</code>) of language, live status, utility icons and the user avatar. Every interactive element is a <code>.tb-control</code> at the same 32px height.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Full bar <code>.topbar</code></h3>
+          <p>52px tall, surface background, hairline bottom border. Mirrors the sidebar header height so logos align across the seam.</p>
+        </div>
+        <span class="spec-tag">App shell</span>
+      </div>
+      <div class="spec-canvas">
+        <div class="bar-frame">
+          <div class="topbar">
+            <button class="btn btn-primary btn-sm"><i data-lucide="plus"></i> New transaction</button>
+            <div class="pill-search">
+              <i data-lucide="search"></i>
+              <input placeholder="Search or ask something" readonly />
+              <span class="kbd">⌘K</span>
+            </div>
+            <div class="tb-spacer">
+              <button class="tb-control" style="padding:0 var(--space-3)">
+                <img src="../assets/flags/EUA-rounded.svg" alt="" style="width:14px;height:14px;border-radius:50%"/>
+                <span class="tb-flag-label">ENG</span>
+                <span class="chev"><i data-lucide="chevron-down"></i></span>
+              </button>
+              <div class="tb-control tb-live"><span class="dot"></span><span class="lbl">Live</span><span class="tb-clock">0:19</span></div>
+              <button class="tb-control icon" aria-label="Help"><i data-lucide="info"></i></button>
+              <button class="tb-control icon tb-bell" aria-label="Notifications"><span class="badge-anchor"><i data-lucide="bell"></i><span class="badge"></span></span></button>
+              <div class="tb-avatar">JD</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 CONTROLS -->
+  <section class="doc-section" id="controls">
+    <h2><span class="num">02</span>Controls</h2>
+    <p class="lead">Three forms of the same building block. Default for labelled actions, <code>.icon</code> for square icon-only buttons. The bar's single call to action is the <strong>canonical</strong> <code>.btn-primary</code> from the button system — not a top-bar-local style.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Control variants <code>.tb-control</code></h3>
+          <p>All 32px tall, same radius and hover. Hover any to see the border lift and background fill.</p>
+        </div>
+        <span class="spec-tag">Interactive</span>
+      </div>
+      <div class="spec-canvas center">
+        <div>
+          <div class="demo-label">Default · labelled</div>
+          <button class="tb-control" style="padding:0 var(--space-3)">
+            <img src="../assets/flags/EUA-rounded.svg" alt="" style="width:14px;height:14px;border-radius:50%"/>
+            <span class="tb-flag-label">ENG</span>
+            <span class="chev"><i data-lucide="chevron-down"></i></span>
+          </button>
+        </div>
+        <div>
+          <div class="demo-label">Icon-only · .icon</div>
+          <div style="display:flex; gap:var(--space-2)">
+            <button class="tb-control icon" aria-label="Help"><i data-lucide="info"></i></button>
+            <button class="tb-control icon" aria-label="Theme"><i data-lucide="moon"></i></button>
+            <button class="tb-control icon tb-bell" aria-label="Notifications"><span class="badge-anchor"><i data-lucide="bell"></i><span class="badge"></span></span></button>
+          </div>
+        </div>
+        <div>
+          <div class="demo-label">Primary · .btn-primary</div>
+          <button class="btn btn-primary btn-sm"><i data-lucide="plus"></i> New transaction</button>
+        </div>
+        <div>
+          <div class="demo-label">Avatar · .tb-avatar</div>
+          <div class="tb-avatar">JD</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 LIVE -->
+  <section class="doc-section" id="live">
+    <h2><span class="num">03</span>Live indicator</h2>
+    <p class="lead">A non-interactive control that signals an active real-time session. Same pill shell as the buttons so it sits in rhythm, but with a steady success dot and a monospace elapsed clock — never a hover state.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Session status <code>.tb-live</code></h3>
+          <p>Dot uses <code>--color-success-500</code> with a soft 15% halo. The clock is mono <code>--fs-xxs</code>, muted.</p>
+        </div>
+        <span class="spec-tag">Status</span>
+      </div>
+      <div class="spec-canvas center">
+        <div class="tb-control tb-live"><span class="dot"></span><span class="lbl">Live</span><span class="tb-clock">0:19</span></div>
+        <div class="tb-control tb-live"><span class="dot"></span><span class="lbl">Live</span><span class="tb-clock">1:42:08</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 MOBILE -->
+  <section class="doc-section" id="mobile">
+    <h2><span class="num">04</span>Mobile</h2>
+    <p class="lead">Below 720px the bar collapses: the menu button and brand mark lead, the utility cluster drops to a single primary-action icon plus the avatar, and search shrinks to a glyph-first pill.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div>
+          <h3>Compact bar</h3>
+          <p>Menu toggle replaces the collapsed sidebar; secondary controls hide to protect the tap targets.</p>
+        </div>
+        <span class="spec-tag">≤ 720px</span>
+      </div>
+      <div class="spec-canvas">
+        <div class="bar-frame" style="max-width:380px">
+          <div class="topbar" style="gap:var(--space-2); padding:0 var(--space-3)">
+            <button class="tb-control icon" aria-label="Open menu"><i data-lucide="panel-left"></i></button>
+            <img src="../assets/logo-attrus-dark.svg" alt="ATTRUS" style="height:16px" data-logo-mark/>
+            <div class="pill-search" style="flex:1">
+              <i data-lucide="search"></i>
+              <input placeholder="Search" readonly />
+            </div>
+            <div class="tb-spacer">
+              <button class="tb-control icon" aria-label="New transaction"><i data-lucide="plus"></i></button>
+              <div class="tb-avatar">JD</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 CLASS MAP -->
+  <section class="doc-section" id="map">
+    <h2><span class="num">05</span>Class map</h2>
+    <p class="lead">The full vocabulary. Defined once in <code>components/topbar.css</code> and consumed by both this page and the live app shell — edit the CSS and both move together.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Reference <code>topbar.css</code></h3></div>
+        <span class="spec-tag">Single source</span>
+      </div>
+      <div style="padding:var(--space-2) var(--space-2) var(--space-4)">
+        <table class="map">
+          <thead><tr><th>Class</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td><code>.topbar</code></td><td>Root bar — 52px, surface, bottom hairline.</td></tr>
+            <tr><td><code>.tb-control</code></td><td>Unified 32px control; base for every button/pill.</td></tr>
+            <tr><td><code>.tb-control.icon</code></td><td>Square 32×32 icon-only button.</td></tr>
+            <tr><td><code>.btn-primary.btn-sm</code></td><td>The bar's call to action — canonical button (buttons.css), not topbar-local.</td></tr>
+            <tr><td><code>.tb-live</code> · <code>.dot</code> · <code>.tb-clock</code></td><td>Live-session indicator, status dot, elapsed clock.</td></tr>
+            <tr><td><code>.tb-flag-label</code> · <code>.chev</code></td><td>Language label and disclosure chevron.</td></tr>
+            <tr><td><code>.tb-bell</code> · <code>.badge</code></td><td>Notification button and unread dot.</td></tr>
+            <tr><td><code>.tb-avatar</code></td><td>30px user avatar chip.</td></tr>
+            <tr><td><code>.tb-spacer</code></td><td>Right-aligned cluster wrapper (<code>margin-left:auto</code>).</td></tr>
+            <tr><td><code>.pill-search</code></td><td>Global search — lives in <code>inputs.css</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="padding:0 var(--space-6) var(--space-6)">
+        <div class="callout">
+          <i data-lucide="moon"></i>
+          <div class="callout-body">Every value resolves to a semantic token, so <code>[data-theme="dark"]</code> reskins the whole bar with no per-class dark CSS. Try the toggle, top-right.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="doc-foot">
+    <span>ATTRUS Design System · Top bar</span>
+    <a href="components.html">← Back to catalog</a>
+  </footer>
+
+</main>
+
+<script>
+  lucide.createIcons();
+  // swap the mobile-demo mark with theme
+  function syncMarks(){
+    var dark = window.ATTRUSTheme && window.ATTRUSTheme.get() === 'dark';
+    document.querySelectorAll('[data-logo-mark]').forEach(function(img){
+      img.src = '../assets/logo-attrus-' + (dark ? 'light' : 'dark') + '.svg';
+    });
+  }
+  window.addEventListener('attrus-theme', syncMarks);
+  syncMarks();
+</script>
+
+</body>
+</html>

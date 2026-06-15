@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Cards" subtitle="8 surface variants · padding scale · slots" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cards · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  /* ===== DOCUMENT CHROME — identical pattern to other component docs ===== */
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  .doc-header { display:flex; align-items:flex-end; justify-content:space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p  { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta { display:flex; gap: var(--space-3); flex-shrink:0; }
+  .doc-meta-pill { display:inline-flex; align-items:center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border:1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  .doc-nav { display:flex; flex-wrap:wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration:none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+  .lead code, .spec-head p code, .copy code { font-family: var(--font-mono); font-size: 0.92em; color: var(--color-foreground-accent); background: var(--color-background-selected); padding: 1px var(--space-2); border-radius: var(--radius-2xs); }
+
+  /* spec card */
+  .spec { background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow:hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
+  .spec-head { display:flex; align-items:flex-start; justify-content:space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: var(--color-background-selected); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .spec-head .tag { display:inline-flex; align-items:center; gap: var(--space-2); padding: var(--space-1) var(--space-3); background: var(--color-background-subtle); color: var(--color-foreground-secondary); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; border-radius: var(--radius-pill); flex-shrink:0; }
+
+  .spec-canvas { padding: var(--space-7) var(--space-6); background: var(--color-background-canvas); display:flex; flex-wrap:wrap; gap: var(--space-5); align-items:flex-start; border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-canvas.col   { flex-direction:column; align-items:stretch; }
+  .spec-canvas.dark  { background: var(--color-background-inverse); }
+  .spec-canvas.brand { background: var(--color-background-inverse-brand); }
+  .spec-canvas.grid-2 { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-5); }
+  .spec-canvas.grid-3 { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-5); }
+
+  .spec-foot { display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); padding: var(--space-5) var(--space-6); background: var(--color-background-surface); }
+  .spec-foot h4 { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); margin: 0 0 var(--space-3); }
+  .spec-foot ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap: var(--space-2); }
+  .spec-foot li { font-size: var(--fs-sm); color: var(--color-foreground-secondary); display:flex; gap: var(--space-2); align-items:flex-start; }
+  .spec-foot li i, .spec-foot li svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); flex-shrink:0; margin-top: 2px; }
+  .spec-foot li.do i, .spec-foot li.do svg    { color: var(--color-feedback-success-foreground); }
+  .spec-foot li.dont i, .spec-foot li.dont svg  { color: var(--color-feedback-danger-foreground); }
+
+  /* anatomy figure — pulls a card apart */
+  .anatomy { background: var(--color-background-canvas); padding: var(--space-10) var(--space-8); border-radius: var(--radius-lg); border: 1px solid var(--color-border-default); display:flex; flex-direction:column; align-items:center; gap: var(--space-8); margin-bottom: var(--space-5); box-shadow: var(--shadow-xs); }
+  .anatomy-callouts { display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--space-6); width:100%; max-width:880px; }
+  .anatomy-callout { display:flex; flex-direction:column; align-items:center; gap: var(--space-2); text-align:center; }
+  .anatomy-callout .num { width:22px; height:22px; border-radius: var(--radius-pill); background: var(--color-foreground-accent); color: var(--color-foreground-on-solid); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-bold); display:inline-flex; align-items:center; justify-content:center; }
+  .anatomy-callout .name { font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-default); text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-semibold); }
+  .anatomy-callout .desc { font-size: var(--fs-xs); color: var(--color-foreground-muted); line-height: var(--lh-snug); max-width: 22ch; }
+
+  /* token table */
+  .token-table { width:100%; border-collapse:collapse; background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-md); overflow:hidden; box-shadow: var(--shadow-xs); font-size: var(--fs-sm); }
+  .token-table th, .token-table td { padding: var(--space-3) var(--space-5); text-align:left; border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .token-table tr:last-child td { border-bottom: 0; }
+  .token-table th { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); }
+  .token-table td.k { font-family: var(--font-mono); color: var(--color-foreground-accent); white-space: nowrap; }
+  .token-table td.v { font-family: var(--font-mono); color: var(--color-foreground-secondary); white-space: nowrap; }
+
+  /* don'ts grid */
+  .dont-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-5); }
+  .dont-card { background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-md); overflow:hidden; box-shadow: var(--shadow-xs); }
+  .dont-card-canvas { padding: var(--space-6); background: var(--color-background-canvas); display:flex; align-items:center; justify-content:center; min-height: 140px; border-bottom:1px solid var(--color-border-subtle); }
+  .dont-card-body { padding: var(--space-4) var(--space-5); display:flex; gap: var(--space-3); align-items:flex-start; }
+  .dont-card-body i, .dont-card-body svg { width: var(--icon-md); height: var(--icon-md); stroke-width: var(--icon-stroke); color: var(--color-feedback-danger-foreground); flex-shrink:0; margin-top:1px; }
+  .dont-card-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-normal); }
+  .dont-card-body strong { color: var(--color-foreground-default); display:block; margin-bottom: var(--space-1); font-weight: var(--w-semibold); }
+
+  /* surface swatch grid */
+  .surface-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--space-5); width:100%; }
+
+  /* small helpers */
+  .stack { display:flex; flex-direction:column; gap: var(--space-3); }
+  .row   { display:flex; flex-wrap:wrap; gap: var(--space-3); align-items:center; }
+  .num-big { font-family: var(--font-sans); font-weight: var(--w-bold); font-size: var(--fs-3xl); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; line-height: 1.1; }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <!-- ========== HEADER ========== -->
+  <header class="doc-header">
+    <div>
+      <h1>Cards</h1>
+      <p>The container component. Cards group related content into a single visual surface — a record, a metric, an alert, a piece of UI machinery. They define <strong>where one thing ends and the next begins</strong>. Almost everything in the product lives in a card.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Stable</span>
+    </div>
+  </header>
+
+  <!-- ========== NAV ========== -->
+  <nav class="doc-nav">
+    <a href="#anatomy">Anatomy</a>
+    <a href="#surfaces">Surfaces</a>
+    <a href="#slots">Slots</a>
+    <a href="#density">Density</a>
+    <a href="#layouts">Layouts</a>
+    <a href="#interactive">Interactive</a>
+    <a href="#semantic">Semantic</a>
+    <a href="#on-inverse">On inverse</a>
+    <a href="#donts">Don'ts</a>
+    <a href="#a11y">Accessibility</a>
+    <a href="#tokens">Tokens</a>
+  </nav>
+
+  <!-- ========== 01 ANATOMY ========== -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">01</span>Anatomy</h2>
+    <p class="lead">A card is built from a <strong>surface</strong>, an optional <strong>border</strong>, a <strong>radius</strong>, an <strong>elevation</strong>, and the <strong>padding</strong> that holds its content. Each is a token. Change the token, every card updates.</p>
+
+    <div class="anatomy">
+      <div style="width: 100%; max-width: 540px;">
+        <article class="card">
+          <header class="card-header">
+            <div>
+              <h3>Açai Brasil S.A.</h3>
+              <p>Counterparty · CNPJ 12.345.678/0001-99</p>
+            </div>
+            <span class="pill success sm"><span class="dot"></span>Approved</span>
+          </header>
+          <div class="card-body">
+            <p style="margin:0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);">Last activity 4 hours ago. KYC validated, sanctions clear, beneficial ownership on file. R$ 1.2M in the last 30 days across 14 transactions.</p>
+          </div>
+          <footer class="card-footer">
+            <span style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Updated 2026-04-12</span>
+            <button class="btn btn-tertiary btn-sm">View record<i data-lucide="arrow-right"></i></button>
+          </footer>
+        </article>
+      </div>
+
+      <div class="anatomy-callouts">
+        <div class="anatomy-callout"><span class="num">1</span><span class="name">Surface</span><span class="desc"><code>--color-background-surface</code> · the container fill.</span></div>
+        <div class="anatomy-callout"><span class="num">2</span><span class="name">Border</span><span class="desc"><code>--color-border-default</code> · 1px hairline. Pairs with shadow.</span></div>
+        <div class="anatomy-callout"><span class="num">3</span><span class="name">Radius</span><span class="desc"><code>--radius-md</code> · 10px softness.</span></div>
+        <div class="anatomy-callout"><span class="num">4</span><span class="name">Elevation</span><span class="desc"><code>--shadow-xs</code> · the default lift.</span></div>
+        <div class="anatomy-callout"><span class="num">5</span><span class="name">Header</span><span class="desc">Title + meta + action — divided from body.</span></div>
+        <div class="anatomy-callout"><span class="num">6</span><span class="name">Body</span><span class="desc">Primary content — narrative or data.</span></div>
+        <div class="anatomy-callout"><span class="num">7</span><span class="name">Footer</span><span class="desc">Tinted, secondary actions or metadata.</span></div>
+      </div>
+    </div>
+
+    <table class="token-table">
+      <thead><tr><th>Layer</th><th>Default</th><th>Token</th></tr></thead>
+      <tbody>
+        <tr><td>Background</td><td>White (light theme) / dark graphite (inverse)</td><td class="k">--color-background-surface · --color-background-inverse</td></tr>
+        <tr><td>Border</td><td>1px hairline</td><td class="k">--color-border-default</td></tr>
+        <tr><td>Radius</td><td>10px softly rounded</td><td class="k">--radius-md</td></tr>
+        <tr><td>Shadow</td><td>1px blue-tinted lift</td><td class="k">--shadow-xs</td></tr>
+        <tr><td>Padding (default)</td><td>20px / 24px (content-bearing card)</td><td class="k">--space-5 · --space-6</td></tr>
+        <tr><td>Padding (slots)</td><td>Each slot brings its own</td><td class="k">--space-5 · --space-6 (header/body) · --space-4 · --space-6 (footer)</td></tr>
+        <tr><td>Header divider</td><td>1px subtle line</td><td class="k">--color-border-subtle</td></tr>
+        <tr><td>Footer fill</td><td>Subtle neutral wash</td><td class="k">--color-background-subtle</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+
+  <!-- ========== 02 SURFACES ========== -->
+  <section class="doc-section" id="surfaces">
+    <h2><span class="num">02</span>Surfaces</h2>
+    <p class="lead">Eight surface variants. Pick by <strong>what role the container plays</strong>, not by how it should look. The system handles colour and elevation for you.</p>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Default <code>.card</code></h3><p>White surface, hairline border, soft xs shadow. The workhorse — use this for 80% of cards.</p></div><span class="tag">default</span></header>
+      <div class="spec-canvas">
+        <div style="width: 100%; max-width: 320px;"><article class="card"><div class="card-stat"><span class="stat-label">Total balance · USD</span><span class="stat-value">1,250,000.00</span><span class="stat-delta up"><i data-lucide="arrow-up-right"></i>+8.4%</span></div></article></div>
+      </div>
+      <div class="spec-foot">
+        <div><h4>Use for</h4><ul><li class="do"><i data-lucide="check"></i>Records, metrics, content blocks</li><li class="do"><i data-lucide="check"></i>Anything that needs to feel "lifted" off canvas</li></ul></div>
+        <div><h4>Don't use for</h4><ul><li class="dont"><i data-lucide="x"></i>Nested groups inside another card — use <code>.subtle</code></li><li class="dont"><i data-lucide="x"></i>Floating menus — use <code>.raised</code></li></ul></div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Flat <code>.card.flat</code></h3><p>No shadow. Use inside another card, or when laying out tight rows where shadows would compound and feel heavy.</p></div><span class="tag">flat</span></header>
+      <div class="spec-canvas">
+        <div style="width: 100%; max-width: 320px;"><article class="card flat"><div class="card-stat"><span class="stat-label">Settlement queue</span><span class="stat-value">847</span><span class="stat-delta flat">No change</span></div></article></div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Subtle <code>.card.subtle</code></h3><p>Neutral inset fill, no shadow. The "nested group" surface — use inside another card to group related sub-content.</p></div><span class="tag">subtle</span></header>
+      <div class="spec-canvas">
+        <div style="width: 100%; max-width: 320px;"><article class="card subtle"><div class="card-stat"><span class="stat-label">Linked accounts</span><span class="stat-value">12</span></div></article></div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Sunken <code>.card.sunken</code></h3><p>Inset receipt-style surface. Use for read-only summaries, totals, JSON/code panels — anything that should feel "carved in".</p></div><span class="tag">sunken</span></header>
+      <div class="spec-canvas">
+        <div style="width: 100%; max-width: 360px;"><article class="card sunken"><div style="display:flex; flex-direction:column; gap: var(--space-2);"><div style="display:flex; justify-content:space-between; font-size: var(--fs-sm); color: var(--color-foreground-secondary);"><span>Subtotal</span><span class="num-big" style="font-size: var(--fs-md); font-weight: var(--w-medium);">R$ 184,200.00</span></div><div style="display:flex; justify-content:space-between; font-size: var(--fs-sm); color: var(--color-foreground-secondary);"><span>Network fee</span><span style="font-family: var(--font-mono);">R$ 0.00</span></div><div style="height:1px; background: var(--color-border-subtle); margin: var(--space-2) 0;"></div><div style="display:flex; justify-content:space-between; font-size: var(--fs-md); font-weight: var(--w-semibold);"><span>Total</span><span class="num-big" style="font-size: var(--fs-lg);">R$ 184,200.00</span></div></div></article></div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Raised <code>.card.raised</code></h3><p>md shadow. For floating elements: popovers, dropdown menus, side panels.</p></div><span class="tag">raised</span></header>
+      <div class="spec-canvas">
+        <div style="width: 100%; max-width: 280px;"><article class="card raised" style="padding:0;"><div class="card-body" style="padding: var(--space-3);"><div style="display:flex; flex-direction:column; gap: 2px;"><button class="btn btn-ghost btn-sm" style="justify-content:flex-start;"><i data-lucide="eye"></i>View details</button><button class="btn btn-ghost btn-sm" style="justify-content:flex-start;"><i data-lucide="copy"></i>Copy ID</button><button class="btn btn-ghost btn-sm" style="justify-content:flex-start;"><i data-lucide="archive"></i>Archive</button><div style="height:1px; background: var(--color-border-subtle); margin: var(--space-2) 0;"></div><button class="btn btn-ghost btn-sm" style="justify-content:flex-start; color: var(--color-feedback-danger-foreground);"><i data-lucide="trash-2"></i>Delete</button></div></div></article></div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Floating <code>.card.floating</code></h3><p>lg shadow, no border. Modals, command palettes — components that visually break the layout flow.</p></div><span class="tag">floating</span></header>
+      <div class="spec-canvas">
+        <div style="width: 100%; max-width: 380px;"><article class="card floating"><header class="card-header"><div><h3>Confirm release</h3><p>R$ 1.2M to 8 beneficiaries. This cannot be undone.</p></div></header><footer class="card-footer"><button class="btn btn-tertiary btn-sm">Cancel</button><button class="btn btn-primary btn-sm">Release funds<i data-lucide="arrow-right"></i></button></footer></article></div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Hero <code>.card.hero</code></h3><p>Brand gradient surface for dashboard summary tiles. Use sparingly — one hero card per view, max.</p></div><span class="tag">hero</span></header>
+      <div class="spec-canvas">
+        <div style="width: 100%; max-width: 400px;"><article class="card hero"><div class="card-body" style="padding: var(--space-7);"><div class="card-stat"><span class="stat-label">Total balance · USD</span><span class="stat-value">1,250,000.00</span><span class="stat-delta up" style="color: var(--color-success-100);"><i data-lucide="arrow-up-right"></i>+8.4% this month</span></div></div></article></div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Inverse <code>.card.inverse</code></h3><p>Dark graphite surface for the inverse layer. Pairs with <code>.on-inverse</code> children components.</p></div><span class="tag">inverse</span></header>
+      <div class="spec-canvas dark">
+        <div style="width: 100%; max-width: 320px;"><article class="card inverse"><div class="card-stat"><span class="stat-label" style="color: var(--color-foreground-inverse-muted);">Compliance score</span><span class="stat-value" style="color: var(--color-foreground-inverse-default);">98.2</span><span class="stat-delta up"><i data-lucide="arrow-up-right"></i>+1.4 pts</span></div></article></div>
+      </div>
+    </article>
+  </section>
+
+
+  <!-- ========== 03 SLOTS ========== -->
+  <section class="doc-section" id="slots">
+    <h2><span class="num">03</span>Slots</h2>
+    <p class="lead">Cards subdivide into named slots. <strong>Use a slot — don't hand-roll padding.</strong> Slots carry the right divider, fill, and rounded corners automatically.</p>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Header + body + footer</h3><p>The canonical 3-slot card. Header for title + meta + actions; body for content; footer for secondary actions and timestamps.</p></div><span class="tag">3 slots</span></header>
+      <div class="spec-canvas">
+        <div style="width: 100%; max-width: 480px;">
+          <article class="card">
+            <header class="card-header">
+              <div>
+                <h3>Wire transfer · TX-19847</h3>
+                <p>R$ 184,200.00 to Açai Brasil S.A.</p>
+              </div>
+              <span class="pill warning sm"><span class="dot"></span>Funds on hold</span>
+            </header>
+            <div class="card-body">
+              <p style="margin:0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);">Holding pending compliance review. The counterparty has been pre-approved; this is a routine secondary check on transactions over R$ 100,000.</p>
+            </div>
+            <footer class="card-footer">
+              <span style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Created 2 hours ago</span>
+              <div style="display:flex; gap: var(--space-2);">
+                <button class="btn btn-tertiary btn-sm">Cancel</button>
+                <button class="btn btn-primary btn-sm">Approve<i data-lucide="check"></i></button>
+              </div>
+            </footer>
+          </article>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Header + canvas + footer</h3><p>The <code>.card-canvas</code> slot is full-bleed — for charts, image previews, code samples. Fills to the rounded corners on top.</p></div><span class="tag">canvas slot</span></header>
+      <div class="spec-canvas">
+        <div style="width: 100%; max-width: 480px;">
+          <article class="card">
+            <header class="card-header">
+              <div>
+                <h3>FX · USD/BRL · 30d</h3>
+                <p>Last close 5.0432 · +1.2%</p>
+              </div>
+              <button class="btn btn-ghost btn-icon btn-sm" aria-label="More"><i data-lucide="more-horizontal"></i></button>
+            </header>
+            <div class="card-canvas" style="height: 120px; display:flex; align-items:flex-end; padding: var(--space-4); gap: 4px;">
+              <div style="flex:1; height: 38%; background: var(--color-brand-secondary-200); border-radius: var(--radius-2xs);"></div>
+              <div style="flex:1; height: 52%; background: var(--color-brand-secondary-300); border-radius: var(--radius-2xs);"></div>
+              <div style="flex:1; height: 41%; background: var(--color-brand-secondary-200); border-radius: var(--radius-2xs);"></div>
+              <div style="flex:1; height: 67%; background: var(--color-brand-secondary-400); border-radius: var(--radius-2xs);"></div>
+              <div style="flex:1; height: 58%; background: var(--color-brand-secondary-300); border-radius: var(--radius-2xs);"></div>
+              <div style="flex:1; height: 78%; background: var(--color-brand-secondary-500); border-radius: var(--radius-2xs);"></div>
+              <div style="flex:1; height: 64%; background: var(--color-brand-secondary-400); border-radius: var(--radius-2xs);"></div>
+              <div style="flex:1; height: 82%; background: var(--color-brand-secondary-500); border-radius: var(--radius-2xs);"></div>
+              <div style="flex:1; height: 71%; background: var(--color-brand-secondary-400); border-radius: var(--radius-2xs);"></div>
+              <div style="flex:1; height: 88%; background: var(--color-brand-secondary-600); border-radius: var(--radius-2xs);"></div>
+              <div style="flex:1; height: 76%; background: var(--color-brand-secondary-500); border-radius: var(--radius-2xs);"></div>
+              <div style="flex:1; height: 94%; background: var(--color-brand-secondary-600); border-radius: var(--radius-2xs);"></div>
+            </div>
+            <footer class="card-footer">
+              <span style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Source · BCB</span>
+              <button class="btn btn-tertiary btn-sm">View full chart<i data-lucide="arrow-right"></i></button>
+            </footer>
+          </article>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Body only</h3><p>Skip header and footer when the card is purely informational. The card's own padding kicks in automatically.</p></div><span class="tag">no slots</span></header>
+      <div class="spec-canvas grid-3">
+        <article class="card"><div class="card-stat"><span class="stat-label">MRR</span><span class="stat-value">R$ 4.82M</span><span class="stat-delta up"><i data-lucide="arrow-up-right"></i>+12%</span></div></article>
+        <article class="card"><div class="card-stat"><span class="stat-label">Active customers</span><span class="stat-value">1,184</span><span class="stat-delta up"><i data-lucide="arrow-up-right"></i>+38</span></div></article>
+        <article class="card"><div class="card-stat"><span class="stat-label">Settlement queue</span><span class="stat-value">847</span><span class="stat-delta down"><i data-lucide="arrow-down-right"></i>-14</span></div></article>
+      </div>
+    </article>
+  </section>
+
+
+  <!-- ========== 04 DENSITY ========== -->
+  <section class="doc-section" id="density">
+    <h2><span class="num">04</span>Density</h2>
+    <p class="lead">Three density modes. <strong>Default</strong> is correct for most cards — generous but not loose. Use <code>.compact</code> in tight grids; <code>.spacious</code> only for hero / detail-page panels.</p>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Three densities side by side</h3><p>Same content, three vertical rhythms. Notice the slot padding adjusts in lock-step.</p></div><span class="tag">compact · default · spacious</span></header>
+      <div class="spec-canvas grid-3">
+        <article class="card compact"><header class="card-header"><h3>Compact</h3></header><div class="card-body"><p style="margin:0; font-size: var(--fs-sm); color: var(--color-foreground-secondary);">12/16 padding · for dense tables, sidebars, tight lists.</p></div></article>
+        <article class="card"><header class="card-header"><h3>Default</h3></header><div class="card-body"><p style="margin:0; font-size: var(--fs-sm); color: var(--color-foreground-secondary);">20/24 padding · the everyday rhythm.</p></div></article>
+        <article class="card spacious"><header class="card-header"><h3>Spacious</h3></header><div class="card-body"><p style="margin:0; font-size: var(--fs-sm); color: var(--color-foreground-secondary);">28/32 padding · hero tiles, detail headers.</p></div></article>
+      </div>
+      <div class="spec-foot">
+        <div><h4>Picking density</h4><ul><li class="do"><i data-lucide="check"></i><strong>compact</strong> — 4+ cards in a row, sidebar widgets</li><li class="do"><i data-lucide="check"></i><strong>default</strong> — 2–3 cards per row, full-width sections</li><li class="do"><i data-lucide="check"></i><strong>spacious</strong> — single hero, detail-page summary</li></ul></div>
+        <div><h4>Specs</h4><ul><li><strong>compact</strong> · 12px / 16px (h-pad)</li><li><strong>default</strong> · 20px / 24px</li><li><strong>spacious</strong> · 28px / 32px</li></ul></div>
+      </div>
+    </article>
+  </section>
+
+
+
+  <!-- ========== 05 LAYOUTS ========== -->
+  <section class="doc-section" id="layouts">
+    <h2><span class="num">05</span>Layouts</h2>
+    <p class="lead">Common compositions where cards live in the product. These are <strong>patterns</strong>, not new components — the underlying card is the same; only the contents differ.</p>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Stat / KPI card</h3><p>Single metric — label, value, delta. The most common card in the product.</p></div><span class="tag">stat</span></header>
+      <div class="spec-canvas grid-3">
+        <article class="card"><div class="card-stat"><span class="stat-label">Released today</span><span class="stat-value">R$ 4.82M</span><span class="stat-delta up"><i data-lucide="arrow-up-right"></i>+R$ 312K vs yesterday</span></div></article>
+        <article class="card"><div class="card-stat"><span class="stat-label">On hold</span><span class="stat-value">R$ 1.18M</span><span class="stat-delta down"><i data-lucide="arrow-down-right"></i>-12% week</span></div></article>
+        <article class="card"><div class="card-stat"><span class="stat-label">Compliance flags</span><span class="stat-value">7</span><span class="stat-delta flat">No change</span></div></article>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Record card</h3><p>One business object — counterparty, transaction, document. Header carries title + status; body summarises; footer offers the primary action.</p></div><span class="tag">record</span></header>
+      <div class="spec-canvas grid-2">
+        <article class="card">
+          <header class="card-header">
+            <div><h3>Granjas do Vale Ltda.</h3><p>CNPJ 21.567.890/0001-44 · São Paulo</p></div>
+            <span class="pill warning sm"><span class="dot"></span>Under review</span>
+          </header>
+          <div class="card-body"><p style="margin:0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);">Awaiting beneficial-ownership documents. 3 of 4 items received.</p></div>
+          <footer class="card-footer"><span style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Submitted 5d ago</span><button class="btn btn-tertiary btn-sm">Open<i data-lucide="arrow-right"></i></button></footer>
+        </article>
+        <article class="card">
+          <header class="card-header">
+            <div><h3>Mineração Sertão MG</h3><p>CNPJ 09.123.456/0001-77 · Belo Horizonte</p></div>
+            <span class="pill success sm"><span class="dot"></span>Approved</span>
+          </header>
+          <div class="card-body"><p style="margin:0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);">Tier 1 counterparty. R$ 8.4M cleared in last 30 days.</p></div>
+          <footer class="card-footer"><span style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Last activity 1h ago</span><button class="btn btn-tertiary btn-sm">Open<i data-lucide="arrow-right"></i></button></footer>
+        </article>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Action card</h3><p>A card that exists to drive a single action — onboarding nudges, "next steps", quick-launch tiles. Use a primary or secondary button in the footer.</p></div><span class="tag">action</span></header>
+      <div class="spec-canvas grid-2">
+        <article class="card">
+          <header class="card-header"><div><h3>Connect a banking partner</h3><p>Required to move funds. Takes ~5 minutes.</p></div></header>
+          <footer class="card-footer"><span style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Step 2 of 4</span><button class="btn btn-primary btn-sm">Start<i data-lucide="arrow-right"></i></button></footer>
+        </article>
+        <article class="card">
+          <header class="card-header"><div><h3>Invite your finance team</h3><p>Add up to 5 teammates with read-only access.</p></div></header>
+          <footer class="card-footer"><span style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Optional</span><button class="btn btn-secondary btn-sm">Invite<i data-lucide="user-plus"></i></button></footer>
+        </article>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Empty state card</h3><p>A card that holds a "nothing yet" message. Centered, generous padding, an optional CTA. One sentence + one button.</p></div><span class="tag">empty</span></header>
+      <div class="spec-canvas">
+        <div style="width:100%; max-width: 520px;">
+          <article class="card spacious">
+            <div class="card-body" style="text-align:center; padding: var(--space-8) var(--space-7);">
+              <div style="width:48px; height:48px; border-radius: var(--radius-pill); background: var(--color-background-subtle); display:inline-flex; align-items:center; justify-content:center; margin-bottom: var(--space-4); color: var(--color-foreground-muted);"><i data-lucide="inbox" style="width:24px; height:24px; stroke-width: var(--icon-stroke);"></i></div>
+              <h3 style="margin:0; font-size: var(--fs-lg); font-weight: var(--w-semibold); letter-spacing: var(--ls-title);">No transactions today</h3>
+              <p style="margin: var(--space-2) 0 var(--space-5); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);">Your settlement queue is clear. Inbound transfers will appear here as they arrive.</p>
+              <button class="btn btn-tertiary btn-sm">View all transactions<i data-lucide="arrow-right"></i></button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>List card</h3><p>A header + a sequence of internal rows divided by hairlines. The last row drops its divider.</p></div><span class="tag">list</span></header>
+      <div class="spec-canvas">
+        <div style="width:100%; max-width: 520px;">
+          <article class="card">
+            <header class="card-header"><div><h3>Recent activity</h3><p>Last 24 hours · 4 events</p></div><button class="btn btn-ghost btn-icon btn-sm" aria-label="More"><i data-lucide="more-horizontal"></i></button></header>
+            <div>
+              <div style="display:flex; align-items:center; gap: var(--space-4); padding: var(--space-3) var(--space-6); border-bottom: 1px solid var(--color-border-subtle);">
+                <div style="width:32px; height:32px; border-radius: var(--radius-pill); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="check" style="width:16px; height:16px;"></i></div>
+                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-medium);">TX-19847 · Released</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono);">R$ 184,200.00 · 2h ago</div></div>
+              </div>
+              <div style="display:flex; align-items:center; gap: var(--space-4); padding: var(--space-3) var(--space-6); border-bottom: 1px solid var(--color-border-subtle);">
+                <div style="width:32px; height:32px; border-radius: var(--radius-pill); background: var(--color-feedback-warning-background); color: var(--color-feedback-warning-foreground); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="clock" style="width:16px; height:16px;"></i></div>
+                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-medium);">TX-19851 · Funds on hold</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono);">R$ 42,800.00 · 4h ago</div></div>
+              </div>
+              <div style="display:flex; align-items:center; gap: var(--space-4); padding: var(--space-3) var(--space-6); border-bottom: 1px solid var(--color-border-subtle);">
+                <div style="width:32px; height:32px; border-radius: var(--radius-pill); background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="x" style="width:16px; height:16px;"></i></div>
+                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-medium);">TX-19844 · Bounced</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono);">R$ 8,400.00 · 7h ago</div></div>
+              </div>
+              <div style="display:flex; align-items:center; gap: var(--space-4); padding: var(--space-3) var(--space-6);">
+                <div style="width:32px; height:32px; border-radius: var(--radius-pill); background: var(--color-feedback-info-background); color: var(--color-feedback-info-foreground); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="user-plus" style="width:16px; height:16px;"></i></div>
+                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-medium);">New counterparty added</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono);">Açai Brasil S.A. · 12h ago</div></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </article>
+  </section>
+
+
+  <!-- ========== 06 INTERACTIVE ========== -->
+  <section class="doc-section" id="interactive">
+    <h2><span class="num">06</span>Interactive cards</h2>
+    <p class="lead">When the entire card is a click target — wrap it in <code>&lt;a&gt;</code> or <code>&lt;button&gt;</code> and add <code>.interactive</code>. Hover lifts; focus draws the standard ring; press settles back.</p>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Link card</h3><p>Hover one to see the lift. Use for navigation tiles — never put a button inside an interactive card.</p></div><span class="tag">interactive</span></header>
+      <div class="spec-canvas grid-3">
+        <a class="card interactive" href="#layouts"><header class="card-header"><div><h3>Transactions</h3><p>847 active</p></div><i data-lucide="arrow-right" style="width:16px; height:16px; color: var(--color-foreground-muted);"></i></header></a>
+        <a class="card interactive" href="#layouts"><header class="card-header"><div><h3>Counterparties</h3><p>1,184 records</p></div><i data-lucide="arrow-right" style="width:16px; height:16px; color: var(--color-foreground-muted);"></i></header></a>
+        <a class="card interactive" href="#layouts"><header class="card-header"><div><h3>Compliance queue</h3><p>7 flagged</p></div><i data-lucide="arrow-right" style="width:16px; height:16px; color: var(--color-foreground-muted);"></i></header></a>
+      </div>
+      <div class="spec-foot">
+        <div><h4>Triggers</h4><ul><li><strong>:hover</strong> — border darkens, sm shadow, -1px translate</li><li><strong>:focus-visible</strong> — 4px focus ring</li><li><strong>:active</strong> — translate returns, shadow back to xs</li></ul></div>
+        <div><h4>Wiring</h4><ul><li class="do"><i data-lucide="check"></i>Use <code>&lt;a&gt;</code> with a real <code>href</code></li><li class="do"><i data-lucide="check"></i>Or <code>&lt;button&gt;</code> for non-nav actions</li><li class="dont"><i data-lucide="x"></i>Never wrap a card in <code>onclick</code>'d <code>&lt;div&gt;</code></li></ul></div>
+      </div>
+    </article>
+  </section>
+
+
+  <!-- ========== 07 SEMANTIC ========== -->
+  <section class="doc-section" id="semantic">
+    <h2><span class="num">07</span>Semantic accent cards</h2>
+    <p class="lead">For inline alerts and banners only. The semantic shadow tints the elevation toward the variant. <strong>Don't use for normal content cards</strong> — that's pill territory, not the surface itself.</p>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Four semantic variants</h3><p>Each carries the variant's bg, border, and tinted shadow. Pair with a leading icon for instant readability.</p></div><span class="tag">accent</span></header>
+      <div class="spec-canvas col">
+        <article class="card accent-success" style="display:flex; gap: var(--space-4); align-items:flex-start;"><i data-lucide="check-circle-2" style="width:20px; height:20px; color: var(--color-feedback-success-foreground); flex-shrink:0; margin-top:2px;"></i><div><strong style="font-weight: var(--w-semibold);">Funds released successfully.</strong><p style="margin: var(--space-1) 0 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary);">R$ 184,200.00 to Açai Brasil S.A. · TX-19847</p></div></article>
+        <article class="card accent-warning" style="display:flex; gap: var(--space-4); align-items:flex-start;"><i data-lucide="alert-triangle" style="width:20px; height:20px; color: var(--color-feedback-warning-foreground); flex-shrink:0; margin-top:2px;"></i><div><strong style="font-weight: var(--w-semibold);">3 transactions awaiting your review.</strong><p style="margin: var(--space-1) 0 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary);">All over R$ 100K · auto-released in 24h if not actioned.</p></div></article>
+        <article class="card accent-danger" style="display:flex; gap: var(--space-4); align-items:flex-start;"><i data-lucide="x-circle" style="width:20px; height:20px; color: var(--color-feedback-danger-foreground); flex-shrink:0; margin-top:2px;"></i><div><strong style="font-weight: var(--w-semibold);">Connection to BACEN failed.</strong><p style="margin: var(--space-1) 0 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary);">Outbound transfers are queued. Retry attempted in 5 min.</p></div></article>
+        <article class="card accent-info" style="display:flex; gap: var(--space-4); align-items:flex-start;"><i data-lucide="info" style="width:20px; height:20px; color: var(--color-feedback-info-foreground); flex-shrink:0; margin-top:2px;"></i><div><strong style="font-weight: var(--w-semibold);">PIX cutoff at 22:00 BRT.</strong><p style="margin: var(--space-1) 0 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary);">After cutoff, instant transfers process the next business day.</p></div></article>
+      </div>
+    </article>
+  </section>
+
+
+  <!-- ========== 08 ON INVERSE ========== -->
+  <section class="doc-section" id="on-inverse">
+    <h2><span class="num">08</span>On inverse</h2>
+    <p class="lead">Cards on dark surfaces — use <code>.card.inverse</code>. Graphite fill replaces white; borders use the inverse strong; shadows are dropped.</p>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Inverse cards on inverse canvas</h3><p>Borders are slightly stronger to compensate for the missing shadow.</p></div><span class="tag">inverse</span></header>
+      <div class="spec-canvas dark grid-3">
+        <article class="card inverse"><div class="card-stat"><span class="stat-label" style="color: var(--color-foreground-inverse-muted);">Compliance score</span><span class="stat-value" style="color: var(--color-foreground-inverse-default);">98.2</span><span class="stat-delta up"><i data-lucide="arrow-up-right"></i>+1.4 pts</span></div></article>
+        <article class="card inverse"><div class="card-stat"><span class="stat-label" style="color: var(--color-foreground-inverse-muted);">SLA hit rate</span><span class="stat-value" style="color: var(--color-foreground-inverse-default);">99.7%</span><span class="stat-delta flat" style="color: var(--color-foreground-inverse-muted);">No change</span></div></article>
+        <article class="card inverse"><div class="card-stat"><span class="stat-label" style="color: var(--color-foreground-inverse-muted);">Open flags</span><span class="stat-value" style="color: var(--color-foreground-inverse-default);">7</span><span class="stat-delta down"><i data-lucide="arrow-down-right"></i>-3 today</span></div></article>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head"><div><h3>Hero alongside inverse</h3><p>The hero gradient is at home on either canvas — its glow supplies its own depth.</p></div><span class="tag">hero + inverse</span></header>
+      <div class="spec-canvas brand grid-2">
+        <article class="card hero"><div class="card-body" style="padding: var(--space-7);"><div class="card-stat"><span class="stat-label">Total balance · USD</span><span class="stat-value">1,250,000.00</span><span class="stat-delta up" style="color: var(--color-success-100);"><i data-lucide="arrow-up-right"></i>+8.4% this month</span></div></div></article>
+        <article class="card inverse"><div class="card-stat"><span class="stat-label" style="color: var(--color-foreground-inverse-muted);">Available · BRL</span><span class="stat-value" style="color: var(--color-foreground-inverse-default);">R$ 6.4M</span><span class="stat-delta flat" style="color: var(--color-foreground-inverse-muted);">Settled 1h ago</span></div></article>
+      </div>
+    </article>
+  </section>
+
+
+  <!-- ========== 09 DON'TS ========== -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">09</span>Don'ts</h2>
+    <p class="lead">Common pitfalls. Each undermines the contract that "card = single, self-contained unit of meaning."</p>
+
+    <div class="dont-grid">
+      <div class="dont-card">
+        <div class="dont-card-canvas"><article class="card raised" style="box-shadow: var(--shadow-xl); width: 220px;"><div class="card-stat"><span class="stat-label">MRR</span><span class="stat-value">R$ 4.82M</span></div></article></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't over-elevate stat cards.</strong> A KPI card never needs more than xs shadow. Heavy lift competes with real elevation hierarchy.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><article class="card" style="border-radius: 0; width: 220px;"><div class="card-stat"><span class="stat-label">Sharp corners</span><span class="stat-value">0px</span></div></article></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't square-corner cards.</strong> The system minimum is <code>--radius-2xs</code>. Sharp corners feel jarring against the rest of the product's softness.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><article class="card" style="background: #FCE7F3; border-color: #F472B6; width: 240px;"><div class="card-stat"><span class="stat-label" style="color:#9D174D;">Custom colour</span><span class="stat-value" style="color:#9D174D;">Off-brand</span></div></article></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't hex-pick a custom card surface.</strong> If the eight surface variants don't fit, propose a new one — don't override locally.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><a class="card interactive" href="#" onclick="event.preventDefault()" style="width:240px;"><header class="card-header"><div><h3>Click anywhere<br>(also click button)</h3></div><button class="btn btn-primary btn-sm" onclick="event.preventDefault();event.stopPropagation()">Action</button></header></a></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't combine an interactive card with a button inside.</strong> Pick one — clickable card OR contained action. Both creates ambiguous click targets.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><article class="card" style="width:240px;"><div class="card-body" style="padding: var(--space-3);"><article class="card" style="box-shadow: var(--shadow-md);"><div class="card-body" style="padding: var(--space-3);"><span style="font-size: var(--fs-xs); color: var(--color-foreground-muted);">Nested card with shadow</span></div></article></div></article></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't nest shadowed cards.</strong> Shadows compound and create visual noise. For nested groups, use <code>.subtle</code> or <code>.flat</code>.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><article class="card accent-warning" style="width:260px;"><header class="card-header"><div><h3>Standard content</h3><p>Not actually a warning</p></div></header></article></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't use semantic accents for normal content.</strong> Semantic surfaces signal alerts. Using them as decoration cries wolf.</p></div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========== 10 ACCESSIBILITY ========== -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">10</span>Accessibility</h2>
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Rule</th><th>How we comply</th></tr></thead>
+      <tbody>
+        <tr><td>Surface contrast</td><td>WCAG 1.4.11 — 3:1</td><td><code>--color-background-surface</code> on <code>--color-background-canvas</code> verified ≥ 3.1:1 via the hairline border, even when shadow renders weakly.</td></tr>
+        <tr><td>Text contrast</td><td>WCAG 1.4.3 — 4.5:1</td><td>All <code>--fg-*</code> on <code>--color-background-surface</code> / <code>--color-background-subtle</code> / <code>--color-background-sunken</code> pairs verified.</td></tr>
+        <tr><td>Inverse text</td><td>WCAG 1.4.3</td><td><code>--color-foreground-inverse-default</code> on <code>--color-background-inverse</code> verified ≥ 7:1.</td></tr>
+        <tr><td>Interactive role</td><td>WCAG 4.1.2</td><td><code>.card.interactive</code> requires a real <code>&lt;a&gt;</code> or <code>&lt;button&gt;</code> wrapper.</td></tr>
+        <tr><td>Focus visible</td><td>WCAG 2.4.7</td><td>Interactive cards expose <code>--shadow-focus</code> on <code>:focus-visible</code> + a <code>--color-border-focus</code> border.</td></tr>
+        <tr><td>Hit target</td><td>WCAG 2.5.5 (AAA)</td><td>Interactive cards are at least 44px tall in all density modes.</td></tr>
+        <tr><td>Semantic accent</td><td>WCAG 1.4.1</td><td>Accent cards always pair colour with a leading semantic icon — colour alone never carries meaning.</td></tr>
+        <tr><td>Heading order</td><td>WCAG 1.3.1</td><td>Card titles use <code>h3</code>/<code>h4</code> consistent with surrounding heading hierarchy.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+
+  <!-- ========== 11 TOKENS ========== -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">11</span>Tokens consumed</h2>
+    <p class="lead">Every value in <code>cards.css</code> traces back to a token in <code>dist/css/tokens.css</code>.</p>
+    <table class="token-table">
+      <thead><tr><th>Role</th><th>Token</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td>Default surface</td><td class="k">--color-background-surface</td><td><code>.card</code> background</td></tr>
+        <tr><td>Subtle surface</td><td class="k">--color-background-subtle</td><td><code>.subtle</code> + footer fill</td></tr>
+        <tr><td>Sunken surface</td><td class="k">--color-background-sunken</td><td><code>.sunken</code></td></tr>
+        <tr><td>Raised surface</td><td class="k">--color-background-raised</td><td><code>.raised</code> background</td></tr>
+        <tr><td>Inverse surface</td><td class="k">--color-background-inverse</td><td><code>.inverse</code></td></tr>
+        <tr><td>Hero gradient</td><td class="k">--grad-hero · --grad-radial-glow</td><td><code>.hero</code></td></tr>
+        <tr><td>Default border</td><td class="k">--color-border-default</td><td>1px hairline</td></tr>
+        <tr><td>Subtle divider</td><td class="k">--color-border-subtle</td><td>Header / footer / row dividers</td></tr>
+        <tr><td>Strong border</td><td class="k">--color-border-strong</td><td>Hover state</td></tr>
+        <tr><td>Focus border</td><td class="k">--color-border-focus</td><td>Interactive focus</td></tr>
+        <tr><td>Inverse border</td><td class="k">--color-border-inverse</td><td><code>.inverse</code> hairline</td></tr>
+        <tr><td>Radius</td><td class="k">--radius-md (10px)</td><td>All cards</td></tr>
+        <tr><td>Default shadow</td><td class="k">--shadow-xs</td><td>Default lift</td></tr>
+        <tr><td>Hover shadow</td><td class="k">--shadow-sm</td><td>Interactive hover</td></tr>
+        <tr><td>Raised shadow</td><td class="k">--shadow-md</td><td><code>.raised</code></td></tr>
+        <tr><td>Floating shadow</td><td class="k">--shadow-lg</td><td><code>.floating</code></td></tr>
+        <tr><td>Semantic shadows</td><td class="k">--shadow-success-sm · --shadow-warning-sm · --shadow-danger-sm · --shadow-info-sm</td><td>Accent card elevation</td></tr>
+        <tr><td>Focus ring</td><td class="k">--shadow-focus</td><td>Interactive focus halo</td></tr>
+        <tr><td>Padding (default)</td><td class="k">--space-5 · --space-6</td><td>Default body padding</td></tr>
+        <tr><td>Padding (compact)</td><td class="k">--space-3 · --space-4</td><td><code>.compact</code></td></tr>
+        <tr><td>Padding (spacious)</td><td class="k">--space-7 · --space-8</td><td><code>.spacious</code></td></tr>
+        <tr><td>Footer padding</td><td class="k">--space-4 · --space-6</td><td><code>.card-footer</code></td></tr>
+        <tr><td>Title font</td><td class="k">--fs-md · --w-semibold · --ls-title</td><td><code>.card-header h3</code></td></tr>
+        <tr><td>Stat value</td><td class="k">--fs-3xl · --w-bold · --ls-display · tabular-nums</td><td><code>.stat-value</code></td></tr>
+        <tr><td>Stat label</td><td class="k">--font-mono · --fs-xxs · --w-semibold · --ls-caps</td><td><code>.stat-label</code></td></tr>
+        <tr><td>Transitions</td><td class="k">--transition-base</td><td>Hover &amp; press motion</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script>
+  if (window.lucide && lucide.createIcons) lucide.createIcons();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Callout · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  .page-theme { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition-fast); }
+  .page-theme:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background: var(--color-background-hover); }
+  .page-theme [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
+  .spec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .spec-tag { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
+  .spec-body { padding: var(--space-7) var(--space-6); display: flex; flex-direction: column; gap: var(--space-5); }
+
+  .demo-label { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+
+  .map { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  .map th, .map td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .map th { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .map td code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .map td:last-child { color: var(--color-foreground-secondary); }
+
+  .code { font-family: var(--font-mono); font-size: var(--fs-xs); line-height: var(--lh-relaxed); color: var(--color-foreground-secondary); background: var(--color-background-subtle); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-sm); padding: var(--space-4) var(--space-5); white-space: pre; overflow-x: auto; }
+  .code .t { color: var(--color-foreground-accent); }
+  .code .c { color: var(--color-foreground-muted); }
+
+  .doc-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+</style>
+</head>
+<body>
+
+<button class="page-theme" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">☾</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Callout</h1>
+      <p>An icon-led note that sets a short message apart from running content — tips, warnings, results, and asides. Tonal variants carry meaning; the tint adapts to the theme.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="git-merge"></i> Single source</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#tones">01 Tones</a>
+    <a href="#sizes">02 Sizes</a>
+    <a href="#anatomy">03 Anatomy</a>
+    <a href="#rich">04 Rich &amp; actions</a>
+    <a href="#bar">05 Alert bar</a>
+    <a href="#inline">06 Inline &amp; on-inverse</a>
+    <a href="#usage">07 Usage</a>
+    <a href="#map">08 Class map</a>
+  </nav>
+
+  <!-- 01 TONES -->
+  <section class="doc-section" id="tones">
+    <h2><span class="num">01</span>Tones</h2>
+    <p class="lead">Five tones, each driven by two custom properties (<code>--callout-tint</code> for the box, <code>--callout-fg</code> for the icon). The background is <code>color-mix</code>'d against the surface, so every tone reskins automatically in dark mode — try the toggle, top-right.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Tonal variants</h3><p>Default is informational (royal). Add a modifier class for the others.</p></div>
+        <span class="spec-tag">Semantic</span>
+      </div>
+      <div class="spec-body">
+        <div>
+          <div class="demo-label">Default · info <code style="color:var(--color-foreground-accent)">.callout</code></div>
+          <div class="callout"><i data-lucide="info"></i><div class="callout-body">Settlement runs nightly at <strong>22:00 UTC</strong>. Movements created after the cutoff settle the next business day.</div></div>
+        </div>
+        <div>
+          <div class="demo-label">Warning <code style="color:var(--color-foreground-accent)">.callout-warn</code></div>
+          <div class="callout callout-warn"><i data-lucide="alert-triangle"></i><div class="callout-body">This counterparty is at <strong>KYC Level 1</strong>. Transfers above USD 10,000 require Level 2 verification.</div></div>
+        </div>
+        <div>
+          <div class="demo-label">Success <code style="color:var(--color-foreground-accent)">.callout-success</code></div>
+          <div class="callout callout-success"><i data-lucide="check-circle"></i><div class="callout-body">Transaction <strong>TX-90412</strong> settled. Funds are available in the destination account.</div></div>
+        </div>
+        <div>
+          <div class="demo-label">Danger <code style="color:var(--color-foreground-accent)">.callout-danger</code></div>
+          <div class="callout callout-danger"><i data-lucide="x-circle"></i><div class="callout-body">Payment <strong>failed</strong>: the destination IBAN could not be validated. No funds were debited.</div></div>
+        </div>
+        <div>
+          <div class="demo-label">Neutral <code style="color:var(--color-foreground-accent)">.callout-neutral</code></div>
+          <div class="callout callout-neutral"><i data-lucide="info"></i><div class="callout-body">Amounts are shown in your base currency. Original currency appears beneath each value.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 SIZES -->
+  <section class="doc-section" id="sizes">
+    <h2><span class="num">02</span>Sizes</h2>
+    <p class="lead">Default for standalone asides; <code>.callout-sm</code> for inline hints inside dense panels, drawers, and forms.</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Default &amp; compact</h3></div><span class="spec-tag">Scale</span></div>
+      <div class="spec-body">
+        <div>
+          <div class="demo-label">Default</div>
+          <div class="callout"><i data-lucide="lightbulb"></i><div class="callout-body">Press <code>⌘K</code> anywhere to open search and jump to any transaction, counterparty or account.</div></div>
+        </div>
+        <div>
+          <div class="demo-label">Compact <code style="color:var(--color-foreground-accent)">.callout-sm</code></div>
+          <div class="callout callout-sm"><i data-lucide="lightbulb"></i><div class="callout-body">Tip: paste a reference to filter the ledger instantly.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 ANATOMY -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">03</span>Anatomy</h2>
+    <p class="lead">A leading icon (18px, or 16px when compact) and a <code>.callout-body</code> message. The body takes <code>strong</code>, <code>code</code>, and links; the icon is any Lucide glyph that fits the tone.</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Structure</h3></div><span class="spec-tag">Markup</span></div>
+      <div class="spec-body">
+        <div class="callout"><i data-lucide="git-merge"></i><div class="callout-body">Defined once in <code>components/callout.css</code> and consumed by every doc page and product surface — edit the CSS and all callouts move together. See <a href="components.html">the catalog</a>.</div></div>
+        <div class="code"><span class="c">&lt;!-- info (default) --&gt;</span>
+<span class="t">&lt;div</span> class=<span class="t">"callout"</span><span class="t">&gt;</span>
+  <span class="t">&lt;i</span> data-lucide=<span class="t">"info"</span><span class="t">&gt;&lt;/i&gt;</span>
+  <span class="t">&lt;div</span> class=<span class="t">"callout-body"</span><span class="t">&gt;</span>Your message, with &lt;strong&gt;emphasis&lt;/strong&gt; or &lt;code&gt;tokens&lt;/code&gt;.<span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span>
+
+<span class="c">&lt;!-- tonal + compact --&gt;</span>
+<span class="t">&lt;div</span> class=<span class="t">"callout callout-warn callout-sm"</span><span class="t">&gt;</span> … <span class="t">&lt;/div&gt;</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 RICH & ACTIONS -->
+  <section class="doc-section" id="rich">
+    <h2><span class="num">04</span>Rich content &amp; actions</h2>
+    <p class="lead">Wrap the message in <code>.callout-content</code> to stack a <code>.callout-title</code>, body and an <code>.callout-actions</code> row of buttons. Add a <code>.callout-dismiss</code> button to make it closeable. Buttons are the canonical <code>.btn</code> — use <strong>small</strong> ones (<code>.btn-xs</code>): <code>.btn-secondary</code> for the action (its border keeps it legible on the tinted box), <code>.btn-ghost</code> for the soft option, and <code>.btn-danger</code> for destructive.</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Title + body + actions</h3></div><span class="spec-tag">Vertical</span></div>
+      <div class="spec-body">
+        <div class="callout callout-warn">
+          <i data-lucide="alert-triangle"></i>
+          <div class="callout-content">
+            <div class="callout-title">Verification required</div>
+            <div class="callout-body">This counterparty is at <strong>KYC Level 1</strong>. Transfers above USD 10,000 need Level 2 — it takes about two minutes and unlocks higher limits.</div>
+            <div class="callout-actions">
+              <button class="btn btn-secondary btn-xs">Start verification</button>
+              <button class="btn btn-ghost btn-xs">Remind me later</button>
+            </div>
+          </div>
+          <button class="callout-dismiss" aria-label="Dismiss"><i data-lucide="x"></i></button>
+        </div>
+
+        <div class="callout callout-success">
+          <i data-lucide="check-circle"></i>
+          <div class="callout-content">
+            <div class="callout-title">Account connected</div>
+            <div class="callout-body">Your USD operating account is live. You can now receive pay-ins and settle in three corridors.</div>
+            <div class="callout-actions">
+              <button class="btn btn-secondary btn-xs" style="display:inline-flex;align-items:center;gap:var(--space-2)"><i data-lucide="arrow-right" style="width:12px;height:12px"></i> View account</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-neutral">
+          <i data-lucide="list-checks"></i>
+          <div class="callout-content">
+            <div class="callout-title">Before you submit</div>
+            <div class="callout-body">
+              <ul>
+                <li>Confirm the destination IBAN matches the beneficiary name.</li>
+                <li>Check the FX rate lock window — it expires in 15 minutes.</li>
+                <li>Attach the invoice reference for reconciliation.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-danger">
+          <i data-lucide="trash-2"></i>
+          <div class="callout-content">
+            <div class="callout-title">Delete this counterparty?</div>
+            <div class="callout-body">Removing <strong>Globex LATAM Ltda</strong> also clears its saved accounts and templates. This can’t be undone.</div>
+            <div class="callout-actions">
+              <button class="btn btn-danger btn-xs">Delete</button>
+              <button class="btn btn-ghost btn-xs">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 ALERT BAR -->
+  <section class="doc-section" id="bar">
+    <h2><span class="num">05</span>Alert bar</h2>
+    <p class="lead">Add <code>.callout-bar</code> for a full-width banner: items center on one line, a left accent rule aids scanning, and actions/dismiss sit inline-right. Use at the top of a page or section for system-level messages. Add <code>.callout-rounded</code> when it sits inside a padded container rather than edge-to-edge.</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Full-width banners <code>.callout-bar</code></h3></div><span class="spec-tag">Banner</span></div>
+      <div class="spec-body" style="padding-left:0;padding-right:0">
+        <div class="callout callout-bar callout-warn">
+          <i data-lucide="clock"></i>
+          <div class="callout-content"><div class="callout-body"><strong>Scheduled maintenance</strong> — settlement pauses Sat 03:00–04:00 UTC. Movements queue and process automatically after.</div></div>
+          <div class="callout-actions"><button class="btn btn-secondary btn-xs">Details</button></div>
+          <button class="callout-dismiss" aria-label="Dismiss"><i data-lucide="x"></i></button>
+        </div>
+
+        <div class="callout callout-bar callout-danger">
+          <i data-lucide="alert-octagon"></i>
+          <div class="callout-content"><div class="callout-body"><strong>Action needed</strong> — 3 transactions are blocked pending compliance review.</div></div>
+          <div class="callout-actions"><button class="btn btn-secondary btn-xs">Review now</button></div>
+          <button class="callout-dismiss" aria-label="Dismiss"><i data-lucide="x"></i></button>
+        </div>
+
+        <div class="callout callout-bar callout-success">
+          <i data-lucide="check-circle"></i>
+          <div class="callout-content"><div class="callout-body"><strong>All systems operational</strong> — every corridor is settling on time.</div></div>
+          <button class="callout-dismiss" aria-label="Dismiss"><i data-lucide="x"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Rounded, in-container <code>.callout-rounded</code></h3></div><span class="spec-tag">Inset</span></div>
+      <div class="spec-body">
+        <div class="callout callout-bar callout-rounded">
+          <i data-lucide="info"></i>
+          <div class="callout-content"><div class="callout-body">A new statement is ready for September.</div></div>
+          <div class="callout-actions"><button class="btn btn-secondary btn-xs">Download</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 INLINE & ON-INVERSE -->
+  <section class="doc-section" id="inline">
+    <h2><span class="num">06</span>Inline &amp; on-inverse</h2>
+    <p class="lead">Two modifiers for tighter contexts. <code>.callout-inline</code> sizes the box to its content on a single line — for hero badges and inline notices, not full-width asides. <code>.on-inverse</code> swaps the light tint for a glassy translucent fill with light text, so a callout reads on a dark hero, photo, or inverse panel (mirrors <code>.pill.on-inverse</code>).</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Inline <code>.callout-inline</code></h3></div><span class="spec-tag">Content-sized</span></div>
+      <div class="spec-body" style="display:flex; flex-wrap:wrap; gap:var(--space-3); align-items:center">
+        <div class="callout callout-info callout-sm callout-inline"><i data-lucide="info"></i><div class="callout-body">Rate locked for <strong>15 min</strong></div></div>
+        <div class="callout callout-warn callout-sm callout-inline"><i data-lucide="clock"></i><div class="callout-body"><strong>2 pending</strong> · ready to convert</div></div>
+        <div class="callout callout-success callout-sm callout-inline"><i data-lucide="check"></i><div class="callout-body">Verified</div></div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>On inverse <code>.on-inverse</code></h3></div><span class="spec-tag">Dark surfaces</span></div>
+      <div class="spec-body">
+        <div style="background:var(--grad-hero); border-radius:var(--radius-lg); padding:var(--space-7); display:flex; flex-wrap:wrap; gap:var(--space-3); align-items:center">
+          <div class="callout callout-warn callout-sm callout-inline on-inverse"><i data-lucide="refresh-cw"></i><div class="callout-body"><strong>2 pending FX</strong> · ready to convert</div><i data-lucide="arrow-right"></i></div>
+          <div class="callout callout-info callout-sm callout-inline on-inverse"><i data-lucide="info"></i><div class="callout-body">Statement ready</div></div>
+          <div class="callout callout-danger callout-sm callout-inline on-inverse"><i data-lucide="alert-triangle"></i><div class="callout-body"><strong>Action needed</strong></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 USAGE -->
+  <section class="doc-section" id="usage">
+    <h2><span class="num">07</span>Usage</h2>
+    <p class="lead">A callout interrupts reading — spend it carefully.</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Do &amp; don't</h3></div><span class="spec-tag">Guidance</span></div>
+      <div class="spec-body">
+        <div class="callout callout-success"><i data-lucide="check"></i><div class="callout-body"><strong>Do</strong> — match the tone to the message: warning for risk, success for confirmation, neutral for incidental notes. One idea per callout.</div></div>
+        <div class="callout callout-danger"><i data-lucide="x"></i><div class="callout-body"><strong>Don't</strong> — stack several callouts in a row, or use danger for anything that isn't an error. If everything is highlighted, nothing is.</div></div>
+        <div class="callout callout-neutral callout-sm"><i data-lucide="info"></i><div class="callout-body">For emphasis <em>inside</em> a sentence, use the accent text/highlight patterns instead — a callout is a block, not an inline mark.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 CLASS MAP -->
+  <section class="doc-section" id="map">
+    <h2><span class="num">08</span>Class map</h2>
+    <p class="lead">The full vocabulary, defined in <code>components/callout.css</code>.</p>
+    <div class="spec">
+      <div class="spec-head"><div><h3>Reference <code>callout.css</code></h3></div><span class="spec-tag">Single source</span></div>
+      <div style="padding:var(--space-2) var(--space-2) var(--space-4)">
+        <table class="map">
+          <thead><tr><th>Class</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td><code>.callout</code></td><td>Root box — icon + body, info/royal tone by default.</td></tr>
+            <tr><td><code>.callout-body</code></td><td>Message text; accepts <code>strong</code>, <code>code</code>, <code>a</code>.</td></tr>
+            <tr><td><code>.callout-icon</code></td><td>Optional class on the icon (a bare <code>&lt;i&gt;</code>/<code>&lt;svg&gt;</code> child is styled too).</td></tr>
+            <tr><td><code>.callout-warn</code></td><td>Amber — caution, prerequisites, limits.</td></tr>
+            <tr><td><code>.callout-success</code></td><td>Green — confirmation, completed actions.</td></tr>
+            <tr><td><code>.callout-danger</code></td><td>Red — errors, blocked or destructive states.</td></tr>
+            <tr><td><code>.callout-neutral</code></td><td>Muted grey — incidental, low-priority notes.</td></tr>
+            <tr><td><code>.callout-title</code></td><td>Bold heading line for rich/vertical callouts.</td></tr>
+            <tr><td><code>.callout-content</code></td><td>Column wrapper — stacks title, body &amp; actions.</td></tr>
+            <tr><td><code>.callout-actions</code></td><td>Row of buttons (canonical <code>.btn</code>); right-aligned in a bar.</td></tr>
+            <tr><td><code>.callout-dismiss</code></td><td>Ghost close button (top-right, or centered in a bar).</td></tr>
+            <tr><td><code>.callout-bar</code></td><td>Full-width alert banner — centered row, left accent rule.</td></tr>
+            <tr><td><code>.callout-rounded</code></td><td>On a bar: re-adds radius &amp; full border for in-container use.</td></tr>
+            <tr><td><code>.callout-inline</code></td><td>Content-sized, single line — hero badges &amp; inline notices.</td></tr>
+            <tr><td><code>.on-inverse</code></td><td>Glassy translucent fill + light text for dark surfaces.</td></tr>
+            <tr><td><code>.callout-sm</code></td><td>Compact density for dense panels &amp; forms.</td></tr>
+            <tr><td><code>--callout-tint</code> · <code>--callout-fg</code></td><td>Per-variant custom props: box tint &amp; icon foreground.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="padding:0 var(--space-6) var(--space-6)">
+        <div class="callout"><i data-lucide="moon"></i><div class="callout-body">Tint is <code>color-mix</code>'d against <code>--color-background-surface</code> and the icon uses a theme-aware foreground — so <code>[data-theme="dark"]</code> reskins every tone with no extra CSS.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="doc-foot">
+    <span>ATTRUS Design System · Callout</span>
+    <a href="components.html">← Back to catalog</a>
+  </footer>
+
+</main>
+
+<script>
+  lucide.createIcons();
+  // Demo: dismiss buttons remove their callout (re-show on theme toggle for the demo)
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.callout-dismiss');
+    if (!btn) return;
+    var c = btn.closest('.callout');
+    if (c) { c.style.transition = 'opacity .15s, transform .15s'; c.style.opacity = '0'; c.style.transform = 'translateY(-4px)'; setTimeout(function () { c.style.display = 'none'; }, 150); }
+  });
+</script>
+
+</body>
+</html>

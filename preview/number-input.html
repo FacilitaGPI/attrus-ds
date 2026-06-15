@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Number Input · ATTRUS Design System</title>
+<link rel="stylesheet" href="../dist/css/index.css">
+<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="components/spec-page.css">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
+  .spec-head { padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .spec-canvas { padding: var(--space-8) var(--space-6); background: var(--color-background-canvas); background-image: linear-gradient(var(--color-border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; display: flex; flex-wrap: wrap; gap: var(--space-6); align-items: center; justify-content: center; }
+
+  .anatomy { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-8); align-items: center; padding: var(--space-10) var(--space-8); background: var(--color-background-canvas); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); margin-bottom: var(--space-8); }
+  .anatomy-canvas { display: flex; align-items: center; justify-content: center; min-height: 120px; }
+  .anatomy-list ol { padding-left: 0; margin: 0; counter-reset: anat; list-style: none; }
+  .anatomy-list li { counter-increment: anat; margin-bottom: var(--space-3); padding-left: var(--space-7); position: relative; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-sm); }
+  .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
+
+  .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; margin-top: var(--space-4); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .token-table tr:last-child td { border-bottom: none; }
+  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  .field-static { display: block; }
+  .field-static .field-label { display: block; font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-2); }
+
+  .dont-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--space-4); }
+  .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .dont-card-canvas { padding: var(--space-6) var(--space-5); background: var(--color-background-canvas); border-bottom: 1px solid var(--color-border-subtle); display: flex; justify-content: center; align-items: center; min-height: 120px; }
+  .dont-card-body { padding: var(--space-4) var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
+  .dont-card-body i, .dont-card-body svg { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-card-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .dont-card-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+</style>
+</head>
+<body>
+<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">&#9790;</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<div class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Number Input</h1>
+      <p>Numeric field paired with − / + accelerator buttons. Use for bounded quantities where the user nudges around an expected value: counts, percentages, days, seats. Not to be confused with <a href="stepper.html" style="color: var(--color-foreground-highlight); text-decoration: none; border-bottom: 1px dotted currentColor;">Stepper</a> — that's the multi-step flow indicator.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Ready</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#anatomy">01 Anatomy</a>
+    <a href="#sizes">02 Sizes</a>
+    <a href="#decorators">03 Prefix & suffix</a>
+    <a href="#states">04 States</a>
+    <a href="#whichone">05 vs. plain number field</a>
+    <a href="#live">06 Live demo</a>
+    <a href="#donts">07 Don'ts</a>
+    <a href="#a11y">08 Accessibility</a>
+    <a href="#tokens">09 Tokens</a>
+  </nav>
+
+  <!-- ANATOMY -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">01</span>Anatomy</h2>
+    <p class="lead">Three parts in a single rounded shell — decrement, value, increment. Optional prefix/suffix slot for unit context.</p>
+
+    <div class="anatomy">
+      <div class="anatomy-canvas">
+        <div class="number-input" style="width: 220px;">
+          <button class="number-input-btn" type="button" aria-label="Decrement"><i data-lucide="minus"></i></button>
+          <input class="number-input-field" type="number" value="14" />
+          <span class="number-input-suffix">days</span>
+          <button class="number-input-btn" type="button" aria-label="Increment"><i data-lucide="plus"></i></button>
+        </div>
+      </div>
+      <div class="anatomy-list">
+        <ol>
+          <li><strong>Decrement</strong>Always on the left. Hit target 36×40px (default size). Greys out at <code>min</code>.</li>
+          <li><strong>Value</strong>Mono, centered, editable. Type-in is allowed — buttons are accelerators, not the only path.</li>
+          <li><strong>Suffix / prefix</strong>Optional unit slot — currency code, %, days. Sits flush against the value with a hairline divider.</li>
+          <li><strong>Increment</strong>Always on the right. Greys out at <code>max</code>.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIZES -->
+  <section class="doc-section" id="sizes">
+    <h2><span class="num">02</span>Sizes</h2>
+    <p class="lead">Three sizes match the Input scale.</p>
+
+    <div class="spec">
+      <div class="spec-head"><h3>Three sizes</h3><p>Use <strong>md</strong> by default. <strong>sm</strong> for table cells and dense filter rows. <strong>lg</strong> for primary fields in single-purpose forms.</p></div>
+      <div class="spec-canvas">
+        <div class="field-static">
+          <label class="field-label">Small (32px)</label>
+          <div class="number-input number-input-sm">
+            <button class="number-input-btn" type="button"><i data-lucide="minus"></i></button>
+            <input class="number-input-field" type="number" value="3" />
+            <button class="number-input-btn" type="button"><i data-lucide="plus"></i></button>
+          </div>
+        </div>
+        <div class="field-static">
+          <label class="field-label">Medium (40px) — default</label>
+          <div class="number-input">
+            <button class="number-input-btn" type="button"><i data-lucide="minus"></i></button>
+            <input class="number-input-field" type="number" value="14" />
+            <button class="number-input-btn" type="button"><i data-lucide="plus"></i></button>
+          </div>
+        </div>
+        <div class="field-static">
+          <label class="field-label">Large (48px)</label>
+          <div class="number-input number-input-lg">
+            <button class="number-input-btn" type="button"><i data-lucide="minus"></i></button>
+            <input class="number-input-field" type="number" value="100" />
+            <button class="number-input-btn" type="button"><i data-lucide="plus"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DECORATORS -->
+  <section class="doc-section" id="decorators">
+    <h2><span class="num">03</span>Prefix & suffix</h2>
+    <p class="lead">Decorators give the value a unit. Always display them — never put units in placeholder text.</p>
+
+    <div class="spec">
+      <div class="spec-head"><h3>Suffix<code>.number-input-suffix</code></h3><p>Trailing unit. Tinted background, mono caps, hairline left border.</p></div>
+      <div class="spec-canvas">
+        <div class="field-static">
+          <label class="field-label">Settlement window</label>
+          <div class="number-input" style="width: 200px;">
+            <button class="number-input-btn" type="button"><i data-lucide="minus"></i></button>
+            <input class="number-input-field" type="number" value="14" />
+            <span class="number-input-suffix">days</span>
+            <button class="number-input-btn" type="button"><i data-lucide="plus"></i></button>
+          </div>
+        </div>
+        <div class="field-static">
+          <label class="field-label">FX margin</label>
+          <div class="number-input" style="width: 180px;">
+            <button class="number-input-btn" type="button"><i data-lucide="minus"></i></button>
+            <input class="number-input-field" type="number" value="0.5" step="0.1" />
+            <span class="number-input-suffix">%</span>
+            <button class="number-input-btn" type="button"><i data-lucide="plus"></i></button>
+          </div>
+        </div>
+        <div class="field-static">
+          <label class="field-label">Concurrent users</label>
+          <div class="number-input" style="width: 200px;">
+            <button class="number-input-btn" type="button"><i data-lucide="minus"></i></button>
+            <input class="number-input-field" type="number" value="25" />
+            <span class="number-input-suffix">seats</span>
+            <button class="number-input-btn" type="button"><i data-lucide="plus"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><h3>Prefix<code>.number-input-prefix</code></h3><p>Leading symbol — currency mark, hash, lock. Same hairline divider, opposite side.</p></div>
+      <div class="spec-canvas">
+        <div class="field-static">
+          <label class="field-label">Daily transfer cap (BRL)</label>
+          <div class="number-input" style="width: 220px;">
+            <span class="number-input-prefix">R$</span>
+            <button class="number-input-btn" type="button"><i data-lucide="minus"></i></button>
+            <input class="number-input-field" type="number" value="50000" step="1000" />
+            <button class="number-input-btn" type="button"><i data-lucide="plus"></i></button>
+          </div>
+        </div>
+        <div class="field-static">
+          <label class="field-label">Approval threshold (USD)</label>
+          <div class="number-input" style="width: 220px;">
+            <span class="number-input-prefix">$</span>
+            <button class="number-input-btn" type="button"><i data-lucide="minus"></i></button>
+            <input class="number-input-field" type="number" value="10000" step="1000" />
+            <button class="number-input-btn" type="button"><i data-lucide="plus"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATES -->
+  <section class="doc-section" id="states">
+    <h2><span class="num">04</span>States</h2>
+    <div class="spec">
+      <div class="spec-head"><h3>State matrix</h3><p>Buttons disable individually at min/max — the input itself stays editable so the user can still type.</p></div>
+      <div class="spec-canvas">
+        <div class="field-static">
+          <label class="field-label">At min — decrement disabled</label>
+          <div class="number-input" style="width: 180px;">
+            <button class="number-input-btn" type="button" disabled><i data-lucide="minus"></i></button>
+            <input class="number-input-field" type="number" value="0" />
+            <button class="number-input-btn" type="button"><i data-lucide="plus"></i></button>
+          </div>
+        </div>
+        <div class="field-static">
+          <label class="field-label">At max — increment disabled</label>
+          <div class="number-input" style="width: 180px;">
+            <button class="number-input-btn" type="button"><i data-lucide="minus"></i></button>
+            <input class="number-input-field" type="number" value="100" />
+            <button class="number-input-btn" type="button" disabled><i data-lucide="plus"></i></button>
+          </div>
+        </div>
+        <div class="field-static">
+          <label class="field-label">Disabled</label>
+          <div class="number-input is-disabled" style="width: 180px;">
+            <button class="number-input-btn" type="button" disabled><i data-lucide="minus"></i></button>
+            <input class="number-input-field" type="number" value="14" disabled />
+            <button class="number-input-btn" type="button" disabled><i data-lucide="plus"></i></button>
+          </div>
+        </div>
+        <div class="field-static">
+          <label class="field-label" style="color: var(--color-feedback-danger-foreground);">Invalid</label>
+          <div class="number-input is-invalid" style="width: 180px;">
+            <button class="number-input-btn" type="button"><i data-lucide="minus"></i></button>
+            <input class="number-input-field" type="number" value="-5" />
+            <button class="number-input-btn" type="button"><i data-lucide="plus"></i></button>
+          </div>
+          <p style="margin: var(--space-2) 0 0; font-size: var(--fs-xs); color: var(--color-feedback-danger-foreground); display: flex; gap: var(--space-1); align-items: center;"><i data-lucide="alert-circle" style="width: 12px; height: 12px;"></i>Must be positive</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VS INPUT -->
+  <section class="doc-section" id="whichone">
+    <h2><span class="num">05</span>vs. plain number field</h2>
+    <table class="token-table">
+      <thead><tr><th>Range / use</th><th>Use</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Bounded ≤ 100, user nudges</td><td><strong>Number Input</strong></td><td>Buttons make ±1 cheap; bounds are obvious.</td></tr>
+        <tr><td>Free-form amount, broad range</td><td><strong>Plain text field</strong> (<code>.input</code>, type="number")</td><td>± buttons are noise when most users will type.</td></tr>
+        <tr><td>Currency amounts (transactions)</td><td><strong>Money input</strong> (specialized)</td><td>Auto-formatting, decimals, sign handling.</td></tr>
+        <tr><td>Quantity: items in cart, seats, days</td><td><strong>Number Input</strong></td><td>Most adjustments are ±1.</td></tr>
+        <tr><td>Percent threshold, fee rate</td><td><strong>Number Input</strong> with <code>step="0.1"</code></td><td>Gives buttons; keeps decimals.</td></tr>
+        <tr><td>Open-range integer (transaction ID)</td><td><strong>Plain text field</strong></td><td>Buttons are useless at this scale.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- LIVE -->
+  <section class="doc-section" id="live">
+    <h2><span class="num">06</span>Live demo</h2>
+    <p class="lead">Click ± or type. Up/Down arrows step inside the input. Buttons disable at bounds.</p>
+
+    <div class="spec">
+      <div class="spec-head"><h3>Settlement days (0 – 90)</h3><p>Step = 1.</p></div>
+      <div class="spec-canvas">
+        <div class="field-static">
+          <label class="field-label">Days until settlement</label>
+          <div class="number-input" id="live-number-input" style="width: 220px;">
+            <button class="number-input-btn" type="button" id="lni-dec" aria-label="Decrement"><i data-lucide="minus"></i></button>
+            <input class="number-input-field" type="number" id="lni-input" value="14" min="0" max="90" />
+            <span class="number-input-suffix">days</span>
+            <button class="number-input-btn" type="button" id="lni-inc" aria-label="Increment"><i data-lucide="plus"></i></button>
+          </div>
+          <p style="margin: var(--space-3) 0 0; font-size: var(--fs-xs); color: var(--color-foreground-muted);">Range: 0 – 90. Hold any button to step rapidly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DON'TS -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">07</span>Don'ts</h2>
+    <div class="dont-grid">
+      <div class="dont-card">
+        <div class="dont-card-canvas"><div class="number-input" style="width: 220px;"><button class="number-input-btn" type="button"><i data-lucide="minus"></i></button><input class="number-input-field" type="number" value="48571320" /><button class="number-input-btn" type="button"><i data-lucide="plus"></i></button></div></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Number Input for IDs / large numbers</strong>If a user can't reasonably reach the value with ±1 clicks, use a plain number field.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><div class="number-input" style="width: 240px;"><button class="number-input-btn" type="button"><i data-lucide="minus"></i></button><input class="number-input-field" type="text" value="14 days" style="font-family: var(--font-sans);" /><button class="number-input-btn" type="button"><i data-lucide="plus"></i></button></div></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Unit baked into the value</strong>Always use the suffix/prefix slot. The input must be a parseable number.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><div class="number-input" style="width: 200px;"><button class="number-input-btn" type="button"><i data-lucide="minus"></i></button><input class="number-input-field" type="number" value="14" readonly style="cursor: not-allowed;" /><button class="number-input-btn" type="button"><i data-lucide="plus"></i></button></div></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Read-only input but enabled buttons</strong>Type-in is part of the contract. If the input is locked, lock the buttons too.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><div class="number-input" style="width: 220px;"><button class="number-input-btn" type="button" style="background: var(--color-feedback-danger-50); color: var(--color-feedback-danger-700);"><i data-lucide="minus"></i></button><input class="number-input-field" type="number" value="14" /><button class="number-input-btn" type="button" style="background: var(--color-feedback-success-50); color: var(--color-feedback-success-700);"><i data-lucide="plus"></i></button></div></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Recoloring buttons</strong>+/− are neutral. Don't tint them green/red — direction isn't a positive/negative judgment.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><div style="display: flex; gap: var(--space-2);"><div class="number-input" style="width: 140px;"><button class="number-input-btn" type="button"><i data-lucide="minus"></i></button><input class="number-input-field" type="number" value="14" /><button class="number-input-btn" type="button"><i data-lucide="plus"></i></button></div><span style="align-self: center; color: var(--color-foreground-muted); font-size: var(--fs-sm);">days</span></div></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Unit floating outside</strong>Use the built-in prefix/suffix slot — the unit belongs inside the rounded shell, not as separate text.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-card-canvas"><div class="number-input" style="width: 200px;"><button class="number-input-btn" type="button"><i data-lucide="chevron-up"></i></button><input class="number-input-field" type="number" value="14" /><button class="number-input-btn" type="button"><i data-lucide="chevron-down"></i></button></div></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Custom button glyphs</strong>Always <code>minus</code> / <code>plus</code>. Chevrons read as "open dropdown" or "next/prev", not increment.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- A11Y -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">08</span>Accessibility</h2>
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Requirement</th><th>How it's met</th></tr></thead>
+      <tbody>
+        <tr><td>Role</td><td>Native <code>&lt;input type="number"&gt;</code></td><td>Inherits browser numeric semantics. AT announces value, min, max.</td></tr>
+        <tr><td>Button labels</td><td>± buttons must be labeled</td><td><code>aria-label="Decrement"</code> / <code>"Increment"</code> — never bare icons.</td></tr>
+        <tr><td>Keyboard ↑↓</td><td>Step inside the input</td><td>Native browser behavior; Up/Down arrows step by <code>step</code>.</td></tr>
+        <tr><td>Type-in</td><td>User can paste / type any number</td><td>Input is never readonly under default state. Validation on blur/submit.</td></tr>
+        <tr><td>Bounds feedback</td><td>Visible disabled state at min/max</td><td>Buttons go to muted color; <code>disabled</code> is set so AT skips them.</td></tr>
+        <tr><td>Suffix / prefix</td><td>Unit announced to AT</td><td>Wrap the visible suffix in <code>aria-hidden="true"</code> and use <code>aria-describedby</code> on the input pointing at a visually-hidden full label ("days").</td></tr>
+        <tr><td>Color contrast</td><td>Borders ≥ 3:1, text ≥ 4.5:1</td><td>All token-driven; verified against light surface.</td></tr>
+        <tr><td>Touch target</td><td>≥ 44×44px on touch</td><td>Default button is 36×40 — pair with the parent label/wrapper to extend hit area, or use <code>.number-input-lg</code> on touch surfaces.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- TOKENS -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">09</span>Tokens consumed</h2>
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Tokens</th></tr></thead>
+      <tbody>
+        <tr><td>Surface</td><td><code>--color-background-surface</code>, <code>--color-background-subtle</code> (prefix/suffix)</td></tr>
+        <tr><td>Hover</td><td><code>--color-background-hover</code></td></tr>
+        <tr><td>Border</td><td><code>--color-border-default</code>, <code>--color-border-strong</code> (hover), <code>--color-border-subtle</code> (internal dividers), <code>--color-foreground-accent</code> (focus)</td></tr>
+        <tr><td>Focus ring</td><td><code>--shadow-focus</code></td></tr>
+        <tr><td>Foreground (value)</td><td><code>--color-foreground-default</code></td></tr>
+        <tr><td>Foreground (button, suffix, prefix)</td><td><code>--color-foreground-secondary</code>, <code>--color-foreground-muted</code> (disabled)</td></tr>
+        <tr><td>Invalid</td><td><code>--color-feedback-danger-border</code>, <code>--color-feedback-danger-background</code> (focus halo)</td></tr>
+        <tr><td>Disabled</td><td><code>--color-background-subtle</code>, <code>--color-border-subtle</code>, <code>--color-foreground-muted</code></td></tr>
+        <tr><td>Spacing</td><td><code>--space-2</code>, <code>--space-3</code></td></tr>
+        <tr><td>Radius</td><td><code>--radius-sm</code></td></tr>
+        <tr><td>Typography</td><td><code>--font-mono</code> (value, prefix), <code>--fs-xs</code>, <code>--fs-sm</code>, <code>--fs-md</code>, <code>--w-medium</code>, <code>--w-semibold</code>, <code>--ls-caps</code> (suffix)</td></tr>
+        <tr><td>Motion</td><td><code>--transition-fast</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+
+  // Live stepper
+  const input = document.getElementById('lni-input');
+  const dec = document.getElementById('lni-dec');
+  const inc = document.getElementById('lni-inc');
+
+  function updateButtonStates() {
+    const v = parseInt(input.value, 10) || 0;
+    const min = parseInt(input.min, 10);
+    const max = parseInt(input.max, 10);
+    dec.disabled = v <= min;
+    inc.disabled = v >= max;
+  }
+
+  dec.addEventListener('click', () => {
+    const v = parseInt(input.value, 10) || 0;
+    const min = parseInt(input.min, 10);
+    if (v > min) input.value = v - 1;
+    updateButtonStates();
+  });
+  inc.addEventListener('click', () => {
+    const v = parseInt(input.value, 10) || 0;
+    const max = parseInt(input.max, 10);
+    if (v < max) input.value = v + 1;
+    updateButtonStates();
+  });
+  input.addEventListener('input', updateButtonStates);
+  updateButtonStates();
+</script>
+
+</body>
+</html>
