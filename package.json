@@ -1,6 +1,6 @@
 {
   "name": "@attrus-ds/core",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "description": "ATTRUS / Cabiros design system — design tokens, component styles, brand assets, fonts and an optional typed React component layer.",
   "keywords": [
     "design-system",
