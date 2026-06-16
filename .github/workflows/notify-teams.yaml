@@ -1,0 +1,250 @@
+name: Notify Teams
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  notify-sandbox:
+    name: Notify Teams (Sandbox Pre-Release)
+    if: github.event_name == 'release' && github.event.release.prerelease == true
+    runs-on: ubuntu-latest
+    environment: Sandbox
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Send Teams notification
+        env:
+          WEBHOOK_URL: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
+          REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_NAME: ${{ github.event.release.name }}
+          RELEASE_URL: ${{ github.event.release.html_url }}
+          RELEASE_AUTHOR: ${{ github.event.release.author.login }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          if [ -z "$WEBHOOK_URL" ]; then
+            echo "::warning::MS_TEAMS_WEBHOOK_URL is not set for Sandbox. Skipping."
+            exit 0
+          fi
+
+          TIMESTAMP=$(TZ="America/Sao_Paulo" date +"%d/%m/%Y %H:%M:%S (GMT-3)")
+
+          PREV_TAG=$(git tag --sort=-creatordate | grep -v "^${RELEASE_TAG}$" | head -1 || echo "")
+
+          if [ -n "$PREV_TAG" ]; then
+            CHANGES=$(git log "${PREV_TAG}..${RELEASE_TAG}" --pretty=format:'- %s' --no-merges 2>/dev/null | head -30 || echo "- No changes found")
+            CHANGED_FILES=$(git diff --name-only "${PREV_TAG}..${RELEASE_TAG}" | wc -l)
+            COMMIT_COUNT=$(git rev-list --count "${PREV_TAG}..${RELEASE_TAG}" --no-merges 2>/dev/null || echo "?")
+          else
+            CHANGES=$(git log --pretty=format:'- %s' --no-merges -20 2>/dev/null || echo "- First pre-release")
+            CHANGED_FILES="?"
+            COMMIT_COUNT="?"
+          fi
+
+          SAFE_NAME=$(echo "${RELEASE_NAME:-$RELEASE_TAG}" | sed 's/\\/\\\\/g; s/"/\\"/g; s/\t/\\t/g')
+          SAFE_CHANGES=$(echo "$CHANGES" | sed 's/\\/\\\\/g; s/"/\\"/g; s/\t/\\t/g' | awk '{printf "%s\\n", $0}' | sed 's/\\n$//')
+
+          cat > /tmp/teams-card.json <<CARD
+          {
+            "type": "message",
+            "attachments": [
+              {
+                "contentType": "application/vnd.microsoft.card.adaptive",
+                "content": {
+                  "\$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                  "type": "AdaptiveCard",
+                  "version": "1.4",
+                  "body": [
+                    {
+                      "type": "TextBlock",
+                      "text": "🟡 ${REPO_NAME} — Sandbox (Pre-Release)",
+                      "weight": "Bolder",
+                      "size": "Medium",
+                      "wrap": true
+                    },
+                    {
+                      "type": "TextBlock",
+                      "text": "${SAFE_NAME}",
+                      "weight": "Bolder",
+                      "size": "Small",
+                      "wrap": true,
+                      "spacing": "Small"
+                    },
+                    {
+                      "type": "FactSet",
+                      "facts": [
+                        { "title": "Tag", "value": "[${RELEASE_TAG}](${RELEASE_URL})" },
+                        { "title": "Released by", "value": "${RELEASE_AUTHOR}" },
+                        { "title": "Commits", "value": "${COMMIT_COUNT}" },
+                        { "title": "Files changed", "value": "${CHANGED_FILES}" },
+                        { "title": "Date", "value": "${TIMESTAMP}" }
+                      ]
+                    },
+                    {
+                      "type": "TextBlock",
+                      "text": "Changes included:",
+                      "weight": "Bolder",
+                      "size": "Small",
+                      "spacing": "Medium"
+                    },
+                    {
+                      "type": "TextBlock",
+                      "text": "${SAFE_CHANGES}",
+                      "wrap": true,
+                      "size": "Small",
+                      "spacing": "Small"
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": "Action.OpenUrl",
+                      "title": "View Pre-Release",
+                      "url": "${RELEASE_URL}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+          CARD
+
+          HTTP_STATUS=$(curl -s -o /tmp/teams-response.txt -w "%{http_code}" \
+            -H "Content-Type: application/json" \
+            -d @/tmp/teams-card.json \
+            "$WEBHOOK_URL")
+
+          echo "Teams webhook response (Sandbox): $HTTP_STATUS"
+          cat /tmp/teams-response.txt
+
+          if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 300 ]; then
+            echo "::warning::Teams notification failed for Sandbox with status $HTTP_STATUS"
+          fi
+
+  notify-production:
+    name: Notify Teams (Production Release)
+    if: github.event_name == 'release' && github.event.release.prerelease == false
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Send Teams notification
+        env:
+          WEBHOOK_URL: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
+          REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_NAME: ${{ github.event.release.name }}
+          RELEASE_URL: ${{ github.event.release.html_url }}
+          RELEASE_AUTHOR: ${{ github.event.release.author.login }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          if [ -z "$WEBHOOK_URL" ]; then
+            echo "::warning::MS_TEAMS_WEBHOOK_URL is not set for Production. Skipping."
+            exit 0
+          fi
+
+          TIMESTAMP=$(TZ="America/Sao_Paulo" date +"%d/%m/%Y %H:%M:%S (GMT-3)")
+
+          # Previous production tag (semver order; skip RC/pre-release tags on the same commit)
+          PREV_TAG=$(git tag --sort=-v:refname \
+            | grep -viE -- '-rc|rc\.|beta|alpha' \
+            | grep -Fxv "${RELEASE_TAG}" \
+            | head -1 || echo "")
+
+          echo "Comparing changes: ${PREV_TAG:-none}..${RELEASE_TAG}"
+
+          if [ -n "$PREV_TAG" ]; then
+            CHANGES=$(git log "${PREV_TAG}..${RELEASE_TAG}" --pretty=format:'- %s' --no-merges 2>/dev/null | head -30 || echo "- No changes found")
+            CHANGED_FILES=$(git diff --name-only "${PREV_TAG}..${RELEASE_TAG}" | wc -l)
+            COMMIT_COUNT=$(git rev-list --count "${PREV_TAG}..${RELEASE_TAG}" --no-merges 2>/dev/null || echo "?")
+          else
+            CHANGES=$(git log --pretty=format:'- %s' --no-merges -20 2>/dev/null || echo "- First release")
+            CHANGED_FILES="?"
+            COMMIT_COUNT="?"
+          fi
+
+          # Escape for JSON
+          SAFE_NAME=$(echo "${RELEASE_NAME:-$RELEASE_TAG}" | sed 's/\\/\\\\/g; s/"/\\"/g; s/\t/\\t/g')
+          SAFE_CHANGES=$(echo "$CHANGES" | sed 's/\\/\\\\/g; s/"/\\"/g; s/\t/\\t/g' | awk '{printf "%s\\n", $0}' | sed 's/\\n$//')
+
+          cat > /tmp/teams-card.json <<CARD
+          {
+            "type": "message",
+            "attachments": [
+              {
+                "contentType": "application/vnd.microsoft.card.adaptive",
+                "content": {
+                  "\$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                  "type": "AdaptiveCard",
+                  "version": "1.4",
+                  "body": [
+                    {
+                      "type": "TextBlock",
+                      "text": "🟢 ${REPO_NAME} — Production Release",
+                      "weight": "Bolder",
+                      "size": "Medium",
+                      "wrap": true
+                    },
+                    {
+                      "type": "TextBlock",
+                      "text": "${SAFE_NAME}",
+                      "weight": "Bolder",
+                      "size": "Small",
+                      "wrap": true,
+                      "spacing": "Small"
+                    },
+                    {
+                      "type": "FactSet",
+                      "facts": [
+                        { "title": "Tag", "value": "[${RELEASE_TAG}](${RELEASE_URL})" },
+                        { "title": "Released by", "value": "${RELEASE_AUTHOR}" },
+                        { "title": "Commits", "value": "${COMMIT_COUNT}" },
+                        { "title": "Files changed", "value": "${CHANGED_FILES}" },
+                        { "title": "Date", "value": "${TIMESTAMP}" }
+                      ]
+                    },
+                    {
+                      "type": "TextBlock",
+                      "text": "Changes included:",
+                      "weight": "Bolder",
+                      "size": "Small",
+                      "spacing": "Medium"
+                    },
+                    {
+                      "type": "TextBlock",
+                      "text": "${SAFE_CHANGES}",
+                      "wrap": true,
+                      "size": "Small",
+                      "spacing": "Small"
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": "Action.OpenUrl",
+                      "title": "View Release",
+                      "url": "${RELEASE_URL}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+          CARD
+
+          HTTP_STATUS=$(curl -s -o /tmp/teams-response.txt -w "%{http_code}" \
+            -H "Content-Type: application/json" \
+            -d @/tmp/teams-card.json \
+            "$WEBHOOK_URL")
+
+          echo "Teams webhook response (Production): $HTTP_STATUS"
+          cat /tmp/teams-response.txt
+
+          if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 300 ]; then
+            echo "::warning::Teams notification failed for Production with status $HTTP_STATUS"
+          fi
