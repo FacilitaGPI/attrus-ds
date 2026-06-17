@@ -21,7 +21,9 @@ What's inside:
 ```bash
 npm install @attrus-ds/core
 ```
-fghfghfgh
+
+
+
 ## Usage
 
 ### Import everything
