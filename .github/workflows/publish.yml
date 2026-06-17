@@ -4,6 +4,11 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      version:
+        description: Semver to publish (manual runs only). Defaults to package.json version.
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -14,6 +19,8 @@ jobs:
     name: Publish @attrus-ds/core
     runs-on: ubuntu-latest
     environment: npm
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,30 +43,78 @@ jobs:
           # which blocks OIDC when NODE_AUTH_TOKEN is unset.
           npm config delete //registry.npmjs.org/:_authToken --location=user || true
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Verify release tag matches package version
-        if: github.event_name == 'release'
+      - name: Resolve publish version
+        id: version
         run: |
-          PKG_VERSION=$(node -p "require('./package.json').version")
-          TAG_VERSION="${GITHUB_REF_NAME#v}"
-          if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
-            echo "package.json version ($PKG_VERSION) does not match release tag ($TAG_VERSION)"
+          if [ "${{ github.event_name }}" = "release" ]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+          elif [ -n "${{ github.event.inputs.version }}" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION=$(node -p "require('./package.json').version")
+          fi
+
+          if ! echo "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.-]+)?(\+[a-zA-Z0-9.-]+)?$'; then
+            echo "Invalid semver: $VERSION"
             exit 1
           fi
+
+          echo "Publishing version: $VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Sync package.json to publish version
+        run: npm version "${{ steps.version.outputs.version }}" --no-git-tag-version --allow-same-version
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Build package
         run: npm run build
 
       - name: Check version is not already published
         run: |
-          PKG_VERSION=$(node -p "require('./package.json').version")
+          PKG_VERSION="${{ steps.version.outputs.version }}"
           if npm view "@attrus-ds/core@$PKG_VERSION" version 2>/dev/null; then
-            echo "Version $PKG_VERSION is already on npm. Bump package.json before publishing."
+            echo "Version $PKG_VERSION is already on npm."
             exit 1
           fi
           echo "Version $PKG_VERSION is available to publish."
 
       - name: Publish to npm
         run: npm publish --provenance --access public
+
+  sync-version-on-main:
+    name: Sync version on main
+    needs: publish
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Sync package.json on main
+        run: |
+          VERSION="${{ needs.publish.outputs.version }}"
+          npm version "$VERSION" --no-git-tag-version --allow-same-version
+
+      - name: Commit version bump
+        run: |
+          VERSION="${{ needs.publish.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          if git diff --staged --quiet; then
+            echo "main already at version $VERSION"
+            exit 0
+          fi
+          git commit -m "chore: bump version to $VERSION"
+          git push

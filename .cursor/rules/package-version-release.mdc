@@ -1,37 +1,25 @@
 ---
-description: Keep package.json version in sync with GitHub release tags before npm publish
-alwaysApply: true
+description: How npm publish version is resolved in this repo
+alwaysApply: false
+globs: package.json,.github/workflows/publish.yml
 ---
 
-# package.json version must match release tag
+# Release version (automated in CI)
 
-CI (`.github/workflows/publish.yml`) publishes on GitHub **release published** and fails if versions differ:
+Do **not** rely on manually bumping `package.json` before a GitHub release.
 
-```
-package.json version (1.0.0) does not match release tag (1.0.1)
-```
+`.github/workflows/publish.yml` resolves the publish version automatically:
 
-## Before any release or publish
+- **GitHub release** → version comes from the release tag (`v1.0.1` → `1.0.1`), synced into `package.json` before build/publish
+- **Manual workflow run** → optional `version` input, otherwise uses current `package.json`
 
-1. **Bump `package.json` `"version"` first** — it must equal the release tag without the `v` prefix (`v1.0.1` → `"1.0.1"`).
-2. **Commit the version bump** on the branch that will be released (usually `main`).
-3. **Then** create the GitHub release with tag `v{version}`.
+After a successful release publish, CI commits the version bump to `main`.
 
-## When the user asks to release, publish, or bump version
+## Creating a release
 
-- Update `"version"` in `package.json` to the intended semver.
-- Run `npm install` so `package-lock.json` root `"version"` stays aligned (if present).
-- Do not create a GitHub release until `package.json` matches the target tag.
-- Prefer semver: patch for fixes, minor for features, major for breaking changes.
+1. Create a GitHub release with tag `vX.Y.Z` (tag is the source of truth).
+2. CI publishes that version to npm — no Cursor or local bump required.
 
-## Verify locally before releasing
+## Optional local bump
 
-```bash
-node -p "require('./package.json').version"
-# Must equal the tag without v, e.g. 1.0.1 for tag v1.0.1
-```
-
-## Do not
-
-- Publish or tag a release while `package.json` still shows an older version.
-- Assume bumping only the GitHub tag is enough — CI reads `package.json`, not the tag alone.
+Bump `package.json` only when preparing changes on a branch before release, or when running `workflow_dispatch` without a `version` input.
