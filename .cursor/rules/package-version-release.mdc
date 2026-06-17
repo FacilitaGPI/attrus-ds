@@ -1,0 +1,37 @@
+---
+description: Keep package.json version in sync with GitHub release tags before npm publish
+alwaysApply: true
+---
+
+# package.json version must match release tag
+
+CI (`.github/workflows/publish.yml`) publishes on GitHub **release published** and fails if versions differ:
+
+```
+package.json version (1.0.0) does not match release tag (1.0.1)
+```
+
+## Before any release or publish
+
+1. **Bump `package.json` `"version"` first** — it must equal the release tag without the `v` prefix (`v1.0.1` → `"1.0.1"`).
+2. **Commit the version bump** on the branch that will be released (usually `main`).
+3. **Then** create the GitHub release with tag `v{version}`.
+
+## When the user asks to release, publish, or bump version
+
+- Update `"version"` in `package.json` to the intended semver.
+- Run `npm install` so `package-lock.json` root `"version"` stays aligned (if present).
+- Do not create a GitHub release until `package.json` matches the target tag.
+- Prefer semver: patch for fixes, minor for features, major for breaking changes.
+
+## Verify locally before releasing
+
+```bash
+node -p "require('./package.json').version"
+# Must equal the tag without v, e.g. 1.0.1 for tag v1.0.1
+```
+
+## Do not
+
+- Publish or tag a release while `package.json` still shows an older version.
+- Assume bumping only the GitHub tag is enough — CI reads `package.json`, not the tag alone.
