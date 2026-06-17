@@ -57,7 +57,7 @@
   right: var(--space-3);
   bottom: 0;
   height: 2px;
-  background: var(--color-brand-accent-500);
+  background: var(--color-accent-solid);
   border-radius: var(--radius-xs) var(--radius-xs) 0 0;
 }
 .tab:focus-visible {
@@ -83,7 +83,7 @@
 }
 .tab[aria-selected="true"] .tab-count,
 .tab.is-active .tab-count {
-  background: color-mix(in srgb, var(--color-brand-accent-500) 16%, transparent);
+  background: var(--color-accent-subtle);
   color: var(--color-foreground-accent);
 }
 
@@ -234,7 +234,7 @@
   height: 2px;
   width: var(--ind-w, 0);
   transform: translateX(var(--ind-x, 0));
-  background: var(--color-brand-accent-500);
+  background: var(--color-accent-solid);
   border-radius: var(--radius-xs) var(--radius-xs) 0 0;
   pointer-events: none;
   transition: transform var(--duration-base) var(--ease-emphasis),

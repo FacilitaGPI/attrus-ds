@@ -23,10 +23,17 @@
   --color-background-press:    color-mix(in srgb, var(--color-pure-white) 10%, var(--color-ink-raised));
   --color-background-selected: var(--color-background-inverse-selected);
 
+  /* Enterprise primary is Navy (#002142) — near-ink, so it vanishes as a solid
+     fill on the dark canvas. Lift it to a visible deep-blue in dark (Business,
+     via [data-product=business], re-asserts its own #1F6FD6 and wins by order). */
+  --color-brand-solid:        var(--color-brand-primary-400);  /* #2F4F75 — reads on ink */
+  --color-brand-solid-hover:  var(--color-brand-primary-300);  /* #5F7596 */
+  --color-brand-solid-active: var(--color-brand-primary-500);  /* settles to navy */
+
   /* Inverse layer — stays distinct: a brand-tinted dark, lifted off the ambient ink */
-  --color-background-inverse:         color-mix(in srgb, var(--color-brand-primary-500) 24%, var(--color-ink-base));
-  --color-background-inverse-surface: color-mix(in srgb, var(--color-brand-primary-500) 30%, var(--color-ink-raised));
-  --color-background-inverse-subtle:  color-mix(in srgb, var(--color-brand-primary-500) 18%, var(--color-ink-deep));
+  --color-background-inverse:         color-mix(in srgb, var(--color-brand-solid) 24%, var(--color-ink-base));
+  --color-background-inverse-surface: color-mix(in srgb, var(--color-brand-solid) 30%, var(--color-ink-raised));
+  --color-background-inverse-subtle:  color-mix(in srgb, var(--color-brand-solid) 18%, var(--color-ink-deep));
 
   /* Foreground — light on dark */
   --color-foreground-default:     var(--color-neutral-50);

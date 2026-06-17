@@ -12,7 +12,7 @@
   display: block;
   background: var(--color-background-surface);
   border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-md);
+  border-radius: var(--shape-container);
   box-shadow: var(--shadow-xs);
   color: var(--color-foreground-default);
   font-family: var(--font-sans);

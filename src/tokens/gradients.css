@@ -2,11 +2,26 @@
    ATTRUS / Cabiros — GRADIENTS (primary brand + layers)
    ============================================================ */
 
+/* Brand gradients — DERIVED from --color-brand-solid so they follow the
+   active product automatically (Enterprise Navy / Business Blue / …). The
+   var() resolves at use-site, so an element under [data-product] recomputes
+   these with that product's primary — no per-product override needed.
+   --grad-brand tips into the shared Sky accent. */
 :root {
-  --grad-brand:       linear-gradient(135deg, #001A4D 0%, #003399 50%, #3399FF 100%);
-  --grad-brand-soft:  linear-gradient(135deg, #002A80 0%, #003399 100%);
-  --grad-ink:         linear-gradient(160deg, #0B1230 0%, #001A4D 55%, #002A80 100%);
-  --grad-hero:        linear-gradient(180deg, #001133 0%, #003399 100%);
+  --grad-brand:       linear-gradient(135deg,
+                        color-mix(in srgb, var(--color-pure-black) 45%, var(--color-brand-solid)) 0%,
+                        var(--color-brand-solid) 55%,
+                        var(--color-accent-solid) 100%);
+  --grad-brand-soft:  linear-gradient(135deg,
+                        var(--color-brand-solid) 0%,
+                        color-mix(in srgb, var(--color-pure-black) 20%, var(--color-brand-solid)) 100%);
+  --grad-ink:         linear-gradient(160deg,
+                        color-mix(in srgb, var(--color-pure-black) 68%, var(--color-brand-solid)) 0%,
+                        color-mix(in srgb, var(--color-pure-black) 45%, var(--color-brand-solid)) 55%,
+                        color-mix(in srgb, var(--color-pure-black) 25%, var(--color-brand-solid)) 100%);
+  --grad-hero:        linear-gradient(180deg,
+                        color-mix(in srgb, var(--color-pure-black) 52%, var(--color-brand-solid)) 0%,
+                        color-mix(in srgb, var(--color-pure-black) 18%, var(--color-brand-solid)) 100%);
   --grad-sheen:       linear-gradient(120deg,
                         color-mix(in srgb, var(--color-pure-white) 14%, transparent) 0%,
                         color-mix(in srgb, var(--color-pure-white)  0%, transparent) 40%,
@@ -16,8 +31,8 @@
                         color-mix(in srgb, var(--color-pure-white) 65%, transparent) 0%,
                         color-mix(in srgb, var(--color-pure-white)  0%, transparent) 100%);
   --grad-radial-glow: radial-gradient(1200px 500px at 20% -10%,
-                        color-mix(in srgb, var(--color-brand-accent-500) 25%, transparent) 0%,
-                        color-mix(in srgb, var(--color-brand-accent-500)  0%, transparent) 60%);
+                        color-mix(in srgb, var(--color-accent-solid) 25%, transparent) 0%,
+                        color-mix(in srgb, var(--color-accent-solid)  0%, transparent) 60%);
   --grad-data-pos:    linear-gradient(180deg,
                         color-mix(in srgb, var(--color-success-500) 35%, transparent) 0%,
                         color-mix(in srgb, var(--color-success-500)  0%, transparent) 100%);

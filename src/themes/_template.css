@@ -1,0 +1,51 @@
+/* ============================================================
+   PRODUCT THEME — TEMPLATE  (copy me to themes/<id>.css)
+   ============================================================
+   A product theme redefines ONLY the theming surface (matiz + shape).
+   Everything else — surface ramp, feedback, neutrals, spacing, type,
+   shadows — is inherited from @attrus-ds/core. See the theming docs
+   for the full contract; the drift linter enforces it.
+
+   ─── To add a new product (≈10 min, 0 components touched) ───
+   1. Copy this file to themes/<id>.css and replace every "<id>" + the colors.
+   2. Add the theme to your app's theme switcher.
+   3. Add @import "./themes/<id>.css"; to your entry stylesheet.
+   (No per-page edits — the file loads on all pages. No component edits —
+    HTML/.tsx/app all consume these tokens.)
+
+   ─── Contrast to check (WCAG AA) ───
+   • --color-brand-text  ≥ 4.5:1 on white   (darken the primary until it passes)
+   • white               ≥ 4.5:1 on --color-brand-solid   (button labels)
+   ============================================================ */
+
+[data-product="REPLACE_ID"] {
+  /* ── Brand (institutional / primary action) — REQUIRED ── */
+  --color-brand-solid:        #000000;  /* primary fill: buttons, avatars, toggles, progress, badges, hero base */
+  --color-brand-solid-hover:  color-mix(in srgb, #00152E 14%, #000000);  /* darken (or LIGHTEN with white if the primary is near-ink) */
+  --color-brand-solid-active: color-mix(in srgb, #00152E 24%, #000000);
+  --color-brand-text:         #000000;  /* brand text/icon on light — MUST pass AA (≥4.5 on white); usually a darker shade */
+  --color-brand-text-strong:  #000000;  /* emphasis text */
+  --color-brand-subtle:       color-mix(in srgb, #000000 12%, transparent);            /* translucent tint — chips, tags, selected */
+  --color-brand-subtle-solid: color-mix(in srgb, #000000 10%, var(--color-pure-white));/* opaque light tint — avatars, selected rows */
+  --color-brand-border:       color-mix(in srgb, #000000 32%, var(--color-pure-white));/* light brand border — selected chips */
+  --color-foreground-brand:   #000000;  /* institutional brand text/icon (often == brand-text) */
+  /* --color-brand-on-solid inherits white — override only if labels need a dark color on a light primary */
+
+  /* ── Accent (interactive / wayfinding) — OPTIONAL (inherits shared Sky) ── */
+  /* --color-accent-solid:      #3399FF; */
+  /* --color-accent-subtle:     color-mix(in srgb, #3399FF 14%, transparent); */
+  /* --color-foreground-accent: #1E6DC4; */  /* accent text — AA on white */
+
+  /* ── Shape (roundness) — OPTIONAL (inherits Enterprise baseline 6/10/14) ── */
+  /* Must PICK a step from the --radius-* scale, never a raw px (linter enforces). */
+  /* --shape-control:   var(--radius-md); */   /* inputs, select, segmented */
+  /* --shape-container: var(--radius-lg); */   /* cards, table, toast */
+  /* --shape-overlay:   var(--radius-xl); */   /* modals, drawers */
+}
+
+/* ── Dark: re-assert ONLY the foregrounds the [data-theme="dark"] block re-tints
+      (it lightens accent/highlight/brand to Sky/Royal — point them at your hue). ── */
+[data-product="REPLACE_ID"][data-theme="dark"] {
+  --color-foreground-brand: #FFFFFF;  /* a light tint of your brand that reads on ink */
+  /* --color-foreground-accent: #...; */  /* only if you set a custom accent above */
+}

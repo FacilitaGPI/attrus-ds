@@ -132,13 +132,13 @@
    4. VARIANTS
    ---------------------------------------------------------------- */
 
-/* PRIMARY — brand-blue solid */
+/* PRIMARY — brand solid */
 .btn-primary {
-  background: var(--color-brand-secondary-500);
-  color: var(--color-foreground-on-solid);
+  background: var(--color-brand-solid);
+  color: var(--color-brand-on-solid);
 }
-.btn-primary:hover  { background: var(--color-brand-secondary-600); }
-.btn-primary:active { background: var(--color-brand-secondary-700); }
+.btn-primary:hover  { background: var(--color-brand-solid-hover); }
+.btn-primary:active { background: var(--color-brand-solid-active); }
 .btn-primary:focus-visible { box-shadow: var(--shadow-focus); }
 
 
@@ -184,8 +184,8 @@
   border-radius: var(--radius-2xs);
   text-decoration: none;
 }
-.btn-link:hover  { color: var(--color-brand-secondary-700); text-decoration: underline; text-underline-offset: 2px; }
-.btn-link:active { color: var(--color-brand-secondary-800); }
+.btn-link:hover  { color: var(--color-brand-text); text-decoration: underline; text-underline-offset: 2px; }
+.btn-link:active { color: var(--color-brand-text-strong); }
 .btn-link:focus-visible { box-shadow: var(--shadow-focus); }
 
 
@@ -223,9 +223,9 @@
 /* INVERSE — white pill on dark/brand surfaces */
 .btn-inverse {
   background: var(--color-pure-white);
-  color: var(--color-brand-secondary-700);
+  color: var(--color-brand-text);
 }
-.btn-inverse:hover  { background: var(--color-neutral-100); color: var(--color-brand-secondary-800); }
+.btn-inverse:hover  { background: var(--color-neutral-100); color: var(--color-brand-text-strong); }
 .btn-inverse:active { background: var(--color-neutral-150); }
 .btn-inverse:focus-visible { box-shadow: var(--shadow-focus-sky); }
 

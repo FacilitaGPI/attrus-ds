@@ -1,0 +1,37 @@
+/* ============================================================
+   PRODUCT THEME — "Enterprise" (explicit mirror of the :root default)
+   ============================================================
+   Globally, selecting Enterprise just clears data-product → :root (identical
+   values). This explicit rule exists so NESTED / scoped contexts can force
+   Enterprise over an inherited product — e.g. an Enterprise region embedded
+   in a Business page. Values mirror :root (ATTRUS Navy #002142 via the
+   brand-primary scale).
+
+   Load AFTER @attrus-ds/core css. Inert until an element carries
+   data-product="enterprise".
+   ============================================================ */
+
+[data-product="enterprise"] {
+  --color-brand-solid:        var(--color-brand-primary-500);  /* Navy #002142 */
+  --color-brand-solid-hover:  color-mix(in srgb, var(--color-pure-white) 12%, var(--color-brand-primary-500));
+  --color-brand-solid-active: color-mix(in srgb, var(--color-pure-white) 6%,  var(--color-brand-primary-500));
+  --color-brand-text:         var(--color-brand-primary-500);
+  --color-brand-text-strong:  var(--color-brand-primary-700);
+  --color-brand-subtle:       color-mix(in srgb, var(--color-brand-primary-500) 12%, transparent);
+  --color-brand-subtle-solid: var(--color-brand-primary-50);
+  --color-brand-border:       var(--color-brand-primary-200);
+
+  /* Shape — Enterprise is the sober baseline (mirrors :root). Re-asserted here
+     so a nested Enterprise region inside a rounder product keeps sharp edges. */
+  --shape-control:   var(--radius-sm);    /* 6px */
+  --shape-container: var(--radius-md);    /* 10px */
+  --shape-overlay:   var(--radius-lg);    /* 14px */
+}
+
+/* Dark: navy is near-ink → lift the solid fill so it stays visible (mirrors
+   the [data-theme="dark"] block, but scoped so it wins inside nested cells). */
+[data-product="enterprise"][data-theme="dark"] {
+  --color-brand-solid:        var(--color-brand-primary-400);
+  --color-brand-solid-hover:  var(--color-brand-primary-300);
+  --color-brand-solid-active: var(--color-brand-primary-500);
+}

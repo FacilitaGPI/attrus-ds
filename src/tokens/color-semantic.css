@@ -15,7 +15,32 @@
   --color-background-sunken:      var(--color-neutral-100);         /* inputs, wells */
   --color-background-hover:       var(--color-neutral-100);
   --color-background-press:       var(--color-neutral-150);
-  --color-background-selected:    var(--color-brand-secondary-50);
+  --color-background-selected:    var(--color-brand-subtle-solid);  /* product-aware via brand-subtle-solid (dark theme overrides below) */
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     THEMING SURFACE — product axis (semantic brand/accent tokens)
+     ─────────────────────────────────────────────────────────────────────────
+     A product theme (`[data-product="…"]`) redefines ONLY this short set; every
+     component fill, text and tint reads from these, so swapping them reskins the
+     whole catalog with no per-component edits. Primer/Spectrum-style aliasing.
+
+     The two axes stay orthogonal:
+       • PRODUCT axis → matiz: this set + the brand/accent scales, logo, hero grad.
+       • THEME axis (light/dark) → surface ramp + tint intensity. NEVER matiz.
+
+     Brand = institutional / primary action. */
+  --color-brand-solid:        var(--color-brand-primary-500);  /* Enterprise primary — ATTRUS Navy #002142 (buttons, avatars, toggles, badges, hero) */
+  --color-brand-solid-hover:  color-mix(in srgb, var(--color-pure-white) 12%, var(--color-brand-primary-500));  /* navy is near-ink → states LIGHTEN */
+  --color-brand-solid-active: color-mix(in srgb, var(--color-pure-white) 6%,  var(--color-brand-primary-500));
+  --color-brand-text:         var(--color-brand-primary-500);  /* navy as text — 15:1 on white */
+  --color-brand-text-strong:  var(--color-brand-primary-700);  /* brand text pressed/emphasis */
+  --color-brand-subtle:       color-mix(in srgb, var(--color-brand-primary-500) 12%, transparent);  /* tints: brand chips, selected, tags */
+  --color-brand-subtle-solid: var(--color-brand-primary-50);   /* opaque light brand tint: brand avatars, selected-row base */
+  --color-brand-border:       var(--color-brand-primary-200);  /* light brand border: selected filter chips */
+  --color-brand-on-solid:     var(--color-foreground-on-solid);  /* text/icon on --color-brand-solid */
+  /* Accent = interactive / wayfinding (Sky). accent text = --color-foreground-accent. */
+  --color-accent-solid:       var(--color-brand-accent-500);   /* tab/active indicator, focus ring */
+  --color-accent-subtle:      color-mix(in srgb, var(--color-brand-accent-500) 14%, transparent);  /* counts, pagination, accent chips */
 
   /* ─────────────────────────────────────────────────────────────────────────
      INVERSE LAYER — contextual contrast surface, NOT dark theme
@@ -40,9 +65,9 @@
        ✗ Mixing inverse and surface tokens in the same component without intent
        ✗ Hard-coding #0B1230 / white instead of inverse tokens
      ───────────────────────────────────────────────────────────────────────── */
-  --color-background-inverse:          var(--color-ink-base);
-  --color-background-inverse-surface:  var(--color-ink-raised);
-  --color-background-inverse-subtle:   var(--color-ink-deep);
+  --color-background-inverse:          color-mix(in srgb, var(--color-brand-solid) 16%, var(--color-ink-base));      /* product-tinted dark panel */
+  --color-background-inverse-surface:  color-mix(in srgb, var(--color-brand-solid) 20%, var(--color-ink-raised));
+  --color-background-inverse-subtle:   color-mix(in srgb, var(--color-brand-solid) 12%, var(--color-ink-deep));
   --color-background-inverse-hover:    var(--color-ink-hover);
 
   /* Scrim — modal/drawer/sheet backdrop. Same in light and dark themes.
@@ -52,8 +77,8 @@
   --color-scrim:                       rgba(10, 15, 31, 0.32);
   --scrim-blur:                        6px;
   --color-background-inverse-press:    color-mix(in srgb, var(--color-ink-hover) 70%, var(--color-pure-white));
-  --color-background-inverse-selected: color-mix(in srgb, var(--color-brand-secondary-500) 22%, var(--color-ink-base));
-  --color-background-inverse-brand:    var(--color-brand-primary-500);   /* CTA / hero with brand weight — Navy */
+  --color-background-inverse-selected: color-mix(in srgb, var(--color-brand-solid) 22%, var(--color-ink-base));
+  --color-background-inverse-brand:    var(--color-brand-solid);   /* CTA / hero with brand weight — follows product */
 
   /* Foreground (text + icons) on LIGHT surfaces */
   --color-foreground-default:     var(--color-neutral-800);   /* primary copy / headings */
@@ -79,8 +104,8 @@
   --color-border-subtle:    var(--color-neutral-100);
   --color-border-default:   var(--color-neutral-150);
   --color-border-strong:    var(--color-neutral-200);
-  --color-border-focus:     var(--color-brand-accent-500);
-  --color-border-accent:    var(--color-brand-accent-500);
+  --color-border-focus:     var(--color-accent-solid);   /* per-theme accent (Sky default) — follows the product's accent */
+  --color-border-accent:    var(--color-accent-solid);
   --color-border-success:   var(--color-success-500);
   --color-border-warning:   var(--color-warning-500);
   --color-border-danger:    var(--color-danger-500);

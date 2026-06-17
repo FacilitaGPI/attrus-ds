@@ -38,6 +38,8 @@
     "./fonts.css": "./dist/css/fonts.css",
     "./tokens.json": "./dist/tokens/attrus-tokens.json",
     "./tokens.flat.json": "./dist/tokens/attrus-tokens.flat.json",
+    "./themes": "./dist/css/themes/index.css",
+    "./themes/*": "./dist/css/themes/*",
     "./components/*": "./dist/css/components/*",
     "./react": "./dist/react/index.ts",
     "./react/*": "./dist/react/*",

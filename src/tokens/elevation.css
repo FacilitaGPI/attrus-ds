@@ -14,7 +14,7 @@
                 0 32px 80px color-mix(in srgb, var(--color-shadow-tint) 18%, transparent);
   --shadow-2xl: 0 24px 48px color-mix(in srgb, var(--color-shadow-tint) 14%, transparent),
                 0 48px 120px color-mix(in srgb, var(--color-shadow-tint) 24%, transparent); /* deepest — modals, drawers, floating overlays above scrim */
-  --shadow-focus:         0 0 0 4px color-mix(in srgb, var(--color-brand-accent-500)     22%, transparent);
+  --shadow-focus:         0 0 0 4px color-mix(in srgb, var(--color-accent-solid)     22%, transparent);   /* per-theme accent */
   --shadow-focus-sky:     0 0 0 4px color-mix(in srgb, var(--color-brand-accent-500)     25%, transparent);
   --shadow-focus-success: 0 0 0 4px color-mix(in srgb, var(--color-success-500) 22%, transparent);
   --shadow-focus-warning: 0 0 0 4px color-mix(in srgb, var(--color-warning-500) 22%, transparent);

@@ -1,0 +1,17 @@
+/* ============================================================
+   ATTRUS / Cabiros — SHAPE TOKENS (product axis — roundness)
+   ─────────────────────────────────────────────────────────────
+   A product theme (`[data-product]`) may redefine these to pick
+   sharper or softer edges. They MUST reference a step from the
+   raw --radius-* scale (never a raw px) so the scale stays the
+   single source.
+
+   Defaults = Enterprise baseline (value-preserving).
+   Buttons stay pill by deliberate brand stance (not shape-themable).
+   ============================================================ */
+
+:root {
+  --shape-control:   var(--radius-sm);   /* inputs, select, segmented, file trigger, number-input */
+  --shape-container: var(--radius-md);   /* cards, stat tiles, table wrapper, toast, drawer-lead */
+  --shape-overlay:   var(--radius-lg);   /* modals, drawer panels, large surfaces */
+}

@@ -1,0 +1,41 @@
+/* ============================================================
+   PRODUCT THEME — "Business"
+   ============================================================
+   Second product. Primary = ATTRUS Business Blue (#1F6FD6) — brighter and
+   friendlier than the Enterprise Navy. Redefines ONLY the theming surface
+   (matiz); surface ramp, feedback, neutrals, type are inherited.
+
+   Load AFTER @attrus-ds/core css. Inert until <html data-product="business">.
+   Accent stays Sky (shared) for now — Business brand & accent are both blue,
+   so they read close; give Business a distinct accent here if needed later.
+   ============================================================ */
+
+[data-product="business"] {
+  /* Brand = Business Blue #1F6FD6 (solid fills: buttons, avatars, toggles, hero) */
+  --color-brand-solid:        #1F6FD6;
+  --color-brand-solid-hover:  color-mix(in srgb, #00152E 14%, #1F6FD6);  /* mid base → states DARKEN */
+  --color-brand-solid-active: color-mix(in srgb, #00152E 24%, #1F6FD6);
+  --color-brand-text:         #1657AD;   /* darkened so brand text passes AA (~5:1) — #1F6FD6 alone is ~3.8:1 */
+  --color-brand-text-strong:  #103F7D;
+  --color-brand-subtle:       color-mix(in srgb, #1F6FD6 12%, transparent);
+  --color-brand-subtle-solid: color-mix(in srgb, #1F6FD6 10%, var(--color-pure-white));  /* opaque light tint — avatars, selected rows */
+  --color-brand-border:       color-mix(in srgb, #1F6FD6 32%, var(--color-pure-white));
+  /* --color-brand-on-solid inherits white (4.6:1 on #1F6FD6 — OK for ≥14px bold labels) */
+
+  /* Institutional brand text/icon — darkened business blue */
+  --color-foreground-brand:   #1657AD;
+  /* accent (Sky) + foreground-accent/-highlight inherit :root — shared wayfinding */
+
+  /* Shape — Business reads friendlier / rounder than Enterprise (the :root
+     baseline). Picks softer steps from the shared --radius-* scale. */
+  --shape-control:   var(--radius-md);    /* 10px — inputs/selects/segmented (vs 6px) */
+  --shape-container: var(--radius-lg);    /* 14px — cards/stat/table/toast (vs 10px) */
+  --shape-overlay:   var(--radius-xl);    /* 20px — modals/drawers (vs 14px) */
+}
+
+/* Dark: #1F6FD6 reads fine as a fill on ink (no solid override needed — the
+   1-attr [data-product] block wins over [data-theme="dark"] by source order).
+   Only the institutional brand text must lift off the dark canvas. */
+[data-product="business"][data-theme="dark"] {
+  --color-foreground-brand: #9FC4FF;   /* light business blue for dark surfaces */
+}

@@ -103,7 +103,7 @@
   height: 40px;
   padding: 0 var(--space-4);
   border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-control);
   background: var(--color-background-surface);
   color: var(--color-foreground-default);
 
@@ -241,7 +241,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   width: 100%;
   height: 40px;
   border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-control);
   background: var(--color-background-surface);
   overflow: hidden;
   transition:
@@ -366,7 +366,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   min-height: 40px;
   padding: 5px 8px;
   border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-control);
   background: var(--color-background-surface);
   transition:
     border-color var(--transition-fast),
@@ -469,7 +469,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   font-size: var(--fs-xl);
   font-weight: var(--w-semibold);
   border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-container);
   outline: none;
   background: var(--color-background-surface);
   color: var(--color-foreground-default);
@@ -510,7 +510,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   transition: transform var(--transition-base);
 }
 .switch input { position: absolute; opacity: 0; pointer-events: none; }
-.switch input:checked ~ .switch-track { background: var(--color-brand-secondary-500); }
+.switch input:checked ~ .switch-track { background: var(--color-brand-solid); }
 .switch input:checked ~ .switch-track .switch-thumb { transform: translateX(16px); }
 .switch input:focus-visible ~ .switch-track { box-shadow: var(--shadow-focus); }
 .switch input:disabled ~ .switch-track { opacity: 0.5; cursor: not-allowed; }
@@ -553,13 +553,13 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 }
 .check-box svg { width: 14px; height: 14px; stroke-width: 3; opacity: 0; transform: scale(0.8); transition: opacity var(--transition-fast), transform var(--transition-fast); }
 .check input:checked ~ .check-box {
-  background: var(--color-brand-secondary-500);
-  border-color: var(--color-brand-secondary-500);
+  background: var(--color-brand-solid);
+  border-color: var(--color-brand-solid);
 }
 .check input:checked ~ .check-box svg { opacity: 1; transform: scale(1); }
 .check input:indeterminate ~ .check-box {
-  background: var(--color-brand-secondary-500);
-  border-color: var(--color-brand-secondary-500);
+  background: var(--color-brand-solid);
+  border-color: var(--color-brand-solid);
 }
 .check input:indeterminate ~ .check-box::after {
   content: '';
@@ -607,11 +607,11 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   width: 8px;
   height: 8px;
   border-radius: var(--radius-pill);
-  background: var(--color-brand-secondary-500);
+  background: var(--color-brand-solid);
   transform: scale(0);
   transition: transform var(--transition-fast);
 }
-.radio input:checked ~ .radio-dot { border-color: var(--color-brand-secondary-500); }
+.radio input:checked ~ .radio-dot { border-color: var(--color-brand-solid); }
 .radio input:checked ~ .radio-dot::after { transform: scale(1); }
 .radio input:focus-visible ~ .radio-dot { box-shadow: var(--shadow-focus); }
 .radio input:disabled ~ .radio-dot { opacity: 0.5; cursor: not-allowed; }
@@ -629,7 +629,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   height: 40px;
   padding: 0 var(--space-4);
   border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-sm);
+  border-radius: var(--shape-control);
   background: var(--color-background-surface);
   color: var(--color-foreground-default);
   font-family: var(--font-sans);
@@ -739,7 +739,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   cursor: pointer;
   transition: color var(--transition-fast);
 }
-.file-list-action:hover { color: var(--color-brand-secondary-700); }
+.file-list-action:hover { color: var(--color-brand-text); }
 
 .file-rows {
   list-style: none;
@@ -771,9 +771,9 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   color: var(--color-foreground-muted);
 }
 .file-icon[data-kind="pdf"]   { background: color-mix(in srgb, var(--color-danger-500) 8%, var(--color-background-surface)); color: var(--color-feedback-danger-foreground); }
-.file-icon[data-kind="img"]   { background: color-mix(in srgb, var(--color-brand-secondary-500) 8%, var(--color-background-surface));   color: var(--color-brand-secondary-700); }
+.file-icon[data-kind="img"]   { background: color-mix(in srgb, var(--color-brand-solid) 8%, var(--color-background-surface));   color: var(--color-brand-text); }
 .file-icon[data-kind="csv"]   { background: color-mix(in srgb, var(--color-success-500) 8%, var(--color-background-surface)); color: var(--color-feedback-success-foreground); }
-.file-icon[data-kind="doc"]   { background: color-mix(in srgb, var(--color-brand-secondary-500) 10%, var(--color-background-surface));  color: var(--color-brand-secondary-700); }
+.file-icon[data-kind="doc"]   { background: color-mix(in srgb, var(--color-brand-solid) 10%, var(--color-background-surface));  color: var(--color-brand-text); }
 
 .file-icon-tag {
   position: absolute;
@@ -823,7 +823,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .file-progress > span {
   display: block;
   height: 100%;
-  background: var(--color-brand-secondary-500);
+  background: var(--color-brand-solid);
   border-radius: inherit;
   transition: width var(--transition-fast);
 }
@@ -842,7 +842,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   white-space: nowrap;
 }
 .file-status.ok      { color: var(--color-feedback-success-foreground); background: var(--color-feedback-success-background); }
-.file-status.pending { color: var(--color-brand-secondary-700);   background: color-mix(in srgb, var(--color-brand-secondary-500) 10%, transparent); }
+.file-status.pending { color: var(--color-brand-text);   background: var(--color-brand-subtle); }
 .file-status.err     { color: var(--color-feedback-danger-foreground);  background: var(--color-feedback-danger-background); cursor: pointer; }
 
 .file-remove {
@@ -889,7 +889,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   width: 18px;
   height: 18px;
   border-radius: var(--radius-pill);
-  background: var(--color-brand-secondary-500);
+  background: var(--color-brand-solid);
   border: 2px solid var(--color-pure-white);
   box-shadow: 0 1px 4px color-mix(in srgb, var(--color-shadow-tint) 22%, transparent);
   margin-top: -7px;
@@ -899,7 +899,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   width: 18px;
   height: 18px;
   border-radius: var(--radius-pill);
-  background: var(--color-brand-secondary-500);
+  background: var(--color-brand-solid);
   border: 2px solid var(--color-pure-white);
   box-shadow: 0 1px 4px color-mix(in srgb, var(--color-shadow-tint) 22%, transparent);
 }

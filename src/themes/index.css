@@ -1,0 +1,15 @@
+/* ============================================================
+   PRODUCT THEMES — single entry point
+   ============================================================
+   Load AFTER @attrus-ds/core css. Adding a new product = create
+   themes/<id>.css, add one @import line below, and register it
+   in your app's theme switcher. No per-page edits.
+
+   Order: each product's [data-product="<id>"] block is self-scoped,
+   so import order doesn't cause conflicts — only the active product's
+   attribute matches. Enterprise is also the :root default; its file
+   exists for explicit/nested scoping (e.g. an Enterprise region
+   embedded inside a Business page).
+   ============================================================ */
+@import "./enterprise.css";
+@import "./business.css";
