@@ -1,0 +1,25 @@
+---
+description: How npm publish version is resolved in this repo
+alwaysApply: false
+globs: package.json,.github/workflows/publish.yml
+---
+
+# Release version (automated in CI)
+
+Do **not** rely on manually bumping `package.json` before a GitHub release.
+
+`.github/workflows/publish.yml` resolves the publish version automatically:
+
+- **GitHub release** → version comes from the release tag (`v1.0.1` → `1.0.1`), synced into `package.json` before build/publish
+- **Manual workflow run** → optional `version` input, otherwise uses current `package.json`
+
+After a successful release publish, CI commits the version bump to `main`.
+
+## Creating a release
+
+1. Create a GitHub release with tag `vX.Y.Z` (tag is the source of truth).
+2. CI publishes that version to npm — no Cursor or local bump required.
+
+## Optional local bump
+
+Bump `package.json` only when preparing changes on a branch before release, or when running `workflow_dispatch` without a `version` input.
