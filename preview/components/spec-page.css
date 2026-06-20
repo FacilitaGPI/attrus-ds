@@ -1,17 +1,33 @@
 /* Shared chrome for component spec pages (ported from Cabiros preview). */
 
 .doc-back {
+  position: fixed;
+  top: var(--space-5);
+  left: var(--space-5);
+  z-index: 1000;
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  margin: var(--space-6) 0 0 var(--space-8);
-  color: var(--color-foreground-muted);
-  text-decoration: none;
+  font-family: var(--font-sans);
   font-size: var(--fs-sm);
   font-weight: var(--w-semibold);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-foreground-default);
+  text-decoration: none;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-pill);
+  background: var(--color-background-surface);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-fast);
 }
-.doc-back:hover { color: var(--color-foreground-default); }
-.doc-back i, .doc-back svg { width: var(--icon-sm); height: var(--icon-sm); stroke-width: var(--icon-stroke); }
+.doc-back:hover {
+  color: var(--color-foreground-default);
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-md);
+}
+.doc-back svg, .doc-back i { width: 18px; height: 18px; stroke-width: var(--icon-stroke); }
 
 .theme-toggle {
   position: fixed;
