@@ -58,6 +58,7 @@
   font-family: var(--font-sans);
   font-size: var(--fs-xxs); font-weight: var(--w-semibold);
   color: var(--color-foreground-muted);
+  opacity: 0.7;
   letter-spacing: var(--ls-caps); text-transform: uppercase;
 }
 
@@ -66,7 +67,7 @@
   padding: 8px 10px; margin: 3px 10px;
   height: 36px; box-sizing: border-box;
   border-radius: var(--radius-sm);
-  color: var(--color-foreground-secondary);
+  color: var(--color-foreground-default);
   font-size: var(--fs-md); font-weight: var(--w-medium);
   cursor: pointer; position: relative;
   white-space: nowrap; overflow: hidden;
@@ -81,10 +82,10 @@
 .sb-item.active::before {
   content: ""; position: absolute; left: -10px; top: 9px; bottom: 9px;
   width: 2px; border-radius: var(--radius-pill);
-  background: var(--color-brand-secondary-500);
+  background: var(--color-brand-solid);
 }
 .sb-item .ic { width: 15px; height: 15px; stroke-width: var(--icon-stroke); flex-shrink: 0; opacity: 0.85; }
-.sb-item.active .ic { color: var(--color-brand-secondary-500); opacity: 1; }
+.sb-item.active .ic { color: var(--color-brand-solid); opacity: 1; }
 .sb-item .label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .sb-item.disabled { color: var(--color-foreground-placeholder); cursor: not-allowed; }
 .sb-item.disabled:hover { background: transparent; }
@@ -94,7 +95,7 @@
   font-family: var(--font-sans); font-size: 9px; font-weight: var(--w-bold);
   letter-spacing: .06em; line-height: 1.4;
   padding: 1px var(--space-2-5); border-radius: var(--radius-pill);
-  background: var(--color-brand-secondary-500); color: var(--color-pure-white);
+  background: var(--color-brand-solid); color: var(--color-brand-on-solid);
 }
 .sb-badge.alert { background: var(--color-danger-500); }
 .sb-badge.warning { background: var(--color-warning-500); }
@@ -104,7 +105,7 @@
   background: var(--color-background-subtle);
   padding: 1px 6px; border-radius: var(--radius-xs);
 }
-.sb-item.active .sb-count { background: color-mix(in srgb, var(--color-brand-secondary-200) 70%, transparent); color: var(--color-brand-secondary-700); }
+.sb-item.active .sb-count { background: var(--color-brand-subtle); color: var(--color-brand-text); }
 
 /* Footer — user mini-card */
 .sb-foot {
@@ -115,7 +116,7 @@
 }
 .sb-foot .avatar {
   width: 26px; height: 26px; border-radius: var(--radius-pill);
-  background: var(--color-brand-secondary-500); color: var(--color-pure-white);
+  background: var(--color-brand-solid); color: var(--color-brand-on-solid);
   font-size: 10px; font-weight: var(--w-bold);
   display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
@@ -124,6 +125,18 @@
 .sb-foot .meta .role { font-size: var(--fs-xxs); color: var(--color-foreground-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .sb-foot .logout { color: var(--color-foreground-muted); cursor: pointer; flex-shrink: 0; display: inline-flex; }
 .sb-foot .logout svg, .sb-foot .logout i { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
+/* Card variant — enclosed footer that reads as a distinct card and stacks the
+   company under the name (mirrors the top-bar account control). Use .co for the
+   company line. Consumed via AppSidebar's `foot` slot: <div class="sb-foot sb-foot-card">. */
+.sb-foot-card {
+  margin: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--shape-container);
+  background: var(--color-background-surface);
+}
+.sb-foot-card .meta { display: flex; flex-direction: column; line-height: 1.3; }
+.sb-foot-card .meta .co { font-size: var(--fs-xxs); color: var(--color-foreground-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ===== Collapsed (60px icon rail) ===== */
 .sb.collapsed { width: 60px; }
@@ -169,7 +182,7 @@
 .sb-children .sb-subitem:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
 .sb-children .sb-subitem:hover::before { opacity: 1; background: var(--color-foreground-muted); }
 .sb-children .sb-subitem.active { color: var(--color-foreground-brand); font-weight: var(--w-semibold); background: var(--color-background-selected); }
-.sb-children .sb-subitem.active::before { background: var(--color-brand-secondary-500); opacity: 1; }
+.sb-children .sb-subitem.active::before { background: var(--color-brand-solid); opacity: 1; }
 .sb-children .sb-subitem .count, .sb-children .sb-subitem .sb-count {
   margin-left: auto;
   font-family: var(--font-mono); font-size: var(--fs-xxs);

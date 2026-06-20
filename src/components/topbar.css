@@ -80,7 +80,7 @@
 /* Avatar chip */
 .tb-avatar {
   width: 30px; height: 30px; border-radius: var(--radius-pill);
-  background: var(--color-brand-secondary-500); color: var(--color-pure-white);
+  background: var(--color-brand-solid); color: var(--color-brand-on-solid);
   font-size: var(--fs-xs); font-weight: var(--w-bold);
   display: inline-flex; align-items: center; justify-content: center;
   flex-shrink: 0; margin-left: var(--space-1);

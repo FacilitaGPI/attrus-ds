@@ -32,7 +32,7 @@
 
 /* Tone — accent-on-tinted-bg uses the same background+foreground pair as feedback pills,
    so an Avatar reads as the same "object" as a status pill that references it. */
-.av-brand   { background: var(--color-brand-secondary-50);          color: var(--color-brand-secondary-700); }
+.av-brand   { background: var(--color-brand-subtle-solid);          color: var(--color-brand-text); }
 .av-success { background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); }
 .av-warning { background: var(--color-feedback-warning-background); color: var(--color-feedback-warning-foreground); }
 .av-danger  { background: var(--color-feedback-danger-background);  color: var(--color-feedback-danger-foreground); }
@@ -141,7 +141,7 @@
   padding: var(--space-5);
   background: var(--color-background-surface);
   border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-md);
+  border-radius: var(--shape-container);
 }
 .stat-label {
   font-family: var(--font-mono);
@@ -253,7 +253,7 @@
 .eyebrow-muted     { color: var(--color-foreground-muted); }
 .eyebrow-secondary { color: var(--color-foreground-secondary); }
 .eyebrow-default   { color: var(--color-foreground-default); }
-.eyebrow-brand     { color: var(--color-brand-secondary-700); }
+.eyebrow-brand     { color: var(--color-brand-text); }
 .eyebrow-inverse   { color: var(--color-foreground-inverse-muted); }
 
 /* =================== FILTER CHIP =================== */
@@ -280,7 +280,7 @@
 /* Selected (aria-pressed via FilterChip TSX) — same active treatment as combobox filter chips */
 .filter-chip[aria-pressed="true"] {
   background: var(--color-background-selected);
-  border-color: var(--color-brand-secondary-200);
+  border-color: var(--color-brand-border);
   color: var(--color-foreground-brand);
   font-weight: var(--w-semibold);
 }

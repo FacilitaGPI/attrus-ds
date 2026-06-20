@@ -16,7 +16,7 @@
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   border: var(--glass-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--shape-container);
   box-shadow: var(--shadow-glass), var(--shadow-lg);
   font-family: var(--font-sans);
   font-size: var(--fs-sm);

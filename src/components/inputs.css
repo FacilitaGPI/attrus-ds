@@ -469,7 +469,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   font-size: var(--fs-xl);
   font-weight: var(--w-semibold);
   border: 1px solid var(--color-border-default);
-  border-radius: var(--shape-container);
+  border-radius: var(--shape-control);
   outline: none;
   background: var(--color-background-surface);
   color: var(--color-foreground-default);
@@ -842,7 +842,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   white-space: nowrap;
 }
 .file-status.ok      { color: var(--color-feedback-success-foreground); background: var(--color-feedback-success-background); }
-.file-status.pending { color: var(--color-brand-text);   background: var(--color-brand-subtle); }
+.file-status.pending { color: var(--color-brand-text);   background: color-mix(in srgb, var(--color-brand-solid) 10%, transparent); }
 .file-status.err     { color: var(--color-feedback-danger-foreground);  background: var(--color-feedback-danger-background); cursor: pointer; }
 
 .file-remove {
@@ -952,7 +952,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .dark .chips:focus-within,
 .dark .number-input:focus-within,
 .dark .date-trigger:focus-visible {
-  border-color: var(--color-brand-secondary-300);
+  border-color: var(--color-border-focus);
   box-shadow: var(--shadow-focus-sky);
 }
 .dark .field > label  { color: var(--color-foreground-inverse-default); }

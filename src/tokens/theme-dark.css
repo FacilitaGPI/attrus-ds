@@ -66,6 +66,9 @@
   --color-feedback-info-background:    color-mix(in srgb, var(--color-info-500) 18%, var(--color-ink-base));
   --color-feedback-info-border:        color-mix(in srgb, var(--color-info-500) 34%, transparent);
 
+  /* Frosted chrome flips to ink glass on dark (drawer/modal header+footer) */
+  --glass-chrome: var(--glass-ink);
+
   /* Surface-top sheen reads wrong on dark → neutralize */
   --grad-surface-top: linear-gradient(180deg, color-mix(in srgb, var(--color-pure-white) 6%, transparent) 0%, transparent 100%);
 

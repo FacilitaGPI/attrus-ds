@@ -132,7 +132,7 @@
    4. VARIANTS
    ---------------------------------------------------------------- */
 
-/* PRIMARY — brand solid */
+/* PRIMARY — brand-blue solid */
 .btn-primary {
   background: var(--color-brand-solid);
   color: var(--color-brand-on-solid);

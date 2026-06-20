@@ -54,7 +54,7 @@
 .dt-wrap {
   background: var(--color-background-surface);
   border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-md);
+  border-radius: var(--shape-container);
   overflow: hidden;
   box-shadow: var(--shadow-xs);
 }
@@ -138,8 +138,8 @@
 .dt-pagination .page-btn:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
 .dt-pagination .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .dt-pagination .page-btn.is-current {
-  background: color-mix(in srgb, var(--color-brand-accent-500) 14%, transparent);
-  border-color: color-mix(in srgb, var(--color-brand-accent-500) 36%, transparent);
+  background: var(--color-accent-subtle);
+  border-color: color-mix(in srgb, var(--color-accent-solid) 36%, transparent);
   color: var(--color-foreground-accent);
 }
 .dt-pagination .page-btn > i, .dt-pagination .page-btn > svg,

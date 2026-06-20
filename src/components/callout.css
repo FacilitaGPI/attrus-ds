@@ -38,7 +38,7 @@
      --callout-fg    theme-aware foreground → icon color
    ============================================================ */
 .callout {
-  --callout-tint: var(--color-brand-secondary-500);  /* info / royal */
+  --callout-tint: var(--color-brand-solid);  /* info / royal */
   --callout-fg:   var(--color-foreground-accent);     /* sky, theme-aware */
   display: flex;
   gap: var(--space-3);

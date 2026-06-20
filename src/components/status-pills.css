@@ -131,7 +131,7 @@
 .pill.solid.danger  { background: var(--color-danger-500);  color: var(--color-pure-white); border-color: transparent; }
 .pill.solid.info    { background: var(--color-info-500);    color: var(--color-pure-white); border-color: transparent; }
 .pill.solid.neutral { background: var(--color-neutral-700); color: var(--color-pure-white); border-color: transparent; }
-.pill.solid.brand   { background: var(--color-brand-secondary-500);    color: var(--color-foreground-on-solid); border-color: transparent; }
+.pill.solid.brand   { background: var(--color-brand-solid);    color: var(--color-brand-on-solid); border-color: transparent; }
 .pill.solid > .dot  { background: currentColor; }
 
 .pill.outline.success { background: transparent; color: var(--color-feedback-success-foreground); border-color: var(--color-success-500); }
@@ -139,7 +139,7 @@
 .pill.outline.danger  { background: transparent; color: var(--color-feedback-danger-foreground);  border-color: var(--color-danger-500);  }
 .pill.outline.info    { background: transparent; color: var(--color-feedback-info-foreground);    border-color: var(--color-info-500);    }
 .pill.outline.neutral { background: transparent; color: var(--color-foreground-secondary); border-color: var(--color-border-strong); }
-.pill.outline.brand   { background: transparent; color: var(--color-foreground-accent);  border-color: var(--color-brand-secondary-500);    }
+.pill.outline.brand   { background: transparent; color: var(--color-foreground-accent);  border-color: var(--color-brand-solid);    }
 
 
 /* ----------------------------------------------------------------

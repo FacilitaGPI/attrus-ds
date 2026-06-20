@@ -11,6 +11,9 @@
   --glass-ink:       color-mix(in srgb, var(--color-background-inverse) 55%, transparent);   /* dark navy */
   --glass-ink-hi:    color-mix(in srgb, var(--color-background-inverse) 78%, transparent);
   --glass-ink-lo:    color-mix(in srgb, var(--color-background-inverse) 35%, transparent);
+  /* Theme-aware frosted chrome (drawer/modal header+footer): white glass in light,
+     ink glass in dark. Use this — NOT raw --glass-white — on themed chrome. */
+  --glass-chrome:    var(--glass-white);
   --glass-blur:      saturate(140%) blur(18px);
   --glass-blur-sm:   saturate(130%) blur(10px);
   --glass-blur-lg:   saturate(160%) blur(28px);
