@@ -1,15 +1,15 @@
 /* ============================================================
    PRODUCT THEMES — single entry point
    ============================================================
-   Load AFTER @attrus-ds/core css. Adding a new product = create
-   themes/<id>.css, add one @import line below, and register it
-   in your app's theme switcher. No per-page edits.
+   Pages load THIS file once (after colors_and_type.css). Adding a new
+   product = create themes/<id>.css, add one @import line below, and
+   register it in theme-toggle.js (PRODUCTS) + tools/drift-linter.html
+   (THEME_FILES). No per-page edits.
 
-   Order: each product's [data-product="<id>"] block is self-scoped,
-   so import order doesn't cause conflicts — only the active product's
+   Order: each product's [data-product="<id>"] block is self-scoped, so
+   import order doesn't cause conflicts — only the active product's
    attribute matches. Enterprise is also the :root default; its file
-   exists for explicit/nested scoping (e.g. an Enterprise region
-   embedded inside a Business page).
+   exists for explicit/nested scoping (e.g. the theming.html matrix).
    ============================================================ */
-@import "./enterprise.css";
-@import "./business.css";
+@import url("enterprise.css");
+@import url("business.css");

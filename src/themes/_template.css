@@ -3,14 +3,15 @@
    ============================================================
    A product theme redefines ONLY the theming surface (matiz + shape).
    Everything else — surface ramp, feedback, neutrals, spacing, type,
-   shadows — is inherited from @attrus-ds/core. See the theming docs
-   for the full contract; the drift linter enforces it.
+   shadows — is inherited from colors_and_type.css. See preview/theming.html
+   for the full contract and the live 2×2 matrix; the drift linter enforces it.
 
    ─── To add a new product (≈10 min, 0 components touched) ───
    1. Copy this file to themes/<id>.css and replace every "<id>" + the colors.
-   2. Add the theme to your app's theme switcher.
-   3. Add @import "./themes/<id>.css"; to your entry stylesheet.
-   (No per-page edits — the file loads on all pages. No component edits —
+   2. theme-toggle.js → add { id: '<id>', label: '<Label>' } to PRODUCTS.
+   3. tools/drift-linter.html → add 'themes/<id>.css' to THEME_FILES.
+   4. themes/index.css → add  @import url("<id>.css");
+   (No per-page edits — index.css loads on all 64 pages. No component edits —
     HTML/.tsx/app all consume these tokens.)
 
    ─── Contrast to check (WCAG AA) ───

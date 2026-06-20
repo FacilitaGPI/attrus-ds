@@ -5,7 +5,7 @@
    friendlier than the Enterprise Navy. Redefines ONLY the theming surface
    (matiz); surface ramp, feedback, neutrals, type are inherited.
 
-   Load AFTER @attrus-ds/core css. Inert until <html data-product="business">.
+   Load AFTER colors_and_type.css. Inert until <html data-product="business">.
    Accent stays Sky (shared) for now — Business brand & accent are both blue,
    so they read close; give Business a distinct accent here if needed later.
    ============================================================ */

@@ -3,11 +3,11 @@
    ============================================================
    Globally, selecting Enterprise just clears data-product → :root (identical
    values). This explicit rule exists so NESTED / scoped contexts can force
-   Enterprise over an inherited product — e.g. an Enterprise region embedded
-   in a Business page. Values mirror :root (ATTRUS Navy #002142 via the
-   brand-primary scale).
+   Enterprise over an inherited product — e.g. the 2×2 matrix in theming.html,
+   or an Enterprise region embedded in a Business page. Values mirror :root
+   (ATTRUS Navy #002142 via the brand-primary scale).
 
-   Load AFTER @attrus-ds/core css. Inert until an element carries
+   Load AFTER colors_and_type.css. Inert until an element carries
    data-product="enterprise".
    ============================================================ */
 
