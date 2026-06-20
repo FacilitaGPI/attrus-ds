@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Brand" name="Verbal identity" subtitle="Naming · tagline · hero lines · tone of voice · vocabulary · do/don't" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Verbal identity · ATTRUS Design System</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../themes/index.css?v=1">
+<script src="../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  /* shared doc chrome */
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  /* NAMING — large display of ATTRUS + rules */
+  .naming-display {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-8);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-7);
+    box-shadow: var(--shadow-xs);
+  }
+  @media (max-width: 880px) { .naming-display { grid-template-columns: 1fr; } }
+  .naming-display .word {
+    font-family: var(--font-display);
+    font-size: 96px;
+    font-weight: var(--w-black);
+    letter-spacing: var(--ls-display);
+    line-height: 1;
+    color: var(--color-foreground-default);
+    align-self: center;
+  }
+  .naming-rules { display: flex; flex-direction: column; gap: var(--space-3); }
+  .naming-rule {
+    display: flex; align-items: flex-start; gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-background-canvas);
+    border-radius: var(--radius-sm);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-relaxed);
+  }
+  .naming-rule i, .naming-rule svg { width: 16px; height: 16px; stroke-width: var(--icon-stroke); flex-shrink: 0; margin-top: 2px; }
+  .naming-rule.ok i, .naming-rule.ok svg { color: var(--color-feedback-success-foreground); }
+  .naming-rule.no i, .naming-rule.no svg { color: var(--color-feedback-danger-foreground); }
+  .naming-rule .form {
+    font-family: var(--font-mono); font-weight: var(--w-semibold);
+    color: var(--color-foreground-default); margin-right: var(--space-2);
+  }
+  .naming-rule.no .form { text-decoration: line-through; color: var(--color-foreground-muted); }
+  .naming-rule .desc { color: var(--color-foreground-secondary); }
+
+  /* Meanings */
+  .meanings { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+  @media (max-width: 720px) { .meanings { grid-template-columns: 1fr; } }
+  .meaning-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-6); }
+  .meaning-card .lbl { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+  .meaning-card h3 { font-size: var(--fs-lg); font-weight: var(--w-bold); margin: 0 0 var(--space-2); letter-spacing: var(--ls-title); }
+  .meaning-card p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+
+  /* TAGLINE */
+  .tagline-hero {
+    background: var(--grad-hero);
+    color: var(--color-foreground-inverse-default);
+    padding: var(--space-10) var(--space-8);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    position: relative; overflow: hidden;
+    margin-bottom: var(--space-5);
+    box-shadow: var(--shadow-lg);
+  }
+  .tagline-hero::before { content: ""; position: absolute; inset: 0; background: var(--grad-radial-glow); pointer-events: none; }
+  .tagline-hero > * { position: relative; z-index: 1; }
+  .tagline-hero .eyebrow {
+    font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-inverse-secondary); margin-bottom: var(--space-5);
+  }
+  .tagline-hero h2 {
+    font-family: var(--font-display);
+    font-size: var(--fs-5xl);
+    font-weight: var(--w-bold);
+    letter-spacing: var(--ls-display);
+    line-height: var(--lh-tight);
+    margin: 0;
+    color: var(--color-foreground-inverse-default);
+  }
+
+  .tagline-rules { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+  @media (max-width: 720px) { .tagline-rules { grid-template-columns: 1fr; } }
+  .rule-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .rule-card .head { padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: center; gap: var(--space-2); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .rule-card.do .head { color: var(--color-feedback-success-foreground); background: var(--color-feedback-success-background); }
+  .rule-card.dont .head { color: var(--color-feedback-danger-foreground); background: var(--color-feedback-danger-background); }
+  .rule-card .head i, .rule-card .head svg { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
+  .rule-card .body { padding: var(--space-5); }
+  .rule-card .body ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+  .rule-card .body li { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); padding-left: var(--space-4); position: relative; }
+  .rule-card .body li::before { content: "·"; position: absolute; left: 0; color: var(--color-foreground-muted); font-weight: var(--w-bold); }
+
+  /* HERO LINES */
+  .hero-lines { display: grid; grid-template-columns: 1fr; gap: var(--space-3); margin-bottom: var(--space-5); }
+  .hero-line {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    padding: var(--space-5) var(--space-6);
+    display: flex; align-items: center; gap: var(--space-5);
+    box-shadow: var(--shadow-xs);
+  }
+  .hero-line .num {
+    font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); color: var(--color-foreground-muted);
+    flex-shrink: 0; min-width: 28px;
+  }
+  .hero-line .line {
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    font-weight: var(--w-bold);
+    letter-spacing: var(--ls-title);
+    line-height: var(--lh-snug);
+    color: var(--color-foreground-default);
+  }
+
+  .principles { background: var(--color-background-subtle); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); padding: var(--space-5) var(--space-6); }
+  .principles h3 { font-size: var(--fs-sm); font-weight: var(--w-bold); letter-spacing: var(--ls-title); color: var(--color-foreground-default); margin: 0 0 var(--space-3); }
+  .principles ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+  .principles li { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); padding-left: var(--space-5); position: relative; }
+  .principles li::before { content: "↘"; position: absolute; left: 0; color: var(--color-foreground-accent); font-weight: var(--w-bold); }
+  .principles strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+  .principles code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: var(--color-brand-primary-50); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  /* TONE OF VOICE — 4 personality traits */
+  .tone-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+  .tone-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: var(--space-6);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    padding: var(--space-5) var(--space-6);
+    box-shadow: var(--shadow-xs);
+  }
+  @media (max-width: 880px) { .tone-card { grid-template-columns: 1fr; } }
+  .tone-card .head {
+    border-right: 1px solid var(--color-border-subtle);
+    padding-right: var(--space-5);
+  }
+  @media (max-width: 880px) { .tone-card .head { border-right: none; border-bottom: 1px solid var(--color-border-subtle); padding-right: 0; padding-bottom: var(--space-4); } }
+  .tone-card .ord { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); color: var(--color-foreground-muted); margin-bottom: var(--space-2); }
+  .tone-card h3 { font-size: var(--fs-2xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-3); color: var(--color-foreground-default); }
+  .tone-card .how {
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-muted); margin-bottom: var(--space-3); margin-top: var(--space-3);
+  }
+  .tone-card ul { list-style: none; padding: 0; margin: 0 0 var(--space-3); display: flex; flex-direction: column; gap: 6px; }
+  .tone-card ul li { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); padding-left: var(--space-4); position: relative; }
+  .tone-card ul li::before { content: "—"; position: absolute; left: 0; color: var(--color-foreground-accent); }
+  .tone-card .body .lex-title {
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-muted); margin-bottom: var(--space-2);
+  }
+  .tone-card .lexicon {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    padding-top: var(--space-3);
+    border-top: 1px dashed var(--color-border-subtle);
+  }
+  .lex-chip {
+    display: inline-flex; align-items: center;
+    padding: 3px var(--space-3);
+    background: var(--color-brand-primary-50);
+    color: var(--color-brand-primary-700);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+  }
+
+  /* VOCABULARY */
+  .vocab { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+  @media (max-width: 720px) { .vocab { grid-template-columns: 1fr; } }
+  .vocab-col { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .vocab-col .head {
+    padding: var(--space-4) var(--space-5);
+    display: flex; align-items: center; gap: var(--space-2);
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); text-transform: uppercase;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .vocab-col.adopt .head { color: var(--color-feedback-success-foreground); background: var(--color-feedback-success-background); }
+  .vocab-col.avoid .head { color: var(--color-feedback-danger-foreground); background: var(--color-feedback-danger-background); }
+  .vocab-col .head i, .vocab-col .head svg { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
+  .vocab-col .body { padding: var(--space-5); }
+  .vocab-group { margin-bottom: var(--space-5); }
+  .vocab-group:last-child { margin-bottom: 0; }
+  .vocab-group h4 {
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-muted); margin: 0 0 var(--space-2);
+  }
+  .vocab-words { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .vocab-words .w {
+    display: inline-flex; align-items: center;
+    padding: 4px var(--space-3);
+    background: var(--color-background-subtle);
+    border-radius: var(--radius-sm);
+    font-size: var(--fs-sm); color: var(--color-foreground-default);
+  }
+  .vocab-col.avoid .vocab-words .w {
+    text-decoration: line-through;
+    color: var(--color-foreground-muted);
+  }
+
+  .vocab-why {
+    background: var(--color-background-subtle);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--space-5) var(--space-6);
+    margin-top: var(--space-5);
+    font-size: var(--fs-sm);
+    color: var(--color-foreground-secondary);
+    line-height: var(--lh-relaxed);
+  }
+  .vocab-why strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+
+  /* DO / DONT */
+  .compare-grid { display: grid; gap: var(--space-3); }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+  }
+  @media (max-width: 720px) { .compare-row { grid-template-columns: 1fr; } }
+  .compare-cell {
+    padding: var(--space-5) var(--space-6);
+    display: flex; gap: var(--space-3); align-items: flex-start;
+  }
+  .compare-cell.do { background: var(--color-feedback-success-background); }
+  .compare-cell.dont { background: var(--color-feedback-danger-background); border-left: 1px solid var(--color-border-subtle); }
+  @media (max-width: 720px) { .compare-cell.dont { border-left: none; border-top: 1px solid var(--color-border-subtle); } }
+  .compare-cell i, .compare-cell svg { width: 16px; height: 16px; stroke-width: var(--icon-stroke); flex-shrink: 0; margin-top: 2px; }
+  .compare-cell.do i, .compare-cell.do svg { color: var(--color-feedback-success-foreground); }
+  .compare-cell.dont i, .compare-cell.dont svg { color: var(--color-feedback-danger-foreground); }
+  .compare-cell .body { font-size: var(--fs-sm); line-height: var(--lh-relaxed); color: var(--color-foreground-default); }
+  .compare-cell .lbl { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; opacity: 0.6; margin-bottom: var(--space-2); }
+  .compare-cell.do .lbl { color: var(--color-feedback-success-foreground); opacity: 1; }
+  .compare-cell.dont .lbl { color: var(--color-feedback-danger-foreground); opacity: 1; }
+
+  /* USAGE MODELS */
+  .usage-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-4); }
+  .usage-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .usage-card .lbl { padding: var(--space-3) var(--space-5); background: var(--color-background-subtle); border-bottom: 1px solid var(--color-border-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); display: flex; align-items: center; gap: var(--space-2); }
+  .usage-card .lbl i, .usage-card .lbl svg { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
+  .usage-card .quote { padding: var(--space-5) var(--space-6); font-size: var(--fs-md); color: var(--color-foreground-default); line-height: var(--lh-relaxed); font-style: italic; }
+  .usage-card .tone { padding: 0 var(--space-6) var(--space-5); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-accent); }
+</style>
+</head>
+<body>
+
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<main class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Verbal identity</h1>
+      <p>How ATTRUS sounds. The naming rules, the tagline, the five hero lines, the tone of voice tied to each personality trait, the vocabulary we adopt and the vocabulary we refuse.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="message-square-quote"></i>Foundation</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#naming">01 Naming</a>
+    <a href="#tagline">02 Tagline</a>
+    <a href="#hero-lines">03 Hero lines</a>
+    <a href="#tone">04 Tone of voice</a>
+    <a href="#vocabulary">05 Vocabulary</a>
+    <a href="#compare">06 We say · we don't</a>
+    <a href="#usage">07 Usage models</a>
+  </nav>
+
+  <!-- 01 NAMING -->
+  <section class="doc-section" id="naming">
+    <h2><span class="num">01</span>Naming</h2>
+    <p class="lead">The brand name is <strong>ATTRUS</strong>. Always uppercase. Never abbreviated. Never translated. Three rules that protect the mark from drift in copy, deck slides, contracts and emails.</p>
+
+    <div class="naming-display">
+      <div class="word">ATTRUS</div>
+      <div class="naming-rules">
+        <div class="naming-rule ok">
+          <i data-lucide="check-circle-2"></i>
+          <div><span class="form">ATTRUS</span><span class="desc">— correct form in any context, any language, any surface.</span></div>
+        </div>
+        <div class="naming-rule no">
+          <i data-lucide="x-circle"></i>
+          <div><span class="form">Attrus</span><span class="desc">— never sentence-case.</span></div>
+        </div>
+        <div class="naming-rule no">
+          <i data-lucide="x-circle"></i>
+          <div><span class="form">attrus</span><span class="desc">— never lowercase, even inside URLs or @-handles in body copy.</span></div>
+        </div>
+        <div class="naming-rule no">
+          <i data-lucide="x-circle"></i>
+          <div><span class="form">ATT · ATTR</span><span class="desc">— never abbreviated.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="meanings" style="margin-top: var(--space-7);">
+      <div class="meaning-card">
+        <div class="lbl">Internal meaning</div>
+        <h3>A unified ecosystem of financial services</h3>
+        <p>ATTRUS represents the unique structure that connects markets, currencies and operations in a single platform. Used by team members, partners and regulators who already know the brand.</p>
+      </div>
+      <div class="meaning-card">
+        <div class="lbl">External meaning</div>
+        <h3>Name + descriptive tagline</h3>
+        <p>Externally, the name gains meaning when accompanied by clarity. That is why we always use a descriptive tagline to contextualise who we are and what we deliver — never the name alone in a first-touch surface.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 TAGLINE -->
+  <section class="doc-section" id="tagline">
+    <h2><span class="num">02</span>Tagline</h2>
+    <p class="lead">The institutional endorsement. Appears with the logo on every brand surface that introduces ATTRUS to a new audience.</p>
+
+    <div class="tagline-hero">
+      <div class="eyebrow">Institutional endorsement</div>
+      <h2>Powering the flow of global financial services.</h2>
+    </div>
+
+    <div class="tagline-rules">
+      <div class="rule-card do">
+        <div class="head"><i data-lucide="check-circle-2"></i>When to use</div>
+        <div class="body">
+          <ul>
+            <li>Always accompanying the logo on institutional pieces — covers, email signatures, OOH, decks.</li>
+            <li>Always in English — there is no official Portuguese version.</li>
+            <li>Can appear separated from the logo by a vertical rule when layout requires.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="rule-card dont">
+        <div class="head"><i data-lucide="x-circle"></i>When not to use</div>
+        <div class="body">
+          <ul>
+            <li>On very small pieces where legibility would compromise hierarchy.</li>
+            <li>On low-contrast backgrounds or complex images.</li>
+            <li>Inside body copy as a quoted slogan — the tagline is a brand mark, not a quotable line.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 HERO LINES -->
+  <section class="doc-section" id="hero-lines">
+    <h2><span class="num">03</span>Hero lines</h2>
+    <p class="lead">Five rhythmic phrases that translate the essence of ATTRUS into ready-to-use formats. Pulled into campaign pieces, landing-page heroes, OOH and event materials. <strong>Never paraphrased</strong> — pick one and use it as-is.</p>
+
+    <div class="hero-lines">
+      <div class="hero-line"><span class="num">01</span><span class="line">One system. Built for your flow. Ready for every market.</span></div>
+      <div class="hero-line"><span class="num">02</span><span class="line">Unified structure. Local precision. Global confidence.</span></div>
+      <div class="hero-line"><span class="num">03</span><span class="line">Everything connected. Everything aligned. Everything simplified.</span></div>
+      <div class="hero-line"><span class="num">04</span><span class="line">Unified. Reliable. Adaptive.</span></div>
+      <div class="hero-line"><span class="num">05</span><span class="line">We structure the complexity. You focus on what moves your business.</span></div>
+    </div>
+
+    <div class="principles">
+      <h3>Principles for creating new hero lines</h3>
+      <ul>
+        <li><strong>Always in English.</strong> No Portuguese versions ship.</li>
+        <li><strong>Short.</strong> Up to 8 words per sentence; rhythm matters more than density.</li>
+        <li><strong>Reading rhythm.</strong> Short sentences, pauses marked by full stops, never by em-dashes.</li>
+        <li><strong>Action or state verbs.</strong> <code>operate</code> · <code>power</code> · <code>connect</code> · <code>structure</code> · <code>scale</code> · <code>route</code>.</li>
+        <li><strong>Avoid empty adjectives.</strong> <code>incredible</code> · <code>revolutionary</code> · <code>unique</code> — banned.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 04 TONE OF VOICE -->
+  <section class="doc-section" id="tone">
+    <h2><span class="num">04</span>Tone of voice</h2>
+    <p class="lead">Close, institutional, technical, confident, consistent, direct. Each trait of the brand <a href="brand-story.html#personality" style="color: var(--color-foreground-accent);">personality</a> translates into a concrete language guideline.</p>
+
+    <div class="tone-grid">
+      <div class="tone-card">
+        <div class="head">
+          <div class="ord">01</div>
+          <h3>Approachable</h3>
+          <div class="how">How it becomes language</div>
+          <ul>
+            <li>Proximity pronouns (we · you · your company · your business).</li>
+            <li>Phrases with natural rhythm, as if in conversation.</li>
+            <li>Avoid robotic or generic tone.</li>
+          </ul>
+        </div>
+        <div class="body">
+          <div class="lex-title">Lexicon</div>
+          <div class="lexicon">
+            <span class="lex-chip">side by side</span>
+            <span class="lex-chip">next to</span>
+            <span class="lex-chip">alongside</span>
+            <span class="lex-chip">as one</span>
+            <span class="lex-chip">on the same page</span>
+            <span class="lex-chip">in sync</span>
+            <span class="lex-chip">feel free to</span>
+            <span class="lex-chip">join us</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tone-card">
+        <div class="head">
+          <div class="ord">02</div>
+          <h3>Reliable</h3>
+          <div class="how">How it becomes language</div>
+          <ul>
+            <li>Structural metaphors (bridge · foundation · direction).</li>
+            <li>Avoid exaggerations and superlatives.</li>
+            <li>Convey a sense of direction — every sentence points somewhere.</li>
+          </ul>
+        </div>
+        <div class="body">
+          <div class="lex-title">Lexicon</div>
+          <div class="lexicon">
+            <span class="lex-chip">pillar</span>
+            <span class="lex-chip">backbone</span>
+            <span class="lex-chip">pathway</span>
+            <span class="lex-chip">track</span>
+            <span class="lex-chip">foundation</span>
+            <span class="lex-chip">keystone</span>
+            <span class="lex-chip">bridge</span>
+            <span class="lex-chip">compass</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tone-card">
+        <div class="head">
+          <div class="ord">03</div>
+          <h3>Adaptable</h3>
+          <div class="how">How it becomes language</div>
+          <ul>
+            <li>Show understanding of different contexts.</li>
+            <li>Use analogies — make a complex flow legible.</li>
+            <li>Allow room for format variation across markets and audiences.</li>
+          </ul>
+        </div>
+        <div class="body">
+          <div class="lex-title">Lexicon</div>
+          <div class="lexicon">
+            <span class="lex-chip">tailor</span>
+            <span class="lex-chip">tune</span>
+            <span class="lex-chip">adjust</span>
+            <span class="lex-chip">configure</span>
+            <span class="lex-chip">meet you where you are</span>
+            <span class="lex-chip">fit</span>
+            <span class="lex-chip">map to</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tone-card">
+        <div class="head">
+          <div class="ord">04</div>
+          <h3>Simplifying</h3>
+          <div class="how">How it becomes language</div>
+          <ul>
+            <li>Objective sentences — one main idea per sentence.</li>
+            <li>Structures that guide reading and decision.</li>
+            <li>Eliminate redundancy and excess words.</li>
+            <li>Firm cadence — no excess connectives.</li>
+          </ul>
+        </div>
+        <div class="body">
+          <div class="lex-title">Lexicon</div>
+          <div class="lexicon">
+            <span class="lex-chip">structure</span>
+            <span class="lex-chip">route</span>
+            <span class="lex-chip">flow</span>
+            <span class="lex-chip">engine</span>
+            <span class="lex-chip">control</span>
+            <span class="lex-chip">orchestrate</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 VOCABULARY -->
+  <section class="doc-section" id="vocabulary">
+    <h2><span class="num">05</span>Vocabulary</h2>
+    <p class="lead">Two sets of words. The first set we keep close. The second set we refuse — even when the rest of the industry uses them.</p>
+
+    <div class="vocab">
+      <div class="vocab-col adopt">
+        <div class="head"><i data-lucide="check-circle-2"></i>Words we adopt</div>
+        <div class="body">
+          <div class="vocab-group">
+            <h4>Structure</h4>
+            <div class="vocab-words">
+              <span class="w">pillar</span><span class="w">backbone</span><span class="w">foundation</span>
+              <span class="w">bridge</span><span class="w">compass</span><span class="w">pathway</span>
+              <span class="w">keystone</span>
+            </div>
+          </div>
+          <div class="vocab-group">
+            <h4>Flow &amp; operations</h4>
+            <div class="vocab-words">
+              <span class="w">flow</span><span class="w">route</span><span class="w">structure</span>
+              <span class="w">engine</span><span class="w">orchestrate</span><span class="w">control</span>
+              <span class="w">settlement</span><span class="w">FX</span><span class="w">scale</span>
+              <span class="w">infraestrutura</span><span class="w">plataforma</span><span class="w">transações</span>
+              <span class="w">conformidade</span><span class="w">previsível</span><span class="w">auditável</span>
+            </div>
+          </div>
+          <div class="vocab-group">
+            <h4>Closeness</h4>
+            <div class="vocab-words">
+              <span class="w">side by side</span><span class="w">alongside</span><span class="w">in sync</span>
+              <span class="w">on the same page</span><span class="w">as one</span><span class="w">next to</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vocab-col avoid">
+        <div class="head"><i data-lucide="x-circle"></i>Words we avoid</div>
+        <div class="body">
+          <div class="vocab-group">
+            <h4>Empty superlatives</h4>
+            <div class="vocab-words">
+              <span class="w">revolucionário</span><span class="w">world-class</span>
+              <span class="w">best-in-class</span><span class="w">cutting-edge</span>
+              <span class="w">game-changer</span><span class="w">next-gen</span>
+              <span class="w">líder absoluto</span><span class="w">solução completa</span>
+            </div>
+          </div>
+          <div class="vocab-group">
+            <h4>Sentimental clichés</h4>
+            <div class="vocab-words">
+              <span class="w">jornada</span><span class="w">família</span><span class="w">sonho</span>
+              <span class="w">transformar o mundo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vocab-why">
+      <strong>Why these rules?</strong> Our audience is technical and institutional. Inflated words undermine credibility. We prefer a concrete verb over an empty adjective, and a structural metaphor over a superlative.
+    </div>
+  </section>
+
+  <!-- 06 COMPARE -->
+  <section class="doc-section" id="compare">
+    <h2><span class="num">06</span>We say · We don't</h2>
+    <p class="lead">Eight side-by-side examples. Use them as a calibration set — if your copy reads like the right column, rewrite.</p>
+
+    <div class="compare-grid">
+      <div class="compare-row">
+        <div class="compare-cell do">
+          <i data-lucide="check-circle-2"></i>
+          <div class="body">
+            <div class="lbl">We say</div>
+            "We're here to make your global payments simple. That's it."
+          </div>
+        </div>
+        <div class="compare-cell dont">
+          <i data-lucide="x-circle"></i>
+          <div class="body">
+            <div class="lbl">We don't</div>
+            "We provide cutting-edge solutions for your payment needs."
+          </div>
+        </div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-cell do">
+          <i data-lucide="check-circle-2"></i>
+          <div class="body">
+            <div class="lbl">We say</div>
+            "Your business goal is our goal."
+          </div>
+        </div>
+        <div class="compare-cell dont">
+          <i data-lucide="x-circle"></i>
+          <div class="body">
+            <div class="lbl">We don't</div>
+            "We are committed to exceeding your expectations."
+          </div>
+        </div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-cell do">
+          <i data-lucide="check-circle-2"></i>
+          <div class="body">
+            <div class="lbl">We say</div>
+            "Trust isn't a feature. It's our backbone."
+          </div>
+        </div>
+        <div class="compare-cell dont">
+          <i data-lucide="x-circle"></i>
+          <div class="body">
+            <div class="lbl">We don't</div>
+            "We are the most reliable platform in the market."
+          </div>
+        </div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-cell do">
+          <i data-lucide="check-circle-2"></i>
+          <div class="body">
+            <div class="lbl">We say</div>
+            "One solution. Every destination."
+          </div>
+        </div>
+        <div class="compare-cell dont">
+          <i data-lucide="x-circle"></i>
+          <div class="body">
+            <div class="lbl">We don't</div>
+            "The ultimate end-to-end global solution."
+          </div>
+        </div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-cell do">
+          <i data-lucide="check-circle-2"></i>
+          <div class="body">
+            <div class="lbl">We say</div>
+            "We structure your global payments into one clear flow. No friction. Full control."
+          </div>
+        </div>
+        <div class="compare-cell dont">
+          <i data-lucide="x-circle"></i>
+          <div class="body">
+            <div class="lbl">We don't</div>
+            "We revolutionize how the world pays."
+          </div>
+        </div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-cell do">
+          <i data-lucide="check-circle-2"></i>
+          <div class="body">
+            <div class="lbl">We say</div>
+            "Multiple markets. One operation."
+          </div>
+        </div>
+        <div class="compare-cell dont">
+          <i data-lucide="x-circle"></i>
+          <div class="body">
+            <div class="lbl">We don't</div>
+            "A best-in-class, world-class payment ecosystem."
+          </div>
+        </div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-cell do">
+          <i data-lucide="check-circle-2"></i>
+          <div class="body">
+            <div class="lbl">We say</div>
+            "Less fragmentation. More control."
+          </div>
+        </div>
+        <div class="compare-cell dont">
+          <i data-lucide="x-circle"></i>
+          <div class="body">
+            <div class="lbl">We don't</div>
+            "Innovative, disruptive, transformative."
+          </div>
+        </div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-cell do">
+          <i data-lucide="check-circle-2"></i>
+          <div class="body">
+            <div class="lbl">We say</div>
+            "Built to route. Designed to scale."
+          </div>
+        </div>
+        <div class="compare-cell dont">
+          <i data-lucide="x-circle"></i>
+          <div class="body">
+            <div class="lbl">We don't</div>
+            "Join our journey of transformation."
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 USAGE -->
+  <section class="doc-section" id="usage">
+    <h2><span class="num">07</span>Usage models</h2>
+    <p class="lead">The same voice, four surfaces. Each one shifts the trait weighting (Approachable, Reliable, Adaptable, Simplifying) by context — but never sounds like a different brand.</p>
+
+    <div class="usage-grid">
+      <div class="usage-card">
+        <div class="lbl"><i data-lucide="linkedin"></i>LinkedIn · institutional</div>
+        <div class="quote">"Good results are always rewarding, but more than that, they are a sign that we are on the right track. Every metric we share today is a direct consequence of a conviction we have held since day one: global financial infrastructure should work for any company, regardless of where it operates or where its clients are."</div>
+        <div class="tone">Reliable + Simplifying</div>
+      </div>
+
+      <div class="usage-card">
+        <div class="lbl"><i data-lucide="users"></i>LinkedIn · recruitment</div>
+        <div class="quote">"ATTRUS is growing fast, and to keep pace we're opening new positions on the commercial team. If you thrive in a hands-on environment, a close-knit team and real room to build, this might be the right place."</div>
+        <div class="tone">Approachable</div>
+      </div>
+
+      <div class="usage-card">
+        <div class="lbl"><i data-lucide="globe"></i>Website hero</div>
+        <div class="quote">"We structure your global payments into one clear flow. No friction. Full control."</div>
+        <div class="tone">Simplifying</div>
+      </div>
+
+      <div class="usage-card">
+        <div class="lbl"><i data-lucide="megaphone"></i>OOH · billboard</div>
+        <div class="quote">"Everything connected. Everything aligned. Everything simplified."</div>
+        <div class="tone">Reliable + Simplifying</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>if (window.lucide) lucide.createIcons();</script>
+
+</body>
+</html>

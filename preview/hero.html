@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Hero" subtitle="Spec doc — anatomy, 3 variants (dashboard/subtle/marketing), KPI tiles, 3 sizes, in-context, a11y, don'ts, tokens" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hero · ATTRUS Design System</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../themes/index.css?v=1">
+<script src="../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body {
+    margin: 0;
+    background: var(--color-background-canvas);
+    color: var(--color-foreground-default);
+    font-family: var(--font-sans);
+    font-size: var(--fs-base);
+    line-height: var(--lh-normal);
+  }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  /* header */
+  .doc-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: var(--space-8);
+    padding-bottom: var(--space-7);
+    border-bottom: 1px solid var(--color-border-default);
+    margin-bottom: var(--space-10);
+  }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta-pill {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-feedback-success-background);
+    color: var(--color-feedback-success-foreground);
+    border: 1px solid var(--color-feedback-success-border);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+  }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  /* nav */
+  .doc-nav {
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-10);
+    box-shadow: var(--shadow-xs);
+  }
+  .doc-nav a {
+    padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill);
+    color: var(--color-foreground-secondary); text-decoration: none;
+    font-size: var(--fs-sm); font-weight: var(--w-semibold);
+    transition: var(--transition-fast);
+  }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  /* sections */
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  /* spec card */
+  .spec {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: var(--space-6);
+    box-shadow: var(--shadow-xs);
+  }
+  .spec-head {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: var(--space-6);
+    padding: var(--space-5) var(--space-6);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code {
+    font-family: var(--font-mono); font-size: var(--fs-md);
+    font-weight: var(--w-medium); color: var(--color-foreground-accent);
+    background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px;
+  }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .spec-tag {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0;
+  }
+  .spec-canvas {
+    padding: var(--space-7) var(--space-6);
+    background: var(--color-background-subtle);
+  }
+
+  /* anatomy */
+  .anatomy {
+    display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--space-8);
+    align-items: stretch; padding: var(--space-8);
+    background: var(--color-background-canvas);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-8);
+  }
+  @media (max-width: 880px) { .anatomy { grid-template-columns: 1fr; } }
+  .anatomy-canvas { display: flex; align-items: center; justify-content: center; min-height: 320px; }
+  .anatomy-list ol { padding-left: 0; margin: 0; counter-reset: anat; list-style: none; }
+  .anatomy-list li {
+    counter-increment: anat;
+    margin-bottom: var(--space-3);
+    padding-left: var(--space-7); position: relative;
+    color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);
+    font-size: var(--fs-sm);
+  }
+  .anatomy-list li::before {
+    content: counter(anat); position: absolute; left: 0; top: 1px;
+    width: 18px; height: 18px;
+    background: var(--color-foreground-default); color: var(--color-foreground-on-solid);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
+  .anatomy-list li code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  /* ──────────────────────── HERO COMPONENT ──────────────────────── */
+  .hero-base {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    padding: var(--space-8) var(--space-9);
+    color: var(--color-foreground-inverse-default);
+    background: var(--grad-hero);
+    box-shadow: var(--shadow-lg);
+  }
+  .hero-base::before {
+    content: ""; position: absolute; inset: 0;
+    background: var(--grad-radial-glow);
+    pointer-events: none;
+  }
+  .hero-base > * { position: relative; z-index: 1; }
+  .hero-eyebrow {
+    font-size: var(--fs-xs); font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-inverse-secondary);
+    margin: 0 0 var(--space-2);
+    display: inline-flex; align-items: center; gap: var(--space-2);
+  }
+  .hero-eyebrow .pill {
+    background: var(--color-overlay-white-14);
+    border: 1px solid var(--color-overlay-white-18);
+    border-radius: var(--radius-pill);
+    padding: 2px var(--space-2);
+    font-size: var(--fs-xxs);
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--fs-7xl);
+    font-weight: var(--w-black);
+    letter-spacing: var(--ls-display);
+    line-height: var(--lh-tight);
+    margin: 0 0 var(--space-3);
+  }
+  .hero-title em { font-style: normal; color: var(--color-brand-secondary-200); }
+  .hero-sub {
+    font-size: var(--fs-md);
+    color: var(--color-foreground-inverse-secondary);
+    line-height: var(--lh-relaxed);
+    margin: 0;
+    max-width: 56ch;
+  }
+  .hero-actions {
+    display: inline-flex; gap: var(--space-3); flex-wrap: wrap;
+    margin-top: var(--space-5);
+  }
+  .hero-btn {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    height: 40px; padding: 0 var(--space-5);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans); font-weight: var(--w-semibold); font-size: var(--fs-sm);
+    border: 1px solid transparent; cursor: pointer; text-decoration: none;
+    transition: var(--transition-fast);
+  }
+  .hero-btn-primary { background: var(--color-pure-white); color: var(--color-brand-secondary-700); /* fixed dark — white button on dark hero in BOTH themes */ }
+  .hero-btn-primary:hover { background: var(--color-brand-secondary-50); }
+  .hero-btn-ghost {
+    background: var(--color-overlay-white-08);
+    color: var(--color-foreground-inverse-default);
+    border-color: var(--color-overlay-white-22);
+  }
+  .hero-btn-ghost:hover { background: var(--color-overlay-white-16); }
+  .hero-btn i, .hero-btn svg { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
+
+  /* Dashboard tiles row */
+  .hero-tiles {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+  @media (max-width: 880px) { .hero-tiles { grid-template-columns: repeat(2, 1fr); } }
+  .hero-tile {
+    background: var(--color-overlay-white-08);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    border: 1px solid var(--color-overlay-white-12);
+    border-radius: var(--radius-sm);
+    padding: var(--space-3) var(--space-4);
+  }
+  .hero-tile .k {
+    display: flex; align-items: center; gap: var(--space-2);
+    font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-inverse-secondary);
+  }
+  .hero-tile .v {
+    font-family: var(--font-sans); font-weight: var(--w-bold); font-size: var(--fs-lg);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-foreground-inverse-default);
+    margin-top: var(--space-1);
+    letter-spacing: var(--ls-title);
+  }
+  .hero-tile .d {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    color: var(--color-foreground-inverse-muted);
+    margin-top: 2px; display: flex; align-items: center; gap: 4px;
+  }
+  .hero-tile .d.up { color: var(--color-feedback-success-foreground-on-inverse); }
+  .hero-tile .d.down { color: var(--color-feedback-danger-foreground-on-inverse); }
+  .hero-tile .d svg, .hero-tile .d i { width: 11px; height: 11px; stroke-width: 2.4; }
+
+  /* Subtle variant — light surface */
+  .hero-base.is-subtle {
+    background: var(--color-background-subtle);
+    color: var(--color-foreground-default);
+    box-shadow: var(--shadow-xs);
+    border: 1px solid var(--color-border-default);
+  }
+  .hero-base.is-subtle::before { display: none; }
+  .hero-base.is-subtle .hero-eyebrow { color: var(--color-foreground-muted); }
+  .hero-base.is-subtle .hero-eyebrow .pill { background: var(--color-background-surface); border-color: var(--color-border-default); color: var(--color-foreground-secondary); }
+  .hero-base.is-subtle .hero-title { color: var(--color-foreground-default); }
+  .hero-base.is-subtle .hero-title em { color: var(--color-foreground-accent); }
+  .hero-base.is-subtle .hero-sub { color: var(--color-foreground-secondary); }
+  .hero-base.is-subtle .hero-btn-primary { background: var(--color-brand-secondary-500); color: var(--color-foreground-on-solid); }
+  .hero-base.is-subtle .hero-btn-primary:hover { background: var(--color-brand-secondary-600); }
+  .hero-base.is-subtle .hero-btn-ghost { background: transparent; border-color: var(--color-border-default); color: var(--color-foreground-secondary); }
+  .hero-base.is-subtle .hero-btn-ghost:hover { background: var(--color-background-hover); }
+
+  /* Marketing variant — full-bleed image + headline */
+  .hero-base.is-marketing { padding: var(--space-12) var(--space-12); }
+  .hero-base.is-marketing .hero-title { font-size: var(--fs-8xl); max-width: 14ch; }
+
+  /* Compact variant */
+  .hero-base.is-compact { padding: var(--space-6) var(--space-7); }
+  .hero-base.is-compact .hero-title { font-size: var(--fs-5xl); }
+  .hero-base.is-compact .hero-sub { font-size: var(--fs-sm); }
+
+  /* Anatomy labels */
+  .anatomy-canvas .hero-base {
+    width: 100%;
+    padding: var(--space-7) var(--space-7);
+  }
+
+  /* size matrix */
+  .sizes-grid {
+    display: grid; grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  /* In-context */
+  .ctx-frame {
+    background: var(--color-background-canvas);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    box-shadow: var(--shadow-xs);
+  }
+  .ctx-toolbar {
+    display: flex; align-items: center; gap: var(--space-3);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+    margin-bottom: var(--space-5);
+    font-size: var(--fs-xs); color: var(--color-foreground-muted);
+  }
+  .ctx-toolbar .dot { width: 8px; height: 8px; border-radius: var(--radius-pill); background: var(--color-border-default); }
+  .ctx-toolbar .breadcrumb { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .ctx-toolbar .breadcrumb i, .ctx-toolbar .breadcrumb svg { width: 12px; height: 12px; stroke-width: var(--icon-stroke); }
+
+  /* token table */
+  .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .token-table tr:last-child td { border-bottom: 0; }
+  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  /* don'ts */
+  .dont-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-4); }
+  .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .dont-canvas { padding: var(--space-5); background: var(--color-background-subtle); border-bottom: 1px solid var(--color-border-subtle); display: flex; justify-content: center; align-items: center; min-height: 160px; }
+  .dont-body { padding: var(--space-4) var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
+  .dont-body i, .dont-body svg { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .dont-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+</style>
+</head>
+<body>
+
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<main class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Hero</h1>
+      <p>The top-of-page focal element. Sets the identity of a screen — greets the user, announces the page, or anchors a marketing surface — with a brand-tinted backdrop, a confident headline and one or two clear actions.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Ready</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#anatomy">01 Anatomy</a>
+    <a href="#variants">02 Variants</a>
+    <a href="#tiles">03 With KPI tiles</a>
+    <a href="#sizes">04 Sizes</a>
+    <a href="#context">05 In context</a>
+    <a href="#a11y">06 Accessibility</a>
+    <a href="#donts">07 Don'ts</a>
+    <a href="#tokens">08 Tokens</a>
+  </nav>
+
+  <!-- 01 ANATOMY -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">01</span>Anatomy</h2>
+    <p class="lead">Six pieces stacked top-to-bottom. <strong>Eyebrow → title → sub → actions</strong> is the canonical order; tiles are optional and sit below.</p>
+
+    <div class="anatomy">
+      <div class="anatomy-canvas">
+        <div class="hero-base">
+          <div class="hero-eyebrow">
+            <span>ATTRUS</span>
+            <span class="pill">v0.2</span>
+          </div>
+          <h1 class="hero-title">Hi, <em>John</em></h1>
+          <p class="hero-sub">Pending transactions · 2 · Wires expiring · 3</p>
+          <div class="hero-actions">
+            <a class="hero-btn hero-btn-primary">New transaction <i data-lucide="arrow-right"></i></a>
+            <a class="hero-btn hero-btn-ghost">View activity</a>
+          </div>
+        </div>
+      </div>
+      <div class="anatomy-list">
+        <ol>
+          <li><strong>Backdrop</strong> A gradient (<code>--grad-hero</code>) plus a radial glow (<code>--grad-radial-glow</code>) for atmospheric depth. Never a solid colour — the depth is the point.</li>
+          <li><strong>Eyebrow</strong> Mono caps, <code>--fs-xs</code>, brand-muted. Sets context: company, breadcrumb, or release tag. Optional pill slot for status (v0.2, beta).</li>
+          <li><strong>Title</strong> Display weight (<code>--w-black</code>) at <code>--fs-7xl</code> with <code>--ls-display</code>. The largest type on the screen. <em>One accent word</em> may use <code>--color-brand-secondary-200</code> for emphasis.</li>
+          <li><strong>Subtitle</strong> Plain body at <code>--fs-md</code>. Tells the user what the screen is or what is happening. Max ~56ch line length so multi-line stays readable.</li>
+          <li><strong>Actions</strong> One <em>primary</em> filled button (white pill on dark hero) and at most one <em>ghost</em> button. Never three. Skip both when the hero is decorative only.</li>
+          <li><strong>Optional KPI tiles</strong> A glass row below the actions — see <a href="#tiles">§03</a>. Use only on dashboard heroes.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 VARIANTS -->
+  <section class="doc-section" id="variants">
+    <h2><span class="num">02</span>Variants</h2>
+    <p class="lead">Three styles for three contexts. Pick by where the hero lives — never mix on the same screen.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Dashboard hero <code>.hero</code></h3>
+          <p>The default. Greets the user inside the app — brand-gradient background, radial glow, inverse text. Sits at the top of authenticated routes like <em>Home</em>, <em>Counterparties</em>, <em>Receivables</em>.</p>
+        </div>
+        <span class="spec-tag">default</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="hero-base">
+          <div class="hero-eyebrow"><span>ATTRUS · Home</span></div>
+          <h1 class="hero-title">Welcome back, <em>Maria</em></h1>
+          <p class="hero-sub">You have 3 wires awaiting authorisation and 12 receivables expiring in the next 7 days.</p>
+          <div class="hero-actions">
+            <a class="hero-btn hero-btn-primary">Authorise wires <i data-lucide="arrow-right"></i></a>
+            <a class="hero-btn hero-btn-ghost">View receivables</a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Subtle hero <code>.hero.is-subtle</code></h3>
+          <p>A quieter variant for secondary screens (Settings, Documentation, profile). Light surface, no gradient — the hero still announces the page but gets out of the way.</p>
+        </div>
+        <span class="spec-tag">secondary</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="hero-base is-subtle">
+          <div class="hero-eyebrow"><span>Settings · Workspace</span></div>
+          <h1 class="hero-title">Workspace <em>preferences</em></h1>
+          <p class="hero-sub">Manage how this workspace handles authorisation rules, default currencies and beneficiary approvals.</p>
+          <div class="hero-actions">
+            <a class="hero-btn hero-btn-primary">Save changes</a>
+            <a class="hero-btn hero-btn-ghost">Reset to defaults</a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Marketing hero <code>.hero.is-marketing</code></h3>
+          <p>Larger padding, larger title, longer dwell. For unauthenticated marketing surfaces — landing pages, sign-up flows, campaign micro-sites. Keeps the same gradient identity.</p>
+        </div>
+        <span class="spec-tag">unauthenticated</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="hero-base is-marketing">
+          <div class="hero-eyebrow"><span>ATTRUS Platform</span></div>
+          <h1 class="hero-title">Powering the <em>flow</em> of global financial services.</h1>
+          <p class="hero-sub">Move money across LatAm and the US — one platform, one operations console, one set of compliance rails.</p>
+          <div class="hero-actions">
+            <a class="hero-btn hero-btn-primary">Open an account <i data-lucide="arrow-right"></i></a>
+            <a class="hero-btn hero-btn-ghost">Talk to sales</a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 03 WITH TILES -->
+  <section class="doc-section" id="tiles">
+    <h2><span class="num">03</span>With KPI tiles</h2>
+    <p class="lead">Optional glass row below the actions. Each tile shows one number — never narrative copy. Max four tiles; on mobile they wrap to two columns.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Dashboard hero + 4 KPIs</h3>
+          <p>Used on the Home route. Pair currency code + flag + balance + day delta. Glass background (<code>--color-overlay-white-08</code> + blur 6px) so tiles read as floating chips, not solid surfaces.</p>
+        </div>
+        <span class="spec-tag">home</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="hero-base">
+          <div class="hero-eyebrow"><span>Account · Acme S.A.</span></div>
+          <h1 class="hero-title">Hi, <em>John</em></h1>
+          <p class="hero-sub">All-time balance across linked accounts</p>
+          <div class="hero-tiles">
+            <div class="hero-tile">
+              <div class="k">🇺🇸 USD</div>
+              <div class="v">12,400.00</div>
+              <div class="d up"><i data-lucide="arrow-up-right"></i>+2.4% today</div>
+            </div>
+            <div class="hero-tile">
+              <div class="k">🇪🇺 EUR</div>
+              <div class="v">8,210.55</div>
+              <div class="d up"><i data-lucide="arrow-up-right"></i>+0.8% today</div>
+            </div>
+            <div class="hero-tile">
+              <div class="k">🇲🇽 MXN</div>
+              <div class="v">204,840.00</div>
+              <div class="d down"><i data-lucide="arrow-down-right"></i>−0.3% today</div>
+            </div>
+            <div class="hero-tile">
+              <div class="k">🇨🇴 COP</div>
+              <div class="v">3,120,500</div>
+              <div class="d">stable</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 04 SIZES -->
+  <section class="doc-section" id="sizes">
+    <h2><span class="num">04</span>Sizes</h2>
+    <p class="lead">Three padding presets. Same component, three densities. Use the smallest variant that doesn't crush the title.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Compact <code>.is-compact</code></h3>
+          <p>For pages where the hero is decorative and the content below carries the weight (Transaction detail, Counterparty profile).</p>
+        </div>
+        <span class="spec-tag">160-200px</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="hero-base is-compact">
+          <div class="hero-eyebrow"><span>Transaction · TX-9821</span></div>
+          <h1 class="hero-title">Wire to <em>Banco Itaú</em></h1>
+          <p class="hero-sub">USD 12,400.00 · approved 2 minutes ago</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Default <code>.hero</code></h3>
+          <p>The everyday hero. Most app routes use this padding scale. <code>--space-8</code> vertical, <code>--space-9</code> horizontal.</p>
+        </div>
+        <span class="spec-tag">240-280px</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="hero-base">
+          <div class="hero-eyebrow"><span>Receivables · 30 days</span></div>
+          <h1 class="hero-title">Expected <em>USD 84,200</em></h1>
+          <p class="hero-sub">17 wires expected, 3 expiring in the next 48 hours.</p>
+          <div class="hero-actions">
+            <a class="hero-btn hero-btn-primary">View calendar</a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Marketing <code>.is-marketing</code></h3>
+          <p>Maximum padding (<code>--space-12</code>) and the largest title (<code>--fs-8xl</code>). Reserve for landing pages and pre-auth surfaces.</p>
+        </div>
+        <span class="spec-tag">320-400px</span>
+      </header>
+      <div class="spec-canvas">
+        <div class="hero-base is-marketing">
+          <div class="hero-eyebrow"><span>ATTRUS Platform</span></div>
+          <h1 class="hero-title">Cross-border payments, <em>simplified</em>.</h1>
+          <p class="hero-sub">One operations console for treasury, compliance and payments — across LatAm and the US.</p>
+          <div class="hero-actions">
+            <a class="hero-btn hero-btn-primary">Get started <i data-lucide="arrow-right"></i></a>
+            <a class="hero-btn hero-btn-ghost">Read the docs</a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 05 IN CONTEXT -->
+  <section class="doc-section" id="context">
+    <h2><span class="num">05</span>In context</h2>
+    <p class="lead">A hero never floats — it always sits at the top of a content column, immediately above the page's data.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Home route</h3>
+          <p>App shell · sidebar · content column. Hero is the first child of the content column with no extra spacing above; the next block (recent activity table) sits <code>--space-7</code> below.</p>
+        </div>
+      </header>
+      <div class="spec-canvas">
+        <div class="ctx-frame">
+          <div class="ctx-toolbar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="breadcrumb"><i data-lucide="home"></i> Home</span>
+          </div>
+          <div class="hero-base">
+            <div class="hero-eyebrow"><span>ATTRUS · Home</span></div>
+            <h1 class="hero-title">Hi, <em>Maria</em></h1>
+            <p class="hero-sub">You have 3 wires awaiting authorisation today.</p>
+            <div class="hero-actions">
+              <a class="hero-btn hero-btn-primary">Authorise <i data-lucide="arrow-right"></i></a>
+              <a class="hero-btn hero-btn-ghost">View activity</a>
+            </div>
+            <div class="hero-tiles">
+              <div class="hero-tile"><div class="k">🇺🇸 USD</div><div class="v">12,400.00</div><div class="d up"><i data-lucide="arrow-up-right"></i>+2.4%</div></div>
+              <div class="hero-tile"><div class="k">🇪🇺 EUR</div><div class="v">8,210.55</div><div class="d up"><i data-lucide="arrow-up-right"></i>+0.8%</div></div>
+              <div class="hero-tile"><div class="k">🇲🇽 MXN</div><div class="v">204,840.00</div><div class="d down"><i data-lucide="arrow-down-right"></i>−0.3%</div></div>
+              <div class="hero-tile"><div class="k">🇨🇴 COP</div><div class="v">3,120,500</div><div class="d">stable</div></div>
+            </div>
+          </div>
+          <div style="margin-top: var(--space-5); padding: var(--space-5); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); display: flex; align-items: center; gap: var(--space-3); font-size: var(--fs-sm); color: var(--color-foreground-muted);">
+            <i data-lucide="activity" style="width: 16px; height: 16px; color: var(--color-foreground-secondary);"></i>
+            <span><strong style="color: var(--color-foreground-default); font-weight: var(--w-semibold);">Recent activity</strong> · 12 transactions this week</span>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 06 A11Y -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">06</span>Accessibility</h2>
+    <p class="lead">Heroes are decorative chrome but they also carry the page's primary heading. Treat them as semantic landmarks, not just visual flourishes.</p>
+
+    <table class="token-table">
+      <thead>
+        <tr><th>Concern</th><th>Rule</th><th>Why</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Heading level</td>
+          <td>The hero title must be the route's <code>&lt;h1&gt;</code>. Eyebrow is plain text (not a heading).</td>
+          <td>Screen readers announce the page name from <code>&lt;h1&gt;</code> — keeping the eyebrow as a styled <code>&lt;div&gt;</code> avoids polluting the document outline.</td>
+        </tr>
+        <tr>
+          <td>Contrast</td>
+          <td>Title and sub use inverse-default and inverse-secondary tokens. Both pass AA against <code>--grad-hero</code> (tested at <code>--color-brand-secondary-900</code> baseline).</td>
+          <td>The radial glow doesn't change the worst-case contrast — the bottom-right corner stays dark enough.</td>
+        </tr>
+        <tr>
+          <td>Action targets</td>
+          <td>Buttons are 40px tall, minimum 88px wide. <code>--shadow-focus</code> on <code>:focus-visible</code>.</td>
+          <td>Meets WCAG 2.5.5 (target size). Ghost button keeps the white border at 22% opacity so the focus ring is visible.</td>
+        </tr>
+        <tr>
+          <td>Tiles</td>
+          <td>Each tile gets <code>role="group"</code> with an aria-label describing the currency + amount + delta.</td>
+          <td>The currency flag emoji is decorative; without aria-label, screen readers may skip the numeric value or read raw glyphs.</td>
+        </tr>
+        <tr>
+          <td>Backdrop motion</td>
+          <td>No animation. The radial glow is static.</td>
+          <td>Reduces visual noise and avoids <code>prefers-reduced-motion</code> friction.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 07 DON'TS -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">07</span>Don'ts</h2>
+    <p class="lead">Five anti-patterns. All five appear in product designs from time to time. None of them belong in ATTRUS.</p>
+
+    <div class="dont-grid">
+      <div class="dont-card">
+        <div class="dont-canvas">
+          <div class="hero-base is-compact" style="background: var(--color-pure-black); width: 100%;">
+            <div class="hero-eyebrow"><span>Pure black</span></div>
+            <h1 class="hero-title" style="font-size: var(--fs-3xl);">No gradient, no glow</h1>
+          </div>
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't use a flat colour.</strong> The hero gets its identity from <code>--grad-hero</code> + <code>--grad-radial-glow</code>. Without depth, it reads as a banner ad, not a hero.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas">
+          <div class="hero-base is-compact" style="width: 100%;">
+            <h1 class="hero-title" style="font-size: var(--fs-3xl);">Tiny title</h1>
+          </div>
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't shrink the title.</strong> Heroes must use the display scale (<code>--fs-7xl</code> default, <code>--fs-8xl</code> marketing). Smaller titles look like cards, not heroes.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas">
+          <div class="hero-base is-compact" style="width: 100%;">
+            <div class="hero-eyebrow"><span>Page name</span></div>
+            <h1 class="hero-title" style="font-size: var(--fs-3xl);">Title</h1>
+            <div class="hero-actions">
+              <a class="hero-btn hero-btn-primary">One</a>
+              <a class="hero-btn hero-btn-ghost">Two</a>
+              <a class="hero-btn hero-btn-ghost">Three</a>
+              <a class="hero-btn hero-btn-ghost">Four</a>
+            </div>
+          </div>
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't stack 3+ actions.</strong> Maximum one primary + one ghost. More buttons turn the hero into a toolbar — promote the extra actions to the page body.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas">
+          <div class="hero-base is-compact" style="width: 100%;">
+            <div class="hero-eyebrow"><span>Lorem ipsum</span></div>
+            <h1 class="hero-title" style="font-size: var(--fs-3xl); max-width: none;">A very long, descriptive headline that wraps across several lines and keeps going just because it can</h1>
+          </div>
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't write paragraph-length titles.</strong> Max 8 words, ~3 lines on desktop. Anything longer belongs in the sub, or split across multiple screens.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas">
+          <div class="hero-base is-compact" style="width: 100%;">
+            <div class="hero-eyebrow"><span>Page</span></div>
+            <h1 class="hero-title" style="font-size: var(--fs-3xl);">Numbers</h1>
+            <div class="hero-tiles" style="grid-template-columns: repeat(6, 1fr);">
+              <div class="hero-tile"><div class="k">A</div><div class="v">1</div></div>
+              <div class="hero-tile"><div class="k">B</div><div class="v">2</div></div>
+              <div class="hero-tile"><div class="k">C</div><div class="v">3</div></div>
+              <div class="hero-tile"><div class="k">D</div><div class="v">4</div></div>
+              <div class="hero-tile"><div class="k">E</div><div class="v">5</div></div>
+              <div class="hero-tile"><div class="k">F</div><div class="v">6</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't stuff 5+ tiles.</strong> Maximum 4. Beyond that, the row turns into a data dump and the hero loses its top-of-page rhythm. Put extra KPIs in a separate band below.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 TOKENS -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">08</span>Tokens</h2>
+    <p class="lead">All values resolve through the design system. The hero is built entirely from existing tokens — no custom values.</p>
+
+    <table class="token-table">
+      <thead>
+        <tr><th>Concept</th><th>Token</th><th>Where</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Backdrop gradient</td><td><code>var(--grad-hero)</code></td><td>Hero background</td></tr>
+        <tr><td>Radial glow</td><td><code>var(--grad-radial-glow)</code></td><td>::before atmospheric layer</td></tr>
+        <tr><td>Corner radius</td><td><code>var(--radius-lg)</code></td><td>Hero outer border</td></tr>
+        <tr><td>Elevation</td><td><code>var(--shadow-lg)</code></td><td>Default · seats the hero above the page</td></tr>
+        <tr><td>Eyebrow text</td><td><code>var(--color-foreground-inverse-secondary)</code> · <code>--fs-xs</code> · <code>--ls-caps</code></td><td>Above title</td></tr>
+        <tr><td>Eyebrow pill</td><td><code>var(--color-overlay-white-14)</code> + <code>var(--color-overlay-white-18)</code></td><td>Optional status chip</td></tr>
+        <tr><td>Title</td><td><code>var(--font-display)</code> · <code>--fs-7xl</code> · <code>--w-black</code> · <code>--ls-display</code></td><td>Main headline</td></tr>
+        <tr><td>Title accent word</td><td><code>var(--color-brand-secondary-200)</code></td><td>Single emphasised word</td></tr>
+        <tr><td>Sub copy</td><td><code>var(--color-foreground-inverse-secondary)</code> · <code>--fs-md</code> · <code>--lh-relaxed</code></td><td>Below title</td></tr>
+        <tr><td>Primary action</td><td><code>var(--color-pure-white)</code> bg · <code>var(--color-foreground-default)</code> fg</td><td>White pill on dark hero</td></tr>
+        <tr><td>Ghost action</td><td><code>var(--color-overlay-white-08)</code> bg · <code>var(--color-overlay-white-22)</code> border</td><td>Secondary on dark hero</td></tr>
+        <tr><td>Tile background</td><td><code>var(--color-overlay-white-08)</code> + 6px backdrop blur</td><td>Glass plate over hero gradient</td></tr>
+        <tr><td>Tile border</td><td><code>var(--color-overlay-white-12)</code></td><td>1px hairline</td></tr>
+        <tr><td>Tile delta up</td><td><code>var(--color-feedback-success-foreground-on-inverse)</code></td><td>Positive change indicator</td></tr>
+        <tr><td>Tile delta down</td><td><code>var(--color-feedback-danger-foreground-on-inverse)</code></td><td>Negative change indicator</td></tr>
+        <tr><td>Subtle variant bg</td><td><code>var(--color-background-subtle)</code> + <code>var(--color-border-default)</code></td><td>Light hero (settings, docs)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script>if (window.lucide) lucide.createIcons();</script>
+
+</body>
+</html>

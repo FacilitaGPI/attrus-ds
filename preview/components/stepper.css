@@ -1,0 +1,309 @@
+/* ============================================================
+   STEPPER — multi-step flow indicator (navigation)
+   Horizontal for wizards (top-of-form), vertical for long
+   onboardings (sidebar). Four step states: todo / current /
+   done / error. Optional skipped state for non-linear flows.
+
+   Markup contract:
+     <ol class="stepper" aria-label="…">
+       <li class="step is-done">
+         <a class="step-marker" href="…"><i data-lucide="check"></i></a>
+         <div class="step-body">
+           <span class="step-label">…</span>
+           <span class="step-help">…</span>
+         </div>
+       </li>
+       <li class="step is-current" aria-current="step">…</li>
+       <li class="step">…</li>
+     </ol>
+
+   The connector line between steps is drawn with a pseudo-
+   element on .step (::after for horizontal, ::after on the
+   marker's vertical track for vertical). Last child hides it.
+   ============================================================ */
+
+/* ---------- Container ---------- */
+.stepper {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  font-family: var(--font-sans);
+  color: var(--color-foreground-default);
+}
+
+/* ---------- Step (the row/column unit) ---------- */
+.step {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  position: relative;
+  color: var(--color-foreground-muted);
+}
+
+/* Connector line — drawn from this step's marker to the next */
+.step::after {
+  content: "";
+  position: absolute;
+  background: var(--color-border-default);
+  z-index: 0;
+}
+.step:last-child::after { display: none; }
+
+/* ---------- Marker (the numbered circle) ---------- */
+.step-marker {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background: var(--color-background-surface);
+  border: 1.5px solid var(--color-border-default);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: var(--w-semibold);
+  color: var(--color-foreground-muted);
+  text-decoration: none;
+  transition: var(--transition-fast);
+  position: relative;
+  z-index: 1;
+}
+.step-marker i, .step-marker svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2.4;
+}
+
+/* Anchor markers (clickable past steps) get a focus ring */
+a.step-marker:hover { border-color: var(--color-border-strong); }
+a.step-marker:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+/* ---------- Body (label + helper) ---------- */
+.step-body {
+  flex: 1;
+  min-width: 0;
+  padding-top: var(--space-1);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.step-label {
+  font-size: var(--fs-sm);
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--ls-title);
+  color: var(--color-foreground-secondary);
+  line-height: var(--lh-tight);
+}
+.step-help {
+  font-size: var(--fs-xs);
+  color: var(--color-foreground-muted);
+  line-height: var(--lh-snug);
+}
+
+/* ============================================================
+   STATES
+   ============================================================ */
+
+/* --- todo (default, future steps) --- */
+/* No modifier — base styles above. */
+
+/* --- current (the active step) ---
+   Fill uses accent-700 (#1E6DC4) — NOT accent-500 — because the marker carries
+   white text/number: white-on-Sky-500 is only 2.94:1 (fails WCAG AA), while
+   white-on-accent-700 is 5.20:1 (passes). Stays in the Sky family; reads as the
+   energetic "active" state without the contrast failure. See accent-highlights.html. */
+.step.is-current .step-marker {
+  background: var(--color-brand-accent-700);
+  border-color: var(--color-brand-accent-700);
+  color: var(--color-foreground-on-solid);
+  box-shadow: var(--shadow-focus);
+}
+.step.is-current .step-label {
+  color: var(--color-foreground-default);
+  font-weight: var(--w-bold);
+}
+.step.is-current .step-help {
+  color: var(--color-foreground-secondary);
+}
+
+/* --- done (completed steps) --- */
+.step.is-done .step-marker {
+  background: var(--color-feedback-success-foreground);
+  border-color: var(--color-feedback-success-foreground);
+  color: var(--color-foreground-on-solid);
+}
+.step.is-done .step-label {
+  color: var(--color-foreground-default);
+}
+.step.is-done::after {
+  background: var(--color-feedback-success-foreground);
+}
+
+/* --- error --- */
+.step.is-error .step-marker {
+  background: var(--color-feedback-danger-background);
+  border-color: var(--color-feedback-danger-border);
+  color: var(--color-feedback-danger-foreground);
+}
+.step.is-error .step-label {
+  color: var(--color-feedback-danger-foreground);
+  font-weight: var(--w-bold);
+}
+.step.is-error .step-help {
+  color: var(--color-feedback-danger-foreground);
+}
+
+/* --- skipped (non-linear flows, user jumped past) --- */
+.step.is-skipped .step-marker {
+  background: var(--color-background-subtle);
+  border-style: dashed;
+  color: var(--color-foreground-muted);
+}
+.step.is-skipped .step-label {
+  color: var(--color-foreground-muted);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+/* ============================================================
+   ORIENTATION — Horizontal (default)
+   ============================================================ */
+.stepper {
+  flex-direction: row;
+}
+
+.stepper .step {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+}
+
+/* Horizontal connector — from this marker's right edge to next marker's left */
+.stepper .step::after {
+  top: 15px;                       /* center of 32px marker */
+  left: calc(50% + 20px);          /* edge of marker + small gap */
+  right: calc(-50% + 20px);
+  height: 2px;
+}
+
+.stepper .step-body {
+  align-items: center;
+  padding-top: 0;
+  max-width: 16ch;
+}
+.stepper .step-label { text-align: center; }
+.stepper .step-help { text-align: center; }
+
+/* ============================================================
+   ORIENTATION — Vertical
+   ============================================================ */
+.stepper.is-vertical {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+.stepper.is-vertical .step {
+  flex: 0 0 auto;
+  flex-direction: row;
+  align-items: flex-start;
+  text-align: left;
+  gap: var(--space-4);
+  padding-bottom: var(--space-7);
+}
+.stepper.is-vertical .step:last-child { padding-bottom: 0; }
+
+/* Vertical connector — from this marker's bottom to next marker's top */
+.stepper.is-vertical .step::after {
+  top: 36px;                        /* below the marker */
+  left: 15px;                       /* center of marker */
+  width: 2px;
+  bottom: var(--space-1);
+  height: auto;
+}
+
+.stepper.is-vertical .step-body {
+  padding-top: var(--space-1);
+  max-width: none;
+  padding-bottom: 0;
+}
+.stepper.is-vertical .step-label { text-align: left; }
+.stepper.is-vertical .step-help { text-align: left; }
+
+/* ============================================================
+   SIZE — Compact
+   For dense surfaces (drawer headers, table-row mini-flows).
+   ============================================================ */
+.stepper.is-compact .step-marker {
+  width: 24px;
+  height: 24px;
+  font-size: var(--fs-xs);
+}
+.stepper.is-compact .step-marker i,
+.stepper.is-compact .step-marker svg { width: 11px; height: 11px; }
+.stepper.is-compact .step-label { font-size: var(--fs-xs); }
+.stepper.is-compact .step-help  { font-size: var(--fs-xxs); }
+.stepper.is-compact .step::after { top: 11px; }
+.stepper.is-compact.is-vertical .step::after { top: 28px; left: 11px; }
+
+/* ============================================================
+   VARIANT — Numbered without circles (line-rule style)
+   For minimalist top-of-form indicators where vertical space
+   is precious. Removes circle; uses a 4px capsule + label.
+   ============================================================ */
+.stepper.is-rule .step {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-2);
+  padding: 0;
+}
+.stepper.is-rule .step::after { display: none; }
+.stepper.is-rule .step-marker {
+  width: auto;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border-default);
+  border: none;
+  font-size: 0;
+}
+.stepper.is-rule .step-marker i,
+.stepper.is-rule .step-marker svg { display: none; }
+.stepper.is-rule .step-body { padding-top: 0; align-items: flex-start; max-width: none; }
+.stepper.is-rule .step-label {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xxs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-caps);
+  font-weight: var(--w-semibold);
+}
+.stepper.is-rule .step.is-done .step-marker { background: var(--color-feedback-success-foreground); }
+.stepper.is-rule .step.is-current .step-marker { background: var(--color-brand-accent-700); box-shadow: none; }
+.stepper.is-rule .step.is-error .step-marker { background: var(--color-feedback-danger-foreground); }
+
+/* ============================================================
+   Responsive — Collapse labels at narrow widths
+   The wizard pattern: keep markers + connector visible, hide
+   labels to save space. Caller opts in with .is-collapse-sm.
+   ============================================================ */
+@media (max-width: 640px) {
+  .stepper.is-collapse-sm .step-body { display: none; }
+  .stepper.is-collapse-sm .step { gap: 0; }
+}
+
+/* ============================================================
+   Reduced motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .step-marker { transition: none; }
+}

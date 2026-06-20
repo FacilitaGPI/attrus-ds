@@ -1,0 +1,207 @@
+/* ================================================================
+   STATUS PILLS — components/status-pills.css
+   The single source of truth for status feedback.
+   100% token-driven; consumed by status-pills.html and any product UI.
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   Base — .pill
+   Inline pill with optional leading dot and trailing close (×).
+   ---------------------------------------------------------------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 24px;            /* default md */
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--w-semibold);
+  line-height: 1;
+  letter-spacing: var(--ls-caps);
+  white-space: nowrap;
+  user-select: none;
+  vertical-align: middle;
+  font-feature-settings: "tnum" 1;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+/* Leading dot — purely decorative; meaning lives in label + variant */
+.pill > .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  flex-shrink: 0;
+  background: currentColor;
+  align-self: center;
+}
+
+/* Label wrapper — runtime-injected; nudges text up 0.5px to compensate for
+   Lato's optical descender offset, leaving the dot at geometric centre. */
+.pill > .pill-label {
+  display: inline-block;
+  transform: translateY(-0.5px);
+}
+
+/* Trailing icon (e.g. clock, arrow) */
+.pill > i, .pill > svg,
+.pill > svg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  stroke-width: var(--icon-stroke);
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+.pill > svg, .pill > i > svg { display: block; }
+
+/* Removable close (×) — interactive */
+.pill > .pill-x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  margin-right: -4px;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.7;
+  transition: opacity var(--transition-fast), background var(--transition-fast);
+}
+.pill > .pill-x:hover { opacity: 1; background: color-mix(in srgb, currentColor 16%, transparent); }
+.pill > .pill-x svg, .pill > .pill-x i { width: 10px; height: 10px; stroke-width: 2.25; }
+
+
+/* ----------------------------------------------------------------
+   Sizes
+   ---------------------------------------------------------------- */
+.pill.sm {
+  height: 20px;
+  padding: 0 8px;
+  font-size: var(--fs-xxs);
+  gap: 4px;
+}
+.pill.sm > .dot { width: 5px; height: 5px; }
+.pill.sm > i, .pill.sm > svg, .pill.sm > svg { width: 10px; height: 10px; }
+
+/* md is default (24px) */
+
+.pill.lg {
+  height: 28px;
+  padding: 0 14px;
+  font-size: var(--fs-xs);   /* keep label compact — lg = bigger pill, not bigger type */
+  gap: 8px;
+}
+.pill.lg > .dot { width: 6px; height: 6px; }
+.pill.lg > i, .pill.lg > svg, .pill.lg > svg { width: 12px; height: 12px; }
+
+
+/* ----------------------------------------------------------------
+   Variants — semantic
+   Each = bg + fg + border. Variant carries meaning; label is required.
+   ---------------------------------------------------------------- */
+.pill.success { background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-feedback-success-border); }
+.pill.warning { background: var(--color-feedback-warning-background); color: var(--color-feedback-warning-foreground); border-color: var(--color-feedback-warning-border); }
+.pill.danger  { background: var(--color-feedback-danger-background);  color: var(--color-feedback-danger-foreground);  border-color: var(--color-feedback-danger-border);  }
+.pill.info    { background: var(--color-feedback-info-background);    color: var(--color-feedback-info-foreground);    border-color: var(--color-feedback-info-border);    }
+.pill.neutral { background: var(--color-background-subtle);  color: var(--color-foreground-secondary); border-color: var(--color-border-default); }
+
+/* Brand — for "in progress under our system" / featured states */
+.pill.brand   { background: var(--color-background-selected); color: var(--color-foreground-accent); border-color: color-mix(in srgb, var(--color-foreground-accent) 22%, transparent); }
+
+
+/* ----------------------------------------------------------------
+   Style modifiers
+   .solid    — filled (use sparingly, for very high salience)
+   .outline  — transparent bg, color from variant
+   ---------------------------------------------------------------- */
+.pill.solid.success { background: var(--color-success-500); color: var(--color-pure-white); border-color: transparent; }
+.pill.solid.warning { background: var(--color-warning-500); color: var(--color-ink-base);    border-color: transparent; }
+.pill.solid.danger  { background: var(--color-danger-500);  color: var(--color-pure-white); border-color: transparent; }
+.pill.solid.info    { background: var(--color-info-500);    color: var(--color-pure-white); border-color: transparent; }
+.pill.solid.neutral { background: var(--color-neutral-700); color: var(--color-pure-white); border-color: transparent; }
+.pill.solid.brand   { background: var(--color-brand-solid);    color: var(--color-brand-on-solid); border-color: transparent; }
+.pill.solid > .dot  { background: currentColor; }
+
+.pill.outline.success { background: transparent; color: var(--color-feedback-success-foreground); border-color: var(--color-success-500); }
+.pill.outline.warning { background: transparent; color: var(--color-feedback-warning-foreground); border-color: var(--color-warning-500); }
+.pill.outline.danger  { background: transparent; color: var(--color-feedback-danger-foreground);  border-color: var(--color-danger-500);  }
+.pill.outline.info    { background: transparent; color: var(--color-feedback-info-foreground);    border-color: var(--color-info-500);    }
+.pill.outline.neutral { background: transparent; color: var(--color-foreground-secondary); border-color: var(--color-border-strong); }
+.pill.outline.brand   { background: transparent; color: var(--color-foreground-accent);  border-color: var(--color-brand-solid);    }
+
+
+/* ----------------------------------------------------------------
+   Interactive — for filter chips / clickable state pills
+   ---------------------------------------------------------------- */
+.pill.interactive { cursor: pointer; }
+.pill.interactive:hover {
+  border-color: color-mix(in srgb, currentColor 50%, transparent);
+}
+.pill.interactive:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+.pill.interactive[aria-pressed="true"],
+.pill.interactive.is-selected {
+  background: var(--color-foreground-accent);
+  color: var(--color-foreground-on-solid);
+  border-color: var(--color-foreground-accent);
+}
+.pill.interactive[aria-pressed="true"] > .dot,
+.pill.interactive.is-selected > .dot { background: currentColor; }
+
+
+/* ----------------------------------------------------------------
+   On inverse — pills over dark surfaces
+   ---------------------------------------------------------------- */
+.pill.success.on-inverse {
+  background: color-mix(in srgb, var(--color-success-500) 18%, transparent);
+  color: var(--color-feedback-success-foreground-on-inverse);
+  border-color: color-mix(in srgb, var(--color-success-500) 38%, transparent);
+}
+.pill.warning.on-inverse {
+  background: color-mix(in srgb, var(--color-warning-500) 18%, transparent);
+  color: var(--color-feedback-warning-foreground-on-inverse);
+  border-color: color-mix(in srgb, var(--color-warning-500) 38%, transparent);
+}
+.pill.danger.on-inverse {
+  background: color-mix(in srgb, var(--color-danger-500) 18%, transparent);
+  color: var(--color-feedback-danger-foreground-on-inverse);
+  border-color: color-mix(in srgb, var(--color-danger-500) 38%, transparent);
+}
+.pill.info.on-inverse {
+  background: color-mix(in srgb, var(--color-info-500) 18%, transparent);
+  color: var(--color-feedback-info-foreground-on-inverse, var(--color-info-100));
+  border-color: color-mix(in srgb, var(--color-info-500) 38%, transparent);
+}
+.pill.neutral.on-inverse {
+  background: var(--color-background-inverse-subtle);
+  color: var(--color-foreground-inverse-muted);
+  border-color: var(--color-border-inverse);
+}
+.pill.brand.on-inverse {
+  background: color-mix(in srgb, var(--color-brand-accent-500) 18%, transparent);
+  color: var(--color-brand-accent-300, var(--color-brand-accent-500));
+  border-color: color-mix(in srgb, var(--color-brand-accent-500) 38%, transparent);
+}
+
+
+/* Disabled */
+.pill[aria-disabled="true"],
+.pill:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}

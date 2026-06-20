@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Composition &amp; hierarchy · ATTRUS Design System</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../themes/index.css?v=1">
+<script src="../theme-toggle.js?v=1"></script>
+<link rel="stylesheet" href="components/primitives.css">
+<link rel="stylesheet" href="components/buttons.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .doc-back { display: inline-flex; align-items: center; gap: var(--space-2); margin: var(--space-6) 0 0 var(--space-8); color: var(--color-foreground-muted); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); }
+  .doc-back:hover { color: var(--color-foreground-default); }
+  .doc-back i, .doc-back svg { width: var(--icon-sm); height: var(--icon-sm); stroke-width: var(--icon-stroke); }
+
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-brand); border: 1px solid var(--color-brand-secondary-100); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 72ch; margin: 0 0 var(--space-7); }
+
+  .principle { display: grid; grid-template-columns: 1fr; gap: var(--space-1); margin-bottom: var(--space-6); }
+  @media (min-width: 860px) { .principle { grid-template-columns: 300px 1fr; gap: var(--space-8); align-items: start; } }
+  .principle .why { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .principle .why .kicker { display: block; font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-accent); margin-bottom: var(--space-3); }
+  .principle .why p { margin: 0 0 var(--space-3); }
+  .principle .why p:last-child { margin-bottom: 0; }
+  .principle .why b { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+
+  /* demo frame — a neutral "screen" to compose inside */
+  .frame { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-xs); }
+  .frame-canvas { background: var(--color-background-canvas); padding: var(--space-7); }
+
+  /* compare two states */
+  .compare { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+  @media (min-width: 760px) { .compare { grid-template-columns: 1fr 1fr; } }
+  .compare-cell { border-radius: var(--radius-lg); border: 1px solid var(--color-border-default); overflow: hidden; background: var(--color-background-surface); }
+  .compare-tag { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3) var(--space-4); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; border-bottom: 1px solid var(--color-border-subtle); }
+  .compare-tag.bad { color: var(--color-feedback-danger-foreground); background: var(--color-feedback-danger-background); }
+  .compare-tag.good { color: var(--color-feedback-success-foreground); background: var(--color-feedback-success-background); }
+  .compare-tag i, .compare-tag svg { width: var(--icon-xs); height: var(--icon-xs); }
+  .compare-canvas { padding: var(--space-6); background: var(--color-background-canvas); min-height: 220px; }
+
+  /* generic skeleton bits for mock layouts */
+  .mk-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-5); }
+  .mk-line { height: 9px; border-radius: var(--radius-2xs); background: var(--color-neutral-150); }
+  .mk-line.s { width: 35%; } .mk-line.m { width: 60%; } .mk-line.l { width: 85%; }
+  .mk-line.dark { background: var(--color-neutral-300); }
+  .mk-eyebrow { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+
+  /* type hierarchy ladder */
+  .ladder { display: flex; flex-direction: column; gap: 0; }
+  .ladder .rung { display: flex; align-items: baseline; gap: var(--space-5); padding: var(--space-4) 0; border-bottom: 1px solid var(--color-border-subtle); }
+  .ladder .rung:last-child { border-bottom: 0; }
+  .ladder .role { flex: 0 0 132px; font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .ladder .spec-mini { flex: 0 0 96px; font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-placeholder); }
+
+  /* annotation list */
+  .annot { display: grid; gap: var(--space-3); margin-top: var(--space-5); }
+  .annot .row { display: flex; gap: var(--space-3); align-items: flex-start; font-size: var(--fs-sm); line-height: var(--lh-snug); color: var(--color-foreground-secondary); }
+  .annot .k { flex-shrink: 0; width: 20px; height: 20px; border-radius: var(--radius-pill); background: var(--color-brand-secondary-500); color: var(--color-foreground-on-solid); display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); margin-top: 1px; }
+  .annot .row b { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+
+  /* badge overlay for the worked example */
+  .tagnum { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: var(--radius-pill); background: var(--color-brand-accent-700); color: var(--color-pure-white); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); flex-shrink: 0; }
+
+  /* checklist */
+  .checklist { display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
+  @media (min-width: 760px) { .checklist { grid-template-columns: 1fr 1fr; } }
+  .check-item { display: flex; gap: var(--space-3); align-items: flex-start; padding: var(--space-4) var(--space-5); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); }
+  .check-item i, .check-item svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; }
+  .check-item.do i, .check-item.do svg { color: var(--color-feedback-success-foreground); }
+  .check-item.dont i, .check-item.dont svg { color: var(--color-feedback-danger-foreground); }
+  .check-item p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-snug); }
+  .check-item b { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+
+  /* textual composition gallery */
+  .txt-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+  @media (min-width: 820px) { .txt-grid { grid-template-columns: 1fr 1fr; } }
+  .txt-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-xs); display: flex; flex-direction: column; }
+  .txt-label { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .txt-body { padding: var(--space-6); flex: 1; }
+  .txt-note { padding: var(--space-3) var(--space-5); border-top: 1px solid var(--color-border-subtle); font-size: var(--fs-xs); color: var(--color-foreground-muted); line-height: var(--lh-snug); }
+  /* shared text atoms for the gallery */
+  .t-overline { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-accent); }
+  .t-title { font-size: var(--fs-2xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); line-height: var(--lh-tight); color: var(--color-foreground-default); }
+  .t-lead { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .t-body { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .t-caption { font-size: var(--fs-xs); color: var(--color-foreground-muted); }
+  /* key-value description list */
+  .t-dl { display: grid; grid-template-columns: auto 1fr; gap: var(--space-3) var(--space-6); margin: 0; }
+  .t-dl dt { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); align-self: center; }
+  .t-dl dd { margin: 0; font-size: var(--fs-sm); font-weight: var(--w-medium); color: var(--color-foreground-default); text-align: right; font-variant-numeric: tabular-nums; }
+  /* numbered steps */
+  .t-steps { list-style: none; margin: 0; padding: 0; counter-reset: st; display: flex; flex-direction: column; gap: var(--space-5); }
+  .t-steps li { counter-increment: st; display: flex; gap: var(--space-4); }
+  .t-steps li::before { content: counter(st); flex: 0 0 24px; height: 24px; border-radius: var(--radius-pill); background: var(--color-brand-secondary-500); color: var(--color-foreground-on-solid); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
+  .t-steps .s-ttl { font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); margin-bottom: 2px; }
+  .t-steps .s-desc { font-size: var(--fs-xs); color: var(--color-foreground-muted); line-height: var(--lh-snug); }
+  /* pull quote */
+  .t-quote { font-family: var(--font-display); font-size: var(--fs-xl); font-weight: var(--w-medium); line-height: var(--lh-snug); letter-spacing: var(--ls-title); color: var(--color-foreground-default); margin: 0 0 var(--space-4); }
+  .t-quote .mark { color: var(--color-foreground-highlight); }
+  .t-attrib { display: flex; align-items: center; gap: var(--space-3); }
+  .t-attrib .nm { font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); }
+  .t-attrib .role { font-size: var(--fs-xs); color: var(--color-foreground-muted); }
+  /* inline notice */
+  .t-notice { display: flex; gap: var(--space-3); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); border: 1px solid color-mix(in srgb, var(--color-brand-secondary-500) 24%, transparent); }
+  .t-notice i, .t-notice svg { width: 18px; height: 18px; color: var(--color-foreground-brand); flex-shrink: 0; margin-top: 1px; }
+  .t-notice .n-ttl { font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-brand); margin-bottom: 2px; }
+  .t-notice .n-body { font-size: var(--fs-xs); color: var(--color-foreground-secondary); line-height: var(--lh-snug); }
+
+  /* emphasis + inverse */
+  .emph-list { display: flex; flex-direction: column; gap: 0; }
+  .emph-row { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); }
+  .emph-row:last-child { border-bottom: 0; }
+  .emph-row .nm { font-size: var(--fs-sm); color: var(--color-foreground-default); }
+  .emph-row .amt { margin-left: auto; font-variant-numeric: tabular-nums; font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-secondary); }
+  .emph-row.is-focus { background: var(--color-brand-accent-50); border-left: 3px solid var(--color-brand-accent-500); }
+  .emph-row.is-focus .amt { color: var(--color-brand-accent-700); font-weight: var(--w-bold); }
+  .emph-row.is-focus .nm { font-weight: var(--w-semibold); }
+
+  /* inverse panel — composition on a dark surface */
+  .inv { background: var(--color-background-inverse); color: var(--color-foreground-inverse-default); border-radius: var(--radius-lg); padding: var(--space-7); border: 1px solid var(--color-border-inverse); }
+  .inv .ey { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-inverse-secondary); }
+  .inv h4 { font-family: var(--font-display); font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: var(--space-3) 0; color: var(--color-foreground-inverse-default); line-height: var(--lh-tight); }
+  .inv .body { font-size: var(--fs-sm); color: var(--color-foreground-inverse-secondary); line-height: var(--lh-relaxed); max-width: 48ch; }
+  .inv .rule { height: 1px; background: var(--color-border-inverse); margin: var(--space-6) 0; }
+  .inv .row { display: flex; align-items: center; gap: var(--space-3); }
+  .inv .row + .row { margin-top: var(--space-2); }
+  .inv .row-sel { background: var(--color-background-inverse-selected); border-left: 3px solid var(--color-foreground-inverse-accent); padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm); }
+  .inv .a-link { color: var(--color-foreground-inverse-accent); font-weight: var(--w-semibold); text-decoration: none; }
+  .inv .chip { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-3); border-radius: var(--radius-pill); background: var(--color-overlay-white-12); border: 1px solid var(--color-overlay-white-18); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-inverse-default); }
+  .inv .amt { font-variant-numeric: tabular-nums; font-weight: var(--w-bold); }
+  .inv .amt-accent { color: var(--color-foreground-inverse-accent); }
+
+  /* inline emphasis within running text */
+  .t-hl { color: var(--color-foreground-highlight); font-weight: var(--w-semibold); }
+  .t-mark { background: var(--color-brand-accent-50); color: var(--color-brand-accent-800); padding: 1px 5px; border-radius: var(--radius-2xs); font-weight: var(--w-medium); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  .t-prose { font-size: var(--fs-md); line-height: var(--lh-relaxed); color: var(--color-foreground-secondary); margin: 0; max-width: 62ch; }
+
+  .stat-row { display: flex; gap: var(--space-4); flex-wrap: wrap; }
+  .stat-box { flex: 1 1 120px; background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-4) var(--space-5); }
+  .stat-box .lbl { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-2); }
+  .stat-box .val { font-family: var(--font-display); font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); font-variant-numeric: tabular-nums; }
+  .stat-box .val .cur { font-size: var(--fs-md); color: var(--color-foreground-muted); font-weight: var(--w-medium); margin-right: var(--space-1); }
+</style>
+</head>
+<body>
+
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<main class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Composition &amp; hierarchy</h1>
+      <p>How to arrange a screen so it reads itself. Four tools — type, proximity, enclosure and rhythm — turn a pile of data into a structure the eye can scan in order. The platform is dense; these rules are what keep dense from becoming cluttered.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="layout-template"></i>Layout doctrine</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#order">01 Reading order</a>
+    <a href="#type">02 Hierarchy by type</a>
+    <a href="#proximity">03 Grouping by proximity</a>
+    <a href="#enclosure">04 Enclosure &amp; shapes</a>
+    <a href="#rhythm">05 Density &amp; rhythm</a>
+    <a href="#worked">06 A screen, dissected</a>
+    <a href="#textpatterns">07 Text patterns</a>
+    <a href="#emphasis">08 Emphasis &amp; inverse</a>
+    <a href="#checklist">09 Checklist</a>
+  </nav>
+
+  <!-- 01 READING ORDER -->
+  <section class="doc-section" id="order">
+    <h2><span class="num">01</span>Composition is reading order</h2>
+    <p class="lead">Before colour or polish, a screen has one job: tell the eye where to start, what's grouped, and what's secondary. Every technique here serves that — establishing a <b style="color:var(--color-foreground-default)">hierarchy</b> (what matters most) and <b style="color:var(--color-foreground-default)">clusters</b> (what belongs together). Four tools, in order of cost:</p>
+
+    <div class="frame">
+      <div class="frame-canvas">
+        <div class="stat-row">
+          <div class="stat-box"><div class="lbl">01 · Type</div><div class="why" style="font-size:var(--fs-sm); color:var(--color-foreground-secondary); line-height:var(--lh-snug)">Size, weight &amp; colour rank importance. The cheapest hierarchy — costs no space.</div></div>
+          <div class="stat-box"><div class="lbl">02 · Proximity</div><div class="why" style="font-size:var(--fs-sm); color:var(--color-foreground-secondary); line-height:var(--lh-snug)">Whitespace groups. Near = related, far = separate. No borders needed.</div></div>
+          <div class="stat-box"><div class="lbl">03 · Enclosure</div><div class="why" style="font-size:var(--fs-sm); color:var(--color-foreground-secondary); line-height:var(--lh-snug)">Cards, dividers &amp; section heads when proximity alone isn't enough.</div></div>
+          <div class="stat-box"><div class="lbl">04 · Rhythm</div><div class="why" style="font-size:var(--fs-sm); color:var(--color-foreground-secondary); line-height:var(--lh-snug)">Consistent spacing makes the structure predictable and calm.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 TYPE -->
+  <section class="doc-section" id="type">
+    <h2><span class="num">02</span>Hierarchy by type</h2>
+    <p class="lead">The type scale isn't decoration — each step is a <b style="color:var(--color-foreground-default)">rank</b>. Pair size with weight and a foreground role (default → secondary → muted) so three levels of importance are legible at a glance, before the reader has read a single word.</p>
+
+    <div class="principle">
+      <div class="why">
+        <span class="kicker">The rule</span>
+        <p>Use <b>at most three</b> type levels per cluster: a label, a value, a caption. More than three and the ranking blurs.</p>
+        <p>Carry rank with <b>weight and colour</b>, not just size — a 14px bold default-foreground line outranks a 14px regular muted line on the same row.</p>
+      </div>
+      <div class="frame">
+        <div class="frame-canvas">
+          <div class="ladder">
+            <div class="rung"><span class="role">Display</span><span style="font-family:var(--font-display); font-size:var(--fs-5xl); font-weight:var(--w-bold); letter-spacing:var(--ls-display); line-height:1">Total volume</span></div>
+            <div class="rung"><span class="role">H1 · page</span><span style="font-size:var(--fs-3xl); font-weight:var(--w-bold); letter-spacing:var(--ls-title)">Receivables</span></div>
+            <div class="rung"><span class="role">H3 · section</span><span style="font-size:var(--fs-xl); font-weight:var(--w-semibold)">Scheduled this week</span></div>
+            <div class="rung"><span class="role">Body</span><span style="font-size:var(--fs-base); color:var(--color-foreground-secondary)">Six payments are expected to settle in the next seven days.</span></div>
+            <div class="rung"><span class="role">Caption · muted</span><span style="font-size:var(--fs-xs); color:var(--color-foreground-muted)">Updated 2 minutes ago · UTC-3</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare">
+      <div class="compare-cell">
+        <div class="compare-tag bad"><i data-lucide="x"></i>Flat — one weight, one colour</div>
+        <div class="compare-canvas">
+          <div class="mk-card">
+            <div style="font-size:var(--fs-md); margin-bottom:var(--space-2)">Acme Corp S.A.</div>
+            <div style="font-size:var(--fs-md); margin-bottom:var(--space-2)">BRL → USD · FX 0.38765</div>
+            <div style="font-size:var(--fs-md); margin-bottom:var(--space-2)">USD 5,154.74</div>
+            <div style="font-size:var(--fs-md)">Available now · today</div>
+          </div>
+          <p style="font-size:var(--fs-xs); color:var(--color-foreground-muted); margin:var(--space-4) 0 0">Everything shouts equally — the eye has no entry point.</p>
+        </div>
+      </div>
+      <div class="compare-cell">
+        <div class="compare-tag good"><i data-lucide="check"></i>Ranked — value leads, rest recede</div>
+        <div class="compare-canvas">
+          <div class="mk-card">
+            <div style="font-size:var(--fs-md); font-weight:var(--w-semibold); margin-bottom:1px">Acme Corp S.A.</div>
+            <div style="font-size:var(--fs-xs); color:var(--color-foreground-muted); font-family:var(--font-mono); margin-bottom:var(--space-4)">BRL → USD · FX 0.38765</div>
+            <div style="font-size:var(--fs-2xl); font-weight:var(--w-bold); font-variant-numeric:tabular-nums; color:var(--color-feedback-success-foreground); line-height:1"><span style="font-size:var(--fs-sm); color:var(--color-foreground-muted); font-weight:var(--w-medium)">USD </span>5,154.74</div>
+            <div style="font-size:var(--fs-xs); color:var(--color-foreground-muted); margin-top:var(--space-2)">Available now · today</div>
+          </div>
+          <p style="font-size:var(--fs-xs); color:var(--color-foreground-muted); margin:var(--space-4) 0 0">Amount first, name second, metadata last — a clear path.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 PROXIMITY -->
+  <section class="doc-section" id="proximity">
+    <h2><span class="num">03</span>Grouping by proximity</h2>
+    <p class="lead">Whitespace is the cheapest grouping tool in the system — it needs no borders, no fills, no colour. The Gestalt principle: items placed <b style="color:var(--color-foreground-default)">close together read as one group</b>; a larger gap reads as a separation. Vary the gap <em>between</em> clusters vs <em>within</em> them and structure appears for free.</p>
+
+    <div class="principle">
+      <div class="why">
+        <span class="kicker">The rule</span>
+        <p>Make the gap <b>between</b> groups at least <b>2× the gap within</b> a group. If a label and its value are 4px apart, the next field should be 12–16px away.</p>
+        <p>Reach for a divider or a card <em>only after</em> proximity isn't enough — usually it is.</p>
+      </div>
+      <div class="compare" style="grid-template-columns:1fr 1fr">
+        <div class="compare-cell">
+          <div class="compare-tag bad"><i data-lucide="x"></i>Even gaps — no groups</div>
+          <div class="compare-canvas">
+            <div class="mk-card" style="display:flex; flex-direction:column; gap:var(--space-4)">
+              <div><div class="mk-eyebrow">From</div><div class="mk-line m" style="margin-top:var(--space-4)"></div></div>
+              <div><div class="mk-eyebrow">Amount</div><div class="mk-line s" style="margin-top:var(--space-4)"></div></div>
+              <div><div class="mk-eyebrow">To</div><div class="mk-line m" style="margin-top:var(--space-4)"></div></div>
+              <div><div class="mk-eyebrow">Date</div><div class="mk-line s" style="margin-top:var(--space-4)"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="compare-cell">
+          <div class="compare-tag good"><i data-lucide="check"></i>Tight within, loose between</div>
+          <div class="compare-canvas">
+            <div class="mk-card" style="display:flex; flex-direction:column; gap:var(--space-7)">
+              <div style="display:flex; flex-direction:column; gap:var(--space-2)"><div class="mk-eyebrow">From</div><div class="mk-line m"></div></div>
+              <div style="display:flex; flex-direction:column; gap:var(--space-2)"><div class="mk-eyebrow">Amount</div><div class="mk-line s"></div></div>
+              <div style="display:flex; flex-direction:column; gap:var(--space-2)"><div class="mk-eyebrow">To</div><div class="mk-line m"></div></div>
+              <div style="display:flex; flex-direction:column; gap:var(--space-2)"><div class="mk-eyebrow">Date</div><div class="mk-line s"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- 04 ENCLOSURE -->
+  <section class="doc-section" id="enclosure">
+    <h2><span class="num">04</span>Enclosure &amp; shapes</h2>
+    <p class="lead">When proximity can't carry the grouping — because clusters sit side by side, or a region needs to feel "contained" — reach for shapes: the <b style="color:var(--color-foreground-default)">card</b>, the <b style="color:var(--color-foreground-default)">divider</b>, and the <b style="color:var(--color-foreground-default)">section header</b>. Each is a stronger, more expensive signal than whitespace, so use the lightest one that works.</p>
+
+    <div class="principle">
+      <div class="why">
+        <span class="kicker">Escalating strength</span>
+        <p><b>Whitespace</b> — default. Groups without drawing a single line.</p>
+        <p><b>Divider</b> — a 1px rule when two groups share a surface but must read as distinct.</p>
+        <p><b>Card</b> — a bordered surface when a cluster is an object you act on (a row, a metric, a form).</p>
+        <p><b>Section header</b> — an eyebrow or H-level title when a region needs a name.</p>
+      </div>
+      <div class="frame">
+        <div class="frame-canvas" style="display:flex; flex-direction:column; gap:var(--space-6)">
+          <div>
+            <div class="mk-eyebrow" style="margin-bottom:var(--space-4)">Section header · names a region</div>
+            <div style="display:flex; gap:var(--space-4)">
+              <div class="mk-card" style="flex:1"><div class="mk-line s dark" style="margin-bottom:var(--space-3)"></div><div class="mk-line l"></div></div>
+              <div class="mk-card" style="flex:1"><div class="mk-line s dark" style="margin-bottom:var(--space-3)"></div><div class="mk-line m"></div></div>
+            </div>
+            <p style="font-size:var(--fs-xs); color:var(--color-foreground-muted); margin:var(--space-3) 0 0">Two cards = two objects, side by side. The header groups them under one name.</p>
+          </div>
+          <div style="border-top:1px solid var(--color-border-default); padding-top:var(--space-5)">
+            <div style="display:flex; align-items:center; gap:var(--space-3)"><div class="mk-line s" style="flex:0 0 80px"></div><div style="flex:1; height:1px; background:var(--color-border-default)"></div></div>
+            <p style="font-size:var(--fs-xs); color:var(--color-foreground-muted); margin:var(--space-3) 0 0">A divider separates without enclosing — lighter than a card.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare">
+      <div class="compare-cell">
+        <div class="compare-tag bad"><i data-lucide="x"></i>Over-enclosed — boxes in boxes</div>
+        <div class="compare-canvas">
+          <div class="mk-card" style="background:var(--color-background-subtle)">
+            <div class="mk-card" style="margin-bottom:var(--space-3)"><div class="mk-line m"></div></div>
+            <div class="mk-card" style="margin-bottom:var(--space-3)"><div class="mk-line l"></div></div>
+            <div class="mk-card"><div class="mk-line s"></div></div>
+          </div>
+          <p style="font-size:var(--fs-xs); color:var(--color-foreground-muted); margin:var(--space-4) 0 0">Nested borders add visual noise and steal horizontal space for nothing.</p>
+        </div>
+      </div>
+      <div class="compare-cell">
+        <div class="compare-tag good"><i data-lucide="check"></i>One card, rows split by hairlines</div>
+        <div class="compare-canvas">
+          <div class="mk-card" style="padding:0">
+            <div style="padding:var(--space-4) var(--space-5); border-bottom:1px solid var(--color-border-subtle)"><div class="mk-line m"></div></div>
+            <div style="padding:var(--space-4) var(--space-5); border-bottom:1px solid var(--color-border-subtle)"><div class="mk-line l"></div></div>
+            <div style="padding:var(--space-4) var(--space-5)"><div class="mk-line s"></div></div>
+          </div>
+          <p style="font-size:var(--fs-xs); color:var(--color-foreground-muted); margin:var(--space-4) 0 0">One enclosure for the group; hairlines for the items inside it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 RHYTHM -->
+  <section class="doc-section" id="rhythm">
+    <h2><span class="num">05</span>Density &amp; rhythm</h2>
+    <p class="lead">A dense operational platform lives or dies on consistent spacing. Every gap should come from the <b style="color:var(--color-foreground-default)">spacing scale</b> — never an arbitrary number. Predictable spacing is what makes a data-heavy screen feel calm instead of cramped.</p>
+
+    <div class="principle">
+      <div class="why">
+        <span class="kicker">The rule</span>
+        <p>Pick a <b>base rhythm</b> for the screen (most platform surfaces use <code style="font-family:var(--font-mono); font-size:var(--fs-xs)">--space-5</code>/16px between clusters, <code style="font-family:var(--font-mono); font-size:var(--fs-xs)">--space-4</code>/12px inside).</p>
+        <p>Keep <b>one rhythm per region</b>. Mixing 11px, 13px, 19px gaps reads as misalignment even when nothing is broken.</p>
+        <p>Density is a choice: tighten for tables and scanning, loosen for marketing and onboarding.</p>
+      </div>
+      <div class="frame">
+        <div class="frame-canvas" style="display:flex; flex-direction:column; gap:var(--space-5)">
+          <div class="mk-card" style="display:flex; flex-direction:column; gap:var(--space-4)">
+            <div class="mk-eyebrow">Cluster A · internal gap 12px</div>
+            <div class="mk-line l"></div><div class="mk-line m"></div>
+          </div>
+          <div class="mk-card" style="display:flex; flex-direction:column; gap:var(--space-4)">
+            <div class="mk-eyebrow">Cluster B · 16px from A above</div>
+            <div class="mk-line l"></div><div class="mk-line s"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 WORKED EXAMPLE -->
+  <section class="doc-section" id="worked">
+    <h2><span class="num">06</span>A screen, dissected</h2>
+    <p class="lead">The Receivables screen, read as four stacked clusters. Notice how the same four tools combine: type ranks each cluster's content, proximity binds it, a card or divider encloses it where needed, and one rhythm spaces them all.</p>
+
+    <div class="frame">
+      <div class="frame-canvas" style="display:flex; flex-direction:column; gap:var(--space-6)">
+
+        <!-- cluster 1: page header -->
+        <div style="display:flex; align-items:flex-start; gap:var(--space-3)">
+          <span class="tagnum">1</span>
+          <div style="flex:1">
+            <div class="mk-eyebrow" style="margin-bottom:var(--space-2)">Treasury · LATAM</div>
+            <div style="display:flex; align-items:center; gap:var(--space-4); flex-wrap:wrap">
+              <h3 style="font-size:var(--fs-3xl); font-weight:var(--w-bold); letter-spacing:var(--ls-title); margin:0">Receivables</h3>
+              <span class="pill success" style="--x:0"><span class="dot"></span><span class="pill-label">6 scheduled</span></span>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm">+ New</button>
+        </div>
+
+        <!-- cluster 2: KPI stats -->
+        <div style="display:flex; align-items:flex-start; gap:var(--space-3)">
+          <span class="tagnum">2</span>
+          <div class="stat-row" style="flex:1">
+            <div class="stat-box"><div class="lbl">Available</div><div class="val"><span class="cur">USD</span>5,154</div></div>
+            <div class="stat-box"><div class="lbl">To receive</div><div class="val"><span class="cur">USD</span>5,506</div></div>
+            <div class="stat-box"><div class="lbl">This week</div><div class="val">6</div></div>
+          </div>
+        </div>
+
+        <!-- cluster 3: filters -->
+        <div style="display:flex; align-items:center; gap:var(--space-3)">
+          <span class="tagnum">3</span>
+          <div style="flex:1; display:flex; gap:var(--space-3); flex-wrap:wrap">
+            <span class="pill neutral" style="height:32px; border-radius:var(--radius-md)"><span class="pill-label">Status: All</span></span>
+            <span class="pill neutral" style="height:32px; border-radius:var(--radius-md)"><span class="pill-label">Currency: USD</span></span>
+            <span class="pill neutral" style="height:32px; border-radius:var(--radius-md)"><span class="pill-label">Country</span></span>
+          </div>
+        </div>
+
+        <!-- cluster 4: table -->
+        <div style="display:flex; align-items:flex-start; gap:var(--space-3)">
+          <span class="tagnum">4</span>
+          <div class="mk-card" style="flex:1; padding:0">
+            <div style="display:flex; align-items:center; gap:var(--space-4); padding:var(--space-3) var(--space-5); border-bottom:1px solid var(--color-border-subtle)">
+              <span class="mk-eyebrow" style="flex:1">Counterparty</span><span class="mk-eyebrow" style="flex:0 0 80px; text-align:right">Amount</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:var(--space-3); padding:var(--space-4) var(--space-5); border-bottom:1px solid var(--color-border-subtle)">
+              <span class="av av-brand" style="width:24px; height:24px; font-size:9px">AC</span>
+              <div style="flex:1"><div style="font-size:var(--fs-sm); font-weight:var(--w-semibold)">Acme Corp S.A.</div></div>
+              <div style="font-variant-numeric:tabular-nums; font-weight:var(--w-bold); font-size:var(--fs-sm); color:var(--color-feedback-success-foreground)">USD 5,154</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:var(--space-3); padding:var(--space-4) var(--space-5)">
+              <span class="av av-brand" style="width:24px; height:24px; font-size:9px">GL</span>
+              <div style="flex:1"><div style="font-size:var(--fs-sm); font-weight:var(--w-semibold)">Globex LATAM</div></div>
+              <div style="font-variant-numeric:tabular-nums; font-weight:var(--w-bold); font-size:var(--fs-sm)">USD 1,263</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="annot">
+      <div class="row"><span class="k">1</span><span><b>Page header.</b> Eyebrow (muted) → title (H3 bold) → status pill. Three type ranks; the one accent of energy is the Royal "+ New", the action.</span></div>
+      <div class="row"><span class="k">2</span><span><b>KPI cluster.</b> Three equal cards, equal gaps — they're peers. Display-weight numbers lead; mono caps labels recede. Proximity (one row) says "these belong together".</span></div>
+      <div class="row"><span class="k">3</span><span><b>Filter cluster.</b> Pill-shaped controls, tight gaps — clearly one toolbar. Sits closer to the table it filters than to the KPIs above (proximity binds it downward).</span></div>
+      <div class="row"><span class="k">4</span><span><b>Table.</b> A single card encloses the group; hairlines split rows inside it. Amounts right-aligned and tabular for scanning; one bold success value per row is the focal point.</span></div>
+    </div>
+  </section>
+
+  <!-- 07 TEXT PATTERNS -->
+  <section class="doc-section" id="textpatterns">
+    <h2><span class="num">07</span>Textual composition patterns</h2>
+    <p class="lead">A gallery of recurring text blocks, set in generic copy. Each one is a small composition: notice how every block ranks its lines (overline → title → body → caption) and binds them with proximity — the same rules from above, applied to words.</p>
+
+    <div class="txt-grid">
+
+      <!-- A · section intro -->
+      <div class="txt-card">
+        <div class="txt-label">A · Section intro</div>
+        <div class="txt-body">
+          <div style="display:flex; flex-direction:column; gap:var(--space-3)">
+            <span class="t-overline">Overline · context</span>
+            <span class="t-title">A concise, descriptive heading</span>
+            <span class="t-lead">A supporting sentence that frames what follows and sets expectations in one breath.</span>
+            <span class="t-body">Body copy continues the thought with the detail the lead omits — one or two sentences, never a wall. Generous line height keeps it readable.</span>
+          </div>
+        </div>
+        <div class="txt-note">Four ranks, one cluster: label → title → lead → body. The eye enters at the title and falls naturally down.</div>
+      </div>
+
+      <!-- B · key-value details -->
+      <div class="txt-card">
+        <div class="txt-label">B · Key–value details</div>
+        <div class="txt-body">
+          <dl class="t-dl">
+            <dt>From</dt><dd>Generic Holdings S.A.</dd>
+            <dt>Reference</dt><dd>REF-000-000-001</dd>
+            <dt>Amount</dt><dd>0,000.00</dd>
+            <dt>Status</dt><dd>Placeholder value</dd>
+            <dt>Date</dt><dd>00/00/0000</dd>
+          </dl>
+        </div>
+        <div class="txt-note">Muted mono labels recede; default-weight values lead. Right-aligned values make a scannable column.</div>
+      </div>
+
+      <!-- C · metric block -->
+      <div class="txt-card">
+        <div class="txt-label">C · Metric block</div>
+        <div class="txt-body">
+          <div style="display:flex; flex-direction:column; gap:var(--space-2)">
+            <span class="t-overline" style="color:var(--color-foreground-muted)">Metric label</span>
+            <span style="font-family:var(--font-display); font-size:var(--fs-6xl); font-weight:var(--w-bold); letter-spacing:var(--ls-display); line-height:1; font-variant-numeric:tabular-nums; color:var(--color-foreground-default)"><span style="font-size:var(--fs-xl); color:var(--color-foreground-muted); font-weight:var(--w-medium); margin-right:var(--space-1)">00</span>0,000</span>
+            <span class="t-caption"><span style="color:var(--color-feedback-success-foreground); font-weight:var(--w-semibold)">↑ 00%</span> vs. previous period · generic caption</span>
+          </div>
+        </div>
+        <div class="txt-note">The number dominates by size; the label and trend caption frame it without competing.</div>
+      </div>
+
+      <!-- D · inline notice -->
+      <div class="txt-card">
+        <div class="txt-label">D · Inline notice</div>
+        <div class="txt-body">
+          <div class="t-notice">
+            <i data-lucide="info"></i>
+            <div>
+              <div class="n-ttl">A short, bold lead line</div>
+              <div class="n-body">One sentence of supporting detail explaining the notice and, if needed, what to do next. Kept brief.</div>
+            </div>
+          </div>
+        </div>
+        <div class="txt-note">Enclosure (tinted box + icon) sets the message apart; the bold lead carries the gist before the body is read.</div>
+      </div>
+
+      <!-- E · numbered steps -->
+      <div class="txt-card">
+        <div class="txt-label">E · Numbered steps</div>
+        <div class="txt-body">
+          <ol class="t-steps">
+            <li><div><div class="s-ttl">First step title</div><div class="s-desc">A short instruction describing what happens at this step.</div></div></li>
+            <li><div><div class="s-ttl">Second step title</div><div class="s-desc">Each step pairs a bold title with a muted, single-line description.</div></div></li>
+            <li><div><div class="s-ttl">Third step title</div><div class="s-desc">The numbered markers carry order; the titles carry rank.</div></div></li>
+          </ol>
+        </div>
+        <div class="txt-note">Order is explicit (numbers) and ranked (title vs. description) — two signals, no ambiguity about sequence.</div>
+      </div>
+
+      <!-- F · pull quote -->
+      <div class="txt-card">
+        <div class="txt-label">F · Pull quote</div>
+        <div class="txt-body">
+          <blockquote class="t-quote"><span class="mark">“</span>A short, declarative statement set large to earn a pause in the reading rhythm.<span class="mark">”</span></blockquote>
+          <div class="t-attrib">
+            <span class="av av-brand" style="width:32px; height:32px; font-size:var(--fs-xxs)">GN</span>
+            <div><div class="nm">Generic Name</div><div class="role">Role · Generic Company</div></div>
+          </div>
+        </div>
+        <div class="txt-note">Display-weight quote breaks the body rhythm to signal importance; the attribution recedes to caption rank.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 08 EMPHASIS & INVERSE -->
+  <section class="doc-section" id="emphasis">
+    <h2><span class="num">08</span>Emphasis &amp; inverse surfaces</h2>
+    <p class="lead">Two more levers for hierarchy: <b style="color:var(--color-foreground-default)">emphasis</b> — spending the Sky accent on the single thing that matters — and <b style="color:var(--color-foreground-default)">inverse surfaces</b>, where the same composition rules hold but the colour roles flip. (Full colour rules live in <a class="x-doclink" href="accent-highlights.html" style="color:var(--color-foreground-highlight); font-weight:var(--w-semibold); text-decoration:none">Accent &amp; highlights</a>.)</p>
+
+    <div class="principle">
+      <div class="why">
+        <span class="kicker">Emphasis = one focal point</span>
+        <p>Hierarchy isn't only size and position — a single <b>accent</b> creates an instant entry point. Spend it on the row, value or action that matters most.</p>
+        <p>The discipline is <b>one accent per view</b>. Highlight everything and you've highlighted nothing.</p>
+      </div>
+      <div class="compare" style="grid-template-columns:1fr 1fr">
+        <div class="compare-cell">
+          <div class="compare-tag bad"><i data-lucide="x"></i>No focal point</div>
+          <div class="compare-canvas">
+            <div class="mk-card" style="padding:0">
+              <div class="emph-list">
+                <div class="emph-row"><span class="nm">Generic item one</span><span class="amt">0,000</span></div>
+                <div class="emph-row"><span class="nm">Generic item two</span><span class="amt">0,000</span></div>
+                <div class="emph-row"><span class="nm">Generic item three</span><span class="amt">0,000</span></div>
+                <div class="emph-row"><span class="nm">Generic item four</span><span class="amt">0,000</span></div>
+              </div>
+            </div>
+            <p style="font-size:var(--fs-xs); color:var(--color-foreground-muted); margin:var(--space-4) 0 0">All equal — the eye scans without stopping.</p>
+          </div>
+        </div>
+        <div class="compare-cell">
+          <div class="compare-tag good"><i data-lucide="check"></i>One accent leads</div>
+          <div class="compare-canvas">
+            <div class="mk-card" style="padding:0">
+              <div class="emph-list">
+                <div class="emph-row"><span class="nm">Generic item one</span><span class="amt">0,000</span></div>
+                <div class="emph-row is-focus"><span class="nm">Generic item two</span><span class="amt">0,000</span></div>
+                <div class="emph-row"><span class="nm">Generic item three</span><span class="amt">0,000</span></div>
+                <div class="emph-row"><span class="nm">Generic item four</span><span class="amt">0,000</span></div>
+              </div>
+            </div>
+            <p style="font-size:var(--fs-xs); color:var(--color-foreground-muted); margin:var(--space-4) 0 0">Sky rail + tint pulls the eye to the one that matters.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="why">
+        <span class="kicker">Emphasis in running text</span>
+        <p>To pull one phrase out of a paragraph, lift it with the accent — either as <b>coloured, semibold text</b> or a <b>soft highlight mark</b>. Both flag the part that matters while keeping the sentence readable.</p>
+        <p>Emphasise <b>one phrase per block</b>. The moment two spans are highlighted in the same paragraph, neither wins — the same 3% discipline as colour.</p>
+      </div>
+      <div class="frame">
+        <div class="frame-canvas" style="display:flex; flex-direction:column; gap:var(--space-6)">
+          <div>
+            <div class="mk-eyebrow" style="margin-bottom:var(--space-3)">Technique A · accent text</div>
+            <p class="t-prose">A generic introductory sentence sets up the idea without urgency. <span class="t-hl">This is the phrase that carries the point</span>, set in accent-700 and semibold so the eye catches it mid-paragraph — then the sentence continues in normal body weight.</p>
+          </div>
+          <div>
+            <div class="mk-eyebrow" style="margin-bottom:var(--space-3)">Technique B · highlight mark</div>
+            <p class="t-prose">Generic supporting copy continues the thought, and when a span deserves the strongest pull, a <span class="t-mark">soft highlight mark</span> wraps it like a marker stroke. Reserve the mark for the single most important span.</p>
+          </div>
+          <div>
+            <div class="mk-eyebrow" style="margin-bottom:var(--space-3); color:var(--color-feedback-danger-foreground)">Don't · over-highlight</div>
+            <p class="t-prose">When <span class="t-hl">every</span> other <span class="t-mark">phrase</span> is <span class="t-hl">emphasised</span>, the paragraph turns <span class="t-mark">noisy</span> and <span class="t-hl">nothing</span> stands out — emphasis spent everywhere is emphasis spent nowhere.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="why">
+        <span class="kicker">Inverse surfaces</span>
+        <p>On dark (inverse) surfaces — heroes, premium panels, decks — the <b>structure is identical</b>: same type ranks, same proximity, same rhythm.</p>
+        <p>Only the <b>colour roles flip</b> to the inverse tokens: text → <code style="font-family:var(--font-mono); font-size:var(--fs-xs)">--color-foreground-inverse-*</code>, hairlines → <code style="font-family:var(--font-mono); font-size:var(--fs-xs)">--color-border-inverse</code>, chips → white-alpha overlays.</p>
+        <p>Accent flips too: on dark, Sky-500 is legible (<code style="font-family:var(--font-mono); font-size:var(--fs-xs)">--color-foreground-inverse-accent</code>) — the opposite of light, where Sky text must darken to accent-700.</p>
+      </div>
+      <div class="inv">
+        <span class="ey">Overline · inverse</span>
+        <h4>Composition holds on dark</h4>
+        <p class="body">Same ranking, proximity and rhythm as a light surface — only the colour roles are swapped for their inverse tokens. The accent still marks the single focal point.</p>
+        <div class="rule"></div>
+        <div class="row row-sel"><span style="font-size:var(--fs-sm); font-weight:var(--w-semibold)">Selected item · inverse</span><span class="amt amt-accent" style="margin-left:auto">0,000</span></div>
+        <div class="row" style="margin-top:var(--space-4); justify-content:space-between">
+          <span class="chip">Overlay chip</span>
+          <a href="#emphasis" class="a-link">Accent link →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="annot">
+      <div class="row"><span class="k" style="background:var(--color-brand-accent-700)"><i data-lucide="check" style="width:11px;height:11px"></i></span><span><b>Light surface:</b> accent as text/links must use <code style="font-family:var(--font-mono); font-size:var(--fs-xs)">accent-700</code> (5.20:1). Solid fills with white text use Royal.</span></div>
+      <div class="row"><span class="k" style="background:var(--color-brand-accent-700)"><i data-lucide="check" style="width:11px;height:11px"></i></span><span><b>Inverse surface:</b> accent as text uses Sky-500 via <code style="font-family:var(--font-mono); font-size:var(--fs-xs)">--color-foreground-inverse-accent</code> — bright enough against dark.</span></div>
+    </div>
+  </section>
+
+  <!-- 09 CHECKLIST -->
+  <section class="doc-section" id="checklist">
+    <h2><span class="num">09</span>Checklist</h2>
+    <p class="lead">A fast pass before shipping a screen. If any "don't" is true, the composition is fighting the reader.</p>
+
+    <div class="checklist">
+      <div class="check-item do"><i data-lucide="check-circle-2"></i><p><b>Do</b> establish one clear entry point — the single most important thing reads first.</p></div>
+      <div class="check-item dont"><i data-lucide="x-circle"></i><p><b>Don't</b> give five elements equal weight; the eye then has no place to land.</p></div>
+      <div class="check-item do"><i data-lucide="check-circle-2"></i><p><b>Do</b> group with whitespace first — bigger gaps between clusters than within.</p></div>
+      <div class="check-item dont"><i data-lucide="x-circle"></i><p><b>Don't</b> reach for a border when a gap would group the items just as well.</p></div>
+      <div class="check-item do"><i data-lucide="check-circle-2"></i><p><b>Do</b> cap each cluster at ~3 type levels: label, value, caption.</p></div>
+      <div class="check-item dont"><i data-lucide="x-circle"></i><p><b>Don't</b> nest cards inside cards — one enclosure per group, hairlines inside.</p></div>
+      <div class="check-item do"><i data-lucide="check-circle-2"></i><p><b>Do</b> pull every gap from the spacing scale; keep one rhythm per region.</p></div>
+      <div class="check-item dont"><i data-lucide="x-circle"></i><p><b>Don't</b> spend the Sky accent on more than one focal point per view.</p></div>
+    </div>
+  </section>
+
+</main>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" fill="#002142"/>
+    <rect x="24" y="26" width="52" height="10" rx="3" fill="#fff"/>
+    <rect x="24" y="44" width="32" height="6" rx="2" fill="#3399FF"/>
+    <rect x="24" y="58" width="52" height="5" rx="2" fill="#ffffff" opacity=".5"/>
+    <rect x="24" y="68" width="44" height="5" rx="2" fill="#ffffff" opacity=".5"/>
+  </svg>
+</template>
+
+<script>if (window.lucide) lucide.createIcons();</script>
+</body>
+</html>

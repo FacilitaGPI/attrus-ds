@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accent &amp; highlights · ATTRUS Design System</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../themes/index.css?v=1">
+<script src="../theme-toggle.js?v=1"></script>
+<link rel="stylesheet" href="components/buttons.css">
+<link rel="stylesheet" href="components/tabs.css">
+<link rel="stylesheet" href="components/primitives.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .doc-back { display: inline-flex; align-items: center; gap: var(--space-2); margin: var(--space-6) 0 0 var(--space-8); color: var(--color-foreground-muted); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); }
+  .doc-back:hover { color: var(--color-foreground-default); }
+  .doc-back i, .doc-back svg { width: var(--icon-sm); height: var(--icon-sm); stroke-width: var(--icon-stroke); }
+
+  /* shared chrome */
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-brand); border: 1px solid var(--color-brand-secondary-100); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
+  .spec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .spec-tag { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
+  .spec-body { padding: var(--space-6); }
+
+  /* proportion bar */
+  .prop-bar { display: flex; height: 64px; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--color-border-default); margin-bottom: var(--space-5); }
+  .prop-seg { display: flex; align-items: flex-end; padding: var(--space-3); position: relative; min-width: 0; }
+  .prop-seg .pct { font-family: var(--font-mono); font-size: var(--fs-sm); font-weight: var(--w-bold); }
+  .prop-seg .nm { position: absolute; top: var(--space-3); left: var(--space-3); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; opacity: .85; }
+  .prop-legend { display: flex; flex-wrap: wrap; gap: var(--space-4) var(--space-6); }
+  .prop-legend .item { display: flex; align-items: flex-start; gap: var(--space-3); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-snug); max-width: 40ch; }
+  .prop-legend .sw { width: 14px; height: 14px; border-radius: var(--radius-xs); flex-shrink: 0; margin-top: 2px; border: 1px solid var(--color-border-strong); }
+  .prop-legend b { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+
+  /* role map / contrast tables */
+  .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; margin-bottom: var(--space-6); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; line-height: var(--lh-snug); }
+  .token-table tr:last-child td { border-bottom: 0; }
+  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); white-space: nowrap; }
+  .token-table .yes { color: var(--color-feedback-success-foreground); font-weight: var(--w-semibold); }
+  .token-table .no  { color: var(--color-feedback-danger-foreground); font-weight: var(--w-semibold); }
+  .chip-swatch { display: inline-block; width: 12px; height: 12px; border-radius: var(--radius-2xs); vertical-align: -1px; margin-right: var(--space-2); border: 1px solid var(--color-border-strong); }
+
+  /* contrast result pills */
+  .ratio { font-family: var(--font-mono); font-weight: var(--w-bold); }
+  .ratio.pass { color: var(--color-feedback-success-foreground); }
+  .ratio.fail { color: var(--color-feedback-danger-foreground); }
+  .swatch-cell { display: inline-flex; align-items: center; justify-content: center; width: 120px; height: 36px; border-radius: var(--radius-sm); font-size: var(--fs-sm); font-weight: var(--w-semibold); }
+
+  /* two-blue comparison */
+  .twocol { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+  @media (min-width: 760px) { .twocol { grid-template-columns: 1fr 1fr; } }
+  .blue-card { border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--color-border-default); }
+  .blue-card .swatch { height: 96px; display: flex; align-items: flex-end; padding: var(--space-4); }
+  .blue-card .swatch .hex { font-family: var(--font-mono); font-size: var(--fs-sm); font-weight: var(--w-bold); color: var(--color-pure-white); }
+  .blue-card .body { padding: var(--space-5); background: var(--color-background-surface); }
+  .blue-card .body h4 { margin: 0 0 var(--space-2); font-size: var(--fs-lg); font-weight: var(--w-bold); }
+  .blue-card .body ul { margin: 0; padding-left: var(--space-5); color: var(--color-foreground-secondary); font-size: var(--fs-sm); line-height: var(--lh-relaxed); }
+  .blue-card .body li { margin-bottom: var(--space-2); }
+
+  /* live product examples */
+  .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); }
+  .demo-tile { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-4); min-height: 150px; }
+  .demo-tile .demo-stage { flex: 1; display: flex; align-items: center; justify-content: center; }
+  .demo-tile .demo-cap { font-size: var(--fs-xs); color: var(--color-foreground-muted); line-height: var(--lh-snug); }
+  .demo-tile .demo-cap b { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 2px; }
+
+  /* a fake link */
+  .x-link { color: var(--color-foreground-highlight); font-weight: var(--w-semibold); text-decoration: none; }
+  .x-link:hover { text-decoration: underline; text-underline-offset: 2px; }
+  /* a fake focus ring input */
+  .x-input { width: 100%; height: 40px; border-radius: var(--radius-md); border: 1px solid var(--color-border-focus); padding: 0 var(--space-4); font-family: inherit; font-size: var(--fs-sm); box-shadow: var(--shadow-focus); outline: none; background: var(--color-background-surface); color: var(--color-foreground-default); }
+  /* a fake selected row */
+  .x-row { width: 100%; display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm); background: var(--color-brand-accent-50); border-left: 3px solid var(--color-brand-accent-500); font-size: var(--fs-sm); }
+  /* a fake mini chart */
+  .x-chart { display: flex; align-items: flex-end; gap: var(--space-2); height: 72px; }
+  .x-chart .bar { width: 18px; border-radius: var(--radius-2xs) var(--radius-2xs) 0 0; background: var(--color-neutral-200); }
+  .x-chart .bar.hot { background: var(--color-brand-accent-500); }
+
+  /* don'ts */
+  .dont-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-4); }
+  .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .dont-canvas { padding: var(--space-6); background: var(--color-background-subtle); display: flex; justify-content: center; align-items: center; min-height: 120px; border-bottom: 1px solid var(--color-border-subtle); }
+  .dont-body { padding: var(--space-4) var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
+  .dont-body i, .dont-body svg { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .dont-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+
+  .callout { display: flex; gap: var(--space-4); padding: var(--space-5) var(--space-6); border-radius: var(--radius-md); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); border: 1px solid color-mix(in srgb, var(--color-brand-secondary-500) 24%, transparent); margin-bottom: var(--space-6); }
+  .callout i, .callout svg { color: var(--color-foreground-brand); width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
+  .callout p { margin: 0; font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .callout b { color: var(--color-foreground-brand); font-weight: var(--w-semibold); }
+</style>
+</head>
+<body>
+
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<main class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Accent &amp; highlights</h1>
+      <p>How ATTRUS Sky (<code style="font-family:var(--font-mono)">#3399FF</code>) earns its 3%. The accent is the rarest, loudest colour in the system — reserved for action, selection and emphasis, never for surfaces or running text.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="sparkles"></i>Colour doctrine</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#proportion">01 The 3% rule</a>
+    <a href="#two-blues">02 Sky vs Royal</a>
+    <a href="#roles">03 Role map</a>
+    <a href="#contrast">04 Contrast &amp; a11y</a>
+    <a href="#product">05 In product</a>
+    <a href="#donts">06 Don'ts</a>
+    <a href="#tokens">07 Token reference</a>
+  </nav>
+
+  <!-- 01 PROPORTION -->
+  <section class="doc-section" id="proportion">
+    <h2><span class="num">01</span>The 3% rule</h2>
+    <p class="lead">The brand book fixes the chromatic proportion across every piece. Navy and Black carry the weight; white gives air; Royal adds institutional energy; <b style="color:var(--color-foreground-default)">Sky is the 3% — always a highlight or an action, never a dominant background.</b></p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Usage proportion</h3><p>From the brand book's chromatic system. The scarcer the colour, the louder it speaks — which is exactly why Sky must stay rare to keep its signal.</p></div>
+        <span class="spec-tag">brand book · p.28</span>
+      </div>
+      <div class="spec-body">
+        <div class="prop-bar">
+          <div class="prop-seg" style="flex:40; background: var(--color-brand-primary-500); color: var(--color-pure-white);"><span class="nm">Navy</span><span class="pct">40%</span></div>
+          <div class="prop-seg" style="flex:25; background: #0F0F1A; color: var(--color-pure-white);"><span class="nm">Black</span><span class="pct">25%</span></div>
+          <div class="prop-seg" style="flex:22; background: var(--color-pure-white); color: var(--color-foreground-default);"><span class="nm" style="color:var(--color-foreground-muted)">White</span><span class="pct">22%</span></div>
+          <div class="prop-seg" style="flex:10; background: var(--color-brand-secondary-500); color: var(--color-pure-white);"><span class="nm">Royal</span><span class="pct">10%</span></div>
+          <div class="prop-seg" style="flex:3; background: var(--color-brand-accent-500); color: var(--color-pure-white); min-width: 44px;"><span class="pct">3%</span></div>
+        </div>
+        <div class="prop-legend">
+          <div class="item"><span class="sw" style="background:var(--color-brand-primary-500)"></span><span><b>Navy + Black — 65%.</b> Dominant on high-impact and institutional surfaces. The system's gravity.</span></div>
+          <div class="item"><span class="sw" style="background:var(--color-pure-white)"></span><span><b>White — 22%.</b> Pause, breathing room, extended reading. The operational default for the platform.</span></div>
+          <div class="item"><span class="sw" style="background:var(--color-brand-secondary-500)"></span><span><b>Royal — 10%.</b> More energy than Navy, still institutional. Solid fills, primary buttons, highlight blocks.</span></div>
+          <div class="item"><span class="sw" style="background:var(--color-brand-accent-500)"></span><span><b>Sky — 3%.</b> Action &amp; emphasis only. The accent. Lose discipline here and the whole system flattens.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <i data-lucide="info"></i>
+      <p><b>Why so strict?</b> Accent works by contrast with restraint. If Sky appears on ten things per screen, none of them reads as "the action." Keeping it at ~3% is what lets a single Sky element pull the eye instantly — the entire point of an accent.</p>
+    </div>
+  </section>
+
+  <!-- 02 TWO BLUES -->
+  <section class="doc-section" id="two-blues">
+    <h2><span class="num">02</span>Sky vs Royal — the two blues</h2>
+    <p class="lead">The system runs on two blues that are easy to confuse. The rule is about <b style="color:var(--color-foreground-default)">weight vs energy</b>: Royal is the institutional solid; Sky is the interactive spark. When in doubt, a surface or a button is Royal — Sky is only the thing you want clicked or noticed.</p>
+
+    <div class="twocol">
+      <div class="blue-card">
+        <div class="swatch" style="background: var(--color-brand-secondary-500);"><span class="hex">Royal · #003399 · brand-secondary</span></div>
+        <div class="body">
+          <h4>Royal — institutional weight</h4>
+          <ul>
+            <li>Solid <b>primary buttons</b> &amp; their hovers</li>
+            <li>Filled controls: checkbox, radio, switch, slider</li>
+            <li>Highlight blocks, avatars, brand pills</li>
+            <li>Any solid fill that carries <b>white text</b> (10.86:1)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="blue-card">
+        <div class="swatch" style="background: var(--color-brand-accent-500);"><span class="hex">Sky · #3399FF · brand-accent</span></div>
+        <div class="body">
+          <h4>Sky — interactive spark</h4>
+          <ul>
+            <li>Selection indicators: <b>active tab underline</b>, selected row rail</li>
+            <li>Links &amp; inline actions (as <code>accent-700</code> on light)</li>
+            <li>Focus rings (<code>--shadow-focus</code>)</li>
+            <li>The single <b>highlighted series</b> in a chart</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 ROLE MAP -->
+  <section class="doc-section" id="roles">
+    <h2><span class="num">03</span>Role map — where Sky goes</h2>
+    <p class="lead">The concrete answer to "can I use Sky here?". If a use isn't on the left column, it's almost certainly Royal, Navy or neutral.</p>
+
+    <table class="token-table">
+      <thead><tr><th style="width:40%">Sky belongs here</th><th>Token</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td class="yes">Active tab underline / indicator</td><td><code>--color-brand-accent-500</code></td><td>2px rule — a thin indicator, not a text background.</td></tr>
+        <tr><td class="yes">Selected-row rail / soft highlight</td><td><code>accent-500</code> border · <code>accent-50</code> fill</td><td>Left border + tinted background pair.</td></tr>
+        <tr><td class="yes">Links &amp; inline text actions</td><td><code>--color-foreground-highlight</code></td><td>Resolves to a Sky tone; renders at <code>accent-700</code> weight on light for contrast.</td></tr>
+        <tr><td class="yes">Focus rings</td><td><code>--shadow-focus</code></td><td>Sky glow at 22% — keyboard affordance on any control.</td></tr>
+        <tr><td class="yes">Single highlighted chart series</td><td><code>--color-brand-accent-500</code></td><td>One series at a time — the data point you want read first.</td></tr>
+        <tr><td class="yes">Small accent icon / "new" spark</td><td><code>accent-300</code> on dark · <code>accent-600/700</code> on light</td><td>Tiny areas only; pick the shade by background for contrast.</td></tr>
+      </tbody>
+    </table>
+
+    <table class="token-table">
+      <thead><tr><th style="width:40%">Sky does NOT go here</th><th>Use instead</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td class="no">Solid primary button fill</td><td><code>--color-brand-secondary-500</code> (Royal)</td><td>White text on Sky is 2.94:1 — fails AA. Royal is 10.86:1.</td></tr>
+        <tr><td class="no">Page / card / section background</td><td>neutral surfaces, Navy on dark</td><td>"Never as the dominant background" — brand book p.28.</td></tr>
+        <tr><td class="no">Running body text on white</td><td><code>--color-foreground-default</code> (Navy/ink)</td><td>Sky-on-white body is 2.94:1 — illegible at body sizes.</td></tr>
+        <tr><td class="no">Neutral card borders &amp; dividers</td><td><code>--color-border-default</code></td><td>Brand colours in this role create false emphasis everywhere.</td></tr>
+        <tr><td class="no">Filled form controls (check/radio/switch)</td><td><code>--color-brand-secondary-500</code> (Royal)</td><td>They carry a white mark — needs the Royal contrast.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 04 CONTRAST -->
+  <section class="doc-section" id="contrast">
+    <h2><span class="num">04</span>Contrast &amp; accessibility</h2>
+    <p class="lead">Sky is a <b style="color:var(--color-foreground-default)">mid-tone</b> — bright enough to fail white text and dark text alike at the 500 step. This single fact drives most of the role map above. Always step <em>darker</em> (accent-700+) when Sky must carry or be text on light.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Measured ratios</h3><p>WCAG 2.1 — normal text needs 4.5:1, large/UI 3:1. Computed against the actual palette hexes.</p></div>
+        <span class="spec-tag">WCAG AA</span>
+      </div>
+      <div class="spec-body" style="padding:0">
+        <table class="token-table" style="margin:0; border:0; border-radius:0">
+          <thead><tr><th>Combination</th><th>Sample</th><th>Ratio</th><th>Verdict</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>White text on <b>Sky #3399FF</b></td>
+              <td><span class="swatch-cell" style="background:#3399FF; color:#fff;">Confirm</span></td>
+              <td><span class="ratio fail">2.94:1</span></td>
+              <td class="no">Fails — never do this</td>
+            </tr>
+            <tr>
+              <td><b>Sky #3399FF</b> text on white</td>
+              <td><span class="swatch-cell" style="background:#fff; color:#3399FF; border:1px solid var(--color-border-default)">Link</span></td>
+              <td><span class="ratio fail">2.94:1</span></td>
+              <td class="no">Fails — step darker</td>
+            </tr>
+            <tr>
+              <td><b>accent-700 #1E6DC4</b> text on white</td>
+              <td><span class="swatch-cell" style="background:#fff; color:#1E6DC4; border:1px solid var(--color-border-default)">Link</span></td>
+              <td><span class="ratio pass">5.20:1</span></td>
+              <td class="yes">Passes — link / text-on-light</td>
+            </tr>
+            <tr>
+              <td>White text on <b>accent-700 #1E6DC4</b></td>
+              <td><span class="swatch-cell" style="background:#1E6DC4; color:#fff;">Step 3</span></td>
+              <td><span class="ratio pass">5.20:1</span></td>
+              <td class="yes">Passes — Sky-family solid w/ white</td>
+            </tr>
+            <tr>
+              <td>White text on <b>Royal #003399</b></td>
+              <td><span class="swatch-cell" style="background:#003399; color:#fff;">Confirm</span></td>
+              <td><span class="ratio pass">10.86:1</span></td>
+              <td class="yes">Passes — the solid-fill default</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="callout">
+      <i data-lucide="wrench"></i>
+      <p><b>Audit fix applied.</b> The stepper's current-step marker used a solid Sky-500 fill with a white number (2.94:1). It now uses <code>accent-700</code> (5.20:1) — same Sky family, accessible. Everywhere else the system already steps to <code>accent-700</code> for Sky-on-light text (active tabs, pagination) and uses Royal for solid white-bearing fills, so no other changes were needed.</p>
+    </div>
+  </section>
+
+  <!-- 05 IN PRODUCT -->
+  <section class="doc-section" id="product">
+    <h2><span class="num">05</span>In product — six correct uses</h2>
+    <p class="lead">Every place Sky legitimately appears in the platform. Note how each is small, singular, and interactive — and how the surrounding weight is Royal, Navy or neutral.</p>
+
+    <div class="demo-grid">
+      <div class="demo-tile">
+        <div class="demo-stage"><button class="btn btn-sm btn-link">View statement</button></div>
+        <div class="demo-cap"><b>Link / inline action</b>Sky as text, rendered dark enough to pass on white.</div>
+      </div>
+      <div class="demo-tile">
+        <div class="demo-stage" style="align-items:stretch; flex-direction:column; gap:0; justify-content:center">
+          <div class="tabs" style="--ind-w:64px; --ind-x:0px">
+            <button class="tab is-active">Overview</button>
+            <button class="tab">Activity</button>
+          </div>
+        </div>
+        <div class="demo-cap"><b>Active tab</b>A 2px Sky rule — a thin indicator, never a filled tab.</div>
+      </div>
+      <div class="demo-tile">
+        <div class="demo-stage" style="align-items:stretch"><input class="x-input" value="Search counterparties" readonly></div>
+        <div class="demo-cap"><b>Focus ring</b>Sky glow signals the focused control to keyboard users.</div>
+      </div>
+      <div class="demo-tile">
+        <div class="demo-stage" style="align-items:stretch"><div class="x-row"><span style="font-weight:var(--w-semibold)">Acme Corp S.A.</span><span style="margin-left:auto; color:var(--color-foreground-muted)">selected</span></div></div>
+        <div class="demo-cap"><b>Selected row</b>Sky left-rail + a 50-tint fill — soft, not shouting.</div>
+      </div>
+      <div class="demo-tile">
+        <div class="demo-stage"><div class="x-chart"><span class="bar" style="height:40%"></span><span class="bar" style="height:62%"></span><span class="bar hot" style="height:100%"></span><span class="bar" style="height:55%"></span><span class="bar" style="height:48%"></span></div></div>
+        <div class="demo-cap"><b>Chart highlight</b>One Sky bar — the value you want read first. The rest stay neutral.</div>
+      </div>
+      <div class="demo-tile">
+        <div class="demo-stage"><button class="btn btn-primary">Confirm transfer</button></div>
+        <div class="demo-cap"><b>Primary CTA = Royal</b>The action button is <em>Royal</em>, not Sky — accessible white text, institutional weight.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 DON'TS -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">06</span>Don'ts</h2>
+    <p class="lead">Four ways to spend the 3% badly. Each one either fails contrast or dilutes the accent until it stops meaning "action".</p>
+
+    <div class="dont-grid">
+      <div class="dont-card">
+        <div class="dont-canvas"><button class="btn" style="background:var(--color-brand-accent-500); color:#fff;">Confirm transfer</button></div>
+        <div class="dont-body"><i data-lucide="x-circle"></i><p><strong>Don't put white text on Sky</strong>2.94:1 — fails AA. Solid action fills are Royal; if it must be Sky-family, step to accent-700.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-canvas" style="background:var(--color-brand-accent-500); color:#fff; font-weight:var(--w-bold)">Dashboard</div>
+        <div class="dont-body"><i data-lucide="x-circle"></i><p><strong>Don't use Sky as a background</strong>"Never as the dominant background." Sky is a point of emphasis, not a surface.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-canvas" style="background:#fff"><p style="margin:0; color:var(--color-brand-accent-500); font-size:var(--fs-sm); line-height:1.5">Body copy set in Sky on white is hard to read at 2.94:1 and exhausts the eye over a paragraph.</p></div>
+        <div class="dont-body"><i data-lucide="x-circle"></i><p><strong>Don't set body text in Sky</strong>Running text is Navy/ink. Sky is for the occasional link, not paragraphs.</p></div>
+      </div>
+      <div class="dont-card">
+        <div class="dont-canvas" style="gap:var(--space-2); flex-wrap:wrap">
+          <span class="pill brand" style="background:var(--color-brand-accent-50); color:var(--color-brand-accent-700)">New</span>
+          <button class="btn btn-sm" style="background:var(--color-brand-accent-500); color:#fff">Save</button>
+          <span style="color:var(--color-brand-accent-500); font-weight:var(--w-semibold); font-size:var(--fs-sm)">3 items</span>
+          <span class="x-row" style="width:auto; padding:var(--space-2) var(--space-3)">Row</span>
+        </div>
+        <div class="dont-body"><i data-lucide="x-circle"></i><p><strong>Don't sprinkle Sky everywhere</strong>Five Sky things and none reads as "the action." Pick one accent per view.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 TOKENS -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">07</span>Token reference</h2>
+    <p class="lead">The semantic tokens that carry accent intent. Components should consume these — not the raw <code>accent-*</code> steps — so the role, not the hex, is what's referenced.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Token</th><th>Resolves to</th><th>Use for</th></tr></thead>
+      <tbody>
+        <tr><td><code>--color-foreground-highlight</code></td><td><span class="chip-swatch" style="background:#1E6DC4"></span>accent-700</td><td>Links, selected option text, inline actions — legible on light (5.20:1).</td></tr>
+        <tr><td><code>--color-foreground-accent</code></td><td><span class="chip-swatch" style="background:#1E6DC4"></span>accent-700</td><td>Accent text / small icons of emphasis. A foreground token, so it resolves to the legible step.</td></tr>
+        <tr><td><code>--color-border-accent</code> · <code>-focus</code></td><td><span class="chip-swatch" style="background:#3399FF"></span>Sky 500</td><td>Selected-row rails, focused-field borders.</td></tr>
+        <tr><td><code>--shadow-focus</code></td><td><span class="chip-swatch" style="background:#3399FF"></span>Sky 22%</td><td>Keyboard focus rings on every control.</td></tr>
+        <tr><td><code>--color-brand-accent-700</code></td><td><span class="chip-swatch" style="background:#1E6DC4"></span>#1E6DC4</td><td>Sky-as-text on light · solid Sky fills bearing white.</td></tr>
+        <tr><td><code>--color-brand-accent-50</code></td><td><span class="chip-swatch" style="background:#ECF5FF; border-color:var(--color-border-default)"></span>#ECF5FF</td><td>Soft selected/active backgrounds (tinted, not saturated).</td></tr>
+        <tr><td><code>--color-brand-secondary-500</code></td><td><span class="chip-swatch" style="background:#003399"></span>Royal</td><td>Solid primary fills &amp; controls — <em>not</em> an accent, the institutional blue.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" fill="#002142"/>
+    <circle cx="50" cy="50" r="22" fill="#3399FF"/>
+  </svg>
+</template>
+
+<script>if (window.lucide) lucide.createIcons();</script>
+</body>
+</html>

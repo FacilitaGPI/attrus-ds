@@ -1,0 +1,374 @@
+/* ============================================================
+   OVERLAY SYSTEM — Modal + Drawer
+   Both share scrim, entry/exit motion, focus management.
+   All values from tokens.
+   ============================================================ */
+
+/* =================== SCRIM =================== */
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: var(--color-scrim);
+  backdrop-filter: blur(var(--scrim-blur));
+  -webkit-backdrop-filter: blur(var(--scrim-blur));
+  z-index: 9000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+.scrim.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Fallback for browsers without backdrop-filter — strengthen the tint to compensate. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .scrim { background: rgba(10, 15, 31, 0.55); }
+}
+
+/* =================== MODAL =================== */
+.modal {
+  position: fixed;
+  z-index: 9100;
+  top: 50%; left: 50%;
+  transform: translate(-50%, calc(-50% + 32px)) scale(0.96);
+  width: min(560px, calc(100vw - var(--space-8)));
+  max-height: calc(100vh - var(--space-12));
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background-surface);
+  border-radius: var(--shape-overlay);
+  box-shadow: var(--shadow-2xl);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+  /* Exit (default state) — quick fade + small slide */
+  transition:
+    opacity var(--duration-base) var(--ease-standard),
+    transform var(--duration-base) var(--ease-standard);
+}
+.modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+  /* Entry — page-level pace, emphasized for the "land" feel */
+  transition:
+    opacity var(--duration-slower) var(--ease-standard),
+    transform var(--duration-deliberate) var(--ease-emphasis);
+}
+
+/* Sizes */
+.modal-sm  { width: min(420px, calc(100vw - var(--space-8))); }
+.modal-md  { width: min(560px, calc(100vw - var(--space-8))); }
+.modal-lg  { width: min(720px, calc(100vw - var(--space-8))); }
+.modal-xl  { width: min(960px, calc(100vw - var(--space-8))); }
+
+/* Header */
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-6) var(--space-4);
+}
+.modal-header-text { flex: 1; min-width: 0; }
+.modal-title {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xl);
+  font-weight: var(--w-bold);
+  letter-spacing: var(--ls-title);
+  line-height: var(--lh-tight);
+  color: var(--color-foreground-default);
+  margin: 0 0 var(--space-1);
+}
+.modal-subtitle {
+  font-size: var(--fs-sm);
+  color: var(--color-foreground-secondary);
+  line-height: var(--lh-normal);
+  margin: 0;
+}
+.modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-foreground-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: var(--transition-fast);
+}
+.modal-close:hover {
+  background: var(--color-background-hover);
+  color: var(--color-foreground-default);
+}
+.modal-close:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+.modal-close i, .modal-close svg { width: 18px; height: 18px; stroke-width: var(--icon-stroke); }
+
+/* Body */
+.modal-body {
+  padding: var(--space-2) var(--space-6) var(--space-6);
+  overflow-y: auto;
+  font-size: var(--fs-sm);
+  color: var(--color-foreground-default);
+  line-height: var(--lh-relaxed);
+  flex: 1;
+}
+.modal-body p { margin: 0 0 var(--space-3); }
+.modal-body p:last-child { margin-bottom: 0; }
+
+/* Footer */
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6) var(--space-6);
+  border-top: 1px solid var(--color-border-subtle);
+  margin-top: auto;
+  flex-shrink: 0;
+}
+.modal-footer-spread { justify-content: space-between; }
+.modal-footer-aux {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-xs);
+  color: var(--color-foreground-muted);
+}
+
+/* Variant: destructive — top accent strip */
+.modal-destructive .modal-header {
+  border-top: 3px solid var(--color-feedback-danger-foreground);
+  padding-top: calc(var(--space-6) - 3px);
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
+}
+.modal-destructive .modal-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; height: 40px;
+  background: var(--color-feedback-danger-background);
+  color: var(--color-feedback-danger-foreground);
+  border-radius: var(--radius-pill);
+  margin-bottom: var(--space-3);
+}
+.modal-destructive .modal-icon i, .modal-destructive .modal-icon svg { width: 20px; height: 20px; stroke-width: var(--icon-stroke); }
+
+
+/* =================== DRAWER =================== */
+.drawer {
+  position: fixed;
+  z-index: 9100;
+  background: var(--color-background-surface);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: var(--shadow-2xl);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+  /* Exit — slide back out + fade */
+  transition:
+    transform var(--duration-slow) var(--ease-standard),
+    opacity var(--duration-base) var(--ease-standard);
+}
+.drawer.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  /* Entry — page-level pace, emphasized */
+  transition:
+    transform var(--duration-deliberate) var(--ease-emphasis),
+    opacity var(--duration-slower) var(--ease-standard);
+}
+
+/* Right (default). --drawer-w drives the width per size variant. */
+.drawer-right {
+  --drawer-w: min(440px, 90vw);  /* @kind spacing */
+  top: 0; right: 0; bottom: 0;
+  width: var(--drawer-w);
+  border-top-left-radius: var(--radius-xs);
+  border-bottom-left-radius: var(--radius-xs);
+  transform: translateX(100%);
+}
+.drawer-right.is-open { transform: translateX(0); }
+
+/* Left */
+.drawer-left {
+  --drawer-w: min(320px, 85vw);  /* @kind spacing */
+  top: 0; left: 0; bottom: 0;
+  width: var(--drawer-w);
+  border-top-right-radius: var(--radius-xs);
+  border-bottom-right-radius: var(--radius-xs);
+  transform: translateX(-100%);
+}
+.drawer-left.is-open { transform: translateX(0); }
+
+/* Bottom */
+.drawer-bottom {
+  left: 0; right: 0; bottom: 0;
+  max-height: 80vh;
+  border-top-left-radius: var(--radius-sm);
+  border-top-right-radius: var(--radius-sm);
+  transform: translateY(100%);
+}
+.drawer-bottom.is-open { transform: translateY(0); }
+
+/* Drawer sizes (right/left) — feed --drawer-w so widths scale per variant */
+.drawer-sm  { --drawer-w: min(360px, 90vw);  /* @kind spacing */ width: var(--drawer-w); }
+.drawer-md  { --drawer-w: min(440px, 90vw);  /* @kind spacing */ width: var(--drawer-w); }
+.drawer-lg  { --drawer-w: min(560px, 92vw);  /* @kind spacing */ width: var(--drawer-w); }
+.drawer-xl  { --drawer-w: min(720px, 94vw);  /* @kind spacing */ width: var(--drawer-w); }
+
+/* Drawer parts (mirror modal vocabulary).
+   Header and footer are STICKY with a liquid-glass background: body
+   content scrolls underneath them with a frosted blur. The drawer
+   itself is the scroll container (see .drawer overflow-y above). */
+.drawer-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background: var(--glass-chrome);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--color-border-subtle);
+  flex-shrink: 0;
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .drawer-header, .drawer-footer { background: var(--color-background-surface); }
+}
+.drawer-header-text { flex: 1; min-width: 0; }
+.drawer-title {
+  font-family: var(--font-sans);
+  font-size: var(--fs-lg);
+  font-weight: var(--w-bold);
+  letter-spacing: var(--ls-title);
+  line-height: var(--lh-tight);
+  color: var(--color-foreground-default);
+  margin: 0 0 var(--space-1);
+}
+.drawer-subtitle {
+  font-size: var(--fs-sm);
+  color: var(--color-foreground-secondary);
+  line-height: var(--lh-normal);
+  margin: 0;
+}
+.drawer-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  width: 32px; height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-foreground-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: var(--transition-fast);
+}
+.drawer-close:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+/* Footer aux — left-side total/note when the footer is space-between (footerAux prop) */
+.drawer-footer-aux { font-size: var(--fs-xs); color: var(--color-foreground-muted); min-width: 0; }
+
+/* Mobile: footer actions stack full-width (doc §Header & Footer, variant 7) */
+@media (max-width: 560px) {
+  .drawer-footer { flex-direction: column; align-items: stretch; gap: var(--space-2); padding-bottom: max(var(--space-4), env(safe-area-inset-bottom)); }
+  .drawer-footer .btn { width: 100%; justify-content: center; }
+  .drawer-footer-aux { text-align: center; margin-bottom: var(--space-1); }
+}
+
+/* Dense header — tight chrome for utility drawers (filters) */
+.drawer-header.is-dense { padding: var(--space-3) var(--space-4); }
+.drawer-header.is-dense .drawer-title { font-size: var(--fs-md); }
+
+/* Header with a second control row (search pill, tabs) */
+.drawer-header.has-extra { flex-wrap: wrap; }
+.drawer-header > .drawer-header-extra { flex-basis: 100%; min-width: 0; }
+.drawer-close:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+.drawer-close i, .drawer-close svg { width: 18px; height: 18px; stroke-width: var(--icon-stroke); }
+
+/* Header lead tile — standardized icon container on the LEFT of the header.
+   40×40, top-aligned, consistent radius; caller sets bg/color per context. */
+.drawer-lead {
+  width: 40px; height: 40px;
+  flex-shrink: 0;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--shape-container);
+}
+.drawer-lead i, .drawer-lead svg { width: 20px; height: 20px; stroke-width: var(--icon-stroke); }
+
+.drawer-body {
+  padding: var(--space-6);
+  flex: 1 0 auto;
+  font-size: var(--fs-sm);
+  color: var(--color-foreground-default);
+  line-height: var(--lh-relaxed);
+}
+
+.drawer-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-6);
+  background: var(--glass-chrome);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border-top: 1px solid var(--color-border-subtle);
+  flex-shrink: 0;
+}
+
+/* Drawer-bottom drag handle (mobile-style) */
+.drawer-handle {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  padding: var(--space-3) 0 var(--space-1);
+  background: var(--glass-chrome);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  flex-shrink: 0;
+}
+/* When a handle precedes the header (bottom drawer), the header no longer
+   needs its own glass top — they read as one frosted bar. */
+.drawer-handle + .drawer-header { border-top: 0; }
+.drawer-handle::before {
+  content: "";
+  width: 36px;
+  height: 4px;
+  background: var(--color-border-strong);
+  border-radius: var(--radius-pill);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .scrim, .modal, .drawer, .modal.is-open, .drawer.is-open {
+    transition: opacity var(--duration-instant) linear !important;
+  }
+  .modal.is-open { transform: translate(-50%, -50%); }
+  .drawer-right.is-open,
+  .drawer-left.is-open,
+  .drawer-bottom.is-open { transform: none; }
+  .drawer-right { transform: none; }
+  .drawer-left { transform: none; }
+  .drawer-bottom { transform: none; }
+}

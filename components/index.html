@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Components · ATTRUS Design System</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../themes/index.css?v=1">
+<script src="../theme-toggle.js?v=1"></script>
+<script src="../version.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  .view-controls { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); }
+  .theme-toggle { display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition-fast); }
+  .theme-toggle:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background: var(--color-background-hover); }
+  .theme-toggle [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+  .product-select { height: 40px; padding: 0 var(--space-8) 0 var(--space-4); background: var(--color-background-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right var(--space-3) center; color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition-fast); -webkit-appearance: none; appearance: none; }
+  .product-select:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background-color: var(--color-background-hover); }
+  .product-select:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+
+  .doc-header { padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-9); }
+  .doc-header .eyebrow { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-accent); margin-bottom: var(--space-3); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 64ch; }
+  .doc-header p code { font-family: var(--font-mono); font-size: 0.85em; background: var(--color-brand-subtle); color: var(--color-foreground-accent); padding: 1px var(--space-2); border-radius: var(--radius-2xs); }
+
+  .group { margin-bottom: var(--space-10); }
+  .group-head { display: flex; align-items: baseline; gap: var(--space-3); margin-bottom: var(--space-4); }
+  .group-head h2 { font-size: var(--fs-lg); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0; }
+  .group-head .count { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted); }
+
+  .idx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: var(--space-3); }
+  .idx-card {
+    display: flex; align-items: center; gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--shape-container);
+    box-shadow: var(--shadow-xs);
+    text-decoration: none; color: inherit;
+    transition: var(--transition-fast);
+  }
+  .idx-card:hover { border-color: var(--color-brand-border); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+  .idx-card .ic { flex-shrink: 0; width: 34px; height: 34px; border-radius: var(--shape-control); background: var(--color-brand-subtle); color: var(--color-foreground-brand); display: inline-flex; align-items: center; justify-content: center; }
+  .idx-card .ic i, .idx-card .ic svg { width: 17px; height: 17px; stroke-width: var(--icon-stroke); }
+  .idx-card .txt { display: flex; flex-direction: column; min-width: 0; }
+  .idx-card .t { font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); font-family: var(--font-mono); }
+  .idx-card .d { font-size: var(--fs-xxs); color: var(--color-foreground-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .doc-foot { margin-top: var(--space-10); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); display: flex; gap: var(--space-5); flex-wrap: wrap; }
+  .doc-foot a { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); font-size: var(--fs-sm); }
+  .doc-foot a i, .doc-foot a svg { width: 16px; height: 16px; }
+</style>
+</head>
+<body>
+
+<div class="view-controls">
+  <select class="product-select" data-product-select aria-label="Preview product theme"></select>
+  <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+    <span data-theme-icon aria-hidden="true">☾</span>
+    <span data-theme-label>Dark</span>
+  </button>
+</div>
+
+<main class="doc">
+
+  <header class="doc-header">
+    <div class="eyebrow">ATTRUS Design System · <span data-ds-version>v1.0.0</span></div>
+    <h1>Components</h1>
+    <p>Typed component benches — every <code>.tsx</code> wrapper over the canonical CSS, each with its live state gallery. All theme- and product-aware.</p>
+  </header>
+
+  <!-- SHELL & NAVIGATION -->
+  <section class="group">
+    <div class="group-head"><h2>Shell &amp; navigation</h2><span class="count">4</span></div>
+    <div class="idx-grid">
+      <a class="idx-card" href="./AppSidebar/AppSidebar.html"><span class="ic"><i data-lucide="panel-left"></i></span><span class="txt"><span class="t">AppSidebar</span><span class="d">App side navigation</span></span></a>
+      <a class="idx-card" href="./AppTopbar/AppTopbar.html"><span class="ic"><i data-lucide="panel-top"></i></span><span class="txt"><span class="t">AppTopbar</span><span class="d">App header bar</span></span></a>
+      <a class="idx-card" href="./Tabs/Tabs.html"><span class="ic"><i data-lucide="layout"></i></span><span class="txt"><span class="t">Tabs</span><span class="d">View switching</span></span></a>
+      <a class="idx-card" href="./Stepper/Stepper.html"><span class="ic"><i data-lucide="list-ordered"></i></span><span class="txt"><span class="t">Stepper</span><span class="d">Multi-step flows</span></span></a>
+    </div>
+  </section>
+
+  <!-- ACTIONS & FORMS -->
+  <section class="group">
+    <div class="group-head"><h2>Actions &amp; forms</h2><span class="count">6</span></div>
+    <div class="idx-grid">
+      <a class="idx-card" href="./Button/Button.html"><span class="ic"><i data-lucide="mouse-pointer-click"></i></span><span class="txt"><span class="t">Button</span><span class="d">Variants &amp; sizes</span></span></a>
+      <a class="idx-card" href="./Input/Input.html"><span class="ic"><i data-lucide="keyboard"></i></span><span class="txt"><span class="t">Input</span><span class="d">Fields &amp; controls</span></span></a>
+      <a class="idx-card" href="./NumberInput/NumberInput.html"><span class="ic"><i data-lucide="hash"></i></span><span class="txt"><span class="t">NumberInput</span><span class="d">Stepper field</span></span></a>
+      <a class="idx-card" href="./Combobox/Combobox.html"><span class="ic"><i data-lucide="search"></i></span><span class="txt"><span class="t">Combobox</span><span class="d">Search &amp; select</span></span></a>
+      <a class="idx-card" href="./SearchPill/SearchPill.html"><span class="ic"><i data-lucide="scan-search"></i></span><span class="txt"><span class="t">SearchPill</span><span class="d">Search trigger</span></span></a>
+      <a class="idx-card" href="./SmartSearch/SmartSearch.html"><span class="ic"><i data-lucide="command"></i></span><span class="txt"><span class="t">SmartSearch</span><span class="d">Command palette</span></span></a>
+    </div>
+  </section>
+
+  <!-- CONTAINERS & DATA -->
+  <section class="group">
+    <div class="group-head"><h2>Containers &amp; data</h2><span class="count">3</span></div>
+    <div class="idx-grid">
+      <a class="idx-card" href="./Card/Card.html"><span class="ic"><i data-lucide="credit-card"></i></span><span class="txt"><span class="t">Card</span><span class="d">Surface containers</span></span></a>
+      <a class="idx-card" href="./DataTable/DataTable.html"><span class="ic"><i data-lucide="table"></i></span><span class="txt"><span class="t">DataTable</span><span class="d">Data tables</span></span></a>
+      <a class="idx-card" href="./Atoms/Atoms.html"><span class="ic"><i data-lucide="component"></i></span><span class="txt"><span class="t">Atoms</span><span class="d">Money · Stat · Flag · …</span></span></a>
+    </div>
+  </section>
+
+  <!-- OVERLAYS -->
+  <section class="group">
+    <div class="group-head"><h2>Overlays</h2><span class="count">2</span></div>
+    <div class="idx-grid">
+      <a class="idx-card" href="./Modal/Modal.html"><span class="ic"><i data-lucide="app-window"></i></span><span class="txt"><span class="t">Modal</span><span class="d">Centered dialogs</span></span></a>
+      <a class="idx-card" href="./Drawer/Drawer.html"><span class="ic"><i data-lucide="panel-right"></i></span><span class="txt"><span class="t">Drawer</span><span class="d">Side panels</span></span></a>
+    </div>
+  </section>
+
+  <!-- FEEDBACK -->
+  <section class="group">
+    <div class="group-head"><h2>Feedback &amp; status</h2><span class="count">5</span></div>
+    <div class="idx-grid">
+      <a class="idx-card" href="./Callout/Callout.html"><span class="ic"><i data-lucide="megaphone"></i></span><span class="txt"><span class="t">Callout</span><span class="d">Inline messages</span></span></a>
+      <a class="idx-card" href="./Pill/Pill.html"><span class="ic"><i data-lucide="badge-check"></i></span><span class="txt"><span class="t">Pill</span><span class="d">Status badges</span></span></a>
+      <a class="idx-card" href="./Toast/Toast.html"><span class="ic"><i data-lucide="bell"></i></span><span class="txt"><span class="t">Toast</span><span class="d">Transient feedback</span></span></a>
+      <a class="idx-card" href="./Tooltip/Tooltip.html"><span class="ic"><i data-lucide="message-square"></i></span><span class="txt"><span class="t">Tooltip</span><span class="d">Hover hints</span></span></a>
+      <a class="idx-card" href="./ZeroState/ZeroState.html"><span class="ic"><i data-lucide="inbox"></i></span><span class="txt"><span class="t">ZeroState</span><span class="d">Empty screens</span></span></a>
+    </div>
+  </section>
+
+  <footer class="doc-foot">
+    <a href="../preview/changelog.html"><i data-lucide="history"></i>Changelog</a>
+    <a href="../preview/index.html"><i data-lucide="layout-dashboard"></i>Full catalog</a>
+    <a href="../ui_kits/dashboard/index.html"><i data-lucide="app-window"></i>App demo</a>
+  </footer>
+
+</main>
+
+<script>lucide.createIcons();</script>
+
+</body>
+</html>

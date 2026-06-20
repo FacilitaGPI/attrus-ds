@@ -1,0 +1,301 @@
+/* ============================================================
+   BUTTONS — ATTRUS Design System
+   Component CSS — pure tokens, no hardcoded values.
+
+   Anatomy:
+     [leading icon?] [label] [trailing icon?]
+
+   Variants (semantic):
+     .btn-primary     | brand fill — main action
+     .btn-secondary   | neutral fill + hairline border — alternative actions
+     .btn-tertiary    | soft neutral fill (borderless) — quiet affirmative
+     .btn-ghost       | no chrome — toolbar / cancel / low priority
+     .btn-link        | inline text-link styling
+     .btn-danger      | destructive solid — irreversible
+     .btn-danger-outline | destructive secondary — contextual remove
+     .btn-success     | strong positive — approve / confirm
+     .btn-inverse     | white pill on dark/brand surfaces
+
+   Modifier:
+     .btn-icon        | icon-only (square hit-area)
+
+   Sizes:
+     .btn-xs (24h)  .btn-sm (32h)  default (40h)  .btn-lg (48h)
+
+   States: default | :hover | :active | :focus-visible | [disabled] | .is-loading
+   ============================================================ */
+
+
+/* ----------------------------------------------------------------
+   1. BASE
+   ---------------------------------------------------------------- */
+.btn {
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  /* Box — default size = md (40px tall) */
+  height: 40px;
+  padding: 0 var(--space-5);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+
+  /* Type */
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  font-weight: var(--w-semibold);
+  line-height: 1;
+  letter-spacing: var(--ls-body);
+
+  /* Behavior */
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  background: transparent;
+  color: inherit;
+
+  /* Motion */
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.btn:active { transform: translateY(0.5px); }
+
+.btn:focus { outline: none; }
+.btn:focus-visible { box-shadow: var(--shadow-focus); }
+
+.btn[disabled],
+.btn.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Icon sizing inside buttons (Lucide replaces <i> with <svg>) */
+.btn > i, .btn > svg,
+.btn > svg {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  stroke-width: var(--icon-stroke);
+  flex-shrink: 0;
+}
+
+
+/* ----------------------------------------------------------------
+   2. SIZES
+   ---------------------------------------------------------------- */
+.btn-xs {
+  height: 24px;
+  padding: 0 var(--space-3);
+  font-size: var(--fs-sm);
+  gap: var(--space-1);
+}
+.btn-xs > i, .btn-xs > svg, .btn-xs > svg { width: var(--icon-xs); height: var(--icon-xs); }
+
+.btn-sm {
+  height: 32px;
+  padding: 0 var(--space-4);
+  font-size: var(--fs-md);
+}
+.btn-sm > i, .btn-sm > svg, .btn-sm > svg { width: var(--icon-xs); height: var(--icon-xs); }
+
+/* default = md (40px) — defined in .btn */
+
+.btn-lg {
+  height: 48px;
+  padding: 0 var(--space-6);
+  font-size: var(--fs-base);
+  gap: var(--space-3);
+}
+.btn-lg > i, .btn-lg > svg, .btn-lg > svg { width: var(--icon-md); height: var(--icon-md); }
+
+
+/* ----------------------------------------------------------------
+   3. ICON-ONLY MODIFIER
+   ---------------------------------------------------------------- */
+.btn-icon { padding: 0; aspect-ratio: 1 / 1; }
+.btn-icon.btn-xs { width: 24px; }
+.btn-icon.btn-sm { width: 32px; }
+.btn-icon          { width: 40px; }
+.btn-icon.btn-lg { width: 48px; }
+
+
+/* ----------------------------------------------------------------
+   4. VARIANTS
+   ---------------------------------------------------------------- */
+
+/* PRIMARY — brand-blue solid */
+.btn-primary {
+  background: var(--color-brand-solid);
+  color: var(--color-brand-on-solid);
+}
+.btn-primary:hover  { background: var(--color-brand-solid-hover); }
+.btn-primary:active { background: var(--color-brand-solid-active); }
+.btn-primary:focus-visible { box-shadow: var(--shadow-focus); }
+
+
+/* SECONDARY — soft neutral fill + hairline border */
+.btn-secondary {
+  background: var(--color-background-subtle);
+  color: var(--color-foreground-default);
+  border-color: var(--color-border-default);
+}
+.btn-secondary:hover  { background: var(--color-background-hover); border-color: var(--color-border-strong); }
+.btn-secondary:active { background: var(--color-background-press); }
+.btn-secondary:focus-visible { box-shadow: var(--shadow-focus); }
+
+
+/* TERTIARY — soft neutral fill, borderless (quieter than secondary) */
+.btn-tertiary {
+  background: color-mix(in srgb, var(--color-foreground-default) 7%, transparent);
+  color: var(--color-foreground-default);
+  border-color: transparent;
+}
+.btn-tertiary:hover  { background: color-mix(in srgb, var(--color-foreground-default) 12%, transparent); }
+.btn-tertiary:active { background: color-mix(in srgb, var(--color-foreground-default) 16%, transparent); }
+.btn-tertiary:focus-visible { box-shadow: var(--shadow-focus); }
+
+
+/* GHOST — no chrome until hover */
+.btn-ghost {
+  background: transparent;
+  color: var(--color-foreground-secondary);
+}
+.btn-ghost:hover  { background: var(--color-background-hover);  color: var(--color-foreground-default); }
+.btn-ghost:active { background: var(--color-background-press); }
+.btn-ghost:focus-visible { box-shadow: var(--shadow-focus); }
+
+
+/* LINK — looks like inline text link */
+.btn-link {
+  background: transparent;
+  color: var(--color-foreground-highlight);
+  height: auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-2xs);
+  text-decoration: none;
+}
+.btn-link:hover  { color: var(--color-brand-text); text-decoration: underline; text-underline-offset: 2px; }
+.btn-link:active { color: var(--color-brand-text-strong); }
+.btn-link:focus-visible { box-shadow: var(--shadow-focus); }
+
+
+/* DANGER — destructive solid */
+.btn-danger {
+  background: var(--color-danger-500);
+  color: var(--color-foreground-on-solid);
+}
+.btn-danger:hover  { background: var(--color-danger-700); }
+.btn-danger:active { background: var(--color-danger-900); }
+.btn-danger:focus-visible { box-shadow: var(--shadow-focus-danger); }
+
+
+/* DANGER OUTLINE — destructive contextual */
+.btn-danger-outline {
+  background: var(--color-background-surface);
+  color: var(--color-danger-500);
+  border-color: var(--color-feedback-danger-border);
+}
+.btn-danger-outline:hover  { background: var(--color-feedback-danger-background); border-color: var(--color-danger-500); }
+.btn-danger-outline:active { background: color-mix(in srgb, var(--color-feedback-danger-background) 85%, var(--color-danger-500)); }
+.btn-danger-outline:focus-visible { box-shadow: var(--shadow-focus-danger); }
+
+
+/* SUCCESS — strong positive (rare) */
+.btn-success {
+  background: var(--color-success-500);
+  color: var(--color-foreground-on-solid);
+}
+.btn-success:hover  { background: var(--color-success-700); }
+.btn-success:active { background: var(--color-success-900); }
+.btn-success:focus-visible { box-shadow: var(--shadow-focus-success); }
+
+
+/* INVERSE — white pill on dark/brand surfaces */
+.btn-inverse {
+  background: var(--color-pure-white);
+  color: var(--color-brand-text);
+}
+.btn-inverse:hover  { background: var(--color-neutral-100); color: var(--color-brand-text-strong); }
+.btn-inverse:active { background: var(--color-neutral-150); }
+.btn-inverse:focus-visible { box-shadow: var(--shadow-focus-sky); }
+
+
+/* ----------------------------------------------------------------
+   5. ON-INVERSE GHOSTS  —  for use inside .inverse / dark surfaces
+   Apply BOTH .btn-ghost AND .on-inverse
+   ---------------------------------------------------------------- */
+.btn-ghost.on-inverse {
+  color: var(--color-foreground-inverse-secondary);
+}
+.btn-ghost.on-inverse:hover  { background: var(--color-background-inverse-hover); color: var(--color-foreground-inverse-default); }
+.btn-ghost.on-inverse:active { background: var(--color-background-inverse-press); }
+
+/* Outline ghost on inverse — pairs with .btn-secondary semantics */
+.btn-secondary.on-inverse {
+  background: transparent;
+  color: var(--color-foreground-inverse-default);
+  border-color: var(--color-border-inverse-strong);
+}
+.btn-secondary.on-inverse:hover  { background: var(--color-background-inverse-hover); border-color: var(--color-foreground-inverse-secondary); }
+.btn-secondary.on-inverse:active { background: var(--color-background-inverse-press); }
+
+
+/* ----------------------------------------------------------------
+   6. LOADING STATE
+   Add .is-loading; keeps current width but hides label/icons,
+   shows a centered spinner.
+   ---------------------------------------------------------------- */
+.btn.is-loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+.btn.is-loading > * { visibility: hidden; }
+.btn.is-loading::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+  margin: calc(var(--icon-sm) / -2) 0 0 calc(var(--icon-sm) / -2);
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: var(--radius-pill);
+  animation: btn-spin var(--duration-slower) linear infinite;
+  /* Re-introduce currentColor where the variant set it; ::after inherits the parent's color BEFORE the !important override */
+  color: var(--color-foreground-default);
+}
+.btn-primary.is-loading::after,
+.btn-danger.is-loading::after,
+.btn-success.is-loading::after { color: var(--color-pure-white); }
+.btn-tertiary.is-loading::after { color: var(--color-foreground-default); }
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+
+/* ----------------------------------------------------------------
+   7. BUTTON GROUP  —  segmented / toolbar
+   ---------------------------------------------------------------- */
+.btn-group {
+  display: inline-flex;
+}
+.btn-group .btn {
+  border-radius: 0;
+}
+.btn-group .btn:first-child { border-top-left-radius: var(--radius-pill); border-bottom-left-radius: var(--radius-pill); }
+.btn-group .btn:last-child  { border-top-right-radius: var(--radius-pill); border-bottom-right-radius: var(--radius-pill); }
+.btn-group .btn + .btn { margin-left: -1px; }
+.btn-group .btn:focus-visible,
+.btn-group .btn:hover { z-index: 1; }

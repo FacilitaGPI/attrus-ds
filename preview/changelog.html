@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Changelog · ATTRUS Design System</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../themes/index.css?v=1">
+<script src="../theme-toggle.js?v=1"></script>
+<script src="../version.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 880px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  .doc-back { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); margin-bottom: var(--space-7); }
+  .doc-back:hover { color: var(--color-foreground-default); }
+  .doc-back i, .doc-back svg { width: 16px; height: 16px; }
+
+  .view-controls { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); }
+  .theme-toggle { display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition-fast); }
+  .theme-toggle:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background: var(--color-background-hover); }
+  .theme-toggle [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+  .product-select { height: 40px; padding: 0 var(--space-8) 0 var(--space-4); background: var(--color-background-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right var(--space-3) center; color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition-fast); -webkit-appearance: none; appearance: none; }
+  .product-select:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background-color: var(--color-background-hover); }
+  .product-select:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+
+  .doc-header { padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-9); }
+  .doc-header .eyebrow { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-accent); margin-bottom: var(--space-3); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
+  .ver-badge { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-semibold); letter-spacing: 0; color: var(--color-foreground-brand); background: var(--color-brand-subtle); border: 1px solid var(--color-brand-border); padding: var(--space-1) var(--space-3); border-radius: var(--radius-pill); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 64ch; }
+
+  .release { margin-bottom: var(--space-10); }
+  .release-head { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-2); }
+  .release-head h2 { font-size: var(--fs-2xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0; }
+  .release-head .tag { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; padding: 2px var(--space-3); border-radius: var(--radius-pill); }
+  .release-head .tag.current { color: var(--color-brand-on-solid); background: var(--color-brand-solid); }
+  .release-date { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted); margin-bottom: var(--space-5); }
+
+  .change-group { margin-bottom: var(--space-5); }
+  .change-group h3 { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--fs-xs); font-weight: var(--w-bold); letter-spacing: var(--ls-caps); text-transform: uppercase; margin: 0 0 var(--space-3); }
+  .change-group.added h3 { color: var(--color-feedback-success-foreground); }
+  .change-group.changed h3 { color: var(--color-foreground-accent); }
+  .change-group.fixed h3 { color: var(--color-feedback-warning-foreground); }
+  .change-group ul { margin: 0; padding-left: var(--space-6); display: flex; flex-direction: column; gap: var(--space-2); }
+  .change-group li { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .change-group li b { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+  .change-group code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: var(--color-brand-subtle); padding: 1px var(--space-2); border-radius: var(--radius-2xs); }
+
+  .doc-foot { margin-top: var(--space-10); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); line-height: var(--lh-relaxed); }
+  .doc-foot code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+</style>
+</head>
+<body>
+
+<div class="view-controls">
+  <select class="product-select" data-product-select aria-label="Preview product theme"></select>
+  <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+    <span data-theme-icon aria-hidden="true">☾</span>
+    <span data-theme-label>Dark</span>
+  </button>
+</div>
+
+<main class="doc">
+
+  <a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+  <header class="doc-header">
+    <div class="eyebrow">ATTRUS Design System</div>
+    <h1>Changelog <span class="ver-badge" data-ds-version>v1.0.0</span></h1>
+    <p>Every notable change to the design system, grouped by release. Versioning follows <a href="https://semver.org" style="color:var(--color-foreground-accent)">SemVer</a>; the version number lives in <code style="font-family:var(--font-mono);font-size:0.85em">version.js</code> and is mirrored across the catalog and index pages.</p>
+  </header>
+
+  <!-- ============ v1.0.0 ============ -->
+  <section class="release">
+    <div class="release-head">
+      <h2>1.0.0</h2>
+      <span class="tag current">Current</span>
+    </div>
+    <div class="release-date">2026-06-19 · first tagged release</div>
+
+    <div class="change-group added">
+      <h3><i data-lucide="plus-circle"></i> Added</h3>
+      <ul>
+        <li><b>Multi-product theming</b> — two orthogonal axes: <code>data-theme</code> (light/dark) × <code>data-product</code> (Enterprise / Business). Theming surface spans color, gradients, inverse layer and shape.</li>
+        <li><b>Product themes</b> — <code>themes/enterprise.css</code> (Navy) + <code>themes/business.css</code> (Blue), loaded via a single <code>themes/index.css</code>; new product = 1 file + 1 import + 2 registrations. <code>themes/_template.css</code> scaffold included.</li>
+        <li><b>Product &amp; theme controls</b> — selector + dark-mode toggle in the catalog, app topbar, and both index hubs; persisted, anti-FOUC (<code>theme-toggle.js</code>).</li>
+        <li><b>TypeScript layer</b> — 20 typed component wrappers (<code>components/*/*.tsx</code>) over the canonical CSS, each with a live bench gallery.</li>
+        <li><b>Dark mode</b> — full token remap via <code>[data-theme="dark"]</code>; validated across app, catalog and docs.</li>
+        <li><b>Data-viz tokens</b>, <b>token export</b> (JSON / Style Dictionary), and the <b>drift linter</b> (<code>tools/drift-linter.html</code>) guarding CSS↔TSX↔theming.</li>
+        <li><b>Index hubs</b> — <code>preview/index.html</code> (example pages) and <code>components/index.html</code> (TSX benches), cross-linked; bench pages get a back-link.</li>
+        <li><b>This changelog</b> + <code>version.js</code> single-source version, mirrored on the catalog and index pages.</li>
+      </ul>
+    </div>
+
+    <div class="change-group changed">
+      <h3><i data-lucide="refresh-cw"></i> Changed</h3>
+      <ul>
+        <li><b>Brand surface tokenized</b> — every component (CSS + TSX + app) consumes <code>--color-brand-*</code> / <code>--color-accent-*</code> instead of raw scales, so a product reskins the whole system with no component edits.</li>
+        <li><b>Gradients &amp; inverse layer</b> derive from <code>--color-brand-solid</code> — hero backdrops and dark/premium panels follow the active product.</li>
+        <li><b>Shape tokens</b> (<code>--shape-control/-container/-overlay</code>) pick steps from the radius scale; Business reads rounder than Enterprise.</li>
+      </ul>
+    </div>
+
+    <div class="change-group fixed">
+      <h3><i data-lucide="wrench"></i> Fixed</h3>
+      <ul>
+        <li><b>Dark-mode contrast</b> — skeletons, the Failed table row, and ~52 raw light-tint usages across components and docs migrated to theme-aware tokens.</li>
+        <li><b>Stray Royal refs</b> — sidebar active count, combobox chips, file-action hover and focus borders now product-aware.</li>
+        <li><b>Cache-busting</b> on <code>theme-toggle.js</code> / <code>themes/index.css</code> to avoid stale tabs.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="doc-foot">
+    To cut a new release: bump <code>version.js</code>, add a <code>&lt;section class="release"&gt;</code> above this one, and move the <code>Current</code> tag to it.
+  </footer>
+
+</main>
+
+<script>lucide.createIcons();</script>
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+/* ============================================================
+   HUB — shared card grid for index/components/tokens hubs.
+   Extracted from index.html so the three hubs share one DNA.
+   100% token-driven.
+   ============================================================ */
+
+/* ---------- Section header ---------- */
+.ds-section { margin: 0 0 var(--space-12); }
+.ds-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin: 0 0 var(--space-5);
+  padding: 0 0 var(--space-3);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.ds-section-title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+}
+.ds-section-title .num {
+  font-family: var(--font-mono);
+  font-size: var(--fs-md);
+  font-weight: var(--w-regular);
+  color: var(--color-foreground-muted);
+  letter-spacing: var(--ls-caps);
+}
+.ds-section-title h2 {
+  font-family: var(--font-display);
+  font-weight: var(--w-bold);
+  font-size: var(--fs-3xl);
+  letter-spacing: var(--ls-title);
+  margin: 0;
+}
+.ds-section-meta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--color-foreground-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-caps);
+  white-space: nowrap;
+}
+.ds-section-blurb {
+  font-size: var(--fs-md);
+  color: var(--color-foreground-secondary);
+  max-width: 78ch;
+  line-height: var(--lh-normal);
+  margin: 0 0 var(--space-6);
+}
+
+/* ---------- Cards grid ---------- */
+.ds-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+.ds-card {
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: relative;
+  transition: var(--transition-fast);
+  min-height: 168px;
+}
+.ds-card:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.ds-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.ds-card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  display: grid;
+  place-items: center;
+  background: var(--color-background-sunken);
+  color: var(--color-foreground-default);
+}
+.ds-card-icon i, .ds-card-icon svg { width: 18px; height: 18px; stroke-width: var(--icon-stroke); }
+.ds-card-tag {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xxs);
+  font-weight: var(--w-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-caps);
+  color: var(--color-foreground-muted);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-background-sunken);
+}
+.ds-card-tag.is-new {
+  color: var(--color-foreground-brand);
+  background: var(--color-brand-subtle);
+}
+.ds-card-tag.is-primitive {
+  color: var(--color-foreground-secondary);
+  background: var(--color-background-subtle);
+}
+.ds-card h3 {
+  font-family: var(--font-display);
+  font-weight: var(--w-bold);
+  font-size: var(--fs-lg);
+  letter-spacing: var(--ls-tight);
+  margin: 0;
+  color: var(--color-foreground-default);
+}
+.ds-card p {
+  font-size: var(--fs-sm);
+  color: var(--color-foreground-secondary);
+  line-height: var(--lh-normal);
+  margin: 0;
+  flex: 1;
+}
+.ds-card-foot {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xxs);
+  color: var(--color-foreground-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-caps);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+.ds-card-foot i, .ds-card-foot svg { width: 12px; height: 12px; stroke-width: var(--icon-stroke); }
+
+@media (max-width: 720px) {
+  .ds-section-head { flex-direction: column; align-items: flex-start; }
+}

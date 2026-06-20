@@ -4,11 +4,10 @@
 <head>
 <meta charset="utf-8">
 <title>Motion · ATTRUS Design System</title>
-<link rel="stylesheet" href="../dist/css/index.css">
-<script src="./theme-toggle.js"></script>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../themes/index.css?v=1">
+<script src="../theme-toggle.js?v=1"></script>
 <link rel="stylesheet" href="components/tokens-doc.css">
-<link rel="stylesheet" href="components/spec-page.css">
-<link rel="icon" href="../assets/icon-attrus-dark.svg">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
   /* page-specific tweaks */
@@ -106,14 +105,10 @@
 </style>
 </head>
 <body>
-<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
-  <span data-theme-icon aria-hidden="true">&#9790;</span>
-  <span data-theme-label>Dark</span>
-</button>
 
 <main class="doc">
 
-  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+  <a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
 
   <header class="doc-header">
     <div>
@@ -363,7 +358,7 @@
     </div>
 
     <p style="font-size: var(--fs-sm); color: var(--color-foreground-secondary); margin-top: var(--space-4); line-height: var(--lh-relaxed);">
-      The system applies this rule globally in <code>dist/css/tokens.css</code>. Don't override it per-component — even for "essential" animations like pulse loading. A static state always remains legible.
+      The system applies this rule globally in <code>colors_and_type.css</code>. Don't override it per-component — even for "essential" animations like pulse loading. A static state always remains legible.
     </p>
   </section>
 
@@ -414,7 +409,7 @@
   <!-- 07 TOKENS -->
   <section class="doc-section" id="tokens">
     <h2><span class="num">07</span>Tokens</h2>
-    <p class="lead">Every value below lives in <code>dist/css/tokens.css</code>. Reach for these before reaching for a literal <code>ms</code> or <code>cubic-bezier</code>.</p>
+    <p class="lead">Every value below lives in <code>colors_and_type.css</code>. Reach for these before reaching for a literal <code>ms</code> or <code>cubic-bezier</code>.</p>
 
     <table class="dir-table">
       <thead>

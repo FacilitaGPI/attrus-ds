@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tokens · ATTRUS Design System</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="components/tokens-doc.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="components/page-nav.js"></script>
+</head>
+<body>
+
+<main class="doc">
+
+  <!-- ========== HEADER ========== -->
+  <header class="doc-header">
+    <div>
+      <h1>Tokens</h1>
+      <p>The single source of truth for every visual decision in ATTRUS — colour, type, spacing, radius, shadow, motion. Every component, page, and pixel resolves back to this file. Change a token, the whole system updates.</p>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-meta-pill"><i data-lucide="package"></i>Foundation</span>
+    </div>
+  </header>
+
+  <!-- ========== STAT STRIP ========== -->
+  <div class="stat-strip">
+    <div class="stat"><span class="num">214</span><span class="lbl">Tokens</span></div>
+    <div class="stat"><span class="num">68</span><span class="lbl">Colors</span></div>
+    <div class="stat"><span class="num">14</span><span class="lbl">Type sizes</span></div>
+    <div class="stat"><span class="num">15</span><span class="lbl">Spacing steps</span></div>
+    <div class="stat"><span class="num">8</span><span class="lbl">Radii</span></div>
+    <div class="stat"><span class="num">22</span><span class="lbl">Shadows</span></div>
+  </div>
+
+  <!-- ========== NAV ========== -->
+  <nav class="doc-nav">
+    <a href="#overview">Overview</a>
+    <a href="#color-raw">Color · raw</a>
+    <a href="#color-semantic">Color · semantic</a>
+    <a href="#gradients">Gradients</a>
+    <a href="#glass">Liquid glass</a>
+    <a href="#typography">Typography</a>
+    <a href="#spacing">Spacing</a>
+    <a href="#radii">Radii</a>
+    <a href="#shadows">Shadows</a>
+    <a href="#iconography">Iconography</a>
+    <a href="#motion">Motion</a>
+    <a href="#naming">Naming</a>
+    <a href="#consume">How to consume</a>
+  </nav>
+
+  <!-- ========================================================
+       01 · OVERVIEW
+       ======================================================== -->
+  <section class="doc-section" id="overview">
+    <h2><span class="num">01</span>Overview</h2>
+    <p class="lead">A token is a named CSS custom property that holds a single design decision. Tokens flow through three layers — raw values become semantic roles, which components consume. Components never reach past their layer.</p>
+
+    <div class="hier">
+      <div class="hier-step">
+        <span class="stage">Layer 1</span>
+        <span class="name">Raw palette</span>
+        <code>--color-brand-primary-500: #003399</code>
+        <span class="desc">Hex codes, px values, font names. The literal source. Defined once, never referenced from a component.</span>
+      </div>
+      <div class="hier-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="hier-step">
+        <span class="stage">Layer 2</span>
+        <span class="name">Semantic role</span>
+        <code>--color-foreground-accent: var(--color-brand-primary-500)</code>
+        <span class="desc">Named by purpose, not by appearance. Maps a role to a raw value — the only level that may be re-themed.</span>
+      </div>
+      <div class="hier-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="hier-step">
+        <span class="stage">Layer 3</span>
+        <span class="name">Component</span>
+        <code>color: var(--color-foreground-accent)</code>
+        <span class="desc">Buttons, inputs, cards. Read semantic tokens; never read raw palette directly, never invent local values.</span>
+      </div>
+    </div>
+
+    <h3 class="sub">Principles</h3>
+
+    <div class="principles">
+      <div class="principle">
+        <span class="ic"><i data-lucide="link-2"></i></span>
+        <span class="ttl">Reference, don't repeat</span>
+        <p>If two places need the same value, they reference the same token. Duplicating a hex code is a bug.</p>
+      </div>
+      <div class="principle">
+        <span class="ic"><i data-lucide="layers"></i></span>
+        <span class="ttl">Semantic over raw</span>
+        <p>Components consume <code>--color-foreground-accent</code>, not <code>--color-brand-primary-500</code>. Roles can be remapped; raw values cannot.</p>
+      </div>
+      <div class="principle">
+        <span class="ic"><i data-lucide="ruler"></i></span>
+        <span class="ttl">No magic numbers</span>
+        <p>Padding of 11px? Border-radius of 7px? It doesn't exist. Round to the nearest scale step or add a token.</p>
+      </div>
+      <div class="principle">
+        <span class="ic"><i data-lucide="moon"></i></span>
+        <span class="ttl">Light + inverse parity</span>
+        <p>Every foreground role on light has an <code>--color-foreground-inverse-*</code> twin for dark. Never improvise dark variants.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       02 · COLOR · RAW PALETTE
+       ======================================================== -->
+  <section class="doc-section" id="color-raw">
+    <h2><span class="num">02</span>Color · raw palette</h2>
+    <p class="lead">Six families plus brand: cool blue-tinted neutrals, the brand blue scale, sky accent, and four semantic feedback hues — success, warning, danger, info. All numbered <code>50 → 900</code> on a perceptually consistent scale.</p>
+
+    <h3 class="sub">Brand stops <span class="meta">— sourced from the brand manual</span></h3>
+    <p class="intro">Four hex anchors that everything else builds from. These are the only values that ever ship in marketing copy, business cards, or the logo SVG.</p>
+
+    <div class="brand-grid">
+      <div class="brand-card">
+        <div class="fill" data-hex="#0F0F1A" style="background: var(--brand-attrus-ink);"></div>
+        <div class="meta"><div class="name">Ink</div><div class="var">--brand-attrus-ink</div></div>
+      </div>
+      <div class="brand-card">
+        <div class="fill" data-hex="#002142" style="background: var(--brand-attrus-navy);"></div>
+        <div class="meta"><div class="name">Navy</div><div class="var">--brand-attrus-navy</div></div>
+      </div>
+      <div class="brand-card">
+        <div class="fill" data-hex="#003399" style="background: var(--brand-attrus-blue);"></div>
+        <div class="meta"><div class="name">Blue · primary</div><div class="var">--brand-attrus-blue</div></div>
+      </div>
+      <div class="brand-card">
+        <div class="fill" data-hex="#3399FF" style="background: var(--brand-attrus-sky);"></div>
+        <div class="meta"><div class="name">Sky · accent</div><div class="var">--brand-attrus-sky</div></div>
+      </div>
+    </div>
+
+    <h3 class="sub">Neutrals <span class="meta">— cool, blue-tinted, never pure</span></h3>
+    <p class="intro">Thirteen steps from canvas-white through ink-black. Tinted slightly blue to feel cohesive with the brand; pure greys read as cold or sterile next to <code>--brand-attrus-blue</code>.</p>
+
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-neutral-0);"><span class="pin">0</span></div><div class="swatch-meta"><span class="key">--color-neutral-0</span><span class="hex">#FFFFFF</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-neutral-25);"><span class="pin">25</span></div><div class="swatch-meta"><span class="key">--color-neutral-25</span><span class="hex">#FAFBFD</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-neutral-50);"><span class="pin">50</span></div><div class="swatch-meta"><span class="key">--color-neutral-50</span><span class="hex">#F4F6FA</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-neutral-100);"><span class="pin">100</span></div><div class="swatch-meta"><span class="key">--color-neutral-100</span><span class="hex">#EDF0F5</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-neutral-150);"><span class="pin">150</span></div><div class="swatch-meta"><span class="key">--color-neutral-150</span><span class="hex">#E3E8F0</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-neutral-200);"><span class="pin">200</span></div><div class="swatch-meta"><span class="key">--color-neutral-200</span><span class="hex">#D6DCE7</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-neutral-300);"><span class="pin">300</span></div><div class="swatch-meta"><span class="key">--color-neutral-300</span><span class="hex">#B8C1D1</span></div></div>
+    </div>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-neutral-400);"><span class="pin">400</span></div><div class="swatch-meta"><span class="key">--color-neutral-400</span><span class="hex">#8A94A8</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-neutral-500);"><span class="pin">500</span></div><div class="swatch-meta"><span class="key">--color-neutral-500</span><span class="hex">#5E6A82</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-neutral-600);"><span class="pin">600</span></div><div class="swatch-meta"><span class="key">--color-neutral-600</span><span class="hex">#3F4A61</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-neutral-700);"><span class="pin">700</span></div><div class="swatch-meta"><span class="key">--color-neutral-700</span><span class="hex">#27304A</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-neutral-800);"><span class="pin">800</span></div><div class="swatch-meta"><span class="key">--color-neutral-800</span><span class="hex">#141B2E</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-neutral-900);"><span class="pin">900</span></div><div class="swatch-meta"><span class="key">--color-neutral-900</span><span class="hex">#0A0F1F</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-neutral-950);"><span class="pin">950</span></div><div class="swatch-meta"><span class="key">--color-neutral-950</span><span class="hex">#05081A</span></div></div>
+    </div>
+
+    <h3 class="sub">Brand blue <span class="meta">— anchored at <code>--color-brand-primary-500</code></span></h3>
+    <div class="swatch-row">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-primary-50);"><span class="pin">50</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-50</span><span class="hex">#EAF1FF</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-primary-100);"><span class="pin">100</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-100</span><span class="hex">#D1DEFF</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-primary-200);"><span class="pin">200</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-200</span><span class="hex">#A3BEFF</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-primary-300);"><span class="pin">300</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-300</span><span class="hex">#6B95FB</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-primary-400);"><span class="pin">400</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-400</span><span class="hex">#3F6DEF</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-primary-500);"><span class="pin">500</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-500 ★</span><span class="hex">#003399</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-primary-600);"><span class="pin">600</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-600</span><span class="hex">#002A80</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-primary-700);"><span class="pin">700</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-700</span><span class="hex">#002166</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-primary-800);"><span class="pin">800</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-800</span><span class="hex">#001A4D</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-primary-900);"><span class="pin">900</span></div><div class="swatch-meta"><span class="key">--color-brand-primary-900</span><span class="hex">#001133</span></div></div>
+    </div>
+
+    <h3 class="sub">Sky accent</h3>
+    <div class="swatch-row" style="grid-template-columns: repeat(4, 1fr);">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-secondary-100);"><span class="pin">100</span></div><div class="swatch-meta"><span class="key">--color-brand-secondary-100</span><span class="hex">#D9ECFF</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-brand-secondary-300);"><span class="pin">300</span></div><div class="swatch-meta"><span class="key">--color-brand-secondary-300</span><span class="hex">#7AB8FF</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-secondary-500);"><span class="pin">500</span></div><div class="swatch-meta"><span class="key">--color-brand-secondary-500 ★</span><span class="hex">#3399FF</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-brand-secondary-700);"><span class="pin">700</span></div><div class="swatch-meta"><span class="key">--color-brand-secondary-700</span><span class="hex">#1E6DC4</span></div></div>
+    </div>
+
+    <h3 class="sub">Semantic feedback <span class="meta">— success, warning, danger, info</span></h3>
+    <p class="intro">Subdued, sober tones — never bright. Each family has 5 stops that pair predictably: <code>50</code> for backgrounds, <code>100</code> for borders, <code>500</code> for solids, <code>700</code> for foreground text on a <code>50</code> bg.</p>
+
+    <div class="swatch-row" style="grid-template-columns: repeat(5, 1fr); margin-bottom: var(--space-3);">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-success-50);"><span class="pin">50</span></div><div class="swatch-meta"><span class="key">--color-success-50</span><span class="hex">#E8F5EE</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-success-100);"><span class="pin">100</span></div><div class="swatch-meta"><span class="key">--color-success-100</span><span class="hex">#CDEBD9</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-success-500);"><span class="pin">500</span></div><div class="swatch-meta"><span class="key">--color-success-500</span><span class="hex">#1F8A4C</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-success-700);"><span class="pin">700</span></div><div class="swatch-meta"><span class="key">--color-success-700</span><span class="hex">#136236</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-success-900);"><span class="pin">900</span></div><div class="swatch-meta"><span class="key">--color-success-900</span><span class="hex">#0A3D21</span></div></div>
+    </div>
+    <div class="swatch-row" style="grid-template-columns: repeat(5, 1fr); margin-bottom: var(--space-3);">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-warning-50);"><span class="pin">50</span></div><div class="swatch-meta"><span class="key">--color-warning-50</span><span class="hex">#FDF5E3</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-warning-100);"><span class="pin">100</span></div><div class="swatch-meta"><span class="key">--color-warning-100</span><span class="hex">#FAE8BE</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-warning-500);"><span class="pin">500</span></div><div class="swatch-meta"><span class="key">--color-warning-500</span><span class="hex">#B47A12</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-warning-700);"><span class="pin">700</span></div><div class="swatch-meta"><span class="key">--color-warning-700</span><span class="hex">#84560A</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-warning-900);"><span class="pin">900</span></div><div class="swatch-meta"><span class="key">--color-warning-900</span><span class="hex">#4F3105</span></div></div>
+    </div>
+    <div class="swatch-row" style="grid-template-columns: repeat(5, 1fr); margin-bottom: var(--space-3);">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-danger-50);"><span class="pin">50</span></div><div class="swatch-meta"><span class="key">--color-danger-50</span><span class="hex">#FCEBEA</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-danger-100);"><span class="pin">100</span></div><div class="swatch-meta"><span class="key">--color-danger-100</span><span class="hex">#F7CFCD</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-danger-500);"><span class="pin">500</span></div><div class="swatch-meta"><span class="key">--color-danger-500</span><span class="hex">#C23934</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-danger-700);"><span class="pin">700</span></div><div class="swatch-meta"><span class="key">--color-danger-700</span><span class="hex">#8A2622</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-danger-900);"><span class="pin">900</span></div><div class="swatch-meta"><span class="key">--color-danger-900</span><span class="hex">#4F1512</span></div></div>
+    </div>
+    <div class="swatch-row" style="grid-template-columns: repeat(4, 1fr);">
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-info-50);"><span class="pin">50</span></div><div class="swatch-meta"><span class="key">--color-info-50</span><span class="hex">#E6F0FB</span></div></div>
+      <div class="swatch"><div class="swatch-fill" style="background: var(--color-info-100);"><span class="pin">100</span></div><div class="swatch-meta"><span class="key">--color-info-100</span><span class="hex">#C5DCF4</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-info-500);"><span class="pin">500</span></div><div class="swatch-meta"><span class="key">--color-info-500</span><span class="hex">#1F6BC7</span></div></div>
+      <div class="swatch"><div class="swatch-fill dark" style="background: var(--color-info-700);"><span class="pin">700</span></div><div class="swatch-meta"><span class="key">--color-info-700</span><span class="hex">#144B8C</span></div></div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       03 · COLOR · SEMANTIC ROLES
+       ======================================================== -->
+  <section class="doc-section" id="color-semantic">
+    <h2><span class="num">03</span>Color · semantic roles</h2>
+    <p class="lead">Components never reach for raw palette values. They consume semantic roles named by purpose — <code>--color-background-canvas</code>, <code>--color-foreground-default</code>, <code>--color-border-focus</code>. Each role has a light variant and an inverse twin so dark surfaces work without forks.</p>
+
+    <h3 class="sub">Surfaces · light</h3>
+    <div class="chip-group">
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas);"></div><div class="meta"><span class="key">--color-background-canvas</span><span class="desc">App background — outermost surface</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-surface);"></div><div class="meta"><span class="key">--color-background-surface</span><span class="desc">Cards, containers, panels</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-subtle);"></div><div class="meta"><span class="key">--color-background-subtle</span><span class="desc">Zebra rows, nested content</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-raised);"></div><div class="meta"><span class="key">--color-background-raised</span><span class="desc">Floating panels, popovers</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-sunken);"></div><div class="meta"><span class="key">--color-background-sunken</span><span class="desc">Inputs, wells, recessed</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-hover);"></div><div class="meta"><span class="key">--color-background-hover</span><span class="desc">Row / button hover</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-press);"></div><div class="meta"><span class="key">--color-background-press</span><span class="desc">Pressed / active</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-selected);"></div><div class="meta"><span class="key">--color-background-selected</span><span class="desc">Selected row, active filter</span></div></div>
+    </div>
+
+    <h3 class="sub">Surfaces · inverse</h3>
+    <div class="chip-group on-inverse">
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse);"></div><div class="meta"><span class="key">--color-background-inverse</span><span class="desc">Dark canvas — sidebar, hero</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface);"></div><div class="meta"><span class="key">--color-background-inverse-surface</span><span class="desc">Cards on inverse</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-subtle);"></div><div class="meta"><span class="key">--color-background-inverse-subtle</span><span class="desc">Recessed wells on inverse</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-hover);"></div><div class="meta"><span class="key">--color-background-inverse-hover</span><span class="desc">Hover on dark</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-press);"></div><div class="meta"><span class="key">--color-background-inverse-press</span><span class="desc">Press / active on dark</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-selected);"></div><div class="meta"><span class="key">--color-background-inverse-selected</span><span class="desc">Selected row on dark</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-brand);"></div><div class="meta"><span class="key">--color-background-inverse-brand</span><span class="desc">Brand-weight CTA / hero</span></div></div>
+    </div>
+
+    <h3 class="sub">Foregrounds · light</h3>
+    <div class="chip-group">
+      <div class="chip foreground-demo"><div class="demo" style="color: var(--color-foreground-default);">Aa primary</div><div class="meta"><span class="key">--color-foreground-default</span><span class="desc">Body, headings</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="color: var(--color-foreground-secondary);">Aa secondary</div><div class="meta"><span class="key">--color-foreground-secondary</span><span class="desc">Hierarchy step 2</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="color: var(--color-foreground-muted);">Aa muted</div><div class="meta"><span class="key">--color-foreground-muted</span><span class="desc">Captions, helper</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="color: var(--color-foreground-placeholder);">Aa placeholder</div><div class="meta"><span class="key">--color-foreground-placeholder</span><span class="desc">Disabled, placeholder</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="color: var(--color-foreground-accent);">Aa accent</div><div class="meta"><span class="key">--color-foreground-accent</span><span class="desc">Brand emphasis</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="color: var(--color-foreground-highlight);">Aa highlight</div><div class="meta"><span class="key">--color-foreground-highlight</span><span class="desc">Links, selected</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="background: var(--color-brand-primary-500); color: var(--color-foreground-on-solid);">Aa on solid</div><div class="meta"><span class="key">--color-foreground-on-solid</span><span class="desc">Text on brand fills</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="color: var(--color-foreground-disabled);">Aa disabled</div><div class="meta"><span class="key">--color-foreground-disabled</span><span class="desc">Disabled controls</span></div></div>
+    </div>
+
+    <h3 class="sub">Foregrounds · inverse</h3>
+    <div class="chip-group on-inverse">
+      <div class="chip foreground-demo"><div class="demo" style="background: var(--color-background-inverse-surface); color: var(--color-foreground-inverse-default); border-color: var(--color-border-inverse);">Aa primary</div><div class="meta"><span class="key">--color-foreground-inverse-default</span><span class="desc">Body on dark</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="background: var(--color-background-inverse-surface); color: var(--color-foreground-inverse-secondary); border-color: var(--color-border-inverse);">Aa secondary</div><div class="meta"><span class="key">--color-foreground-inverse-secondary</span><span class="desc">Step 2 on dark</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="background: var(--color-background-inverse-surface); color: var(--color-foreground-inverse-muted); border-color: var(--color-border-inverse);">Aa muted</div><div class="meta"><span class="key">--color-foreground-inverse-muted</span><span class="desc">Captions on dark</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="background: var(--color-background-inverse-surface); color: var(--color-foreground-inverse-placeholder); border-color: var(--color-border-inverse);">Aa placeholder</div><div class="meta"><span class="key">--color-foreground-inverse-placeholder</span><span class="desc">Disabled on dark</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="background: var(--color-background-inverse-surface); color: var(--color-foreground-inverse-accent); border-color: var(--color-border-inverse);">Aa accent</div><div class="meta"><span class="key">--color-foreground-inverse-accent</span><span class="desc">Brand emphasis on dark</span></div></div>
+      <div class="chip foreground-demo"><div class="demo" style="background: var(--color-background-inverse-surface); color: var(--color-foreground-inverse-highlight); border-color: var(--color-border-inverse);">Aa highlight</div><div class="meta"><span class="key">--color-foreground-inverse-highlight</span><span class="desc">Links on dark</span></div></div>
+    </div>
+
+    <h3 class="sub">Borders</h3>
+    <div class="chip-group">
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-subtle); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-subtle</span><span class="desc">Internal dividers, table rows</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-default); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-default</span><span class="desc">Cards, inputs, default rule</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-strong); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-strong</span><span class="desc">Pressed inputs, emphasis</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-focus); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-focus</span><span class="desc">Focus state on inputs</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-success); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-success</span><span class="desc">Validated, confirmed</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-warning); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-warning</span><span class="desc">Cautionary, pending</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-danger); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-danger</span><span class="desc">Error, destructive</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-canvas); border-color: var(--color-border-info); border-width: 2px;"></div><div class="meta"><span class="key">--color-border-info</span><span class="desc">Informational</span></div></div>
+    </div>
+
+    <h3 class="sub">Status pairs <span class="meta">— fg / bg / br always travel together</span></h3>
+    <div class="chip-group">
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-success-background); border-color: var(--color-feedback-success-border); color: var(--color-feedback-success-foreground); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">✓</div><div class="meta"><span class="key">--color-feedback-success-foreground / -bg / -br</span><span class="desc">Approved, successful, paid</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-warning-background); border-color: var(--color-feedback-warning-border); color: var(--color-feedback-warning-foreground); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">!</div><div class="meta"><span class="key">--color-feedback-warning-foreground / -bg / -br</span><span class="desc">Pending, hold, attention</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-danger-background); border-color: var(--color-feedback-danger-border); color: var(--color-feedback-danger-foreground); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">×</div><div class="meta"><span class="key">--color-feedback-danger-foreground / -bg / -br</span><span class="desc">Failed, blocked, rejected</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-info-background); border-color: var(--color-feedback-info-border); color: var(--color-feedback-info-foreground); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">i</div><div class="meta"><span class="key">--color-feedback-info-foreground / -bg / -br</span><span class="desc">Informational, neutral fact</span></div></div>
+    </div>
+
+    <h3 class="sub">Status foreground hierarchy <span class="meta">— three weights for text/icons on a status background</span></h3>
+    <div class="chip-group">
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-success-background); border-color: var(--color-feedback-success-border); color: var(--color-feedback-success-foreground); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-success-foreground</span><span class="desc">Default — high-contrast label/icon</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-success-background); border-color: var(--color-feedback-success-border); color: var(--color-feedback-success-foreground-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-success-foreground-muted</span><span class="desc">Muted — secondary text in a chip</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-success-background); border-color: var(--color-feedback-success-border); color: var(--color-feedback-success-foreground-subtle); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-success-foreground-subtle</span><span class="desc">Subtle — captions, helper</span></div></div>
+
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-warning-background); border-color: var(--color-feedback-warning-border); color: var(--color-feedback-warning-foreground); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-warning-foreground</span><span class="desc">Default — high-contrast label/icon</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-warning-background); border-color: var(--color-feedback-warning-border); color: var(--color-feedback-warning-foreground-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-warning-foreground-muted</span><span class="desc">Muted — secondary text in a chip</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-warning-background); border-color: var(--color-feedback-warning-border); color: var(--color-feedback-warning-foreground-subtle); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-warning-foreground-subtle</span><span class="desc">Subtle — captions, helper</span></div></div>
+
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-danger-background); border-color: var(--color-feedback-danger-border); color: var(--color-feedback-danger-foreground); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-danger-foreground</span><span class="desc">Default — high-contrast label/icon</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-danger-background); border-color: var(--color-feedback-danger-border); color: var(--color-feedback-danger-foreground-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-danger-foreground-muted</span><span class="desc">Muted — secondary text in a chip</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-danger-background); border-color: var(--color-feedback-danger-border); color: var(--color-feedback-danger-foreground-subtle); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-danger-foreground-subtle</span><span class="desc">Subtle — captions, helper</span></div></div>
+
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-info-background); border-color: var(--color-feedback-info-border); color: var(--color-feedback-info-foreground); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-info-foreground</span><span class="desc">Default — high-contrast label/icon</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-info-background); border-color: var(--color-feedback-info-border); color: var(--color-feedback-info-foreground-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-info-foreground-muted</span><span class="desc">Muted — secondary text in a chip</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-feedback-info-background); border-color: var(--color-feedback-info-border); color: var(--color-feedback-info-foreground-subtle); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-info-foreground-subtle</span><span class="desc">Subtle — captions, helper</span></div></div>
+    </div>
+
+    <h3 class="sub">Status foreground on inverse <span class="meta">— for chips/banners that sit on dark surfaces</span></h3>
+    <div class="chip-group on-inverse">
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface); border-color: var(--color-border-inverse); color: var(--color-feedback-success-foreground-on-inverse); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-success-foreground-on-inverse</span><span class="desc">Approved/paid label on inverse</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface); border-color: var(--color-border-inverse); color: var(--color-feedback-success-foreground-on-inverse-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-success-foreground-on-inverse-muted</span><span class="desc">Secondary text in inverse chip</span></div></div>
+
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface); border-color: var(--color-border-inverse); color: var(--color-feedback-warning-foreground-on-inverse); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-warning-foreground-on-inverse</span><span class="desc">Pending/hold label on inverse</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface); border-color: var(--color-border-inverse); color: var(--color-feedback-warning-foreground-on-inverse-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-warning-foreground-on-inverse-muted</span><span class="desc">Secondary text in inverse chip</span></div></div>
+
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface); border-color: var(--color-border-inverse); color: var(--color-feedback-danger-foreground-on-inverse); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-danger-foreground-on-inverse</span><span class="desc">Failed/blocked label on inverse</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface); border-color: var(--color-border-inverse); color: var(--color-feedback-danger-foreground-on-inverse-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-danger-foreground-on-inverse-muted</span><span class="desc">Secondary text in inverse chip</span></div></div>
+
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface); border-color: var(--color-border-inverse); color: var(--color-feedback-info-foreground-on-inverse); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-info-foreground-on-inverse</span><span class="desc">Informational label on inverse</span></div></div>
+      <div class="chip"><div class="swatch-mini" style="background: var(--color-background-inverse-surface); border-color: var(--color-border-inverse); color: var(--color-feedback-info-foreground-on-inverse-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size: 14px;">Aa</div><div class="meta"><span class="key">--color-feedback-info-foreground-on-inverse-muted</span><span class="desc">Secondary text in inverse chip</span></div></div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       04 · GRADIENTS
+       ======================================================== -->
+  <section class="doc-section" id="gradients">
+    <h2><span class="num">04</span>Gradients</h2>
+    <p class="lead">Brand-weighted blends used sparingly — hero panels, marketing surfaces, data overlays. Components never invent a gradient locally; they reference one of the eight tokens below.</p>
+
+    <div class="grad-grid">
+      <div class="grad-card"><div class="fill" style="background: var(--grad-brand);"></div><div class="meta"><div class="key">--grad-brand</div><div class="desc">135° · ink → blue → sky · primary brand sweep</div></div></div>
+      <div class="grad-card"><div class="fill" style="background: var(--grad-brand-soft);"></div><div class="meta"><div class="key">--grad-brand-soft</div><div class="desc">135° · subtle blue-on-blue · CTA backdrops</div></div></div>
+      <div class="grad-card"><div class="fill" style="background: var(--grad-ink);"></div><div class="meta"><div class="key">--grad-ink</div><div class="desc">160° · near-black to brand · marketing hero</div></div></div>
+      <div class="grad-card"><div class="fill" style="background: var(--grad-hero);"></div><div class="meta"><div class="key">--grad-hero</div><div class="desc">180° · vertical brand fade</div></div></div>
+      <div class="grad-card"><div class="fill" style="background: var(--color-brand-primary-700) var(--grad-sheen);"></div><div class="meta"><div class="key">--grad-sheen</div><div class="desc">120° · white-light overlay for glass / metal</div></div></div>
+      <div class="grad-card"><div class="fill" style="background: var(--color-background-subtle) var(--grad-surface-top);"></div><div class="meta"><div class="key">--grad-surface-top</div><div class="desc">180° · top-of-card highlight</div></div></div>
+      <div class="grad-card"><div class="fill" style="background: var(--color-background-subtle); background-image: var(--grad-data-pos);"></div><div class="meta"><div class="key">--grad-data-pos</div><div class="desc">Sparkline / area chart positive fill</div></div></div>
+      <div class="grad-card"><div class="fill" style="background: var(--color-background-subtle); background-image: var(--grad-data-neg);"></div><div class="meta"><div class="key">--grad-data-neg</div><div class="desc">Sparkline / area chart negative fill</div></div></div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       05 · LIQUID GLASS
+       ======================================================== -->
+  <section class="doc-section" id="glass">
+    <h2><span class="num">05</span>Liquid glass</h2>
+    <p class="lead">Translucent layers used for floating chrome — toolbars over imagery, modals over a dimmed canvas, navigation that overlaps content. Every glass surface combines a translucent fill, a backdrop-filter blur, and a hairline border.</p>
+
+    <div class="glass-stage">
+      <div class="grid">
+        <div class="glass-card white">
+          <span class="key">--glass-white</span>
+          <span class="desc">58% white — default light glass over mid-bright bg</span>
+        </div>
+        <div class="glass-card white-hi">
+          <span class="key">--glass-white-hi</span>
+          <span class="desc">78% white — opaque-feeling, max readability</span>
+        </div>
+        <div class="glass-card white-lo">
+          <span class="key">--glass-white-lo</span>
+          <span class="desc">38% white — subtle frosted hint</span>
+        </div>
+        <div class="glass-card tint">
+          <span class="key">--glass-tint</span>
+          <span class="desc">Bluish-white tint — system flavor</span>
+        </div>
+        <div class="glass-card ink">
+          <span class="key">--glass-ink</span>
+          <span class="desc">55% navy — default dark glass</span>
+        </div>
+        <div class="glass-card ink-hi">
+          <span class="key">--glass-ink-hi</span>
+          <span class="desc">78% navy — opaque dark</span>
+        </div>
+        <div class="glass-card ink-lo">
+          <span class="key">--glass-ink-lo</span>
+          <span class="desc">35% navy — soft hint of dark</span>
+        </div>
+      </div>
+    </div>
+
+    <table class="token-table" style="width: 100%; border-collapse: collapse; background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-xs); font-size: var(--fs-sm);">
+      <thead>
+        <tr>
+          <th style="font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); padding: var(--space-3) var(--space-5); text-align: left; border-bottom: 1px solid var(--color-border-subtle);">Blur token</th>
+          <th style="font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); padding: var(--space-3) var(--space-5); text-align: left; border-bottom: 1px solid var(--color-border-subtle);">Value</th>
+          <th style="font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); padding: var(--space-3) var(--space-5); text-align: left; border-bottom: 1px solid var(--color-border-subtle);">When to use</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">--glass-blur-sm</td><td style="font-family: var(--font-mono); color: var(--color-foreground-secondary); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">saturate(130%) blur(10px)</td><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary);">Sticky nav, dropdowns, small overlays</td></tr>
+        <tr><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">--glass-blur</td><td style="font-family: var(--font-mono); color: var(--color-foreground-secondary); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">saturate(140%) blur(18px)</td><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary);">Default glass — toolbars, side panels</td></tr>
+        <tr><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5);">--glass-blur-lg</td><td style="font-family: var(--font-mono); color: var(--color-foreground-secondary); padding: var(--space-3) var(--space-5);">saturate(160%) blur(28px)</td><td style="padding: var(--space-3) var(--space-5); color: var(--color-foreground-secondary);">Modals, full-screen overlays</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========================================================
+       06 · TYPOGRAPHY
+       ======================================================== -->
+  <section class="doc-section" id="typography">
+    <h2><span class="num">06</span>Typography</h2>
+    <p class="lead">Lato across the system — humanist sans with seven weights. JetBrains Mono for IDs, codes, and tabular numbers where alignment matters. The type scale runs from <code>10px</code> caption micro through <code>72px</code> hero display.</p>
+
+    <h3 class="sub">Families</h3>
+    <div class="family-grid">
+      <div class="family">
+        <span class="label">Sans · default UI + display</span>
+        <span class="name">Lato</span>
+        <span class="demo" style="font-family: var(--font-sans); font-weight: var(--w-bold);">Aa Bb 1234 — €¥</span>
+        <span class="var">--font-sans · --font-display</span>
+      </div>
+      <div class="family mono">
+        <span class="label">Mono · IDs, codes, tabular</span>
+        <span class="name">JetBrains Mono</span>
+        <span class="demo">Aa Bb 1234 — €¥</span>
+        <span class="var">--font-mono</span>
+      </div>
+    </div>
+
+    <h3 class="sub">Weights</h3>
+    <div class="weight-grid">
+      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-light);">Aa</div><div class="key">--w-light</div><div class="num">300</div></div>
+      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-regular);">Aa</div><div class="key">--w-regular</div><div class="num">400</div></div>
+      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-medium);">Aa</div><div class="key">--w-medium</div><div class="num">500</div></div>
+      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-semibold);">Aa</div><div class="key">--w-semibold</div><div class="num">600</div></div>
+      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-bold);">Aa</div><div class="key">--w-bold</div><div class="num">700</div></div>
+      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-extrabold);">Aa</div><div class="key">--w-extrabold</div><div class="num">800</div></div>
+      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-black);">Aa</div><div class="key">--w-black</div><div class="num">900</div></div>
+    </div>
+
+    <h3 class="sub">Scale <span class="meta">— 14 stops</span></h3>
+    <div class="type-stack">
+      <div class="type-row">
+        <div class="label"><span class="ttl">Display XL</span><span class="px">72px / 900</span></div>
+        <div class="sample" style="font-family: var(--font-display); font-weight: var(--w-black); font-size: var(--fs-8xl); letter-spacing: var(--ls-display); line-height: var(--lh-tight);">Aa Hero</div>
+        <div class="tokens"><span class="k">--fs-8xl</span> · <span class="k">--w-black</span><br/><span class="k">--ls-display</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Display LG</span><span class="px">56px / 800</span></div>
+        <div class="sample" style="font-family: var(--font-display); font-weight: var(--w-extrabold); font-size: var(--fs-7xl); letter-spacing: var(--ls-display); line-height: var(--lh-tight);">Aa Headline</div>
+        <div class="tokens"><span class="k">--fs-7xl</span> · <span class="k">--w-extrabold</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Display</span><span class="px">40px / 700</span></div>
+        <div class="sample" style="font-family: var(--font-display); font-weight: var(--w-bold); font-size: var(--fs-6xl); letter-spacing: var(--ls-display); line-height: var(--lh-tight);">Aa Section</div>
+        <div class="tokens"><span class="k">--fs-6xl</span> · <span class="k">--w-bold</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">H1</span><span class="px">32px / 700</span></div>
+        <div class="sample" style="font-weight: var(--w-bold); font-size: var(--fs-5xl); letter-spacing: var(--ls-display); line-height: var(--lh-tight);">Heading 1</div>
+        <div class="tokens"><span class="k">--fs-5xl</span> · <span class="k">--w-bold</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">H2</span><span class="px">28px / 700</span></div>
+        <div class="sample" style="font-weight: var(--w-bold); font-size: var(--fs-4xl); letter-spacing: var(--ls-title); line-height: var(--lh-snug);">Heading 2</div>
+        <div class="tokens"><span class="k">--fs-4xl</span> · <span class="k">--ls-title</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">H3</span><span class="px">24px / 700</span></div>
+        <div class="sample" style="font-weight: var(--w-bold); font-size: var(--fs-3xl); letter-spacing: var(--ls-title); line-height: var(--lh-snug);">Heading 3</div>
+        <div class="tokens"><span class="k">--fs-3xl</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">H4</span><span class="px">20px / 600</span></div>
+        <div class="sample" style="font-weight: var(--w-semibold); font-size: var(--fs-2xl); letter-spacing: var(--ls-title); line-height: var(--lh-snug);">Heading 4</div>
+        <div class="tokens"><span class="k">--fs-2xl</span> · <span class="k">--w-semibold</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">H5</span><span class="px">18px / 600</span></div>
+        <div class="sample" style="font-weight: var(--w-semibold); font-size: var(--fs-xl); line-height: var(--lh-snug);">Heading 5</div>
+        <div class="tokens"><span class="k">--fs-xl</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">H6 / Body LG</span><span class="px">16px</span></div>
+        <div class="sample" style="font-size: var(--fs-lg); line-height: var(--lh-relaxed);">Body large — section intros, leads</div>
+        <div class="tokens"><span class="k">--fs-lg</span> · <span class="k">--lh-relaxed</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Body</span><span class="px">14px / default</span></div>
+        <div class="sample" style="font-size: var(--fs-base); line-height: var(--lh-normal);">Body — the default UI text size for paragraphs and form values.</div>
+        <div class="tokens"><span class="k">--fs-base</span> · <span class="k">--lh-normal</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Body SM / UI</span><span class="px">13px</span></div>
+        <div class="sample" style="font-size: var(--fs-md); line-height: var(--lh-normal);">UI default — buttons, labels, dense data tables, inputs.</div>
+        <div class="tokens"><span class="k">--fs-md</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Caption</span><span class="px">12px</span></div>
+        <div class="sample" style="font-size: var(--fs-sm); color: var(--color-foreground-muted); line-height: var(--lh-normal);">Caption — helper text, secondary metadata.</div>
+        <div class="tokens"><span class="k">--fs-sm</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Overline</span><span class="px">11px / caps</span></div>
+        <div class="sample" style="font-size: var(--fs-xs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-semibold);">Overline label</div>
+        <div class="tokens"><span class="k">--fs-xs</span> · <span class="k">--ls-caps</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Micro</span><span class="px">10px</span></div>
+        <div class="sample" style="font-size: var(--fs-xxs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-semibold);">Micro · table head</div>
+        <div class="tokens"><span class="k">--fs-xxs</span></div>
+      </div>
+    </div>
+
+    <h3 class="sub">Line height &amp; letter spacing</h3>
+    <div class="metric-grid">
+      <div class="metric">
+        <div class="key">--lh-tight (1.15)</div>
+        <div class="demo" style="line-height: var(--lh-tight);">Used for display + H1 — tight vertical rhythm so multi-line headlines hold together as one shape.</div>
+      </div>
+      <div class="metric">
+        <div class="key">--lh-snug (1.3)</div>
+        <div class="demo" style="line-height: var(--lh-snug);">H2–H5 — comfortable but compact, lets adjacent headings sit close to their content without crowding.</div>
+      </div>
+      <div class="metric">
+        <div class="key">--lh-normal (1.5)</div>
+        <div class="demo" style="line-height: var(--lh-normal);">Body default — the standard for any continuous prose under 16px. Optimised for screen reading without feeling airy.</div>
+      </div>
+      <div class="metric">
+        <div class="key">--lh-relaxed (1.65)</div>
+        <div class="demo" style="line-height: var(--lh-relaxed);">Body LG and lead paragraphs — gives marketing copy and section intros space to breathe across longer line lengths.</div>
+      </div>
+      <div class="metric">
+        <div class="key">--ls-display (-3%)</div>
+        <div class="demo" style="font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display);">Aa Display</div>
+      </div>
+      <div class="metric">
+        <div class="key">--ls-title (-1.5%)</div>
+        <div class="demo" style="font-size: var(--fs-2xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title);">Aa Title</div>
+      </div>
+      <div class="metric">
+        <div class="key">--ls-body (0)</div>
+        <div class="demo" style="letter-spacing: var(--ls-body);">Aa body — default tracking</div>
+      </div>
+      <div class="metric">
+        <div class="key">--ls-caps (+8%)</div>
+        <div class="demo" style="text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-semibold);">Aa overline caps</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       07 · SPACING
+       ======================================================== -->
+  <section class="doc-section" id="spacing">
+    <h2><span class="num">07</span>Spacing</h2>
+    <p class="lead">A 4px base scale — dense enough for data tables, generous enough for marketing layouts. Every padding, margin, and gap in the system snaps to one of fifteen steps. There is no <code>11px</code>, no <code>23px</code>; pick the nearest stop or, if the scale is genuinely lacking, propose a new token.</p>
+
+    <div class="scale-grid">
+      <div class="scale-row"><span class="key">--space-0</span><span class="px">0</span><span class="bar" style="width: 0;"></span><span class="use">Reset / collapse</span></div>
+      <div class="scale-row"><span class="key">--space-1</span><span class="px">2</span><span class="bar" style="width: 2px;"></span><span class="use">Hairline gaps inside small chips</span></div>
+      <div class="scale-row"><span class="key">--space-2</span><span class="px">4</span><span class="bar" style="width: 4px;"></span><span class="use">Icon ↔ label inside buttons / pills</span></div>
+      <div class="scale-row"><span class="key">--space-3</span><span class="px">8</span><span class="bar" style="width: 8px;"></span><span class="use">Form row internal, dense inline</span></div>
+      <div class="scale-row"><span class="key">--space-4</span><span class="px">12</span><span class="bar" style="width: 12px;"></span><span class="use">Default — most cells, list rows</span></div>
+      <div class="scale-row"><span class="key">--space-5</span><span class="px">16</span><span class="bar" style="width: 16px;"></span><span class="use">Card body padding (sm)</span></div>
+      <div class="scale-row"><span class="key">--space-6</span><span class="px">20</span><span class="bar" style="width: 20px;"></span><span class="use">Default card padding, section gaps</span></div>
+      <div class="scale-row"><span class="key">--space-7</span><span class="px">24</span><span class="bar" style="width: 24px;"></span><span class="use">Section internal padding</span></div>
+      <div class="scale-row"><span class="key">--space-8</span><span class="px">32</span><span class="bar" style="width: 32px;"></span><span class="use">Between distinct page blocks</span></div>
+      <div class="scale-row"><span class="key">--space-9</span><span class="px">40</span><span class="bar" style="width: 40px;"></span><span class="use">Hero internal, page header</span></div>
+      <div class="scale-row"><span class="key">--space-10</span><span class="px">48</span><span class="bar" style="width: 48px;"></span><span class="use">Page-level top padding</span></div>
+      <div class="scale-row"><span class="key">--space-12</span><span class="px">64</span><span class="bar" style="width: 64px;"></span><span class="use">Section-to-section vertical rhythm</span></div>
+      <div class="scale-row"><span class="key">--space-14</span><span class="px">80</span><span class="bar" style="width: 80px;"></span><span class="use">Hero blocks, marketing landings</span></div>
+      <div class="scale-row"><span class="key">--space-16</span><span class="px">96</span><span class="bar" style="width: 96px;"></span><span class="use">Major section breaks</span></div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       08 · RADII
+       ======================================================== -->
+  <section class="doc-section" id="radii">
+    <h2><span class="num">08</span>Radii</h2>
+    <p class="lead">Mostly soft, never sharp. Cards and inputs sit at <code>--radius-md</code>; containers grow to <code>--radius-lg</code>; hero panels reach <code>--radius-xl</code>. Buttons are unique — fully rounded with <code>--radius-pill</code> regardless of size.</p>
+
+    <div class="radii-grid">
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-2xs);"></div><span class="key">--radius-2xs</span><span class="px">2px</span></div>
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-xs);"></div><span class="key">--radius-xs</span><span class="px">4px</span></div>
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-sm);"></div><span class="key">--radius-sm</span><span class="px">6px</span></div>
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-md);"></div><span class="key">--radius-md</span><span class="px">10px</span></div>
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-lg);"></div><span class="key">--radius-lg</span><span class="px">14px</span></div>
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-xl);"></div><span class="key">--radius-xl</span><span class="px">20px</span></div>
+      <div class="radii-cell"><div class="demo" style="border-radius: var(--radius-2xl);"></div><span class="key">--radius-2xl</span><span class="px">28px</span></div>
+      <div class="radii-cell pill"><div class="demo" style="border-radius: var(--radius-pill);"></div><span class="key">--radius-pill</span><span class="px">999px</span></div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       09 · SHADOWS
+       ======================================================== -->
+  <section class="doc-section" id="shadows">
+    <h2><span class="num">09</span>Shadows</h2>
+    <p class="lead">Soft, blue-tinted, multi-layer. Every shadow uses <code>--color-shadow-tint</code> (a navy ink) instead of black so elevation reads as part of the system rather than as photographic. Five neutral elevations, four semantic elevations for status surfaces, and six tinted focus rings.</p>
+
+    <h3 class="sub">Neutral elevation</h3>
+    <div class="shadow-grid">
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-xs);"></div><div class="meta"><span class="key">--shadow-xs</span><span class="desc">Hairline lift — table cards, pills</span></div></div>
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-sm);"></div><div class="meta"><span class="key">--shadow-sm</span><span class="desc">Default card / dropdown</span></div></div>
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-md);"></div><div class="meta"><span class="key">--shadow-md</span><span class="desc">Popovers, hovered cards</span></div></div>
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-lg);"></div><div class="meta"><span class="key">--shadow-lg</span><span class="desc">Modals, sheets</span></div></div>
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-xl);"></div><div class="meta"><span class="key">--shadow-xl</span><span class="desc">Hero / floating notifications</span></div></div>
+    </div>
+
+    <h3 class="sub">Semantic elevation <span class="meta">— for status surfaces</span></h3>
+    <div class="shadow-grid">
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-success-sm); border-color: var(--color-feedback-success-border); background: var(--color-feedback-success-background);"></div><div class="meta"><span class="key">--shadow-success-sm / -md</span><span class="desc">Confirm toasts, success banners</span></div></div>
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-warning-sm); border-color: var(--color-feedback-warning-border); background: var(--color-feedback-warning-background);"></div><div class="meta"><span class="key">--shadow-warning-sm / -md</span><span class="desc">Pending dialogs, hold cards</span></div></div>
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-danger-sm); border-color: var(--color-feedback-danger-border); background: var(--color-feedback-danger-background);"></div><div class="meta"><span class="key">--shadow-danger-sm / -md</span><span class="desc">Error states, destructive prompts</span></div></div>
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-info-sm); border-color: var(--color-feedback-info-border); background: var(--color-feedback-info-background);"></div><div class="meta"><span class="key">--shadow-info-sm / -md</span><span class="desc">Informational cards</span></div></div>
+    </div>
+
+    <h3 class="sub">Inset &amp; glass <span class="meta">— surface treatments</span></h3>
+    <div class="shadow-grid">
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-inset);"></div><div class="meta"><span class="key">--shadow-inset</span><span class="desc">Top highlight + bottom shade — buttons, glass cards</span></div></div>
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-glass);"></div><div class="meta"><span class="key">--shadow-glass</span><span class="desc">Light-glass elevation</span></div></div>
+    </div>
+    <div class="shadow-grid dark">
+      <div class="shadow-cell"><div class="demo" style="box-shadow: var(--shadow-glass-dark);"></div><div class="meta"><span class="key">--shadow-glass-dark</span><span class="desc">Dark-glass elevation — for inverse surfaces</span></div></div>
+    </div>
+
+    <h3 class="sub">Focus rings <span class="meta">— accessibility</span></h3>
+    <p class="intro">Every interactive control gets one of these rings on <code>:focus-visible</code>. The hue matches the action's semantic meaning so destructive vs. confirm vs. neutral actions feel different even before reading the label.</p>
+
+    <div class="focus-grid">
+      <div class="focus-cell"><div class="ring-demo r-blue"></div><span class="key">--shadow-focus</span></div>
+      <div class="focus-cell"><div class="ring-demo r-sky"></div><span class="key">--shadow-focus-sky</span></div>
+      <div class="focus-cell"><div class="ring-demo r-success"></div><span class="key">--shadow-focus-success</span></div>
+      <div class="focus-cell"><div class="ring-demo r-warning"></div><span class="key">--shadow-focus-warning</span></div>
+      <div class="focus-cell"><div class="ring-demo r-danger"></div><span class="key">--shadow-focus-danger</span></div>
+      <div class="focus-cell"><div class="ring-demo r-info"></div><span class="key">--shadow-focus-info</span></div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       10 · ICONOGRAPHY
+       ======================================================== -->
+  <section class="doc-section" id="iconography">
+    <h2><span class="num">10</span>Iconography</h2>
+    <p class="lead">Lucide is the canonical icon library — outline strokes, geometric, calm. Five sizes paired one-to-one with the type scale, three stroke weights for visual hierarchy.</p>
+
+    <h3 class="sub">Sizes <span class="meta">— pair with adjacent text</span></h3>
+    <div class="icon-size-grid">
+      <div class="icon-size-cell">
+        <span class="ic"><i data-lucide="circle" style="width: var(--icon-xs); height: var(--icon-xs);"></i></span>
+        <span class="key">--icon-xs</span>
+        <span class="px">12px</span>
+        <span class="pair">Helper, micro caption · 11–12px text</span>
+      </div>
+      <div class="icon-size-cell">
+        <span class="ic"><i data-lucide="circle" style="width: var(--icon-sm); height: var(--icon-sm);"></i></span>
+        <span class="key">--icon-sm</span>
+        <span class="px">14px</span>
+        <span class="pair">Input affix, dense inline · 13px text</span>
+      </div>
+      <div class="icon-size-cell">
+        <span class="ic"><i data-lucide="circle" style="width: var(--icon-md); height: var(--icon-md);"></i></span>
+        <span class="key">--icon-md</span>
+        <span class="px">16px</span>
+        <span class="pair">Default — buttons, nav · 14px text</span>
+      </div>
+      <div class="icon-size-cell">
+        <span class="ic"><i data-lucide="circle" style="width: var(--icon-lg); height: var(--icon-lg);"></i></span>
+        <span class="key">--icon-lg</span>
+        <span class="px">20px</span>
+        <span class="pair">Iconography grid, prominent · 16+ text</span>
+      </div>
+      <div class="icon-size-cell">
+        <span class="ic"><i data-lucide="circle" style="width: var(--icon-xl); height: var(--icon-xl);"></i></span>
+        <span class="key">--icon-xl</span>
+        <span class="px">24px</span>
+        <span class="pair">Hero, empty states · 18+ text</span>
+      </div>
+    </div>
+
+    <h3 class="sub">Stroke weights</h3>
+    <div class="stroke-grid">
+      <div class="stroke-cell thin">
+        <i data-lucide="circle"></i>
+        <span class="key">--icon-stroke-thin</span>
+        <span class="desc">1.5 — decorative or large hero icons where 1.75 looks heavy</span>
+      </div>
+      <div class="stroke-cell normal">
+        <i data-lucide="circle"></i>
+        <span class="key">--icon-stroke</span>
+        <span class="desc">1.75 — default; bolder than 1.5, calmer than 2</span>
+      </div>
+      <div class="stroke-cell bold">
+        <i data-lucide="circle"></i>
+        <span class="key">--icon-stroke-bold</span>
+        <span class="desc">2 — close buttons, X marks, indicators where weight matters</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       11 · MOTION
+       ======================================================== -->
+  <section class="doc-section" id="motion">
+    <h2><span class="num">11</span>Motion</h2>
+    <p class="lead">Snappy, never bouncy. One easing curve does most of the work — <code>--ease-standard</code>, an out-expo. Five durations from <code>80ms</code> tap-feedback through <code>480ms</code> page transition. <em>Hover any cell below to see the motion.</em></p>
+
+    <h3 class="sub">Durations</h3>
+    <div class="motion-grid">
+      <div class="motion-cell d-instant"><div class="track"><div class="ball"></div></div><div class="key">--duration-instant</div><div class="desc">80ms — micro feedback (tap echo)</div><div class="hint">Hover to play</div></div>
+      <div class="motion-cell d-fast"><div class="track"><div class="ball"></div></div><div class="key">--duration-fast</div><div class="desc">140ms — hover, focus, color</div><div class="hint">Hover to play</div></div>
+      <div class="motion-cell d-base"><div class="track"><div class="ball"></div></div><div class="key">--duration-base</div><div class="desc">200ms — default for most UI</div><div class="hint">Hover to play</div></div>
+      <div class="motion-cell d-slow"><div class="track"><div class="ball"></div></div><div class="key">--duration-slow</div><div class="desc">320ms — expansions, reveals</div><div class="hint">Hover to play</div></div>
+      <div class="motion-cell d-slower"><div class="track"><div class="ball"></div></div><div class="key">--duration-slower</div><div class="desc">480ms — page-level transitions</div><div class="hint">Hover to play</div></div>
+    </div>
+
+    <h3 class="sub">Easings</h3>
+    <div class="motion-grid">
+      <div class="motion-cell d-slower"><div class="track"><div class="ball"></div></div><div class="key">--ease-standard</div><div class="desc">cubic-bezier(.2, .8, .2, 1) — default</div><div class="hint">Hover to play</div></div>
+      <div class="motion-cell d-slower e-emphasis"><div class="track"><div class="ball"></div></div><div class="key">--ease-emphasis</div><div class="desc">More overshoot — for entries</div><div class="hint">Hover to play</div></div>
+      <div class="motion-cell d-slower e-linear"><div class="track"><div class="ball"></div></div><div class="key">--ease-linear</div><div class="desc">Linear — loading bars, scrubbers</div><div class="hint">Hover to play</div></div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       12 · NAMING
+       ======================================================== -->
+  <section class="doc-section" id="naming">
+    <h2><span class="num">12</span>Naming</h2>
+    <p class="lead">Token names are predictable. Read left to right, the segments narrow from category to specific role. If you can't construct the name from the formula below, the token probably shouldn't exist.</p>
+
+    <div class="token-anatomy">
+      <div class="formula">
+        <span class="seg s1">--bg</span><span class="dash">-</span><span class="seg s2">inverse</span><span class="dash">-</span><span class="seg s3">brand</span>
+      </div>
+      <div class="legend">
+        <div class="l1">
+          <span class="name">Category</span>
+          <span class="desc">What kind of property is this?</span>
+          <span class="examples">bg · fg · br · radius · space · fs · w · ls · lh · shadow · icon · duration · ease</span>
+        </div>
+        <div class="l2">
+          <span class="name">Layer (optional)</span>
+          <span class="desc">Inverse surface? Status feedback?</span>
+          <span class="examples">inverse · success · warning · danger · info</span>
+        </div>
+        <div class="l3">
+          <span class="name">Role / variant</span>
+          <span class="desc">Default, accent, brand, hover, etc.</span>
+          <span class="examples">default · subtle · accent · brand · hover · press · selected</span>
+        </div>
+        <div class="l4" style="display:none;"></div>
+      </div>
+    </div>
+
+    <table class="token-table" style="width: 100%; border-collapse: collapse; background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-xs); font-size: var(--fs-sm);">
+      <thead>
+        <tr>
+          <th style="font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); padding: var(--space-3) var(--space-5); text-align: left; border-bottom: 1px solid var(--color-border-subtle);">Pattern</th>
+          <th style="font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); padding: var(--space-3) var(--space-5); text-align: left; border-bottom: 1px solid var(--color-border-subtle);">Example</th>
+          <th style="font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); padding: var(--space-3) var(--space-5); text-align: left; border-bottom: 1px solid var(--color-border-subtle);">Meaning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);"><code>--{family}-{stop}</code></td><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">--color-brand-primary-500</td><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary);">Raw palette stop</td></tr>
+        <tr><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);"><code>--{cat}-{role}</code></td><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">--color-foreground-default</td><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary);">Semantic role on light surface</td></tr>
+        <tr><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);"><code>--{cat}-inverse-{role}</code></td><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">--color-foreground-inverse-muted</td><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary);">Same role, dark surface</td></tr>
+        <tr><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);"><code>--{status}-{role}</code></td><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">--color-feedback-success-background</td><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary);">Status-paired bg / fg / br</td></tr>
+        <tr><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);"><code>--space-{n}</code></td><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">--space-6</td><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary);">Step number on the spacing scale</td></tr>
+        <tr><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);"><code>--fs-{stop}</code> / <code>--w-{name}</code></td><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle);">--fs-3xl · --w-bold</td><td style="padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary);">Typography scale + weight</td></tr>
+        <tr><td style="padding: var(--space-3) var(--space-5);"><code>--shadow-{level}</code></td><td style="font-family: var(--font-mono); color: var(--color-foreground-accent); padding: var(--space-3) var(--space-5);">--shadow-lg</td><td style="padding: var(--space-3) var(--space-5); color: var(--color-foreground-secondary);">Elevation level</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ========================================================
+       13 · CONSUME
+       ======================================================== -->
+  <section class="doc-section" id="consume">
+    <h2><span class="num">13</span>How to consume</h2>
+    <p class="lead">When you write a new component, the rule is simple: read semantic tokens, never raw values, never local hex codes. Below — the same button, two ways. Only one will survive a rebrand.</p>
+
+    <div class="code-pair">
+      <div class="code-block">
+        <div class="head do"><i data-lucide="check-circle-2"></i>Do — semantic tokens</div>
+<pre><span class="com">/* button.css */</span>
+<span class="key">.btn-primary</span> {
+  <span class="key">background</span>:    <span class="var">var(--color-brand-primary-500)</span>;
+  <span class="key">color</span>:         <span class="var">var(--color-foreground-on-solid)</span>;
+  <span class="key">border-radius</span>: <span class="var">var(--radius-pill)</span>;
+  <span class="key">padding</span>:       <span class="var">var(--space-3)</span> <span class="var">var(--space-6)</span>;
+  <span class="key">font-size</span>:     <span class="var">var(--fs-md)</span>;
+  <span class="key">font-weight</span>:   <span class="var">var(--w-semibold)</span>;
+  <span class="key">box-shadow</span>:    <span class="var">var(--shadow-sm)</span>;
+  <span class="key">transition</span>:    <span class="var">var(--transition-fast)</span>;
+}
+<span class="key">.btn-primary:focus-visible</span> {
+  <span class="key">box-shadow</span>: <span class="var">var(--shadow-focus)</span>;
+}</pre>
+      </div>
+      <div class="code-block">
+        <div class="head dont"><i data-lucide="x-circle"></i>Don't — local values</div>
+<pre><span class="com">/* button.css */</span>
+<span class="key">.btn-primary</span> {
+  <span class="key">background</span>:    <span class="str">#003399</span>;
+  <span class="key">color</span>:         <span class="str">#FFFFFF</span>;
+  <span class="key">border-radius</span>: <span class="str">999px</span>;
+  <span class="key">padding</span>:       <span class="str">8px 20px</span>;
+  <span class="key">font-size</span>:     <span class="str">13px</span>;
+  <span class="key">font-weight</span>:   <span class="str">600</span>;
+  <span class="key">box-shadow</span>:    <span class="str">0 1px 2px rgba(0,0,0,.08)</span>;
+  <span class="key">transition</span>:    <span class="str">all 150ms ease</span>;
+}
+<span class="key">.btn-primary:focus-visible</span> {
+  <span class="key">outline</span>: <span class="str">2px solid #003399</span>;
+}</pre>
+      </div>
+    </div>
+
+    <h3 class="sub">Rules</h3>
+    <div class="principles">
+      <div class="principle">
+        <span class="ic"><i data-lucide="check"></i></span>
+        <span class="ttl">Always semantic</span>
+        <p>Components consume <code>--color-foreground-default</code>, <code>--color-background-surface</code>, <code>--color-border-focus</code>. Reaching for <code>--color-neutral-800</code> directly is a code smell.</p>
+      </div>
+      <div class="principle">
+        <span class="ic"><i data-lucide="alert-triangle"></i></span>
+        <span class="ttl">Raw is privileged</span>
+        <p>Raw palette tokens (<code>--color-brand-primary-500</code>, <code>--color-success-100</code>) are referenced only inside <code>colors_and_type.css</code> when defining semantic roles.</p>
+      </div>
+      <div class="principle">
+        <span class="ic"><i data-lucide="git-branch"></i></span>
+        <span class="ttl">Add, don't override</span>
+        <p>Need a new shade? Add a token to the file. Never override a token's value inside a component stylesheet.</p>
+      </div>
+      <div class="principle">
+        <span class="ic"><i data-lucide="search"></i></span>
+        <span class="ttl">Audit before adding</span>
+        <p>Search the file before proposing a new token. The closest existing role is almost always the right answer.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Init lucide icons
+  if (window.lucide) lucide.createIcons();
+
+  // Make motion cells re-trigger animation on hover (CSS transition only fires once)
+  document.querySelectorAll('.motion-cell').forEach(cell => {
+    cell.addEventListener('mouseleave', () => {
+      cell.classList.remove('is-running');
+    });
+  });
+</script>
+
+</body>
+</html>

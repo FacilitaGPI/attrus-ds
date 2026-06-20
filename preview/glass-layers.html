@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Glass layers" subtitle="Spec doc — anatomy, 7 tints, 3 blurs, 4 in-context demos, a11y, don'ts, tokens" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Glass layers · ATTRUS Design System</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../themes/index.css?v=1">
+<script src="../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body {
+    margin: 0;
+    background: var(--color-background-canvas);
+    color: var(--color-foreground-default);
+    font-family: var(--font-sans);
+    font-size: var(--fs-base);
+    line-height: var(--lh-normal);
+  }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  /* header */
+  .doc-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: var(--space-8);
+    padding-bottom: var(--space-7);
+    border-bottom: 1px solid var(--color-border-default);
+    margin-bottom: var(--space-10);
+  }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta-pill {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-feedback-success-background);
+    color: var(--color-feedback-success-foreground);
+    border: 1px solid var(--color-feedback-success-border);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+  }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  /* nav */
+  .doc-nav {
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-10);
+    box-shadow: var(--shadow-xs);
+  }
+  .doc-nav a {
+    padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill);
+    color: var(--color-foreground-secondary); text-decoration: none;
+    font-size: var(--fs-sm); font-weight: var(--w-semibold);
+    transition: var(--transition-fast);
+  }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  /* sections */
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  /* spec card */
+  .spec {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: var(--space-6);
+    box-shadow: var(--shadow-xs);
+  }
+  .spec-head {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: var(--space-6);
+    padding: var(--space-5) var(--space-6);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code {
+    font-family: var(--font-mono); font-size: var(--fs-md);
+    font-weight: var(--w-medium); color: var(--color-foreground-accent);
+    background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px;
+  }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .spec-tag {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0;
+  }
+
+  /* Glass stage — colorful photographic-ish gradient backdrop so transparency reads */
+  .glass-stage {
+    position: relative;
+    min-height: 320px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--grad-hero);
+    display: flex; align-items: center; justify-content: center;
+    padding: var(--space-8);
+  }
+  .glass-stage::before {
+    content: ""; position: absolute; inset: 0;
+    background: var(--grad-radial-glow);
+    pointer-events: none;
+  }
+  .glass-stage::after {
+    /* photographic noise to keep transparency readable */
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(at 22% 30%, color-mix(in srgb, var(--color-brand-accent-500) 35%, transparent), transparent 50%),
+      radial-gradient(at 78% 70%, color-mix(in srgb, var(--color-success-500) 30%, transparent), transparent 55%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+  .glass-stage > * { position: relative; z-index: 2; }
+
+  /* Sample glass cards */
+  .glass-card {
+    padding: var(--space-5) var(--space-6);
+    border-radius: var(--radius-md);
+    min-width: 240px;
+    max-width: 320px;
+  }
+  .glass-card .h {
+    font-size: var(--fs-md);
+    font-weight: var(--w-bold);
+    letter-spacing: var(--ls-title);
+    margin-bottom: var(--space-2);
+  }
+  .glass-card .s {
+    font-size: var(--fs-xs);
+    line-height: var(--lh-relaxed);
+  }
+  .glass-card.light {
+    background: var(--glass-white);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    box-shadow: var(--shadow-glass);
+    color: var(--color-foreground-default);
+  }
+  .glass-card.light .s { color: var(--color-foreground-secondary); }
+  .glass-card.light-hi {
+    background: var(--glass-white-hi);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    box-shadow: var(--shadow-glass);
+    color: var(--color-foreground-default);
+  }
+  .glass-card.light-hi .s { color: var(--color-foreground-secondary); }
+  .glass-card.light-lo {
+    background: var(--glass-white-lo);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    box-shadow: var(--shadow-glass);
+    color: var(--color-foreground-default);
+  }
+  .glass-card.light-lo .s { color: var(--color-foreground-secondary); }
+  .glass-card.tint {
+    background: var(--glass-tint);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    box-shadow: var(--shadow-glass);
+    color: var(--color-foreground-default);
+  }
+  .glass-card.tint .s { color: var(--color-foreground-secondary); }
+  .glass-card.dark {
+    background: var(--glass-ink);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border-dark);
+    box-shadow: var(--shadow-glass-dark);
+    color: var(--color-foreground-inverse-default);
+  }
+  .glass-card.dark .s { color: var(--color-foreground-inverse-secondary); }
+  .glass-card.dark-hi {
+    background: var(--glass-ink-hi);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border-dark);
+    box-shadow: var(--shadow-glass-dark);
+    color: var(--color-foreground-inverse-default);
+  }
+  .glass-card.dark-hi .s { color: var(--color-foreground-inverse-secondary); }
+  .glass-card.dark-lo {
+    background: var(--glass-ink-lo);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border-dark);
+    box-shadow: var(--shadow-glass-dark);
+    color: var(--color-foreground-inverse-default);
+  }
+  .glass-card.dark-lo .s { color: var(--color-foreground-inverse-secondary); }
+
+  /* Anatomy diagram */
+  .anatomy {
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-8);
+    align-items: stretch; padding: var(--space-8);
+    background: var(--color-background-canvas);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-8);
+  }
+  .anatomy-canvas {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--grad-hero);
+    min-height: 280px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .anatomy-canvas::before { content: ""; position: absolute; inset: 0; background: var(--grad-radial-glow); }
+  .anatomy-list ol { padding-left: 0; margin: 0; counter-reset: anat; list-style: none; }
+  .anatomy-list li {
+    counter-increment: anat; margin-bottom: var(--space-3);
+    padding-left: var(--space-7); position: relative;
+    color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);
+    font-size: var(--fs-sm);
+  }
+  .anatomy-list li::before {
+    content: counter(anat); position: absolute; left: 0; top: 1px;
+    width: 18px; height: 18px;
+    background: var(--color-foreground-default); color: var(--color-foreground-on-solid);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
+  .anatomy-list li code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  /* Variant matrix */
+  .var-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  .var-cell {
+    padding: var(--space-7) var(--space-5);
+    border-right: 1px solid var(--color-border-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+    display: flex; flex-direction: column; gap: var(--space-3);
+    align-items: center; justify-content: center;
+    min-height: 200px;
+    position: relative;
+  }
+  .var-cell:nth-child(3n) { border-right: 0; }
+  .var-cell:nth-last-child(-n+3) { border-bottom: 0; }
+  .var-cell .var-label {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    font-weight: var(--w-semibold);
+    color: var(--color-foreground-accent);
+    text-align: center;
+  }
+  .var-cell .var-desc {
+    font-size: var(--fs-xs);
+    color: var(--color-foreground-muted);
+    text-align: center;
+    max-width: 22ch;
+    line-height: var(--lh-normal);
+  }
+  .var-cell.on-dark {
+    background: var(--grad-hero);
+    color: var(--color-foreground-inverse-default);
+  }
+  .var-cell.on-dark .var-label { color: var(--color-foreground-inverse-default); }
+  .var-cell.on-dark .var-desc { color: var(--color-foreground-inverse-secondary); }
+
+  /* Blur-strength row — 3 cards over a busy bg to show difference */
+  .blur-row {
+    position: relative; display: flex; gap: var(--space-5);
+    padding: var(--space-7);
+    background: var(--grad-hero); border-radius: var(--radius-md); overflow: hidden;
+    justify-content: center; flex-wrap: wrap;
+  }
+  .blur-row::before { content: ""; position: absolute; inset: 0; background: var(--grad-radial-glow); }
+  .blur-card {
+    position: relative; z-index: 2;
+    flex: 1; min-width: 200px; max-width: 280px;
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    background: var(--glass-white);
+    border: var(--glass-border);
+    box-shadow: var(--shadow-glass);
+    color: var(--color-foreground-default);
+  }
+  .blur-card.sm { backdrop-filter: var(--glass-blur-sm); -webkit-backdrop-filter: var(--glass-blur-sm); }
+  .blur-card.md { backdrop-filter: var(--glass-blur);    -webkit-backdrop-filter: var(--glass-blur); }
+  .blur-card.lg { backdrop-filter: var(--glass-blur-lg); -webkit-backdrop-filter: var(--glass-blur-lg); }
+  .blur-card .label {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-accent); margin-bottom: var(--space-2);
+  }
+  .blur-card .h { font-size: var(--fs-md); font-weight: var(--w-bold); margin-bottom: var(--space-1); }
+  .blur-card .s { font-size: var(--fs-xs); color: var(--color-foreground-secondary); }
+
+  /* In-context demos */
+  .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); }
+  @media (max-width: 880px) { .context-grid { grid-template-columns: 1fr; } }
+
+  .ctx-card {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .ctx-canvas { padding: 0; min-height: 280px; position: relative; }
+  .ctx-meta { padding: var(--space-4) var(--space-5); border-top: 1px solid var(--color-border-subtle); }
+  .ctx-meta strong { display: block; font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); margin-bottom: 2px; }
+  .ctx-meta p { font-size: var(--fs-xs); color: var(--color-foreground-muted); margin: 0; line-height: var(--lh-relaxed); }
+
+  /* In-context: toolbar over imagery */
+  .ctx-toolbar { background: var(--grad-hero); height: 280px; position: relative; }
+  .ctx-toolbar::before { content: ""; position: absolute; inset: 0; background: var(--grad-radial-glow); }
+  .ctx-toolbar .floating-toolbar {
+    position: absolute; top: var(--space-5); left: 50%; transform: translateX(-50%);
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--glass-white);
+    backdrop-filter: var(--glass-blur-sm); -webkit-backdrop-filter: var(--glass-blur-sm);
+    border: var(--glass-border);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-glass);
+  }
+  .ctx-toolbar .tb-btn {
+    width: 28px; height: 28px; border-radius: var(--radius-pill);
+    background: transparent; border: 0; cursor: pointer;
+    color: var(--color-foreground-secondary);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .ctx-toolbar .tb-btn:hover { background: var(--color-background-hover); }
+  .ctx-toolbar .tb-btn.active { background: var(--color-brand-secondary-500); color: var(--color-foreground-on-solid); }
+  .ctx-toolbar .tb-btn svg, .ctx-toolbar .tb-btn i { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
+  .ctx-toolbar .tb-divider { width: 1px; height: 16px; background: color-mix(in srgb, var(--color-foreground-default) 12%, transparent); margin: 0 2px; }
+
+  /* In-context: dropdown over content */
+  .ctx-dropdown { background: var(--grad-hero); height: 280px; position: relative; overflow: hidden; }
+  .ctx-dropdown::before { content: ""; position: absolute; inset: 0; background: var(--grad-radial-glow); }
+  .ctx-dropdown .menu {
+    position: absolute; top: var(--space-7); left: 50%; transform: translateX(-50%);
+    width: 220px; padding: var(--space-2);
+    background: var(--glass-white-hi);
+    backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-glass);
+  }
+  .ctx-dropdown .menu-item {
+    display: flex; align-items: center; gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    font-size: var(--fs-sm); color: var(--color-foreground-default);
+    cursor: pointer;
+  }
+  .ctx-dropdown .menu-item:hover { background: var(--color-background-hover); }
+  .ctx-dropdown .menu-item svg, .ctx-dropdown .menu-item i { width: 14px; height: 14px; color: var(--color-foreground-muted); }
+  .ctx-dropdown .menu-divider { height: 1px; background: var(--color-border-subtle); margin: var(--space-1) 0; }
+
+  /* In-context: dark navbar over dark hero */
+  .ctx-navbar { background: var(--brand-attrus-navy, #002142); height: 280px; position: relative; overflow: hidden; }
+  .ctx-navbar::before { content: ""; position: absolute; inset: 0; background: radial-gradient(at 30% 20%, color-mix(in srgb, var(--color-brand-accent-500) 40%, transparent), transparent 60%); }
+  .ctx-navbar .nav {
+    position: absolute; top: var(--space-5); left: 50%; transform: translateX(-50%);
+    width: calc(100% - var(--space-12));
+    padding: var(--space-3) var(--space-5);
+    background: var(--glass-ink);
+    backdrop-filter: var(--glass-blur-sm); -webkit-backdrop-filter: var(--glass-blur-sm);
+    border: var(--glass-border-dark);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-glass-dark);
+    color: var(--color-foreground-inverse-default);
+    display: flex; align-items: center; gap: var(--space-5); font-size: var(--fs-sm);
+  }
+  .ctx-navbar .nav .logo { font-weight: var(--w-bold); }
+  .ctx-navbar .nav .links { display: flex; gap: var(--space-4); color: var(--color-foreground-inverse-secondary); }
+  .ctx-navbar .nav .links a { color: inherit; text-decoration: none; }
+  .ctx-navbar .nav .links a.active { color: var(--color-foreground-inverse-default); font-weight: var(--w-semibold); }
+  .ctx-navbar .nav .cta {
+    margin-left: auto;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    background: var(--color-pure-white);
+    color: var(--color-brand-secondary-700);
+    font-size: var(--fs-xs); font-weight: var(--w-semibold);
+  }
+
+  /* In-context: full-screen modal */
+  .ctx-modal { background: var(--grad-hero); height: 280px; position: relative; overflow: hidden; }
+  .ctx-modal::before { content: ""; position: absolute; inset: 0; background: var(--grad-radial-glow); }
+  .ctx-modal .modal {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 260px;
+    padding: var(--space-5);
+    background: var(--glass-white-hi);
+    backdrop-filter: var(--glass-blur-lg); -webkit-backdrop-filter: var(--glass-blur-lg);
+    border: var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-glass);
+  }
+  .ctx-modal .modal h4 { font-size: var(--fs-md); font-weight: var(--w-bold); margin: 0 0 var(--space-2); }
+  .ctx-modal .modal p { font-size: var(--fs-xs); color: var(--color-foreground-secondary); margin: 0 0 var(--space-4); line-height: var(--lh-relaxed); }
+  .ctx-modal .modal .actions { display: flex; gap: var(--space-2); justify-content: flex-end; }
+  .ctx-modal .modal .actions button {
+    padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm);
+    font-family: inherit; font-size: var(--fs-xs); font-weight: var(--w-semibold); cursor: pointer;
+    border: 1px solid var(--color-border-default); background: var(--color-background-surface); color: var(--color-foreground-default);
+  }
+  .ctx-modal .modal .actions button.primary { background: var(--color-brand-secondary-500); color: var(--color-foreground-on-solid); border-color: transparent; }
+
+  /* Tokens table */
+  .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .token-table tr:last-child td { border-bottom: 0; }
+  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  /* Don'ts */
+  .dont-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-4); }
+  .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .dont-canvas { padding: var(--space-5); background: var(--grad-hero); border-bottom: 1px solid var(--color-border-subtle); display: flex; justify-content: center; align-items: center; min-height: 140px; position: relative; }
+  .dont-canvas::before { content: ""; position: absolute; inset: 0; background: var(--grad-radial-glow); }
+  .dont-canvas > * { position: relative; z-index: 2; }
+  .dont-body { padding: var(--space-4) var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
+  .dont-body i, .dont-body svg { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .dont-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+</style>
+</head>
+<body>
+
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<main class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Glass layers</h1>
+      <p>Translucent surfaces with a backdrop blur. Used for floating chrome over imagery or gradient surfaces — toolbars, navigation bars, dropdowns, modals — when the underlying content should remain visible but visually quieted.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Ready</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#anatomy">01 Anatomy</a>
+    <a href="#tints">02 Tints &amp; intensities</a>
+    <a href="#blur">03 Blur strengths</a>
+    <a href="#context">04 In context</a>
+    <a href="#shadow">05 Shadow + border</a>
+    <a href="#a11y">06 Accessibility</a>
+    <a href="#donts">07 Don'ts</a>
+    <a href="#tokens">08 Tokens</a>
+  </nav>
+
+  <!-- 01 ANATOMY -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">01</span>Anatomy</h2>
+    <p class="lead">A glass surface is the composition of four things — never just a translucent fill. Skip any of them and the effect collapses into a flat washed-out shape.</p>
+
+    <div class="anatomy">
+      <div class="anatomy-canvas">
+        <div class="glass-card light" style="position: relative; z-index: 2;">
+          <div class="h">Floating toolbar</div>
+          <div class="s">Hovers above scrolling content with a subtle frosted plate</div>
+        </div>
+      </div>
+      <div class="anatomy-list">
+        <ol>
+          <li><strong>Translucent fill</strong> A glass-tinted background (<code>--glass-white</code> or <code>--glass-ink</code>) layered <em>over</em> the underlying surface — alpha mixed with <code>color-mix()</code> against transparent.</li>
+          <li><strong>Backdrop blur</strong> A <code>backdrop-filter</code> token (<code>--glass-blur-sm/md/lg</code>) that blurs everything <em>behind</em> the element, not the element itself. Without blur the panel reads as a flat colored shape.</li>
+          <li><strong>Hairline border</strong> A 1px line (<code>--glass-border</code> on light, <code>--glass-border-dark</code> on dark) that seats the panel against any background — light or busy. Skip it and the edges dissolve.</li>
+          <li><strong>Spec-glass shadow</strong> Inset top-highlight + outer drop (<code>--shadow-glass</code> / <code>--shadow-glass-dark</code>). Simulates the spec highlight on a real piece of glass.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 TINTS & INTENSITIES -->
+  <section class="doc-section" id="tints">
+    <h2><span class="num">02</span>Tints &amp; intensities</h2>
+    <p class="lead">Seven tokenised glass tints — three light intensities, three dark intensities, plus a bluish "system tint". Pick by surface contrast: light glass on dark bg, dark glass on light bg.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Light glass <code>--glass-white-lo / -white / -white-hi</code></h3>
+          <p>Three intensities of white-tinted fill. Use <code>-lo</code> when only a hint of frost is wanted; <code>-hi</code> when opacity is needed for readability without losing the glass character.</p>
+        </div>
+        <span class="spec-tag">on dark bg</span>
+      </header>
+      <div class="glass-stage">
+        <div style="display: flex; gap: var(--space-5); flex-wrap: wrap; justify-content: center;">
+          <div class="glass-card light-lo">
+            <div class="h">--glass-white-lo</div>
+            <div class="s">38% white. Hint of frost. For overlays where readability is provided by adjacent contrast.</div>
+          </div>
+          <div class="glass-card light">
+            <div class="h">--glass-white</div>
+            <div class="s">58% white. Default light glass. Use for most floating chrome over imagery.</div>
+          </div>
+          <div class="glass-card light-hi">
+            <div class="h">--glass-white-hi</div>
+            <div class="s">78% white. Near-opaque. Use when copy must stay readable over a busy backdrop.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Dark glass <code>--glass-ink-lo / -ink / -ink-hi</code></h3>
+          <p>Same intensities, navy-tinted. Used on dark heroes, marketing pages, or inverse-layer surfaces. Pair with <code>--glass-border-dark</code> and <code>--shadow-glass-dark</code>.</p>
+        </div>
+        <span class="spec-tag">on dark bg</span>
+      </header>
+      <div class="glass-stage">
+        <div style="display: flex; gap: var(--space-5); flex-wrap: wrap; justify-content: center;">
+          <div class="glass-card dark-lo">
+            <div class="h">--glass-ink-lo</div>
+            <div class="s">35% navy. Subtle inverse frost. Use when ink should barely tint the background.</div>
+          </div>
+          <div class="glass-card dark">
+            <div class="h">--glass-ink</div>
+            <div class="s">55% navy. Default dark glass. Use for nav over imagery, dark modals over dark heroes.</div>
+          </div>
+          <div class="glass-card dark-hi">
+            <div class="h">--glass-ink-hi</div>
+            <div class="s">78% navy. Near-opaque. Use when the panel must dominate without reading as a solid surface.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>System tint <code>--glass-tint</code></h3>
+          <p>Bluish-white tint that picks up the brand colour through the blur — feels like ATTRUS branded glass. Use for product chrome that wants to declare "this is part of the platform".</p>
+        </div>
+        <span class="spec-tag">brand variant</span>
+      </header>
+      <div class="glass-stage">
+        <div class="glass-card tint">
+          <div class="h">--glass-tint</div>
+          <div class="s">55% neutral-50 (bluish white). Picks up the underlying brand colour without being heavy-handed.</div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 03 BLUR STRENGTHS -->
+  <section class="doc-section" id="blur">
+    <h2><span class="num">03</span>Blur strengths</h2>
+    <p class="lead">Three tokenised blur levels. Choose by how much the user needs to see the content behind the glass — and how much breathing room the panel itself has.</p>
+
+    <div class="blur-row">
+      <div class="blur-card sm">
+        <div class="label">--glass-blur-sm</div>
+        <div class="h">10px blur</div>
+        <div class="s">Light frost. Use when the background is decorative and the panel sits ≤44px tall (toolbars, breadcrumbs, sticky bars).</div>
+      </div>
+      <div class="blur-card md">
+        <div class="label">--glass-blur</div>
+        <div class="h">18px blur · default</div>
+        <div class="s">Medium frost. Use for standard floating chrome — dropdowns, popovers, command palettes. Tweak only when you have a reason.</div>
+      </div>
+      <div class="blur-card lg">
+        <div class="label">--glass-blur-lg</div>
+        <div class="h">28px blur</div>
+        <div class="s">Heavy frost. Use for blocking surfaces — modals over busy heroes, full-screen sheets where the underlying content must recede.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 IN CONTEXT -->
+  <section class="doc-section" id="context">
+    <h2><span class="num">04</span>In context</h2>
+    <p class="lead">Real product uses for each glass token — the combination of fill, blur and shadow that gives each surface its identity.</p>
+
+    <div class="context-grid">
+      <div class="ctx-card">
+        <div class="ctx-canvas ctx-toolbar">
+          <div class="floating-toolbar">
+            <button class="tb-btn active" aria-label="Bold"><i data-lucide="type"></i></button>
+            <button class="tb-btn" aria-label="Italic"><i data-lucide="italic"></i></button>
+            <button class="tb-btn" aria-label="Underline"><i data-lucide="underline"></i></button>
+            <span class="tb-divider"></span>
+            <button class="tb-btn" aria-label="Align left"><i data-lucide="align-left"></i></button>
+            <button class="tb-btn" aria-label="Align center"><i data-lucide="align-center"></i></button>
+            <span class="tb-divider"></span>
+            <button class="tb-btn" aria-label="Link"><i data-lucide="link"></i></button>
+            <button class="tb-btn" aria-label="More"><i data-lucide="more-horizontal"></i></button>
+          </div>
+        </div>
+        <div class="ctx-meta">
+          <strong>Floating toolbar</strong>
+          <p><code>--glass-white</code> + <code>--glass-blur-sm</code> + <code>--shadow-glass</code>. Hovers over scrollable content; the small blur keeps the page legible behind it.</p>
+        </div>
+      </div>
+
+      <div class="ctx-card">
+        <div class="ctx-canvas ctx-dropdown">
+          <div class="menu">
+            <div class="menu-item"><i data-lucide="user"></i>Profile</div>
+            <div class="menu-item"><i data-lucide="settings"></i>Settings</div>
+            <div class="menu-item"><i data-lucide="bell"></i>Notifications</div>
+            <div class="menu-divider"></div>
+            <div class="menu-item"><i data-lucide="log-out"></i>Sign out</div>
+          </div>
+        </div>
+        <div class="ctx-meta">
+          <strong>Dropdown menu</strong>
+          <p><code>--glass-white-hi</code> + <code>--glass-blur</code>. Higher tint so that even over a busy hero the menu rows stay readable. Standard default for popovers.</p>
+        </div>
+      </div>
+
+      <div class="ctx-card">
+        <div class="ctx-canvas ctx-navbar">
+          <div class="nav">
+            <span class="logo">ATTRUS</span>
+            <div class="links">
+              <a class="active">Home</a>
+              <a>Transactions</a>
+              <a>Receivables</a>
+            </div>
+            <span class="cta">Sign in</span>
+          </div>
+        </div>
+        <div class="ctx-meta">
+          <strong>Dark glass nav</strong>
+          <p><code>--glass-ink</code> + <code>--glass-blur-sm</code> + <code>--shadow-glass-dark</code>. Use over imagery, marketing heroes, or any deep-blue surface where a light glass would feel washed out.</p>
+        </div>
+      </div>
+
+      <div class="ctx-card">
+        <div class="ctx-canvas ctx-modal">
+          <div class="modal">
+            <h4>Confirm payment</h4>
+            <p>You're releasing <strong>USD 12,400.00</strong> to <strong>Banco Itaú</strong>. This action cannot be undone.</p>
+            <div class="actions">
+              <button>Cancel</button>
+              <button class="primary">Confirm</button>
+            </div>
+          </div>
+        </div>
+        <div class="ctx-meta">
+          <strong>Glass modal</strong>
+          <p><code>--glass-white-hi</code> + <code>--glass-blur-lg</code>. Heavy blur recedes the background; high-opacity tint guarantees readability for critical copy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 SHADOW + BORDER -->
+  <section class="doc-section" id="shadow">
+    <h2><span class="num">05</span>Shadow &amp; border</h2>
+    <p class="lead">Glass surfaces use a paired shadow + border treatment. The border seats the panel; the shadow gives it physical depth and an inset highlight that simulates real glass.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>On light backgrounds</h3>
+          <p>Pair <code>--glass-border</code> (1px white at 45%) with <code>--shadow-glass</code> (inset top highlight + outer blue drop). The inset is what makes glass read as glass and not as a flat colored shape.</p>
+        </div>
+        <span class="spec-tag">light variant</span>
+      </header>
+      <div class="glass-stage">
+        <div class="glass-card light">
+          <div class="h">Pure glass plate</div>
+          <div class="s">Notice the top edge is brighter than the bottom — the inset 1px white highlight at 50% opacity, the spec highlight of real glass.</div>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>On dark backgrounds</h3>
+          <p>Pair <code>--glass-border-dark</code> (1px white at 10%) with <code>--shadow-glass-dark</code> (inset 8% white highlight + outer black drop). Without the inset highlight, dark glass dissolves into the surface beneath.</p>
+        </div>
+        <span class="spec-tag">dark variant</span>
+      </header>
+      <div class="glass-stage">
+        <div class="glass-card dark">
+          <div class="h">Dark glass plate</div>
+          <div class="s">Lower-opacity inset (8% vs 50%) — just enough to seat the top edge against the dark background.</div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 06 A11Y -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">06</span>Accessibility</h2>
+    <p class="lead">Glass surfaces are tempting but trade contrast for atmosphere. Treat them as decoration first, container second.</p>
+
+    <table class="token-table">
+      <thead>
+        <tr><th>Concern</th><th>Rule</th><th>Why</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Body text contrast</td>
+          <td>Never put long-form reading copy on glass.</td>
+          <td>Backdrop blur cannot guarantee the 4.5:1 contrast required by WCAG AA — the underlying surface can shift it at any time.</td>
+        </tr>
+        <tr>
+          <td>Short labels</td>
+          <td>OK on <code>-hi</code> intensities only.</td>
+          <td>Nav links, button labels, headers (≥ <code>--fs-md</code> + <code>--w-semibold</code>) can sit on glass-white-hi or glass-ink-hi where the fill is near-opaque.</td>
+        </tr>
+        <tr>
+          <td>Focus rings</td>
+          <td>Always use <code>--shadow-focus</code> on interactive children, never rely on the glass border.</td>
+          <td>The 1px hairline border is too soft for keyboard focus visibility.</td>
+        </tr>
+        <tr>
+          <td>Reduced motion</td>
+          <td><code>backdrop-filter</code> is static — no motion concerns. Animations on the surface itself should respect <code>prefers-reduced-motion</code>.</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Fallback</td>
+          <td>Browsers without <code>backdrop-filter</code> support fall back to the translucent fill alone.</td>
+          <td>Test on older Safari / Firefox versions — the fill stays readable, but the "glass" effect disappears gracefully.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 07 DON'TS -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">07</span>Don'ts</h2>
+    <p class="lead">Glass is a finishing touch, not a base material. These are the five ways teams reach for it and shouldn't.</p>
+
+    <div class="dont-grid">
+      <div class="dont-card">
+        <div class="dont-canvas" style="background: var(--color-background-canvas);">
+          <div class="glass-card light" style="backdrop-filter: none; -webkit-backdrop-filter: none;">
+            <div class="h">No blur · flat</div>
+            <div class="s">Just a translucent fill — the panel reads as washed out, not as glass.</div>
+          </div>
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't skip the blur.</strong> Without <code>backdrop-filter</code>, the panel is a flat tinted shape — not glass. Always include one of the <code>--glass-blur-*</code> tokens.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas" style="background: var(--color-background-surface);">
+          <div class="glass-card light" style="backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);">
+            <div class="h">Over plain white</div>
+            <div class="s">Glass on a flat surface has nothing to blur.</div>
+          </div>
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't put glass over flat surfaces.</strong> If the background is a solid token (canvas, surface, subtle), use a regular card. Glass needs imagery, gradient or photographic noise behind it to do its job.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas">
+          <div class="glass-card light" style="font-size: var(--fs-xs);">
+            <div class="h">Eligibility &amp; thresholds</div>
+            <div class="s">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sodales, ipsum vel mattis fringilla, libero felis aliquet justo, nec scelerisque ipsum elit ac nibh.</div>
+          </div>
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't put body copy on glass.</strong> Reading paragraphs on translucent surfaces fails WCAG AA contrast in many backgrounds. Reserve glass for chrome — toolbars, navs, popovers — not content surfaces.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas">
+          <div class="glass-card light light-lo" style="background: var(--glass-white-lo); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);">
+            <div class="h">Custom 40px blur</div>
+            <div class="s">Off-token. The system has 3 intensities for a reason.</div>
+          </div>
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't invent blur values.</strong> Use <code>--glass-blur-sm</code> / <code>--glass-blur</code> / <code>--glass-blur-lg</code>. Custom values fragment the visual rhythm and break consistency across surfaces.</p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas">
+          <div class="glass-card light" style="border: none; box-shadow: none;">
+            <div class="h">No border, no shadow</div>
+            <div class="s">Edges dissolve. The panel reads as a smudge, not a piece of glass.</div>
+          </div>
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't drop the border or shadow.</strong> A glass surface needs the hairline border AND the spec-shadow inset highlight to be perceived as a physical pane. Without them it's a smudge.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 TOKENS -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">08</span>Tokens</h2>
+    <p class="lead">All values resolve through the design system. No magic numbers.</p>
+
+    <table class="token-table">
+      <thead>
+        <tr><th>Token</th><th>Value</th><th>Use</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>--glass-white-lo</code></td><td>pure-white at 38%</td><td>Light glass, hint of frost</td></tr>
+        <tr><td><code>--glass-white</code></td><td>pure-white at 58%</td><td>Light glass default</td></tr>
+        <tr><td><code>--glass-white-hi</code></td><td>pure-white at 78%</td><td>Light glass for readable copy</td></tr>
+        <tr><td><code>--glass-tint</code></td><td>neutral-50 at 55%</td><td>Brand-tinted glass</td></tr>
+        <tr><td><code>--glass-ink-lo</code></td><td>bg-inverse at 35%</td><td>Dark glass, subtle</td></tr>
+        <tr><td><code>--glass-ink</code></td><td>bg-inverse at 55%</td><td>Dark glass default</td></tr>
+        <tr><td><code>--glass-ink-hi</code></td><td>bg-inverse at 78%</td><td>Dark glass for readable copy</td></tr>
+        <tr><td><code>--glass-blur-sm</code></td><td>saturate(130%) blur(10px)</td><td>Toolbars, sticky bars</td></tr>
+        <tr><td><code>--glass-blur</code></td><td>saturate(140%) blur(18px)</td><td>Dropdowns, popovers (default)</td></tr>
+        <tr><td><code>--glass-blur-lg</code></td><td>saturate(160%) blur(28px)</td><td>Modals, blocking overlays</td></tr>
+        <tr><td><code>--glass-border</code></td><td>1px pure-white at 45%</td><td>Hairline on light glass</td></tr>
+        <tr><td><code>--glass-border-dark</code></td><td>1px pure-white at 10%</td><td>Hairline on dark glass</td></tr>
+        <tr><td><code>--shadow-glass</code></td><td>inset 50% white top + outer drop</td><td>Light glass elevation</td></tr>
+        <tr><td><code>--shadow-glass-dark</code></td><td>inset 8% white top + outer drop</td><td>Dark glass elevation</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script>if (window.lucide) lucide.createIcons();</script>
+
+</body>
+</html>

@@ -1,0 +1,602 @@
+/* ============================================================
+   TABLES & DATA GRIDS — ATTRUS Design System
+   Component CSS — pure tokens, no hardcoded values.
+
+   Anatomy (vertical stack):
+     [.dt-wrap]                container card
+       [.dt-toolbar]           top — count + filters + actions
+       [.dt]                   the <table>
+         [thead > tr > th]     overline column headers
+         [tbody > tr.hov]      hoverable data row
+           [td]                cell — text / num / status / actions
+       [.dt-pagination]        bottom — page nav + range
+
+   Sizes:
+     .dt--sm    compact — 8 / 12 padding, fs-xs body, fs-xxs head
+     default    standard — 12 / 16 padding, fs-md body, fs-xxs head
+     .dt--lg    spacious — 16 / 20 padding, fs-md body, fs-xs head
+
+   Density helpers:
+     .dt--zebra            alternating row backgrounds
+     .dt--sticky           thead sticks to top while scrolling
+     .dt--bordered         vertical column borders
+
+   Cell helpers:
+     .dt-cell-stack        primary line + sub line
+     .dt-num               right-aligned, tabular numerals
+     .dt-id                monospace identifier
+     .dt-actions           trailing action cluster
+     .dt-th-sort           sortable header (cursor + chevron)
+
+   Row states:
+     .is-selected          blue tint, persistent
+     .is-muted             dimmed (cancelled, returned)
+     .is-error             danger tint
+
+   Special rows:
+     .dt-empty             zero-state inside <tbody>
+     .dt-skeleton          loading row placeholder
+     .dt-row-divider       group separator
+
+   Inverse:
+     .dt.on-inverse  /  .dark .dt
+
+   Responsive:
+     .dt-responsive  wrapper — collapses rows to label:value
+                     cards below 560px (container query). Each
+                     <td> needs data-label="…". See section 11.
+   ============================================================ */
+
+
+/* ----------------------------------------------------------------
+   1. WRAPPER + TOOLBAR + PAGINATION (the surrounding card)
+   ---------------------------------------------------------------- */
+.dt-wrap {
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--shape-container);
+  overflow: hidden;
+  box-shadow: var(--shadow-xs);
+}
+
+.dt-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-6);
+  min-height: 53px;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--color-border-subtle);
+  background: var(--color-background-surface);
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  color: var(--color-foreground-secondary);
+}
+.dt-toolbar .count {
+  color: var(--color-foreground-default);
+  font-weight: var(--w-semibold);
+}
+.dt-toolbar .count .total {
+  color: var(--color-foreground-muted);
+  font-weight: var(--w-regular);
+  margin-left: var(--space-2);
+}
+.dt-toolbar .spacer { flex: 1; }
+.dt-toolbar .group-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.dt-toolbar .helper {
+  font-size: var(--fs-xs);
+  color: var(--color-foreground-muted);
+}
+
+.dt-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-6);
+  border-top: 1px solid var(--color-border-subtle);
+  background: var(--color-background-surface);
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  color: var(--color-foreground-secondary);
+}
+.dt-pagination .range {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--color-foreground-muted);
+}
+.dt-pagination .pager {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.dt-pagination .page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  min-width: 28px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border-default);
+  background: var(--color-background-surface);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: var(--w-semibold);
+  color: var(--color-foreground-secondary);
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+.dt-pagination .page-btn:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+.dt-pagination .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.dt-pagination .page-btn.is-current {
+  background: var(--color-accent-subtle);
+  border-color: color-mix(in srgb, var(--color-accent-solid) 36%, transparent);
+  color: var(--color-foreground-accent);
+}
+.dt-pagination .page-btn > i, .dt-pagination .page-btn > svg,
+.dt-pagination .page-btn > svg { width: 12px; height: 12px; stroke-width: var(--icon-stroke); }
+
+
+/* ----------------------------------------------------------------
+   2. TABLE BASE
+   ---------------------------------------------------------------- */
+.dt {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  color: var(--color-foreground-default);
+  /* Numbers should align across rows by default — opt-out per cell with .dt-no-tab */
+  font-variant-numeric: tabular-nums;
+}
+.dt-no-tab { font-variant-numeric: normal; }
+
+/* ----------------------------------------------------------------
+   3. HEAD
+   ---------------------------------------------------------------- */
+.dt thead th {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xxs);
+  font-weight: var(--w-semibold);
+  color: var(--color-foreground-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-caps);
+  text-align: left;
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-background-surface);
+  border-bottom: 1px solid var(--color-border-subtle);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.dt thead th.right { text-align: right; }
+.dt thead th.center { text-align: center; }
+
+/* Sortable header */
+.dt-th-sort {
+  cursor: pointer;
+  user-select: none;
+  transition: color var(--transition-fast);
+}
+.dt-th-sort:hover { color: var(--color-foreground-default); }
+.dt-th-sort .chev {
+  display: inline-flex;
+  width: 10px;
+  height: 10px;
+  margin-left: var(--space-2);
+  vertical-align: -1px;
+  color: var(--color-foreground-placeholder);
+  stroke-width: var(--icon-stroke-bold);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+.dt-th-sort.is-asc  .chev { color: var(--color-foreground-accent); transform: rotate(180deg); }
+.dt-th-sort.is-desc .chev { color: var(--color-foreground-accent); }
+
+/* ----------------------------------------------------------------
+   4. BODY ROWS
+   ---------------------------------------------------------------- */
+.dt tbody tr {
+  border-bottom: 1px solid var(--color-border-subtle);
+  transition: background var(--transition-fast);
+}
+.dt tbody tr:last-child { border-bottom: 0; }
+
+.dt tbody tr.hov:hover,
+.dt tbody tr.is-clickable:hover { background: var(--color-background-subtle); cursor: pointer; }
+
+.dt tbody tr.is-selected,
+.dt tbody tr.is-selected:hover { background: var(--color-background-selected); }
+
+.dt tbody tr.is-muted td,
+.dt tbody tr.is-muted .dt-cell-stack > .sub { opacity: 0.55; }
+
+.dt tbody tr.is-error { background: color-mix(in srgb, var(--color-feedback-danger-background) 60%, transparent); }
+.dt tbody tr.is-error:hover { background: var(--color-feedback-danger-background); }
+
+
+/* ----------------------------------------------------------------
+   5. CELLS
+   ---------------------------------------------------------------- */
+.dt tbody td {
+  padding: var(--space-4) var(--space-5);
+  font-size: var(--fs-md);
+  color: var(--color-foreground-default);
+  vertical-align: middle;
+}
+.dt tbody td.right  { text-align: right; }
+.dt tbody td.center { text-align: center; }
+
+/* Common cell patterns */
+.dt-cell-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: var(--lh-snug);
+  min-width: 0;
+}
+.dt-cell-stack > .pri {
+  font-size: var(--fs-md);
+  font-weight: var(--w-semibold);
+  color: var(--color-foreground-default);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dt-cell-stack > .sub {
+  font-size: var(--fs-xs);
+  color: var(--color-foreground-muted);
+  white-space: nowrap;
+}
+.dt-cell-stack > .sub.mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+}
+
+/* Lead avatar / icon + stacked label */
+.dt-cell-lead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.dt-cell-lead > .ic-tile {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: var(--color-background-subtle);
+  border: 1px solid var(--color-border-subtle);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-foreground-secondary);
+}
+.dt-cell-lead > .ic-tile.tone-success { background: var(--color-feedback-success-background); border-color: var(--color-feedback-success-border); color: var(--color-feedback-success-foreground); }
+.dt-cell-lead > .ic-tile.tone-info    { background: var(--color-feedback-info-background);    border-color: var(--color-feedback-info-border);    color: var(--color-feedback-info-foreground);    }
+.dt-cell-lead > .ic-tile.tone-warning { background: var(--color-feedback-warning-background); border-color: var(--color-feedback-warning-border); color: var(--color-feedback-warning-foreground); }
+.dt-cell-lead > .ic-tile.tone-danger  { background: var(--color-feedback-danger-background);  border-color: var(--color-feedback-danger-border);  color: var(--color-feedback-danger-foreground);  }
+.dt-cell-lead > .ic-tile > i, .dt-cell-lead > .ic-tile > svg,
+.dt-cell-lead > .ic-tile > svg {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  stroke-width: var(--icon-stroke);
+}
+.dt-cell-lead > .ic-round {
+  width: 26px; height: 26px; border-radius: var(--radius-pill);
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  background: var(--color-background-subtle); color: var(--color-foreground-secondary);
+}
+.dt-cell-lead > .ic-round.tone-success { background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); }
+.dt-cell-lead > .ic-round.tone-info    { background: var(--color-feedback-info-background);    color: var(--color-feedback-info-foreground); }
+.dt-cell-lead > .ic-round.tone-warning { background: var(--color-feedback-warning-background); color: var(--color-feedback-warning-foreground); }
+.dt-cell-lead > .ic-round.tone-danger  { background: var(--color-feedback-danger-background);  color: var(--color-feedback-danger-foreground); }
+.dt-cell-lead > .ic-round > i, .dt-cell-lead > .ic-round > svg,
+.dt-cell-lead > .ic-round > svg { width: var(--icon-sm); height: var(--icon-sm); stroke-width: var(--icon-stroke-bold); }
+
+/* Numbers — explicit class wins over per-cell .right alignment */
+.dt-num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' on, 'lnum' on;
+  text-align: right;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+.dt-num .ccy {
+  color: var(--color-foreground-muted);
+  font-weight: var(--w-regular);
+  margin-right: var(--space-2);
+  font-size: var(--fs-sm);
+}
+.dt-num.bold { font-weight: var(--w-bold); font-size: var(--fs-base); }
+.dt-num.delta-pos { color: var(--color-feedback-success-foreground); }
+.dt-num.delta-neg { color: var(--color-feedback-danger-foreground); }
+
+/* IDs / hashes */
+.dt-id {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--color-foreground-muted);
+  white-space: nowrap;
+}
+
+/* Trailing actions cluster */
+.dt-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+.dt-actions > .chev {
+  width: var(--icon-sm); height: var(--icon-sm);
+  stroke-width: var(--icon-stroke);
+  color: var(--color-foreground-muted);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+.dt tbody tr.hov:hover .dt-actions > .chev,
+.dt tbody tr.is-clickable:hover .dt-actions > .chev {
+  color: var(--color-foreground-default);
+  transform: translateX(2px);
+}
+
+/* Selection checkbox column — narrow */
+.dt th.col-select,
+.dt td.col-select {
+  width: 36px;
+  padding-left: var(--space-5);
+  padding-right: 0;
+}
+
+
+/* ----------------------------------------------------------------
+   6. SIZES
+   ---------------------------------------------------------------- */
+.dt--sm thead th        { padding: var(--space-2) var(--space-4); }
+.dt--sm tbody td        { padding: var(--space-3) var(--space-4); font-size: var(--fs-sm); }
+.dt--sm .dt-cell-stack > .pri { font-size: var(--fs-sm); }
+.dt--sm .dt-cell-stack > .sub { font-size: var(--fs-xxs); }
+.dt--sm .dt-cell-lead > .ic-tile { width: 28px; height: 28px; border-radius: var(--radius-sm); }
+.dt--sm .dt-cell-lead > .ic-tile > i, .dt--sm .dt-cell-lead > .ic-tile > svg,
+.dt--sm .dt-cell-lead > .ic-tile > svg { width: var(--icon-sm); height: var(--icon-sm); }
+
+.dt--lg thead th        { padding: var(--space-4) var(--space-6); font-size: var(--fs-xs); }
+.dt--lg tbody td        { padding: var(--space-5) var(--space-6); font-size: var(--fs-base); }
+.dt--lg .dt-cell-stack > .pri { font-size: var(--fs-base); }
+.dt--lg .dt-cell-lead > .ic-tile { width: 40px; height: 40px; }
+
+
+/* ----------------------------------------------------------------
+   7. DENSITY HELPERS
+   ---------------------------------------------------------------- */
+/* Zebra — alternating bg */
+.dt--zebra tbody tr:nth-child(even):not(.is-selected):not(:hover) {
+  background: color-mix(in srgb, var(--color-background-subtle) 55%, var(--color-background-surface));
+}
+
+/* Sticky head */
+.dt--sticky thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  /* Solid bg so it covers content scrolling underneath */
+  background: var(--color-background-surface);
+}
+
+/* Vertical column borders */
+.dt--bordered th + th,
+.dt--bordered td + td {
+  border-left: 1px solid var(--color-border-subtle);
+}
+
+
+/* ----------------------------------------------------------------
+   8. EMPTY + SKELETON
+   ---------------------------------------------------------------- */
+.dt-empty td {
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+  color: var(--color-foreground-muted);
+  background: var(--color-background-canvas);
+}
+.dt-empty .ic {
+  width: 32px; height: 32px;
+  stroke-width: var(--icon-stroke-thin);
+  color: var(--color-foreground-placeholder);
+  margin: 0 auto var(--space-3);
+  display: block;
+}
+.dt-empty .ttl {
+  display: block;
+  font-size: var(--fs-base);
+  font-weight: var(--w-semibold);
+  color: var(--color-foreground-default);
+  margin-bottom: var(--space-2);
+}
+.dt-empty .sub {
+  display: block;
+  font-size: var(--fs-sm);
+  color: var(--color-foreground-muted);
+  max-width: 48ch;
+  margin: 0 auto;
+  line-height: var(--lh-relaxed);
+}
+
+/* Skeleton row — shimmer */
+@keyframes dt-shimmer {
+  0%   { background-position: -240px 0; }
+  100% { background-position: 240px 0; }
+}
+.dt-skeleton td > span {
+  display: inline-block;
+  height: 12px;
+  border-radius: var(--radius-2xs);
+  /* theme-aware: border tokens are light-gray hairlines in light and
+     white-alpha in dark — raw neutral-50/100 read near-white on ink */
+  background:
+    linear-gradient(90deg,
+      var(--color-border-default) 0%,
+      var(--color-border-subtle) 40%,
+      var(--color-border-default) 80%);
+  background-size: 480px 100%;
+  animation: dt-shimmer 1.4s var(--ease-linear) infinite;
+}
+.dt-skeleton td > span.w-md  { width: 140px; }
+.dt-skeleton td > span.w-lg  { width: 220px; }
+.dt-skeleton td > span.w-sm  { width: 80px; }
+
+
+/* ----------------------------------------------------------------
+   9. GROUP / SECTION ROW
+   ---------------------------------------------------------------- */
+.dt tbody tr.dt-row-divider td {
+  background: var(--color-background-subtle);
+  padding: var(--space-3) var(--space-5);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xxs);
+  font-weight: var(--w-regular);
+  color: var(--color-foreground-muted);
+  letter-spacing: var(--ls-label);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+
+/* ----------------------------------------------------------------
+   10. INVERSE — dark surfaces
+   ---------------------------------------------------------------- */
+.dt.on-inverse,
+.dark .dt {
+  color: var(--color-foreground-inverse-default);
+}
+.dt.on-inverse thead th,
+.dark .dt thead th {
+  background: var(--color-background-inverse);
+  color: var(--color-foreground-inverse-muted);
+  border-bottom-color: var(--color-border-inverse);
+}
+.dt.on-inverse tbody tr,
+.dark .dt tbody tr {
+  border-bottom-color: var(--color-border-inverse);
+}
+.dt.on-inverse tbody tr.hov:hover,
+.dark .dt tbody tr.hov:hover {
+  background: color-mix(in srgb, var(--color-pure-white) 4%, transparent);
+}
+.dt.on-inverse tbody tr.is-selected,
+.dark .dt tbody tr.is-selected {
+  background: var(--color-background-inverse-selected);
+}
+.dt.on-inverse tbody td,
+.dark .dt tbody td { color: var(--color-foreground-inverse-default); }
+.dt.on-inverse .dt-id,
+.dark .dt .dt-id { color: var(--color-foreground-inverse-muted); }
+.dt.on-inverse .dt-cell-stack > .sub,
+.dark .dt .dt-cell-stack > .sub { color: var(--color-foreground-inverse-muted); }
+.dt.on-inverse .dt-cell-lead > .ic-tile,
+.dark .dt .dt-cell-lead > .ic-tile {
+  background: color-mix(in srgb, var(--color-pure-white) 6%, transparent);
+  border-color: var(--color-border-inverse);
+  color: var(--color-foreground-inverse-secondary);
+}
+
+
+/* ----------------------------------------------------------------
+   11. RESPONSIVE — stacked cards on narrow widths
+   --------------------------------------------------------------
+
+   Two strategies, pick per table:
+
+   A. SCROLL (default) — keep the grid, let it scroll sideways.
+      Wrap .dt in an element with overflow-x:auto. Best for
+      comparison-heavy / numeric tables where column alignment
+      is the point (ledgers, FX rates).
+
+   B. STACK (.dt-responsive) — collapse each row into a card,
+      label : value per field. Best for action-oriented record
+      lists (transactions, counterparties) the user taps into.
+
+   Uses CONTAINER queries (not viewport) so the same component
+   reflows correctly inside a drawer, split-pane or phone frame —
+   not just at the page edge. Each <td> needs a data-label="…".
+   ---------------------------------------------------------------- */
+.dt-responsive { container-type: inline-size; }
+
+@container (max-width: 560px) {
+  /* Drop the header row — labels move inline via data-label */
+  .dt-responsive .dt thead { display: none; }
+
+  .dt-responsive .dt,
+  .dt-responsive .dt tbody,
+  .dt-responsive .dt tr,
+  .dt-responsive .dt td { display: block; width: 100%; box-sizing: border-box; }
+
+  /* Each row becomes a card */
+  .dt-responsive .dt tbody tr {
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    background: var(--color-background-surface);
+    padding: var(--space-2) var(--space-4);
+    margin-bottom: var(--space-3);
+    box-shadow: var(--shadow-xs);
+  }
+  .dt-responsive .dt tbody tr:last-child { margin-bottom: 0; border-bottom: 1px solid var(--color-border-default); }
+
+  /* Each cell becomes a label : value line */
+  .dt-responsive .dt tbody td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+    text-align: right;
+    white-space: normal;
+    min-width: 0;
+  }
+  .dt-responsive .dt tbody td > * { min-width: 0; }
+  .dt-responsive .dt tbody td:last-child { border-bottom: 0; }
+
+  .dt-responsive .dt tbody td::before {
+    content: attr(data-label);
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-caps);
+    color: var(--color-foreground-muted);
+    text-align: left;
+  }
+  /* Cells with no label render full-width (e.g. a lead/title row) */
+  .dt-responsive .dt tbody td[data-label=""]::before,
+  .dt-responsive .dt tbody td:not([data-label])::before { content: none; }
+
+  /* Promote the first cell to a card title */
+  .dt-responsive .dt tbody td.dt-card-title {
+    justify-content: flex-start;
+    text-align: left;
+    font-size: var(--fs-base);
+    font-weight: var(--w-semibold);
+    padding-top: var(--space-3);
+  }
+  /* The lead block (avatar + name + country/doc) reads left-to-right */
+  .dt-responsive .dt tbody td.dt-card-title .dt-cell-stack { text-align: left; align-items: flex-start; }
+
+  /* Right-aligned numbers stay flush right next to their label */
+  .dt-responsive .dt-num { text-align: right; }
+
+  /* Selection / action columns sit inline like any other field */
+  .dt-responsive .dt td.col-select { width: 100%; }
+
+  /* Empty + skeleton rows shouldn't become cards */
+  .dt-responsive .dt tbody tr.dt-empty,
+  .dt-responsive .dt tbody tr.dt-skeleton { border: 0; box-shadow: none; padding: 0; }
+  .dt-responsive .dt tbody tr.dt-empty td { border: 0; text-align: center; }
+  .dt-responsive .dt tbody tr.dt-empty td::before { content: none; }
+}

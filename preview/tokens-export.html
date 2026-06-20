@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <title>Token export · ATTRUS Design System</title>
-<link rel="stylesheet" href="../dist/css/index.css">
-<script src="./theme-toggle.js"></script>
-<link rel="stylesheet" href="components/spec-page.css">
-<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../themes/index.css?v=1">
+<link rel="stylesheet" href="components/callout.css">
+<script src="../theme-toggle.js?v=1"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
   body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
@@ -61,6 +61,7 @@
 </style>
 </head>
 <body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
 
 <button class="page-theme" data-theme-toggle aria-label="Toggle theme">
   <span data-theme-icon aria-hidden="true">☾</span>
@@ -72,7 +73,7 @@
   <header class="doc-header">
     <div>
       <h1>Token export</h1>
-      <p>The whole system as machine-readable JSON — for Style Dictionary, native platforms, and codegen. Generated from <code>dist/css/tokens.css</code>, the single source of truth.</p>
+      <p>The whole system as machine-readable JSON — for Style Dictionary, native platforms, and codegen. Generated from <code>colors_and_type.css</code>, the single source of truth.</p>
     </div>
     <span class="doc-meta-pill"><i data-lucide="braces"></i> 334 tokens</span>
   </header>
@@ -95,7 +96,7 @@
         <a class="dl-btn" href="../export/attrus-tokens.json" download><i data-lucide="download"></i> Download nested JSON</a>
       </div>
     </div>
-    <div class="callout" style="margin-top:var(--space-6)"><i data-lucide="git-merge"></i><div class="callout-body">These files are <strong>generated</strong> from <code>dist/css/tokens.css</code> — don't hand-edit. Re-run the export whenever tokens change; the catalog's <strong>334 tokens</strong> stat should match the file's <code>tokenCount</code>.</div></div>
+    <div class="callout" style="margin-top:var(--space-6)"><i data-lucide="git-merge"></i><div class="callout-body">These files are <strong>generated</strong> from <code>colors_and_type.css</code> — don't hand-edit. Re-run the export whenever tokens change; the catalog's <strong>334 tokens</strong> stat should match the file's <code>tokenCount</code>.</div></div>
   </section>
 
   <!-- 02 SHAPE -->
@@ -142,7 +143,7 @@
     <table class="map">
       <thead><tr><th>Target</th><th>How</th></tr></thead>
       <tbody>
-        <tr><td>CSS / web</td><td>Import <code>dist/css/tokens.css</code> directly — the custom properties already ship. The JSON is for other targets.</td></tr>
+        <tr><td>CSS / web</td><td>Import <code>colors_and_type.css</code> directly — the custom properties already ship. The JSON is for other targets.</td></tr>
         <tr><td>Style Dictionary</td><td>Point a source at <code>attrus-tokens.json</code>; leaves use the <code>{ value }</code> contract. Map <code>darkValue</code> to a dark mode.</td></tr>
         <tr><td>iOS / Android / Flutter</td><td>Feed <code>attrus-tokens.flat.json</code> to your generator; prefer <code>resolved</code>/<code>darkResolved</code> for concrete constants. Skip <code>color-mix()</code>/gradient values.</td></tr>
       </tbody>
@@ -151,15 +152,12 @@
 
   <footer class="doc-foot">
     <span>ATTRUS Design System · Token export</span>
-    <a href="components.html">← Back to catalog</a>
+    <a href="index.html">← Back to catalog</a>
   </footer>
 
 </main>
 
-<script>
-  if (window.lucide) lucide.createIcons();
-  window.addEventListener('attrus-theme', function () { if (window.lucide) lucide.createIcons(); });
-</script>
+<script>lucide.createIcons();</script>
 
 </body>
 </html>

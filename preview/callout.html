@@ -3,10 +3,11 @@
 <head>
 <meta charset="utf-8">
 <title>Callout · ATTRUS Design System</title>
-<link rel="stylesheet" href="../dist/css/index.css">
-<script src="./theme-toggle.js"></script>
-<link rel="stylesheet" href="components/spec-page.css">
-<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../themes/index.css?v=1">
+<link rel="stylesheet" href="components/buttons.css">
+<link rel="stylesheet" href="components/callout.css">
+<script src="../theme-toggle.js?v=1"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
   body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
@@ -56,6 +57,7 @@
 </style>
 </head>
 <body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
 
 <button class="page-theme" data-theme-toggle aria-label="Toggle theme">
   <span data-theme-icon aria-hidden="true">☾</span>
@@ -146,7 +148,7 @@
     <div class="spec">
       <div class="spec-head"><div><h3>Structure</h3></div><span class="spec-tag">Markup</span></div>
       <div class="spec-body">
-        <div class="callout"><i data-lucide="git-merge"></i><div class="callout-body">Defined once in <code>components/callout.css</code> and consumed by every doc page and product surface — edit the CSS and all callouts move together. See <a href="components.html">the catalog</a>.</div></div>
+        <div class="callout"><i data-lucide="git-merge"></i><div class="callout-body">Defined once in <code>components/callout.css</code> and consumed by every doc page and product surface — edit the CSS and all callouts move together. See <a href="index.html">the catalog</a>.</div></div>
         <div class="code"><span class="c">&lt;!-- info (default) --&gt;</span>
 <span class="t">&lt;div</span> class=<span class="t">"callout"</span><span class="t">&gt;</span>
   <span class="t">&lt;i</span> data-lucide=<span class="t">"info"</span><span class="t">&gt;&lt;/i&gt;</span>
@@ -341,7 +343,7 @@
 
   <footer class="doc-foot">
     <span>ATTRUS Design System · Callout</span>
-    <a href="components.html">← Back to catalog</a>
+    <a href="index.html">← Back to catalog</a>
   </footer>
 
 </main>

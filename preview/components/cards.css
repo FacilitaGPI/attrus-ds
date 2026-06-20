@@ -1,0 +1,272 @@
+/* ================================================================
+   CARDS — components/cards.css
+   The container component. Defines surface, elevation, radius, padding.
+   100% token-driven; consumed by cards.html and any product UI.
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   Base — .card
+   Default = surface + xs shadow + md radius + hairline border.
+   ---------------------------------------------------------------- */
+.card {
+  display: block;
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--shape-container);
+  box-shadow: var(--shadow-xs);
+  color: var(--color-foreground-default);
+  font-family: var(--font-sans);
+  /* base padding kicks in only when the card holds direct content
+     (no .card-header / .card-body subdivision) */
+  padding: var(--space-5) var(--space-6);
+  transition:
+    box-shadow var(--transition-base),
+    border-color var(--transition-base),
+    transform var(--transition-base),
+    background var(--transition-base);
+}
+
+/* If the card uses structured slots, drop the base padding —
+   each slot brings its own. */
+.card:has(> .card-header),
+.card:has(> .card-body),
+.card:has(> .card-footer),
+.card:has(> .card-canvas),
+.card:has(> .card-divider) {
+  padding: 0;
+}
+
+
+/* ----------------------------------------------------------------
+   Surface variants — pick by "what role does this container play"
+   ---------------------------------------------------------------- */
+
+/* Flat — no shadow. Use inside another card, or for table rows. */
+.card.flat        { box-shadow: none; }
+
+/* Subtle / inset — neutral fill, no shadow. Use for nested groups. */
+.card.subtle      { background: var(--color-background-subtle); box-shadow: none; }
+
+/* Sunken — like an input well; nested receipt/totals. */
+.card.sunken      { background: var(--color-background-sunken); box-shadow: none; border-color: var(--color-border-subtle); }
+
+/* Raised — md shadow. Floating panels, popovers, dropdowns. */
+.card.raised      { box-shadow: var(--shadow-md); }
+
+/* Floating — lg shadow. Modals, command palettes. */
+.card.floating    { box-shadow: var(--shadow-lg); border: 0; }
+
+/* Hero — brand gradient. For dashboard summary tiles only. */
+.card.hero {
+  background: var(--grad-hero);
+  color: var(--color-foreground-on-solid);
+  border: 0;
+  position: relative;
+  overflow: hidden;
+}
+.card.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--grad-radial-glow);
+  pointer-events: none;
+}
+.card.hero > * { position: relative; z-index: 1; }
+
+/* Inverse — for cards on dark surfaces */
+.card.inverse {
+  background: var(--color-background-inverse);
+  color: var(--color-foreground-inverse-default);
+  border-color: var(--color-border-inverse);
+  box-shadow: none;
+}
+
+
+/* ----------------------------------------------------------------
+   Semantic accents — banner-style cards with semantic shadow
+   ---------------------------------------------------------------- */
+.card.accent-success {
+  background: var(--color-feedback-success-background);
+  border-color: var(--color-feedback-success-border);
+  box-shadow: var(--shadow-success-sm);
+  color: var(--color-foreground-default);
+}
+.card.accent-warning {
+  background: var(--color-feedback-warning-background);
+  border-color: var(--color-feedback-warning-border);
+  box-shadow: var(--shadow-warning-sm);
+  color: var(--color-foreground-default);
+}
+.card.accent-danger {
+  background: var(--color-feedback-danger-background);
+  border-color: var(--color-feedback-danger-border);
+  box-shadow: var(--shadow-danger-sm);
+  color: var(--color-foreground-default);
+}
+.card.accent-info {
+  background: var(--color-feedback-info-background);
+  border-color: var(--color-feedback-info-border);
+  box-shadow: var(--shadow-info-sm);
+  color: var(--color-foreground-default);
+}
+
+
+/* ----------------------------------------------------------------
+   Density modifiers — affect both .card and slot padding
+   ---------------------------------------------------------------- */
+.card.compact   > .card-header,
+.card.compact   > .card-body,
+.card.compact   > .card-footer { padding: var(--space-3) var(--space-4); }
+.card.compact:not(:has(> .card-header)):not(:has(> .card-body)):not(:has(> .card-footer)):not(:has(> .card-canvas)):not(:has(> .card-divider)) {
+  padding: var(--space-3) var(--space-4);
+}
+
+.card.spacious  > .card-header,
+.card.spacious  > .card-body,
+.card.spacious  > .card-footer { padding: var(--space-7) var(--space-8); }
+.card.spacious:not(:has(> .card-header)):not(:has(> .card-body)):not(:has(> .card-footer)):not(:has(> .card-canvas)):not(:has(> .card-divider)) {
+  padding: var(--space-7) var(--space-8);
+}
+
+
+/* ----------------------------------------------------------------
+   Slots — header / body / footer / canvas / divider
+   ---------------------------------------------------------------- */
+.card-header {
+  padding: var(--space-5) var(--space-6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.card-header h3,
+.card-header h4 {
+  margin: 0;
+  font-size: var(--fs-md);
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--ls-title);
+  color: var(--color-foreground-default);
+}
+.card-header p {
+  margin: var(--space-1) 0 0;
+  font-size: var(--fs-sm);
+  color: var(--color-foreground-secondary);
+  line-height: var(--lh-relaxed);
+}
+.card-header .actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.card-body {
+  padding: var(--space-5) var(--space-6);
+}
+
+.card-footer {
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--color-border-subtle);
+  background: var(--color-background-subtle);
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+/* Canvas slot — full-bleed image / chart area */
+.card-canvas {
+  background: var(--color-background-canvas);
+  border-bottom: 1px solid var(--color-border-subtle);
+  overflow: hidden;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+/* Divider — thin separator inside body sections */
+.card-divider {
+  height: 1px;
+  background: var(--color-border-subtle);
+  margin: 0;
+  border: 0;
+}
+
+
+/* ----------------------------------------------------------------
+   Card layouts (helpers — common compositions)
+   ---------------------------------------------------------------- */
+
+/* KPI / stat card */
+.card-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.card-stat .stat-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xxs);
+  font-weight: var(--w-semibold);
+  color: var(--color-foreground-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-caps);
+}
+.card-stat .stat-value {
+  font-family: var(--font-sans);
+  font-weight: var(--w-bold);
+  font-size: var(--fs-3xl);
+  letter-spacing: var(--ls-display);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-foreground-default);
+  line-height: 1.1;
+}
+.card-stat .stat-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-xs);
+  font-weight: var(--w-semibold);
+  font-variant-numeric: tabular-nums;
+}
+.card-stat .stat-delta.up   { color: var(--color-feedback-success-foreground); }
+.card-stat .stat-delta.down { color: var(--color-feedback-danger-foreground); }
+.card-stat .stat-delta.flat { color: var(--color-foreground-muted); }
+.card-stat .stat-delta i, .card-stat .stat-delta svg,
+.card-stat .stat-delta svg { width: 12px; height: 12px; stroke-width: var(--icon-stroke); }
+
+/* Hero stat — for .card.hero */
+.card.hero .card-stat .stat-label { color: color-mix(in srgb, var(--color-pure-white) 70%, transparent); }
+.card.hero .card-stat .stat-value { color: var(--color-foreground-on-solid); font-size: var(--fs-5xl); }
+
+
+/* ----------------------------------------------------------------
+   Interactive — link / button cards
+   Apply .card.interactive to make the whole card clickable.
+   The card itself should be wrapped in <a> or <button>.
+   ---------------------------------------------------------------- */
+.card.interactive {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+.card.interactive:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+.card.interactive:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-xs);
+}
+.card.interactive:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+  border-color: var(--color-border-focus);
+}
+
+/* On inverse interactive */
+.card.inverse.interactive:hover {
+  background: var(--color-background-inverse-hover);
+  border-color: var(--color-border-inverse-strong);
+}

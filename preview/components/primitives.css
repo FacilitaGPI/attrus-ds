@@ -1,0 +1,314 @@
+/* ============================================================
+   PRIMITIVES — Avatar · Money · Stat · Divider · Pill
+   Atoms used across every product surface. All values from tokens.
+   (Tabs moved to components/tabs.css — it's a stateful nav component.)
+   ============================================================ */
+
+/* =================== AVATAR =================== */
+.av {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--av-size, 36px);
+  height: var(--av-size, 36px);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: var(--av-fs, var(--fs-xs));
+  font-weight: var(--w-bold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  user-select: none;
+  overflow: hidden;
+  position: relative;
+}
+.av img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.av-xs { --av-size: 20px; --av-fs: 9px; }
+.av-sm { --av-size: 28px; --av-fs: var(--fs-xxs); }
+.av-md { --av-size: 36px; --av-fs: var(--fs-xs); }
+.av-lg { --av-size: 48px; --av-fs: var(--fs-sm); }
+.av-xl { --av-size: 64px; --av-fs: var(--fs-md); }
+
+/* Tone — accent-on-tinted-bg uses the same background+foreground pair as feedback pills,
+   so an Avatar reads as the same "object" as a status pill that references it. */
+.av-brand   { background: var(--color-brand-subtle-solid);          color: var(--color-brand-text); }
+.av-success { background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); }
+.av-warning { background: var(--color-feedback-warning-background); color: var(--color-feedback-warning-foreground); }
+.av-danger  { background: var(--color-feedback-danger-background);  color: var(--color-feedback-danger-foreground); }
+.av-info    { background: var(--color-feedback-info-background);    color: var(--color-feedback-info-foreground); }
+.av-neutral { background: var(--color-background-subtle);           color: var(--color-foreground-muted); }
+
+/* Status dot — overlay for presence/online state */
+.av-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 30%;
+  height: 30%;
+  min-width: 8px;
+  min-height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-success-500);
+  box-shadow: 0 0 0 2px var(--color-background-surface);
+}
+.av-dot-busy { background: var(--color-feedback-danger-foreground); }
+.av-dot-away { background: var(--color-feedback-warning-foreground); }
+.av-dot-off  { background: var(--color-foreground-muted); }
+
+/* Avatar group — overlapping stack */
+.av-group {
+  display: inline-flex;
+  align-items: center;
+  isolation: isolate;
+}
+.av-group .av {
+  margin-left: -8px;
+  border: 2px solid var(--color-background-surface);
+}
+.av-group .av:first-child { margin-left: 0; }
+.av-group .av-more {
+  background: var(--color-background-surface);
+  color: var(--color-foreground-secondary);
+  border: 1px dashed var(--color-border-default);
+}
+
+/* =================== MONEY =================== */
+.money {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--money-fs, var(--fs-sm));
+  font-weight: var(--w-semibold);
+  color: var(--color-foreground-default);
+  white-space: nowrap;
+}
+.money-cur {
+  font-size: 0.78em;
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+}
+.money-frac { color: var(--color-foreground-secondary); font-weight: var(--w-medium); }
+
+.money-sm { --money-fs: var(--fs-xs); }
+.money-md { --money-fs: var(--fs-sm); }
+.money-lg { --money-fs: var(--fs-md); font-weight: var(--w-bold); }
+.money-xl { --money-fs: var(--fs-2xl); font-weight: var(--w-bold); letter-spacing: var(--ls-tight); }
+.money-display { --money-fs: var(--fs-4xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); }
+
+.money-pos { color: var(--color-feedback-success-foreground); }
+.money-neg { color: var(--color-feedback-danger-foreground); }
+.money-muted { color: var(--color-foreground-muted); font-weight: var(--w-medium); }
+
+/* =================== METRIC (hero display number) ===================
+   Big, display-weight figure for hero/KPI moments. Distinct from .money
+   (mono, inline): .metric is SANS display, tabular, with a dimmed currency
+   prefix and dimmed fraction. Colour INHERITS (works on light + inverse);
+   dimming uses opacity so it reads on any surface. Tone via inline color
+   or a utility (e.g. success). Size via .metric-{sm,md,lg}. */
+.metric {
+  font-family: var(--font-display);
+  font-weight: var(--w-bold);
+  letter-spacing: var(--ls-display);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+  white-space: nowrap;
+  font-size: var(--metric-fs, 38px);
+}
+.metric-cur { font-size: 0.58em; font-weight: var(--w-semibold); opacity: 0.55; margin-right: 0.32em; }
+.metric-frac { font-size: 0.68em; opacity: 0.55; }
+.metric-sm { --metric-fs: 30px; }
+.metric-md { --metric-fs: 38px; }
+.metric-lg { --metric-fs: var(--fs-5xl); }
+.metric-pos { color: var(--color-success-700); }
+.metric-neg { color: var(--color-danger-700); }
+
+/* =================== STAT =================== */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(var(--stat-cols, 3), 1fr);
+  gap: var(--space-3);
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--shape-container);
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xxs);
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+}
+.stat-value {
+  font-size: var(--fs-3xl);
+  font-weight: var(--w-bold);
+  letter-spacing: var(--ls-tight);
+  color: var(--color-foreground-default);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.stat-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: var(--w-semibold);
+}
+.stat-delta i, .stat-delta svg { width: 14px; height: 14px; stroke-width: 2.25; }
+.stat-delta-up   { color: var(--color-feedback-success-foreground); }
+.stat-delta-down { color: var(--color-feedback-danger-foreground); }
+.stat-delta-flat { color: var(--color-foreground-muted); }
+
+.stat-foot {
+  font-size: var(--fs-xs);
+  color: var(--color-foreground-secondary);
+  margin-top: var(--space-1);
+}
+/* Bare stat — figure block without tile chrome, for use inside a Card */
+.stat.is-bare { background: none; border: 0; padding: 0; border-radius: 0; }
+
+/* Compact variant — for sidebars / dense headers */
+.stat-compact {
+  padding: var(--space-3) var(--space-4);
+  background: transparent;
+  border: 0;
+}
+.stat-compact .stat-value { font-size: var(--fs-xl); }
+
+/* =================== DIVIDER =================== */
+.divider {
+  border: 0;
+  border-top: 1px solid var(--color-border-default);
+  margin: var(--space-4) 0;
+}
+.divider-subtle { border-top-color: var(--color-border-subtle); }
+.divider-strong { border-top-color: var(--color-border-strong); }
+.divider-dashed { border-top-style: dashed; }
+
+.divider-vertical {
+  width: 1px;
+  height: 1em;
+  border-top: 0;
+  border-left: 1px solid var(--color-border-default);
+  display: inline-block;
+  margin: 0 var(--space-3);
+  vertical-align: middle;
+}
+
+/* Labelled divider — splits content with a midline label */
+.divider-labelled {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-5) 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xxs);
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+}
+.divider-labelled::before,
+.divider-labelled::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-border-default);
+}
+
+/* =================== PILL =================== */
+/* Canonical pill lives in components/status-pills.css (single source:
+   Lato, chained tones .pill.success / sizes .pill.sm). This file no
+   longer re-defines .pill — primitives.html loads status-pills.css. */
+
+/* =================== EYEBROW =================== */
+/* Uppercase micro-label. size = xs|sm|md, tone maps to a foreground role.
+   When an icon sits inline, add .has-icon (the JS wrapper does this). */
+.eyebrow {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+}
+.eyebrow.has-icon { display: inline-flex; align-items: center; gap: var(--space-2-5); }
+.eyebrow-xs { font-size: var(--fs-xxs); font-weight: var(--w-bold); }
+.eyebrow-xs.has-icon { gap: var(--space-2); }
+.eyebrow-sm { font-size: var(--fs-xxs); font-weight: var(--w-semibold); }
+.eyebrow-md { font-size: var(--fs-xs); font-weight: var(--w-semibold); }
+.eyebrow-muted     { color: var(--color-foreground-muted); }
+.eyebrow-secondary { color: var(--color-foreground-secondary); }
+.eyebrow-default   { color: var(--color-foreground-default); }
+.eyebrow-brand     { color: var(--color-brand-text); }
+.eyebrow-inverse   { color: var(--color-foreground-inverse-muted); }
+
+/* =================== FILTER CHIP =================== */
+/* Pill-button used in filter rows. Control height matches .input / .btn (40px). */
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2-5);
+  height: 40px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-background-surface);
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  font-weight: var(--w-medium);
+  color: var(--color-foreground-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+.filter-chip:hover { background: var(--color-background-hover); border-color: var(--color-border-strong); }
+.filter-chip:active { background: var(--color-background-press); }
+/* Selected (aria-pressed via FilterChip TSX) — same active treatment as combobox filter chips */
+.filter-chip[aria-pressed="true"] {
+  background: var(--color-background-selected);
+  border-color: var(--color-brand-border);
+  color: var(--color-foreground-brand);
+  font-weight: var(--w-semibold);
+}
+.filter-chip .chip-chevron { opacity: .55; }
+
+/* =================== PROGRESS BAR =================== */
+/* Slim track + fill. Width of fill is data-driven (set inline). */
+.progress {
+  height: var(--progress-h, 6px);
+  background: var(--progress-track, var(--color-border-default));
+  border-radius: var(--radius-pill);
+  position: relative;
+  overflow: hidden;
+}
+.progress-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--progress-fill, var(--grad-brand-soft));
+  border-radius: var(--radius-pill);
+}
+
+/* =================== DESC TERM =================== */
+/* Labelled term-definition pair (receipts, detail drawers). */
+.desc-term-label {
+  font-size: var(--fs-xxs);
+  font-weight: var(--w-bold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+  margin-bottom: var(--space-2-5);
+}

@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <title>Data visualization · ATTRUS Design System</title>
-<link rel="stylesheet" href="../dist/css/index.css">
-<script src="./theme-toggle.js"></script>
-<link rel="stylesheet" href="components/spec-page.css">
-<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="../themes/index.css?v=1">
+<link rel="stylesheet" href="components/callout.css">
+<script src="../theme-toggle.js?v=1"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
   body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
@@ -104,6 +104,7 @@
 </style>
 </head>
 <body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
 
 <button class="page-theme" data-theme-toggle aria-label="Toggle theme">
   <span data-theme-icon aria-hidden="true">☾</span>
@@ -322,9 +323,9 @@
   <!-- 05 TOKEN MAP -->
   <section class="doc-section" id="map">
     <h2><span class="num">05</span>Token map</h2>
-    <p class="lead">All 30 tokens live in <code>dist/css/tokens.css</code>. Categorical hues get dark-theme overrides; ramps and structure follow the semantic tokens already remapped for dark.</p>
+    <p class="lead">All 30 tokens live in <code>colors_and_type.css</code>. Categorical hues get dark-theme overrides; ramps and structure follow the semantic tokens already remapped for dark.</p>
     <div class="spec">
-      <div class="spec-head"><div><h3>Reference</h3></div><span class="spec-tag">dist/css/tokens.css</span></div>
+      <div class="spec-head"><div><h3>Reference</h3></div><span class="spec-tag">colors_and_type.css</span></div>
       <div style="padding:var(--space-2) var(--space-2) var(--space-4)">
         <table class="map">
           <thead><tr><th>Token</th><th>Role</th></tr></thead>
@@ -347,7 +348,7 @@
 
   <footer class="doc-foot">
     <span>ATTRUS Design System · Data visualization</span>
-    <a href="components.html">← Back to catalog</a>
+    <a href="index.html">← Back to catalog</a>
   </footer>
 
 </main>
