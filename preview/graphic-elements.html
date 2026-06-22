@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Brand" name="Graphic elements" subtitle="Rounded triangle · dot pattern · opacity rules · composition" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Graphic elements · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<script src="../theme-toggle.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  /* shared chrome */
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
+  .spec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .spec-tag { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
+  .spec-canvas { padding: var(--space-8) var(--space-6); display: flex; align-items: center; justify-content: center; }
+
+  /* === ROUNDED TRIANGLE (apex glyph) — the SVG ===
+     We use an inline SVG that mimics the official apex glyph shape.
+     The shape is a softly-rounded equilateral triangle.
+     Color is controlled via fill="currentColor" on the path. */
+  .glyph {
+    display: inline-block;
+    color: var(--color-brand-primary-500);
+    width: 200px; height: 200px;
+    flex-shrink: 0;
+  }
+  .glyph svg { display: block; width: 100%; height: 100%; }
+
+  /* Canvas variations */
+  .variants-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--color-border-subtle); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .variant-tile { background: var(--color-background-surface); padding: var(--space-6) var(--space-4); display: flex; flex-direction: column; align-items: center; gap: var(--space-3); }
+  .variant-tile .glyph { width: 72px; height: 72px; }
+  .variant-tile .lbl { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); text-align: center; }
+
+  /* Anatomy diagram */
+  .anatomy { display: grid; grid-template-columns: 1fr; gap: var(--space-6); padding: var(--space-7); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); margin-bottom: var(--space-5); }
+  @media (min-width: 880px) { .anatomy { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: var(--space-8); padding: var(--space-8); } }
+  .anatomy-canvas { padding: var(--space-7); background: var(--color-background-canvas); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; min-height: 280px; }
+  .anatomy-list { min-width: 0; }
+  .anatomy-list ol { padding-left: 0; margin: 0; counter-reset: anat; list-style: none; }
+  .anatomy-list li { counter-increment: anat; margin-bottom: var(--space-4); padding-left: var(--space-8); position: relative; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-sm); }
+  .anatomy-list li:last-child { margin-bottom: 0; }
+  .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
+
+  /* Composition examples */
+  .compositions { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-4); }
+  .comp-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .comp-canvas { height: 240px; position: relative; overflow: hidden; }
+  .comp-meta { padding: var(--space-4) var(--space-5); border-top: 1px solid var(--color-border-subtle); }
+  .comp-meta strong { display: block; font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); margin-bottom: 2px; }
+  .comp-meta p { font-size: var(--fs-xs); color: var(--color-foreground-muted); margin: 0; line-height: var(--lh-relaxed); }
+
+  /* Composition 1: cover with cropped glyph */
+  .comp-cover-1 {
+    background: var(--grad-hero);
+  }
+  .comp-cover-1::before { content: ""; position: absolute; inset: 0; background: var(--grad-radial-glow); }
+  .comp-cover-1 .glyph {
+    position: absolute;
+    right: -60px; bottom: -60px;
+    width: 220px; height: 220px;
+    color: var(--color-overlay-white-18);
+    opacity: 1;
+  }
+  .comp-cover-1 .text {
+    position: absolute; left: var(--space-5); top: var(--space-5); right: var(--space-5);
+    color: var(--color-foreground-inverse-default);
+    font-family: var(--font-display); font-size: var(--fs-md); font-weight: var(--w-bold); letter-spacing: var(--ls-title);
+    line-height: var(--lh-tight);
+    z-index: 1;
+  }
+  .comp-cover-1 .eyebrow {
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-inverse-secondary); margin-bottom: var(--space-2);
+  }
+
+  /* Composition 2: divider with stacked glyph */
+  .comp-cover-2 {
+    background: var(--color-background-subtle);
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .comp-cover-2 .top-pane { background: var(--color-pure-white); flex: 1; padding: var(--space-4) var(--space-5); }
+  .comp-cover-2 .divider-rule { background: var(--color-background-canvas); padding: var(--space-3) var(--space-5); display: flex; align-items: center; gap: var(--space-4); border-block: 1px solid var(--color-border-subtle); }
+  .comp-cover-2 .divider-rule .glyph { width: 18px; height: 18px; color: var(--color-brand-primary-500); }
+  .comp-cover-2 .divider-rule .lbl { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .comp-cover-2 .bot-pane { background: var(--color-pure-white); flex: 1; padding: var(--space-4) var(--space-5); }
+  .comp-cover-2 .skel { height: 8px; background: var(--color-neutral-100); border-radius: var(--radius-2xs); margin-bottom: 6px; }
+  .comp-cover-2 .skel.short { width: 40%; }
+  .comp-cover-2 .skel.med { width: 70%; }
+
+  /* Composition 3: brand pattern background */
+  .comp-cover-3 {
+    background: var(--color-brand-primary-500);
+    overflow: hidden;
+  }
+  .comp-cover-3 .pattern-layer {
+    position: absolute; inset: 0;
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60' width='60' height='60'><path d='M30 8 L52 50 Q52 54 48 54 L12 54 Q8 54 8 50 Z' fill='rgba(255,255,255,0.06)'/></svg>");
+    background-size: 60px 60px;
+    opacity: 1;
+  }
+  .comp-cover-3 .text {
+    position: relative; z-index: 1;
+    padding: var(--space-6);
+    color: var(--color-foreground-inverse-default);
+    font-family: var(--font-display); font-size: var(--fs-lg); font-weight: var(--w-bold); letter-spacing: var(--ls-title); line-height: var(--lh-tight);
+  }
+
+  /* === DOT PATTERN === */
+  .dot-pattern {
+    background-color: var(--bg, var(--color-background-canvas));
+    background-image: radial-gradient(circle, var(--dot, var(--color-brand-primary-500)) 1.2px, transparent 1.5px);
+    background-size: 16px 16px;
+  }
+  .dot-pattern.dense { background-size: 10px 10px; }
+  .dot-pattern.sparse { background-size: 24px 24px; }
+
+  .dot-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1px; background: var(--color-border-subtle); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .dot-tile { height: 140px; position: relative; display: flex; align-items: flex-end; padding: var(--space-3); }
+  .dot-tile .lbl { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-surface); padding: 4px var(--space-2); border-radius: var(--radius-xs); border: 1px solid var(--color-border-default); }
+  .dot-tile.dark .lbl { background: var(--color-overlay-white-08); color: var(--color-foreground-inverse-default); border-color: var(--color-overlay-white-18); }
+
+  /* Dot pattern in context */
+  .dot-context { background: var(--grad-hero); position: relative; overflow: hidden; padding: var(--space-8); border-radius: var(--radius-md); }
+  .dot-context::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(circle, var(--color-overlay-white-18) 1.2px, transparent 1.5px);
+    background-size: 18px 18px;
+    pointer-events: none;
+  }
+  .dot-context > * { position: relative; z-index: 1; }
+  .dot-context .eyebrow { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-inverse-secondary); margin-bottom: var(--space-3); }
+  .dot-context h3 { font-family: var(--font-display); font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); line-height: var(--lh-tight); color: var(--color-foreground-inverse-default); margin: 0 0 var(--space-3); max-width: 24ch; }
+  .dot-context p { font-size: var(--fs-md); color: var(--color-foreground-inverse-secondary); line-height: var(--lh-relaxed); max-width: 56ch; margin: 0; }
+
+  /* Rules tables */
+  .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .token-table tr:last-child td { border-bottom: 0; }
+  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  /* Don'ts */
+  .dont-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-4); }
+  .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .dont-canvas { padding: var(--space-5); background: var(--color-background-subtle); display: flex; justify-content: center; align-items: center; min-height: 140px; border-bottom: 1px solid var(--color-border-subtle); position: relative; }
+  .dont-body { padding: var(--space-4) var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
+  .dont-body i, .dont-body svg { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .dont-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .dont-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+</style>
+</head>
+<body>
+
+<!-- Reusable SVG for the rounded triangle (apex glyph). Defined once, referenced via <use>. -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 0; height: 0; overflow: hidden;">
+  <defs>
+    <symbol id="apex-glyph" viewBox="0 0 100 100">
+      <path d="M50 8 Q53 8 55 13 L93 84 Q96 92 88 92 L12 92 Q4 92 7 84 L45 13 Q47 8 50 8 Z" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<main class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Graphic elements</h1>
+      <p>Two support assets beyond the logo and symbol — the rounded triangle (apex glyph extracted from the "A") and the dot pattern (a network matrix). Both add atmosphere and depth without competing with content.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="shapes"></i>Foundation</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#triangle">01 Rounded triangle</a>
+    <a href="#triangle-variants">02 Triangle variants</a>
+    <a href="#triangle-comp">03 Triangle in composition</a>
+    <a href="#dot">04 Dot pattern</a>
+    <a href="#dot-density">05 Dot density &amp; opacity</a>
+    <a href="#donts">06 Don'ts</a>
+    <a href="#tokens">07 Tokens</a>
+  </nav>
+
+  <!-- 01 TRIANGLE -->
+  <section class="doc-section" id="triangle">
+    <h2><span class="num">01</span>Rounded triangle</h2>
+    <p class="lead">Form derived from the logo's "A". A softly rounded equilateral triangle that points upward — read variously as an arrow, a mountain, a convergence point. Applied to covers, dividers, backgrounds and patterns.</p>
+
+    <div class="anatomy">
+      <div class="anatomy-canvas">
+        <span class="glyph"><svg><use href="#apex-glyph"/></svg></span>
+      </div>
+      <div class="anatomy-list">
+        <ol>
+          <li><strong>Construction</strong> Equilateral triangle with rounded corners (radius ≈ 6% of the side). The apex sits at the top — never inverted. Matches the proportions of the apex inside the wordmark.</li>
+          <li><strong>Source</strong> SVG inline (<code>#apex-glyph symbol</code>). Renders crisply at any size; fills via <code>currentColor</code> so it inherits the parent's text colour.</li>
+          <li><strong>Role</strong> Always a support element — never replaces the logo, text or photography. Adds atmosphere; carries no information of its own.</li>
+          <li><strong>Limit</strong> Maximum 2 instances per piece. More than that and the shape stops being supportive — it becomes the subject.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 TRIANGLE VARIANTS -->
+  <section class="doc-section" id="triangle-variants">
+    <h2><span class="num">02</span>Variants — colour &amp; opacity</h2>
+    <p class="lead">The triangle inherits any palette colour via <code>currentColor</code>. Use opacity to create depth — solid for hero pieces, translucent for backgrounds and patterns.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Solid · 100%</h3>
+          <p>Full opacity. Use as a clear graphic accent — divider rules, navigation marks, small badges.</p>
+        </div>
+        <span class="spec-tag">solid</span>
+      </header>
+      <div class="variants-strip">
+        <div class="variant-tile"><span class="glyph" style="color: var(--color-brand-primary-500);"><svg><use href="#apex-glyph"/></svg></span><span class="lbl">primary · navy</span></div>
+        <div class="variant-tile"><span class="glyph" style="color: var(--color-brand-secondary-500);"><svg><use href="#apex-glyph"/></svg></span><span class="lbl">secondary · royal</span></div>
+        <div class="variant-tile"><span class="glyph" style="color: var(--color-brand-accent-500);"><svg><use href="#apex-glyph"/></svg></span><span class="lbl">accent · sky</span></div>
+        <div class="variant-tile" style="background: var(--color-background-inverse);"><span class="glyph" style="color: var(--color-pure-white);"><svg><use href="#apex-glyph"/></svg></span><span class="lbl" style="color: var(--color-foreground-inverse-muted);">white on ink</span></div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Translucent · for depth</h3>
+          <p>Lower opacity creates layered atmosphere. Use on hero covers when the triangle is the background, not the focal point.</p>
+        </div>
+        <span class="spec-tag">opacity scale</span>
+      </header>
+      <div class="variants-strip">
+        <div class="variant-tile"><span class="glyph" style="color: color-mix(in srgb, var(--color-brand-primary-500) 80%, transparent);"><svg><use href="#apex-glyph"/></svg></span><span class="lbl">80%</span></div>
+        <div class="variant-tile"><span class="glyph" style="color: color-mix(in srgb, var(--color-brand-primary-500) 50%, transparent);"><svg><use href="#apex-glyph"/></svg></span><span class="lbl">50%</span></div>
+        <div class="variant-tile"><span class="glyph" style="color: color-mix(in srgb, var(--color-brand-primary-500) 25%, transparent);"><svg><use href="#apex-glyph"/></svg></span><span class="lbl">25%</span></div>
+        <div class="variant-tile"><span class="glyph" style="color: color-mix(in srgb, var(--color-brand-primary-500) 10%, transparent);"><svg><use href="#apex-glyph"/></svg></span><span class="lbl">10%</span></div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>On inverse — light overlay</h3>
+          <p>On Navy / Black surfaces, the triangle uses white at low alpha (the <code>--color-overlay-white-*</code> tokens). Stronger overlays for active marks, lighter for ambient background fills.</p>
+        </div>
+        <span class="spec-tag">on inverse</span>
+      </header>
+      <div class="variants-strip" style="background: var(--color-border-inverse-strong);">
+        <div class="variant-tile" style="background: var(--color-background-inverse);"><span class="glyph" style="color: var(--color-overlay-white-22);"><svg><use href="#apex-glyph"/></svg></span><span class="lbl" style="color: var(--color-foreground-inverse-muted);">22%</span></div>
+        <div class="variant-tile" style="background: var(--color-background-inverse);"><span class="glyph" style="color: var(--color-overlay-white-18);"><svg><use href="#apex-glyph"/></svg></span><span class="lbl" style="color: var(--color-foreground-inverse-muted);">18%</span></div>
+        <div class="variant-tile" style="background: var(--color-background-inverse);"><span class="glyph" style="color: var(--color-overlay-white-12);"><svg><use href="#apex-glyph"/></svg></span><span class="lbl" style="color: var(--color-foreground-inverse-muted);">12%</span></div>
+        <div class="variant-tile" style="background: var(--color-background-inverse);"><span class="glyph" style="color: var(--color-overlay-white-08);"><svg><use href="#apex-glyph"/></svg></span><span class="lbl" style="color: var(--color-foreground-inverse-muted);">08%</span></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 03 TRIANGLE COMPOSITION -->
+  <section class="doc-section" id="triangle-comp">
+    <h2><span class="num">03</span>In composition</h2>
+    <p class="lead">Three established uses. The triangle is always supportive — anchored to an edge, sized large or small as appropriate, and never centred on its own as a hero element.</p>
+
+    <div class="compositions">
+      <div class="comp-card">
+        <div class="comp-canvas comp-cover-1">
+          <div class="text">
+            <div class="eyebrow">2025 · Q4 brief</div>
+            One platform.<br>Every market.
+          </div>
+        </div>
+        <div class="comp-meta">
+          <strong>Cropped at edge</strong>
+          <p>Anchored bottom-right, scaled large, cropped past the canvas edge. Suggests continuity beyond the frame.</p>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-canvas comp-cover-2">
+          <div class="top-pane">
+            <div class="skel med"></div>
+            <div class="skel short"></div>
+            <div class="skel med"></div>
+          </div>
+          <div class="divider-rule">
+            <span class="glyph"><svg><use href="#apex-glyph"/></svg></span>
+            <span class="lbl">Section · 02</span>
+          </div>
+          <div class="bot-pane">
+            <div class="skel med"></div>
+            <div class="skel short"></div>
+          </div>
+        </div>
+        <div class="comp-meta">
+          <strong>Section divider</strong>
+          <p>Tiny solid glyph as a separator between sections in long documents and deck decks. 18px scale, brand-primary fill.</p>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-canvas comp-cover-3">
+          <div class="pattern-layer"></div>
+          <div class="text">Where the world sees borders, we draw routes.</div>
+        </div>
+        <div class="comp-meta">
+          <strong>Pattern fill</strong>
+          <p>Tiled at low alpha as a textured background — adds depth without competing with copy. Use sparingly on hero / OOH only.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 DOT PATTERN -->
+  <section class="doc-section" id="dot">
+    <h2><span class="num">04</span>Dot pattern</h2>
+    <p class="lead">A dot matrix suggesting connectivity and network. Used at low opacity in the background of denser pieces — covers, decks, web heroes. Never as a foreground element.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Default · 18px grid</h3>
+          <p>The canonical density. Dots are 2.4px diameter on a 18px grid. Use on Navy or Black backgrounds with <code>--color-overlay-white-18</code> as the fill.</p>
+        </div>
+        <span class="spec-tag">default</span>
+      </header>
+      <div class="dot-context">
+        <div class="eyebrow">Infrastructure · Latin America</div>
+        <h3>Multiple markets.<br>One operation.</h3>
+        <p>The dot pattern sits at the bottom of the visual stack — atmospheric, never demanding attention. The hero gradient still owns the surface.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- 05 DOT DENSITY -->
+  <section class="doc-section" id="dot-density">
+    <h2><span class="num">05</span>Density &amp; opacity</h2>
+    <p class="lead">Three density steps; the opacity should sit between <strong>25–45%</strong> per brand book. Below 25% the pattern disappears; above 45% it competes with copy.</p>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Density variants</h3>
+          <p>Same opacity, three grid sizes. Choose by surface size — sparse on small marketing pieces, dense on full-bleed OOH.</p>
+        </div>
+        <span class="spec-tag">10 · 18 · 24px</span>
+      </header>
+      <div class="dot-strip">
+        <div class="dot-tile dark dot-pattern dense" style="--bg: var(--color-background-inverse); --dot: var(--color-overlay-white-22);">
+          <span class="lbl">Dense · 10px</span>
+        </div>
+        <div class="dot-tile dark dot-pattern" style="--bg: var(--color-background-inverse); --dot: var(--color-overlay-white-22);">
+          <span class="lbl">Default · 16px</span>
+        </div>
+        <div class="dot-tile dark dot-pattern sparse" style="--bg: var(--color-background-inverse); --dot: var(--color-overlay-white-22);">
+          <span class="lbl">Sparse · 24px</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>Opacity scale</h3>
+          <p>From subtle (08%) to maximum allowed (22%). Note that on the brand gradient (Navy → Royal) the perceptual contrast shifts — always preview on the target surface before fixing the value.</p>
+        </div>
+        <span class="spec-tag">opacity</span>
+      </header>
+      <div class="dot-strip">
+        <div class="dot-tile dark dot-pattern" style="--bg: var(--color-background-inverse); --dot: var(--color-overlay-white-08);"><span class="lbl">08% — too subtle</span></div>
+        <div class="dot-tile dark dot-pattern" style="--bg: var(--color-background-inverse); --dot: var(--color-overlay-white-12);"><span class="lbl">12% — minimum</span></div>
+        <div class="dot-tile dark dot-pattern" style="--bg: var(--color-background-inverse); --dot: var(--color-overlay-white-18);"><span class="lbl">18% — recommended</span></div>
+        <div class="dot-tile dark dot-pattern" style="--bg: var(--color-background-inverse); --dot: var(--color-overlay-white-22);"><span class="lbl">22% — maximum</span></div>
+      </div>
+    </article>
+
+    <article class="spec">
+      <header class="spec-head">
+        <div>
+          <h3>On light surfaces</h3>
+          <p>Reverse the contrast on light backgrounds — dots in <code>--color-brand-primary-100</code> or <code>--color-neutral-200</code>. Same density rules apply.</p>
+        </div>
+        <span class="spec-tag">light variant</span>
+      </header>
+      <div class="dot-strip">
+        <div class="dot-tile dot-pattern dense" style="--bg: var(--color-background-canvas); --dot: var(--color-brand-primary-100);"><span class="lbl">Dense · brand-100</span></div>
+        <div class="dot-tile dot-pattern" style="--bg: var(--color-background-canvas); --dot: var(--color-brand-primary-100);"><span class="lbl">Default · brand-100</span></div>
+        <div class="dot-tile dot-pattern" style="--bg: var(--color-background-canvas); --dot: var(--color-neutral-200);"><span class="lbl">Default · neutral-200</span></div>
+        <div class="dot-tile dot-pattern sparse" style="--bg: var(--color-background-canvas); --dot: var(--color-neutral-200);"><span class="lbl">Sparse · neutral-200</span></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 06 DON'TS -->
+  <section class="doc-section" id="donts">
+    <h2><span class="num">06</span>Don'ts</h2>
+    <p class="lead">Six anti-patterns. Each one turns a support element into a focal element — exactly what these tokens are not.</p>
+
+    <div class="dont-grid">
+      <div class="dont-card">
+        <div class="dont-canvas">
+          <span class="glyph" style="transform: rotate(180deg); color: var(--color-brand-primary-500); width: 64px; height: 64px;"><svg><use href="#apex-glyph"/></svg></span>
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't invert</strong><p>The triangle always points upward. Inverting destroys the "arrow / convergence" reading and turns the mark into a generic warning glyph.</p></p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas">
+          <span class="glyph" style="transform: rotate(28deg); color: var(--color-brand-primary-500); width: 64px; height: 64px;"><svg><use href="#apex-glyph"/></svg></span>
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't rotate or tilt</strong><p>The triangle is always axis-aligned. Tilting feels arbitrary and breaks the structural metaphor.</p></p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas">
+          <span class="glyph" style="color: var(--color-feedback-danger-foreground); width: 64px; height: 64px;"><svg><use href="#apex-glyph"/></svg></span>
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't use off-brand colours</strong><p>Stay within the official palette — primary, secondary, accent, neutral, or white-alpha overlays on dark. Never feedback colours (success / warning / danger) — those carry meaning.</p></p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas">
+          <span class="glyph" style="color: var(--color-brand-primary-500); width: 36px; height: 36px;"><svg><use href="#apex-glyph"/></svg></span>
+          <span class="glyph" style="color: var(--color-brand-primary-500); width: 36px; height: 36px; margin-left: 8px;"><svg><use href="#apex-glyph"/></svg></span>
+          <span class="glyph" style="color: var(--color-brand-primary-500); width: 36px; height: 36px; margin-left: 8px;"><svg><use href="#apex-glyph"/></svg></span>
+          <span class="glyph" style="color: var(--color-brand-primary-500); width: 36px; height: 36px; margin-left: 8px;"><svg><use href="#apex-glyph"/></svg></span>
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't stack more than two</strong><p>The brand book caps at 2 instances per piece. Beyond that the triangle stops being supportive and starts feeling like decoration.</p></p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas dot-pattern" style="--bg: var(--color-background-canvas); --dot: var(--color-brand-primary-500); background-size: 10px 10px;">
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't use the dot pattern at 100%</strong><p>The dot pattern is atmospheric, not a focal layer. Anything above 22% opacity turns the surface into a graph paper that fights copy.</p></p>
+        </div>
+      </div>
+
+      <div class="dont-card">
+        <div class="dont-canvas dot-pattern" style="--bg: var(--color-background-canvas); --dot: var(--color-foreground-default);">
+          <div style="position: absolute; inset: 0; padding: var(--space-3); font-size: var(--fs-xs); color: var(--color-foreground-default); line-height: 1.4; background: rgba(0,0,0,0);">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.
+          </div>
+        </div>
+        <div class="dont-body">
+          <i data-lucide="x-circle"></i>
+          <p><strong>Don't place body copy on the pattern</strong><p>Patterns and reading copy don't share a surface. If copy needs to sit there, drop a solid card behind it first.</p></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 TOKENS -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">07</span>Tokens</h2>
+    <p class="lead">Both elements consume existing palette tokens — no new dedicated tokens. Density and opacity are configurable per surface.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Concept</th><th>Token / value</th></tr></thead>
+      <tbody>
+        <tr><td>Triangle source</td><td><code>&lt;use href="#apex-glyph"/&gt;</code> — inline SVG symbol</td></tr>
+        <tr><td>Triangle fill (light bg)</td><td><code>var(--color-brand-primary-500)</code> · <code>var(--color-brand-secondary-500)</code> · <code>var(--color-brand-accent-500)</code></td></tr>
+        <tr><td>Triangle fill (dark bg)</td><td><code>var(--color-pure-white)</code> · <code>var(--color-overlay-white-{08,12,18,22})</code></td></tr>
+        <tr><td>Triangle scale</td><td>Free — anchored to the layout. Minimum 12px (never smaller than the wordmark's apex).</td></tr>
+        <tr><td>Dot pattern grid</td><td>10px (dense) · 16px (default) · 24px (sparse)</td></tr>
+        <tr><td>Dot diameter</td><td>1.2px (with 1.5px transparent edge for soft anti-alias)</td></tr>
+        <tr><td>Dot colour (on dark)</td><td><code>var(--color-overlay-white-{12,18,22})</code> — 12% min, 22% max</td></tr>
+        <tr><td>Dot colour (on light)</td><td><code>var(--color-brand-primary-100)</code> · <code>var(--color-neutral-200)</code></td></tr>
+        <tr><td>Dot CSS recipe</td><td><code>background-image: radial-gradient(circle, var(--dot) 1.2px, transparent 1.5px); background-size: 16px 16px;</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script>if (window.lucide) lucide.createIcons();</script>
+
+</body>
+</html>

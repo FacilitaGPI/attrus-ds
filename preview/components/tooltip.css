@@ -1,0 +1,231 @@
+/* ============================================================
+   TOOLTIP COMPONENT — ATTRUS Design System
+   Hover/focus-triggered label that names a target.
+   All values from tokens.
+   ============================================================ */
+
+.tooltip-target {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 8000;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-background-inverse);
+  color: var(--color-foreground-inverse-default);
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--w-medium);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-body);
+  white-space: normal;
+  width: max-content;
+  max-width: 240px;
+  border-radius: var(--radius-xs);
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-standard),
+              transform var(--duration-base) var(--ease-emphasis);
+}
+
+.tooltip-target:hover > .tooltip,
+.tooltip-target:focus-visible > .tooltip,
+.tooltip-target:focus-within > .tooltip,
+.tooltip-target:has(> .tooltip-rich:hover) > .tooltip-rich,
+.tooltip.is-open {
+  opacity: 1;
+  pointer-events: none;
+}
+
+/* Arrow */
+.tooltip::after {
+  content: "";
+  position: absolute;
+  width: 8px; height: 8px;
+  background: var(--color-background-inverse);
+  transform: rotate(45deg);
+}
+
+/* Placements */
+.tooltip-top {
+  bottom: calc(100% + var(--space-2));
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+}
+.tooltip-target:hover > .tooltip-top,
+.tooltip-target:focus-within > .tooltip-top { transform: translateX(-50%) translateY(0); }
+.tooltip-top::after { bottom: -3px; left: 50%; margin-left: -4px; }
+
+.tooltip-bottom {
+  top: calc(100% + var(--space-2));
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+}
+.tooltip-target:hover > .tooltip-bottom,
+.tooltip-target:focus-within > .tooltip-bottom { transform: translateX(-50%) translateY(0); }
+.tooltip-bottom::after { top: -3px; left: 50%; margin-left: -4px; }
+
+.tooltip-left {
+  right: calc(100% + var(--space-2));
+  top: 50%;
+  transform: translateY(-50%) translateX(4px);
+}
+.tooltip-target:hover > .tooltip-left,
+.tooltip-target:focus-within > .tooltip-left { transform: translateY(-50%) translateX(0); }
+.tooltip-left::after { right: -3px; top: 50%; margin-top: -4px; }
+
+.tooltip-right {
+  left: calc(100% + var(--space-2));
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+}
+.tooltip-target:hover > .tooltip-right,
+.tooltip-target:focus-within > .tooltip-right { transform: translateY(-50%) translateX(0); }
+.tooltip-right::after { left: -3px; top: 50%; margin-top: -4px; }
+
+/* Variants */
+.tooltip-rich {
+  white-space: normal;
+  max-width: 260px;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-normal);
+}
+/* Rich tooltips are interactive (may contain a link): make them hoverable
+   and bridge the gap to the target so the pointer can travel without the
+   tooltip closing. Bridge is an invisible pad on the target-facing side. */
+.tooltip-target:hover > .tooltip-rich,
+.tooltip-target:focus-within > .tooltip-rich,
+.tooltip-target:has(> .tooltip-rich:hover) > .tooltip-rich,
+.tooltip-rich.is-open { pointer-events: auto; }
+.tooltip-rich::before {
+  content: "";
+  position: absolute;
+  /* covers the space-2 gap between tooltip and target */
+}
+.tooltip-rich.tooltip-top::before    { left: 0; right: 0; bottom: calc(-1 * var(--space-2)); height: var(--space-2); }
+.tooltip-rich.tooltip-bottom::before { left: 0; right: 0; top: calc(-1 * var(--space-2)); height: var(--space-2); }
+.tooltip-rich.tooltip-left::before   { top: 0; bottom: 0; right: calc(-1 * var(--space-2)); width: var(--space-2); }
+.tooltip-rich.tooltip-right::before  { top: 0; bottom: 0; left: calc(-1 * var(--space-2)); width: var(--space-2); }
+.tooltip-rich .tooltip-title {
+  font-weight: var(--w-semibold);
+  font-size: var(--fs-sm);
+  margin: 0 0 var(--space-1);
+  color: var(--color-foreground-inverse-default);
+}
+.tooltip-rich .tooltip-desc {
+  margin: 0;
+  color: var(--color-foreground-inverse-muted);
+}
+
+/* --- Rich tooltip building blocks (title · meta · header icon ·
+   divider · bullet list · key/value rows · footer) --- */
+.tooltip-rich .tooltip-meta {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xxs);
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-inverse-muted);
+  margin: 0 0 var(--space-1);
+}
+.tooltip-rich .tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+.tooltip-rich .tooltip-header .tooltip-title { margin: 0; }
+.tooltip-rich .tooltip-header i,
+.tooltip-rich .tooltip-header svg {
+  width: 15px; height: 15px;
+  color: var(--color-foreground-inverse-default);
+  flex-shrink: 0;
+  stroke-width: var(--icon-stroke);
+}
+.tooltip-rich .tooltip-divider {
+  height: 1px;
+  margin: var(--space-3) 0;
+  background: var(--color-border-inverse);
+  border: 0;
+}
+.tooltip-rich .tooltip-list {
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.tooltip-rich .tooltip-list li {
+  position: relative;
+  padding-left: var(--space-4);
+  color: var(--color-foreground-inverse-muted);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-snug);
+}
+.tooltip-rich .tooltip-list li::before {
+  content: "";
+  position: absolute;
+  left: 2px; top: 7px;
+  width: 4px; height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-foreground-inverse-accent);
+}
+.tooltip-rich .tooltip-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  font-size: var(--fs-xs);
+}
+.tooltip-rich .tooltip-row + .tooltip-row { margin-top: var(--space-1); }
+.tooltip-rich .tooltip-row .k { color: var(--color-foreground-inverse-muted); }
+.tooltip-rich .tooltip-row .v {
+  color: var(--color-foreground-inverse-default);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--w-medium);
+}
+.tooltip-rich .tooltip-footer {
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border-inverse);
+  font-size: var(--fs-xxs);
+  color: var(--color-foreground-inverse-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.tooltip-rich .tooltip-footer i,
+.tooltip-rich .tooltip-footer svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+.tooltip-kbd kbd {
+  display: inline-block;
+  margin-left: var(--space-2);
+  padding: 1px var(--space-1);
+  background: var(--color-background-inverse-subtle);
+  color: var(--color-foreground-inverse-default);
+  border: 1px solid var(--color-border-inverse);
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xxs);
+  font-weight: var(--w-medium);
+  line-height: 1;
+}
+
+/* Esc suppression — hide while focus stays on the target (doc a11y contract).
+   The TSX toggles .is-suppressed on Escape; clears on blur / mouse re-enter. */
+.tooltip-target.is-suppressed > .tooltip,
+.tooltip-target.is-suppressed > .tooltip-rich { opacity: 0; pointer-events: none; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .tooltip { transition: opacity var(--duration-instant) linear; transform: none !important; transition-delay: 0s !important; }
+}

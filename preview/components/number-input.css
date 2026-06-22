@@ -1,0 +1,138 @@
+/* ============================================================
+   NUMBER INPUT — numeric field with − / + accelerator buttons
+   For bounded quantities: counts, percentages, days, seats.
+   All values from tokens.
+
+   Renamed from .stepper (Nov 2025) to free the "Stepper" name
+   for the multi-step flow indicator component. See stepper.css.
+   ============================================================ */
+
+.number-input {
+  display: inline-flex;
+  align-items: stretch;
+  height: 40px;
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  transition: var(--transition-fast);
+  overflow: hidden;
+}
+.number-input:hover { border-color: var(--color-border-strong); }
+.number-input:focus-within {
+  border-color: var(--color-foreground-accent);
+  box-shadow: var(--shadow-focus);
+}
+
+.number-input-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  background: transparent;
+  border: none;
+  color: var(--color-foreground-secondary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: var(--transition-fast);
+}
+.number-input-btn:hover {
+  background: var(--color-background-hover);
+  color: var(--color-foreground-default);
+}
+.number-input-btn:focus-visible { outline: none; background: var(--color-background-hover); }
+.number-input-btn:disabled,
+.number-input-btn[aria-disabled="true"] {
+  color: var(--color-foreground-muted);
+  cursor: not-allowed;
+  background: transparent;
+}
+.number-input-btn i, .number-input-btn svg {
+  width: 14px; height: 14px;
+  stroke-width: 2.4;
+}
+
+.number-input-field {
+  flex: 1;
+  min-width: 0;
+  width: 80px;
+  padding: 0 var(--space-2);
+  background: transparent;
+  border: none;
+  border-left: 1px solid var(--color-border-subtle);
+  border-right: 1px solid var(--color-border-subtle);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: var(--w-medium);
+  color: var(--color-foreground-default);
+  text-align: center;
+  -moz-appearance: textfield;
+}
+.number-input-field::-webkit-outer-spin-button,
+.number-input-field::-webkit-inner-spin-button {
+  -webkit-appearance: none; margin: 0;
+}
+.number-input-field:focus { outline: none; }
+
+/* Sizes */
+.number-input-sm { height: 32px; }
+.number-input-sm .number-input-btn { width: 28px; }
+.number-input-sm .number-input-btn i, .number-input-sm .number-input-btn svg { width: 12px; height: 12px; }
+.number-input-sm .number-input-field { font-size: var(--fs-xs); width: 56px; }
+
+.number-input-lg { height: 48px; }
+.number-input-lg .number-input-btn { width: 44px; }
+.number-input-lg .number-input-btn i, .number-input-lg .number-input-btn svg { width: 16px; height: 16px; }
+.number-input-lg .number-input-field { font-size: var(--fs-md); width: 96px; }
+
+/* With suffix (currency, unit) */
+.number-input-suffix {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+  border-left: 1px solid var(--color-border-subtle);
+  background: var(--color-background-subtle);
+}
+
+.number-input-prefix {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: var(--w-semibold);
+  color: var(--color-foreground-muted);
+  border-right: 1px solid var(--color-border-subtle);
+  background: var(--color-background-subtle);
+}
+
+/* States */
+.number-input.is-disabled,
+.number-input:has(.number-input-field:disabled) {
+  background: var(--color-background-subtle);
+  border-color: var(--color-border-subtle);
+  cursor: not-allowed;
+}
+.number-input.is-disabled .number-input-field,
+.number-input-field:disabled {
+  color: var(--color-foreground-muted);
+  cursor: not-allowed;
+}
+
+.number-input.is-invalid {
+  border-color: var(--color-feedback-danger-border);
+}
+.number-input.is-invalid:focus-within {
+  box-shadow: 0 0 0 3px var(--color-feedback-danger-background);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .number-input, .number-input-btn { transition: none; }
+}

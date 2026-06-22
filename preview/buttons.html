@@ -4,10 +4,10 @@
 <head>
 <meta charset="utf-8">
 <title>Buttons · ATTRUS Design System</title>
-<link rel="stylesheet" href="../dist/css/index.css">
-<script src="./theme-toggle.js"></script>
-<link rel="stylesheet" href="components/spec-page.css">
-<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<script src="../theme-toggle.js"></script>
+<link rel="stylesheet" href="components/buttons.css">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
   /* ============================================================
@@ -382,14 +382,10 @@
 </style>
 </head>
 <body>
-<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
-  <span data-theme-icon aria-hidden="true">&#9790;</span>
-  <span data-theme-label>Dark</span>
-</button>
 
 <main class="doc">
 
-  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+  <a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
 
   <!-- ========== HEADER ========== -->
   <header class="doc-header">
@@ -1043,7 +1039,7 @@
   <!-- ========== TOKENS ========== -->
   <section class="doc-section" id="tokens">
     <h2><span class="num">09</span>Tokens consumed</h2>
-    <p class="lead">Every value in <code>buttons.css</code> traces back to a token defined in <code>dist/css/tokens.css</code>. Change it there, every button updates.</p>
+    <p class="lead">Every value in <code>buttons.css</code> traces back to a token defined in <code>colors_and_type.css</code>. Change it there, every button updates.</p>
 
     <table class="token-table">
       <thead><tr><th>Concern</th><th>Tokens</th></tr></thead>
@@ -1065,9 +1061,6 @@
 
 </main>
 
-<script>
-  if (window.lucide) lucide.createIcons();
-  window.addEventListener('attrus-theme', function () { if (window.lucide) lucide.createIcons(); });
-</script>
+<script>lucide.createIcons();</script>
 </body>
 </html>

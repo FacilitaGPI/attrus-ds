@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Brand" name="Photography direction" subtitle="5 principles · on-brand tones · composition · what to avoid" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Photography · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<script src="../theme-toggle.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  /* shared chrome */
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  /* Hero call-out */
+  .photo-hero {
+    background: var(--grad-hero);
+    color: var(--color-foreground-inverse-default);
+    padding: var(--space-10) var(--space-8);
+    border-radius: var(--radius-lg);
+    position: relative; overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: var(--space-5);
+  }
+  .photo-hero::before { content: ""; position: absolute; inset: 0; background: var(--grad-radial-glow); pointer-events: none; }
+  .photo-hero > * { position: relative; z-index: 1; }
+  .photo-hero .eyebrow { font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-inverse-secondary); margin-bottom: var(--space-4); }
+  .photo-hero h2 { font-family: var(--font-display); font-size: var(--fs-5xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); line-height: var(--lh-tight); margin: 0 0 var(--space-4); max-width: 28ch; color: var(--color-foreground-inverse-default); }
+  .photo-hero p { font-size: var(--fs-lg); color: var(--color-foreground-inverse-secondary); line-height: var(--lh-relaxed); max-width: 64ch; margin: 0; }
+
+  /* Principles */
+  .principles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-5); }
+  .principle-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-xs); }
+  .principle-frame {
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .principle-meta {
+    padding: var(--space-5) var(--space-6);
+  }
+  .principle-meta .ord { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); color: var(--color-foreground-muted); margin-bottom: var(--space-2); }
+  .principle-meta h3 { font-size: var(--fs-lg); font-weight: var(--w-bold); letter-spacing: var(--ls-title); color: var(--color-foreground-default); margin: 0 0 var(--space-2); }
+  .principle-meta p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+
+  /* Each principle frame uses SVG silhouettes / abstract shapes to evoke composition. */
+  .silhouette-bg { width: 100%; height: 100%; display: block; }
+
+  /* Tone palette */
+  .tone-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0; background: var(--color-border-subtle); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .tone-cell {
+    height: 120px;
+    display: flex; align-items: flex-end;
+    padding: var(--space-3);
+    position: relative;
+  }
+  .tone-cell .lbl {
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); text-transform: uppercase;
+    padding: 4px var(--space-2);
+    background: var(--color-overlay-white-22);
+    color: var(--color-foreground-default);
+    border-radius: var(--radius-xs);
+  }
+  .tone-cell.dark .lbl { background: var(--color-overlay-white-12); color: var(--color-foreground-inverse-default); }
+
+  .tone-rules { background: var(--color-background-subtle); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); padding: var(--space-5) var(--space-6); margin-top: var(--space-5); }
+  .tone-rules h3 { font-size: var(--fs-sm); font-weight: var(--w-bold); letter-spacing: var(--ls-title); color: var(--color-foreground-default); margin: 0 0 var(--space-3); }
+  .tone-rules ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+  .tone-rules li { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); padding-left: var(--space-5); position: relative; }
+  .tone-rules li::before { content: "↘"; position: absolute; left: 0; color: var(--color-foreground-accent); font-weight: var(--w-bold); }
+  .tone-rules strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+
+  /* Composition rule diagrams */
+  .comp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); }
+  .comp-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .comp-frame {
+    height: 200px;
+    background: var(--color-neutral-150);
+    position: relative;
+    overflow: hidden;
+  }
+  .comp-frame svg { width: 100%; height: 100%; display: block; }
+  .comp-frame .grid-overlay {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, transparent calc(33.33% - 0.5px), var(--color-overlay-white-22) calc(33.33% - 0.5px), var(--color-overlay-white-22) 33.33%, transparent 33.33%,
+        transparent calc(66.66% - 0.5px), var(--color-overlay-white-22) calc(66.66% - 0.5px), var(--color-overlay-white-22) 66.66%, transparent 66.66%),
+      linear-gradient(to bottom, transparent calc(33.33% - 0.5px), var(--color-overlay-white-22) calc(33.33% - 0.5px), var(--color-overlay-white-22) 33.33%, transparent 33.33%,
+        transparent calc(66.66% - 0.5px), var(--color-overlay-white-22) calc(66.66% - 0.5px), var(--color-overlay-white-22) 66.66%, transparent 66.66%);
+    pointer-events: none;
+  }
+  .comp-meta { padding: var(--space-4) var(--space-5); }
+  .comp-meta strong { display: block; font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); margin-bottom: 2px; }
+  .comp-meta p { font-size: var(--fs-xs); color: var(--color-foreground-muted); margin: 0; line-height: var(--lh-relaxed); }
+
+  /* Compare do/don't */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  @media (max-width: 720px) { .compare-grid { grid-template-columns: 1fr; } }
+  .compare-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .compare-card.do { border-left: 3px solid var(--color-feedback-success-foreground); }
+  .compare-card.dont { border-left: 3px solid var(--color-feedback-danger-foreground); }
+  .compare-frame { height: 220px; position: relative; overflow: hidden; background: var(--color-neutral-150); border-bottom: 1px solid var(--color-border-subtle); }
+  .compare-meta { padding: var(--space-4) var(--space-5); }
+  .compare-meta .tag { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; margin-bottom: var(--space-2); display: inline-flex; align-items: center; gap: var(--space-2); }
+  .compare-card.do .compare-meta .tag { color: var(--color-feedback-success-foreground); }
+  .compare-card.dont .compare-meta .tag { color: var(--color-feedback-danger-foreground); }
+  .compare-meta .tag i, .compare-meta .tag svg { width: 12px; height: 12px; stroke-width: var(--icon-stroke); }
+  .compare-meta strong { display: block; font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); margin-bottom: 2px; }
+  .compare-meta p { font-size: var(--fs-xs); color: var(--color-foreground-secondary); margin: 0; line-height: var(--lh-relaxed); }
+
+  /* What to avoid grid */
+  .avoid-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-4); }
+  .avoid-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
+  .avoid-card i, .avoid-card svg { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .avoid-card .body strong { display: block; font-size: var(--fs-md); font-weight: var(--w-bold); color: var(--color-foreground-default); margin-bottom: var(--space-1); letter-spacing: var(--ls-title); }
+  .avoid-card .body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+
+  /* note */
+  .doc-note {
+    background: var(--color-feedback-info-background);
+    color: var(--color-feedback-info-foreground);
+    border: 1px solid var(--color-feedback-info-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
+    margin-bottom: var(--space-8);
+    display: flex; gap: var(--space-3); align-items: flex-start;
+  }
+  .doc-note i, .doc-note svg { width: 16px; height: 16px; stroke-width: var(--icon-stroke); flex-shrink: 0; margin-top: 2px; }
+  .doc-note p { margin: 0; font-size: var(--fs-sm); line-height: var(--lh-relaxed); }
+  .doc-note strong { font-weight: var(--w-semibold); }
+</style>
+</head>
+<body>
+
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<main class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Photography</h1>
+      <p>The direction for any photo that carries the ATTRUS brand — marketing pages, decks, OOH, social. Sober, focused, present. Never obvious stock or artificially happy scenes.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="camera"></i>Foundation</span>
+  </header>
+
+  <div class="doc-note">
+    <i data-lucide="info"></i>
+    <p><strong>Note:</strong> the frames on this page are abstracted SVG illustrations, not real product shots. The principles they encode (composition, tones, posture, breathing) apply to commissioned photography. Real photo library is curated by the brand team in the asset DAM.</p>
+  </div>
+
+  <nav class="doc-nav">
+    <a href="#stance">01 Stance</a>
+    <a href="#principles">02 Five principles</a>
+    <a href="#tones">03 On-brand tones</a>
+    <a href="#composition">04 Composition</a>
+    <a href="#compare">05 On-brand vs off-brand</a>
+    <a href="#avoid">06 What to avoid</a>
+  </nav>
+
+  <!-- 01 STANCE -->
+  <section class="doc-section" id="stance">
+    <h2><span class="num">01</span>Stance</h2>
+    <p class="lead">Photography in ATTRUS supports — never decorates. Every shot must read as <em>credible</em> first and <em>warm</em> second.</p>
+
+    <div class="photo-hero">
+      <div class="eyebrow">Photography direction</div>
+      <h2>Real people in professional contexts. Sobriety, focus, presence.</h2>
+      <p>Never obvious stock. Never forced smiles. Never artificially happy scenes. ATTRUS speaks to financial operators, treasurers and compliance teams — people who recognise a stock image at first glance and dismiss the brand that uses one.</p>
+    </div>
+  </section>
+
+  <!-- 02 PRINCIPLES -->
+  <section class="doc-section" id="principles">
+    <h2><span class="num">02</span>Five principles</h2>
+    <p class="lead">Five compositional rules every shot follows. Together they produce the institutional, restrained look that lets ATTRUS sit alongside regulators and banks without performing.</p>
+
+    <div class="principles-grid">
+      <div class="principle-card">
+        <div class="principle-frame">
+          <svg class="silhouette-bg" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bg1" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#5F7596"/>
+                <stop offset="100%" stop-color="#2F4F75"/>
+              </linearGradient>
+            </defs>
+            <rect width="320" height="200" fill="url(#bg1)"/>
+            <!-- thoughtful figure silhouette: shoulders & head, off-centre -->
+            <path d="M180 200 Q180 132 200 130 Q210 100 200 88 Q200 70 210 64 Q220 60 230 64 Q240 70 240 88 Q230 100 240 130 Q260 132 260 200 Z" fill="#001830" opacity="0.85"/>
+            <!-- distant figure for depth -->
+            <ellipse cx="110" cy="130" rx="14" ry="22" fill="#1F2D44" opacity="0.55"/>
+            <ellipse cx="100" cy="180" rx="22" ry="40" fill="#1F2D44" opacity="0.45"/>
+          </svg>
+        </div>
+        <div class="principle-meta">
+          <div class="ord">01</div>
+          <h3>Composed posture</h3>
+          <p>Thoughtful gaze, restrained gesture. Never forced smiles. The subject is engaged in something credible — not performing for the camera.</p>
+        </div>
+      </div>
+
+      <div class="principle-card">
+        <div class="principle-frame">
+          <svg class="silhouette-bg" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="200" fill="#E3E8F0"/>
+            <!-- window frame -->
+            <rect x="40" y="20" width="80" height="160" fill="#FAFBFD" stroke="#B8C1D1" stroke-width="1"/>
+            <line x1="80" y1="20" x2="80" y2="180" stroke="#B8C1D1" stroke-width="1"/>
+            <line x1="40" y1="100" x2="120" y2="100" stroke="#B8C1D1" stroke-width="1"/>
+            <!-- desk -->
+            <rect x="160" y="130" width="160" height="6" fill="#8E9FB8"/>
+            <rect x="160" y="136" width="160" height="44" fill="#5F7596"/>
+            <!-- monitor on desk -->
+            <rect x="180" y="100" width="56" height="34" fill="#27304A"/>
+            <rect x="200" y="134" width="16" height="6" fill="#27304A"/>
+            <!-- chair back -->
+            <rect x="250" y="80" width="40" height="80" fill="#2F4F75" rx="4"/>
+            <!-- urban facade outside -->
+            <rect x="42" y="22" width="76" height="156" fill="url(#cityFade)"/>
+            <defs>
+              <linearGradient id="cityFade" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#C2CDDB"/>
+                <stop offset="60%" stop-color="#E3E8F0"/>
+                <stop offset="100%" stop-color="#FAFBFD"/>
+              </linearGradient>
+            </defs>
+            <line x1="60" y1="40" x2="60" y2="170" stroke="#8E9FB8" stroke-width="0.5" opacity="0.5"/>
+            <line x1="100" y1="60" x2="100" y2="160" stroke="#8E9FB8" stroke-width="0.5" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="principle-meta">
+          <div class="ord">02</div>
+          <h3>Corporate environments</h3>
+          <p>Offices, meeting rooms, urban facades. Natural light when possible — large windows, daylight, soft shadows. Never lifestyle settings (cafés, sofas, kitchens).</p>
+        </div>
+      </div>
+
+      <div class="principle-card">
+        <div class="principle-frame">
+          <svg class="silhouette-bg" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bg3" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0%" stop-color="#002142"/>
+                <stop offset="100%" stop-color="#003399"/>
+              </linearGradient>
+            </defs>
+            <rect width="320" height="200" fill="url(#bg3)"/>
+            <!-- swatches -->
+            <rect x="20" y="60" width="56" height="80" fill="#001830" rx="2"/>
+            <rect x="84" y="60" width="56" height="80" fill="#5F7596" rx="2"/>
+            <rect x="148" y="60" width="56" height="80" fill="#B8C1D1" rx="2"/>
+            <rect x="212" y="60" width="56" height="80" fill="#3399FF" rx="2"/>
+            <!-- annotations -->
+            <text x="48" y="160" font-family="monospace" font-size="9" fill="#FFFFFF" opacity="0.8" text-anchor="middle">DEEP NAVY</text>
+            <text x="112" y="160" font-family="monospace" font-size="9" fill="#FFFFFF" opacity="0.8" text-anchor="middle">SLATE</text>
+            <text x="176" y="160" font-family="monospace" font-size="9" fill="#FFFFFF" opacity="0.8" text-anchor="middle">COOL GREY</text>
+            <text x="240" y="160" font-family="monospace" font-size="9" fill="#FFFFFF" opacity="0.8" text-anchor="middle">SKY</text>
+          </svg>
+        </div>
+        <div class="principle-meta">
+          <div class="ord">03</div>
+          <h3>On-brand tones</h3>
+          <p>Blues, greys, neutrals. Cool side of the colour wheel. Avoid saturated warm colours — orange, red, yellow — unless they're an unavoidable detail in the environment.</p>
+        </div>
+      </div>
+
+      <div class="principle-card">
+        <div class="principle-frame">
+          <svg class="silhouette-bg" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="200" fill="#E5EBF2"/>
+            <!-- figure pushed to bottom-right; large negative space top-left -->
+            <ellipse cx="260" cy="160" rx="16" ry="22" fill="#27304A"/>
+            <ellipse cx="260" cy="200" rx="34" ry="50" fill="#27304A"/>
+            <!-- subtle window glow -->
+            <rect x="0" y="0" width="180" height="80" fill="#FFFFFF" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="principle-meta">
+          <div class="ord">04</div>
+          <h3>Breathing composition</h3>
+          <p>Negative space is part of the image. The subject occupies ⅓ of the frame; the rest is air. Crop tight only when the gesture is the whole point.</p>
+        </div>
+      </div>
+
+      <div class="principle-card">
+        <div class="principle-frame">
+          <svg class="silhouette-bg" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="200" fill="#C2CDDB"/>
+            <!-- four figures, varied silhouettes -->
+            <ellipse cx="50" cy="100" rx="18" ry="22" fill="#27304A"/>
+            <rect x="32" y="118" width="36" height="60" fill="#27304A"/>
+
+            <ellipse cx="120" cy="100" rx="16" ry="20" fill="#3F4A61"/>
+            <rect x="104" y="116" width="32" height="64" fill="#3F4A61"/>
+
+            <ellipse cx="190" cy="100" rx="17" ry="21" fill="#1F2D44"/>
+            <rect x="173" y="118" width="34" height="62" fill="#1F2D44"/>
+
+            <ellipse cx="260" cy="100" rx="15" ry="19" fill="#5F7596"/>
+            <rect x="245" y="115" width="30" height="65" fill="#5F7596"/>
+          </svg>
+        </div>
+        <div class="principle-meta">
+          <div class="ord">05</div>
+          <h3>Authentic diversity</h3>
+          <p>Different ages, ethnicities, genders, body types — without theatrics. The group looks like a real team, not a stock-library composite optimised for inclusion screenshots.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 TONES -->
+  <section class="doc-section" id="tones">
+    <h2><span class="num">03</span>On-brand tones</h2>
+    <p class="lead">A six-step palette that any commissioned photo should land inside, after colour grading. Skin tones excepted — those stay accurate.</p>
+
+    <div class="tone-strip">
+      <div class="tone-cell dark" style="background: #000C1A;"><span class="lbl">#000C1A</span></div>
+      <div class="tone-cell dark" style="background: #001830;"><span class="lbl">#001830</span></div>
+      <div class="tone-cell dark" style="background: #2F4F75;"><span class="lbl">#2F4F75</span></div>
+      <div class="tone-cell" style="background: #8E9FB8;"><span class="lbl">#8E9FB8</span></div>
+      <div class="tone-cell" style="background: #C2CDDB;"><span class="lbl">#C2CDDB</span></div>
+      <div class="tone-cell" style="background: #E5EBF2;"><span class="lbl">#E5EBF2</span></div>
+    </div>
+
+    <div class="tone-rules">
+      <h3>Colour-grading rules</h3>
+      <ul>
+        <li><strong>Cast:</strong> very slight blue tint in shadows; neutral midtones; clean highlights. <em>Never</em> a warm orange/amber cast.</li>
+        <li><strong>Saturation:</strong> reduced 10–20% from camera default. Skin tones stay natural; environment desaturates more than people.</li>
+        <li><strong>Contrast:</strong> medium. Lift shadows slightly so detail survives on dark surfaces (decks, OOH). Don't crush blacks.</li>
+        <li><strong>Forbidden:</strong> orange-and-teal Hollywood grade, vintage filters, vignettes, lens flares, heavy bloom.</li>
+        <li><strong>Reference:</strong> the photography of <em>Wall Street Journal</em> long-form pieces — restrained, cool, observational.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 04 COMPOSITION -->
+  <section class="doc-section" id="composition">
+    <h2><span class="num">04</span>Composition</h2>
+    <p class="lead">Three compositional patterns that recur across the brand. All three respect the rule-of-thirds grid; the subject sits on a thirds intersection, never dead-centre.</p>
+
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="comp-frame">
+          <svg class="silhouette-bg" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="200" fill="#C2CDDB"/>
+            <ellipse cx="213" cy="80" rx="16" ry="20" fill="#27304A"/>
+            <rect x="197" y="98" width="32" height="102" fill="#27304A"/>
+          </svg>
+          <div class="grid-overlay"></div>
+        </div>
+        <div class="comp-meta">
+          <strong>Right-third placement</strong>
+          <p>Subject on the right vertical third, head at the top horizontal third. Negative space left for copy overlay.</p>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-frame">
+          <svg class="silhouette-bg" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="200" fill="#5F7596"/>
+            <ellipse cx="107" cy="133" rx="14" ry="18" fill="#001830"/>
+            <rect x="93" y="148" width="28" height="52" fill="#001830"/>
+            <!-- urban facade right side -->
+            <rect x="200" y="0" width="120" height="200" fill="#2F4F75"/>
+            <rect x="220" y="40" width="20" height="20" fill="#C2CDDB" opacity="0.4"/>
+            <rect x="250" y="40" width="20" height="20" fill="#C2CDDB" opacity="0.4"/>
+            <rect x="280" y="40" width="20" height="20" fill="#C2CDDB" opacity="0.4"/>
+            <rect x="220" y="70" width="20" height="20" fill="#C2CDDB" opacity="0.4"/>
+            <rect x="250" y="70" width="20" height="20" fill="#C2CDDB" opacity="0.4"/>
+            <rect x="280" y="70" width="20" height="20" fill="#C2CDDB" opacity="0.4"/>
+            <rect x="220" y="100" width="20" height="20" fill="#C2CDDB" opacity="0.4"/>
+            <rect x="250" y="100" width="20" height="20" fill="#C2CDDB" opacity="0.4"/>
+            <rect x="280" y="100" width="20" height="20" fill="#C2CDDB" opacity="0.4"/>
+          </svg>
+          <div class="grid-overlay"></div>
+        </div>
+        <div class="comp-meta">
+          <strong>Subject + environment</strong>
+          <p>Subject occupies one third, environment (urban facade, office, infrastructure) fills the rest. Place tells story alongside person.</p>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-frame">
+          <svg class="silhouette-bg" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <rect width="320" height="200" fill="#E5EBF2"/>
+            <!-- group walking -->
+            <ellipse cx="80" cy="100" rx="14" ry="18" fill="#27304A"/>
+            <rect x="66" y="115" width="28" height="85" fill="#27304A"/>
+            <ellipse cx="130" cy="100" rx="14" ry="18" fill="#3F4A61"/>
+            <rect x="116" y="115" width="28" height="85" fill="#3F4A61"/>
+            <ellipse cx="180" cy="100" rx="14" ry="18" fill="#1F2D44"/>
+            <rect x="166" y="115" width="28" height="85" fill="#1F2D44"/>
+          </svg>
+          <div class="grid-overlay"></div>
+        </div>
+        <div class="comp-meta">
+          <strong>Centre-weighted group</strong>
+          <p>Two or three figures, horizontally aligned, anchored at the lower-third line. Team shots, leadership rows, partnership announcements.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 COMPARE -->
+  <section class="doc-section" id="compare">
+    <h2><span class="num">05</span>On-brand vs off-brand</h2>
+    <p class="lead">Side-by-side calibration. Same scenario, two treatments — only the left lands.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card do">
+        <div class="compare-frame">
+          <svg class="silhouette-bg" viewBox="0 0 320 220" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="goodBg" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#C2CDDB"/>
+                <stop offset="100%" stop-color="#8E9FB8"/>
+              </linearGradient>
+            </defs>
+            <rect width="320" height="220" fill="url(#goodBg)"/>
+            <ellipse cx="200" cy="100" rx="18" ry="22" fill="#27304A"/>
+            <path d="M180 122 Q180 220 200 220 Q220 220 220 122 Z" fill="#27304A"/>
+          </svg>
+        </div>
+        <div class="compare-meta">
+          <span class="tag"><i data-lucide="check-circle-2"></i>On-brand</span>
+          <strong>Cool-toned · negative space · single subject</strong>
+          <p>Slate background, subject on the right third, restrained crop, no filters. Reads as institutional.</p>
+        </div>
+      </div>
+
+      <div class="compare-card dont">
+        <div class="compare-frame">
+          <svg class="silhouette-bg" viewBox="0 0 320 220" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="badBg" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0%" stop-color="#FF9966"/>
+                <stop offset="100%" stop-color="#FFDD66"/>
+              </linearGradient>
+            </defs>
+            <rect width="320" height="220" fill="url(#badBg)"/>
+            <ellipse cx="160" cy="100" rx="22" ry="26" fill="#553322"/>
+            <path d="M138 124 Q138 220 160 220 Q182 220 182 124 Z" fill="#553322"/>
+            <!-- smile overlay -->
+            <path d="M145 105 Q160 120 175 105" stroke="#FFFFFF" stroke-width="2.5" fill="none"/>
+            <!-- sticker -->
+            <circle cx="265" cy="40" r="20" fill="#FFE100"/>
+            <text x="265" y="45" font-family="sans-serif" font-size="16" fill="#553300" text-anchor="middle" font-weight="bold">!</text>
+            <!-- vignette -->
+            <radialGradient id="vignette" cx="0.5" cy="0.5" r="0.7">
+              <stop offset="60%" stop-color="rgba(0,0,0,0)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.5)"/>
+            </radialGradient>
+            <rect width="320" height="220" fill="url(#vignette)"/>
+          </svg>
+        </div>
+        <div class="compare-meta">
+          <span class="tag"><i data-lucide="x-circle"></i>Off-brand</span>
+          <strong>Warm filter · centred · stickers · forced smile</strong>
+          <p>Orange-and-yellow grade, subject dead-centre, theatrical smile, sticker overlay, vignette. Reads as marketing collateral, not infrastructure.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 AVOID -->
+  <section class="doc-section" id="avoid">
+    <h2><span class="num">06</span>What to avoid</h2>
+    <p class="lead">Six patterns the brand book explicitly rules out. None of them belong on any ATTRUS surface.</p>
+
+    <div class="avoid-grid">
+      <div class="avoid-card"><i data-lucide="x-circle"></i><div class="body"><strong>Heavy artistic filters</strong><p>Vintage tones, sepia, hard vignettes, lens-flares, faux-film grain. The brand reads as institutional — filters read as performance.</p></div></div>
+      <div class="avoid-card"><i data-lucide="x-circle"></i><div class="body"><strong>Artificially raised saturation</strong><p>Punched-up reds, neons, oversaturated skies. Stay 10–20% under camera-default saturation.</p></div></div>
+      <div class="avoid-card"><i data-lucide="x-circle"></i><div class="body"><strong>Stickers &amp; emojis on photos</strong><p>The brand is institutional finance. Childish overlays — even on social — break the tone instantly.</p></div></div>
+      <div class="avoid-card"><i data-lucide="x-circle"></i><div class="body"><strong>Stock-library composites</strong><p>Diversity panels arranged in front of a white wall, smiling at the camera in unison. Real teams don't pose like that.</p></div></div>
+      <div class="avoid-card"><i data-lucide="x-circle"></i><div class="body"><strong>Lifestyle / casual settings</strong><p>Cafés, kitchens, sofas, parks. ATTRUS lives in offices, meeting rooms, urban facades, infrastructure environments.</p></div></div>
+      <div class="avoid-card"><i data-lucide="x-circle"></i><div class="body"><strong>Forced smiles</strong><p>Wide, theatrical, camera-aware smiles. The brand subject is thinking, listening, deciding — never performing.</p></div></div>
+    </div>
+  </section>
+
+</main>
+
+<script>if (window.lucide) lucide.createIcons();</script>
+
+</body>
+</html>

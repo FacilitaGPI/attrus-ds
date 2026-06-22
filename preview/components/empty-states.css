@@ -1,0 +1,61 @@
+/* ============================================================
+   EMPTY STATES — production component CSS
+   Used by empty-states.html and any product surface that needs
+   a zero-data placeholder. All values resolve to design tokens.
+   ============================================================ */
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  padding: 56px 24px;
+  border-radius: var(--radius-md);
+  background: transparent;
+  border: 0;
+}
+.empty.empty-default { padding: 56px 24px; gap: 14px; }
+.empty.empty-compact { padding: 28px 20px; gap: 10px; }
+
+.empty-illo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.empty-illo svg { display: block; }
+
+.empty h4 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-lg);
+  font-weight: var(--w-bold);
+  letter-spacing: -.01em;
+  color: var(--color-foreground-default);
+  margin: 0;
+  max-width: 360px;
+}
+.empty.empty-compact h4 { font-size: var(--fs-md); }
+
+.empty p {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  color: var(--color-foreground-secondary);
+  line-height: var(--lh-relaxed);
+  margin: 0;
+  max-width: 360px;
+  text-wrap: pretty;
+}
+
+.empty-actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ---- tone: warning ---- */
+.empty.empty-warning {
+  background: var(--color-feedback-warning-background);
+  border: 1px solid var(--color-feedback-warning-border);
+}

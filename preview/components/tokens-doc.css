@@ -193,7 +193,7 @@ body {
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   color: var(--color-foreground-accent);
-  background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
+  background: var(--color-brand-subtle);
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-2xs);
   align-self: flex-start;
@@ -230,7 +230,7 @@ body {
 .principle .ic {
   width: 32px; height: 32px;
   border-radius: var(--radius-sm);
-  background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
+  background: var(--color-brand-subtle);
   color: var(--color-foreground-accent);
   display: inline-flex; align-items: center; justify-content: center;
   margin-bottom: var(--space-2);

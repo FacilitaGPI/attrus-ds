@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <!-- @dsCard group="Brand" name="Iconography" subtitle="Lucide outline · 5 tamanhos · 3 stroke weights" viewport="1280x900" -->
-<html><head><meta charset="utf-8"><link rel="stylesheet" href="../dist/css/index.css">
-<script src="./theme-toggle.js"></script>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<script src="../theme-toggle.js"></script>
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 <style>
   body { margin:0; padding:20px; background: var(--color-background-surface); font-family: var(--font-sans); }
@@ -18,12 +19,7 @@
 </style>
 </head>
 <body>
-<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
-  <span data-theme-icon aria-hidden="true">&#9790;</span>
-  <span data-theme-label>Dark</span>
-</button>
-
-<a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
 <div class="grid">
   <div class="g"><i data-lucide="home" class="ic"></i><span class="lbl">home</span></div>
   <div class="g"><i data-lucide="arrow-left-right" class="ic"></i><span class="lbl">a-l-r</span></div>
@@ -80,8 +76,5 @@
   <strong>Library:</strong> <span class="tag">Lucide 0.469</span> via CDN · stroke-width <span class="tag">1.75</span> · default size <span class="tag">16–20 px</span>.<br>
   Use <code>&lt;i data-lucide="{name}"&gt;</code> and call <code>lucide.createIcons()</code>. Do <strong>not</strong> hand-draw SVGs — the only exception is the country flags in <code>assets/flags/</code>.
 </div>
-<script>
-  if (window.lucide) lucide.createIcons();
-  window.addEventListener('attrus-theme', function () { if (window.lucide) lucide.createIcons(); });
-</script>
+<script>lucide.createIcons();</script>
 </body></html>

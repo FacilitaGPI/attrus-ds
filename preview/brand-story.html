@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Brand" name="Brand story" subtitle="Positioning · manifesto · mission · personality · archetype · territories" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Brand story · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<script src="../theme-toggle.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  /* doc chrome — same pattern across spec pages */
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  /* Positioning hero — dark surface, large pull-quote style */
+  .position-hero {
+    background: var(--grad-hero);
+    color: var(--color-foreground-inverse-default);
+    padding: var(--space-10) var(--space-8);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-8);
+    position: relative; overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .position-hero::before { content: ""; position: absolute; inset: 0; background: var(--grad-radial-glow); pointer-events: none; }
+  .position-hero > * { position: relative; z-index: 1; }
+  .position-hero .eyebrow {
+    font-family: var(--font-mono); font-size: var(--fs-xs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-inverse-secondary);
+    margin-bottom: var(--space-4);
+  }
+  .position-hero h2 {
+    font-family: var(--font-display);
+    font-size: var(--fs-5xl);
+    font-weight: var(--w-bold);
+    letter-spacing: var(--ls-display);
+    line-height: var(--lh-tight);
+    margin: 0 0 var(--space-5);
+    max-width: 24ch;
+    color: var(--color-foreground-inverse-default);
+  }
+  .position-hero p {
+    font-size: var(--fs-lg);
+    line-height: var(--lh-relaxed);
+    color: var(--color-foreground-inverse-secondary);
+    max-width: 64ch;
+    margin: 0;
+  }
+  .position-hero p strong { color: var(--color-foreground-inverse-default); font-weight: var(--w-semibold); }
+  .position-hero .negation {
+    display: flex; gap: var(--space-5); flex-wrap: wrap;
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-overlay-white-18);
+  }
+  .position-hero .negation .item {
+    flex: 1 1 200px;
+    font-size: var(--fs-sm);
+    color: var(--color-foreground-inverse-secondary);
+    line-height: var(--lh-relaxed);
+  }
+  .position-hero .negation .item .lbl { display: block; font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-inverse-muted); margin-bottom: var(--space-2); }
+
+  /* Anchor data strip */
+  .anchor-data { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; background: var(--color-border-subtle); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
+  .anchor-cell { padding: var(--space-6) var(--space-5); background: var(--color-background-surface); }
+  .anchor-cell .num {
+    font-family: var(--font-display); font-weight: var(--w-bold);
+    font-size: var(--fs-4xl); letter-spacing: var(--ls-display);
+    line-height: 1; font-variant-numeric: tabular-nums;
+    color: var(--color-foreground-default);
+    margin-bottom: var(--space-2);
+  }
+  .anchor-cell .lbl { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-normal); }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: var(--space-7); margin: var(--space-5) 0; }
+  .timeline::before { content: ""; position: absolute; left: 10px; top: 6px; bottom: 6px; width: 1px; background: var(--color-border-default); }
+  .timeline-item { position: relative; margin-bottom: var(--space-6); padding-left: var(--space-5); }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-item::before { content: ""; position: absolute; left: calc(-1 * var(--space-7) + 6px); top: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--color-background-canvas); border: 2px solid var(--color-brand-primary-500); }
+  .timeline-item.is-now::before { background: var(--color-brand-primary-500); box-shadow: 0 0 0 4px var(--color-brand-primary-50); }
+  .timeline-year { font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); color: var(--color-foreground-accent); }
+  .timeline-title { font-size: var(--fs-md); font-weight: var(--w-bold); color: var(--color-foreground-default); margin: 2px 0 4px; letter-spacing: var(--ls-title); }
+  .timeline-desc { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+
+  /* Foundations 4-up */
+  .foundations { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-5); }
+  .foundation-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-6); box-shadow: var(--shadow-xs); }
+  .foundation-card .num { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); letter-spacing: var(--ls-caps); color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+  .foundation-card h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); color: var(--color-foreground-default); margin: 0 0 var(--space-3); }
+  .foundation-card p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+
+  /* Values list */
+  .values-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); }
+  .value-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-5) var(--space-6); display: flex; gap: var(--space-4); align-items: flex-start; }
+  .value-card .ord { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-bold); color: var(--color-foreground-accent); flex-shrink: 0; letter-spacing: var(--ls-caps); padding-top: 2px; }
+  .value-card .body strong { display: block; font-size: var(--fs-md); font-weight: var(--w-bold); color: var(--color-foreground-default); margin-bottom: var(--space-2); letter-spacing: var(--ls-title); }
+  .value-card .body p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+
+  /* Personality grid */
+  .personality-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-5); }
+  .personality-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-xs); }
+  .personality-head { padding: var(--space-5) var(--space-6); background: var(--color-background-subtle); border-bottom: 1px solid var(--color-border-subtle); }
+  .personality-head .num { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); color: var(--color-foreground-muted); margin-bottom: var(--space-2); }
+  .personality-head h3 { font-size: var(--fs-2xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); color: var(--color-foreground-default); margin: 0; }
+  .personality-body { padding: var(--space-5) var(--space-6); }
+  .personality-body p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-4); }
+  .personality-body p:last-child { margin-bottom: 0; }
+  .personality-traits {
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    padding-top: var(--space-4);
+    border-top: 1px dashed var(--color-border-subtle);
+  }
+  .personality-trait {
+    display: inline-flex; align-items: center;
+    padding: 2px var(--space-3);
+    background: var(--color-brand-primary-50);
+    color: var(--color-brand-primary-700);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+  }
+
+  /* Archetype */
+  .archetype { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: var(--space-5); }
+  .archetype-card {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-7) var(--space-7);
+    box-shadow: var(--shadow-xs);
+    position: relative;
+    overflow: hidden;
+  }
+  .archetype-card .num {
+    font-family: var(--font-display); font-weight: var(--w-bold);
+    font-size: 80px; line-height: 1; color: var(--color-brand-primary-50);
+    letter-spacing: -0.06em;
+    position: absolute; top: var(--space-5); right: var(--space-6);
+    pointer-events: none;
+  }
+  .archetype-card .label {
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-muted);
+    margin-bottom: var(--space-3);
+  }
+  .archetype-card h3 {
+    font-family: var(--font-display);
+    font-size: var(--fs-4xl);
+    font-weight: var(--w-bold);
+    letter-spacing: var(--ls-display);
+    line-height: var(--lh-tight);
+    color: var(--color-foreground-default);
+    margin: 0 0 var(--space-4);
+  }
+  .archetype-card p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-4); }
+  .archetype-card .connects {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border-subtle);
+    font-size: var(--fs-xs);
+    color: var(--color-foreground-muted);
+  }
+  .archetype-card .connects strong {
+    color: var(--color-brand-primary-700);
+    font-weight: var(--w-semibold);
+    font-family: var(--font-mono);
+    letter-spacing: var(--ls-caps);
+    text-transform: uppercase;
+    font-size: var(--fs-xxs);
+  }
+
+  .archetype-sum {
+    background: var(--color-background-subtle);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--space-5) var(--space-6);
+    margin-top: var(--space-5);
+    text-align: center;
+  }
+  .archetype-sum p { font-size: var(--fs-md); color: var(--color-foreground-default); line-height: var(--lh-relaxed); margin: 0; }
+  .archetype-sum p strong { font-weight: var(--w-semibold); color: var(--color-foreground-accent); }
+
+  /* Territories */
+  .territory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-4); }
+  .territory-card {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    display: flex; flex-direction: column; gap: var(--space-3);
+  }
+  .territory-card .ic {
+    width: 36px; height: 36px;
+    border-radius: var(--radius-sm);
+    background: var(--color-brand-primary-50);
+    color: var(--color-brand-primary-700);
+    display: grid; place-items: center;
+  }
+  .territory-card .ic i, .territory-card .ic svg { width: 18px; height: 18px; stroke-width: var(--icon-stroke); }
+  .territory-card h3 { font-size: var(--fs-md); font-weight: var(--w-bold); color: var(--color-foreground-default); margin: 0; letter-spacing: var(--ls-title); }
+  .territory-card p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+  .territory-card .ord {
+    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-muted);
+  }
+
+  /* Manifesto block */
+  .manifesto {
+    padding: var(--space-8) var(--space-7);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs);
+  }
+  .manifesto p {
+    font-size: var(--fs-lg);
+    color: var(--color-foreground-default);
+    line-height: var(--lh-relaxed);
+    margin: 0 0 var(--space-4);
+    max-width: 64ch;
+  }
+  .manifesto p:last-child { margin-bottom: 0; }
+  .manifesto .pull {
+    font-family: var(--font-display);
+    font-size: var(--fs-2xl);
+    font-weight: var(--w-bold);
+    letter-spacing: var(--ls-display);
+    line-height: var(--lh-snug);
+    color: var(--color-foreground-accent);
+    padding: var(--space-5) 0;
+    margin: var(--space-3) 0;
+    border-top: 1px solid var(--color-border-default);
+    border-bottom: 1px solid var(--color-border-default);
+  }
+</style>
+</head>
+<body>
+
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<main class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Brand story</h1>
+      <p>The foundations that underpin every ATTRUS surface — who we are, how we got here, what we believe, and how we behave. Source-of-truth for anyone writing, designing or speaking on behalf of ATTRUS.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="book-open"></i>Foundation</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#positioning">01 Positioning</a>
+    <a href="#anchor">02 Anchor data</a>
+    <a href="#history">03 History</a>
+    <a href="#manifesto">04 Manifesto</a>
+    <a href="#foundations">05 Mission · vision · goal · philosophy</a>
+    <a href="#values">06 Values</a>
+    <a href="#personality">07 Personality</a>
+    <a href="#archetype">08 Archetype</a>
+    <a href="#territories">09 Thematic territories</a>
+  </nav>
+
+  <!-- 01 POSITIONING -->
+  <section class="doc-section" id="positioning">
+    <h2><span class="num">01</span>Positioning</h2>
+    <p class="lead">Who ATTRUS is — and just as important, who ATTRUS is <em>not</em>. The negation is what makes the positioning sharp.</p>
+
+    <div class="position-hero">
+      <div class="eyebrow">Who is ATTRUS</div>
+      <h2>ATTRUS is the financial infrastructure that unifies the flow of international transactions between businesses.</h2>
+      <p>We are the layer that connects <strong>markets, currencies and local rails</strong> — with the security of a regulated institution and the speed of a modern platform.</p>
+
+      <div class="negation">
+        <div class="item">
+          <span class="lbl">We are not</span>
+          A consumer fintech. We don't serve individuals shopping for a card.
+        </div>
+        <div class="item">
+          <span class="lbl">We are not</span>
+          A bank. We don't custody, we don't lend, we don't compete with our clients' banking relationships.
+        </div>
+        <div class="item">
+          <span class="lbl">We are</span>
+          The layer. The infrastructure. The platform that lets businesses move money across borders without rebuilding it themselves.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 ANCHOR -->
+  <section class="doc-section" id="anchor">
+    <h2><span class="num">02</span>Anchor data</h2>
+    <p class="lead">Numbers that anchor the brand in something verifiable. Always available for press releases, decks, and institutional copy. Refresh quarterly with the Brand team.</p>
+
+    <div class="anchor-data">
+      <div class="anchor-cell">
+        <div class="num">+35</div>
+        <div class="lbl">countries connected via local rails</div>
+      </div>
+      <div class="anchor-cell">
+        <div class="num">2023</div>
+        <div class="lbl">first regulated Payment Institution for FX in Brazil</div>
+      </div>
+      <div class="anchor-cell">
+        <div class="num">5+1</div>
+        <div class="lbl">Brazil · Mexico · Colombia · Chile · USA · Argentina coming</div>
+      </div>
+      <div class="anchor-cell">
+        <div class="num">+220%</div>
+        <div class="lbl">TPV growth in 2024 · H1 2025 already surpassed full 2024</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 HISTORY -->
+  <section class="doc-section" id="history">
+    <h2><span class="num">03</span>History</h2>
+    <p class="lead">Eight years of building infrastructure for cross-border payments in Latin America. Each milestone is a deliberate step, not an accident.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">2017</div>
+        <div class="timeline-title">The beginning</div>
+        <div class="timeline-desc">Three partners found the company to revolutionise payments in Brazil — closing the gap between developed economies and emerging markets.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2018–19</div>
+        <div class="timeline-title">Integrations</div>
+        <div class="timeline-desc">Clients in more than 10 countries. USD 2 billion in total processed volume.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2020</div>
+        <div class="timeline-title">Feature expansion</div>
+        <div class="timeline-desc">Expanded beyond payments — integrated fraud prevention as a native part of the platform.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2021–22</div>
+        <div class="timeline-title">Local operations</div>
+        <div class="timeline-desc">Reached Colombia and Chile with on-the-ground teams. 350% growth in 2022.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2023</div>
+        <div class="timeline-title">Regulatory milestone</div>
+        <div class="timeline-desc">First regulated Payment Institution for FX in Brazil — a category-defining licence from the central bank.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2024</div>
+        <div class="timeline-title">Exponential growth</div>
+        <div class="timeline-desc">+220% in TPV, +37% in active client base, +260% in revenue.</div>
+      </div>
+      <div class="timeline-item is-now">
+        <div class="timeline-year">2025–now</div>
+        <div class="timeline-title">Sustained growth</div>
+        <div class="timeline-desc">H1 2025 surpasses the full year of 2024. Argentina operations launching. Platform expanding into structured account opening and corporate treasury.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 MANIFESTO -->
+  <section class="doc-section" id="manifesto">
+    <h2><span class="num">04</span>Manifesto</h2>
+    <p class="lead">The diagnosis, the response, the commitment. Read aloud, the manifesto is what ATTRUS would say if it had to introduce itself in 60 seconds.</p>
+
+    <div class="manifesto">
+      <p>The economy is global, but the path of money is still fragmented. Each country, currency and regulation creates a different way of doing the same thing: paying and receiving.</p>
+      <p>We exist to simplify financial operations between countries, reducing the complexity that makes it hard for businesses to operate beyond their borders — offering clarity, structure and consistent support.</p>
+
+      <div class="pull">Where the world sees borders, we draw routes.</div>
+
+      <p>We face every challenge as a natural part of the evolution of our business and our clients. We believe proximity is a genuine differentiator and we uphold transparency as a principle. Our focus goes beyond technology: we work to remove barriers, expand borders and enable opportunities — so businesses can operate with safety, predictability and efficiency.</p>
+      <p>We are ATTRUS, the financial infrastructure that unifies the flow of international transactions between businesses. We deliver simplified transactions, controlled risk and structured international operations to sustain consistent growth.</p>
+    </div>
+  </section>
+
+  <!-- 05 FOUNDATIONS -->
+  <section class="doc-section" id="foundations">
+    <h2><span class="num">05</span>Mission · vision · goal · philosophy</h2>
+    <p class="lead">Four short statements that organise long-term direction. Together they say <em>what we exist to do</em>, <em>where we aim</em>, <em>how we measure ourselves</em>, and <em>how we operate</em>.</p>
+
+    <div class="foundations">
+      <div class="foundation-card">
+        <div class="num">01 · Mission</div>
+        <h3>What we exist to do</h3>
+        <p>To revolutionise the way businesses handle the global payments market — making cross-border financial operations as routine as domestic ones.</p>
+      </div>
+      <div class="foundation-card">
+        <div class="num">02 · Vision</div>
+        <h3>Where we aim</h3>
+        <p>Our unwavering focus on client satisfaction and success drives us to deliver innovative, technologically rigorous payment solutions.</p>
+      </div>
+      <div class="foundation-card">
+        <div class="num">03 · Goal</div>
+        <h3>How we measure ourselves</h3>
+        <p>Sustainable growth. Growing is essential, but growing sustainably — without breaking quality, compliance or team — is what defines us.</p>
+      </div>
+      <div class="foundation-card">
+        <div class="num">04 · Philosophy</div>
+        <h3>How we operate</h3>
+        <p>Global Perspective, Local Action. Being global is not just a goal, it's our way of operating — adapting strategy to each local market.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 VALUES -->
+  <section class="doc-section" id="values">
+    <h2><span class="num">06</span>Cultural values</h2>
+    <p class="lead">Four cultural pillars. Used in hiring rubrics, performance reviews, and the way we describe how we work — externally and internally.</p>
+
+    <div class="values-grid">
+      <div class="value-card">
+        <span class="ord">01</span>
+        <div class="body">
+          <strong>Commitment to results</strong>
+          <p>Personal and team responsibility for delivery. Each person owns their commitment to the company's outcomes; results are everyone's job, not just leadership's.</p>
+        </div>
+      </div>
+      <div class="value-card">
+        <span class="ord">02</span>
+        <div class="body">
+          <strong>Collaboration</strong>
+          <p>Complementarity. Each person plays a unique, complementary role — and the company is incomplete without any of them. Alignment and integration of talent over individual heroism.</p>
+        </div>
+      </div>
+      <div class="value-card">
+        <span class="ord">03</span>
+        <div class="body">
+          <strong>Continuous development</strong>
+          <p>Constant learning and improvement. The market changes; the regulation changes; the team must change with them. Growth and development are baked into how we operate.</p>
+        </div>
+      </div>
+      <div class="value-card">
+        <span class="ord">04</span>
+        <div class="body">
+          <strong>Excellence</strong>
+          <p>High performance. Quality. We hold ourselves to the standards of the institutions we operate alongside — regulators, central banks, corporate treasuries. The bar is set externally, not internally.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 PERSONALITY -->
+  <section class="doc-section" id="personality">
+    <h2><span class="num">07</span>Personality</h2>
+    <p class="lead">Four traits that organise how ATTRUS thinks, speaks and presents itself at every touchpoint. Each one is paired with concrete language guidance in <a href="verbal-identity.html" style="color: var(--color-foreground-accent);">Verbal identity</a>.</p>
+
+    <div class="personality-grid">
+      <div class="personality-card">
+        <div class="personality-head">
+          <div class="num">01</div>
+          <h3>Approachable</h3>
+        </div>
+        <div class="personality-body">
+          <p>To always be within reach and genuinely connected. The brand speaks in a human, direct and accessible way. Avoids jargon and pomposity. <strong>It stands beside the client, not above them.</strong></p>
+          <div class="personality-traits">
+            <span class="personality-trait">Human</span>
+            <span class="personality-trait">Direct</span>
+            <span class="personality-trait">Accessible</span>
+            <span class="personality-trait">Side-by-side</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="personality-card">
+        <div class="personality-head">
+          <div class="num">02</div>
+          <h3>Reliable</h3>
+        </div>
+        <div class="personality-body">
+          <p>We deliver what we promise, we are solid and convey security. Projects firmness without sounding heavy or bureaucratic. <strong>Uses terms that show solidity, with a touch of lightness.</strong></p>
+          <div class="personality-traits">
+            <span class="personality-trait">Solid</span>
+            <span class="personality-trait">Secure</span>
+            <span class="personality-trait">Firm</span>
+            <span class="personality-trait">Light</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="personality-card">
+        <div class="personality-head">
+          <div class="num">03</div>
+          <h3>Adaptable</h3>
+        </div>
+        <div class="personality-body">
+          <p>As a team, we adjust solutions to the reality of each operation, meeting the specific needs of each client in an environment of continuous transformation. <strong>Shows understanding of different contexts; uses analogies; leaves room for format variation.</strong></p>
+          <div class="personality-traits">
+            <span class="personality-trait">Contextual</span>
+            <span class="personality-trait">Flexible</span>
+            <span class="personality-trait">Analogical</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="personality-card">
+        <div class="personality-head">
+          <div class="num">04</div>
+          <h3>Simplifying</h3>
+        </div>
+        <div class="personality-body">
+          <p>We translate complexity into clarity, simplifying our clients' journey and delivering structured solutions. <strong>Objective sentences, one main idea per sentence. Structures that guide reading and decision.</strong></p>
+          <div class="personality-traits">
+            <span class="personality-trait">Objective</span>
+            <span class="personality-trait">One-idea</span>
+            <span class="personality-trait">Structured</span>
+            <span class="personality-trait">Clear</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 ARCHETYPE -->
+  <section class="doc-section" id="archetype">
+    <h2><span class="num">08</span>Archetype</h2>
+    <p class="lead">Every strong brand anchors itself in an archetype — a symbolic model that organises how it thinks, speaks and acts. ATTRUS combines two classic archetypes.</p>
+
+    <div class="archetype">
+      <div class="archetype-card">
+        <span class="num">01</span>
+        <div class="label">Archetype I</div>
+        <h3>The Sage</h3>
+        <p>Seeks truth, values technical knowledge, communicates with precision. The stance that underpins our market authority — we don't speak about what we don't know, and when we do speak, it is with substance.</p>
+        <div class="connects">
+          <strong>Connects to</strong> · Reliable
+        </div>
+      </div>
+
+      <div class="archetype-card">
+        <span class="num">02</span>
+        <div class="label">Archetype II</div>
+        <h3>The Creator</h3>
+        <p>Builds what doesn't yet exist, values structure and functionality, transforms vision into reality. The stance that underpins our delivery — rails, platform, infrastructure: concrete things, built to last.</p>
+        <div class="connects">
+          <strong>Connects to</strong> · Simplifying · Adaptable
+        </div>
+      </div>
+    </div>
+
+    <div class="archetype-sum">
+      <p>Synthesis: <strong>we deeply understand the problem and build the solution</strong> — with proximity and clarity.</p>
+    </div>
+  </section>
+
+  <!-- 09 TERRITORIES -->
+  <section class="doc-section" id="territories">
+    <h2><span class="num">09</span>Thematic territories</h2>
+    <p class="lead">All ATTRUS communication — website, social, sales, events, content — anchors to four thematic territories. They guide what is worth saying.</p>
+
+    <div class="territory-grid">
+      <div class="territory-card">
+        <div class="ic"><i data-lucide="layers-3"></i></div>
+        <div class="ord">01</div>
+        <h3>Infrastructure</h3>
+        <p>How we build, why it matters, what differentiates rails from gateways. Technical authority. Regulatory clarity.</p>
+      </div>
+      <div class="territory-card">
+        <div class="ic"><i data-lucide="globe-2"></i></div>
+        <div class="ord">02</div>
+        <h3>Markets</h3>
+        <p>Latin America, local particularities, cross-border opportunities. Real ground-truth, not generic emerging-market commentary.</p>
+      </div>
+      <div class="territory-card">
+        <div class="ic"><i data-lucide="trending-up"></i></div>
+        <div class="ord">03</div>
+        <h3>Results</h3>
+        <p>Numbers, cases, evidence. We grow because we solve. Quantitative proof — not slogans.</p>
+      </div>
+      <div class="territory-card">
+        <div class="ic"><i data-lucide="users-round"></i></div>
+        <div class="ord">04</div>
+        <h3>Team &amp; culture</h3>
+        <p>Who builds, how we think, what drives us. Internal voice, externally visible. Recruitment, leadership, working principles.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>if (window.lucide) lucide.createIcons();</script>
+
+</body>
+</html>

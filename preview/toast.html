@@ -4,10 +4,10 @@
 <head>
 <meta charset="utf-8">
 <title>Toast · ATTRUS Design System</title>
-<link rel="stylesheet" href="../dist/css/index.css">
-<script src="./theme-toggle.js"></script>
-<link rel="stylesheet" href="components/spec-page.css">
-<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<script src="../theme-toggle.js"></script>
+<link rel="stylesheet" href="components/toast.css">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
   /* ============================================================
@@ -339,12 +339,7 @@
 </style>
 </head>
 <body>
-<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
-  <span data-theme-icon aria-hidden="true">&#9790;</span>
-  <span data-theme-label>Dark</span>
-</button>
-
-<a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
 
 <div class="doc">
 
@@ -852,7 +847,7 @@
   <!-- ========== TOKENS ========== -->
   <section class="doc-section" id="tokens">
     <h2><span class="num">10</span>Tokens consumed</h2>
-    <p class="lead">Every value in <code>toast.css</code> traces back to <code>dist/css/tokens.css</code>. No hexes, no magic numbers — change the token, every toast updates.</p>
+    <p class="lead">Every value in <code>toast.css</code> traces back to <code>colors_and_type.css</code>. No hexes, no magic numbers — change the token, every toast updates.</p>
 
     <table class="token-table">
       <thead><tr><th>Concern</th><th>Tokens</th></tr></thead>

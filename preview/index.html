@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<!-- @dsCard group="UI Kit — Dashboard" name="Design system home" subtitle="Índice navegando tokens, components e brand" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cabiros · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<script src="../theme-toggle.js"></script>
+<script src="../version.js"></script>
+<link rel="stylesheet" href="components/tokens-doc.css?v=2">
+<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { background: var(--color-background-canvas); }
+
+  /* View controls — fixed cluster, top-right (product + theme) */
+  .view-controls {
+    position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100;
+    display: inline-flex; align-items: center; gap: var(--space-2);
+  }
+  .theme-toggle {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    height: 40px; padding: 0 var(--space-4);
+    background: var(--color-background-surface); color: var(--color-foreground-secondary);
+    border: 1px solid var(--color-border-default); border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer;
+    box-shadow: var(--shadow-sm); transition: var(--transition-fast);
+  }
+  .theme-toggle:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background: var(--color-background-hover); }
+  .theme-toggle [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+
+  /* Product selector — pill <select> matching the theme toggle */
+  .product-select {
+    height: 40px; padding: 0 var(--space-8) 0 var(--space-4);
+    background: var(--color-background-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right var(--space-3) center;
+    color: var(--color-foreground-secondary);
+    border: 1px solid var(--color-border-default); border-radius: var(--radius-pill);
+    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer;
+    box-shadow: var(--shadow-sm); transition: var(--transition-fast);
+    -webkit-appearance: none; appearance: none;
+  }
+  .product-select:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background-color: var(--color-background-hover); }
+  .product-select:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+
+  /* Hero */
+  .ds-hero {
+    background: var(--color-background-inverse);
+    color: var(--color-foreground-inverse-default);
+    border-radius: var(--radius-xl);
+    padding: var(--space-10) var(--space-8);
+    margin: 0 0 var(--space-10);
+    position: relative;
+    overflow: hidden;
+  }
+  .ds-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--grad-hero);
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ds-hero > * { position: relative; z-index: 1; }
+  .ds-hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    font-weight: var(--w-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-caps);
+    color: var(--color-foreground-inverse-secondary);
+    margin: 0 0 var(--space-3);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .ds-hero-eyebrow .pill {
+    background: var(--color-overlay-white-14);
+    border: 1px solid var(--color-overlay-white-18);
+    border-radius: var(--radius-pill);
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--fs-xxs);
+    letter-spacing: var(--ls-caps);
+  }
+  a.pill.pill-link {
+    display: inline-flex; align-items: center; gap: var(--space-1);
+    text-decoration: none; color: inherit; cursor: pointer;
+    transition: var(--transition-fast);
+  }
+  a.pill.pill-link:hover { background: var(--color-overlay-white-22); border-color: var(--color-overlay-white-22); }
+  a.pill.pill-link i, a.pill.pill-link svg { width: 12px; height: 12px; stroke-width: var(--icon-stroke); }
+  .ds-hero h1 {
+    font-family: var(--font-display);
+    font-weight: var(--w-bold);
+    font-size: clamp(48px, 6vw, 80px);
+    letter-spacing: var(--ls-tight);
+    line-height: 1.02;
+    margin: 0 0 var(--space-5);
+    max-width: 18ch;
+  }
+  .ds-hero h1 em {
+    font-style: normal;
+    color: var(--color-brand-secondary-200);
+  }
+  .ds-hero p.lead {
+    font-size: var(--fs-lg);
+    color: var(--color-foreground-inverse-secondary);
+    max-width: 64ch;
+    line-height: var(--lh-normal);
+    margin: 0 0 var(--space-7);
+  }
+  .ds-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .ds-hero-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    height: 44px;
+    padding: 0 var(--space-5);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-weight: var(--w-semibold);
+    font-size: var(--fs-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    text-decoration: none;
+  }
+  .ds-hero-btn-primary {
+    background: var(--color-pure-white);
+    color: var(--color-brand-text); /* product-aware; white button on dark hero in BOTH themes (brand-text = dark in both) */
+  }
+  .ds-hero-btn-primary:hover { background: var(--color-brand-subtle-solid); }
+  .ds-hero-btn-ghost {
+    background: var(--color-overlay-white-08);
+    color: var(--color-foreground-inverse-default);
+    border-color: var(--color-overlay-white-22);
+  }
+  .ds-hero-btn-ghost:hover { background: var(--color-overlay-white-16); }
+  .ds-hero-btn i, .ds-hero-btn svg { width: var(--icon-md); height: var(--icon-md); stroke-width: var(--icon-stroke); }
+
+  /* Section header */
+  .ds-section { margin: 0 0 var(--space-12); }
+  .ds-section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin: 0 0 var(--space-5);
+    padding: 0 0 var(--space-3);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .ds-section-title {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+  }
+  .ds-section-title .num {
+    font-family: var(--font-mono);
+    font-size: var(--fs-md);
+    font-weight: var(--w-regular);
+    color: var(--color-foreground-muted);
+    letter-spacing: var(--ls-caps);
+  }
+  .ds-section-title h2 {
+    font-family: var(--font-display);
+    font-weight: var(--w-bold);
+    font-size: var(--fs-3xl);
+    letter-spacing: var(--ls-title);
+    margin: 0;
+  }
+  .ds-section-meta {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--color-foreground-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-caps);
+    white-space: nowrap;
+  }
+  .ds-section-blurb {
+    font-size: var(--fs-md);
+    color: var(--color-foreground-secondary);
+    max-width: 78ch;
+    line-height: var(--lh-normal);
+    margin: 0 0 var(--space-6);
+  }
+
+  /* Cards grid */
+  .ds-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .ds-card {
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    position: relative;
+    transition: var(--transition-fast);
+    min-height: 168px;
+  }
+  .ds-card:hover {
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .ds-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  .ds-card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    display: grid;
+    place-items: center;
+    background: var(--color-background-sunken);
+    color: var(--color-foreground-default);
+  }
+  .ds-card-icon i, .ds-card-icon svg { width: 18px; height: 18px; stroke-width: var(--icon-stroke); }
+  .ds-card-tag {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xxs);
+    font-weight: var(--w-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-caps);
+    color: var(--color-foreground-muted);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-pill);
+    background: var(--color-background-sunken);
+  }
+  .ds-card-tag.is-new {
+    color: var(--color-foreground-brand);
+    background: var(--color-brand-subtle);
+  }
+  .ds-card h3 {
+    font-family: var(--font-display);
+    font-weight: var(--w-bold);
+    font-size: var(--fs-lg);
+    letter-spacing: var(--ls-tight);
+    margin: 0;
+    color: var(--color-foreground-default);
+  }
+  .ds-card p {
+    font-size: var(--fs-sm);
+    color: var(--color-foreground-secondary);
+    line-height: var(--lh-normal);
+    margin: 0;
+    flex: 1;
+  }
+  .ds-card-foot {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xxs);
+    color: var(--color-foreground-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-caps);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-1);
+  }
+  .ds-card-foot i, .ds-card-foot svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  /* Stat strip */
+  .ds-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--color-border-subtle);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin: 0 0 var(--space-10);
+  }
+  .ds-stat {
+    background: var(--color-background-surface);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .ds-stat .num {
+    font-family: var(--font-display);
+    font-weight: var(--w-bold);
+    font-size: var(--fs-3xl);
+    letter-spacing: var(--ls-title);
+    color: var(--color-foreground-default);
+    line-height: 1;
+  }
+  .ds-stat .lbl {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xxs);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-caps);
+    color: var(--color-foreground-muted);
+    margin-top: var(--space-2);
+  }
+
+  @media (max-width: 720px) {
+    .ds-stats { grid-template-columns: repeat(2, 1fr); }
+    .ds-section-head { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* Components-section legend strip */
+  .ds-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    padding: var(--space-3) var(--space-4);
+    margin: 0 0 var(--space-5);
+    background: var(--color-background-sunken);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    font-size: var(--fs-xs);
+    color: var(--color-foreground-secondary);
+    line-height: var(--lh-normal);
+  }
+  .ds-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .ds-legend-item strong {
+    color: var(--color-foreground-default);
+    font-weight: var(--w-semibold);
+  }
+  .ds-legend .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-pill);
+    flex: 0 0 auto;
+  }
+  .ds-legend .dot-stable    { background: var(--color-feedback-success-500); }
+  .ds-legend .dot-new       { background: var(--color-brand-solid); }
+  .ds-legend .dot-asset     { background: var(--color-foreground-muted); }
+
+  /* Templates row — links to demo screens that ride alongside this homepage */
+  .ds-templates {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-3);
+  }
+  .ds-template {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--color-background-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition-fast);
+  }
+  .ds-template:hover { border-color: var(--color-border-strong); box-shadow: var(--shadow-sm); }
+  .ds-template-ic {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: var(--color-background-sunken);
+    display: grid;
+    place-items: center;
+    color: var(--color-foreground-default);
+    flex: 0 0 auto;
+  }
+  .ds-template-ic i, .ds-template-ic svg { width: var(--icon-md); height: var(--icon-md); stroke-width: var(--icon-stroke); }
+  .ds-template-meta { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+  .ds-template-name {
+    font-weight: var(--w-semibold);
+    font-size: var(--fs-md);
+    color: var(--color-foreground-default);
+  }
+  .ds-template-sub {
+    font-family: var(--font-mono);
+    font-size: var(--fs-xxs);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-caps);
+    color: var(--color-foreground-muted);
+  }
+
+  /* Footer */
+  .ds-foot {
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border-subtle);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--color-foreground-muted);
+    letter-spacing: var(--ls-caps);
+  }
+</style>
+</head>
+<body>
+
+<div class="view-controls">
+  <select class="product-select" data-product-select aria-label="Preview product theme"></select>
+  <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+    <span data-theme-icon aria-hidden="true">☾</span>
+    <span data-theme-label>Dark</span>
+  </button>
+</div>
+
+<main class="doc">
+
+  <!-- HERO -->
+  <section class="ds-hero">
+    <div class="ds-hero-eyebrow">
+      <span>Cabiros</span>
+      <a class="pill pill-link" href="changelog.html" title="View changelog"><i data-lucide="history"></i><span data-ds-version>v1.0.0</span></a>
+      <span class="pill">May 2026</span>
+    </div>
+    <h1>The design system that powers <em>ATTRUS</em>.</h1>
+    <p class="lead">A token-driven foundation for ATTRUS — the financial-operations platform for Latin American treasuries. Every colour, type ramp, spacing step, radius, shadow, and component lives here, in one canonical place. Change a token; every screen re-skins.</p>
+    <div class="ds-hero-actions">
+      <a class="ds-hero-btn ds-hero-btn-primary" href="#components">Browse components<i data-lucide="arrow-right"></i></a>
+      <a class="ds-hero-btn ds-hero-btn-ghost" href="#foundations">Read the foundations<i data-lucide="braces"></i></a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="ds-stats">
+    <div class="ds-stat"><span class="num">3</span><span class="lbl">Layers — Raw · Semantic · Component</span></div>
+    <div class="ds-stat"><span class="num">20</span><span class="lbl">Components</span></div>
+    <div class="ds-stat"><span class="num">334</span><span class="lbl">Tokens</span></div>
+    <div class="ds-stat"><span class="num">100%</span><span class="lbl">Token-driven · zero hard-coded values</span></div>
+  </div>
+
+  <!-- 01 · FOUNDATIONS -->
+  <section class="ds-section" id="foundations">
+    <div class="ds-section-head">
+      <div class="ds-section-title">
+        <span class="num">01</span>
+        <h2>Foundations</h2>
+      </div>
+      <span class="ds-section-meta">Layer 1 + 2 · raw values + semantic roles</span>
+    </div>
+    <p class="ds-section-blurb">Brand-rooted decisions: the colour palette, the typographic system, the spacing rhythm, the corner softness, the elevation language. These are the smallest atoms — every component composes from them. Each card opens its own focused page.</p>
+
+    <div class="ds-grid">
+      <a class="ds-card" href="colors-palette.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="droplet"></i></span>
+          <span class="ds-card-tag">Color · raw</span>
+        </div>
+        <h3>Brand &amp; palette</h3>
+        <p>Brand stops, neutrals (13 steps), the brand blue scale 50→900, sky accent, and four semantic feedback hues — each at five stops.</p>
+        <span class="ds-card-foot">colors-palette.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="colors-semantic.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="message-square-warning"></i></span>
+          <span class="ds-card-tag">Color · semantic</span>
+        </div>
+        <h3>Semantic roles</h3>
+        <p>Surfaces, foregrounds, borders, status pairs — light + inverse twins. Components consume only these, never raw values.</p>
+        <span class="ds-card-foot">colors-semantic.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="accent-highlights.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="sparkles"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Accent &amp; highlights</h3>
+        <p>How Sky earns its 3% — the role map, the Sky-vs-Royal rule, and the contrast facts behind every accent decision.</p>
+        <span class="ds-card-foot">accent-highlights.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="gradients.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="palette"></i></span>
+          <span class="ds-card-tag">Color</span>
+        </div>
+        <h3>Gradients</h3>
+        <p>Nine brand-weighted blends for hero panels, marketing surfaces, data overlays. Used sparingly.</p>
+        <span class="ds-card-foot">gradients.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="data-viz.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="bar-chart-3"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Data visualization</h3>
+        <p>Thirty chart tokens — categorical series, sequential &amp; diverging ramps, and structure. Reskins with the theme.</p>
+        <span class="ds-card-foot">data-viz.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="theming.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="layers"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Theming &amp; products</h3>
+        <p>Two axes — theme (light/dark) × product (Enterprise/Business). Color, gradient, inverse &amp; shape, with a live 2×2 matrix.</p>
+        <span class="ds-card-foot">theming.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="tokens-export.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="braces"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Token export</h3>
+        <p>All 334 tokens as machine-readable JSON — flat &amp; Style-Dictionary nested, with dark values. For codegen &amp; native platforms.</p>
+        <span class="ds-card-foot">tokens-export.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="glass-tokens.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="square-dashed"></i></span>
+          <span class="ds-card-tag">Surface</span>
+        </div>
+        <h3>Liquid glass</h3>
+        <p>Translucent fills + three blur strengths × two tints. For floating chrome over imagery and dimmed canvas.</p>
+        <span class="ds-card-foot">glass-tokens.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="typography.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="type"></i></span>
+          <span class="ds-card-tag">Type</span>
+        </div>
+        <h3>Typography</h3>
+        <p>Lato + JetBrains Mono. Seven weights. Fourteen-stop scale from 10px caption micro through 72px hero display.</p>
+        <span class="ds-card-foot">typography.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="spacing.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="ruler"></i></span>
+          <span class="ds-card-tag">Layout</span>
+        </div>
+        <h3>Spacing</h3>
+        <p>4px base. Fourteen canonical steps. Every padding, margin and gap snaps to one. No magic numbers.</p>
+        <span class="ds-card-foot">spacing.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="radii.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="square-dashed-bottom-code"></i></span>
+          <span class="ds-card-tag">Layout</span>
+        </div>
+        <h3>Radii</h3>
+        <p>Mostly soft, never sharp. Eight steps from 2xs to pill. Buttons are uniformly pill-shaped.</p>
+        <span class="ds-card-foot">radii.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="shadows.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="layers-2"></i></span>
+          <span class="ds-card-tag">Layout</span>
+        </div>
+        <h3>Shadows</h3>
+        <p>Soft, blue-tinted, multi-layer. Five neutral elevations + four semantic + six tinted focus rings.</p>
+        <span class="ds-card-foot">shadows.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="motion.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="fast-forward"></i></span>
+          <span class="ds-card-tag">Motion</span>
+        </div>
+        <h3>Motion</h3>
+        <p>Five durations from 80ms tap-feedback to 480ms page transition. Out-expo as the default curve.</p>
+        <span class="ds-card-foot">motion.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="naming-and-consume.html" style="background: var(--color-background-inverse); color: var(--color-foreground-inverse-default); border-color: transparent;">
+        <div class="ds-card-top">
+          <span class="ds-card-icon" style="background: var(--color-overlay-white-12); color: var(--color-foreground-inverse-default);"><i data-lucide="braces"></i></span>
+          <span class="ds-card-tag" style="background: var(--color-overlay-white-12); color: var(--color-foreground-inverse-secondary);">Doctrine</span>
+        </div>
+        <h3 style="color: var(--color-foreground-inverse-default);">Naming &amp; how to consume</h3>
+        <p style="color: var(--color-foreground-inverse-secondary);">The doctrine: how tokens are named, how they layer, and how a new component should consume them. The rebrand-proof rules.</p>
+        <span class="ds-card-foot" style="color: var(--color-foreground-inverse-secondary);">naming-and-consume.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="typescript.html" style="background: var(--color-background-inverse); color: var(--color-foreground-inverse-default); border-color: transparent;">
+        <div class="ds-card-top">
+          <span class="ds-card-icon" style="background: var(--color-overlay-white-12); color: var(--color-foreground-inverse-default);"><i data-lucide="shield-check"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3 style="color: var(--color-foreground-inverse-default);">TypeScript layer</h3>
+        <p style="color: var(--color-foreground-inverse-secondary);">All 20 components ship as typed React. CSS stays the visual truth; the types add the contract — drift linter &amp; bench coverage keep both in sync.</p>
+        <span class="ds-card-foot" style="color: var(--color-foreground-inverse-secondary);">typescript.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="composition.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="layout-template"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Composition &amp; hierarchy</h3>
+        <p>Arranging a screen so it reads itself — type, proximity, enclosure and rhythm to cluster information and rank it.</p>
+        <span class="ds-card-foot">composition.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- 02 · COMPONENTS -->
+  <section class="ds-section" id="components">
+    <div class="ds-section-head">
+      <div class="ds-section-title">
+        <span class="num">02</span>
+        <h2>Components</h2>
+      </div>
+      <span class="ds-section-meta">Layer 3 · 20 components · typed</span>
+    </div>
+    <p class="ds-section-blurb">Every reusable building block in ATTRUS. Components read only from semantic tokens (Layer 2), never from raw values (Layer 1). They are responsible for shape, behaviour, and accessibility — not for picking colours, sizes, or motion curves.</p>
+
+    <div class="ds-legend" aria-label="Tag legend">
+      <span class="ds-legend-item"><span class="dot dot-stable"></span><strong>Stable</strong> — production-ready, full spec page available</span>
+      <span class="ds-legend-item"><span class="dot dot-new"></span><strong>New</strong> — newly added, behaviour locked</span>
+    </div>
+
+    <div class="ds-grid">
+      <a class="ds-card" href="buttons.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="mouse-pointer-click"></i></span>
+          <span class="ds-card-tag">Action</span>
+        </div>
+        <h3>Buttons</h3>
+        <p>Primary, secondary, tertiary, ghost, danger × four sizes. Pill-shaped by convention.</p>
+      </a>
+
+      <a class="ds-card" href="inputs.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="text-cursor-input"></i></span>
+          <span class="ds-card-tag">Form</span>
+        </div>
+        <h3>Inputs &amp; Forms</h3>
+        <p>Text, select, checkbox, switch, radio, date, file. Five canonical states each.</p>
+      </a>
+
+      <a class="ds-card" href="combobox.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="list-tree"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Combobox</h3>
+        <p>Type-ahead picker. Single or multi-select.</p>
+      </a>
+
+      <a class="ds-card" href="combobox.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="command"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Smart search</h3>
+        <p>⌘K command palette — 8 canonical states (suggestions, grouped results, ID disambiguation, loading, error). Typed as SmartSearch.</p>
+        <span class="ds-card-foot">combobox.html §03<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="cards.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="square-stack"></i></span>
+          <span class="ds-card-tag">Surface</span>
+        </div>
+        <h3>Cards &amp; Surfaces</h3>
+        <p>Eight surface variants from quietest to loudest.</p>
+      </a>
+
+      <a class="ds-card" href="status-pills.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="circle-dot"></i></span>
+          <span class="ds-card-tag">Display</span>
+        </div>
+        <h3>Status pills</h3>
+        <p>Six tones for state communication. Always paired with text.</p>
+      </a>
+
+      <a class="ds-card" href="table.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="table"></i></span>
+          <span class="ds-card-tag">Display</span>
+        </div>
+        <h3>Table</h3>
+        <p>Dense tabular-numeric data. Toolbar, 3 sizes, zebra/sticky, cell patterns, row states.</p>
+      </a>
+
+      <a class="ds-card" href="sidebar-nav.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="panel-left"></i></span>
+          <span class="ds-card-tag">Nav</span>
+        </div>
+        <h3>Sidebar navigation</h3>
+        <p>Collapsible side panel with active-state token. Used as the app shell's primary nav.</p>
+      </a>
+
+      <a class="ds-card" href="topbar.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="app-window"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Top bar</h3>
+        <p>App top edge: primary action, global search, and a 32px cluster of session controls.</p>
+      </a>
+
+      <a class="ds-card" href="stepper.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="list-ordered"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Stepper</h3>
+        <p>Multi-step flow indicator. Horizontal wizard or vertical sidebar; five step states.</p>
+      </a>
+
+      <a class="ds-card" href="tabs.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="panel-top"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Tabs</h3>
+        <p>Non-sequential nav between sibling views. Underline + pill variants, counts, keyboard nav.</p>
+      </a>
+
+      <a class="ds-card" href="number-input.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="diff"></i></span>
+          <span class="ds-card-tag">Form</span>
+        </div>
+        <h3>Number Input</h3>
+        <p>Numeric field with −/+ accelerator buttons. For bounded quantities — days, %, seats.</p>
+      </a>
+
+      <a class="ds-card" href="hero.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="rectangle-horizontal"></i></span>
+          <span class="ds-card-tag">Surface</span>
+        </div>
+        <h3>Hero &amp; banners</h3>
+        <p>Top-of-page focal element. One per screen, max.</p>
+      </a>
+
+      <a class="ds-card" href="glass-layers.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="square-dashed"></i></span>
+          <span class="ds-card-tag">Surface</span>
+        </div>
+        <h3>Glass layers</h3>
+        <p>Translucent surface component. Composes glass tokens with content slots.</p>
+      </a>
+
+      <a class="ds-card" href="modal-drawer.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="square-arrow-out-up-right"></i></span>
+          <span class="ds-card-tag">Overlay</span>
+        </div>
+        <h3>Modal</h3>
+        <p>Blocking overlay for focused decisions — confirmations, short forms.</p>
+      </a>
+
+      <a class="ds-card" href="drawer.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="panel-right-open"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Drawer</h3>
+        <p>Edge-anchored panel for detail &amp; editing. Right/left/bottom; sticky glass chrome.</p>
+      </a>
+
+      <a class="ds-card" href="toast.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="bell"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Toast</h3>
+        <p>Transient feedback. Stacks bottom-right, max 3 visible.</p>
+      </a>
+
+      <a class="ds-card" href="tooltip.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="message-circle"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Tooltip</h3>
+        <p>Brief hover/focus help. Dark on light, light on dark.</p>
+      </a>
+
+      <a class="ds-card" href="callout.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="message-square-warning"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Callout</h3>
+        <p>Icon-led note box — info, warning, success, danger, neutral. Tint adapts to the theme.</p>
+      </a>
+
+      <a class="ds-card" href="empty-states.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="inbox"></i></span>
+          <span class="ds-card-tag">Display</span>
+        </div>
+        <h3>Empty states</h3>
+        <p>Six abstract illustrations + headline + body + 1–2 actions.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- 03 · BRAND & ASSETS -->
+  <section class="ds-section" id="brand">
+    <div class="ds-section-head">
+      <div class="ds-section-title">
+        <span class="num">03</span>
+        <h2>Brand &amp; assets</h2>
+      </div>
+      <span class="ds-section-meta">Static resources · iconography · primitives</span>
+    </div>
+    <p class="ds-section-blurb">The marks, glyphs and headless primitives that the rest of the system reuses. Not components — but every screen pulls from this shelf.</p>
+
+    <div class="ds-grid">
+      <a class="ds-card" href="logos.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="badge"></i></span>
+          <span class="ds-card-tag">Asset</span>
+        </div>
+        <h3>Logos</h3>
+        <p>Brand mark in two contrasts. Wordmark + symbol, light + dark.</p>
+      </a>
+
+      <a class="ds-card" href="iconography.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="shapes"></i></span>
+          <span class="ds-card-tag">Asset</span>
+        </div>
+        <h3>Iconography</h3>
+        <p>Lucide — outlined, 1.75 stroke. Five sizes paired with the type scale, three stroke weights.</p>
+      </a>
+
+      <a class="ds-card" href="primitives.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="atom"></i></span>
+          <span class="ds-card-tag">Primitive</span>
+        </div>
+        <h3>Primitives</h3>
+        <p>Headless building blocks — avatar, money, stat, divider, pill.</p>
+      </a>
+
+      <a class="ds-card" href="brand-story.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="book-open"></i></span>
+          <span class="ds-card-tag">Brand</span>
+        </div>
+        <h3>Brand story</h3>
+        <p>Positioning, manifesto and the narrative behind ATTRUS.</p>
+      </a>
+
+      <a class="ds-card" href="verbal-identity.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="message-square-quote"></i></span>
+          <span class="ds-card-tag">Brand</span>
+        </div>
+        <h3>Verbal identity</h3>
+        <p>Name, tagline, tone of voice and vocabulary.</p>
+      </a>
+
+      <a class="ds-card" href="graphic-elements.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="shapes"></i></span>
+          <span class="ds-card-tag">Asset</span>
+        </div>
+        <h3>Graphic elements</h3>
+        <p>Routes, dot-maps and the supporting graphic language.</p>
+      </a>
+
+      <!-- Photography — desativado temporariamente (pedido do usuário, 2026-06-03). Reativar removendo este comentário.
+      <a class="ds-card" href="photography.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="image"></i></span>
+          <span class="ds-card-tag">Asset</span>
+        </div>
+        <h3>Photography</h3>
+        <p>Image direction, subjects and treatment.</p>
+      </a>
+      -->
+    </div>
+  </section>
+
+  <!-- 04 · TEMPLATES -->
+  <section class="ds-section" id="templates">
+    <div class="ds-section-head">
+      <div class="ds-section-title">
+        <span class="num">04</span>
+        <h2>Templates</h2>
+      </div>
+      <span class="ds-section-meta">Demo screens · sit alongside this homepage</span>
+    </div>
+    <p class="ds-section-blurb">Full-screen demonstrations — the dashboard shell with every product surface assembled. Useful as a layout reference and as a smoke test that the system holds together end-to-end.</p>
+
+    <div class="ds-templates">
+      <a class="ds-template" href="../ui_kits/dashboard/index.html" onclick="localStorage.setItem('attrus_route','home')">
+        <span class="ds-template-ic"><i data-lucide="layout-dashboard"></i></span>
+        <span class="ds-template-meta"><span class="ds-template-name">Dashboard shell</span><span class="ds-template-sub">HomeScreen.jsx · index.html</span></span>
+      </a>
+      <a class="ds-template" href="../ui_kits/dashboard/index.html#counterparties" onclick="localStorage.setItem('attrus_route','counterparties')">
+        <span class="ds-template-ic"><i data-lucide="contact"></i></span>
+        <span class="ds-template-meta"><span class="ds-template-name">Counterparties</span><span class="ds-template-sub">Counterparties.jsx · index.html</span></span>
+      </a>
+      <a class="ds-template" href="../ui_kits/dashboard/index.html#receivables" onclick="localStorage.setItem('attrus_route','receivables')">
+        <span class="ds-template-ic"><i data-lucide="hand-coins"></i></span>
+        <span class="ds-template-meta"><span class="ds-template-name">Receivables</span><span class="ds-template-sub">Receivables.jsx · index.html</span></span>
+      </a>
+      <a class="ds-template" href="../ui_kits/dashboard/index.html#receipts" onclick="localStorage.setItem('attrus_route','receipts')">
+        <span class="ds-template-ic"><i data-lucide="receipt"></i></span>
+        <span class="ds-template-meta"><span class="ds-template-name">Receipts</span><span class="ds-template-sub">Receivables.jsx · index.html</span></span>
+      </a>
+      <a class="ds-template" href="../ui_kits/dashboard/index.html#products" onclick="localStorage.setItem('attrus_route','products')">
+        <span class="ds-template-ic"><i data-lucide="layout-grid"></i></span>
+        <span class="ds-template-meta"><span class="ds-template-name">Product Hub</span><span class="ds-template-sub">ProductsHub.jsx · index.html</span></span>
+      </a>
+    </div>
+  </section>
+
+  <footer class="ds-foot">
+    <span>Cabiros · ATTRUS Design System · <span data-ds-version>v1.0.0</span> · May 2026</span>
+    <span>Token-driven · WCAG AA · OKLCH-calibrated</span>
+  </footer>
+
+</main>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

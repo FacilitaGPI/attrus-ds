@@ -4,10 +4,12 @@
 <head>
 <meta charset="utf-8">
 <title>Cards · ATTRUS Design System</title>
-<link rel="stylesheet" href="../dist/css/index.css">
-<script src="./theme-toggle.js"></script>
-<link rel="stylesheet" href="components/spec-page.css">
-<link rel="icon" href="../assets/icon-attrus-dark.svg">
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<script src="../theme-toggle.js"></script>
+<link rel="stylesheet" href="components/cards.css">
+<link rel="stylesheet" href="components/buttons.css">
+<link rel="stylesheet" href="components/status-pills.css">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
   /* ===== DOCUMENT CHROME — identical pattern to other component docs ===== */
@@ -89,14 +91,10 @@
 </style>
 </head>
 <body>
-<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
-  <span data-theme-icon aria-hidden="true">&#9790;</span>
-  <span data-theme-label>Dark</span>
-</button>
 
 <main class="doc">
 
-  <a class="doc-back" href="components.html"><i data-lucide="arrow-left"></i>Design system</a>
+  <a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
 
   <!-- ========== HEADER ========== -->
   <header class="doc-header">
@@ -556,7 +554,7 @@
   <!-- ========== 11 TOKENS ========== -->
   <section class="doc-section" id="tokens">
     <h2><span class="num">11</span>Tokens consumed</h2>
-    <p class="lead">Every value in <code>cards.css</code> traces back to a token in <code>dist/css/tokens.css</code>.</p>
+    <p class="lead">Every value in <code>cards.css</code> traces back to a token in <code>colors_and_type.css</code>.</p>
     <table class="token-table">
       <thead><tr><th>Role</th><th>Token</th><th>Used for</th></tr></thead>
       <tbody>

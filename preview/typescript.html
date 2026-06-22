@@ -1,0 +1,255 @@
+<!-- @dsCard group="Brand" viewport="1180x900" name="TypeScript layer" subtitle="Como o contrato tipado envolve o CSS canônico — consumo, guard-rails, checklist" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TypeScript layer · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<script src="../theme-toggle.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  .page-theme { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition-fast); }
+  .page-theme:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background: var(--color-background-hover); }
+  .page-theme [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
+  .spec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 58ch; }
+  .spec-tag { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
+  .spec-body { padding: var(--space-6); }
+
+  .map { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  .map th, .map td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .map th { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .map td code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .map tr:last-child td { border-bottom: 0; }
+  .map td:last-child { color: var(--color-foreground-secondary); }
+
+  /* code sample */
+  .code { background: var(--color-background-inverse); color: var(--color-foreground-inverse-default); border-radius: var(--radius-md); padding: var(--space-5) var(--space-6); font-family: var(--font-mono); font-size: var(--fs-xs); line-height: 1.7; overflow-x: auto; white-space: pre; }
+  .code .c  { color: var(--color-foreground-inverse-muted); }
+  .code .k  { color: var(--color-brand-accent-300); }
+  .code .s  { color: var(--color-success-300); }
+
+  /* advantage grid */
+  .adv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  @media (max-width: 820px) { .adv-grid { grid-template-columns: 1fr; } }
+  .adv { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-5) var(--space-6); box-shadow: var(--shadow-xs); }
+  .adv i, .adv svg { width: 20px; height: 20px; color: var(--color-foreground-accent); stroke-width: var(--icon-stroke); margin-bottom: var(--space-3); }
+  .adv h4 { margin: 0 0 var(--space-2); font-size: var(--fs-md); font-weight: var(--w-semibold); letter-spacing: var(--ls-title); }
+  .adv p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-snug); }
+  .adv p code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+
+  /* principle banner */
+  .principle-banner { background: var(--color-background-inverse); color: var(--color-foreground-inverse-default); border-radius: var(--radius-lg); padding: var(--space-7) var(--space-8); margin-bottom: var(--space-6); }
+  .principle-banner .eyebrow { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-inverse-accent); display: block; margin-bottom: var(--space-3); }
+  .principle-banner p { margin: 0; font-family: var(--font-display); font-size: var(--fs-2xl); font-weight: var(--w-medium); letter-spacing: var(--ls-title); line-height: var(--lh-snug); max-width: 30ch; }
+
+  /* checklist */
+  .check { list-style: none; margin: 0; padding: 0; counter-reset: st; display: flex; flex-direction: column; gap: var(--space-4); }
+  .check li { counter-increment: st; display: flex; gap: var(--space-4); }
+  .check li::before { content: counter(st); flex: 0 0 26px; height: 26px; border-radius: var(--radius-pill); background: var(--color-brand-secondary-500); color: var(--color-foreground-on-solid); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
+  .check .t { font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); margin-bottom: 2px; }
+  .check .d { font-size: var(--fs-xs); color: var(--color-foreground-muted); line-height: var(--lh-snug); }
+  .check .d code { font-family: var(--font-mono); color: var(--color-foreground-accent); }
+
+  .callout { --callout-tint: var(--color-brand-secondary-500); --callout-fg: var(--color-foreground-accent); display: flex; gap: var(--space-3); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md); background: color-mix(in srgb, var(--callout-tint) 8%, var(--color-background-surface)); border: 1px solid color-mix(in srgb, var(--callout-tint) 22%, transparent); margin-top: var(--space-5); }
+  .callout > i, .callout > svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; color: var(--callout-fg); stroke-width: var(--icon-stroke); }
+  .callout-body { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-snug); }
+  .callout-body code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .callout-body a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+
+  .doc-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+</style>
+</head>
+<body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+
+<button class="page-theme" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">☾</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>TypeScript layer</h1>
+      <p>Every component ships as a typed React component (<code style="font-family:var(--font-mono)">.tsx</code>) wrapped around the canonical CSS. The CSS stays the visual source of truth; TypeScript adds the contract — and the tooling that keeps both in sync.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="shield-check"></i> 19 typed components</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#architecture">01 Architecture</a>
+    <a href="#advantages">02 What the types add</a>
+    <a href="#consuming">03 Consuming</a>
+    <a href="#guardrails">04 Guard-rails</a>
+    <a href="#adding">05 Adding a component</a>
+  </nav>
+
+  <!-- 01 ARCHITECTURE -->
+  <section class="doc-section" id="architecture">
+    <h2><span class="num">01</span>Architecture — two layers, one truth</h2>
+    <p class="lead">The <code style="font-family:var(--font-mono)">.tsx</code> files carry <strong>no styling</strong>. They compose the canonical classes — <code style="font-family:var(--font-mono)">.btn</code>, <code style="font-family:var(--font-mono)">.drawer</code>, <code style="font-family:var(--font-mono)">.pill</code> — and expose them as typed props. Change a token and every component reskins; the TypeScript never needs to know.</p>
+
+    <div class="principle-banner">
+      <span class="eyebrow">The division of labour</span>
+      <p>CSS guarantees everything <em>looks</em> right. TypeScript guarantees everything is <em>used</em> right.</p>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>File anatomy <code>components/&lt;Name&gt;/</code></h3><p>Each component is a folder with three files. The visual rules live elsewhere — in <code style="font-family:var(--font-mono)">preview/components/*.css</code>.</p></div>
+        <span class="spec-tag">Per component</span>
+      </div>
+      <div style="padding: var(--space-2) var(--space-2) var(--space-4)">
+        <table class="map">
+          <thead><tr><th>File</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td><code>&lt;Name&gt;.tsx</code></td><td>The component. Maps typed props → canonical classes. Zero hardcoded styles; behaviour only (open/close, keyboard, ARIA).</td></tr>
+            <tr><td><code>&lt;Name&gt;.d.ts</code></td><td>The public contract, mirrored 1:1 — union types for every variant, doc comment on every prop. What consumers and tooling read.</td></tr>
+            <tr><td><code>&lt;Name&gt;.html</code></td><td>The bench — a live preview that demonstrates <strong>every</strong> variant, prop and export, with interaction tests. The card you see in the DS tab.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Example — variant as a union type</h3><p>The type IS the documentation. An invalid value fails the build with the exact line.</p></div>
+        <span class="spec-tag">Button.d.ts</span>
+      </div>
+      <div class="spec-body">
+        <div class="code"><span class="k">export type</span> ButtonVariant =
+  <span class="s">'primary'</span> | <span class="s">'secondary'</span> | <span class="s">'tertiary'</span> | <span class="s">'ghost'</span> |
+  <span class="s">'danger'</span> | <span class="s">'danger-outline'</span> | <span class="s">'success'</span> | <span class="s">'link'</span> | <span class="s">'inverse'</span>;
+
+<span class="c">// Each value maps 1:1 to a canonical class in buttons.css —</span>
+<span class="c">// the drift linter proves it on every run.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 ADVANTAGES -->
+  <section class="doc-section" id="advantages">
+    <h2><span class="num">02</span>What the types add</h2>
+    <p class="lead">Before the migration, components were classes assembled by hand — and a typo was an unstyled element nobody caught. The types turn those silent failures into build errors, and the API into data that tooling can audit.</p>
+
+    <div class="adv-grid">
+      <div class="adv"><i data-lucide="text-cursor-input"></i><h4>Explicit, autocompletable API</h4><p>Every variant, size and slot is a union type. Consumers get autocomplete and inline docs — no opening the CSS to discover what exists.</p></div>
+      <div class="adv"><i data-lucide="shield-alert"></i><h4>Errors at build time</h4><p><code>variant="primry"</code> breaks the build with a line number. Misspelt classes used to ship as unstyled UI.</p></div>
+      <div class="adv"><i data-lucide="git-pull-request"></i><h4>Safe refactors</h4><p>Rename or remove a prop and the compiler flags every call site at once — no grep-and-pray.</p></div>
+      <div class="adv"><i data-lucide="scan-search"></i><h4>Machine-auditable source of truth</h4><p>Union types are structured data. The <a href="../tools/drift-linter.html" style="color:var(--color-foreground-accent);text-decoration:none;font-weight:var(--w-semibold)">drift linter</a> cross-checks CSS ↔ types ↔ benches automatically.</p></div>
+      <div class="adv"><i data-lucide="arrow-left-right"></i><h4>Zero-translation handoff</h4><p>The Next.js app in <code>export/nextjs/</code> imports these same <code>.tsx</code> files directly — design system and product consume one artifact.</p></div>
+      <div class="adv"><i data-lucide="layers"></i><h4>Styling stays protected</h4><p>Types add a contract <em>on top of</em> the CSS — they never replace it. Tokens, themes and dark mode keep working untouched.</p></div>
+    </div>
+  </section>
+
+  <!-- 03 CONSUMING -->
+  <section class="doc-section" id="consuming">
+    <h2><span class="num">03</span>Consuming the typed components</h2>
+    <p class="lead">Two consumption modes, same source files.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>In the browser <code>_ds_bundle.js</code></h3><p>The compiler bundles every <code style="font-family:var(--font-mono)">.tsx</code> and exposes them on a window namespace. This is how the benches and demo pages work — React UMD + one script tag.</p></div>
+        <span class="spec-tag">No build step</span>
+      </div>
+      <div class="spec-body">
+        <div class="code"><span class="c">&lt;!-- after React UMD --&gt;</span>
+&lt;script src=<span class="s">"_ds_bundle.js"</span>&gt;&lt;/script&gt;
+
+<span class="k">const</span> { Button, Drawer, DataTable } = window.<span class="s">&lt;Namespace&gt;</span>;
+React.createElement(Button, { variant: <span class="s">'primary'</span>, size: <span class="s">'sm'</span> }, <span class="s">'Save'</span>);</div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>In a real app <code>import</code></h3><p>TypeScript projects import the source directly — full type-checking, tree-shaking, no bundle. The reference implementation is <code style="font-family:var(--font-mono)">export/nextjs/</code>.</p></div>
+        <span class="spec-tag">Next.js / Vite</span>
+      </div>
+      <div class="spec-body">
+        <div class="code"><span class="c">// app code — same files the design system compiles</span>
+<span class="k">import</span> { Button } <span class="k">from</span> <span class="s">'…/components/Button/Button'</span>;
+<span class="k">import</span> <span class="s">'…/colors_and_type.css'</span>;        <span class="c">// tokens + themes</span>
+<span class="k">import</span> <span class="s">'…/preview/components/buttons.css'</span>; <span class="c">// canonical visual</span>
+
+&lt;Button variant=<span class="s">"secondary"</span> size=<span class="s">"sm"</span> loading&gt;Export&lt;/Button&gt;</div>
+        <div class="callout"><i data-lucide="info"></i><div class="callout-body">The CSS imports are <strong>mandatory</strong> — the components only compose class names. Without the canonical stylesheets they render unstyled (by design: one visual source of truth).</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 GUARD-RAILS -->
+  <section class="doc-section" id="guardrails">
+    <h2><span class="num">04</span>Guard-rails — kept in sync by tooling</h2>
+    <p class="lead">Three artifacts watch the contract so humans don't have to.</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Reference</h3></div><span class="spec-tag">Automated</span></div>
+      <div style="padding: var(--space-2) var(--space-2) var(--space-4)">
+        <table class="map">
+          <thead><tr><th>Guard</th><th>What it proves</th></tr></thead>
+          <tbody>
+            <tr><td><code>tools/drift-linter.html</code> · CSS ↔ types</td><td>Every canonical class has a union value and vice-versa. A variant added to the CSS without updating the type (or the reverse) flags as <strong>DRIFT</strong>.</td></tr>
+            <tr><td><code>tools/drift-linter.html</code> · bench coverage</td><td>Every union value, prop and export is demonstrated in the component's bench. A new capability without a demo flags as <strong>GAP</strong>.</td></tr>
+            <tr><td><code>_adherence.oxlintrc.json</code></td><td>Generated from the types — lints consuming codebases (e.g. via Claude Code) for unknown props and off-contract usage.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 ADDING -->
+  <section class="doc-section" id="adding">
+    <h2><span class="num">05</span>Adding or changing a component</h2>
+    <p class="lead">The order matters: visual first, contract second, proof third.</p>
+
+    <div class="spec">
+      <div class="spec-body">
+        <ol class="check">
+          <li><div><div class="t">CSS canônico primeiro</div><div class="d">Create or extend the classes in <code>preview/components/*.css</code>, consuming only semantic tokens. The visual decision lives here.</div></div></li>
+          <li><div><div class="t"><code>.tsx</code> compõe — nunca estiliza</div><div class="d">Map props → classes. Behaviour (keyboard, ARIA, open/close) is welcome; hardcoded colours and sizes are not.</div></div></li>
+          <li><div><div class="t">Espelhe o contrato no <code>.d.ts</code></div><div class="d">Union type for every variant, doc comment on every prop. This is the file consumers and tooling read.</div></div></li>
+          <li><div><div class="t">Bench com cobertura completa</div><div class="d">Demonstrate every variant, prop and export in <code>&lt;Name&gt;.html</code> — with a live interaction test for anything stateful.</div></div></li>
+          <li><div><div class="t">Linter verde, duas vezes</div><div class="d">Run <code>tools/drift-linter.html</code>: CSS ↔ types must read <em>zero drift</em>; bench coverage must read <em>cobertura completa</em>.</div></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <footer class="doc-foot">
+    <span>ATTRUS Design System · TypeScript layer</span>
+    <a href="index.html">← Back to catalog</a>
+  </footer>
+
+</main>
+
+<script>lucide.createIcons();</script>
+
+</body>
+</html>
