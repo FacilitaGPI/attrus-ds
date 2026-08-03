@@ -9,6 +9,9 @@
   --ease-standard: cubic-bezier(.2, .8, .2, 1);  /* @kind other */
   --ease-emphasis: cubic-bezier(.2, .9, .15, 1);  /* @kind other */   /* slightly more overshoot — for entries */
   --ease-linear:   linear;  /* @kind other */                         /* loading bars, scrubbers */
+  /* Entrance choreography — the eases above cover microinteraction; this one is for
+     elements arriving on screen (hero, wizard steps, staggered lists). */
+  --ease-entrance: cubic-bezier(.16, 1, .3, 1);  /* @kind other */
 
   /* Durations — paired with --ease-standard unless noted */
   --duration-instant: 80ms;  /* @kind other */     /* micro feedback (tap echo) */
@@ -17,6 +20,20 @@
   --duration-slow:    320ms;  /* @kind other */    /* expansions, reveals */
   --duration-slower:  480ms;  /* @kind other */    /* page-level transitions */
   --duration-deliberate: 640ms;  /* @kind other */ /* overlays — modal/drawer entry */
+  --duration-entrance:   720ms;  /* @kind other */ /* on-screen arrival, paired with --ease-entrance */
+
+  /* Stagger — delay step between siblings in a choreographed entrance */
+  --stagger-tight: 40ms;  /* @kind other */
+  --stagger-base:  80ms;  /* @kind other */
+  --stagger-loose: 140ms;  /* @kind other */
+
+  /* Breakpoints — single source for JS, docs and the token export. NOTE: custom
+     properties do NOT work inside @media queries; author media with the literal
+     px and keep these as the canonical reference. */
+  --bp-sm: 640px;  /* @kind other */
+  --bp-md: 900px;  /* @kind other */
+  --bp-lg: 1200px;  /* @kind other */
+  --bp-xl: 1440px;  /* @kind other */
 
   /* Pre-composed transition shorthand (most common cases) */
   --transition-fast:  140ms var(--ease-standard);  /* @kind other */   /* default for buttons/inputs */

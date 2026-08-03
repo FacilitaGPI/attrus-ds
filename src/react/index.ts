@@ -13,6 +13,8 @@
      import "@attrus-ds/core/css";
    ============================================================ */
 
+export * from "./ActionBar/ActionBar";
+export * from "./AmbientBackdrop/AmbientBackdrop";
 export * from "./AppSidebar/AppSidebar";
 export * from "./AppTopbar/AppTopbar";
 export * from "./Atoms/Atoms";
@@ -27,9 +29,11 @@ export * from "./Modal/Modal";
 export * from "./NumberInput/NumberInput";
 export * from "./Pill/Pill";
 export * from "./SearchPill/SearchPill";
+export * from "./SelectableCard/SelectableCard";
 export * from "./SmartSearch/SmartSearch";
 export * from "./Stepper/Stepper";
 export * from "./Tabs/Tabs";
 export * from "./Toast/Toast";
+export * from "./ToggleChip/ToggleChip";
 export * from "./Tooltip/Tooltip";
 export * from "./ZeroState/ZeroState";

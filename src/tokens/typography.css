@@ -33,6 +33,7 @@
   --fs-6xl: 40px;
   --fs-7xl: 56px;
   --fs-8xl: 72px;
+  --fs-9xl: 96px;  /* marketing/editorial hero — the scale used to stop at 72 */
 
   /* Line heights */
   --lh-tight:   1.15;  /* @kind font */
@@ -42,6 +43,7 @@
 
   /* Letter spacing — per Lato manual rules */
   --ls-display: -0.03em;  /* @kind font */  /* 32–80px headlines */
+  --ls-display-xl: -0.04em;  /* @kind font */  /* >80px — -3% reads loose at hero sizes */
   --ls-tight:   -0.01em;  /* @kind font */  /* large numerics / stat values — between display and body */
   --ls-title:   -0.015em;  /* @kind font */ /* 16–32px titles (manual says -5%, but -5% looks tight on screens; using -1.5%) */
   --ls-body:    0em;  /* @kind font */      /* <16px body */

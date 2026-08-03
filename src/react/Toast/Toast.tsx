@@ -10,7 +10,7 @@ import * as React from 'react';
 export type ToastTone = 'success' | 'warning' | 'danger' | 'info' | 'brand' | 'inverse';
 export type ToastStackPosition = 'tr' | 'tl' | 'tc' | 'br' | 'bl' | 'bc';
 
-export interface ToastProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   tone?: ToastTone;
   /** Leading icon slot (.toast-icon). */
   icon?: React.ReactNode;

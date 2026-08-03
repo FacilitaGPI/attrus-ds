@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { createPortal } from 'react-dom';
 
 /**
  * ATTRUS Combobox — typed wrapper over the canonical `.combobox`
@@ -49,6 +50,9 @@ export interface ComboboxProps {
   emptyTitle?: React.ReactNode;
   emptySub?: React.ReactNode;
   disabled?: boolean;
+  /** Gallery/doc rendering: popover stays inline (absolute under the trigger),
+      not portaled. Use inside relative frames for side-by-side examples. */
+  static?: boolean;
   className?: string;
   style?: React.CSSProperties;
   'aria-label'?: string;
@@ -88,6 +92,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
   emptyTitle = 'No matches',
   emptySub,
   disabled = false,
+  static: isStatic = false,
   className,
   style,
   ...rest
@@ -96,11 +101,32 @@ export const Combobox: React.FC<ComboboxProps> = ({
   const [q, setQ] = React.useState('');
   const [active, setActive] = React.useState<string | null>(null);
   const wrapRef = React.useRef<HTMLDivElement>(null);
+  const popRef = React.useRef<HTMLDivElement>(null);
+  const [pos, setPos] = React.useState<{ left: number; top: number; width: number } | null>(null);
+
+  // Position the portaled popover under the trigger (fixed coords from rect).
+  React.useLayoutEffect(() => {
+    if (!open || isStatic) return undefined;
+    const place = () => {
+      const r = wrapRef.current?.getBoundingClientRect();
+      if (r) setPos({ left: r.left, top: r.bottom + 8, width: r.width });
+    };
+    place();
+    window.addEventListener('scroll', place, true);
+    window.addEventListener('resize', place);
+    return () => {
+      window.removeEventListener('scroll', place, true);
+      window.removeEventListener('resize', place);
+    };
+  }, [open, isStatic]);
 
   React.useEffect(() => {
     if (!open) return;
     const onDoc = (e: MouseEvent) => {
-      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false);
+      const t = e.target as Node;
+      if (wrapRef.current && wrapRef.current.contains(t)) return;
+      if (popRef.current && popRef.current.contains(t)) return;
+      setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setOpen(false);
@@ -130,7 +156,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
         ? selectable[Math.min(idx + 1, selectable.length - 1)]
         : selectable[Math.max(idx - 1, 0)];
       setActive(next.value);
-      const list = wrapRef.current?.querySelector('.combobox-list');
+      const list = popRef.current?.querySelector('.combobox-list') || wrapRef.current?.querySelector('.combobox-list');
       const el = list?.querySelector(`[data-value="${next.value}"]`) as HTMLElement | null;
       if (list && el) {
         const lt = (list as HTMLElement).scrollTop;
@@ -188,7 +214,40 @@ export const Combobox: React.FC<ComboboxProps> = ({
     );
   });
 
-  return (
+  const popoverInner = (
+    <React.Fragment>
+      {searchable ? (
+        <div className="combobox-search">
+          <svg className="combobox-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+          </svg>
+          <input autoFocus placeholder={searchPlaceholder} value={q} onChange={(e) => setQ(e.target.value)} />
+        </div>
+      ) : null}
+      {filters != null ? <div className="combobox-filters">{filters}</div> : null}
+      {meta != null ? <div className="combobox-meta">{meta}</div> : null}
+      {filtered.length === 0 ? (
+        <div className="combobox-empty">
+          <strong>{emptyTitle}</strong>
+          {emptySub}
+        </div>
+      ) : (
+        <ul className="combobox-list" role="listbox">
+          {rendered}
+        </ul>
+      )}
+      {footMeta != null ? <div className="combobox-foot-meta">{footMeta}</div> : null}
+      {footer ? (
+        <div className="combobox-footer">
+          <button type="button" className="combobox-footer-action" onClick={onFooterClick}>
+            {footer}
+          </button>
+        </div>
+      ) : null}
+    </React.Fragment>
+  );
+
+  const tree = (
     <div
       ref={wrapRef}
       className={['combobox', open ? 'is-open' : '', status === 'error' ? 'is-invalid' : '', className || ''].filter(Boolean).join(' ')}
@@ -210,44 +269,31 @@ export const Combobox: React.FC<ComboboxProps> = ({
         </span>
         <Chevron />
       </button>
-      {open ? (
-        <div className="combobox-popover">
-          {searchable ? (
-            <div className="combobox-search">
-              <svg className="combobox-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
-              </svg>
-              <input
-                autoFocus
-                placeholder={searchPlaceholder}
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-              />
-            </div>
-          ) : null}
-          {filters != null ? <div className="combobox-filters">{filters}</div> : null}
-          {meta != null ? <div className="combobox-meta">{meta}</div> : null}
-          {filtered.length === 0 ? (
-            <div className="combobox-empty">
-              <strong>{emptyTitle}</strong>
-              {emptySub}
-            </div>
-          ) : (
-            <ul className="combobox-list" role="listbox">
-              {rendered}
-            </ul>
-          )}
-          {footMeta != null ? <div className="combobox-foot-meta">{footMeta}</div> : null}
-          {footer ? (
-            <div className="combobox-footer">
-              <button type="button" className="combobox-footer-action" onClick={onFooterClick}>
-                {footer}
-              </button>
-            </div>
-          ) : null}
-        </div>
+      {open && isStatic ? (
+        <div className="combobox-popover" ref={popRef}>{popoverInner}</div>
       ) : null}
     </div>
+  );
+
+  // Portal the popover to <body> (fixed coords) so it escapes any overflow /
+  // stacking ancestor. Static (gallery/doc) keeps it inline under the trigger.
+  if (isStatic || typeof document === 'undefined') return tree;
+  return (
+    <React.Fragment>
+      {tree}
+      {open && pos
+        ? createPortal(
+            <div
+              className={['combobox', 'is-open', status === 'error' ? 'is-invalid' : ''].filter(Boolean).join(' ')}
+              style={{ position: 'fixed', left: pos.left, top: pos.top, width: pos.width, margin: 0, zIndex: 7000 }}
+              onKeyDown={onWrapKeyDown}
+            >
+              <div className="combobox-popover" ref={popRef} style={{ position: 'static' }}>{popoverInner}</div>
+            </div>,
+            document.body
+          )
+        : null}
+    </React.Fragment>
   );
 };
 

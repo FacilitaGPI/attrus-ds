@@ -105,7 +105,7 @@
   background: var(--color-background-subtle);
   padding: 1px 6px; border-radius: var(--radius-xs);
 }
-.sb-item.active .sb-count { background: var(--color-brand-subtle); color: var(--color-brand-text); }
+.sb-item.active .sb-count { background: var(--color-brand-subtle); color: var(--color-foreground-brand); }
 
 /* Footer — user mini-card */
 .sb-foot {

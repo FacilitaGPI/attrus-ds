@@ -61,6 +61,12 @@
   --grad-surface-top: linear-gradient(180deg, color-mix(in srgb, var(--color-pure-white) 6%, transparent) 0%, transparent 100%);  /* @kind color */
   /* Frosted chrome flips to ink glass on dark (drawer/modal header+footer) */
   --glass-chrome: var(--glass-ink);
+  --glass-chrome-fg: var(--color-foreground-inverse-default);
+  --glass-surface: var(--glass-ink-lo);
+  --glass-surface-fg: var(--color-foreground-default);
+  --glass-overlay: var(--glass-ink-hi);
+  --glass-overlay-fg: var(--color-foreground-default);
+  /* --glass-hero stays ink in both themes (by design) */
 
   /* Data-viz categorical — lift the dark hues so every series reads on dark ink.
      Ramps (seq/div) + structure follow the semantic tokens already remapped above. */

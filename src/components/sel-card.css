@@ -1,0 +1,211 @@
+/* ============================================================
+   SELECTABLE CARD — components/sel-card.css
+   A card that IS a control: pick-one (radio) or pick-many (checkbox)
+   with the whole card as the hit target. Replaces the hand-rolled
+   `.card + .radio` composition that every onboarding/KYC flow
+   reinvented (each with its own padding, radius and selected state).
+
+   Structure:
+     .sel-card                      the label/button wrapper
+       .sel-card-index              optional leading index (01, 02…)
+       .sel-card-body               title + description
+         .sel-card-title
+         .sel-card-desc
+       .sel-card-mark               trailing selection marker
+
+   States:   :hover · .is-selected · [aria-disabled] / :has(input:disabled) · :focus-visible
+   Variants: .sel-card-sm (dense) · .sel-card-multi (square marker) · .on-inverse
+   ============================================================ */
+
+.sel-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--shape-container);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-sans);
+  transition: background var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.sel-card > input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+.sel-card:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-background-hover);
+}
+
+/* ---------- Leading index ---------- */
+.sel-card-index {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: var(--w-bold);
+  letter-spacing: var(--ls-caps);
+  color: var(--color-foreground-muted);
+  padding-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Body ---------- */
+.sel-card-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.sel-card-title {
+  font-size: var(--fs-md);
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--ls-title);
+  color: var(--color-foreground-default);
+  line-height: var(--lh-snug);
+}
+.sel-card-desc {
+  font-size: var(--fs-sm);
+  color: var(--color-foreground-secondary);
+  line-height: var(--lh-relaxed);
+  text-wrap: pretty;
+}
+
+/* ---------- Selection marker ---------- */
+.sel-card-mark {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--color-border-strong);
+  background: var(--color-background-surface);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+.sel-card-mark::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--color-brand-solid);
+  transform: scale(0);
+  transition: transform var(--transition-fast) var(--ease-standard);
+}
+/* Multi = square marker with a check glyph instead of a dot */
+.sel-card-multi .sel-card-mark { border-radius: var(--radius-2xs); }
+.sel-card-multi .sel-card-mark::after { border-radius: 1px; }
+
+/* ---------- Selected ---------- */
+.sel-card.is-selected {
+  border-color: var(--color-brand-solid);
+  background: var(--color-background-selected);
+  box-shadow: inset 0 0 0 1px var(--color-brand-solid);
+}
+.sel-card.is-selected .sel-card-title { color: var(--color-foreground-brand); }
+.sel-card.is-selected .sel-card-index { color: var(--color-foreground-brand); }
+.sel-card.is-selected .sel-card-mark {
+  border-color: var(--color-brand-solid);
+  background: var(--color-background-surface);
+}
+.sel-card.is-selected .sel-card-mark::after { transform: scale(1); }
+
+/* ---------- Focus ---------- */
+.sel-card:focus-visible,
+.sel-card:has(input:focus-visible) {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+.sel-card.is-selected:focus-visible,
+.sel-card.is-selected:has(input:focus-visible) {
+  box-shadow: inset 0 0 0 1px var(--color-brand-solid), var(--shadow-focus);
+}
+
+/* ---------- Disabled ---------- */
+.sel-card[aria-disabled="true"],
+.sel-card:has(input:disabled) {
+  cursor: not-allowed;
+  background: var(--color-background-sunken);
+  border-color: var(--color-border-default);
+  box-shadow: none;
+}
+.sel-card[aria-disabled="true"] .sel-card-title,
+.sel-card:has(input:disabled) .sel-card-title { color: var(--color-foreground-disabled); }
+.sel-card[aria-disabled="true"] .sel-card-desc,
+.sel-card[aria-disabled="true"] .sel-card-index,
+.sel-card:has(input:disabled) .sel-card-desc,
+.sel-card:has(input:disabled) .sel-card-index { color: var(--color-foreground-disabled); }
+.sel-card[aria-disabled="true"] .sel-card-mark,
+.sel-card:has(input:disabled) .sel-card-mark {
+  border-color: var(--color-border-default);
+  background: var(--color-background-sunken);
+}
+.sel-card[aria-disabled="true"] .sel-card-mark::after,
+.sel-card:has(input:disabled) .sel-card-mark::after {
+  background: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+}
+
+/* ---------- Dense ---------- */
+.sel-card-sm { padding: var(--space-4); gap: var(--space-3); }
+.sel-card-sm .sel-card-title { font-size: var(--fs-sm); }
+.sel-card-sm .sel-card-desc  { font-size: var(--fs-xs); }
+.sel-card-sm .sel-card-mark  { width: 18px; height: 18px; }
+.sel-card-sm .sel-card-mark::after { width: 8px; height: 8px; }
+
+/* ---------- On inverse ---------- */
+.sel-card.on-inverse {
+  background: color-mix(in srgb, var(--color-pure-white) 6%, transparent);
+  border-color: var(--color-border-inverse);
+}
+.sel-card.on-inverse:hover {
+  background: color-mix(in srgb, var(--color-pure-white) 10%, transparent);
+  border-color: color-mix(in srgb, var(--color-pure-white) 26%, transparent);
+}
+.sel-card.on-inverse .sel-card-title { color: var(--color-foreground-inverse-default); }
+.sel-card.on-inverse .sel-card-desc  { color: var(--color-foreground-inverse-secondary); }
+.sel-card.on-inverse .sel-card-index { color: var(--color-foreground-inverse-muted); }
+.sel-card.on-inverse .sel-card-mark {
+  border-color: color-mix(in srgb, var(--color-pure-white) 34%, transparent);
+  background: transparent;
+}
+.sel-card.on-inverse .sel-card-mark::after { background: var(--color-accent-solid); }
+.sel-card.on-inverse.is-selected {
+  border-color: var(--color-accent-solid);
+  background: color-mix(in srgb, var(--color-accent-solid) 16%, transparent);
+  box-shadow: inset 0 0 0 1px var(--color-accent-solid);
+}
+.sel-card.on-inverse.is-selected .sel-card-title,
+.sel-card.on-inverse.is-selected .sel-card-index { color: var(--color-foreground-inverse-default); }
+.sel-card.on-inverse.is-selected .sel-card-mark { border-color: var(--color-accent-solid); background: transparent; }
+.sel-card.on-inverse:focus-visible,
+.sel-card.on-inverse:has(input:focus-visible) { box-shadow: var(--shadow-focus-inverse); }
+.sel-card.on-inverse[aria-disabled="true"],
+.sel-card.on-inverse:has(input:disabled) {
+  background: color-mix(in srgb, var(--color-pure-white) 3%, transparent);
+  box-shadow: none;
+}
+.sel-card.on-inverse[aria-disabled="true"] .sel-card-title,
+.sel-card.on-inverse:has(input:disabled) .sel-card-title { color: var(--color-foreground-inverse-muted); }
+.sel-card.on-inverse[aria-disabled="true"] .sel-card-desc,
+.sel-card.on-inverse:has(input:disabled) .sel-card-desc { color: var(--color-foreground-inverse-muted); }
+
+/* ---------- Group helper ---------- */
+.sel-card-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.sel-card-group.is-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}

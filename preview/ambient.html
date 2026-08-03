@@ -1,0 +1,152 @@
+<!-- @dsCard group="Components" name="AmbientBackdrop" subtitle="Camada decorativa oficial — blobs radiais tokenizados + scrim de leitura" viewport="1280x900" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AmbientBackdrop · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<link rel="stylesheet" href="components/tokens-doc.css?v=2">
+<link rel="stylesheet" href="components/ambient.css">
+<link rel="stylesheet" href="components/buttons.css">
+<script src="../theme-toggle.js"></script>
+<script src="../version.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1080px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .page-theme { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); }
+  .page-theme [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-6); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-6); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .api { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: var(--space-4) var(--space-6); padding: var(--space-5) var(--space-6); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .api-k { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-2); }
+  .api-v { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .api ul { margin: 0; padding-left: var(--space-4); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .api code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .api .prefer { grid-column: 1 / -1; font-size: var(--fs-sm); color: var(--color-foreground-default); padding-top: var(--space-3); border-top: 1px solid var(--color-border-subtle); line-height: var(--lh-relaxed); }
+  .api .prefer b { color: var(--color-foreground-brand); }
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-6); }
+  .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-5); box-shadow: var(--shadow-xs); }
+  .spec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-head h3 { font-size: var(--fs-lg); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-brand); background: var(--color-brand-subtle); padding: var(--space-1) var(--space-2); border-radius: var(--radius-xs); margin-left: var(--space-2); }
+  .spec-head p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
+  .spec-tag { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
+  .spec-canvas { padding: var(--space-6); background: var(--color-background-canvas); }
+  .spec-canvas.inverse { background: var(--color-background-inverse); }
+  .spec-canvas.pad0 { padding: 0; }
+  .tk { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  .tk th, .tk td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .tk thead th { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); }
+  .tk tr:last-child td { border-bottom: 0; }
+  .tk td code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .frame { border: 1px solid var(--color-border-default); border-radius: var(--shape-container); overflow: hidden; background: var(--color-background-surface); }
+  .frame > .fbody { padding: var(--space-6); font-size: var(--fs-sm); color: var(--color-foreground-secondary); }
+  .doc-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+</style>
+</head>
+<body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<button class="page-theme" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">☾</span>
+  <span data-theme-label>Dark</span>
+</button>
+<main class="doc">
+  <header class="doc-header">
+    <div>
+      <h1>AmbientBackdrop</h1>
+      <p>A camada decorativa oficial: blobs radiais suaves atrás de hero e conteúdo de marketing. Existe para o efeito parar de ser recriado com hex cru e blur aleatório em cada landing. Os blobs derivam de <code>--color-brand-solid</code> e <code>--color-accent-solid</code>, então seguem o produto ativo.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="sparkles"></i> Stable</span>
+  </header>
+  <section class="api" aria-label="API summary">
+    <div><div class="api-k">Import</div><code class="api-v">const { AmbientBackdrop } = ATTRUS</code></div>
+    <div><div class="api-k">CSS class</div><code class="api-v">.ambient</code></div>
+    <div><div class="api-k">Variants</div><ul><li><code>default</code> — 2 blobs, opacidade 55%</li><li><code>.is-subtle</code> — blobs a 30%</li><li><code>.is-strong</code> — 75% com blur mais curto</li><li><code>.on-inverse</code> — hero escuro — fundo e scrim em ink</li></ul></div>
+    <div><div class="api-k">Key props</div><ul><li><code>blobs</code> — 1 | 2 | 3</li><li><code>intensity</code> — 'subtle' | 'default' | 'strong'</li><li><code>onInverse</code> — hero escuro</li><li><code>noScrim</code> — remove o véu — só para faixa sem texto</li></ul></div>
+    <div class="prefer"><b>Prefer:</b> sempre manter o <code>.ambient-scrim</code> (é <b>obrigatório</b>): sobre um blob nu, o corpo de texto cai abaixo de AA. Use <code>noScrim</code> apenas em faixas puramente decorativas, sem texto. Não recrie gradientes radiais à mão.</div>
+  </section>
+  <script type="application/json" id="ds-api">{"component":"AmbientBackdrop","import":"const { AmbientBackdrop } = ATTRUS","cssClass":".ambient","variants":["default","is-subtle","is-strong","on-inverse"],"props":["blobs","intensity","onInverse","noScrim"],"slots":["ambient-blob","ambient-scrim","ambient-content"],"prefer":"Keep the mandatory scrim; never hand-roll radial gradients.","status":"stable"}</script>
+  <section class="doc-section">
+    <h2><span class="num">01</span>Anatomia</h2>
+    <p class="lead">Três camadas empilhadas: blobs (z 0), scrim de leitura (z 1) e conteúdo (z 2). O host recebe <code>isolation:isolate</code> e <code>overflow:hidden</code>.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Default <code>.ambient</code></h3><p>2 blobs — brand no topo-esquerda, accent embaixo-direita — com o véu obrigatório.</p></div>
+      <span class="spec-tag">hero</span>
+    </div>
+    <div class="spec-canvas"><div class="ambient" style="border-radius:var(--shape-container); overflow:hidden"><div class="ambient-blob is-1" aria-hidden="true"></div><div class="ambient-blob is-2" aria-hidden="true"></div><div class="ambient-scrim" aria-hidden="true"></div><div class="ambient-content"><div style="padding:var(--space-8) var(--space-7); display:flex; flex-direction:column; gap:var(--space-3)"><h2 style="margin:0; font-size:var(--fs-4xl); font-weight:var(--w-bold); letter-spacing:var(--ls-display); color:var(--color-foreground-default)">Tesouraria sem fronteira</h2><p style="margin:0; font-size:var(--fs-md); max-width:46ch; line-height:var(--lh-relaxed); color:var(--color-foreground-secondary)">Liquide em BRL, USD e EUR na mesma conta, com conciliação automática e trilha de auditoria.</p><div><button class="btn btn-primary btn-md">Abrir conta</button></div></div></div></div></div>
+  </div>
+  </section>
+  <section class="doc-section">
+    <h2><span class="num">02</span>Intensidade</h2>
+    <p class="lead">Três presets. Escolha pela hierarquia da página: quanto mais texto, mais discreto o fundo.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Subtle <code>.is-subtle</code></h3><p>Um blob a 30% — para páginas de produto onde a leitura manda.</p></div>
+      <span class="spec-tag">product</span>
+    </div>
+    <div class="spec-canvas"><div class="ambient is-subtle" style="border-radius:var(--shape-container); overflow:hidden"><div class="ambient-blob is-1" aria-hidden="true"></div><div class="ambient-scrim" aria-hidden="true"></div><div class="ambient-content"><div style="padding:var(--space-8) var(--space-7); display:flex; flex-direction:column; gap:var(--space-3)"><h2 style="margin:0; font-size:var(--fs-4xl); font-weight:var(--w-bold); letter-spacing:var(--ls-display); color:var(--color-foreground-default)">Discreto</h2><p style="margin:0; font-size:var(--fs-md); max-width:46ch; line-height:var(--lh-relaxed); color:var(--color-foreground-secondary)">Um único blob a 30% — o fundo recua e o texto lidera.</p><div><button class="btn btn-primary btn-md">Abrir conta</button></div></div></div></div></div>
+  </div>  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Strong <code>.is-strong</code></h3><p>Três blobs a 75% com blur mais curto — hero de campanha.</p></div>
+      <span class="spec-tag">marketing</span>
+    </div>
+    <div class="spec-canvas"><div class="ambient is-strong" style="border-radius:var(--shape-container); overflow:hidden"><div class="ambient-blob is-1" aria-hidden="true"></div><div class="ambient-blob is-2" aria-hidden="true"></div><div class="ambient-blob is-3" aria-hidden="true"></div><div class="ambient-scrim" aria-hidden="true"></div><div class="ambient-content"><div style="padding:var(--space-8) var(--space-7); display:flex; flex-direction:column; gap:var(--space-3)"><h2 style="margin:0; font-size:var(--fs-4xl); font-weight:var(--w-bold); letter-spacing:var(--ls-display); color:var(--color-foreground-default)">Marketing</h2><p style="margin:0; font-size:var(--fs-md); max-width:46ch; line-height:var(--lh-relaxed); color:var(--color-foreground-secondary)">Três blobs a 75% — presença máxima, ainda com o véu garantindo contraste.</p><div><button class="btn btn-primary btn-md">Abrir conta</button></div></div></div></div></div>
+  </div>
+  </section>
+  <section class="doc-section">
+    <h2><span class="num">03</span>On inverse</h2>
+    <p class="lead">No hero permanentemente escuro o véu passa a usar ink em vez do canvas ambiente.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Dark hero <code>.on-inverse</code></h3><p>Fundo <code>--color-background-inverse</code> + scrim ink.</p></div>
+      <span class="spec-tag">inverse</span>
+    </div>
+    <div class="spec-canvas"><div class="ambient on-inverse" style="border-radius:var(--shape-container); overflow:hidden"><div class="ambient-blob is-1" aria-hidden="true"></div><div class="ambient-blob is-2" aria-hidden="true"></div><div class="ambient-blob is-3" aria-hidden="true"></div><div class="ambient-scrim" aria-hidden="true"></div><div class="ambient-content"><div style="padding:var(--space-8) var(--space-7); display:flex; flex-direction:column; gap:var(--space-3)"><h2 style="margin:0; font-size:var(--fs-4xl); font-weight:var(--w-bold); letter-spacing:var(--ls-display); color:var(--color-foreground-inverse-default)">Enterprise</h2><p style="margin:0; font-size:var(--fs-md); max-width:46ch; line-height:var(--lh-relaxed); color:var(--color-foreground-inverse-secondary)">A camada escura permanente: o scrim usa ink, não o canvas ambiente.</p><div><button class="btn btn-inverse btn-md">Abrir conta</button></div></div></div></div></div>
+  </div>
+  </section>
+  <section class="doc-section">
+    <h2><span class="num">04</span>Sem scrim</h2>
+    <p class="lead">Único caso legítimo: faixa decorativa sem texto. Com texto, o contraste falha no centro do blob.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>noScrim <code>.ambient (sem .ambient-scrim)</code></h3><p>Faixa de 96px puramente decorativa.</p></div>
+      <span class="spec-tag">decorative only</span>
+    </div>
+    <div class="spec-canvas"><div style="height:96px"><div class="ambient" style="border-radius:var(--shape-container); overflow:hidden"><div class="ambient-blob is-1" aria-hidden="true"></div><div class="ambient-blob is-2" aria-hidden="true"></div><div class="ambient-content"></div></div></div></div>
+  </div>
+  </section>
+  <section class="doc-section">
+    <h2><span class="num">05</span>Referência</h2>
+    <p class="lead">Definido em <code>components/ambient.css</code>. Movimento respeita <code>prefers-reduced-motion</code>.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Class map</h3><p>Uma fonte para CSS, doc e TSX.</p></div>
+      <span class="spec-tag">single source</span>
+    </div>
+    <div class="spec-canvas pad0"><table class="tk"><thead><tr><th>Classe</th><th>Papel</th></tr></thead><tbody>
+<tr><td><code>.ambient</code></td><td>Host posicionado (isolate + overflow hidden).</td></tr>
+<tr><td><code>.ambient-blob.is-1..3</code></td><td>Blobs radiais; drift lento com <code>prefers-reduced-motion</code> respeitado.</td></tr>
+<tr><td><code>.ambient-scrim</code></td><td><strong>Obrigatório</strong> — véu de leitura sobre os blobs.</td></tr>
+<tr><td><code>.ambient-content</code></td><td>Seu conteúdo, acima das camadas.</td></tr>
+<tr><td><code>.is-subtle</code> · <code>.is-strong</code></td><td>Presets de opacidade.</td></tr>
+</tbody></table></div>
+  </div>
+  </section>
+  <footer class="doc-foot">
+    <span>ATTRUS Design System · AmbientBackdrop · <span data-ds-version></span></span>
+    <a href="index.html">← Back to catalog</a>
+  </footer>
+</main>
+<script>lucide.createIcons();</script>
+</body>
+</html>

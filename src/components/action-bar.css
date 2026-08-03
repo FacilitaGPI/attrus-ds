@@ -1,0 +1,93 @@
+/* ============================================================
+   ACTION BAR — components/action-bar.css
+   Persistent action strip for wizards, drawers and editors: primary
+   action on the right, secondary/back on the left, optional context
+   (progress, count, hint) in the middle.
+
+   IMPORTANT: right-align with `.action-bar-actions { margin-left:auto }`.
+   Never use a flex:1 spacer — a spacer competing with a stepper in the
+   same row collapses it (that is exactly how the stepper label overlap
+   bug happened).
+
+   Structure:
+     .action-bar
+       .action-bar-lead     back / secondary (optional)
+       .action-bar-context  progress text, count, hint (optional)
+       .action-bar-actions  primary cluster — margin-left:auto
+   Variants: .is-fixed (viewport-pinned) · .action-bar-sm · .on-inverse
+   ============================================================ */
+
+.action-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-6);
+  background: var(--glass-chrome);
+  color: var(--glass-chrome-fg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border-top: 1px solid var(--color-border-subtle);
+  box-sizing: border-box;
+  font-family: var(--font-sans);
+  width: 100%;
+}
+
+/* Pinned to the viewport bottom — for full-page wizards */
+.action-bar.is-fixed {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 900;
+  box-shadow: var(--shadow-lg);
+}
+
+.action-bar-lead {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+.action-bar-context {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  font-size: var(--fs-sm);
+  color: var(--color-foreground-secondary);
+}
+.action-bar-context .strong {
+  font-weight: var(--w-semibold);
+  color: var(--color-foreground-default);
+}
+/* Right cluster — margin-left:auto, NOT a flex spacer */
+.action-bar-actions {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+/* ---------- Dense ---------- */
+.action-bar-sm {
+  padding: var(--space-3) var(--space-5);
+  gap: var(--space-3);
+}
+.action-bar-sm .action-bar-context { font-size: var(--fs-xs); }
+
+/* ---------- On inverse ---------- */
+.action-bar.on-inverse {
+  background: var(--glass-hero);
+  color: var(--glass-hero-fg);
+  border-top-color: var(--color-border-inverse);
+}
+.action-bar.on-inverse .action-bar-context { color: var(--color-foreground-inverse-secondary); }
+.action-bar.on-inverse .action-bar-context .strong { color: var(--color-foreground-inverse-default); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+  .action-bar { flex-wrap: wrap; gap: var(--space-3); padding: var(--space-4); }
+  .action-bar-context { order: 3; width: 100%; }
+  .action-bar-actions { margin-left: auto; }
+}

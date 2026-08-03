@@ -68,15 +68,60 @@
 
   <header class="doc-header">
     <div class="eyebrow">ATTRUS Design System</div>
-    <h1>Changelog <span class="ver-badge" data-ds-version>v1.0.0</span></h1>
+    <h1>Changelog <span class="ver-badge" data-ds-version>v1.0.6</span></h1>
     <p>Every notable change to the design system, grouped by release. Versioning follows <a href="https://semver.org" style="color:var(--color-foreground-accent)">SemVer</a>; the version number lives in <code style="font-family:var(--font-mono);font-size:0.85em">version.js</code> and is mirrored across the catalog and index pages.</p>
   </header>
+
+  <!-- ============ v1.0.6 ============ -->
+  <section class="release">
+    <div class="release-head">
+      <h2>1.0.6</h2>
+      <span class="tag current">Current</span>
+    </div>
+    <div class="release-date">2026-08-03 · patch from real consumption (landing page + onboarding flow)</div>
+
+    <div class="change-group added">
+      <h3><i data-lucide="plus-circle"></i> Added</h3>
+      <ul>
+        <li><b>SelectableCard</b> (<code>.sel-card</code>) — a card that <em>is</em> a control: pick-one / pick-many with index, description and marker. Replaces the hand-rolled <code>.card + .radio</code> composition that every onboarding and KYC flow reinvented.</li>
+        <li><b>ToggleChip</b> (<code>.toggle-chip</code>) — selection chip with <code>aria-pressed</code> for multi-select filters and tag pickers. <code>.chip</code> is a removable token and <code>.pill.interactive</code> is a status pill — neither was a form control.</li>
+        <li><b>ActionBar</b> (<code>.action-bar</code>) — persistent action strip for wizard, drawer and editor, on <code>--glass-chrome</code>. Right cluster aligns with <code>margin-left:auto</code>, never a flex spacer.</li>
+        <li><b>AmbientBackdrop</b> (<code>.ambient</code>) — the official decorative layer: tokenized radial blobs that follow the active product, a mandatory readability scrim, and <code>prefers-reduced-motion</code> built in.</li>
+        <li><b>Semantic glass</b> — <code>--glass-surface / -chrome / -overlay / -hero</code>, each with a paired <code>-fg</code>, remapped in dark (<code>-hero</code> stays dark in both themes by design).</li>
+        <li><b>Display / editorial layer</b> — <code>--fs-9xl</code> (96px), <code>--ls-display-xl</code>, classes <code>.display-hero</code>, <code>.display-hero-xl</code> and <code>.overline-mono</code>.</li>
+        <li><b>Entrance choreography</b> — <code>--ease-entrance</code>, <code>--duration-entrance</code>, <code>--stagger-tight/base/loose</code> plus <code>.enter</code> / <code>.enter-1..5</code> utilities respecting reduced motion.</li>
+        <li><b>Dark-surface focus + glows</b> — <code>--shadow-focus-inverse</code> (the Sky ring vanished over ink) and <code>--shadow-glow-accent / -brand / -success</code>.</li>
+        <li><b>Breakpoint tokens</b> — <code>--bp-sm/md/lg/xl</code> as the single reference for JS, docs and the token export.</li>
+        <li><b>On-inverse layer for controls</b> — <code>.switch</code>, <code>.check</code>, <code>.radio</code>, <code>.field</code> and <code>.stepper</code> joined <code>.input</code>, so permanently-dark heroes and onboarding stop overriding colour inline.</li>
+      </ul>
+    </div>
+
+    <div class="change-group changed">
+      <h3><i data-lucide="refresh-cw"></i> Changed</h3>
+      <ul>
+        <li><code>--color-brand-text</code> renamed to <b><code>--color-brand-text-on-light</code></b> so the name declares its restriction (fixed light background only). The old name stays as a deprecated alias.</li>
+        <li><code>--glass-white*</code>, <code>--glass-tint</code> and <code>--glass-ink*</code> demoted to raw primitives — they are not theme-aware. Use the semantic glass tokens on themed chrome.</li>
+        <li>README corrected: the selected-state recipe now points at <code>--color-background-selected</code> (the light-only <code>--color-brand-primary-50</code> broke in dark), and the disabled recipe no longer recommends opacity.</li>
+        <li>Token export regenerated — 372 tokens, 52 dark overrides, 33 categories.</li>
+      </ul>
+    </div>
+
+    <div class="change-group fixed">
+      <h3><i data-lucide="bug"></i> Fixed</h3>
+      <ul>
+        <li><b><code>--color-brand-text</code> broke in dark.</b> The token resolves navy in every theme — 1.05:1 on the ambient surface. Ambient consumers (<code>.btn-link</code> hover/active, <code>.eyebrow-brand</code>, the active sidebar count, combobox selected meta and active filter count, file-list action hover, file icons and pending status) now read the theme-aware <code>--color-foreground-brand</code>. Fixed-light-background consumers keep navy at 15:1.</li>
+        <li><b>Disabled switch / checkbox / radio used <code>opacity:.5</code>.</b> It composed with the surface into an off-palette tint, erased the white thumb, and made checked+disabled indistinguishable from unchecked+disabled. Replaced with explicit tokens, and <code>cursor:not-allowed</code> moved to the wrapper so the whole hit target reflects the state.</li>
+        <li><b>Stepper labels overlapped</b> in narrow containers (“AtivaçãoRecebimento”). Root cause: <code>.stepper .step-body</code> carried a fixed <code>max-width: 16ch</code> and overflowed its own <code>flex:1</code> step on both sides, so the label’s ellipsis never engaged. The body is now bounded to the step, labels truncate, and <code>.stepper.is-wrap</code> opts into two lines.</li>
+        <li>Code chips in the new component docs measured 3.95:1 — below AA — and now use <code>--color-foreground-brand</code> at semibold.</li>
+      </ul>
+    </div>
+  </section>
 
   <!-- ============ v1.0.0 ============ -->
   <section class="release">
     <div class="release-head">
       <h2>1.0.0</h2>
-      <span class="tag current">Current</span>
+      <span class="tag">Initial</span>
     </div>
     <div class="release-date">2026-06-19 · first tagged release</div>
 

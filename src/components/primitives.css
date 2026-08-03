@@ -32,7 +32,7 @@
 
 /* Tone — accent-on-tinted-bg uses the same background+foreground pair as feedback pills,
    so an Avatar reads as the same "object" as a status pill that references it. */
-.av-brand   { background: var(--color-brand-subtle-solid);          color: var(--color-brand-text); }
+.av-brand   { background: var(--color-brand-subtle-solid);          color: var(--color-brand-text-on-light); }
 .av-success { background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); }
 .av-warning { background: var(--color-feedback-warning-background); color: var(--color-feedback-warning-foreground); }
 .av-danger  { background: var(--color-feedback-danger-background);  color: var(--color-feedback-danger-foreground); }
@@ -253,7 +253,7 @@
 .eyebrow-muted     { color: var(--color-foreground-muted); }
 .eyebrow-secondary { color: var(--color-foreground-secondary); }
 .eyebrow-default   { color: var(--color-foreground-default); }
-.eyebrow-brand     { color: var(--color-brand-text); }
+.eyebrow-brand     { color: var(--color-foreground-brand); }
 .eyebrow-inverse   { color: var(--color-foreground-inverse-muted); }
 
 /* =================== FILTER CHIP =================== */

@@ -12,7 +12,11 @@
 @import "./data-viz.css";
 @import "./glass.css";
 @import "./radius.css";
-@import "./shape.css";
+/* Shape tokens (--shape-control/container/overlay) live in radius.css — they are
+   authored in the same section of the Cabiros source and arrive with it. A product
+   theme ([data-product]) may redefine them, but MUST reference a step from the raw
+   --radius-* scale, never a raw px, so the scale stays the single source. Buttons
+   stay pill by deliberate brand stance and are not shape-themable. */
 @import "./elevation.css";
 @import "./spacing.css";
 @import "./iconography.css";

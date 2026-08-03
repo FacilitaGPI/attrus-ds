@@ -247,11 +247,11 @@ export default DataTable;
    Typed cell-pattern helpers — compose inside a column's render().
    ---------------------------------------------------------------- */
 
-/** Stacked primary + secondary lines — `.dt-cell-stack` (.pri / .sec). */
+/** Stacked primary + secondary lines — `.dt-cell-stack` (.pri / .sub). */
 export const DTCellStack: React.FC<{ pri: React.ReactNode; sec?: React.ReactNode } & React.HTMLAttributes<HTMLDivElement>> = ({ pri, sec, className, ...rest }) => (
   <div className={['dt-cell-stack', className || ''].filter(Boolean).join(' ')} {...rest}>
     <span className="pri">{pri}</span>
-    {sec != null ? <span className="sec">{sec}</span> : null}
+    {sec != null ? <span className="sub">{sec}</span> : null}
   </div>
 );
 
@@ -261,7 +261,7 @@ export const DTCellLead: React.FC<{ lead: React.ReactNode; pri: React.ReactNode;
     {lead}
     <div className="dt-cell-stack">
       <span className="pri">{pri}</span>
-      {sec != null ? <span className="sec">{sec}</span> : null}
+      {sec != null ? <span className="sub">{sec}</span> : null}
     </div>
   </div>
 );

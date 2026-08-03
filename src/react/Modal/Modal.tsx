@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { createPortal } from 'react-dom';
 
 /**
  * ATTRUS Modal — typed wrapper over the canonical `.modal` + `.scrim`
@@ -140,7 +141,7 @@ export const Modal: React.FC<ModalProps> = ({
     .filter(Boolean)
     .join(' ');
 
-  return (
+  const overlay = (
     <React.Fragment>
       {isStatic ? null : <div className={['scrim', shown ? 'is-open' : ''].filter(Boolean).join(' ')} onClick={onClose} />}
       <div ref={panelRef} className={cls} role="dialog" aria-modal="true" tabIndex={-1} onKeyDown={onTrapKeyDown}>
@@ -168,6 +169,12 @@ export const Modal: React.FC<ModalProps> = ({
       </div>
     </React.Fragment>
   );
+
+  // Portal the live overlay to <body> so the scrim + dialog escape any clipping
+  // / stacking ancestor (e.g. a Drawer: position:fixed; overflow:auto). Static
+  // (gallery/doc) renders inline inside its relative frame, as documented.
+  if (isStatic || typeof document === 'undefined') return overlay;
+  return createPortal(overlay, document.body);
 };
 
 export default Modal;

@@ -102,6 +102,26 @@ a.step-marker:focus-visible {
   letter-spacing: var(--ls-title);
   color: var(--color-foreground-secondary);
   line-height: var(--lh-tight);
+  /* Truncate by default — labels used to overlap into "AtivaçãoRecebimento" in any
+     narrow container. Opt into two lines with .stepper.is-wrap. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.step-help {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+/* Wrap modifier — allow labels/helpers to run to two lines instead of truncating */
+.stepper.is-wrap .step-label,
+.stepper.is-wrap .step-help {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  text-wrap: pretty;
 }
 .step-help {
   font-size: var(--fs-xs);
@@ -199,7 +219,11 @@ a.step-marker:focus-visible {
 .stepper .step-body {
   align-items: center;
   padding-top: 0;
-  max-width: 16ch;
+  /* Constrain to the step, never wider — a fixed 16ch let the body overflow its
+     own flex:1 step on both sides, so the label's nowrap+ellipsis never engaged
+     and the labels overlapped ("AtivaçãoRecebimento"). */
+  max-width: 100%;
+  min-width: 0;
 }
 .stepper .step-label { text-align: center; }
 .stepper .step-help { text-align: center; }
@@ -300,6 +324,37 @@ a.step-marker:focus-visible {
   .stepper.is-collapse-sm .step-body { display: none; }
   .stepper.is-collapse-sm .step { gap: 0; }
 }
+
+/* ============================================================
+   ON INVERSE — stepper on a permanently-dark surface
+   ============================================================ */
+.stepper.on-inverse .step-label { color: var(--color-foreground-inverse-secondary); }
+.stepper.on-inverse .step-help  { color: var(--color-foreground-inverse-muted); }
+.stepper.on-inverse .step-marker {
+  background: color-mix(in srgb, var(--color-pure-white) 8%, transparent);
+  border-color: var(--color-border-inverse);
+  color: var(--color-foreground-inverse-secondary);
+}
+.stepper.on-inverse .step::after { background: var(--color-border-inverse); }
+.stepper.on-inverse .step.is-current .step-marker {
+  background: var(--color-accent-solid);
+  border-color: var(--color-accent-solid);
+  color: var(--color-foreground-on-solid);
+}
+.stepper.on-inverse .step.is-current .step-label,
+.stepper.on-inverse .step.is-done .step-label { color: var(--color-foreground-inverse-default); }
+.stepper.on-inverse .step.is-done .step-marker {
+  background: color-mix(in srgb, var(--color-accent-solid) 30%, transparent);
+  border-color: var(--color-accent-solid);
+  color: var(--color-foreground-inverse-default);
+}
+.stepper.on-inverse .step.is-done::after { background: var(--color-accent-solid); }
+.stepper.on-inverse .step.is-error .step-marker,
+.stepper.on-inverse .step.is-error .step-label { color: var(--color-danger-300); }
+.stepper.on-inverse .step.is-error .step-marker { border-color: var(--color-danger-300); }
+.stepper.on-inverse .step.is-skipped .step-label,
+.stepper.on-inverse .step.is-skipped .step-marker { color: var(--color-foreground-inverse-muted); }
+.stepper.on-inverse .step-btn:focus-visible { box-shadow: var(--shadow-focus-inverse); }
 
 /* ============================================================
    Reduced motion
