@@ -15,8 +15,23 @@
   .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
   .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
   .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
-  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
   .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  /* API & usage panel (generated) */
+  .api-panel { margin: calc(var(--space-7) * -1 + var(--space-2)) 0 var(--space-10); padding: var(--space-6); background: var(--color-background-subtle); border: 1px solid var(--color-border-default); border-radius: var(--shape-container); display: flex; flex-direction: column; gap: var(--space-5); }
+  .api-prefer { display: flex; gap: var(--space-3); align-items: flex-start; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .api-prefer strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+  .api-prefer i, .api-prefer svg { width: 18px; height: 18px; color: var(--color-foreground-accent); flex-shrink: 0; margin-top: 1px; }
+  .api-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--space-5); }
+  .api-col { display: flex; flex-direction: column; gap: var(--space-2); align-items: flex-start; }
+  .api-k { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-1); }
+  .api-v { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: var(--color-brand-subtle); padding: 2px var(--space-2); border-radius: var(--radius-2xs); }
+  .api-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .api-tags code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-secondary); background: var(--color-background-surface); border: 1px solid var(--color-border-subtle); padding: 2px var(--space-2); border-radius: var(--radius-2xs); }
+  .api-ai-link { display: inline-flex; align-items: center; gap: var(--space-2); align-self: flex-start; font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-accent); text-decoration: none; }
+  .api-ai-link:hover { text-decoration: underline; }
+  .api-ai-link i, .api-ai-link svg { width: 16px; height: 16px; }
 
   .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
   .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
@@ -24,15 +39,15 @@
 
   .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
   .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
-  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
   .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
 
   .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
   .spec-head { padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); }
   .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
-  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
   .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
-  .spec-tag { display: inline-flex; align-items: center; padding: var(--space-1) var(--space-3); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); border-radius: var(--radius-pill); flex-shrink: 0; }
+  .spec-tag { display: inline-flex; align-items: center; padding: var(--space-1) var(--space-3); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); border-radius: var(--radius-pill); flex-shrink: 0; }
   .spec-canvas { padding: var(--space-10) var(--space-8); background: var(--color-background-canvas); background-image: linear-gradient(var(--color-border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; display: flex; flex-direction: column; gap: var(--space-7); align-items: stretch; }
   .spec-canvas.is-center { align-items: center; }
   .spec-canvas .canvas-row { display: flex; align-items: flex-start; gap: var(--space-8); flex-wrap: wrap; }
@@ -42,16 +57,16 @@
   .anatomy-canvas { display: flex; align-items: center; justify-content: center; min-height: 160px; }
   .anatomy-list ol { padding-left: 0; margin: 0; counter-reset: anat; list-style: none; }
   .anatomy-list li { counter-increment: anat; margin-bottom: var(--space-3); padding-left: var(--space-7); position: relative; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-sm); }
-  .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
+  .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
   .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
 
   .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; margin-top: var(--space-4); }
-  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
   .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
   .token-table tr:last-child td { border-bottom: none; }
-  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+  .token-table code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
 
-  .canvas-label { display: block; font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-4); }
+  .canvas-label { display: block; font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-4); }
 
   .dont-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--space-4); }
   .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
@@ -73,6 +88,8 @@
   .demo-btn.is-primary { background: var(--color-brand-primary-500); color: var(--color-foreground-on-solid); border-color: var(--color-brand-primary-500); }
   .demo-btn.is-primary:hover { background: var(--color-brand-primary-600); }
   .demo-btn i, .demo-btn svg { width: 14px; height: 14px; }
+  .mini-lbl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+  .mini-lbl code { text-transform: none; letter-spacing: 0; color: var(--color-foreground-accent); }
 </style>
 </head>
 <body>
@@ -87,6 +104,32 @@
     </div>
     <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Ready</span>
   </header>
+
+  <!-- @api-panel: generated by tools/gen-api.cjs from Stepper.d.ts + tools/api-meta.json -->
+  <section class="api-panel" aria-label="API and usage summary">
+    <div class="api-prefer"><i data-lucide="sparkles"></i><span><strong>Prefira:</strong> use o Stepper padrão para qualquer fluxo sequencial, finito e conhecido. Não recrie com pills, números soltos ou barras de progresso.</span></div>
+    <div class="api-grid">
+      <div class="api-col">
+        <div class="api-k">Import</div>
+        <code class="api-v">const { Stepper } = ATTRUS</code>
+        <code class="api-v">.stepper</code>
+      </div>
+      <div class="api-col">
+        <div class="api-k">Variants</div>
+        <div class="api-tags"><code>horizontal</code><code>vertical</code><code>compact</code><code>rule</code><code>collapseOnMobile</code><code>labelSize sm|md|lg</code></div>
+      </div>
+      <div class="api-col">
+        <div class="api-k">Key props</div>
+        <div class="api-tags"><code>steps[]</code><code>vertical?</code><code>compact?</code><code>labelSize?</code><code>rule?</code><code>collapseOnMobile?</code><code>onStepClick?</code></div>
+      </div>
+      <div class="api-col">
+        <div class="api-k">Step states</div>
+        <div class="api-tags"><code>todo</code><code>current</code><code>done</code><code>error</code><code>skipped</code></div>
+      </div>
+    </div>
+    <a class="api-ai-link" href="for-ai.html"><i data-lucide="bot"></i>Guia de precedência para IA</a>
+  </section>
+  <script type="application/json" id="ds-api">{"component":"Stepper","import":"const { Stepper } = ATTRUS","class":".stepper","status":"ready","prefer":"Use o Stepper padrão para fluxos sequenciais, finitos e conhecidos; não recrie com pills, números soltos ou barras de progresso.","variants":["horizontal","vertical","compact","rule","collapseOnMobile","labelSize"],"props":[{"name":"steps","type":"StepItem[]","required":true},{"name":"vertical","type":"boolean","default":false},{"name":"compact","type":"boolean","default":false},{"name":"labelSize","type":"'sm' | 'md' | 'lg'","default":"md"},{"name":"rule","type":"boolean","default":false},{"name":"collapseOnMobile","type":"boolean","default":false},{"name":"onStepClick","type":"(key: string) => void"}],"stepStates":["todo","current","done","error","skipped"]}</script>
 
   <nav class="doc-nav">
     <a href="#anatomy">01 Anatomy</a>
@@ -219,6 +262,64 @@
   <!-- ─── 04 VARIANTS ─── -->
   <section class="doc-section" id="variants">
     <h2><span class="num">04</span>Variants</h2>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Label size <code>labelSize</code> · <code>.stepper-label-sm|-md|-lg</code></h3><p>Type scale for the label and helper, on its own axis. Density (<code>.is-compact</code>) owns marker geometry; this owns type — so the two compose instead of competing, and a dense stepper can still carry a large label.</p></div>
+        <span class="spec-tag">Type axis</span>
+      </div>
+      <div class="spec-canvas" style="display:flex; flex-direction:column; gap:var(--space-7)">
+        <div>
+          <div class="mini-lbl">sm — label <code>--fs-xs</code> · helper <code>--fs-xxs</code></div>
+          <ol class="stepper stepper-label-sm" style="max-width: 560px;" aria-label="Wire transfer — small label">
+          <li class="step is-done"><a class="step-marker" href="#"><i data-lucide="check"></i></a><div class="step-body"><span class="step-label">Recipient</span><span class="step-help">Verified</span></div></li>
+          <li class="step is-current"><a class="step-marker" href="#" aria-current="step">2</a><div class="step-body"><span class="step-label">Amount</span><span class="step-help">FX locked</span></div></li>
+          <li class="step"><span class="step-marker">3</span><div class="step-body"><span class="step-label">Review</span><span class="step-help">Confirm & send</span></div></li>
+        </ol>
+        </div>
+        <div>
+          <div class="mini-lbl">md (default) — label <code>--fs-sm</code> · helper <code>--fs-xs</code></div>
+          <ol class="stepper" style="max-width: 560px;" aria-label="Wire transfer — default label">
+          <li class="step is-done"><a class="step-marker" href="#"><i data-lucide="check"></i></a><div class="step-body"><span class="step-label">Recipient</span><span class="step-help">Verified</span></div></li>
+          <li class="step is-current"><a class="step-marker" href="#" aria-current="step">2</a><div class="step-body"><span class="step-label">Amount</span><span class="step-help">FX locked</span></div></li>
+          <li class="step"><span class="step-marker">3</span><div class="step-body"><span class="step-label">Review</span><span class="step-help">Confirm & send</span></div></li>
+        </ol>
+        </div>
+        <div>
+          <div class="mini-lbl">lg — label <code>--fs-md</code> · helper <code>--fs-sm</code></div>
+          <ol class="stepper stepper-label-lg" style="max-width: 560px;" aria-label="Wire transfer — large label">
+          <li class="step is-done"><a class="step-marker" href="#"><i data-lucide="check"></i></a><div class="step-body"><span class="step-label">Recipient</span><span class="step-help">Verified</span></div></li>
+          <li class="step is-current"><a class="step-marker" href="#" aria-current="step">2</a><div class="step-body"><span class="step-label">Amount</span><span class="step-help">FX locked</span></div></li>
+          <li class="step"><span class="step-marker">3</span><div class="step-body"><span class="step-label">Review</span><span class="step-help">Confirm & send</span></div></li>
+        </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Composing with density</h3><p>An explicit <code>labelSize</code> outranks the type scale baked into <code>.is-compact</code>, so "small marker, large label" is reachable. Without that precedence the two axes would fight and density would always win.</p></div>
+        <span class="spec-tag">Both axes</span>
+      </div>
+      <div class="spec-canvas" style="display:flex; flex-direction:column; gap:var(--space-7)">
+        <div>
+          <div class="mini-lbl">compact + sm — the densest pairing</div>
+          <ol class="stepper is-compact stepper-label-sm" style="max-width: 560px;" aria-label="Wire transfer — compact with small label">
+          <li class="step is-done"><a class="step-marker" href="#"><i data-lucide="check"></i></a><div class="step-body"><span class="step-label">Recipient</span><span class="step-help">Verified</span></div></li>
+          <li class="step is-current"><a class="step-marker" href="#" aria-current="step">2</a><div class="step-body"><span class="step-label">Amount</span><span class="step-help">FX locked</span></div></li>
+          <li class="step"><span class="step-marker">3</span><div class="step-body"><span class="step-label">Review</span><span class="step-help">Confirm & send</span></div></li>
+        </ol>
+        </div>
+        <div>
+          <div class="mini-lbl">compact + lg — 24px marker, 13px label</div>
+          <ol class="stepper is-compact stepper-label-lg" style="max-width: 560px;" aria-label="Wire transfer — compact with large label">
+          <li class="step is-done"><a class="step-marker" href="#"><i data-lucide="check"></i></a><div class="step-body"><span class="step-label">Recipient</span><span class="step-help">Verified</span></div></li>
+          <li class="step is-current"><a class="step-marker" href="#" aria-current="step">2</a><div class="step-body"><span class="step-label">Amount</span><span class="step-help">FX locked</span></div></li>
+          <li class="step"><span class="step-marker">3</span><div class="step-body"><span class="step-label">Review</span><span class="step-help">Confirm & send</span></div></li>
+        </ol>
+        </div>
+      </div>
+    </div>
 
     <div class="spec">
       <div class="spec-head">

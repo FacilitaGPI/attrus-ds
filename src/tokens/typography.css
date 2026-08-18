@@ -7,16 +7,30 @@
      ============================================================ */
   --font-sans: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+  /* Optical size for the mono family. JetBrains Mono is drawn for code editors:
+     its x-height is 0.550 against Lato's 0.5065, so at the same px it reads ~8.6%
+     larger in mixed UI text. Every rule that sets --font-mono also sets
+     font-size-adjust to this value, which scales the glyph to Lato's x-height.
+     Swapping the mono family = change the two lines above/below (and a product
+     theme may override the pair). Set to `none` to disable the whole mechanism. */
+  --font-mono-adjust: 0.5065;  /* @kind font */
   --font-display: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Weights (per manual) */
   --w-light: 300;  /* @kind font */
   --w-regular: 400;  /* @kind font */
-  --w-medium: 500;  /* @kind font */  /* Lato doesn't ship 500 natively; maps to 400 */
-  --w-semibold: 600;  /* @kind font */
   --w-bold: 700;  /* @kind font */
-  --w-extrabold: 800;  /* @kind font */
   --w-black: 900;  /* @kind font */
+  /* RETIRED — Lato has no Medium, SemiBold or ExtraBold. Requesting them from
+     Google Fonts returns nothing and the browser rounds silently (500→400,
+     600→700, 800→900), so the scale advertised 7 steps while rendering 4.
+     --w-semibold was the most used token in the system (99 rules) and rendered
+     BOLD everywhere, which is why the UI read heavier than the scale implied.
+     Kept as deprecated aliases so a consuming project does not break; new code
+     must use one of the four real weights above. */
+  --w-medium: var(--w-regular);     /* DEPRECATED → 400 */
+  --w-semibold: var(--w-regular);   /* DEPRECATED → 400 */
+  --w-extrabold: var(--w-black);    /* DEPRECATED → 900 */
 
   /* Type scale  (px) */
   --fs-xxs: 10px;
@@ -33,6 +47,7 @@
   --fs-6xl: 40px;
   --fs-7xl: 56px;
   --fs-8xl: 72px;
+  --fs-9xl: 96px;  /* marketing/editorial hero — the scale used to stop at 72 */
 
   /* Line heights */
   --lh-tight:   1.15;  /* @kind font */
@@ -42,6 +57,7 @@
 
   /* Letter spacing — per Lato manual rules */
   --ls-display: -0.03em;  /* @kind font */  /* 32–80px headlines */
+  --ls-display-xl: -0.04em;  /* @kind font */  /* >80px — -3% reads loose at hero sizes */
   --ls-tight:   -0.01em;  /* @kind font */  /* large numerics / stat values — between display and body */
   --ls-title:   -0.015em;  /* @kind font */ /* 16–32px titles (manual says -5%, but -5% looks tight on screens; using -1.5%) */
   --ls-body:    0em;  /* @kind font */      /* <16px body */

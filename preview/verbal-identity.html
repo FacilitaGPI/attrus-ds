@@ -16,7 +16,7 @@
   .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
   .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
   .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
-  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
   .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
 
   .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
@@ -25,7 +25,7 @@
 
   .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
   .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
-  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
   .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
 
   /* NAMING — large display of ATTRUS + rules */
@@ -62,7 +62,7 @@
   .naming-rule.ok i, .naming-rule.ok svg { color: var(--color-feedback-success-foreground); }
   .naming-rule.no i, .naming-rule.no svg { color: var(--color-feedback-danger-foreground); }
   .naming-rule .form {
-    font-family: var(--font-mono); font-weight: var(--w-semibold);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-semibold);
     color: var(--color-foreground-default); margin-right: var(--space-2);
   }
   .naming-rule.no .form { text-decoration: line-through; color: var(--color-foreground-muted); }
@@ -72,7 +72,7 @@
   .meanings { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
   @media (max-width: 720px) { .meanings { grid-template-columns: 1fr; } }
   .meaning-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-6); }
-  .meaning-card .lbl { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+  .meaning-card .lbl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
   .meaning-card h3 { font-size: var(--fs-lg); font-weight: var(--w-bold); margin: 0 0 var(--space-2); letter-spacing: var(--ls-title); }
   .meaning-card p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
 
@@ -90,7 +90,7 @@
   .tagline-hero::before { content: ""; position: absolute; inset: 0; background: var(--grad-radial-glow); pointer-events: none; }
   .tagline-hero > * { position: relative; z-index: 1; }
   .tagline-hero .eyebrow {
-    font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold);
     letter-spacing: var(--ls-caps); text-transform: uppercase;
     color: var(--color-foreground-inverse-secondary); margin-bottom: var(--space-5);
   }
@@ -107,7 +107,7 @@
   .tagline-rules { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
   @media (max-width: 720px) { .tagline-rules { grid-template-columns: 1fr; } }
   .rule-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
-  .rule-card .head { padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: center; gap: var(--space-2); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .rule-card .head { padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: center; gap: var(--space-2); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
   .rule-card.do .head { color: var(--color-feedback-success-foreground); background: var(--color-feedback-success-background); }
   .rule-card.dont .head { color: var(--color-feedback-danger-foreground); background: var(--color-feedback-danger-background); }
   .rule-card .head i, .rule-card .head svg { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
@@ -127,7 +127,7 @@
     box-shadow: var(--shadow-xs);
   }
   .hero-line .num {
-    font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold);
     letter-spacing: var(--ls-caps); color: var(--color-foreground-muted);
     flex-shrink: 0; min-width: 28px;
   }
@@ -146,7 +146,7 @@
   .principles li { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); padding-left: var(--space-5); position: relative; }
   .principles li::before { content: "↘"; position: absolute; left: 0; color: var(--color-foreground-accent); font-weight: var(--w-bold); }
   .principles strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
-  .principles code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: var(--color-brand-primary-50); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+  .principles code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: var(--color-brand-primary-50); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
 
   /* TONE OF VOICE — 4 personality traits */
   .tone-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
@@ -166,10 +166,10 @@
     padding-right: var(--space-5);
   }
   @media (max-width: 880px) { .tone-card .head { border-right: none; border-bottom: 1px solid var(--color-border-subtle); padding-right: 0; padding-bottom: var(--space-4); } }
-  .tone-card .ord { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); color: var(--color-foreground-muted); margin-bottom: var(--space-2); }
+  .tone-card .ord { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); color: var(--color-foreground-muted); margin-bottom: var(--space-2); }
   .tone-card h3 { font-size: var(--fs-2xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-3); color: var(--color-foreground-default); }
   .tone-card .how {
-    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
     letter-spacing: var(--ls-caps); text-transform: uppercase;
     color: var(--color-foreground-muted); margin-bottom: var(--space-3); margin-top: var(--space-3);
   }
@@ -177,7 +177,7 @@
   .tone-card ul li { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); padding-left: var(--space-4); position: relative; }
   .tone-card ul li::before { content: "—"; position: absolute; left: 0; color: var(--color-foreground-accent); }
   .tone-card .body .lex-title {
-    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
     letter-spacing: var(--ls-caps); text-transform: uppercase;
     color: var(--color-foreground-muted); margin-bottom: var(--space-2);
   }
@@ -192,7 +192,7 @@
     background: var(--color-brand-primary-50);
     color: var(--color-brand-primary-700);
     border-radius: var(--radius-pill);
-    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
   }
 
   /* VOCABULARY */
@@ -202,7 +202,7 @@
   .vocab-col .head {
     padding: var(--space-4) var(--space-5);
     display: flex; align-items: center; gap: var(--space-2);
-    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
     letter-spacing: var(--ls-caps); text-transform: uppercase;
     border-bottom: 1px solid var(--color-border-subtle);
   }
@@ -213,7 +213,7 @@
   .vocab-group { margin-bottom: var(--space-5); }
   .vocab-group:last-child { margin-bottom: 0; }
   .vocab-group h4 {
-    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
     letter-spacing: var(--ls-caps); text-transform: uppercase;
     color: var(--color-foreground-muted); margin: 0 0 var(--space-2);
   }
@@ -265,17 +265,17 @@
   .compare-cell.do i, .compare-cell.do svg { color: var(--color-feedback-success-foreground); }
   .compare-cell.dont i, .compare-cell.dont svg { color: var(--color-feedback-danger-foreground); }
   .compare-cell .body { font-size: var(--fs-sm); line-height: var(--lh-relaxed); color: var(--color-foreground-default); }
-  .compare-cell .lbl { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; opacity: 0.6; margin-bottom: var(--space-2); }
+  .compare-cell .lbl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; opacity: 0.6; margin-bottom: var(--space-2); }
   .compare-cell.do .lbl { color: var(--color-feedback-success-foreground); opacity: 1; }
   .compare-cell.dont .lbl { color: var(--color-feedback-danger-foreground); opacity: 1; }
 
   /* USAGE MODELS */
   .usage-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-4); }
   .usage-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
-  .usage-card .lbl { padding: var(--space-3) var(--space-5); background: var(--color-background-subtle); border-bottom: 1px solid var(--color-border-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); display: flex; align-items: center; gap: var(--space-2); }
+  .usage-card .lbl { padding: var(--space-3) var(--space-5); background: var(--color-background-subtle); border-bottom: 1px solid var(--color-border-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); display: flex; align-items: center; gap: var(--space-2); }
   .usage-card .lbl i, .usage-card .lbl svg { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
   .usage-card .quote { padding: var(--space-5) var(--space-6); font-size: var(--fs-md); color: var(--color-foreground-default); line-height: var(--lh-relaxed); font-style: italic; }
-  .usage-card .tone { padding: 0 var(--space-6) var(--space-5); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-accent); }
+  .usage-card .tone { padding: 0 var(--space-6) var(--space-5); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-accent); }
 </style>
 </head>
 <body>

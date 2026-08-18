@@ -367,7 +367,7 @@ export const Otp: React.FC<OtpProps> = ({ length = 6, value, onChange, error = f
   );
 };
 
-export interface FileDropProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface FileDropProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Called with the dropped/browsed files. */
   onFiles?: (files: File[]) => void;
   multiple?: boolean;

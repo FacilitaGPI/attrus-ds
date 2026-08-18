@@ -22,6 +22,7 @@
 }
 .ds-section-title .num {
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-md);
   font-weight: var(--w-regular);
   color: var(--color-foreground-muted);
@@ -36,6 +37,7 @@
 }
 .ds-section-meta {
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xs);
   color: var(--color-foreground-muted);
   text-transform: uppercase;
@@ -93,8 +95,9 @@
 .ds-card-icon i, .ds-card-icon svg { width: 18px; height: 18px; stroke-width: var(--icon-stroke); }
 .ds-card-tag {
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xxs);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   text-transform: uppercase;
   letter-spacing: var(--ls-caps);
   color: var(--color-foreground-muted);
@@ -127,6 +130,7 @@
 }
 .ds-card-foot {
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xxs);
   color: var(--color-foreground-muted);
   text-transform: uppercase;
@@ -141,3 +145,12 @@
 @media (max-width: 720px) {
   .ds-section-head { flex-direction: column; align-items: flex-start; }
 }
+
+/* ============================================================
+   BENCH CHROME — clearance for the fixed back pill
+   ============================================================
+   The .bench-back pill is position:fixed at top:16px and 38px tall, so it ends
+   at y=54 and used to sit on top of every bench <h1>. Cleared here once rather
+   than in 24 local <style> blocks — those declare .bench without padding-top,
+   so this rule applies without !important. */
+.bench { padding-top: var(--space-8); }

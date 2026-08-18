@@ -74,7 +74,7 @@
 }
 .dt-toolbar .count {
   color: var(--color-foreground-default);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
 }
 .dt-toolbar .count .total {
   color: var(--color-foreground-muted);
@@ -106,6 +106,7 @@
 }
 .dt-pagination .range {
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xs);
   color: var(--color-foreground-muted);
 }
@@ -126,8 +127,9 @@
   background: var(--color-background-surface);
   border-radius: var(--radius-sm);
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xs);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   color: var(--color-foreground-secondary);
   cursor: pointer;
   transition:
@@ -165,8 +167,9 @@
    ---------------------------------------------------------------- */
 .dt thead th {
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xxs);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   color: var(--color-foreground-muted);
   text-transform: uppercase;
   letter-spacing: var(--ls-caps);
@@ -244,7 +247,7 @@
 }
 .dt-cell-stack > .pri {
   font-size: var(--fs-md);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   color: var(--color-foreground-default);
   white-space: nowrap;
   overflow: hidden;
@@ -257,6 +260,7 @@
 }
 .dt-cell-stack > .sub.mono {
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xs);
 }
 
@@ -309,6 +313,10 @@
   white-space: nowrap;
   letter-spacing: -0.01em;
 }
+/* Header label follows the values (beats `.dt thead th { text-align:left }`
+   by specificity); stacked cells in a numeric column align flex to the right. */
+.dt thead th.dt-num { text-align: right; }
+.dt td.dt-num .dt-cell-stack { align-items: flex-end; }
 .dt-num .ccy {
   color: var(--color-foreground-muted);
   font-weight: var(--w-regular);
@@ -322,6 +330,7 @@
 /* IDs / hashes */
 .dt-id {
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xs);
   color: var(--color-foreground-muted);
   white-space: nowrap;
@@ -415,7 +424,7 @@
 .dt-empty .ttl {
   display: block;
   font-size: var(--fs-base);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   color: var(--color-foreground-default);
   margin-bottom: var(--space-2);
 }
@@ -459,6 +468,7 @@
   background: var(--color-background-subtle);
   padding: var(--space-3) var(--space-5);
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xxs);
   font-weight: var(--w-regular);
   color: var(--color-foreground-muted);
@@ -566,8 +576,9 @@
     content: attr(data-label);
     flex-shrink: 0;
     font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
     font-size: var(--fs-xxs);
-    font-weight: var(--w-semibold);
+    font-weight: var(--w-regular);
     text-transform: uppercase;
     letter-spacing: var(--ls-caps);
     color: var(--color-foreground-muted);
@@ -582,7 +593,7 @@
     justify-content: flex-start;
     text-align: left;
     font-size: var(--fs-base);
-    font-weight: var(--w-semibold);
+    font-weight: var(--w-regular);
     padding-top: var(--space-3);
   }
   /* The lead block (avatar + name + country/doc) reads left-to-right */
@@ -599,4 +610,154 @@
   .dt-responsive .dt tbody tr.dt-skeleton { border: 0; box-shadow: none; padding: 0; }
   .dt-responsive .dt tbody tr.dt-empty td { border: 0; text-align: center; }
   .dt-responsive .dt tbody tr.dt-empty td::before { content: none; }
+}
+
+/* ----------------------------------------------------------------
+   12. SUBROWS — a row bound to the row above it
+   ----------------------------------------------------------------
+   For a line item that belongs to another line item and shares its columns:
+   an ACH fee under its payment, a refund under its charge, a leg under its
+   transfer. This is hierarchy (tree rows), NOT a detail panel — the child
+   fills the same columns as the parent, so the two read as one block.
+
+   Structure:
+     <tr class="has-subrows">   parent — loses its bottom border, so the pair glues
+     <tr class="dt-subrow">     child  — sunken bg, one type step down, no border
+     <tr class="dt-subrow is-last">  last child of the group — restores the border
+
+   Indent scales by depth through one token, so nesting costs no new rules:
+     <tr class="dt-subrow" data-depth="2">
+
+   ROW STATES DO NOT CASCADE IN CSS — a sibling selector cannot read the
+   previous row's class. The component echoes is-muted / is-error / is-selected
+   onto each subrow; without that the child visually detaches from its parent.
+
+   ACCESSIBILITY — native table semantics are kept on purpose. role="treegrid"
+   is the formally correct role for hierarchical rows, but it is a PROMISE of a
+   keyboard model (arrow-key cell/row navigation, aria-level, aria-expanded,
+   posinset/setsize). Claiming it without implementing that model is worse for
+   a screen-reader user than a plain table. Since these subrows are always
+   visible and one level deep, hierarchy is conveyed in CONTENT instead: the
+   lead cell carries a visually-hidden prefix naming its parent. Revisit
+   treegrid only if the rows ever become collapsible and keyboard-navigable.
+   ---------------------------------------------------------------- */
+
+/* Glue: the parent gives up its bottom border so no line splits the pair */
+.dt tbody tr.has-subrows > td { border-bottom: 0; }
+
+.dt tbody tr.dt-subrow > td {
+  background: var(--color-background-subtle);
+  border-bottom: 0;
+  padding-top: var(--space-2-5);
+  padding-bottom: var(--space-2-5);
+  font-size: var(--fs-sm);
+  color: var(--color-foreground-secondary);
+}
+/* The group closes with a normal rule */
+.dt tbody tr.dt-subrow.is-last > td { border-bottom: 1px solid var(--color-border-default); }
+
+/* Hover reads on the whole group, not on one row */
+.dt tbody tr.has-subrows.is-clickable:hover > td,
+.dt tbody tr.has-subrows.is-clickable:hover + tr.dt-subrow > td {
+  background: var(--color-background-hover);
+}
+
+/* Indent — one token, multiplied by depth */
+/* --subrow-indent is a real token (declared in colors_and_type.css §7 spacing);
+   depth multiplies it in the calc, so no custom property is declared under a
+   component selector and N levels still cost one rule each. */
+.dt tbody tr.dt-subrow > td:first-child {
+  padding-left: calc(var(--space-5) + var(--subrow-indent) * 1);
+}
+.dt tbody tr.dt-subrow[data-depth="2"] > td:first-child {
+  padding-left: calc(var(--space-5) + var(--subrow-indent) * 2);
+}
+.dt tbody tr.dt-subrow[data-depth="3"] > td:first-child {
+  padding-left: calc(var(--space-5) + var(--subrow-indent) * 3);
+}
+
+/* Lead cell — connector glyph + content. The glyph is a ::before so it is not
+   copied with the text and not announced as a character. */
+.dt-subrow-lead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.dt-subrow-lead::before {
+  content: "\21B3";
+  color: var(--color-foreground-placeholder);
+  font-size: var(--fs-sm);
+  line-height: 1;
+  flex-shrink: 0;
+}
+/* Small square icon tile, quieter than the parent's .ic-tile */
+.dt-subrow-lead > .ic-mini {
+  width: 20px; height: 20px;
+  border-radius: var(--radius-2xs);
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border-default);
+  color: var(--color-foreground-muted);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.dt-subrow-lead > .ic-mini > i,
+.dt-subrow-lead > .ic-mini > svg { width: 11px; height: 11px; stroke-width: var(--icon-stroke); }
+.dt-subrow-lead > .txt {
+  color: var(--color-foreground-default);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* Neutral tag for the item kind (Fee, Refund, Leg) */
+.dt-subrow-tag {
+  font-size: var(--fs-xxs);
+  color: var(--color-foreground-muted);
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-2xs);
+  padding: 1px var(--space-2);
+  flex-shrink: 0;
+}
+/* Status text on a subrow is plain muted copy, not a pill — the parent owns the
+   status signal and two pills in a group compete. */
+.dt-subrow-status { color: var(--color-foreground-muted); font-size: var(--fs-xs); flex-shrink: 0; }
+
+/* Row states echoed from the parent by the component */
+.dt tbody tr.dt-subrow.is-muted > td { opacity: .55; }
+.dt tbody tr.dt-subrow.is-selected > td { background: var(--color-background-selected); }
+.dt tbody tr.dt-subrow.is-error > td { background: color-mix(in srgb, var(--color-feedback-danger-background) 40%, transparent); }
+
+/* Inverse / dark */
+.dt.on-inverse tbody tr.dt-subrow > td,
+.dark .dt tbody tr.dt-subrow > td {
+  background: color-mix(in srgb, var(--color-pure-white) 3%, transparent);
+  color: var(--color-foreground-inverse-secondary);
+}
+.dt.on-inverse .dt-subrow-lead > .txt,
+.dark .dt .dt-subrow-lead > .txt { color: var(--color-foreground-inverse-default); }
+.dt.on-inverse .dt-subrow-lead > .ic-mini,
+.dark .dt .dt-subrow-lead > .ic-mini {
+  background: transparent;
+  border-color: var(--color-border-inverse);
+  color: var(--color-foreground-inverse-muted);
+}
+.dt.on-inverse .dt-subrow-tag,
+.dark .dt .dt-subrow-tag {
+  background: transparent;
+  border-color: var(--color-border-inverse);
+  color: var(--color-foreground-inverse-muted);
+}
+
+/* Mobile — inside the card stack the child becomes a nested block, still
+   visibly hanging off its parent card. */
+@media (max-width: 900px) {
+  .dt-responsive .dt tbody tr.dt-subrow {
+    margin: calc(-1 * var(--space-3)) var(--space-3) var(--space-3);
+    border-radius: var(--shape-control);
+    border: 1px solid var(--color-border-default);
+    border-top: 0;
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+  }
+  .dt-responsive .dt tbody tr.dt-subrow > td { border-bottom: 0; padding-left: var(--space-4); }
+  .dt-responsive .dt tbody tr.dt-subrow > td::before { display: none; }
 }

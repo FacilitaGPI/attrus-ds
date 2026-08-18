@@ -36,7 +36,7 @@
     color: var(--color-feedback-success-foreground);
     border: 1px solid var(--color-feedback-success-border);
     border-radius: var(--radius-pill);
-    font-family: var(--font-mono); font-size: var(--fs-xs);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs);
     font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
   }
   .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
@@ -62,7 +62,7 @@
   /* sections */
   .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
   .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
-  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
   .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
 
   /* spec card */
@@ -82,7 +82,7 @@
   }
   .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
   .spec-head h3 code {
-    font-family: var(--font-mono); font-size: var(--fs-md);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md);
     font-weight: var(--w-medium); color: var(--color-foreground-accent);
     background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
     padding: var(--space-1) var(--space-3);
@@ -90,7 +90,7 @@
   }
   .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
   .spec-tag {
-    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs);
     font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
     color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0;
   }
@@ -123,11 +123,11 @@
     width: 18px; height: 18px;
     background: var(--color-foreground-default); color: var(--color-foreground-on-solid);
     border-radius: var(--radius-pill);
-    font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-bold);
     display: flex; align-items: center; justify-content: center;
   }
   .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
-  .anatomy-list li code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+  .anatomy-list li code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
 
   /* ──────────────────────── HERO COMPONENT ──────────────────────── */
   .hero-base {
@@ -224,7 +224,7 @@
     letter-spacing: var(--ls-title);
   }
   .hero-tile .d {
-    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs);
     color: var(--color-foreground-inverse-muted);
     margin-top: 2px; display: flex; align-items: center; gap: 4px;
   }
@@ -292,10 +292,10 @@
 
   /* token table */
   .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
-  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
   .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
   .token-table tr:last-child td { border-bottom: 0; }
-  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+  .token-table code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
 
   /* don'ts */
   .dont-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-4); }

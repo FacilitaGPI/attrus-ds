@@ -15,28 +15,57 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.display-xl { font-family: var(--font-display); font-weight: var(--w-black);    font-size: var(--fs-8xl); line-height: var(--lh-tight); letter-spacing: var(--ls-display); }
-.display-lg { font-family: var(--font-display); font-weight: var(--w-extrabold);font-size: var(--fs-7xl); line-height: var(--lh-tight); letter-spacing: var(--ls-display); }
+.display-hero-xl { font-family: var(--font-display); font-weight: var(--w-black); font-size: var(--fs-9xl); line-height: 0.98; letter-spacing: var(--ls-display-xl); }
+.display-hero    { font-family: var(--font-display); font-weight: var(--w-black); font-size: var(--fs-8xl); line-height: 1.02; letter-spacing: var(--ls-display-xl); }
+.display-xl { font-family: var(--font-display); font-weight: var(--w-black);    font-size: var(--fs-8xl); line-height: var(--lh-tight); letter-spacing: var(--ls-display); }.display-lg { font-family: var(--font-display); font-weight: var(--w-black);font-size: var(--fs-7xl); line-height: var(--lh-tight); letter-spacing: var(--ls-display); }
 .display    { font-family: var(--font-display); font-weight: var(--w-bold);     font-size: var(--fs-6xl); line-height: var(--lh-tight); letter-spacing: var(--ls-display); }
 
 h1, .h1 { font-weight: var(--w-bold);     font-size: var(--fs-5xl); line-height: var(--lh-tight); letter-spacing: var(--ls-display); }
 h2, .h2 { font-weight: var(--w-bold);     font-size: var(--fs-4xl); line-height: var(--lh-snug);  letter-spacing: var(--ls-title); }
 h3, .h3 { font-weight: var(--w-bold);     font-size: var(--fs-3xl); line-height: var(--lh-snug);  letter-spacing: var(--ls-title); }
-h4, .h4 { font-weight: var(--w-semibold); font-size: var(--fs-2xl); line-height: var(--lh-snug);  letter-spacing: var(--ls-title); }
-h5, .h5 { font-weight: var(--w-semibold); font-size: var(--fs-xl);  line-height: var(--lh-snug);  letter-spacing: var(--ls-title); }
-h6, .h6 { font-weight: var(--w-semibold); font-size: var(--fs-lg);  line-height: var(--lh-snug);  letter-spacing: var(--ls-body);  }
+h4, .h4 { font-weight: var(--w-regular); font-size: var(--fs-2xl); line-height: var(--lh-snug);  letter-spacing: var(--ls-title); }
+h5, .h5 { font-weight: var(--w-regular); font-size: var(--fs-xl);  line-height: var(--lh-snug);  letter-spacing: var(--ls-title); }
+h6, .h6 { font-weight: var(--w-regular); font-size: var(--fs-lg);  line-height: var(--lh-snug);  letter-spacing: var(--ls-body);  }
 
 .body-lg  { font-size: var(--fs-lg);  line-height: var(--lh-relaxed); }
 .body     { font-size: var(--fs-base);line-height: var(--lh-normal);  }
 .body-sm  { font-size: var(--fs-md);  line-height: var(--lh-normal);  }
 .caption  { font-size: var(--fs-sm);  line-height: var(--lh-normal); color: var(--color-foreground-muted); }
-.overline { font-size: var(--fs-xs);  line-height: var(--lh-normal); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); font-weight: var(--w-semibold); }
-.label    { font-size: var(--fs-sm);  font-weight: var(--w-semibold); letter-spacing: var(--ls-label); }
+.overline { font-size: var(--fs-xs);  line-height: var(--lh-normal); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); font-weight: var(--w-regular); }
+.overline-mono { font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); line-height: var(--lh-normal); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); font-weight: var(--w-regular); }
+.label    { font-size: var(--fs-sm);  font-weight: var(--w-regular); letter-spacing: var(--ls-label); }
 
-.mono, code, pre, kbd { font-family: var(--font-mono); font-size: .92em; }
+.mono, code, pre, kbd { font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust); font-size: .92em; }
 
 /* Numbers that must line up in tables */
 .tabular { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' on, 'lnum' on; }
+
+/* ============================================================
+   ENTRANCE CHOREOGRAPHY — .enter + .enter-1..5
+   Fade/rise for elements arriving on screen. Use .enter alone, or the
+   numbered variants on siblings for a staggered reveal.
+   ============================================================ */
+@keyframes ds-enter {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+.enter {
+  animation: ds-enter var(--duration-entrance) var(--ease-entrance) both;
+}
+.enter-1 { animation: ds-enter var(--duration-entrance) var(--ease-entrance) both; animation-delay: calc(var(--stagger-base) * 0); }
+.enter-2 { animation: ds-enter var(--duration-entrance) var(--ease-entrance) both; animation-delay: calc(var(--stagger-base) * 1); }
+.enter-3 { animation: ds-enter var(--duration-entrance) var(--ease-entrance) both; animation-delay: calc(var(--stagger-base) * 2); }
+.enter-4 { animation: ds-enter var(--duration-entrance) var(--ease-entrance) both; animation-delay: calc(var(--stagger-base) * 3); }
+.enter-5 { animation: ds-enter var(--duration-entrance) var(--ease-entrance) both; animation-delay: calc(var(--stagger-base) * 4); }
+@media (prefers-reduced-motion: reduce) {
+  .enter, .enter-1, .enter-2, .enter-3, .enter-4, .enter-5 {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
 
 /* Utility text colors */
 .fg-default     { color: var(--color-foreground-default); }
@@ -67,7 +96,7 @@ h6, .h6 { font-weight: var(--w-semibold); font-size: var(--fs-lg);  line-height:
   gap: var(--space-2);
   font-family: var(--font-sans);
   font-size: var(--fs-sm);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   letter-spacing: 0;
   text-transform: none;
   color: var(--color-foreground-default);

@@ -20,7 +20,7 @@
   .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
   .doc-header p  { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
   .doc-meta { display:flex; gap: var(--space-3); flex-shrink:0; }
-  .doc-meta-pill { display:inline-flex; align-items:center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border:1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill { display:inline-flex; align-items:center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border:1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
   .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
 
   .doc-nav { display:flex; flex-wrap:wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
@@ -29,17 +29,17 @@
 
   .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
   .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
-  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
   .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
-  .lead code, .spec-head p code, .copy code { font-family: var(--font-mono); font-size: 0.92em; color: var(--color-foreground-accent); background: var(--color-background-selected); padding: 1px var(--space-2); border-radius: var(--radius-2xs); }
+  .lead code, .spec-head p code, .copy code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: 0.92em; color: var(--color-foreground-accent); background: var(--color-background-selected); padding: 1px var(--space-2); border-radius: var(--radius-2xs); }
 
   /* spec card */
   .spec { background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow:hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
   .spec-head { display:flex; align-items:flex-start; justify-content:space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
   .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
-  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: var(--color-background-selected); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: var(--color-background-selected); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
   .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
-  .spec-head .tag { display:inline-flex; align-items:center; gap: var(--space-2); padding: var(--space-1) var(--space-3); background: var(--color-background-subtle); color: var(--color-foreground-secondary); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; border-radius: var(--radius-pill); flex-shrink:0; }
+  .spec-head .tag { display:inline-flex; align-items:center; gap: var(--space-2); padding: var(--space-1) var(--space-3); background: var(--color-background-subtle); color: var(--color-foreground-secondary); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; border-radius: var(--radius-pill); flex-shrink:0; }
 
   .spec-canvas { padding: var(--space-7) var(--space-6); background: var(--color-background-canvas); display:flex; flex-wrap:wrap; gap: var(--space-5); align-items:flex-start; border-bottom: 1px solid var(--color-border-subtle); }
   .spec-canvas.col   { flex-direction:column; align-items:stretch; }
@@ -49,7 +49,7 @@
   .spec-canvas.grid-3 { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-5); }
 
   .spec-foot { display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); padding: var(--space-5) var(--space-6); background: var(--color-background-surface); }
-  .spec-foot h4 { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); margin: 0 0 var(--space-3); }
+  .spec-foot h4 { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); margin: 0 0 var(--space-3); }
   .spec-foot ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap: var(--space-2); }
   .spec-foot li { font-size: var(--fs-sm); color: var(--color-foreground-secondary); display:flex; gap: var(--space-2); align-items:flex-start; }
   .spec-foot li i, .spec-foot li svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); flex-shrink:0; margin-top: 2px; }
@@ -60,17 +60,17 @@
   .anatomy { background: var(--color-background-canvas); padding: var(--space-10) var(--space-8); border-radius: var(--radius-lg); border: 1px solid var(--color-border-default); display:flex; flex-direction:column; align-items:center; gap: var(--space-8); margin-bottom: var(--space-5); box-shadow: var(--shadow-xs); }
   .anatomy-callouts { display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--space-6); width:100%; max-width:880px; }
   .anatomy-callout { display:flex; flex-direction:column; align-items:center; gap: var(--space-2); text-align:center; }
-  .anatomy-callout .num { width:22px; height:22px; border-radius: var(--radius-pill); background: var(--color-foreground-accent); color: var(--color-foreground-on-solid); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-bold); display:inline-flex; align-items:center; justify-content:center; }
-  .anatomy-callout .name { font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-default); text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-semibold); }
+  .anatomy-callout .num { width:22px; height:22px; border-radius: var(--radius-pill); background: var(--color-foreground-accent); color: var(--color-foreground-on-solid); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-bold); display:inline-flex; align-items:center; justify-content:center; }
+  .anatomy-callout .name { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-default); text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-semibold); }
   .anatomy-callout .desc { font-size: var(--fs-xs); color: var(--color-foreground-muted); line-height: var(--lh-snug); max-width: 22ch; }
 
   /* token table */
   .token-table { width:100%; border-collapse:collapse; background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-md); overflow:hidden; box-shadow: var(--shadow-xs); font-size: var(--fs-sm); }
   .token-table th, .token-table td { padding: var(--space-3) var(--space-5); text-align:left; border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
   .token-table tr:last-child td { border-bottom: 0; }
-  .token-table th { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); }
-  .token-table td.k { font-family: var(--font-mono); color: var(--color-foreground-accent); white-space: nowrap; }
-  .token-table td.v { font-family: var(--font-mono); color: var(--color-foreground-secondary); white-space: nowrap; }
+  .token-table th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); }
+  .token-table td.k { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); color: var(--color-foreground-accent); white-space: nowrap; }
+  .token-table td.v { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); color: var(--color-foreground-secondary); white-space: nowrap; }
 
   /* don'ts grid */
   .dont-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-5); }
@@ -141,7 +141,7 @@
             <p style="margin:0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);">Last activity 4 hours ago. KYC validated, sanctions clear, beneficial ownership on file. R$ 1.2M in the last 30 days across 14 transactions.</p>
           </div>
           <footer class="card-footer">
-            <span style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Updated 2026-04-12</span>
+            <span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Updated 2026-04-12</span>
             <button class="btn btn-tertiary btn-sm">View record<i data-lucide="arrow-right"></i></button>
           </footer>
         </article>
@@ -207,7 +207,7 @@
     <article class="spec">
       <header class="spec-head"><div><h3>Sunken <code>.card.sunken</code></h3><p>Inset receipt-style surface. Use for read-only summaries, totals, JSON/code panels — anything that should feel "carved in".</p></div><span class="tag">sunken</span></header>
       <div class="spec-canvas">
-        <div style="width: 100%; max-width: 360px;"><article class="card sunken"><div style="display:flex; flex-direction:column; gap: var(--space-2);"><div style="display:flex; justify-content:space-between; font-size: var(--fs-sm); color: var(--color-foreground-secondary);"><span>Subtotal</span><span class="num-big" style="font-size: var(--fs-md); font-weight: var(--w-medium);">R$ 184,200.00</span></div><div style="display:flex; justify-content:space-between; font-size: var(--fs-sm); color: var(--color-foreground-secondary);"><span>Network fee</span><span style="font-family: var(--font-mono);">R$ 0.00</span></div><div style="height:1px; background: var(--color-border-subtle); margin: var(--space-2) 0;"></div><div style="display:flex; justify-content:space-between; font-size: var(--fs-md); font-weight: var(--w-semibold);"><span>Total</span><span class="num-big" style="font-size: var(--fs-lg);">R$ 184,200.00</span></div></div></article></div>
+        <div style="width: 100%; max-width: 360px;"><article class="card sunken"><div style="display:flex; flex-direction:column; gap: var(--space-2);"><div style="display:flex; justify-content:space-between; font-size: var(--fs-sm); color: var(--color-foreground-secondary);"><span>Subtotal</span><span class="num-big" style="font-size: var(--fs-md); font-weight: var(--w-medium);">R$ 184,200.00</span></div><div style="display:flex; justify-content:space-between; font-size: var(--fs-sm); color: var(--color-foreground-secondary);"><span>Network fee</span><span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);">R$ 0.00</span></div><div style="height:1px; background: var(--color-border-subtle); margin: var(--space-2) 0;"></div><div style="display:flex; justify-content:space-between; font-size: var(--fs-md); font-weight: var(--w-semibold);"><span>Total</span><span class="num-big" style="font-size: var(--fs-lg);">R$ 184,200.00</span></div></div></article></div>
       </div>
     </article>
 
@@ -262,7 +262,7 @@
               <p style="margin:0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);">Holding pending compliance review. The counterparty has been pre-approved; this is a routine secondary check on transactions over R$ 100,000.</p>
             </div>
             <footer class="card-footer">
-              <span style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Created 2 hours ago</span>
+              <span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Created 2 hours ago</span>
               <div style="display:flex; gap: var(--space-2);">
                 <button class="btn btn-tertiary btn-sm">Cancel</button>
                 <button class="btn btn-primary btn-sm">Approve<i data-lucide="check"></i></button>
@@ -300,7 +300,7 @@
               <div style="flex:1; height: 94%; background: var(--color-brand-secondary-600); border-radius: var(--radius-2xs);"></div>
             </div>
             <footer class="card-footer">
-              <span style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Source · BCB</span>
+              <span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Source · BCB</span>
               <button class="btn btn-tertiary btn-sm">View full chart<i data-lucide="arrow-right"></i></button>
             </footer>
           </article>
@@ -363,7 +363,7 @@
             <span class="pill warning sm"><span class="dot"></span>Under review</span>
           </header>
           <div class="card-body"><p style="margin:0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);">Awaiting beneficial-ownership documents. 3 of 4 items received.</p></div>
-          <footer class="card-footer"><span style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Submitted 5d ago</span><button class="btn btn-tertiary btn-sm">Open<i data-lucide="arrow-right"></i></button></footer>
+          <footer class="card-footer"><span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Submitted 5d ago</span><button class="btn btn-tertiary btn-sm">Open<i data-lucide="arrow-right"></i></button></footer>
         </article>
         <article class="card">
           <header class="card-header">
@@ -371,7 +371,7 @@
             <span class="pill success sm"><span class="dot"></span>Approved</span>
           </header>
           <div class="card-body"><p style="margin:0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);">Tier 1 counterparty. R$ 8.4M cleared in last 30 days.</p></div>
-          <footer class="card-footer"><span style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Last activity 1h ago</span><button class="btn btn-tertiary btn-sm">Open<i data-lucide="arrow-right"></i></button></footer>
+          <footer class="card-footer"><span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Last activity 1h ago</span><button class="btn btn-tertiary btn-sm">Open<i data-lucide="arrow-right"></i></button></footer>
         </article>
       </div>
     </article>
@@ -381,11 +381,11 @@
       <div class="spec-canvas grid-2">
         <article class="card">
           <header class="card-header"><div><h3>Connect a banking partner</h3><p>Required to move funds. Takes ~5 minutes.</p></div></header>
-          <footer class="card-footer"><span style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Step 2 of 4</span><button class="btn btn-primary btn-sm">Start<i data-lucide="arrow-right"></i></button></footer>
+          <footer class="card-footer"><span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Step 2 of 4</span><button class="btn btn-primary btn-sm">Start<i data-lucide="arrow-right"></i></button></footer>
         </article>
         <article class="card">
           <header class="card-header"><div><h3>Invite your finance team</h3><p>Add up to 5 teammates with read-only access.</p></div></header>
-          <footer class="card-footer"><span style="font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Optional</span><button class="btn btn-secondary btn-sm">Invite<i data-lucide="user-plus"></i></button></footer>
+          <footer class="card-footer"><span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-muted);">Optional</span><button class="btn btn-secondary btn-sm">Invite<i data-lucide="user-plus"></i></button></footer>
         </article>
       </div>
     </article>
@@ -415,19 +415,19 @@
             <div>
               <div style="display:flex; align-items:center; gap: var(--space-4); padding: var(--space-3) var(--space-6); border-bottom: 1px solid var(--color-border-subtle);">
                 <div style="width:32px; height:32px; border-radius: var(--radius-pill); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="check" style="width:16px; height:16px;"></i></div>
-                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-medium);">TX-19847 · Released</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono);">R$ 184,200.00 · 2h ago</div></div>
+                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-medium);">TX-19847 · Released</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);">R$ 184,200.00 · 2h ago</div></div>
               </div>
               <div style="display:flex; align-items:center; gap: var(--space-4); padding: var(--space-3) var(--space-6); border-bottom: 1px solid var(--color-border-subtle);">
                 <div style="width:32px; height:32px; border-radius: var(--radius-pill); background: var(--color-feedback-warning-background); color: var(--color-feedback-warning-foreground); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="clock" style="width:16px; height:16px;"></i></div>
-                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-medium);">TX-19851 · Funds on hold</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono);">R$ 42,800.00 · 4h ago</div></div>
+                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-medium);">TX-19851 · Funds on hold</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);">R$ 42,800.00 · 4h ago</div></div>
               </div>
               <div style="display:flex; align-items:center; gap: var(--space-4); padding: var(--space-3) var(--space-6); border-bottom: 1px solid var(--color-border-subtle);">
                 <div style="width:32px; height:32px; border-radius: var(--radius-pill); background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="x" style="width:16px; height:16px;"></i></div>
-                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-medium);">TX-19844 · Bounced</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono);">R$ 8,400.00 · 7h ago</div></div>
+                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-medium);">TX-19844 · Bounced</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);">R$ 8,400.00 · 7h ago</div></div>
               </div>
               <div style="display:flex; align-items:center; gap: var(--space-4); padding: var(--space-3) var(--space-6);">
                 <div style="width:32px; height:32px; border-radius: var(--radius-pill); background: var(--color-feedback-info-background); color: var(--color-feedback-info-foreground); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="user-plus" style="width:16px; height:16px;"></i></div>
-                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-medium);">New counterparty added</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono);">Açai Brasil S.A. · 12h ago</div></div>
+                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-medium);">New counterparty added</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);">Açai Brasil S.A. · 12h ago</div></div>
               </div>
             </div>
           </article>

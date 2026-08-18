@@ -1,0 +1,391 @@
+<!-- @dsCard group="Components" name="Animated backdrop" subtitle="Oito fundos animados para hero, onboarding e marketing" viewport="1280x1200" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Animated backdrop · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<link rel="stylesheet" href="components/tokens-doc.css?v=2">
+<link rel="stylesheet" href="components/animated-bg.css">
+<link rel="stylesheet" href="components/buttons.css">
+<link rel="stylesheet" href="components/tabs.css">
+<link rel="stylesheet" href="components/toggle-chip.css">
+<script src="../theme-toggle.js"></script>
+<script src="../version.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1080px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .page-theme { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); }
+  .page-theme [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-6); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-6); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .api { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: var(--space-4) var(--space-6); padding: var(--space-5) var(--space-6); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .api-k { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-2); }
+  .api-v { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .api ul { margin: 0; padding-left: var(--space-4); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .api code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .api .prefer { grid-column: 1 / -1; font-size: var(--fs-sm); color: var(--color-foreground-default); padding-top: var(--space-3); border-top: 1px solid var(--color-border-subtle); line-height: var(--lh-relaxed); }
+  .api .prefer b { color: var(--color-foreground-brand); }
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-6); }
+  .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-5); box-shadow: var(--shadow-xs); }
+  .spec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-head h3 { font-size: var(--fs-lg); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-brand); background: var(--color-brand-subtle); padding: var(--space-1) var(--space-2); border-radius: var(--radius-xs); margin-left: var(--space-2); }
+  .spec-head p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
+  .spec-tag { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
+  .spec-canvas { padding: 0; }
+  .tk { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  .tk th, .tk td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .tk thead th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); }
+  .tk tr:last-child td { border-bottom: 0; }
+  .tk td code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  /* demo staging */
+  .abg { aspect-ratio: 16 / 9; }
+  .hero { padding: var(--space-8) var(--space-7); display: flex; flex-direction: column; gap: var(--space-3); height: 100%; justify-content: center; box-sizing: border-box; }
+  .hero h3 { margin: 0; font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); color: var(--color-foreground-inverse-default); }
+  .hero p { margin: 0; font-size: var(--fs-sm); max-width: 42ch; line-height: var(--lh-relaxed); color: var(--color-foreground-inverse-secondary); }
+  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); padding: var(--space-6); }
+  @media (max-width: 760px) { .duo { grid-template-columns: 1fr; } }
+  .doc-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+  /* ---------- lab controls ---------- */
+  .abg-lab { position: sticky; top: 0; z-index: 90; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); padding: var(--space-4) var(--space-5); margin-bottom: var(--space-8); background: var(--glass-chrome); color: var(--glass-chrome-fg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border: 1px solid var(--color-border-default); border-radius: var(--shape-container); box-shadow: var(--shadow-sm); }
+  .abg-lab .grp { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .abg-lab .grp > .k { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .abg-lab .sep { width: 1px; align-self: stretch; background: var(--color-border-subtle); }
+  .abg-lab .reset { margin-left: auto; }
+  /* paused state — also useful outside the doc */
+  .abg.is-paused .abg-layer, .abg.is-paused .abg-blob, .abg.is-paused .abg-glint-x,
+  .abg.is-paused .abg-glint-y, .abg.is-paused .abg-beam, .abg.is-paused .abg-ring,
+  .abg.is-paused [style*="animation"] { animation-play-state: paused !important; }
+  .abg.is-paused .abg-dotglow { transition: none; }
+  /* content hidden by the lab */
+  .abg.is-bare .abg-content { display: none; }
+</style>
+</head>
+<body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<button class="page-theme" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">☾</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+  <header class="doc-header">
+    <div>
+      <h1>Animated backdrop</h1>
+      <p>Oito fundos animados para hero, onboarding e marketing. Companheiro do <a href="ambient.html">Ambient backdrop</a> (blobs simples): use este quando a superfície precisa de vocabulário de movimento. Toda tinta deriva de <code>--color-brand-solid</code> / <code>--color-accent-solid</code>, então o fundo acompanha o produto ativo.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="waves"></i> Stable</span>
+  </header>
+
+  <section class="api" aria-label="API summary">
+    <div><div class="api-k">Import</div><code class="api-v">const { AnimatedBackdrop } = ATTRUS</code></div>
+    <div><div class="api-k">CSS class</div><code class="api-v">.abg + .abg-&lt;variant&gt;</code></div>
+    <div><div class="api-k">Variants</div><ul><li><code>aurora</code> — blobs em deriva</li><li><code>mesh</code> — malha reativa ao cursor</li><li><code>grid</code> — grade com brilhos</li><li><code>ripple</code> — ondas concêntricas</li><li><code>beams</code> — trilhas horizontais</li><li><code>orbits</code> — anéis com satélites</li><li><code>apex</code> — a marca traçada por feixe</li><li><code>triangles</code> — planos gigantes</li></ul></div>
+    <div><div class="api-k">Key props</div><ul><li><code>variant</code> — qual fundo</li><li><code>intensity</code> — subtle | default | strong</li><li><code>onInverse</code> — hero escuro (base ink)</li><li><code>scrim</code> — diagonal | vertical</li><li><code>noScrim</code> — remove o véu</li></ul></div>    <div class="prefer"><b>Prefer:</b> manter o <code>.abg-scrim</code> (é <b>obrigatório</b> quando há texto — sobre camada nua a copy cai abaixo de AA). Use <code>AmbientBackdrop</code> quando bastar o blob estático; use este quando o movimento faz parte da mensagem. Um fundo animado por tela — dois competem entre si.</div>
+  </section>
+
+  <script type="application/json" id="ds-api">{"component":"AnimatedBackdrop","import":"const { AnimatedBackdrop } = ATTRUS","cssClass":".abg","variants":["aurora","mesh","grid","ripple","beams","orbits","apex","triangles"],"props":["variant","intensity","onInverse","scrim","noScrim"],"slots":["abg-layer","abg-scrim","abg-content"],"prefer":"Keep the mandatory scrim; one animated backdrop per screen; AmbientBackdrop for static blobs.","status":"stable"}</script>
+
+  <div class="abg-lab" role="group" aria-label="Controles de visualização">
+    <div class="grp">
+      <span class="k">Surface</span>
+      <div class="tabs tabs-pill tabs-sm" role="tablist" aria-label="Surface">
+        <button class="tab" role="tab" aria-selected="true" data-ctl="surface" data-val="inverse"><span class="tab-label">Inverse</span></button>
+        <button class="tab" role="tab" aria-selected="false" data-ctl="surface" data-val="ambient"><span class="tab-label">Ambient</span></button>
+      </div>
+    </div>
+    <div class="sep" aria-hidden="true"></div>
+    <div class="grp">
+      <span class="k">Intensity</span>
+      <div class="tabs tabs-pill tabs-sm" role="tablist" aria-label="Intensity">
+        <button class="tab" role="tab" aria-selected="false" data-ctl="intensity" data-val="subtle"><span class="tab-label">Subtle</span></button>
+        <button class="tab" role="tab" aria-selected="true" data-ctl="intensity" data-val="default"><span class="tab-label">Default</span></button>
+        <button class="tab" role="tab" aria-selected="false" data-ctl="intensity" data-val="strong"><span class="tab-label">Strong</span></button>
+      </div>
+    </div>
+    <div class="sep" aria-hidden="true"></div>
+    <div class="grp">
+      <span class="k">Scrim</span>
+      <div class="tabs tabs-pill tabs-sm" role="tablist" aria-label="Scrim">
+        <button class="tab" role="tab" aria-selected="true" data-ctl="scrim" data-val="diagonal"><span class="tab-label">Diagonal</span></button>
+        <button class="tab" role="tab" aria-selected="false" data-ctl="scrim" data-val="vertical"><span class="tab-label">Vertical</span></button>
+        <button class="tab" role="tab" aria-selected="false" data-ctl="scrim" data-val="off"><span class="tab-label">Off</span></button>
+      </div>
+    </div>
+    <div class="sep" aria-hidden="true"></div>
+    <div class="grp">
+      <button type="button" class="toggle-chip toggle-chip-sm" aria-pressed="true" data-ctl="content"><i data-lucide="type"></i>Copy</button>
+      <button type="button" class="toggle-chip toggle-chip-sm" aria-pressed="true" data-ctl="motion"><i data-lucide="play"></i>Motion</button>
+    </div>
+    <button type="button" class="btn btn-ghost btn-sm reset" data-ctl="reset"><i data-lucide="rotate-ccw"></i>Reset</button>
+  </div>
+
+  <section class="doc-section" id="variants">
+    <h2><span class="num">01</span>As oito variantes</h2>
+    <p class="lead">Cada uma resolve um tom diferente: aurora e triangles são atmosféricos; grid, beams e orbits sugerem infraestrutura e rede; ripple e apex são narrativos (origem, marca); mesh responde ao cursor.</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Aurora <code>.abg-aurora</code></h3><p>Quatro blobs radiais com blur pesado, em deriva de 26 a 44 s. O fundo mais neutro — funciona sob qualquer copy.</p></div><span class="spec-tag">atmosférico</span></div>
+      <div class="spec-canvas">
+        <div class="abg abg-aurora on-inverse">
+          <div class="abg-layer is-tinted" aria-hidden="true"><div class="abg-blob is-1"></div><div class="abg-blob is-2"></div><div class="abg-blob is-3"></div><div class="abg-blob is-4"></div></div>
+          <div class="abg-scrim" aria-hidden="true"></div>
+          <div class="abg-content"><div class="hero"><span class="overline-mono">Etapa 01</span><h3>Conte sobre sua empresa.</h3><p>Texto de apoio para medir contraste sobre o fundo.</p><div><button class="btn btn-primary btn-sm">Continuar</button></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Grid <code>.abg-grid</code></h3><p>Grade plana relativa (26 × 16) com onze brilhos discretos percorrendo as linhas. Passo em porcentagem: a densidade não depende de medição.</p></div><span class="spec-tag">infraestrutura</span></div>
+      <div class="spec-canvas">
+        <div class="abg abg-grid on-inverse">
+          <div class="abg-layer" aria-hidden="true" style="background:linear-gradient(155deg, var(--abg-ink) 10%, color-mix(in srgb, var(--abg-base) 78%, var(--abg-ink)) 100%)"></div>
+          <div class="abg-layer abg-gridlines is-tinted" aria-hidden="true"></div>
+          <div class="abg-layer" aria-hidden="true" style="overflow:hidden">
+            <div class="abg-glint-x" style="top:25%;width:14%;opacity:.34;animation-duration:11s;animation-delay:0s"></div>
+            <div class="abg-glint-x" style="top:43.75%;width:20%;opacity:.38;animation-duration:14s;animation-delay:2.4s"></div>
+            <div class="abg-glint-x" style="top:62.5%;width:26%;opacity:.42;animation-duration:17s;animation-delay:4.8s"></div>
+            <div class="abg-glint-x" style="top:81.25%;width:14%;opacity:.34;animation-duration:20s;animation-delay:7.2s"></div>
+            <div class="abg-glint-y" style="left:11.54%;height:14%;opacity:.3;animation-duration:13s;animation-delay:.7s"></div>
+            <div class="abg-glint-y" style="left:23.08%;height:20%;opacity:.34;animation-duration:16s;animation-delay:2.4s"></div>
+            <div class="abg-glint-y" style="left:34.62%;height:26%;opacity:.38;animation-duration:19s;animation-delay:4.1s"></div>
+            <div class="abg-glint-y" style="left:50%;height:14%;opacity:.3;animation-duration:22s;animation-delay:5.8s"></div>
+            <div class="abg-glint-y" style="left:61.54%;height:20%;opacity:.34;animation-duration:13s;animation-delay:7.5s"></div>
+            <div class="abg-glint-y" style="left:73.08%;height:26%;opacity:.38;animation-duration:16s;animation-delay:9.2s"></div>
+            <div class="abg-glint-y" style="left:84.62%;height:14%;opacity:.3;animation-duration:19s;animation-delay:10.9s"></div>
+          </div>
+          <div class="abg-layer abg-vignette" aria-hidden="true"></div>
+          <div class="abg-scrim" aria-hidden="true"></div>
+          <div class="abg-content"><div class="hero"><span class="overline-mono">Etapa 01</span><h3>Conte sobre sua empresa.</h3><p>Texto de apoio para medir contraste sobre o fundo.</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Beams <code>.abg-beams</code></h3><p>Catorze trilhas atravessando em velocidades diferentes. A dessincronia é o que tira o efeito da cara de barra de progresso.</p></div><span class="spec-tag">rede</span></div>
+      <div class="spec-canvas">
+        <div class="abg abg-beams on-inverse">
+          <div class="abg-layer" aria-hidden="true" style="background:linear-gradient(180deg, color-mix(in srgb, var(--abg-base) 62%, var(--abg-ink)) 0%, var(--abg-ink) 78%)"></div>
+          <div class="abg-layer abg-tracks is-tinted" aria-hidden="true">
+            <div class="abg-track"><div class="abg-beam" style="width:27%;opacity:.22;animation-duration:6.5s;animation-delay:0s"></div></div>
+            <div class="abg-track"><div class="abg-beam" style="width:32%;opacity:.28;animation-duration:8.8s;animation-delay:.74s"></div></div>
+            <div class="abg-track"><div class="abg-beam" style="width:27%;opacity:.22;animation-duration:11.1s;animation-delay:1.48s"></div></div>
+            <div class="abg-track"><div class="abg-beam is-strong" style="width:37%;opacity:.34;animation-duration:12.9s;animation-delay:2.22s"></div></div>
+            <div class="abg-track"><div class="abg-beam" style="width:27%;opacity:.22;animation-duration:13.7s;animation-delay:2.96s"></div></div>
+            <div class="abg-track"><div class="abg-beam" style="width:32%;opacity:.28;animation-duration:7s;animation-delay:3.7s"></div></div>
+            <div class="abg-track"><div class="abg-beam" style="width:27%;opacity:.22;animation-duration:9.3s;animation-delay:4.44s"></div></div>
+            <div class="abg-track"><div class="abg-beam is-strong" style="width:42%;opacity:.4;animation-duration:12.4s;animation-delay:5.18s"></div></div>
+            <div class="abg-track"><div class="abg-beam" style="width:27%;opacity:.22;animation-duration:13.7s;animation-delay:5.92s"></div></div>
+            <div class="abg-track"><div class="abg-beam" style="width:32%;opacity:.28;animation-duration:8s;animation-delay:6.66s"></div></div>
+            <div class="abg-track"><div class="abg-beam" style="width:27%;opacity:.22;animation-duration:9.3s;animation-delay:7.4s"></div></div>
+            <div class="abg-track"><div class="abg-beam is-strong" style="width:37%;opacity:.34;animation-duration:11.1s;animation-delay:8.14s"></div></div>
+            <div class="abg-track"><div class="abg-beam" style="width:27%;opacity:.22;animation-duration:13.7s;animation-delay:8.88s"></div></div>
+            <div class="abg-track"><div class="abg-beam" style="width:32%;opacity:.28;animation-duration:7s;animation-delay:9.62s"></div></div>
+          </div>
+          <div class="abg-layer is-tinted" aria-hidden="true" style="inset:auto 0 auto auto;top:20%;bottom:20%;right:0;width:24%;filter:blur(30px);background:radial-gradient(ellipse at 100% 50%, color-mix(in srgb, var(--color-brand-accent-500) 26%, transparent), transparent 74%)"></div>
+          <div class="abg-layer abg-vignette" aria-hidden="true"></div>
+          <div class="abg-scrim" aria-hidden="true"></div>
+          <div class="abg-content"><div class="hero"><span class="overline-mono">Etapa 01</span><h3>Conte sobre sua empresa.</h3><p>Texto de apoio para medir contraste sobre o fundo.</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Ripple <code>.abg-ripple</code></h3><p>Dez ondas de 18 s emanando do ponto central, intercalando intensidades. Sugere origem, transmissão, alcance.</p></div><span class="spec-tag">narrativo</span></div>
+      <div class="spec-canvas">
+        <div class="abg abg-ripple on-inverse">
+          <div class="abg-layer" aria-hidden="true" style="background:radial-gradient(125% 105% at 62% 46%, color-mix(in srgb, var(--abg-base) 42%, var(--abg-ink)), var(--abg-ink) 76%)"></div>
+          <div class="abg-layer is-tinted" aria-hidden="true">
+            <svg viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%">
+              <g fill="none" stroke="var(--color-brand-accent-500)" stroke-width="1.2">
+                <ellipse cx="420" cy="200" rx="380" ry="262" style="transform-origin:420px 200px;animation:abg-ripple 18s var(--ease-standard) 0s infinite"></ellipse>
+                <ellipse cx="420" cy="200" rx="380" ry="262" stroke="var(--color-brand-accent-300)" stroke-width=".8" opacity=".4" style="transform-origin:420px 200px;animation:abg-ripple-soft 18s var(--ease-standard) -1.8s infinite"></ellipse>
+                <ellipse cx="420" cy="200" rx="380" ry="262" style="transform-origin:420px 200px;animation:abg-ripple 18s var(--ease-standard) -3.6s infinite"></ellipse>
+                <ellipse cx="420" cy="200" rx="380" ry="262" stroke="var(--color-brand-accent-300)" stroke-width=".8" opacity=".4" style="transform-origin:420px 200px;animation:abg-ripple-soft 18s var(--ease-standard) -5.4s infinite"></ellipse>
+                <ellipse cx="420" cy="200" rx="380" ry="262" style="transform-origin:420px 200px;animation:abg-ripple 18s var(--ease-standard) -7.2s infinite"></ellipse>
+                <ellipse cx="420" cy="200" rx="380" ry="262" stroke="var(--color-brand-accent-300)" stroke-width=".8" opacity=".4" style="transform-origin:420px 200px;animation:abg-ripple-soft 18s var(--ease-standard) -9s infinite"></ellipse>
+                <ellipse cx="420" cy="200" rx="380" ry="262" style="transform-origin:420px 200px;animation:abg-ripple 18s var(--ease-standard) -10.8s infinite"></ellipse>
+                <ellipse cx="420" cy="200" rx="380" ry="262" stroke="var(--color-brand-accent-300)" stroke-width=".8" opacity=".4" style="transform-origin:420px 200px;animation:abg-ripple-soft 18s var(--ease-standard) -12.6s infinite"></ellipse>
+                <ellipse cx="420" cy="200" rx="380" ry="262" style="transform-origin:420px 200px;animation:abg-ripple 18s var(--ease-standard) -14.4s infinite"></ellipse>
+                <ellipse cx="420" cy="200" rx="380" ry="262" stroke="var(--color-brand-accent-300)" stroke-width=".8" opacity=".4" style="transform-origin:420px 200px;animation:abg-ripple-soft 18s var(--ease-standard) -16.2s infinite"></ellipse>
+              </g>
+              <circle cx="420" cy="200" r="5.5" fill="var(--color-brand-accent-300)" opacity=".28"></circle>
+            </svg>
+          </div>
+          <div class="abg-scrim" aria-hidden="true"></div>
+          <div class="abg-content"><div class="hero"><span class="overline-mono">Etapa 01</span><h3>Conte sobre sua empresa.</h3><p>Texto de apoio para medir contraste sobre o fundo.</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Orbits <code>.abg-orbits</code></h3><p>Dez anéis concêntricos com satélites, girando em sentidos alternados. O hub fica em 62% da largura — a copy ocupa a esquerda.</p></div><span class="spec-tag">rede</span></div>
+      <div class="spec-canvas">
+        <div class="abg abg-orbits on-inverse">
+          <div class="abg-layer" aria-hidden="true" style="background:radial-gradient(120% 100% at 62% 50%, color-mix(in srgb, var(--abg-base) 38%, var(--abg-ink)), var(--abg-ink) 76%)"></div>
+          <div class="abg-layer is-tinted" aria-hidden="true">
+            <div class="abg-hub">
+              <div class="abg-ring" style="left:-65px;top:-65px;width:130px;height:130px;border-color:color-mix(in srgb, var(--color-brand-accent-500) 24%, transparent);animation-duration:18s"><span class="abg-sat" style="opacity:.9"></span></div>
+              <div class="abg-ring" style="left:-100px;top:-100px;width:200px;height:200px;border-color:color-mix(in srgb, var(--color-brand-accent-500) 21.6%, transparent);animation-duration:25s;animation-direction:reverse"><span class="abg-sat" style="opacity:.83"></span></div>
+              <div class="abg-ring" style="left:-140px;top:-140px;width:280px;height:280px;border-color:color-mix(in srgb, var(--color-brand-accent-500) 19.2%, transparent);animation-duration:32s"><span class="abg-sat" style="opacity:.76"></span></div>
+              <div class="abg-ring" style="left:-190px;top:-190px;width:380px;height:380px;border-color:color-mix(in srgb, var(--color-brand-accent-500) 16.8%, transparent);animation-duration:39s;animation-direction:reverse"><span class="abg-sat" style="opacity:.69"></span></div>
+              <div class="abg-ring" style="left:-245px;top:-245px;width:490px;height:490px;border-color:color-mix(in srgb, var(--color-brand-accent-500) 14.4%, transparent);animation-duration:46s"><span class="abg-sat" style="opacity:.62"></span></div>
+              <div class="abg-ring" style="left:-305px;top:-305px;width:610px;height:610px;border-color:color-mix(in srgb, var(--color-brand-accent-500) 12%, transparent);animation-duration:53s;animation-direction:reverse"><span class="abg-sat" style="opacity:.55"></span></div>
+              <div class="abg-ring" style="left:-370px;top:-370px;width:740px;height:740px;border-color:color-mix(in srgb, var(--color-brand-accent-500) 9.6%, transparent);animation-duration:60s"><span class="abg-sat" style="opacity:.48"></span></div>
+              <div class="abg-ring" style="left:-440px;top:-440px;width:880px;height:880px;border-color:color-mix(in srgb, var(--color-brand-accent-500) 7.2%, transparent);animation-duration:67s;animation-direction:reverse"><span class="abg-sat" style="opacity:.41"></span></div>
+              <div class="abg-ring" style="left:-515px;top:-515px;width:1030px;height:1030px;border-color:color-mix(in srgb, var(--color-brand-accent-500) 4.8%, transparent);animation-duration:74s"><span class="abg-sat" style="opacity:.34"></span></div>
+              <div class="abg-ring" style="left:-595px;top:-595px;width:1190px;height:1190px;border-color:color-mix(in srgb, var(--color-brand-accent-500) 4%, transparent);animation-duration:81s;animation-direction:reverse"><span class="abg-sat" style="opacity:.27"></span></div>
+              <span class="abg-core"></span>
+            </div>
+          </div>
+          <div class="abg-scrim" aria-hidden="true"></div>
+          <div class="abg-content"><div class="hero"><span class="overline-mono">Etapa 01</span><h3>Conte sobre sua empresa.</h3><p>Texto de apoio para medir contraste sobre o fundo.</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Triangles <code>.abg-triangles</code></h3><p>Cinco planos maiores que a tela, translúcidos e desfocados, em deriva de 26 a 44 s. O mais discreto dos oito.</p></div><span class="spec-tag">atmosférico</span></div>
+      <div class="spec-canvas">
+        <div class="abg abg-triangles on-inverse">
+          <div class="abg-layer" aria-hidden="true" style="background:radial-gradient(120% 100% at 60% 46%, color-mix(in srgb, var(--abg-base) 34%, var(--abg-ink)), var(--abg-ink) 78%)"></div>
+          <div class="abg-layer is-tinted" aria-hidden="true">
+            <svg viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%">
+              <defs><filter id="doc-tri-soft" x="-25%" y="-25%" width="150%" height="150%"><feGaussianBlur stdDeviation="18"></feGaussianBlur></filter></defs>
+              <g style="transform-origin:120px 300px;animation:abg-tri-a 34s linear infinite alternate"><polygon points="120,-60 460,320 -220,320" fill="color-mix(in srgb, var(--color-brand-secondary-500) 9%, transparent)" filter="url(#doc-tri-soft)"></polygon></g>
+              <g style="transform-origin:520px 90px;animation:abg-tri-b 30s linear infinite alternate"><polygon points="520,-120 880,300 160,300" fill="none" stroke="var(--color-brand-accent-500)" stroke-width="1" opacity=".14"></polygon></g>
+              <g style="transform-origin:380px 340px;animation:abg-tri-c 38s linear infinite alternate"><polygon points="380,120 700,560 60,560" fill="color-mix(in srgb, var(--color-brand-accent-500) 6%, transparent)" filter="url(#doc-tri-soft)"></polygon></g>
+              <g style="transform-origin:80px 120px;animation:abg-tri-d 26s linear infinite alternate"><polygon points="80,-40 300,300 -140,300" fill="none" stroke="var(--color-brand-accent-300)" stroke-width=".8" opacity=".1"></polygon></g>
+              <g style="transform-origin:600px 260px;animation:abg-tri-a 44s linear -20s infinite alternate"><polygon points="600,60 900,520 300,520" fill="color-mix(in srgb, var(--dataviz-cat-3) 5%, transparent)" filter="url(#doc-tri-soft)"></polygon></g>
+            </svg>
+          </div>
+          <div class="abg-layer abg-vignette" aria-hidden="true"></div>
+          <div class="abg-scrim" aria-hidden="true"></div>
+          <div class="abg-content"><div class="hero"><span class="overline-mono">Etapa 01</span><h3>Conte sobre sua empresa.</h3><p>Texto de apoio para medir contraste sobre o fundo.</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Mesh, Apex <code>via TSX</code></h3><p><strong>Mesh</strong> depende de um listener de <code>pointermove</code> e <strong>Apex</strong> monta doze traços sobrepostos — os dois vivem no componente. Veja no bench interativo.</p></div><span class="spec-tag">bench</span></div>
+      <div class="spec-canvas" style="padding:var(--space-6)">
+        <a class="btn btn-secondary btn-sm" href="../components/AnimatedBackdrop/AnimatedBackdrop.html"><i data-lucide="external-link"></i> Abrir bench interativo</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="doc-section" id="usage">
+    <h2><span class="num">02</span>Camadas e legibilidade</h2>
+    <p class="lead">A pilha é sempre a mesma: camadas decorativas (z 0), véu de leitura (z 1), conteúdo (z 2). O véu não é opcional quando há texto — sobre camada nua a copy cai abaixo de AA.</p>
+    <div class="spec">
+      <div class="spec-head"><div><h3>Sem véu × com véu</h3><p>Mesmo fundo, mesma copy. À esquerda o texto disputa com a animação; à direita o véu abre espaço de leitura sem apagar o efeito.</p></div><span class="spec-tag">obrigatório</span></div>
+      <div class="spec-canvas">
+        <div class="duo">
+          <div class="abg abg-orbits on-inverse" style="border-radius:var(--shape-container)">
+            <div class="abg-layer is-tinted" aria-hidden="true"><div class="abg-hub"><div class="abg-ring" style="left:-100px;top:-100px;width:200px;height:200px;animation-duration:25s"><span class="abg-sat"></span></div><div class="abg-ring" style="left:-190px;top:-190px;width:380px;height:380px;animation-duration:39s;animation-direction:reverse"><span class="abg-sat"></span></div><div class="abg-ring" style="left:-305px;top:-305px;width:610px;height:610px;animation-duration:53s"><span class="abg-sat"></span></div><span class="abg-core"></span></div></div>
+            <div class="abg-content"><div class="hero"><h3 style="font-size:var(--fs-xl)">Sem véu</h3><p>A copy disputa atenção com a animação.</p></div></div>
+          </div>
+          <div class="abg abg-orbits on-inverse" style="border-radius:var(--shape-container)">
+            <div class="abg-layer is-tinted" aria-hidden="true"><div class="abg-hub"><div class="abg-ring" style="left:-100px;top:-100px;width:200px;height:200px;animation-duration:25s"><span class="abg-sat"></span></div><div class="abg-ring" style="left:-190px;top:-190px;width:380px;height:380px;animation-duration:39s;animation-direction:reverse"><span class="abg-sat"></span></div><div class="abg-ring" style="left:-305px;top:-305px;width:610px;height:610px;animation-duration:53s"><span class="abg-sat"></span></div><span class="abg-core"></span></div></div>
+            <div class="abg-scrim" aria-hidden="true"></div>
+            <div class="abg-content"><div class="hero"><h3 style="font-size:var(--fs-xl)">Com véu</h3><p>O véu abre espaço de leitura sem apagar o efeito.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="doc-section" id="map">
+    <h2><span class="num">03</span>Referência</h2>
+    <p class="lead">Definido em <code>components/animated-bg.css</code> e consumido pela camada TSX. Movimento respeita <code>prefers-reduced-motion</code>.</p>
+    <div class="spec">
+      <div class="spec-head"><div><h3>Class map</h3><p>Uma fonte para CSS, doc e TSX.</p></div><span class="spec-tag">single source</span></div>
+      <div class="spec-canvas">
+        <table class="tk">
+          <thead><tr><th>Classe</th><th>Papel</th></tr></thead>
+          <tbody>
+            <tr><td><code>.abg</code></td><td>Host posicionado. Define <code>--abg-ink</code> / <code>--abg-base</code> / <code>--abg-glint</code>, que viram com o tema.</td></tr>
+            <tr><td><code>.abg-&lt;variant&gt;</code></td><td>Uma das oito: aurora, mesh, grid, ripple, beams, orbits, apex, triangles.</td></tr>
+            <tr><td><code>.abg-layer</code></td><td>Camada decorativa. <code>.is-tinted</code> aplica multiply em superfície clara (translúcido sobre branco vira cinza).</td></tr>
+            <tr><td><code>.abg-scrim</code></td><td><strong>Obrigatório com texto.</strong> <code>.is-vertical</code> para copy centrada.</td></tr>
+            <tr><td><code>.abg-content</code></td><td>Seu conteúdo, acima de todas as camadas.</td></tr>
+            <tr><td><code>.abg-vignette</code></td><td>Vinheta compartilhada — puxa foco ao centro.</td></tr>
+            <tr><td><code>.is-subtle</code> · <code>.is-strong</code></td><td>Intensidade das camadas — <code>subtle</code> baixa a opacidade a 55%; <code>strong</code> eleva saturação e brilho (opacidade acima de 1 não existe).</td></tr>
+            <tr><td><code>.on-inverse</code></td><td>Hero escuro permanente — base e véu em ink.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer class="doc-foot">
+    <span>ATTRUS Design System · Animated backdrop · <span data-ds-version></span></span>
+    <a href="index.html">← Back to catalog</a>
+  </footer>
+</main>
+<script>lucide.createIcons();
+(function () {
+  /* The lab reconfigures every gallery demo at once. The two hosts in §02
+     (sem véu × com véu) are excluded — they exist to contrast scrim on/off,
+     so a global scrim switch would erase the point. */
+  var hosts = [].slice.call(document.querySelectorAll('#variants .abg'));
+  var state = { surface: 'inverse', intensity: 'default', scrim: 'diagonal', content: true, motion: true };
+
+  function apply() {
+    hosts.forEach(function (el) {
+      el.classList.toggle('on-inverse', state.surface === 'inverse');
+      el.classList.toggle('is-subtle', state.intensity === 'subtle');
+      el.classList.toggle('is-strong', state.intensity === 'strong');
+      el.classList.toggle('is-bare', !state.content);
+      el.classList.toggle('is-paused', !state.motion);
+      var scrim = el.querySelector(':scope > .abg-scrim');
+      if (scrim) {
+        scrim.style.display = state.scrim === 'off' ? 'none' : '';
+        scrim.classList.toggle('is-vertical', state.scrim === 'vertical');
+      }
+    });
+  }
+
+  function syncTabs(ctl) {
+    document.querySelectorAll('[data-ctl="' + ctl + '"]').forEach(function (b) {
+      b.setAttribute('aria-selected', String(b.dataset.val === state[ctl]));
+    });
+  }
+  function syncChip(ctl) {
+    var b = document.querySelector('[data-ctl="' + ctl + '"]');
+    if (b) b.setAttribute('aria-pressed', String(state[ctl]));
+  }
+
+  document.querySelectorAll('.abg-lab [data-ctl]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var ctl = b.dataset.ctl;
+      if (ctl === 'reset') {
+        state = { surface: 'inverse', intensity: 'default', scrim: 'diagonal', content: true, motion: true };
+        ['surface', 'intensity', 'scrim'].forEach(syncTabs);
+        ['content', 'motion'].forEach(syncChip);
+      } else if (b.dataset.val) {
+        state[ctl] = b.dataset.val;
+        syncTabs(ctl);
+      } else {
+        state[ctl] = !state[ctl];
+        syncChip(ctl);
+      }
+      apply();
+    });
+  });
+
+  apply();
+})();
+</script>
+</body>
+</html>

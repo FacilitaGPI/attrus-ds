@@ -13,6 +13,9 @@ export interface StepperProps extends React.OlHTMLAttributes<HTMLOListElement> {
   steps: StepItem[];
   vertical?: boolean;
   compact?: boolean;
+  /** Type scale for the label + helper, independent of marker density.
+      Composes with `compact`: geometry and type are separate axes. */
+  labelSize?: 'sm' | 'md' | 'lg';
   /** Minimal capsule+label variant (.is-rule) for tight headers. */
   rule?: boolean;
   /** ≤640px: hide labels, keep markers (.is-collapse-sm). */

@@ -1,0 +1,154 @@
+<!-- @dsCard group="Components" name="SelectableCard" subtitle="Card que É controle — pick-one / pick-many, com índice, descrição e marcador" viewport="1280x900" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SelectableCard · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<link rel="stylesheet" href="components/tokens-doc.css?v=2">
+<link rel="stylesheet" href="components/sel-card.css">
+<link rel="stylesheet" href="components/buttons.css">
+<script src="../theme-toggle.js"></script>
+<script src="../version.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1080px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .page-theme { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); }
+  .page-theme [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-6); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-6); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .api { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: var(--space-4) var(--space-6); padding: var(--space-5) var(--space-6); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .api-k { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-2); }
+  .api-v { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .api ul { margin: 0; padding-left: var(--space-4); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .api code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .api .prefer { grid-column: 1 / -1; font-size: var(--fs-sm); color: var(--color-foreground-default); padding-top: var(--space-3); border-top: 1px solid var(--color-border-subtle); line-height: var(--lh-relaxed); }
+  .api .prefer b { color: var(--color-foreground-brand); }
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-6); }
+  .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-5); box-shadow: var(--shadow-xs); }
+  .spec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-head h3 { font-size: var(--fs-lg); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-brand); background: var(--color-brand-subtle); padding: var(--space-1) var(--space-2); border-radius: var(--radius-xs); margin-left: var(--space-2); }
+  .spec-head p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
+  .spec-tag { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
+  .spec-canvas { padding: var(--space-6); background: var(--color-background-canvas); }
+  .spec-canvas.inverse { background: var(--color-background-inverse); }
+  .spec-canvas.pad0 { padding: 0; }
+  .tk { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  .tk th, .tk td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .tk thead th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); }
+  .tk tr:last-child td { border-bottom: 0; }
+  .tk td code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .frame { border: 1px solid var(--color-border-default); border-radius: var(--shape-container); overflow: hidden; background: var(--color-background-surface); }
+  .frame > .fbody { padding: var(--space-6); font-size: var(--fs-sm); color: var(--color-foreground-secondary); }
+  .doc-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+</style>
+</head>
+<body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<button class="page-theme" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">☾</span>
+  <span data-theme-label>Dark</span>
+</button>
+<main class="doc">
+  <header class="doc-header">
+    <div>
+      <h1>SelectableCard</h1>
+      <p>Um card que <strong>é</strong> o controle: a superfície inteira é o alvo de clique. Substitui a composição manual <code>.card + .radio</code> que todo fluxo de onboarding e KYC reinventava — cada um com seu próprio padding, raio e estado selecionado.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="square-check"></i> Stable</span>
+  </header>
+  <section class="api" aria-label="API summary">
+    <div><div class="api-k">Import</div><code class="api-v">const { SelectableCard, SelectableCardGroup } = ATTRUS</code></div>
+    <div><div class="api-k">CSS class</div><code class="api-v">.sel-card</code></div>
+    <div><div class="api-k">Variants</div><ul><li><code>default</code> — pick-one, marcador redondo (radio)</li><li><code>.sel-card-multi</code> — pick-many, marcador quadrado (checkbox)</li><li><code>.sel-card-sm</code> — denso — padding e tipo menores</li><li><code>.on-inverse</code> — superfície escura permanente</li></ul></div>
+    <div><div class="api-k">Key props</div><ul><li><code>title</code> — linha primária (obrigatória)</li><li><code>desc</code> — copy de apoio</li><li><code>index</code> — chip de índice — "01"</li><li><code>selected / onSelect</code> — estado controlado</li><li><code>multi</code> — semântica de checkbox</li><li><code>name</code> — agrupa radios</li><li><code>disabled</code> — estado travado</li><li><code>size</code> — 'md' | 'sm'</li><li><code>onInverse</code> — tratamento escuro</li></ul></div>
+    <div class="prefer"><b>Prefer:</b> este componente sempre que o usuário escolhe entre opções descritivas (tipo de conta, plano, método, jurisdição). <b>Não</b> recomponha com <code>.card</code> + <code>.radio</code>, e não use <code>.toggle-chip</code> quando há descrição — chip é para rótulo curto.</div>
+  </section>
+  <script type="application/json" id="ds-api">{"component":"SelectableCard","import":"const { SelectableCard, SelectableCardGroup } = ATTRUS","cssClass":".sel-card","variants":["default","sel-card-multi","sel-card-sm","on-inverse"],"props":["title","desc","index","selected","onSelect","name","value","multi","disabled","size","onInverse"],"states":["hover","is-selected","disabled","focus-visible"],"prefer":"Use for descriptive option choice; do not recompose card+radio.","status":"stable"}</script>
+  <section class="doc-section">
+    <h2><span class="num">01</span>Anatomia</h2>
+    <p class="lead">Índice opcional, corpo (título + descrição) e marcador de seleção. O <code>&lt;label&gt;</code> envolve um input escondido, então clique e teclado funcionam nativamente.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Pick one <code>.sel-card</code></h3><p>Marcador redondo, semântica de radio. Agrupe com <code>name</code>.</p></div>
+      <span class="spec-tag">radio</span>
+    </div>
+    <div class="spec-canvas"><div class="sel-card-group"><label class="sel-card is-selected"><span class="sel-card-index">01</span><span class="sel-card-body"><span class="sel-card-title">Pessoa jurídica</span><span class="sel-card-desc">CNPJ ativo, faturamento comprovável e conta bancária no titular.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card"><span class="sel-card-index">02</span><span class="sel-card-body"><span class="sel-card-title">Pessoa física</span><span class="sel-card-desc">CPF regular. Limites iniciais menores até a verificação completa.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card"><span class="sel-card-index">03</span><span class="sel-card-body"><span class="sel-card-title">MEI</span><span class="sel-card-desc">Cadastro simplificado com teto de movimentação mensal.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label></div></div>
+  </div>
+  </section>
+  <section class="doc-section">
+    <h2><span class="num">02</span>Pick many</h2>
+    <p class="lead">A variante <code>.sel-card-multi</code> troca o marcador para quadrado — o sinal universal de "pode escolher mais de um".</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Multi <code>.sel-card-multi</code></h3><p>Semântica de checkbox. Combine com <code>.sel-card-group.is-grid</code> para grade auto-fit.</p></div>
+      <span class="spec-tag">checkbox</span>
+    </div>
+    <div class="spec-canvas"><div class="sel-card-group is-grid"><label class="sel-card sel-card-multi is-selected"><span class="sel-card-body"><span class="sel-card-title">Pix</span><span class="sel-card-desc">Liquidação instantânea, 24/7.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card sel-card-multi is-selected"><span class="sel-card-body"><span class="sel-card-title">TED</span><span class="sel-card-desc">Mesmo dia, em horário bancário.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card sel-card-multi"><span class="sel-card-body"><span class="sel-card-title">SWIFT</span><span class="sel-card-desc">Internacional, D+1 a D+2.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label></div></div>
+  </div>
+  </section>
+  <section class="doc-section">
+    <h2><span class="num">03</span>Tamanho e estados</h2>
+    <p class="lead">Denso para listas longas sem descrição; disabled usa tokens explícitos (superfície sunken + texto disabled), nunca opacidade.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Dense <code>.sel-card-sm</code></h3><p>Padding e tipo reduzidos — bom para moeda, jurisdição, período.</p></div>
+      <span class="spec-tag">size</span>
+    </div>
+    <div class="spec-canvas"><div class="sel-card-group is-grid"><label class="sel-card sel-card-sm is-selected"><span class="sel-card-body"><span class="sel-card-title">BRL · Real</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card sel-card-sm"><span class="sel-card-body"><span class="sel-card-title">USD · Dólar</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card sel-card-sm"><span class="sel-card-body"><span class="sel-card-title">EUR · Euro</span></span><span class="sel-card-mark" aria-hidden="true"></span></label></div></div>
+  </div>  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Disabled <code>[aria-disabled]</code></h3><p>Selecionado + travado permanece distinguível do não-selecionado + travado — o bug que a opacidade causava.</p></div>
+      <span class="spec-tag">state</span>
+    </div>
+    <div class="spec-canvas"><div class="sel-card-group"><label class="sel-card" aria-disabled="true"><span class="sel-card-body"><span class="sel-card-title">Conta escrow</span><span class="sel-card-desc">Disponível a partir do plano Enterprise.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card is-selected" aria-disabled="true"><span class="sel-card-body"><span class="sel-card-title">Conta corrente</span><span class="sel-card-desc">Selecionada e travada pelo compliance.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label></div></div>
+  </div>
+  </section>
+  <section class="doc-section">
+    <h2><span class="num">04</span>On inverse</h2>
+    <p class="lead">Em hero e onboarding permanentemente escuros, <code>.on-inverse</code> troca superfície, borda e marcador para a camada accent — sem sobrescrever cor inline.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Dark surface <code>.on-inverse</code></h3><p>O estado selecionado usa <code>--color-accent-solid</code> em vez do brand sólido, que somiria no ink.</p></div>
+      <span class="spec-tag">inverse</span>
+    </div>
+    <div class="spec-canvas inverse"><div class="sel-card-group"><label class="sel-card on-inverse is-selected"><span class="sel-card-index">01</span><span class="sel-card-body"><span class="sel-card-title">Começar do zero</span><span class="sel-card-desc">Configuramos sua conta em 4 passos guiados.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card on-inverse"><span class="sel-card-index">02</span><span class="sel-card-body"><span class="sel-card-title">Importar de outro provedor</span><span class="sel-card-desc">Traga contrapartes e histórico via CSV.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card on-inverse" aria-disabled="true"><span class="sel-card-body"><span class="sel-card-title">Falar com especialista</span><span class="sel-card-desc">Indisponível fora do horário comercial.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label></div></div>
+  </div>
+  </section>
+  <section class="doc-section">
+    <h2><span class="num">05</span>Referência</h2>
+    <p class="lead">Vocabulário completo, definido em <code>components/sel-card.css</code> e consumido pela camada TSX.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Class map</h3><p>Edite o CSS e a doc e o app se movem juntos.</p></div>
+      <span class="spec-tag">single source</span>
+    </div>
+    <div class="spec-canvas pad0"><table class="tk"><thead><tr><th>Classe</th><th>Papel</th></tr></thead><tbody>
+<tr><td><code>.sel-card</code></td><td>Raiz — o label/controle.</td></tr>
+<tr><td><code>.sel-card-index</code></td><td>Chip de índice mono opcional.</td></tr>
+<tr><td><code>.sel-card-body</code></td><td>Coluna título + descrição.</td></tr>
+<tr><td><code>.sel-card-title</code> · <code>-desc</code></td><td>Linha primária / copy de apoio.</td></tr>
+<tr><td><code>.sel-card-mark</code></td><td>Marcador de seleção (redondo ou quadrado).</td></tr>
+<tr><td><code>.is-selected</code></td><td>Estado selecionado.</td></tr>
+<tr><td><code>.sel-card-group</code> · <code>.is-grid</code></td><td>Wrapper coluna / grade auto-fit.</td></tr>
+</tbody></table></div>
+  </div>
+  </section>
+  <footer class="doc-foot">
+    <span>ATTRUS Design System · SelectableCard · <span data-ds-version></span></span>
+    <a href="index.html">← Back to catalog</a>
+  </footer>
+</main>
+<script>lucide.createIcons();</script>
+</body>
+</html>

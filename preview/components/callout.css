@@ -70,7 +70,7 @@
 
 .callout-title {
   font-size: var(--fs-md);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   letter-spacing: var(--ls-title);
   color: var(--color-foreground-default);
   line-height: var(--lh-tight);
@@ -81,13 +81,14 @@
   color: var(--color-foreground-secondary);
   line-height: var(--lh-snug);
 }
-.callout-body strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+.callout-body strong { color: var(--color-foreground-default); font-weight: var(--w-regular); }
 .callout-body code {
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xs);
   color: var(--color-foreground-accent);
 }
-.callout-body a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+.callout-body a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-regular); }
 .callout-body p { margin: 0 0 var(--space-2); }
 .callout-body p:last-child { margin-bottom: 0; }
 .callout-body ul { margin: var(--space-2) 0 0; padding-left: var(--space-5); }

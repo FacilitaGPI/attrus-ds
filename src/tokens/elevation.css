@@ -22,6 +22,17 @@
   --shadow-focus-warning: 0 0 0 4px color-mix(in srgb, var(--color-warning-500) 22%, transparent);
   --shadow-focus-danger:  0 0 0 4px color-mix(in srgb, var(--color-danger-500)  22%, transparent);
   --shadow-focus-info:    0 0 0 4px color-mix(in srgb, var(--color-info-500)    22%, transparent);
+  /* Focus ring for dark/inverse surfaces — the 22% accent ring vanishes over ink */
+  --shadow-focus-inverse: 0 0 0 4px color-mix(in srgb, var(--color-pure-white) 34%, transparent);
+
+  /* Glow — colored ambient halos that survive a dark surface (all --shadow-* above
+     are neutral bluish and disappear there). For CTAs, active cards, hero accents. */
+  --shadow-glow-accent:  0 0 0 1px color-mix(in srgb, var(--color-accent-solid) 26%, transparent),
+                         0 8px 32px color-mix(in srgb, var(--color-accent-solid) 34%, transparent);
+  --shadow-glow-brand:   0 0 0 1px color-mix(in srgb, var(--color-brand-solid) 26%, transparent),
+                         0 8px 32px color-mix(in srgb, var(--color-brand-solid) 34%, transparent);
+  --shadow-glow-success: 0 0 0 1px color-mix(in srgb, var(--color-success-500) 26%, transparent),
+                         0 8px 32px color-mix(in srgb, var(--color-success-500) 34%, transparent);
 
   /* Semantic elevation — for status cards, toasts, banners, action buttons */
   --shadow-success-sm: 0 1px 2px  color-mix(in srgb, var(--shadow-tint-success-color)  8%, transparent),

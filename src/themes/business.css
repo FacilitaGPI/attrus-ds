@@ -15,7 +15,8 @@
   --color-brand-solid:        #1F6FD6;
   --color-brand-solid-hover:  color-mix(in srgb, #00152E 14%, #1F6FD6);  /* mid base → states DARKEN */
   --color-brand-solid-active: color-mix(in srgb, #00152E 24%, #1F6FD6);
-  --color-brand-text:         #1657AD;   /* darkened so brand text passes AA (~5:1) — #1F6FD6 alone is ~3.8:1 */
+  --color-brand-text-on-light: #1657AD;   /* darkened so brand text passes AA (~5:1) — #1F6FD6 alone is ~3.8:1 */
+  --color-brand-text:         var(--color-brand-text-on-light);  /* deprecated alias */
   --color-brand-text-strong:  #103F7D;
   --color-brand-subtle:       color-mix(in srgb, #1F6FD6 12%, transparent);
   --color-brand-subtle-solid: color-mix(in srgb, #1F6FD6 10%, var(--color-pure-white));  /* opaque light tint — avatars, selected rows */

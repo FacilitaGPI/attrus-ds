@@ -36,7 +36,7 @@
   cursor: pointer;
   font-family: var(--font-sans);
   font-size: var(--fs-sm);
-  font-weight: var(--w-medium);
+  font-weight: var(--w-regular);
   color: var(--color-foreground-secondary);
   position: relative;
   white-space: nowrap;
@@ -47,7 +47,7 @@
 .tab[aria-selected="true"],
 .tab.is-active {
   color: var(--color-brand-accent-700);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
 }
 .tab[aria-selected="true"]::after,
 .tab.is-active::after {
@@ -75,6 +75,7 @@
   height: 20px;
   padding: 0 var(--space-2);
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xxs);
   font-weight: var(--w-bold);
   background: var(--color-background-subtle);
@@ -204,7 +205,7 @@
 }
 .tab-label::after {
   content: attr(data-label);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   height: 0;
   visibility: hidden;
   overflow: hidden;

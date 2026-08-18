@@ -150,7 +150,7 @@ export const SmartSearch: React.FC<SmartSearchProps> = ({
         {it.sub != null ? <span className="meta">{it.sub}</span> : null}
       </span>
       {it.trailing != null ? (
-        <span style={{ marginLeft: 'auto', flexShrink: 0, fontFamily: 'var(--font-mono)', fontSize: 'var(--fs-xxs)', color: 'var(--color-foreground-muted)' }}>{it.trailing}</span>
+        <span style={{ marginLeft: 'auto', flexShrink: 0, fontFamily: 'var(--font-mono)', fontSizeAdjust: 'var(--font-mono-adjust)', fontSize: 'var(--fs-xxs)', color: 'var(--color-foreground-muted)' }}>{it.trailing}</span>
       ) : null}
     </li>
   );
@@ -209,7 +209,7 @@ export const SmartSearch: React.FC<SmartSearchProps> = ({
               <button key={b.key} type="button" className="ss-typebtn" onClick={() => onTypeSelect && onTypeSelect(b.key)}>
                 {b.icon}
                 <span className="grow">{b.label}</span>
-                {b.hint != null ? <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--fs-xxs)', color: 'var(--color-foreground-muted)' }}>{b.hint}</span> : null}
+                {b.hint != null ? <span style={{ fontFamily: 'var(--font-mono)', fontSizeAdjust: 'var(--font-mono-adjust)', fontSize: 'var(--fs-xxs)', color: 'var(--color-foreground-muted)' }}>{b.hint}</span> : null}
               </button>
             ))}
           </div>

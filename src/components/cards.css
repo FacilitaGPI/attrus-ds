@@ -144,7 +144,7 @@
 .card-header h4 {
   margin: 0;
   font-size: var(--fs-md);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   letter-spacing: var(--ls-title);
   color: var(--color-foreground-default);
 }
@@ -206,8 +206,9 @@
 }
 .card-stat .stat-label {
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xxs);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   color: var(--color-foreground-muted);
   text-transform: uppercase;
   letter-spacing: var(--ls-caps);
@@ -226,7 +227,7 @@
   align-items: center;
   gap: var(--space-1);
   font-size: var(--fs-xs);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   font-variant-numeric: tabular-nums;
 }
 .card-stat .stat-delta.up   { color: var(--color-feedback-success-foreground); }

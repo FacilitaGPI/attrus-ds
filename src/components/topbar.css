@@ -40,7 +40,7 @@
   border: 1px solid var(--color-border-default);
   background: var(--color-background-surface);
   color: var(--color-foreground-secondary);
-  font-family: inherit; font-size: var(--fs-md); font-weight: var(--w-medium);
+  font-family: inherit; font-size: var(--fs-md); font-weight: var(--w-regular);
   white-space: nowrap; cursor: pointer;
   transition: var(--transition-fast);
 }
@@ -54,7 +54,7 @@
    (buttons.css), NOT a topbar-local style. Kept out of here on purpose for single source. */
 
 /* Lang label inside a control */
-.tb-control .tb-flag-label { font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-secondary); }
+.tb-control .tb-flag-label { font-size: var(--fs-sm); font-weight: var(--w-regular); color: var(--color-foreground-secondary); }
 .tb-control .chev { opacity: .6; }
 .tb-control .chev svg, .tb-control .chev i { width: 11px; height: 11px; }
 
@@ -66,8 +66,9 @@
   background: var(--color-success-500);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-success-500) 15%, transparent);
 }
-.tb-live .lbl { font-size: var(--fs-sm); font-weight: var(--w-semibold); }
-.tb-clock { font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-muted); margin-left: var(--space-1); }
+.tb-live .lbl { font-size: var(--fs-sm); font-weight: var(--w-regular); }
+.tb-clock { font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); margin-left: var(--space-1); }
 
 /* Notification button + unread badge */
 .tb-bell .badge-anchor { position: relative; display: inline-flex; }
@@ -113,7 +114,7 @@
 .tb-account.is-open { border-color: var(--color-border-strong); background: var(--color-background-hover); }
 .tb-account .tb-avatar { width: 24px; height: 24px; font-size: 9px; margin-left: 0; }
 .tb-account-id { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.1; min-width: 0; }
-.tb-account-id .nm { font-size: var(--fs-xs); font-weight: var(--w-semibold); color: var(--color-foreground-default); white-space: nowrap; }
+.tb-account-id .nm { font-size: var(--fs-xs); font-weight: var(--w-regular); color: var(--color-foreground-default); white-space: nowrap; }
 .tb-account-id .co { font-size: var(--fs-xxs); color: var(--color-foreground-muted); white-space: nowrap; }
 .tb-account .chev { display: inline-flex; color: var(--color-foreground-muted); margin-left: var(--space-1); }
 .tb-account .chev svg, .tb-account .chev i { width: 12px; height: 12px; }
@@ -129,14 +130,14 @@
 .tb-account-menu-head { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-2) var(--space-3); }
 .tb-account-menu .tb-avatar.lg { width: 36px; height: 36px; font-size: var(--fs-sm); margin-left: 0; }
 .tb-account-menu-id { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
-.tb-account-menu-id .nm { font-size: var(--fs-md); font-weight: var(--w-semibold); color: var(--color-foreground-default); white-space: nowrap; }
+.tb-account-menu-id .nm { font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-default); white-space: nowrap; }
 .tb-account-menu-id .co { font-size: var(--fs-xs); color: var(--color-foreground-muted); white-space: nowrap; }
 .tb-account-menu-sep { height: 1px; background: var(--color-border-subtle); margin: var(--space-1) calc(-1 * var(--space-2)); }
 .tb-account-menu-item {
   display: flex; align-items: center; gap: var(--space-3); width: 100%;
   padding: var(--space-2-5) var(--space-2); margin: 1px 0;
   border: 0; border-radius: var(--radius-sm); background: transparent; cursor: pointer;
-  font-family: inherit; font-size: var(--fs-sm); font-weight: var(--w-medium);
+  font-family: inherit; font-size: var(--fs-sm); font-weight: var(--w-regular);
   color: var(--color-foreground-secondary); text-align: left; white-space: nowrap;
   transition: background var(--transition-fast), color var(--transition-fast);
 }

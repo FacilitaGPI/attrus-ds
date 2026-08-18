@@ -17,6 +17,8 @@
   --space-6:   20px;
   --space-7:   24px;
   --space-8:   32px;
+  /* Indent step for a table subrow, multiplied by its depth (see table.css §12) */
+  --subrow-indent: 24px;  /* @kind spacing */
   --space-9:   40px;
   --space-10:  48px;
   --space-12:  64px;

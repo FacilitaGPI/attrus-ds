@@ -17,7 +17,7 @@
   .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
   .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
   .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
-  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
   .doc-meta-pill svg, .doc-meta-pill i { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
 
   .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
@@ -26,14 +26,14 @@
 
   .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
   .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
-  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
   .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
 
   /* State grid — 8 stacked cards for the smart searchbar walkthrough */
   .state-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: var(--space-5); }
   .state-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-xs); display: flex; flex-direction: column; }
   .state-head { padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: baseline; gap: var(--space-3); }
-  .state-head .num { font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .state-head .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
   .state-head h3 { font-size: var(--fs-md); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0; }
   .state-head p { font-size: var(--fs-sm); color: var(--color-foreground-muted); margin: 0 0 0 auto; }
   .state-canvas { padding: var(--space-7) var(--space-5); background: var(--color-background-subtle); flex: 1; display: flex; justify-content: center; align-items: flex-start; }
@@ -51,14 +51,14 @@
   .anatomy-list { padding: var(--space-6); }
   .anatomy-list ol { padding-left: 0; margin: 0; counter-reset: anat; list-style: none; }
   .anatomy-list li { counter-increment: anat; margin-bottom: var(--space-3); padding-left: var(--space-7); position: relative; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-sm); }
-  .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 2px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
+  .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 2px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
   .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
 
   .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; margin-top: var(--space-4); }
-  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
   .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
   .token-table tr:last-child td { border-bottom: none; }
-  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+  .token-table code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
 
   .principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); }
   .principle { padding: var(--space-5); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); }
@@ -196,26 +196,26 @@
             <ul class="combobox-list" role="listbox">
               <li class="combobox-option is-selected" role="option" aria-selected="true">
                 <span class="combobox-option-content">
-                  <span class="combobox-option-label">Ana Beatriz Gomes <span style="font-family: var(--font-mono); font-weight: var(--w-regular); color: var(--color-foreground-secondary); margin-left: var(--space-2);">CPF 456.789.012-34</span></span>
+                  <span class="combobox-option-label">Ana Beatriz Gomes <span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-regular); color: var(--color-foreground-secondary); margin-left: var(--space-2);">CPF 456.789.012-34</span></span>
                   <span class="combobox-option-meta">ana.beatriz@example.com</span>
                 </span>
                 <i data-lucide="check" class="combobox-option-check"></i>
               </li>
               <li class="combobox-option" role="option">
                 <span class="combobox-option-content">
-                  <span class="combobox-option-label">Aurora Payments Ltda <span style="font-family: var(--font-mono); font-weight: var(--w-regular); color: var(--color-foreground-secondary); margin-left: var(--space-2);">CNPJ 74.807.482/0001-22</span></span>
+                  <span class="combobox-option-label">Aurora Payments Ltda <span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-regular); color: var(--color-foreground-secondary); margin-left: var(--space-2);">CNPJ 74.807.482/0001-22</span></span>
                   <span class="combobox-option-meta">billing@aurorapaymentsltda.com</span>
                 </span>
               </li>
               <li class="combobox-option" role="option">
                 <span class="combobox-option-content">
-                  <span class="combobox-option-label">Felipe Rocha de Carvalho <span style="font-family: var(--font-mono); font-weight: var(--w-regular); color: var(--color-foreground-secondary); margin-left: var(--space-2);">CPF 567.890.123-45</span></span>
+                  <span class="combobox-option-label">Felipe Rocha de Carvalho <span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-regular); color: var(--color-foreground-secondary); margin-left: var(--space-2);">CPF 567.890.123-45</span></span>
                   <span class="combobox-option-meta">felipe.rocha@example.com</span>
                 </span>
               </li>
               <li class="combobox-option" role="option">
                 <span class="combobox-option-content">
-                  <span class="combobox-option-label">Mariana Costa Oliveira de Souza <span style="font-family: var(--font-mono); font-weight: var(--w-regular); color: var(--color-foreground-secondary); margin-left: var(--space-2);">CPF 234.567.890-12</span></span>
+                  <span class="combobox-option-label">Mariana Costa Oliveira de Souza <span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-regular); color: var(--color-foreground-secondary); margin-left: var(--space-2);">CPF 234.567.890-12</span></span>
                   <span class="combobox-option-meta">mariana@example.com</span>
                 </span>
               </li>
@@ -449,7 +449,7 @@
           <div class="ss">
             <div class="ss-input">
               <i data-lucide="search"></i>
-              <input type="text" value="C5715326-BD84-45BF-8AD4-64B9E550A047" style="font-family: var(--font-mono); font-size: var(--fs-xs);" />
+              <input type="text" value="C5715326-BD84-45BF-8AD4-64B9E550A047" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs);" />
               <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
             </div>
             <div class="ss-section">
@@ -483,7 +483,7 @@
           <div class="ss">
             <div class="ss-input">
               <i data-lucide="search"></i>
-              <input type="text" value="C5715326" style="font-family: var(--font-mono);" />
+              <input type="text" value="C5715326" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);" />
               <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
             </div>
             <div class="ss-section">
