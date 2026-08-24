@@ -72,15 +72,19 @@ jobs:
         run: npm run build
 
       - name: Check version is not already published
+        id: npm_check
         run: |
           PKG_VERSION="${{ steps.version.outputs.version }}"
           if npm view "@attrus-ds/core@$PKG_VERSION" version 2>/dev/null; then
-            echo "Version $PKG_VERSION is already on npm."
-            exit 1
+            echo "Version $PKG_VERSION is already on npm; skipping publish."
+            echo "already_published=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Version $PKG_VERSION is available to publish."
+            echo "already_published=false" >> "$GITHUB_OUTPUT"
           fi
-          echo "Version $PKG_VERSION is available to publish."
 
       - name: Publish to npm
+        if: steps.npm_check.outputs.already_published != 'true'
         run: npm publish --provenance --access public
 
   sync-version-on-main:
@@ -90,6 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -106,9 +111,12 @@ jobs:
           VERSION="${{ needs.publish.outputs.version }}"
           npm version "$VERSION" --no-git-tag-version --allow-same-version
 
-      - name: Commit version bump
+      - name: Open version bump pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION="${{ needs.publish.outputs.version }}"
+          BRANCH="chore/bump-version-$VERSION"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add package.json package-lock.json
@@ -116,5 +124,13 @@ jobs:
             echo "main already at version $VERSION"
             exit 0
           fi
+          git checkout -B "$BRANCH"
           git commit -m "chore: bump version to $VERSION"
-          git push
+          git push -u origin "$BRANCH"
+          if [ "$(gh pr list --base main --head "$BRANCH" --json number --jq 'length')" = "0" ]; then
+            gh pr create \
+              --base main \
+              --head "$BRANCH" \
+              --title "chore: bump version to $VERSION" \
+              --body "Automated version sync after publishing \`@attrus-ds/core@$VERSION\`. Direct pushes to \`main\` are blocked by branch protection."
+          fi
