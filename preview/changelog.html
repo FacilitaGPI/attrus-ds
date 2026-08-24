@@ -68,15 +68,31 @@
 
   <header class="doc-header">
     <div class="eyebrow">ATTRUS Design System</div>
-    <h1>Changelog <span class="ver-badge" data-ds-version>v1.0.10</span></h1>
+    <h1>Changelog <span class="ver-badge" data-ds-version>v1.0.11</span></h1>
     <p>Every notable change to the design system, grouped by release. Versioning follows <a href="https://semver.org" style="color:var(--color-foreground-accent)">SemVer</a>; the version number lives in <code style="font-family:var(--font-mono);font-size:0.85em">version.js</code> and is mirrored across the catalog and index pages.</p>
   </header>
+
+  <!-- ============ v1.0.11 ============ -->
+  <section class="release">
+    <div class="release-head">
+      <h2>1.0.11</h2>
+      <span class="tag current">Current</span>
+    </div>
+    <div class="release-date">2026-08-24 · publish pipeline on protected main</div>
+
+    <div class="change-group fixed">
+      <h3><i data-lucide="bug"></i> Fixed</h3>
+      <ul>
+        <li>The npm publish workflow no longer pushes version bumps directly to <code>main</code> (blocked by branch protection). After a release it opens a pull request instead.</li>
+        <li>Re-running a release whose version is already on npm skips publish instead of failing the job.</li>
+      </ul>
+    </div>
+  </section>
 
   <!-- ============ v1.0.10 ============ -->
   <section class="release">
     <div class="release-head">
       <h2>1.0.10</h2>
-      <span class="tag current">Current</span>
     </div>
     <div class="release-date">2026-08-18 · the weight scale now matches the typeface</div>
 
