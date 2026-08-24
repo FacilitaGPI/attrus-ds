@@ -37,7 +37,12 @@
   --color-brand-solid:    var(--color-brand-primary-500);  /* Enterprise primary — ATTRUS Navy #002142 (buttons, avatars, toggles, badges, hero) */
   --color-brand-solid-hover:  color-mix(in srgb, var(--color-pure-white) 12%, var(--color-brand-primary-500));  /* navy is near-ink → states LIGHTEN */
   --color-brand-solid-active: color-mix(in srgb, var(--color-pure-white) 6%,  var(--color-brand-primary-500));
-  --color-brand-text:     var(--color-brand-primary-500);  /* navy as text — 15:1 on white */
+  /* Brand text on a FIXED LIGHT background (white / --color-brand-subtle-solid).
+     Stays navy in both themes on purpose — 15:1 there. NEVER use on the ambient
+     surface: it resolves 1.05:1 in dark. For ambient brand text use the
+     theme-aware --color-foreground-brand. */
+  --color-brand-text-on-light: var(--color-brand-primary-500);
+  --color-brand-text:     var(--color-brand-text-on-light);  /* DEPRECATED alias — use -on-light (fixed bg) or --color-foreground-brand (ambient) */
   --color-brand-text-strong: var(--color-brand-primary-700);  /* brand text pressed/emphasis */
   --color-brand-subtle:   color-mix(in srgb, var(--color-brand-primary-500) 12%, transparent);  /* tints: brand chips, selected, tags */
   --color-brand-subtle-solid: var(--color-brand-primary-50);   /* opaque light brand tint: brand avatars, selected-row base */
@@ -106,9 +111,13 @@
   --color-foreground-inverse-disabled:    var(--color-neutral-600);
 
   /* Borders */
-  --color-border-subtle:    var(--color-neutral-100);
-  --color-border-default:   var(--color-neutral-150);
-  --color-border-strong:    var(--color-neutral-200);
+  /* Borders — ink-alpha hairlines. Transparency instead of a fixed neutral so the
+     line takes the hue of whatever sits under it: it reads as a seam, not a rule.
+     Semantic borders below (focus, accent, feedback) stay solid — they carry
+     meaning and must remain legible. */
+  --color-border-subtle:    color-mix(in srgb, var(--color-ink-base) 4%,  transparent);
+  --color-border-default:   color-mix(in srgb, var(--color-ink-base) 7%,  transparent);
+  --color-border-strong:    color-mix(in srgb, var(--color-ink-base) 12%, transparent);
   --color-border-focus:     var(--color-accent-solid);   /* per-theme accent (Sky default) — follows the product's accent */
   --color-border-accent:    var(--color-accent-solid);
   --color-border-success:   var(--color-success-500);

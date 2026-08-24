@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- @dsCard group="Foundations" name="For AI / Usage rules" subtitle="Precedência de componentes — leia primeiro ao consumir o DS" viewport="1280x900" -->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For AI · Usage rules · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<link rel="stylesheet" href="components/tokens-doc.css?v=2">
+<script src="../theme-toggle.js"></script>
+<script src="../version.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 940px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .doc-header { padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-9); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 66ch; }
+  h2 { font-size: var(--fs-2xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: var(--space-10) 0 var(--space-4); }
+  .rule { display: flex; gap: var(--space-4); padding: var(--space-5) var(--space-6); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--shape-container); margin-bottom: var(--space-4); }
+  .rule .n { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-lg); font-weight: var(--w-bold); color: var(--color-foreground-accent); flex-shrink: 0; }
+  .rule h3 { font-size: var(--fs-md); font-weight: var(--w-semibold); margin: 0 0 var(--space-2); }
+  .rule p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+  .rule code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: var(--color-brand-subtle); padding: 1px var(--space-2); border-radius: var(--radius-2xs); }
+  table.tk { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--shape-container); overflow: hidden; }
+  .tk th, .tk td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .tk thead th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); text-transform: uppercase; letter-spacing: var(--ls-caps); color: var(--color-foreground-muted); background: var(--color-background-subtle); }
+  .tk tr:last-child td { border-bottom: 0; }
+  .tk td code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .tk td.no { color: var(--color-foreground-muted); }
+  .doc-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+</style>
+</head>
+<body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<button class="page-theme" data-theme-toggle aria-label="Toggle theme" style="position:fixed;top:var(--space-5);right:var(--space-5);z-index:100;display:inline-flex;align-items:center;gap:var(--space-2);height:40px;padding:0 var(--space-4);background:var(--color-background-surface);color:var(--color-foreground-secondary);border:1px solid var(--color-border-default);border-radius:var(--radius-pill);font-family:var(--font-mono);font-size:var(--fs-xxs);font-weight:var(--w-semibold);letter-spacing:var(--ls-caps);text-transform:uppercase;cursor:pointer;box-shadow:var(--shadow-sm);"><span data-theme-icon aria-hidden="true">☾</span><span data-theme-label>Dark</span></button>
+
+<div class="doc">
+  <header class="doc-header">
+    <h1>For AI · Usage rules</h1>
+    <p>Read this first when consuming ATTRUS. The design system already ships a canonical component and token for nearly every UI need — the golden rule is <strong>reuse before you recreate</strong>. Each component's doc page carries an <em>API &amp; usage</em> panel (and a machine-readable <code>#ds-api</code> JSON block) with its variants, props and preferred usage.</p>
+  </header>
+
+  <h2>Golden rules</h2>
+  <div class="rule"><span class="n">1</span><div><h3>Prefer the canonical component</h3><p>Before building any UI, check if the DS has it. Use <code>ATTRUS.&lt;Component&gt;</code> (React) or the canonical class (e.g. <code>.btn</code>, <code>.stepper</code>). Never re-implement a button, pill, table, stepper, modal, drawer or combobox from scratch.</p></div></div>
+  <div class="rule"><span class="n">2</span><div><h3>Consume tokens, never raw values</h3><p>Colors, spacing, radius, shadows, type — always <code>var(--token)</code>. Never hardcode hex, px for spacing/radius, or font stacks. Raw literals break theming (light/dark) and the product axis (Enterprise/Business).</p></div></div>
+  <div class="rule"><span class="n">3</span><div><h3>One theme surface, two axes</h3><p><code>data-theme</code> = light/dark (surface + intensity); <code>data-product</code> = brand matiz. Both live on <code>&lt;html&gt;</code>. Don't redefine surface/feedback tokens per product — only the brand/accent/gradient/shape surface.</p></div></div>
+  <div class="rule"><span class="n">4</span><div><h3>Read the API panel, not the prose</h3><p>Each doc page's <code>#ds-api</code> JSON is the source of truth for variants and props (generated from the <code>.d.ts</code>). Match those exact names.</p></div></div>
+
+  <h2>Component precedence — use this, not that</h2>
+  <table class="tk">
+    <thead><tr><th>Need</th><th>Use (canonical)</th><th class="no">Don't</th></tr></thead>
+    <tbody>
+      <tr><td>Multi-step flow</td><td><code>Stepper</code></td><td class="no">pills / loose numbers / progress bar</td></tr>
+      <tr><td>Primary action</td><td><code>Button</code> <code>.btn-primary</code></td><td class="no">styled <code>&lt;a&gt;</code>/<code>&lt;div&gt;</code></td></tr>
+      <tr><td>Status label</td><td><code>Pill</code></td><td class="no">colored span</td></tr>
+      <tr><td>Tabular data</td><td><code>DataTable</code> <code>.dt</code></td><td class="no">raw <code>&lt;table&gt;</code>; money uses <code>.dt-num</code></td></tr>
+      <tr><td>Overlay dialog</td><td><code>Modal</code> (portals)</td><td class="no">absolute div inside content</td></tr>
+      <tr><td>Side panel</td><td><code>Drawer</code> (portals)</td><td class="no">fixed div + manual scrim</td></tr>
+      <tr><td>Select / typeahead</td><td><code>Combobox</code> (portals; <code>static</code> for docs)</td><td class="no"><code>&lt;select&gt;</code> restyle / custom popover</td></tr>
+      <tr><td>Inline notice / alert</td><td><code>Callout</code></td><td class="no">bordered tinted div</td></tr>
+      <tr><td>Numeric field</td><td><code>NumberInput</code></td><td class="no">text input + custom ±</td></tr>
+      <tr><td>Command / search palette</td><td><code>SmartSearch</code></td><td class="no">custom ⌘K modal</td></tr>
+      <tr><td>Big metric</td><td><code>.metric</code></td><td class="no">hand-sized number span</td></tr>
+    </tbody>
+  </table>
+
+  <footer class="doc-foot">
+    <a href="index.html">← Back to catalog</a> · v<span data-ds-version></span>
+  </footer>
+</div>
+<script>lucide.createIcons();</script>
+</body>
+</html>

@@ -38,9 +38,9 @@
   /* --color-foreground-on-solid stays neutral-0 (white text on Royal/accent fills) */
 
   /* Borders — white-alpha hairlines */
-  --color-border-subtle:  color-mix(in srgb, var(--color-pure-white) 8%,  transparent);
-  --color-border-default: color-mix(in srgb, var(--color-pure-white) 12%, transparent);
-  --color-border-strong:  color-mix(in srgb, var(--color-pure-white) 20%, transparent);
+  --color-border-subtle:  color-mix(in srgb, var(--color-pure-white) 4%,  transparent);
+  --color-border-default: color-mix(in srgb, var(--color-pure-white) 6%,  transparent);
+  --color-border-strong:  color-mix(in srgb, var(--color-pure-white) 10%, transparent);
   /* focus / accent borders stay Sky-500 — reads well on dark */
 
   /* Feedback pairs flip: light foreground + dark-tinted background */
@@ -61,6 +61,12 @@
   --grad-surface-top: linear-gradient(180deg, color-mix(in srgb, var(--color-pure-white) 6%, transparent) 0%, transparent 100%);  /* @kind color */
   /* Frosted chrome flips to ink glass on dark (drawer/modal header+footer) */
   --glass-chrome: var(--glass-ink);
+  --glass-chrome-fg: var(--color-foreground-inverse-default);
+  --glass-surface: var(--glass-ink-lo);
+  --glass-surface-fg: var(--color-foreground-default);
+  --glass-overlay: var(--glass-ink-hi);
+  --glass-overlay-fg: var(--color-foreground-default);
+  /* --glass-hero stays ink in both themes (by design) */
 
   /* Data-viz categorical — lift the dark hues so every series reads on dark ink.
      Ramps (seq/div) + structure follow the semantic tokens already remapped above. */

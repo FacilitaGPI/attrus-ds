@@ -19,8 +19,8 @@
   .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
   .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
   .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
-  .doc-header p code { font-family: var(--font-mono); font-size: 0.85em; background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-accent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
-  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .doc-header p code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: 0.85em; background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-accent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
   .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
 
   .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
@@ -29,31 +29,31 @@
 
   .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
   .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
-  .doc-section h2 .num { font-family: var(--font-mono); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
   .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 72ch; margin: 0 0 var(--space-7); }
 
   .spec { border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); background: var(--color-background-surface); }
   .spec-head { padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); }
   .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
-  .spec-head h3 code { font-family: var(--font-mono); font-size: var(--fs-sm); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-sm); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
   .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 58ch; }
-  .spec-tag { display: inline-flex; align-items: center; padding: var(--space-1) var(--space-3); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); border-radius: var(--radius-pill); flex-shrink: 0; }
+  .spec-tag { display: inline-flex; align-items: center; padding: var(--space-1) var(--space-3); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); border-radius: var(--radius-pill); flex-shrink: 0; }
   .spec-canvas { padding: var(--space-7) var(--space-6); background: var(--color-background-canvas); display: flex; flex-direction: column; gap: var(--space-6); }
   .spec-canvas.is-flush { padding: 0; background: var(--color-background-surface); }
-  .canvas-label { display: block; font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+  .canvas-label { display: block; font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
 
   /* Anatomy callout list */
   .anatomy-list ol { padding-left: 0; margin: var(--space-6) 0 0; counter-reset: anat; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3) var(--space-8); }
   .anatomy-list li { counter-increment: anat; padding-left: var(--space-7); position: relative; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-sm); }
-  .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
+  .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
   .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
-  .anatomy-list code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .anatomy-list code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
 
   .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; margin-top: var(--space-4); }
-  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
   .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
   .token-table tr:last-child td { border-bottom: none; }
-  .token-table code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+  .token-table code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
 
   .dont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
   .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
@@ -81,10 +81,10 @@
   .resp-stage .resp-note h4 { font-size: var(--fs-md); font-weight: var(--w-bold); margin: 0 0 var(--space-2); letter-spacing: var(--ls-title); }
   .resp-stage .resp-note p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-4); }
   .resp-stage .resp-note ul { margin: 0; padding-left: var(--space-5); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
-  .resp-stage .resp-note code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+  .resp-stage .resp-note code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
   .phone { width: 100%; max-width: 380px; flex: 0 1 380px; min-width: 0; box-sizing: border-box; background: var(--color-neutral-800); border-radius: 40px; padding: 12px; box-shadow: var(--shadow-lg); }
   .phone-screen { background: var(--color-background-canvas); border-radius: 28px; overflow: hidden; height: 620px; display: flex; flex-direction: column; }
-  .phone-statusbar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-2) var(--space-5) var(--space-1); font-family: var(--font-mono); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-secondary); flex-shrink: 0; }
+  .phone-statusbar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-2) var(--space-5) var(--space-1); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-secondary); flex-shrink: 0; }
   .phone-statusbar .dots { display: inline-flex; gap: 4px; align-items: center; }
   .phone-statusbar .dots i, .phone-statusbar .dots svg { width: 13px; height: 13px; }
   .phone-appbar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); flex-shrink: 0; background: var(--color-background-surface); }
@@ -693,6 +693,98 @@
         <tr><td>Inverse</td><td><code>--color-background-inverse</code>, <code>--color-foreground-inverse-*</code>, <code>--color-border-inverse</code></td></tr>
       </tbody>
     </table>
+  </section>
+
+  <!-- ─── 14 SUBROWS ─── -->
+  <section class="spec-section" id="subrows">
+    <h2><span class="n">14</span>Subrows — an item glued to an item</h2>
+    <p class="lede">For an entry that <strong>belongs to</strong> another and shares its columns: the fee under its payment, the reversal under its charge, the leg under its transfer. This is row hierarchy, not a detail panel — the child fills the parent's columns, so the pair reads as one block. The parent gives up its bottom border (that is what glues them), the child takes a sunken background and one type step down, and the last child of the group restores the rule.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>One level <code>.dt-subrow</code></h3><p>The common case — a fee hanging off its payment. Single indent, <code>↳</code> connector drawn with <code>::before</code> so it is not copied with the text.</p></div>
+        <span class="spec-tag">recommended</span>
+      </div>
+      <div class="spec-canvas" style="padding:0">
+        <table class="dt">
+          <thead><tr><th>Transaction</th><th class="dt-num">Amount</th></tr></thead>
+          <tbody>
+            <tr class="has-subrows">
+            <td><span class="dt-cell-lead"><span class="ic-tile" style="background:var(--color-feedback-danger-background); color:var(--color-feedback-danger-foreground)"><i data-lucide="arrow-up-right"></i></span><span class="dt-cell-stack"><span class="pri">Global Supplies LLC</span><span class="sub">ACH</span></span></span></td>
+            <td class="dt-num">−$18,750.00</td>
+          </tr>
+            <tr class="dt-subrow is-last">
+            <td><span class="dt-subrow-lead"><span class="ic-mini"><i data-lucide="receipt"></i></span><span class="txt">Same-day ACH fee</span><span class="dt-subrow-tag">Fee</span><span class="dt-subrow-status">Processing</span></span></td>
+            <td class="dt-num">−$3.00</td>
+          </tr>
+            <tr class="has-subrows">
+            <td><span class="dt-cell-lead"><span class="ic-tile" style="background:var(--color-feedback-danger-background); color:var(--color-feedback-danger-foreground)"><i data-lucide="arrow-up-right"></i></span><span class="dt-cell-stack"><span class="pri">Northwind Traders</span><span class="sub">ACH</span></span></span></td>
+            <td class="dt-num">−$4,200.00</td>
+          </tr>
+            <tr class="dt-subrow ">
+            <td><span class="dt-subrow-lead"><span class="ic-mini"><i data-lucide="receipt"></i></span><span class="txt">Wire fee</span><span class="dt-subrow-tag">Fee</span><span class="dt-subrow-status">Processing</span></span></td>
+            <td class="dt-num">−$12.00</td>
+          </tr>
+            <tr class="dt-subrow is-last">
+            <td><span class="dt-subrow-lead"><span class="ic-mini"><i data-lucide="receipt"></i></span><span class="txt">FX spread</span><span class="dt-subrow-tag">Fee</span><span class="dt-subrow-status">Processing</span></span></td>
+            <td class="dt-num">−$8.40</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Nested <code>data-depth</code></h3><p>Depth scales through one token (<code>--dt-subrow-indent × --dt-subrow-depth</code>), so N levels cost no extra rules. Past two levels a financial table rarely gains: reading starts to depend on counting indents.</p></div>
+        <span class="spec-tag">judge it</span>
+      </div>
+      <div class="spec-canvas" style="padding:0">
+        <table class="dt">
+          <thead><tr><th>Transaction</th><th class="dt-num">Amount</th></tr></thead>
+          <tbody>
+            <tr class="has-subrows">
+            <td><span class="dt-cell-lead"><span class="ic-tile" style="background:var(--color-feedback-danger-background); color:var(--color-feedback-danger-foreground)"><i data-lucide="arrow-up-right"></i></span><span class="dt-cell-stack"><span class="pri">Global Supplies LLC</span><span class="sub">ACH</span></span></span></td>
+            <td class="dt-num">−$18,750.00</td>
+          </tr>
+            <tr class="dt-subrow ">
+            <td><span class="dt-subrow-lead"><span class="ic-mini"><i data-lucide="receipt"></i></span><span class="txt">Same-day ACH fee</span><span class="dt-subrow-tag">Fee</span><span class="dt-subrow-status">Processing</span></span></td>
+            <td class="dt-num">−$3.00</td>
+          </tr>
+            <tr class="dt-subrow " data-depth="2">
+            <td><span class="dt-subrow-lead"><span class="ic-mini"><i data-lucide="receipt"></i></span><span class="txt">Regulatory surcharge</span><span class="dt-subrow-tag">Tax</span><span class="dt-subrow-status">Processing</span></span></td>
+            <td class="dt-num">−$0.42</td>
+          </tr>
+            <tr class="dt-subrow is-last" data-depth="3">
+            <td><span class="dt-subrow-lead"><span class="ic-mini"><i data-lucide="receipt"></i></span><span class="txt">Rounding adjustment</span><span class="dt-subrow-tag">Adj</span><span class="dt-subrow-status">Processing</span></span></td>
+            <td class="dt-num">−$0.01</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Inherited state</h3><p><strong>States do not cascade in CSS</strong> — a selector cannot read the previous row's class. The component echoes <code>is-muted</code> / <code>is-error</code> / <code>is-selected</code> onto every child; without that the child detaches from its parent.</p></div>
+        <span class="spec-tag">gotcha</span>
+      </div>
+      <div class="spec-canvas" style="padding:0">
+        <table class="dt">
+          <thead><tr><th>Transaction</th><th class="dt-num">Amount</th></tr></thead>
+          <tbody>
+            <tr class="has-subrows is-muted">
+            <td><span class="dt-cell-lead"><span class="ic-tile" style="background:var(--color-feedback-danger-background); color:var(--color-feedback-danger-foreground)"><i data-lucide="arrow-up-right"></i></span><span class="dt-cell-stack"><span class="pri">Cancelled — Acme Ltd</span><span class="sub">ACH</span></span></span></td>
+            <td class="dt-num">−$900.00</td>
+          </tr>
+            <tr class="dt-subrow is-muted is-last">
+            <td><span class="dt-subrow-lead"><span class="ic-mini"><i data-lucide="receipt"></i></span><span class="txt">Reversal fee</span><span class="dt-subrow-tag">Fee</span><span class="dt-subrow-status">Processing</span></span></td>
+            <td class="dt-num">−$1.50</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </section>
 
 </div>

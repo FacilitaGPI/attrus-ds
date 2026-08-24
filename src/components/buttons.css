@@ -47,7 +47,7 @@
   /* Type */
   font-family: var(--font-sans);
   font-size: var(--fs-md);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   line-height: 1;
   letter-spacing: var(--ls-body);
 
@@ -184,8 +184,8 @@
   border-radius: var(--radius-2xs);
   text-decoration: none;
 }
-.btn-link:hover  { color: var(--color-brand-text); text-decoration: underline; text-underline-offset: 2px; }
-.btn-link:active { color: var(--color-brand-text-strong); }
+.btn-link:hover  { color: var(--color-foreground-brand); text-decoration: underline; text-underline-offset: 2px; }
+.btn-link:active { color: var(--color-foreground-brand); filter: brightness(.9); }
 .btn-link:focus-visible { box-shadow: var(--shadow-focus); }
 
 
@@ -223,7 +223,7 @@
 /* INVERSE — white pill on dark/brand surfaces */
 .btn-inverse {
   background: var(--color-pure-white);
-  color: var(--color-brand-text);
+  color: var(--color-brand-text-on-light);
 }
 .btn-inverse:hover  { background: var(--color-neutral-100); color: var(--color-brand-text-strong); }
 .btn-inverse:active { background: var(--color-neutral-150); }

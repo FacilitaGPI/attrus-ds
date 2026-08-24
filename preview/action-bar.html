@@ -1,0 +1,159 @@
+<!-- @dsCard group="Components" name="ActionBar" subtitle="Barra de ação persistente para wizard, drawer e editor" viewport="1280x900" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ActionBar · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<link rel="stylesheet" href="components/tokens-doc.css?v=2">
+<link rel="stylesheet" href="components/action-bar.css">
+<link rel="stylesheet" href="components/buttons.css">
+<link rel="stylesheet" href="components/stepper.css">
+<script src="../theme-toggle.js"></script>
+<script src="../version.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1080px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .page-theme { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); }
+  .page-theme [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-6); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-6); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .api { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: var(--space-4) var(--space-6); padding: var(--space-5) var(--space-6); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .api-k { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-2); }
+  .api-v { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .api ul { margin: 0; padding-left: var(--space-4); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .api code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .api .prefer { grid-column: 1 / -1; font-size: var(--fs-sm); color: var(--color-foreground-default); padding-top: var(--space-3); border-top: 1px solid var(--color-border-subtle); line-height: var(--lh-relaxed); }
+  .api .prefer b { color: var(--color-foreground-brand); }
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-6); }
+  .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-5); box-shadow: var(--shadow-xs); }
+  .spec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-head h3 { font-size: var(--fs-lg); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-brand); background: var(--color-brand-subtle); padding: var(--space-1) var(--space-2); border-radius: var(--radius-xs); margin-left: var(--space-2); }
+  .spec-head p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
+  .spec-tag { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
+  .spec-canvas { padding: var(--space-6); background: var(--color-background-canvas); }
+  .spec-canvas.inverse { background: var(--color-background-inverse); }
+  .spec-canvas.pad0 { padding: 0; }
+  .tk { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  .tk th, .tk td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .tk thead th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); }
+  .tk tr:last-child td { border-bottom: 0; }
+  .tk td code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .frame { border: 1px solid var(--color-border-default); border-radius: var(--shape-container); overflow: hidden; background: var(--color-background-surface); }
+  .frame > .fbody { padding: var(--space-6); font-size: var(--fs-sm); color: var(--color-foreground-secondary); }
+  .doc-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+</style>
+</head>
+<body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<button class="page-theme" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">☾</span>
+  <span data-theme-label>Dark</span>
+</button>
+<main class="doc">
+  <header class="doc-header">
+    <div>
+      <h1>ActionBar</h1>
+      <p>Faixa de ação persistente: ação primária à direita, secundária/voltar à esquerda, contexto (progresso, contagem, aviso) no meio. Fica em <code>--glass-chrome</code>, então acompanha o tema.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="panel-bottom"></i> Stable</span>
+  </header>
+  <section class="api" aria-label="API summary">
+    <div><div class="api-k">Import</div><code class="api-v">const { ActionBar } = ATTRUS</code></div>
+    <div><div class="api-k">CSS class</div><code class="api-v">.action-bar</code></div>
+    <div><div class="api-k">Variants</div><ul><li><code>default</code> — 52px, glass chrome + hairline superior</li><li><code>.is-fixed</code> — fixada no rodapé da viewport</li><li><code>.action-bar-sm</code> — densa</li><li><code>.on-inverse</code> — superfície escura permanente</li></ul></div>
+    <div><div class="api-k">Key props</div><ul><li><code>lead</code> — cluster esquerdo — voltar/secundária</li><li><code>context</code> — progresso, contagem, aviso</li><li><code>actions</code> — cluster direito — primária</li><li><code>fixed</code> — fixa na viewport</li><li><code>size</code> — 'md' | 'sm'</li><li><code>onInverse</code> — tratamento escuro</li></ul></div>
+    <div class="prefer"><b>Prefer:</b> alinhar o cluster direito com <code>.action-bar-actions { margin-left:auto }</code>. <b>Nunca</b> use um spacer <code>flex:1</code> — um spacer competindo com um Stepper na mesma linha colapsa o Stepper (foi exatamente assim que os rótulos passaram a se sobrepor).</div>
+  </section>
+  <script type="application/json" id="ds-api">{"component":"ActionBar","import":"const { ActionBar } = ATTRUS","cssClass":".action-bar","variants":["default","is-fixed","action-bar-sm","on-inverse"],"props":["lead","context","actions","fixed","size","onInverse"],"slots":["action-bar-lead","action-bar-context","action-bar-actions"],"prefer":"Right-align with margin-left:auto, never a flex:1 spacer.","status":"stable"}</script>
+  <section class="doc-section">
+    <h2><span class="num">01</span>Anatomia</h2>
+    <p class="lead">Três slots: <code>lead</code>, <code>context</code> e <code>actions</code>. Só o cluster direito recebe <code>margin-left:auto</code>.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Default <code>.action-bar</code></h3><p>Voltar + contexto de progresso + par de ações.</p></div>
+      <span class="spec-tag">wizard</span>
+    </div>
+    <div class="spec-canvas"><div class="frame"><div class="fbody">Conteúdo do passo — a barra ancora a ação primária no rodapé da superfície.</div><div class="action-bar"><div class="action-bar-lead"><button class="btn btn-ghost btn-sm">Voltar</button></div><div class="action-bar-context"><span class="strong">Passo 2</span> de 4 · rascunho salvo</div><div class="action-bar-actions"><button class="btn btn-secondary btn-sm">Salvar e sair</button><button class="btn btn-primary btn-sm">Continuar</button></div></div></div></div>
+  </div>  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Só ações <code>.action-bar-actions</code></h3><p>Sem lead nem contexto — o cluster continua à direita por <code>margin-left:auto</code>.</p></div>
+      <span class="spec-tag">drawer</span>
+    </div>
+    <div class="spec-canvas"><div class="frame"><div class="fbody">Conteúdo do passo — a barra ancora a ação primária no rodapé da superfície.</div><div class="action-bar"><div class="action-bar-actions"><button class="btn btn-ghost btn-sm">Cancelar</button><button class="btn btn-primary btn-sm">Confirmar transferência</button></div></div></div></div>
+  </div>
+  </section>
+  <section class="doc-section">
+    <h2><span class="num">02</span>Com Stepper no contexto</h2>
+    <p class="lead">O caso que motivou a regra do spacer: um Stepper no slot de contexto mantém a largura porque nada compete por <code>flex</code>.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Stepper + ação <code>context</code></h3><p>Rótulos truncam com ellipsis em vez de se sobrepor.</p></div>
+      <span class="spec-tag">no collapse</span>
+    </div>
+    <div class="spec-canvas"><div class="frame"><div class="fbody">Conteúdo do passo — a barra ancora a ação primária no rodapé da superfície.</div><div class="action-bar"><div class="action-bar-context"><div class="stepper is-compact"><div class="step is-done"><span class="step-marker"></span><span class="step-body"><span class="step-label">Dados</span></span></div><div class="step is-current"><span class="step-marker">2</span><span class="step-body"><span class="step-label">Ativação</span></span></div><div class="step"><span class="step-marker">3</span><span class="step-body"><span class="step-label">Recebimento</span></span></div><div class="step"><span class="step-marker">4</span><span class="step-body"><span class="step-label">Revisão</span></span></div></div></div><div class="action-bar-actions"><button class="btn btn-primary btn-sm">Continuar</button></div></div></div></div>
+  </div>
+  </section>
+  <section class="doc-section">
+    <h2><span class="num">03</span>Tamanho e estados</h2>
+    <p class="lead">Densa para drawers; primária desabilitada quando não há nada a enviar.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Dense <code>.action-bar-sm</code></h3><p>Padding reduzido.</p></div>
+      <span class="spec-tag">size</span>
+    </div>
+    <div class="spec-canvas"><div class="frame"><div class="fbody">Conteúdo do passo — a barra ancora a ação primária no rodapé da superfície.</div><div class="action-bar action-bar-sm"><div class="action-bar-lead"><button class="btn btn-ghost btn-sm">Voltar</button></div><div class="action-bar-context">3 contrapartes selecionadas</div><div class="action-bar-actions"><button class="btn btn-primary btn-sm">Aplicar</button></div></div></div></div>
+  </div>  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Primária desabilitada <code>:disabled</code></h3><p>O contexto explica o porquê — evita um botão morto sem motivo.</p></div>
+      <span class="spec-tag">state</span>
+    </div>
+    <div class="spec-canvas"><div class="frame"><div class="fbody">Conteúdo do passo — a barra ancora a ação primária no rodapé da superfície.</div><div class="action-bar"><div class="action-bar-lead"><button class="btn btn-ghost btn-sm">Voltar</button></div><div class="action-bar-context">Selecione ao menos uma opção</div><div class="action-bar-actions"><button class="btn btn-primary btn-sm" disabled>Continuar</button></div></div></div></div>
+  </div>
+  </section>
+  <section class="doc-section">
+    <h2><span class="num">04</span>On inverse</h2>
+    <p class="lead">Em onboarding escuro, <code>.on-inverse</code> troca para <code>--glass-hero</code> (que permanece escuro nos dois temas).</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Dark surface <code>.on-inverse</code></h3><p>Contexto e hairline migram para a rampa inverse.</p></div>
+      <span class="spec-tag">inverse</span>
+    </div>
+    <div class="spec-canvas inverse"><div class="frame" style="background:var(--color-background-inverse)"><div class="fbody" style="color:var(--color-foreground-inverse-secondary)">Conteúdo do passo sobre superfície escura.</div><div class="action-bar on-inverse"><div class="action-bar-lead"><button class="btn btn-inverse btn-sm">Voltar</button></div><div class="action-bar-context"><span class="strong">Onboarding</span> · 1 de 3</div><div class="action-bar-actions"><button class="btn btn-primary btn-sm">Começar</button></div></div></div></div>
+  </div>
+  </section>
+  <section class="doc-section">
+    <h2><span class="num">05</span>Referência</h2>
+    <p class="lead">Definido em <code>components/action-bar.css</code>.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Class map</h3><p>Uma fonte para CSS, doc e TSX.</p></div>
+      <span class="spec-tag">single source</span>
+    </div>
+    <div class="spec-canvas pad0"><table class="tk"><thead><tr><th>Classe</th><th>Papel</th></tr></thead><tbody>
+<tr><td><code>.action-bar</code></td><td>Raiz — glass chrome + hairline superior.</td></tr>
+<tr><td><code>.action-bar-lead</code></td><td>Cluster esquerdo (voltar/secundária).</td></tr>
+<tr><td><code>.action-bar-context</code></td><td>Progresso, contagem, aviso. <code>.strong</code> destaca.</td></tr>
+<tr><td><code>.action-bar-actions</code></td><td>Cluster direito — <code>margin-left:auto</code>.</td></tr>
+<tr><td><code>.is-fixed</code></td><td>Fixa no rodapé da viewport.</td></tr>
+</tbody></table></div>
+  </div>
+  </section>
+  <footer class="doc-foot">
+    <span>ATTRUS Design System · ActionBar · <span data-ds-version></span></span>
+    <a href="index.html">← Back to catalog</a>
+  </footer>
+</main>
+<script>lucide.createIcons();</script>
+</body>
+</html>

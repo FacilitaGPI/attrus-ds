@@ -54,7 +54,7 @@
 }
 .toast-title {
   font-size: var(--fs-sm);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   color: var(--color-foreground-default);
   margin: 0 0 var(--space-1);
   letter-spacing: var(--ls-tight);
@@ -74,7 +74,7 @@
   border: 0;
   padding: 0;
   font: inherit;
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   color: var(--color-foreground-accent);
   text-decoration: underline;
   text-underline-offset: 3px;

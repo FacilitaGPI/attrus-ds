@@ -24,7 +24,8 @@
   --color-brand-solid:        #000000;  /* primary fill: buttons, avatars, toggles, progress, badges, hero base */
   --color-brand-solid-hover:  color-mix(in srgb, #00152E 14%, #000000);  /* darken (or LIGHTEN with white if the primary is near-ink) */
   --color-brand-solid-active: color-mix(in srgb, #00152E 24%, #000000);
-  --color-brand-text:         #000000;  /* brand text/icon on light — MUST pass AA (≥4.5 on white); usually a darker shade */
+  --color-brand-text-on-light: #000000;  /* brand text on a FIXED LIGHT bg — MUST pass AA (≥4.5 on white). Ambient brand text uses --color-foreground-brand. */
+  --color-brand-text:         var(--color-brand-text-on-light);  /* deprecated alias */
   --color-brand-text-strong:  #000000;  /* emphasis text */
   --color-brand-subtle:       color-mix(in srgb, #000000 12%, transparent);            /* translucent tint — chips, tags, selected */
   --color-brand-subtle-solid: color-mix(in srgb, #000000 10%, var(--color-pure-white));/* opaque light tint — avatars, selected rows */

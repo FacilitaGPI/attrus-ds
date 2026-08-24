@@ -2,7 +2,7 @@ import * as React from 'react';
 
 export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 
-export interface TooltipProps extends React.HTMLAttributes<HTMLSpanElement> {
+export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'content'> {
   /** Tooltip content — plain label, or rich blocks when rich=true. */
   content: React.ReactNode;
   placement?: TooltipPlacement;

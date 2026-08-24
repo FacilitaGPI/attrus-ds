@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { createPortal } from 'react-dom';
 
 /**
  * ATTRUS Drawer — typed wrapper over the canonical `.drawer` + `.scrim`
@@ -173,7 +174,7 @@ export const Drawer: React.FC<DrawerProps> = ({
     .filter(Boolean)
     .join(' ');
 
-  return (
+  const overlay = (
     <React.Fragment>
       {isStatic ? null : <div className={['scrim', shown ? 'is-open' : ''].filter(Boolean).join(' ')} onClick={onClose} />}
       <div
@@ -221,6 +222,11 @@ export const Drawer: React.FC<DrawerProps> = ({
       </div>
     </React.Fragment>
   );
+
+  // Portal the live overlay to <body> so the scrim + panel escape any clipping /
+  // stacking ancestor. Static (gallery/doc) stays inline in its relative frame.
+  if (isStatic || typeof document === 'undefined') return overlay;
+  return createPortal(overlay, document.body);
 };
 
 export default Drawer;

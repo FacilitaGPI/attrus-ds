@@ -110,7 +110,7 @@ export interface OtpProps {
 }
 export declare const Otp: React.FC<OtpProps>;
 
-export interface FileDropProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface FileDropProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   onFiles?: (files: File[]) => void;
   multiple?: boolean;
   accept?: string;

@@ -51,7 +51,7 @@
     color: var(--color-feedback-success-foreground);
     border: 1px solid var(--color-feedback-success-border);
     border-radius: var(--radius-pill);
-    font-family: var(--font-mono); font-size: var(--fs-xs);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs);
     font-weight: var(--w-semibold); letter-spacing: var(--ls-caps);
     text-transform: uppercase;
   }
@@ -84,7 +84,7 @@
     letter-spacing: var(--ls-title); margin: 0 0 var(--space-2);
   }
   .doc-section h2 .num {
-    font-family: var(--font-mono); font-size: var(--fs-md);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md);
     font-weight: var(--w-regular); color: var(--color-foreground-muted);
     letter-spacing: var(--ls-caps); margin-right: var(--space-3);
     vertical-align: 0.25em;
@@ -114,7 +114,7 @@
     letter-spacing: var(--ls-title); margin: 0 0 var(--space-2);
   }
   .spec-head h3 code {
-    font-family: var(--font-mono); font-size: var(--fs-md);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md);
     font-weight: var(--w-medium); color: var(--color-foreground-accent);
     background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
     padding: var(--space-1) var(--space-3);
@@ -130,7 +130,7 @@
     padding: var(--space-1) var(--space-3);
     background: var(--color-background-subtle);
     color: var(--color-foreground-secondary);
-    font-family: var(--font-mono); font-size: var(--fs-xxs);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs);
     font-weight: var(--w-semibold); letter-spacing: var(--ls-caps);
     text-transform: uppercase;
     border-radius: var(--radius-pill); flex-shrink: 0;
@@ -193,7 +193,7 @@
     background: var(--color-foreground-default);
     color: var(--color-foreground-on-solid);
     border-radius: var(--radius-pill);
-    font-family: var(--font-mono);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);
     font-size: var(--fs-xxs); font-weight: var(--w-bold);
     display: flex; align-items: center; justify-content: center;
   }
@@ -219,7 +219,7 @@
     text-align: left;
     padding: var(--space-3) var(--space-4);
     background: var(--color-background-subtle);
-    font-family: var(--font-mono);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);
     font-size: var(--fs-xxs);
     font-weight: var(--w-semibold);
     letter-spacing: var(--ls-caps);
@@ -234,7 +234,7 @@
   }
   .token-table tr:last-child td { border-bottom: none; }
   .token-table code {
-    font-family: var(--font-mono);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);
     font-size: var(--fs-xs);
     color: var(--color-foreground-accent);
     background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
@@ -709,7 +709,7 @@
         <button onclick="window.spawnToast('brand')"><i data-lucide="sparkles"></i>Brand</button>
       </div>
       <div class="demo-controls" style="border-top: 1px solid var(--color-border-subtle); border-bottom: 0;">
-        <span style="font-family: var(--font-mono); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); align-self: center;">Position →</span>
+        <span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); align-self: center;">Position →</span>
         <button data-pos="tl" onclick="window.setPos('tl', this)">Top-left</button>
         <button data-pos="tc" onclick="window.setPos('tc', this)">Top-center</button>
         <button data-pos="tr" class="is-active" onclick="window.setPos('tr', this)" style="background: var(--color-foreground-default); color: var(--color-foreground-on-solid);">Top-right</button>

@@ -55,7 +55,7 @@
 .field > label {
   font-family: var(--font-sans);
   font-size: var(--fs-sm);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   color: var(--color-foreground-default);
   letter-spacing: var(--ls-body);
 }
@@ -260,6 +260,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   background: var(--color-background-subtle);
   color: var(--color-foreground-muted);
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-sm);
   flex-shrink: 0;
 }
@@ -326,8 +327,9 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   display: inline-flex;
   align-items: center;
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xxs);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   color: var(--color-foreground-muted);
   background: var(--color-background-subtle);
   border: 1px solid var(--color-border-default);
@@ -389,7 +391,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   border-radius: var(--radius-xs);
   font-family: var(--font-sans);
   font-size: var(--fs-xs);
-  font-weight: var(--w-medium);
+  font-weight: var(--w-regular);
   line-height: 1;
   white-space: nowrap;
   flex-shrink: 0;
@@ -466,8 +468,9 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   height: 48px;
   text-align: center;
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xl);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   border: 1px solid var(--color-border-default);
   border-radius: var(--shape-control);
   outline: none;
@@ -513,7 +516,21 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .switch input:checked ~ .switch-track { background: var(--color-brand-solid); }
 .switch input:checked ~ .switch-track .switch-thumb { transform: translateX(16px); }
 .switch input:focus-visible ~ .switch-track { box-shadow: var(--shadow-focus); }
-.switch input:disabled ~ .switch-track { opacity: 0.5; cursor: not-allowed; }
+/* Disabled — explicit tokens, never opacity (it composes with the surface into an
+   off-palette malva, kills the white thumb, and makes checked indistinguishable). */
+.switch:has(input:disabled) { cursor: not-allowed; }
+.switch:has(input:disabled) .switch-label { color: var(--color-foreground-disabled); }
+.switch input:disabled ~ .switch-track {
+  background: var(--color-background-sunken);
+  box-shadow: inset 0 0 0 1px var(--color-border-default);
+}
+.switch input:disabled ~ .switch-track .switch-thumb {
+  background: var(--color-neutral-100);
+  box-shadow: none;
+}
+.switch input:checked:disabled ~ .switch-track {
+  background: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+}
 .switch-label {
   font-family: var(--font-sans);
   font-size: var(--fs-sm);
@@ -570,7 +587,20 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 }
 .check input:indeterminate ~ .check-box svg { display: none; }
 .check input:focus-visible ~ .check-box { box-shadow: var(--shadow-focus); }
-.check input:disabled ~ .check-box { opacity: 0.5; cursor: not-allowed; }
+/* Disabled — explicit tokens (see .switch rationale) */
+.check:has(input:disabled) { cursor: not-allowed; }
+.check:has(input:disabled) .check-label { color: var(--color-foreground-disabled); }
+.check input:disabled ~ .check-box {
+  background: var(--color-background-sunken);
+  border-color: var(--color-border-default);
+}
+.check input:disabled ~ .check-box svg { color: var(--color-foreground-disabled); }
+.check input:checked:disabled ~ .check-box,
+.check input:indeterminate:disabled ~ .check-box {
+  background: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+  border-color: transparent;
+}
+.check input:checked:disabled ~ .check-box svg { color: var(--color-neutral-100); }
 .check.is-error .check-box { border-color: var(--color-border-danger); }
 
 
@@ -614,7 +644,19 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .radio input:checked ~ .radio-dot { border-color: var(--color-brand-solid); }
 .radio input:checked ~ .radio-dot::after { transform: scale(1); }
 .radio input:focus-visible ~ .radio-dot { box-shadow: var(--shadow-focus); }
-.radio input:disabled ~ .radio-dot { opacity: 0.5; cursor: not-allowed; }
+/* Disabled — explicit tokens (see .switch rationale) */
+.radio:has(input:disabled) { cursor: not-allowed; }
+.radio:has(input:disabled) .radio-label { color: var(--color-foreground-disabled); }
+.radio input:disabled ~ .radio-dot {
+  background: var(--color-background-sunken);
+  border-color: var(--color-border-default);
+}
+.radio input:checked:disabled ~ .radio-dot {
+  border-color: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+}
+.radio input:checked:disabled ~ .radio-dot::after {
+  background: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+}
 
 
 /* ----------------------------------------------------------------
@@ -697,9 +739,9 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   stroke-width: var(--icon-stroke);
   color: var(--color-foreground-muted);
 }
-.file-drop .ttl { font-size: var(--fs-md); font-weight: var(--w-semibold); color: var(--color-foreground-default); }
+.file-drop .ttl { font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-default); }
 .file-drop .sub { font-size: var(--fs-xs); color: var(--color-foreground-muted); }
-.file-drop .anchor { color: var(--color-foreground-highlight); font-weight: var(--w-semibold); }
+.file-drop .anchor { color: var(--color-foreground-highlight); font-weight: var(--w-regular); }
 
 /* ----------------------------------------------------------------
    16b. FILE LIST (post-upload state)
@@ -719,6 +761,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   background: var(--color-background-subtle);
   border-bottom: 1px solid var(--color-border-subtle);
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xxs);
   color: var(--color-foreground-muted);
   text-transform: uppercase;
@@ -732,6 +775,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   border: 0;
   padding: 0;
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xxs);
   color: var(--color-foreground-highlight);
   text-transform: uppercase;
@@ -739,7 +783,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   cursor: pointer;
   transition: color var(--transition-fast);
 }
-.file-list-action:hover { color: var(--color-brand-text); }
+.file-list-action:hover { color: var(--color-foreground-brand); }
 
 .file-rows {
   list-style: none;
@@ -771,9 +815,9 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   color: var(--color-foreground-muted);
 }
 .file-icon[data-kind="pdf"]   { background: color-mix(in srgb, var(--color-danger-500) 8%, var(--color-background-surface)); color: var(--color-feedback-danger-foreground); }
-.file-icon[data-kind="img"]   { background: color-mix(in srgb, var(--color-brand-solid) 8%, var(--color-background-surface));   color: var(--color-brand-text); }
+.file-icon[data-kind="img"]   { background: color-mix(in srgb, var(--color-brand-solid) 8%, var(--color-background-surface));   color: var(--color-foreground-brand); }
 .file-icon[data-kind="csv"]   { background: color-mix(in srgb, var(--color-success-500) 8%, var(--color-background-surface)); color: var(--color-feedback-success-foreground); }
-.file-icon[data-kind="doc"]   { background: color-mix(in srgb, var(--color-brand-solid) 10%, var(--color-background-surface));  color: var(--color-brand-text); }
+.file-icon[data-kind="doc"]   { background: color-mix(in srgb, var(--color-brand-solid) 10%, var(--color-background-surface));  color: var(--color-foreground-brand); }
 
 .file-icon-tag {
   position: absolute;
@@ -781,6 +825,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: 8px;
   font-weight: var(--w-bold);
   letter-spacing: 0.04em;
@@ -800,7 +845,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .file-name {
   font-family: var(--font-sans);
   font-size: var(--fs-sm);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   color: var(--color-foreground-default);
   white-space: nowrap;
   overflow: hidden;
@@ -808,6 +853,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 }
 .file-sub {
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xxs);
   color: var(--color-foreground-muted);
 }
@@ -835,14 +881,15 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   padding: 3px var(--space-2);
   border-radius: var(--radius-pill);
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xxs);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   text-transform: uppercase;
   letter-spacing: var(--ls-caps);
   white-space: nowrap;
 }
 .file-status.ok      { color: var(--color-feedback-success-foreground); background: var(--color-feedback-success-background); }
-.file-status.pending { color: var(--color-brand-text);   background: color-mix(in srgb, var(--color-brand-solid) 10%, transparent); }
+.file-status.pending { color: var(--color-foreground-brand);   background: color-mix(in srgb, var(--color-brand-solid) 10%, transparent); }
 .file-status.err     { color: var(--color-feedback-danger-foreground);  background: var(--color-feedback-danger-background); cursor: pointer; }
 
 .file-remove {
@@ -912,6 +959,43 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 /* ----------------------------------------------------------------
    18. ON INVERSE — dark surfaces
    ---------------------------------------------------------------- */
+/* Field + selection controls on a permanently-dark surface (hero, onboarding).
+   Without these, every dark surface had to override colour inline. */
+.field.on-inverse .field-label { color: var(--color-foreground-inverse-default); }
+.field.on-inverse .field-help  { color: var(--color-foreground-inverse-muted); }
+
+.switch.on-inverse .switch-track {
+  background: color-mix(in srgb, var(--color-pure-white) 18%, transparent);
+  box-shadow: inset 0 0 0 1px var(--color-border-inverse);
+}
+.switch.on-inverse .switch-label { color: var(--color-foreground-inverse-default); }
+.switch.on-inverse input:checked ~ .switch-track { background: var(--color-accent-solid); box-shadow: none; }
+.switch.on-inverse input:focus-visible ~ .switch-track { box-shadow: var(--shadow-focus-inverse); }
+.switch.on-inverse input:disabled ~ .switch-track {
+  background: color-mix(in srgb, var(--color-pure-white) 8%, transparent);
+  box-shadow: inset 0 0 0 1px var(--color-border-inverse);
+}
+.switch.on-inverse:has(input:disabled) .switch-label { color: var(--color-foreground-inverse-muted); }
+
+.check.on-inverse .check-box,
+.radio.on-inverse .radio-dot {
+  background: color-mix(in srgb, var(--color-pure-white) 8%, transparent);
+  border-color: var(--color-border-inverse);
+}
+.check.on-inverse .check-label,
+.radio.on-inverse .radio-label { color: var(--color-foreground-inverse-default); }
+.check.on-inverse input:checked ~ .check-box,
+.check.on-inverse input:indeterminate ~ .check-box {
+  background: var(--color-accent-solid);
+  border-color: var(--color-accent-solid);
+}
+.radio.on-inverse input:checked ~ .radio-dot { border-color: var(--color-accent-solid); }
+.radio.on-inverse input:checked ~ .radio-dot::after { background: var(--color-accent-solid); }
+.check.on-inverse input:focus-visible ~ .check-box,
+.radio.on-inverse input:focus-visible ~ .radio-dot { box-shadow: var(--shadow-focus-inverse); }
+.check.on-inverse:has(input:disabled) .check-label,
+.radio.on-inverse:has(input:disabled) .radio-label { color: var(--color-foreground-inverse-muted); }
+
 .input.on-inverse,
 .dark .input,
 .dark .group,

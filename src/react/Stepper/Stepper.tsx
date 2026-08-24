@@ -5,6 +5,8 @@ import * as React from 'react';
  * indicator (preview/components/stepper.css). States: todo / current /
  * done / error / skipped. Orientations: horizontal (default), vertical.
  * Density: compact. Minimal: rule (4px capsule, mono labels).
+ * Label type scale: labelSize sm | md | lg — a separate axis from density, so a
+ * compact stepper can still carry a large label.
  */
 
 export type StepState = 'todo' | 'current' | 'done' | 'error' | 'skipped';
@@ -20,6 +22,9 @@ export interface StepperProps extends React.OlHTMLAttributes<HTMLOListElement> {
   steps: StepItem[];
   vertical?: boolean;
   compact?: boolean;
+  /** Type scale for the label + helper, independent of marker density.
+      Composes with `compact`: geometry and type are separate axes. */
+  labelSize?: 'sm' | 'md' | 'lg';
   /** Minimal capsule+label variant (.is-rule) for tight headers. */
   rule?: boolean;
   /** ≤640px: hide labels, keep markers (.is-collapse-sm). */
@@ -44,6 +49,7 @@ export const Stepper: React.FC<StepperProps> = ({
   steps,
   vertical = false,
   compact = false,
+  labelSize,
   rule = false,
   collapseOnMobile = false,
   onStepClick,
@@ -54,6 +60,7 @@ export const Stepper: React.FC<StepperProps> = ({
     'stepper',
     vertical ? 'is-vertical' : '',
     compact ? 'is-compact' : '',
+    labelSize ? 'stepper-label-' + labelSize : '',
     rule ? 'is-rule' : '',
     collapseOnMobile ? 'is-collapse-sm' : '',
     className || '',

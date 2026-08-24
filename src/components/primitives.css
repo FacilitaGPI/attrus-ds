@@ -14,6 +14,7 @@
   height: var(--av-size, 36px);
   border-radius: var(--radius-pill);
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--av-fs, var(--fs-xs));
   font-weight: var(--w-bold);
   letter-spacing: var(--ls-caps);
@@ -32,7 +33,7 @@
 
 /* Tone — accent-on-tinted-bg uses the same background+foreground pair as feedback pills,
    so an Avatar reads as the same "object" as a status pill that references it. */
-.av-brand   { background: var(--color-brand-subtle-solid);          color: var(--color-brand-text); }
+.av-brand   { background: var(--color-brand-subtle-solid);          color: var(--color-brand-text-on-light); }
 .av-success { background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); }
 .av-warning { background: var(--color-feedback-warning-background); color: var(--color-feedback-warning-foreground); }
 .av-danger  { background: var(--color-feedback-danger-background);  color: var(--color-feedback-danger-foreground); }
@@ -79,20 +80,21 @@
   align-items: baseline;
   gap: var(--space-1);
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-variant-numeric: tabular-nums;
   font-size: var(--money-fs, var(--fs-sm));
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   color: var(--color-foreground-default);
   white-space: nowrap;
 }
 .money-cur {
   font-size: 0.78em;
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   color: var(--color-foreground-muted);
 }
-.money-frac { color: var(--color-foreground-secondary); font-weight: var(--w-medium); }
+.money-frac { color: var(--color-foreground-secondary); font-weight: var(--w-regular); }
 
 .money-sm { --money-fs: var(--fs-xs); }
 .money-md { --money-fs: var(--fs-sm); }
@@ -102,7 +104,7 @@
 
 .money-pos { color: var(--color-feedback-success-foreground); }
 .money-neg { color: var(--color-feedback-danger-foreground); }
-.money-muted { color: var(--color-foreground-muted); font-weight: var(--w-medium); }
+.money-muted { color: var(--color-foreground-muted); font-weight: var(--w-regular); }
 
 /* =================== METRIC (hero display number) ===================
    Big, display-weight figure for hero/KPI moments. Distinct from .money
@@ -120,7 +122,7 @@
   white-space: nowrap;
   font-size: var(--metric-fs, 38px);
 }
-.metric-cur { font-size: 0.58em; font-weight: var(--w-semibold); opacity: 0.55; margin-right: 0.32em; }
+.metric-cur { font-size: 0.58em; font-weight: var(--w-regular); opacity: 0.55; margin-right: 0.32em; }
 .metric-frac { font-size: 0.68em; opacity: 0.55; }
 .metric-sm { --metric-fs: 30px; }
 .metric-md { --metric-fs: 38px; }
@@ -145,8 +147,9 @@
 }
 .stat-label {
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xxs);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   color: var(--color-foreground-muted);
@@ -164,8 +167,9 @@
   align-items: center;
   gap: var(--space-1);
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xs);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
 }
 .stat-delta i, .stat-delta svg { width: 14px; height: 14px; stroke-width: 2.25; }
 .stat-delta-up   { color: var(--color-feedback-success-foreground); }
@@ -215,8 +219,9 @@
   gap: var(--space-3);
   margin: var(--space-5) 0;
   font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xxs);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   color: var(--color-foreground-muted);
@@ -240,7 +245,7 @@
 .eyebrow {
   display: block;
   font-size: var(--fs-xs);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
   letter-spacing: var(--ls-caps);
   text-transform: uppercase;
   color: var(--color-foreground-muted);
@@ -248,12 +253,12 @@
 .eyebrow.has-icon { display: inline-flex; align-items: center; gap: var(--space-2-5); }
 .eyebrow-xs { font-size: var(--fs-xxs); font-weight: var(--w-bold); }
 .eyebrow-xs.has-icon { gap: var(--space-2); }
-.eyebrow-sm { font-size: var(--fs-xxs); font-weight: var(--w-semibold); }
-.eyebrow-md { font-size: var(--fs-xs); font-weight: var(--w-semibold); }
+.eyebrow-sm { font-size: var(--fs-xxs); font-weight: var(--w-regular); }
+.eyebrow-md { font-size: var(--fs-xs); font-weight: var(--w-regular); }
 .eyebrow-muted     { color: var(--color-foreground-muted); }
 .eyebrow-secondary { color: var(--color-foreground-secondary); }
 .eyebrow-default   { color: var(--color-foreground-default); }
-.eyebrow-brand     { color: var(--color-brand-text); }
+.eyebrow-brand     { color: var(--color-foreground-brand); }
 .eyebrow-inverse   { color: var(--color-foreground-inverse-muted); }
 
 /* =================== FILTER CHIP =================== */
@@ -269,7 +274,7 @@
   background: var(--color-background-surface);
   font-family: inherit;
   font-size: var(--fs-sm);
-  font-weight: var(--w-medium);
+  font-weight: var(--w-regular);
   color: var(--color-foreground-secondary);
   cursor: pointer;
   white-space: nowrap;
@@ -282,7 +287,7 @@
   background: var(--color-background-selected);
   border-color: var(--color-brand-border);
   color: var(--color-foreground-brand);
-  font-weight: var(--w-semibold);
+  font-weight: var(--w-regular);
 }
 .filter-chip .chip-chevron { opacity: .55; }
 

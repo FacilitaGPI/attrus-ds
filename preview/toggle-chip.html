@@ -1,0 +1,140 @@
+<!-- @dsCard group="Components" name="ToggleChip" subtitle="Chip de seleção com aria-pressed — filtro multi-select, tag picker" viewport="1280x900" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ToggleChip · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<link rel="stylesheet" href="components/tokens-doc.css?v=2">
+<link rel="stylesheet" href="components/toggle-chip.css">
+<script src="../theme-toggle.js"></script>
+<script src="../version.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1080px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .page-theme { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); }
+  .page-theme [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-6); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-6); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .api { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: var(--space-4) var(--space-6); padding: var(--space-5) var(--space-6); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .api-k { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-2); }
+  .api-v { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .api ul { margin: 0; padding-left: var(--space-4); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .api code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .api .prefer { grid-column: 1 / -1; font-size: var(--fs-sm); color: var(--color-foreground-default); padding-top: var(--space-3); border-top: 1px solid var(--color-border-subtle); line-height: var(--lh-relaxed); }
+  .api .prefer b { color: var(--color-foreground-brand); }
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-6); }
+  .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-5); box-shadow: var(--shadow-xs); }
+  .spec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
+  .spec-head h3 { font-size: var(--fs-lg); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-brand); background: var(--color-brand-subtle); padding: var(--space-1) var(--space-2); border-radius: var(--radius-xs); margin-left: var(--space-2); }
+  .spec-head p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
+  .spec-tag { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
+  .spec-canvas { padding: var(--space-6); background: var(--color-background-canvas); }
+  .spec-canvas.inverse { background: var(--color-background-inverse); }
+  .spec-canvas.pad0 { padding: 0; }
+  .tk { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  .tk th, .tk td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .tk thead th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); }
+  .tk tr:last-child td { border-bottom: 0; }
+  .tk td code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .frame { border: 1px solid var(--color-border-default); border-radius: var(--shape-container); overflow: hidden; background: var(--color-background-surface); }
+  .frame > .fbody { padding: var(--space-6); font-size: var(--fs-sm); color: var(--color-foreground-secondary); }
+  .doc-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+</style>
+</head>
+<body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<button class="page-theme" data-theme-toggle aria-label="Toggle theme">
+  <span data-theme-icon aria-hidden="true">☾</span>
+  <span data-theme-label>Dark</span>
+</button>
+<main class="doc">
+  <header class="doc-header">
+    <div>
+      <h1>ToggleChip</h1>
+      <p>Um chip que é <strong>controle de formulário</strong>. Existe porque <code>.chip</code> é um token removível (traz <code>.chip-x</code>) e <code>.pill.interactive</code> é status pill — nenhum dos dois é seleção.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="toggle-right"></i> Stable</span>
+  </header>
+  <section class="api" aria-label="API summary">
+    <div><div class="api-k">Import</div><code class="api-v">const { ToggleChip, ToggleChipGroup } = ATTRUS</code></div>
+    <div><div class="api-k">CSS class</div><code class="api-v">.toggle-chip</code></div>
+    <div><div class="api-k">Variants</div><ul><li><code>default</code> — 32px, rótulo + contador opcional</li><li><code>.toggle-chip-sm</code> — denso, 26px</li><li><code>.on-inverse</code> — superfície escura permanente</li></ul></div>
+    <div><div class="api-k">Key props</div><ul><li><code>children</code> — rótulo</li><li><code>icon</code> — ícone à esquerda</li><li><code>count</code> — contador à direita</li><li><code>pressed / onToggle</code> — estado controlado → aria-pressed</li><li><code>disabled</code> — travado</li><li><code>size</code> — 'md' | 'sm'</li><li><code>onInverse</code> — tratamento escuro</li></ul></div>
+    <div class="prefer"><b>Prefer:</b> este componente para <b>seleção</b> (filtros, tags, preferências). Use <code>.chip</code> só para tokens removíveis e <code>.pill</code> só para status não-interativo. Quando a opção precisa de descrição, suba para <code>SelectableCard</code>.</div>
+  </section>
+  <script type="application/json" id="ds-api">{"component":"ToggleChip","import":"const { ToggleChip, ToggleChipGroup } = ATTRUS","cssClass":".toggle-chip","variants":["default","toggle-chip-sm","on-inverse"],"props":["children","icon","count","pressed","onToggle","disabled","size","onInverse"],"states":["hover","aria-pressed=true","disabled","focus-visible"],"prefer":"Selection control; not .chip (removable) nor .pill (status).","status":"stable"}</script>
+  <section class="doc-section">
+    <h2><span class="num">01</span>Anatomia e estados</h2>
+    <p class="lead">Renderiza <code>&lt;button aria-pressed&gt;</code> — o padrão acessível de toggle. O estado ligado usa a superfície selected + texto de marca.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Multi-select com contador <code>.toggle-chip</code></h3><p>O contador usa mono tabular e acompanha a cor do estado.</p></div>
+      <span class="spec-tag">filter</span>
+    </div>
+    <div class="spec-canvas"><div class="toggle-chip-group"><button type="button" class="toggle-chip" aria-pressed="true">Pix<span class="toggle-chip-count">128</span></button><button type="button" class="toggle-chip" aria-pressed="false">TED<span class="toggle-chip-count">42</span></button><button type="button" class="toggle-chip" aria-pressed="true">SWIFT<span class="toggle-chip-count">17</span></button><button type="button" class="toggle-chip" aria-pressed="false">ACH<span class="toggle-chip-count">6</span></button></div></div>
+  </div>  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Disabled <code>:disabled</code></h3><p>Ligado + travado continua distinguível de desligado + travado.</p></div>
+      <span class="spec-tag">state</span>
+    </div>
+    <div class="spec-canvas"><div class="toggle-chip-group"><button type="button" class="toggle-chip" aria-pressed="false" disabled>Cripto</button><button type="button" class="toggle-chip" aria-pressed="true" disabled>Travado pelo plano<span class="toggle-chip-count">2</span></button></div></div>
+  </div>
+  </section>
+  <section class="doc-section">
+    <h2><span class="num">02</span>Tamanho</h2>
+    <p class="lead">A variante densa cabe em barras de filtro e cabeçalhos de tabela.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Dense <code>.toggle-chip-sm</code></h3><p>26px de altura, tipo <code>--fs-xs</code>.</p></div>
+      <span class="spec-tag">size</span>
+    </div>
+    <div class="spec-canvas"><div class="toggle-chip-group"><button type="button" class="toggle-chip toggle-chip-sm" aria-pressed="true">7 dias</button><button type="button" class="toggle-chip toggle-chip-sm" aria-pressed="false">30 dias</button><button type="button" class="toggle-chip toggle-chip-sm" aria-pressed="false">90 dias</button><button type="button" class="toggle-chip toggle-chip-sm" aria-pressed="false">Personalizado<span class="toggle-chip-count">3</span></button></div></div>
+  </div>
+  </section>
+  <section class="doc-section">
+    <h2><span class="num">03</span>On inverse</h2>
+    <p class="lead">Em superfície escura o estado ligado migra para a camada accent.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Dark surface <code>.on-inverse</code></h3><p>Borda e fundo em white-alpha; ligado em accent translúcido.</p></div>
+      <span class="spec-tag">inverse</span>
+    </div>
+    <div class="spec-canvas inverse"><div class="toggle-chip-group"><button type="button" class="toggle-chip on-inverse" aria-pressed="true">Pagamentos</button><button type="button" class="toggle-chip on-inverse" aria-pressed="false">Recebíveis<span class="toggle-chip-count">12</span></button><button type="button" class="toggle-chip on-inverse" aria-pressed="true">FX</button><button type="button" class="toggle-chip on-inverse" aria-pressed="false" disabled>Escrow</button></div></div>
+  </div>
+  </section>
+  <section class="doc-section">
+    <h2><span class="num">04</span>Referência</h2>
+    <p class="lead">Definido em <code>components/toggle-chip.css</code>.</p>
+  <div class="spec">
+    <div class="spec-head">
+      <div><h3>Class map</h3><p>Uma fonte para CSS, doc e TSX.</p></div>
+      <span class="spec-tag">single source</span>
+    </div>
+    <div class="spec-canvas pad0"><table class="tk"><thead><tr><th>Classe</th><th>Papel</th></tr></thead><tbody>
+<tr><td><code>.toggle-chip</code></td><td>Raiz — button com aria-pressed.</td></tr>
+<tr><td><code>.toggle-chip-count</code></td><td>Contador mono à direita.</td></tr>
+<tr><td><code>[aria-pressed="true"]</code> · <code>.is-on</code></td><td>Estado ligado.</td></tr>
+<tr><td><code>.toggle-chip-sm</code></td><td>Variante densa.</td></tr>
+<tr><td><code>.toggle-chip-group</code></td><td>Wrapper flex-wrap com gap.</td></tr>
+</tbody></table></div>
+  </div>
+  </section>
+  <footer class="doc-foot">
+    <span>ATTRUS Design System · ToggleChip · <span data-ds-version></span></span>
+    <a href="index.html">← Back to catalog</a>
+  </footer>
+</main>
+<script>lucide.createIcons();</script>
+</body>
+</html>

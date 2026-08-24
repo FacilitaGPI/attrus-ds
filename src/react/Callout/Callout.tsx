@@ -13,7 +13,7 @@ import * as React from 'react';
 
 export type CalloutTone = 'info' | 'warn' | 'success' | 'danger' | 'neutral';
 
-export interface CalloutProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CalloutProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Semantic tone. Default 'info' (brand royal tint). */
   tone?: CalloutTone;
   /** Compact density for dense panels & forms. */

@@ -43,6 +43,8 @@ export interface ComboboxProps {
   emptyTitle?: React.ReactNode;
   emptySub?: React.ReactNode;
   disabled?: boolean;
+  /** Gallery/doc rendering: popover stays inline (not portaled). */
+  static?: boolean;
   className?: string;
   style?: React.CSSProperties;
   'aria-label'?: string;

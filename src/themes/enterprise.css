@@ -15,7 +15,8 @@
   --color-brand-solid:        var(--color-brand-primary-500);  /* Navy #002142 */
   --color-brand-solid-hover:  color-mix(in srgb, var(--color-pure-white) 12%, var(--color-brand-primary-500));
   --color-brand-solid-active: color-mix(in srgb, var(--color-pure-white) 6%,  var(--color-brand-primary-500));
-  --color-brand-text:         var(--color-brand-primary-500);
+  --color-brand-text-on-light: var(--color-brand-primary-500);
+  --color-brand-text:         var(--color-brand-text-on-light);  /* deprecated alias */
   --color-brand-text-strong:  var(--color-brand-primary-700);
   --color-brand-subtle:       color-mix(in srgb, var(--color-brand-primary-500) 12%, transparent);
   --color-brand-subtle-solid: var(--color-brand-primary-50);

@@ -1,0 +1,261 @@
+/* ============================================================
+   ANIMATED BACKDROP — components/animated-bg.css
+   Nine full-bleed animated backgrounds for hero, onboarding and
+   marketing surfaces. Companion to `.ambient` (which is the plain
+   blob layer): these carry motion vocabulary — aurora drift, cursor
+   mesh, scanning grid, ripples, beams, orbits, apex bloom, triangles.
+
+   Structure (mirrors .ambient so the two are interchangeable):
+     .abg[.abg-<variant>]        positioned host
+       .abg-layer                one or more decorative layers (aria-hidden)
+       .abg-scrim                MANDATORY readability veil when text sits on top
+       .abg-content              your content, above every layer
+
+   Every tint derives from --color-brand-solid / --color-accent-solid and the
+   Sky/Royal accent stops, so a backdrop follows the active product theme.
+   The ambient ink base uses --abg-ink, which flips with the theme.
+
+   Variants: aurora · mesh · grid · ripple · beams · orbits · apex · triangles
+   Modifiers: .is-subtle / .is-strong (layer opacity) · .on-inverse (dark hero)
+   Motion is disabled under prefers-reduced-motion.
+   ============================================================ */
+
+.abg {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* Ink base — the deep field every variant paints on. Theme-aware. */
+  --abg-ink: var(--color-background-canvas);
+  --abg-base: var(--color-background-subtle);
+  --abg-glint: var(--color-brand-accent-700);
+  background: var(--abg-ink);
+}
+[data-theme="dark"] .abg,
+.abg.on-inverse {
+  --abg-ink: var(--color-ink-deep);
+  --abg-base: var(--color-ink-base);
+  --abg-glint: var(--color-brand-accent-200);
+}
+.abg.on-inverse {
+  background: var(--abg-ink);
+  color: var(--color-foreground-inverse-default);
+}
+
+.abg-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+/* On a light ambient surface a translucent layer over white turns grey;
+   multiply keeps the hue and only darkens what is actually painted. */
+.abg:not(.on-inverse) .abg-layer.is-tinted { mix-blend-mode: multiply; }
+[data-theme="dark"] .abg:not(.on-inverse) .abg-layer.is-tinted { mix-blend-mode: normal; }
+
+/* Readability veil — REQUIRED whenever content sits on the backdrop. */
+.abg-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(100deg,
+    var(--abg-ink) 24%,
+    color-mix(in srgb, var(--abg-ink) 76%, transparent) 48%,
+    transparent 74%);
+}
+/* Vertical veil — for centred hero copy instead of a left-anchored block */
+.abg-scrim.is-vertical {
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--abg-ink) 58%, transparent) 0%,
+    color-mix(in srgb, var(--abg-ink) 86%, transparent) 100%);
+}
+
+.abg-content { position: relative; z-index: 2; }
+
+/* Intensity — subtle dims the layers; strong cannot use opacity > 1 (it clamps
+   to 1 and does nothing), so it lifts saturation and brightness instead. */
+.abg.is-subtle .abg-layer { opacity: .55; }
+.abg.is-strong .abg-layer { filter: saturate(1.3) brightness(1.18); }
+.abg.is-strong .abg-blob { filter: blur(64px) saturate(1.3) brightness(1.18); }
+
+/* Shared vignette — pulls focus to the centre, mutes the edges */
+.abg-vignette {
+  background: radial-gradient(125% 100% at 50% 45%, transparent 40%,
+    color-mix(in srgb, var(--abg-ink) 92%, transparent) 100%);
+}
+
+/* ============================================================
+   01 · AURORA — four drifting radial blobs, heavy blur
+   ============================================================ */
+.abg-aurora .abg-blob {
+  position: absolute;
+  border-radius: var(--radius-pill);
+  filter: blur(64px);
+  will-change: transform;
+}
+.abg-aurora .abg-blob.is-1 {
+  top: -30%; right: -20%; width: 70%; aspect-ratio: 1; opacity: .38;
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-brand-accent-500) 52%, transparent), transparent 66%);
+  animation: abg-drift-a 26s var(--ease-standard) infinite;
+}
+.abg-aurora .abg-blob.is-2 {
+  bottom: -40%; left: -18%; width: 82%; aspect-ratio: 1; opacity: .35;
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-brand-secondary-400) 60%, transparent), transparent 68%);
+  animation: abg-drift-b 32s var(--ease-standard) infinite;
+}
+.abg-aurora .abg-blob.is-3 {
+  top: 8%; left: 24%; width: 46%; aspect-ratio: 1; opacity: .29;
+  background: radial-gradient(circle, color-mix(in srgb, var(--dataviz-cat-5) 48%, transparent), transparent 66%);
+  animation: abg-drift-c 38s var(--ease-standard) infinite;
+}
+.abg-aurora .abg-blob.is-4 {
+  bottom: -14%; right: 6%; width: 52%; aspect-ratio: 1; opacity: .26;
+  background: radial-gradient(circle, color-mix(in srgb, var(--dataviz-cat-3) 44%, transparent), transparent 66%);
+  animation: abg-drift-d 44s var(--ease-standard) infinite;
+}
+@keyframes abg-drift-a { 0%,100% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(18%,-14%,0) scale(1.3); } }
+@keyframes abg-drift-b { 0%,100% { transform: translate3d(0,0,0) scale(1.12); } 50% { transform: translate3d(-22%,16%,0) scale(.82); } }
+@keyframes abg-drift-c { 0%,100% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(16%,20%,0) scale(1.18); } }
+@keyframes abg-drift-d { 0%,100% { transform: translate3d(0,0,0) scale(1); } 33% { transform: translate3d(-24%,14%,0) scale(1.26); } 66% { transform: translate3d(20%,-18%,0) scale(.86); } }
+
+/* ============================================================
+   02 · MESH — static dot mesh; dots brighten around the cursor.
+   The bright layer is revealed through a radial mask at --mx/--my,
+   updated by a pointermove listener on the host.
+   ============================================================ */
+.abg-mesh .abg-dotglow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--duration-slower) var(--ease-standard);
+  -webkit-mask-image: radial-gradient(210px 210px at var(--mx, -999px) var(--my, -999px), rgba(0,0,0,.6) 0%, rgba(0,0,0,.3) 46%, rgba(0,0,0,.12) 68%, transparent 84%);
+  mask-image: radial-gradient(210px 210px at var(--mx, -999px) var(--my, -999px), rgba(0,0,0,.6) 0%, rgba(0,0,0,.3) 46%, rgba(0,0,0,.12) 68%, transparent 84%);
+}
+.abg-mesh:hover .abg-dotglow { animation: abg-dotpulse 4.2s var(--ease-standard) infinite; }
+@keyframes abg-dotpulse { 0%,100% { opacity: .18; } 50% { opacity: .5; } }
+
+/* ============================================================
+   03 · GRID — flat relative grid with glints running the lines
+   ============================================================ */
+.abg-grid .abg-gridlines {
+  -webkit-mask-image: radial-gradient(115% 95% at 58% 46%, #000 26%, transparent 78%);
+  mask-image: radial-gradient(115% 95% at 58% 46%, #000 26%, transparent 78%);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--color-brand-accent-500) 11%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-brand-accent-500) 11%, transparent) 1px, transparent 1px);
+  background-size: 3.846% 6.25%;
+}
+.abg-grid .abg-glint-x,
+.abg-grid .abg-glint-y { position: absolute; }
+.abg-grid .abg-glint-x {
+  left: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--abg-glint), transparent);
+  animation: abg-glint-x 12s var(--ease-standard) infinite;
+}
+.abg-grid .abg-glint-y {
+  top: 0; width: 1px;
+  background: linear-gradient(180deg, transparent, var(--abg-glint), transparent);
+  animation: abg-glint-y 14s var(--ease-standard) infinite;
+}
+/* Travel the whole line: animate left/top in % of the host, not translate in %
+   of the element's own width (which only moved it ~25% across). */
+@keyframes abg-glint-x {
+  0% { left: -26%; opacity: 0; } 10% { opacity: .34; }
+  46% { opacity: .34; } 56%, 100% { left: 100%; opacity: 0; }
+}
+@keyframes abg-glint-y {
+  0% { top: -26%; opacity: 0; } 10% { opacity: .3; }
+  46% { opacity: .3; } 56%, 100% { top: 100%; opacity: 0; }
+}
+
+/* ============================================================
+   04 · RIPPLE — concentric waves emanating from one point
+   ============================================================ */
+@keyframes abg-ripple { 0% { transform: scale(.06); opacity: .6; } 100% { transform: scale(1); opacity: 0; } }
+@keyframes abg-ripple-soft { 0% { transform: scale(.06); opacity: .2; } 100% { transform: scale(1); opacity: 0; } }
+
+/* ============================================================
+   05 · BEAMS — horizontal light trails at mixed speeds
+   ============================================================ */
+.abg-beams .abg-tracks {
+  inset: 6% 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.abg-beams .abg-track {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  overflow: hidden;
+  background: linear-gradient(90deg, transparent,
+    color-mix(in srgb, var(--color-brand-accent-500) 7%, transparent) 45%,
+    color-mix(in srgb, var(--color-brand-accent-500) 4%, transparent));
+}
+.abg-beams .abg-beam {
+  position: absolute;
+  top: 0; height: 1px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, transparent, var(--color-brand-accent-300), transparent);
+  animation: abg-beam-h 9s linear infinite;
+}
+.abg-beams .abg-beam.is-strong {
+  top: -1px; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--color-brand-accent-200), transparent);
+}
+@keyframes abg-beam-h { 0% { transform: translateX(-110%); } 100% { transform: translateX(240%); } }
+
+/* ============================================================
+   06 · ORBITS — concentric rings with satellites, alternating spin
+   ============================================================ */
+.abg-orbits .abg-hub {
+  position: absolute;
+  top: 50%; left: 62%;
+  width: 0; height: 0;
+}
+.abg-orbits .abg-ring {
+  position: absolute;
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in srgb, var(--color-brand-accent-500) 14%, transparent);
+  animation: abg-orbit 32s linear infinite;
+}
+.abg-orbits .abg-sat {
+  position: absolute;
+  top: -1.5px; left: 50%;
+  width: 3px; height: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--color-brand-accent-300);
+  box-shadow: 0 0 6px var(--color-brand-accent-500);
+}
+.abg-orbits .abg-core {
+  position: absolute;
+  left: -4px; top: -4px;
+  width: 8px; height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-brand-accent-300);
+  box-shadow: 0 0 16px var(--color-brand-accent-500);
+}
+@keyframes abg-orbit { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   07 · APEX — the brand mark outlined, with a light beam tracing it.
+   The dash period equals the path length, so exactly one beam rides
+   the contour and its tail re-enters at the start.
+   ============================================================ */
+@keyframes abg-apex-glint { from { stroke-dashoffset: 628; } to { stroke-dashoffset: 0; } }
+
+/* ============================================================
+   08 · TRIANGLES — oversized translucent planes in slow drift
+   ============================================================ */
+@keyframes abg-tri-a { 0% { transform: translate3d(-6%, 4%, 0) rotate(0deg); } 100% { transform: translate3d(8%, -6%, 0) rotate(14deg); } }
+@keyframes abg-tri-b { 0% { transform: translate3d(6%, -5%, 0) rotate(0deg); } 100% { transform: translate3d(-9%, 7%, 0) rotate(-18deg); } }
+@keyframes abg-tri-c { 0% { transform: translate3d(0, 8%, 0) rotate(-8deg); } 100% { transform: translate3d(-7%, -9%, 0) rotate(10deg); } }
+@keyframes abg-tri-d { 0% { transform: translate3d(-8%, -7%, 0) rotate(6deg); } 100% { transform: translate3d(10%, 8%, 0) rotate(-12deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .abg-layer, .abg-blob, .abg-glint-x, .abg-glint-y, .abg-beam,
+  .abg-ring, .abg-dotglow, .abg [style*="animation"] {
+    animation: none !important;
+  }
+  .abg-dotglow { transition: none; }
+}
