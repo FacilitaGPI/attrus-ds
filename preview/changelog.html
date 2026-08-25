@@ -68,15 +68,53 @@
 
   <header class="doc-header">
     <div class="eyebrow">ATTRUS Design System</div>
-    <h1>Changelog <span class="ver-badge" data-ds-version>v1.0.11</span></h1>
+    <h1>Changelog <span class="ver-badge" data-ds-version>v1.0.12</span></h1>
     <p>Every notable change to the design system, grouped by release. Versioning follows <a href="https://semver.org" style="color:var(--color-foreground-accent)">SemVer</a>; the version number lives in <code style="font-family:var(--font-mono);font-size:0.85em">version.js</code> and is mirrored across the catalog and index pages.</p>
   </header>
+
+  <!-- ============ v1.0.12 ============ -->
+  <section class="release">
+    <div class="release-head">
+      <h2>1.0.12</h2>
+      <span class="tag current">Current</span>
+    </div>
+    <div class="release-date">2026-08-25 · hierarchy in the table</div>
+
+    <div class="change-group added">
+      <h3><i data-lucide="plus-circle"></i> Added</h3>
+      <ul>
+        <li><b>Collapsible subrows</b> (table §12b) — the same subrow vocabulary as §12, but the group starts closed and the parent carries a disclosure control: <code>.dt-subrow-toggle</code> with <code>aria-expanded</code>/<code>aria-controls</code>, an optional <code>.dt-subrow-count</code> badge that says what is hidden before opening, and <code>.dt-subrow-inner</code> wrapping the reveal.</li>
+        <li><b>Row as control</b> (§12c) — <code>.has-subrows.is-clickable</code> turns the whole parent row into the toggle. With <code>role="button"</code> and a tabindex the row needs what a button has, so it gets a pointer and a visible focus ring; the chevron inside becomes <code>aria-hidden</code> and <code>pointer-events:none</code>, or one action would cost two tab stops and the click would land twice.</li>
+        <li><b><code>.dt-detail</code></b> (§12d) — the other half of the hierarchy story. Reach for a subrow when the child shares the parent's columns because it is the same kind of thing (a fee under a payment); reach for a detail panel when the child has its own attributes and the parent's headers would be lies (an audit trail, KYC documents, delivery steps). One <code>colspan</code> cell frees the layout: <code>.dt-detail-grid</code> for key/value pairs, or a nested <code>.dt</code> with its own <code>&lt;thead&gt;</code>.</li>
+        <li><b><code>--w-mono-emphasis</code></b> — the weight amounts use, kept separate from <code>--w-bold</code> because the two families are tuned apart: a future mono swap re-tunes this one line without disturbing the sans scale.</li>
+        <li><b><code>.sr-only</code></b> — visually hidden but announced, using the clip-rect technique rather than <code>display:none</code> (which drops the node from the accessibility tree) or <code>width:0</code> (which some engines skip).</li>
+        <li>React: <code>DTSubrowLead</code>, <code>DTSubrowToggle</code> and <code>DTSubrowCell</code>. <code>DTSubrowLead</code> takes a <code>parentName</code> and renders a hidden “Item of &lt;parent&gt;:” prefix — native table semantics carry no hierarchy, so a screen reader has no other way to hear that a row is a child.</li>
+      </ul>
+    </div>
+
+    <div class="change-group changed">
+      <h3><i data-lucide="refresh-cw"></i> Changed</h3>
+      <ul>
+        <li><b>Amounts now carry the emphasis by default.</b> <code>.dt-num</code> renders in mono at <code>--w-mono-emphasis</code>: a monospaced face cannot widen — it must keep its cell — so weight there buys ink, not width. The currency chip and any sub line stay regular, so the pair gives one strong figure against quiet context instead of a bold block.</li>
+        <li><code>.dt-num.bold</code> consequently only steps the <b>size</b> up; the weight is already there.</li>
+      </ul>
+    </div>
+
+    <div class="change-group">
+      <h3><i data-lucide="info"></i> Notes</h3>
+      <ul>
+        <li><b>The modern reveal pattern does not work inside a table.</b> <code>grid-template-rows: 0fr → 1fr</code> was tried first: a <code>&lt;td&gt;</code> has no definite height, so <code>1fr</code> has nothing to resolve against and computes to <code>0px</code> — the group simply stays shut. That is a property of table layout, not a bug in the pattern. The reveal animates <code>max-height</code> on a clipped wrapper instead, which costs a cap: an open subrow may grow to <b>120px</b>, generous enough for two wrapped lines, beyond which it clips. The value is a literal — the surrounding comment calls it <code>--subrow-max</code>, but no such token is declared yet; promoting it is the obvious follow-up for a product with taller subrows.</li>
+        <li>The animation lives on a wrapper <i>inside</i> the cell for the same reason a <code>&lt;tr&gt;</code> cannot be animated directly: height on a row is ignored by table layout, and <code>display:grid</code> on a <code>&lt;td&gt;</code> destroys column alignment. Cell padding moved to <code>.dt-subrow-cell</code> too — padding on the <code>&lt;td&gt;</code> would keep a closed row 24px tall and leave a visible gap.</li>
+        <li>Measured before settling on 700: <code>700</code> and <code>800</code> resolve to the <b>same face</b> in the mono family (ink 48.00 for both, against 44.00 regular), so 800 bought nothing visually. 700 is what the browser draws and what the <code>@import</code> requests.</li>
+        <li><code>prefers-reduced-motion</code> disables every transition in the disclosure. Older engines that skip the tween still open and close — the failure mode is graceful.</li>
+      </ul>
+    </div>
+  </section>
 
   <!-- ============ v1.0.11 ============ -->
   <section class="release">
     <div class="release-head">
       <h2>1.0.11</h2>
-      <span class="tag current">Current</span>
     </div>
     <div class="release-date">2026-08-24 · publish pipeline on protected main</div>
 

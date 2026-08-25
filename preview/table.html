@@ -7,10 +7,10 @@
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
-<link rel="stylesheet" href="components/table.css">
-<link rel="stylesheet" href="components/status-pills.css">
-<link rel="stylesheet" href="components/tabs.css">
-<link rel="stylesheet" href="components/primitives.css">
+<link rel="stylesheet" href="components/table.css?v=3">
+<link rel="stylesheet" href="components/status-pills.css?v=3">
+<link rel="stylesheet" href="components/tabs.css?v=3">
+<link rel="stylesheet" href="components/primitives.css?v=3">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
   body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
@@ -95,6 +95,7 @@
 </style>
 </head>
 <body>
+<main class="doc">
 <a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
 
 <div class="doc">
@@ -108,24 +109,40 @@
   </header>
 
   <nav class="doc-nav">
-    <a href="#anatomy">01 Anatomy</a>
-    <a href="#sizes">02 Sizes</a>
-    <a href="#cells">03 Cell patterns</a>
-    <a href="#states">04 Row states</a>
-    <a href="#density">05 Density</a>
-    <a href="#empty">06 Empty &amp; loading</a>
-    <a href="#pagination">07 Pagination</a>
-    <a href="#groups">08 Group rows</a>
-    <a href="#inverse">09 Dark surfaces</a>
-    <a href="#responsive">10 Responsive</a>
-    <a href="#usage">11 When to use</a>
-    <a href="#a11y">12 Accessibility</a>
-    <a href="#tokens">13 Tokens</a>
+    <a href="#usage">01 When to use</a>
+    <a href="#anatomy">02 Anatomy</a>
+    <a href="#sizes">03 Sizes</a>
+    <a href="#cells">04 Cell patterns</a>
+    <a href="#states">05 Row states</a>
+    <a href="#density">06 Density</a>
+    <a href="#empty">07 Empty &amp; loading</a>
+    <a href="#pagination">08 Pagination</a>
+    <a href="#groups">09 Group rows</a>
+    <a href="#subrows">10 Subrows</a>
+    <a href="#inverse">11 Dark surfaces</a>
+    <a href="#responsive">12 Responsive</a>
+    <a href="#a11y">13 Accessibility</a>
+    <a href="#tokens">14 Tokens</a>
   </nav>
 
-  <!-- ─── 01 ANATOMY ─── -->
+  <!-- ─── 01 WHEN TO USE ─── -->
+  <section class="doc-section" id="usage">
+    <h2><span class="num">01</span>When to use</h2>
+    <p class="lead">Tables are for comparing many records across the same set of attributes. If users scan down a single column to compare values, a table is right. If each record needs rich, varied layout, use Cards instead.</p>
+
+    <div class="dont-grid">
+      <div class="dont-card do"><i data-lucide="check-circle-2"></i><p><strong>Right-align all numbers</strong>Use <code>.dt-num</code> so decimals line up. Tabular figures are on by default at the <code>.dt</code> level.</p></div>
+      <div class="dont-card dont"><i data-lucide="x-circle"></i><p><strong>Don't center-align numeric columns</strong>Centered figures break vertical scanning and make magnitude impossible to compare.</p></div>
+      <div class="dont-card do"><i data-lucide="check-circle-2"></i><p><strong>Keep one primary action per row</strong>A trailing <code>.dt-actions</code> cluster or a clickable row — not a wall of buttons in every cell.</p></div>
+      <div class="dont-card dont"><i data-lucide="x-circle"></i><p><strong>Don't exceed ~7 columns on desktop</strong>Past that, move secondary attributes into a <code>.dt-cell-stack</code> sub-line or a detail drawer.</p></div>
+      <div class="dont-card do"><i data-lucide="check-circle-2"></i><p><strong>Always show count + pagination</strong>Users need to know the total and where they are. Pair <code>.count .total</code> with <code>.dt-pagination .range</code>.</p></div>
+      <div class="dont-card dont"><i data-lucide="x-circle"></i><p><strong>Don't tint rows per category</strong>Row colour means state (selected / error / muted) only. Use a status pill or lead tone for category.</p></div>
+    </div>
+  </section>
+
+  <!-- ─── 02 ANATOMY ─── -->
   <section class="doc-section" id="anatomy">
-    <h2><span class="num">01</span>Anatomy</h2>
+    <h2><span class="num">02</span>Anatomy</h2>
     <p class="lead">A complete data table is a vertical stack inside one card: toolbar (count + filters + bulk actions), the table, and pagination. Each layer is optional — a static reference table can be just <code>.dt-wrap</code> + <code>.dt</code>.</p>
 
     <div class="spec">
@@ -185,9 +202,9 @@
     </div>
   </section>
 
-  <!-- ─── 02 SIZES ─── -->
+  <!-- ─── 03 SIZES ─── -->
   <section class="doc-section" id="sizes">
-    <h2><span class="num">02</span>Sizes</h2>
+    <h2><span class="num">03</span>Sizes</h2>
     <p class="lead">Match row height to data density. <code>.dt--sm</code> for log-like high-volume views, default for standard records, <code>.dt--lg</code> for spacious detail tables with lead avatars.</p>
 
     <div class="spec">
@@ -228,9 +245,9 @@
     </div>
   </section>
 
-  <!-- ─── 03 CELL PATTERNS ─── -->
+  <!-- ─── 04 CELL PATTERNS ─── -->
   <section class="doc-section" id="cells">
-    <h2><span class="num">03</span>Cell patterns</h2>
+    <h2><span class="num">04</span>Cell patterns</h2>
     <p class="lead">Cells are composed, not styled ad-hoc. Reach for these helpers so alignment, type and colour stay consistent across every table in the product.</p>
 
     <div class="spec">
@@ -270,9 +287,9 @@
     </table>
   </section>
 
-  <!-- ─── 04 ROW STATES ─── -->
+  <!-- ─── 05 ROW STATES ─── -->
   <section class="doc-section" id="states">
-    <h2><span class="num">04</span>Row states</h2>
+    <h2><span class="num">05</span>Row states</h2>
     <p class="lead">State is set on the <code>&lt;tr&gt;</code>. Selection persists through hover; muted dims terminal rows; error tints rows needing attention. Try the live selection below.</p>
 
     <div class="spec">
@@ -326,9 +343,9 @@
     </div>
   </section>
 
-  <!-- ─── 05 DENSITY ─── -->
+  <!-- ─── 06 DENSITY ─── -->
   <section class="doc-section" id="density">
-    <h2><span class="num">05</span>Density helpers</h2>
+    <h2><span class="num">06</span>Density helpers</h2>
     <p class="lead">Three independent modifiers, combinable. Toggle them below on the same table.</p>
 
     <div class="spec">
@@ -358,9 +375,9 @@
     </div>
   </section>
 
-  <!-- ─── 06 EMPTY & LOADING ─── -->
+  <!-- ─── 07 EMPTY & LOADING ─── -->
   <section class="doc-section" id="empty">
-    <h2><span class="num">06</span>Empty &amp; loading</h2>
+    <h2><span class="num">07</span>Empty &amp; loading</h2>
     <p class="lead">Both states live inside <code>&lt;tbody&gt;</code> so the table chrome (head, toolbar) stays put. Never collapse the table to a blank card.</p>
 
     <div class="spec">
@@ -388,9 +405,9 @@
     </div>
   </section>
 
-  <!-- ─── 07 PAGINATION ─── -->
+  <!-- ─── 08 PAGINATION ─── -->
   <section class="doc-section" id="pagination">
-    <h2><span class="num">07</span>Pagination</h2>
+    <h2><span class="num">08</span>Pagination</h2>
     <p class="lead">The footer that anchors a paged table. It answers two questions at a glance — <em>where am I</em> (<code>.range</code>) and <em>how do I move</em> (<code>.pager</code>). Lives at the bottom of <code>.dt-wrap</code>, mirroring the toolbar at the top.</p>
 
     <div class="spec">
@@ -520,9 +537,9 @@
     </table>
   </section>
 
-  <!-- ─── 08 GROUP ROWS ─── -->
+  <!-- ─── 09 GROUP ROWS ─── -->
   <section class="doc-section" id="groups">
-    <h2><span class="num">08</span>Group / section rows</h2>
+    <h2><span class="num">09</span>Group / section rows</h2>
     <p class="lead">Use <code>.dt-row-divider</code> to break a long table into labelled sections — by date, currency or category — without leaving the single-table structure.</p>
 
     <div class="spec">
@@ -544,161 +561,10 @@
     </div>
   </section>
 
-  <!-- ─── 09 DARK ─── -->
-  <section class="doc-section" id="inverse">
-    <h2><span class="num">09</span>Dark surfaces</h2>
-    <p class="lead">Drop <code>.on-inverse</code> on the table (or wrap it in <code>.dark</code>) for tables on ink/navy panels — used in the marketing site and modal overlays.</p>
-
-    <div class="spec">
-      <div class="spec-head"><div><h3>Inverse table <code>.dt.on-inverse</code></h3><p>Head, borders, hover and stacked sub-text all retune to the inverse foreground tokens.</p></div><span class="spec-tag">Inverse</span></div>
-      <div class="spec-canvas" style="background: var(--color-background-inverse);">
-        <div class="scroll-x">
-        <table class="dt on-inverse">
-          <thead><tr><th>Counterparty</th><th>Method</th><th class="right">Volume</th><th>Status</th></tr></thead>
-          <tbody>
-            <tr class="hov"><td><span class="dt-cell-lead"><span class="ic-tile"><i data-lucide="building-2"></i></span><span class="dt-cell-stack"><span class="pri">Aurora Logistics</span><span class="sub mono">acct_9f2a</span></span></span></td><td>Wire · SWIFT</td><td class="dt-num bold"><span class="ccy">USD</span>284,500.00</td><td><span class="pill success sm">Active</span></td></tr>
-            <tr class="hov"><td><span class="dt-cell-lead"><span class="ic-tile"><i data-lucide="globe"></i></span><span class="dt-cell-stack"><span class="pri">Belvo Pay LATAM</span><span class="sub mono">acct_3c71</span></span></span></td><td>Local rails</td><td class="dt-num bold"><span class="ccy">MXN</span>1,902,000.00</td><td><span class="pill success sm">Active</span></td></tr>
-          </tbody>
-        </table>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── 10 RESPONSIVE ─── -->
-  <section class="doc-section" id="responsive">
-    <h2><span class="num">10</span>Responsive &amp; mobile</h2>
-    <p class="lead">A grid of columns can't survive a 390px screen intact. Pick one of two strategies per table — never let columns silently crush.</p>
-
-    <table class="token-table" style="margin-bottom: var(--space-7);">
-      <thead><tr><th>Strategy</th><th>How</th><th>Use when</th></tr></thead>
-      <tbody>
-        <tr><td><strong>A · Scroll</strong></td><td>Wrap <code>.dt</code> in an <code>overflow-x:auto</code> element. The grid stays whole and pans sideways.</td><td>Comparison-heavy / numeric tables where column alignment is the point — ledgers, FX rates, reconciliation.</td></tr>
-        <tr><td><strong>B · Stack</strong> <code>.dt-responsive</code></td><td>Below 560px the wrapper collapses each row into a label : value card. Driven by a <strong>container query</strong>, so it also reflows inside drawers &amp; split-panes.</td><td>Action-oriented record lists the user taps into — transactions, counterparties, requests.</td></tr>
-      </tbody>
-    </table>
-
-    <div class="spec">
-      <div class="spec-head">
-        <div><h3>Stacked cards <code>.dt-responsive</code></h3><p>The same transactions table inside a phone frame. Every <code>&lt;td&gt;</code> carries a <code>data-label</code> that becomes the inline field label; the lead cell gets <code>.dt-card-title</code> to read as the card heading.</p></div>
-        <span class="spec-tag">Strategy B</span>
-      </div>
-      <div class="spec-canvas">
-        <div class="resp-stage">
-          <div class="resp-note">
-            <h4>What changes at &lt;560px</h4>
-            <p>The container query (not the viewport) drives the switch — resize a desktop window or open this table in a drawer and it reflows the same way.</p>
-            <ul>
-              <li><code>thead</code> is hidden; column names move inline via <code>data-label</code>.</li>
-              <li>Each <code>tr</code> becomes a bordered card with the lead cell as its title.</li>
-              <li>Numbers stay right-aligned opposite their label for fast scanning.</li>
-              <li>Status pills, deltas and IDs keep their exact tokens — no restyle.</li>
-            </ul>
-          </div>
-          <div class="phone">
-            <div class="phone-screen">
-              <div class="phone-statusbar">
-                <span>9:41</span>
-                <span class="dots"><i data-lucide="signal"></i><i data-lucide="wifi"></i><i data-lucide="battery-full"></i></span>
-              </div>
-              <div class="phone-appbar">
-                <span class="ttl">Transactions</span>
-                <i data-lucide="sliders-horizontal"></i>
-              </div>
-              <div class="phone-body">
-                <div class="dt-responsive">
-                  <div class="dt-toolbar"><span class="count">6 transactions<span class="total">of 248</span></span></div>
-                  <table class="dt">
-                    <thead><tr><th>Counterparty</th><th>Type</th><th class="right">Amount</th><th>Reference</th><th>Status</th></tr></thead>
-                    <tbody>
-                      <tr class="hov">
-                        <td class="dt-card-title"><span class="dt-cell-lead"><span class="ic-round tone-success"><i data-lucide="arrow-down-left"></i></span>Aurora Logistics</span></td>
-                        <td data-label="Type">Pay-in ↓</td>
-                        <td data-label="Amount" class="dt-num bold"><span class="ccy">BRL</span>1,000.00</td>
-                        <td data-label="Reference" class="dt-id">N-741469</td>
-                        <td data-label="Status"><span class="pill success sm">Approved</span></td>
-                      </tr>
-                      <tr class="hov">
-                        <td class="dt-card-title"><span class="dt-cell-lead"><span class="ic-round tone-danger"><i data-lucide="arrow-up-right"></i></span>Northwind Co.</span></td>
-                        <td data-label="Type">Pay-out ↑</td>
-                        <td data-label="Amount" class="dt-num bold"><span class="ccy">USD</span>1,500.00</td>
-                        <td data-label="Reference" class="dt-id">N-741470</td>
-                        <td data-label="Status"><span class="pill warning sm">Pending</span></td>
-                      </tr>
-                      <tr class="hov">
-                        <td class="dt-card-title"><span class="dt-cell-lead"><span class="ic-round tone-success"><i data-lucide="arrow-down-left"></i></span>Belvo Pay LATAM</span></td>
-                        <td data-label="Type">Pay-in ↓</td>
-                        <td data-label="Amount" class="dt-num bold"><span class="ccy">MXN</span>25,400.00</td>
-                        <td data-label="Reference" class="dt-id">N-741472</td>
-                        <td data-label="Status"><span class="pill success sm">Approved</span></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── 11 WHEN TO USE ─── -->
-  <section class="doc-section" id="usage">
-    <h2><span class="num">11</span>When to use</h2>
-    <p class="lead">Tables are for comparing many records across the same set of attributes. If users scan down a single column to compare values, a table is right. If each record needs rich, varied layout, use Cards instead.</p>
-
-    <div class="dont-grid">
-      <div class="dont-card do"><i data-lucide="check-circle-2"></i><p><strong>Right-align all numbers</strong>Use <code>.dt-num</code> so decimals line up. Tabular figures are on by default at the <code>.dt</code> level.</p></div>
-      <div class="dont-card dont"><i data-lucide="x-circle"></i><p><strong>Don't center-align numeric columns</strong>Centered figures break vertical scanning and make magnitude impossible to compare.</p></div>
-      <div class="dont-card do"><i data-lucide="check-circle-2"></i><p><strong>Keep one primary action per row</strong>A trailing <code>.dt-actions</code> cluster or a clickable row — not a wall of buttons in every cell.</p></div>
-      <div class="dont-card dont"><i data-lucide="x-circle"></i><p><strong>Don't exceed ~7 columns on desktop</strong>Past that, move secondary attributes into a <code>.dt-cell-stack</code> sub-line or a detail drawer.</p></div>
-      <div class="dont-card do"><i data-lucide="check-circle-2"></i><p><strong>Always show count + pagination</strong>Users need to know the total and where they are. Pair <code>.count .total</code> with <code>.dt-pagination .range</code>.</p></div>
-      <div class="dont-card dont"><i data-lucide="x-circle"></i><p><strong>Don't tint rows per category</strong>Row colour means state (selected / error / muted) only. Use a status pill or lead tone for category.</p></div>
-    </div>
-  </section>
-
-  <!-- ─── 12 A11Y ─── -->
-  <section class="doc-section" id="a11y">
-    <h2><span class="num">12</span>Accessibility</h2>
-    <table class="token-table">
-      <thead><tr><th>Concern</th><th>Requirement</th><th>How it's met</th></tr></thead>
-      <tbody>
-        <tr><td>Semantics</td><td>Real table elements</td><td>Native <code>&lt;table&gt;&lt;thead&gt;&lt;tbody&gt;&lt;th&gt;&lt;td&gt;</code> — never <code>&lt;div&gt;</code> grids. Screen readers announce row/column position.</td></tr>
-        <tr><td>Header scope</td><td>Column headers associated</td><td>Add <code>scope="col"</code> on <code>&lt;th&gt;</code> (and <code>scope="row"</code> for row headers) in production markup.</td></tr>
-        <tr><td>Sort state</td><td>Announced, not colour-only</td><td>Sortable header gets <code>aria-sort="ascending|descending"</code>; the chevron rotation mirrors it visually.</td></tr>
-        <tr><td>Selection</td><td>Checkboxes are real inputs</td><td>Use a real <code>&lt;input type="checkbox"&gt;</code> with a label (the demo uses styled stand-ins). Bulk toolbar appears with <code>aria-live="polite"</code>.</td></tr>
-        <tr><td>Row actions</td><td>Reachable by keyboard</td><td>Icon buttons carry <code>aria-label</code>; clickable rows expose the same action via a focusable control, not just the row click.</td></tr>
-        <tr><td>Empty / loading</td><td>Communicated to AT</td><td>Skeleton rows are <code>aria-hidden</code> with an <code>aria-busy="true"</code> table; empty state uses real text, not just an icon.</td></tr>
-        <tr><td>Contrast</td><td>Text ≥ 4.5:1, borders ≥ 3:1</td><td>All token-driven. Zebra tint stays above 3:1 against body text; status pills carry text labels, not colour alone.</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- ─── 13 TOKENS ─── -->
-  <section class="doc-section" id="tokens">
-    <h2><span class="num">13</span>Tokens consumed</h2>
-    <table class="token-table">
-      <thead><tr><th>Concern</th><th>Tokens</th></tr></thead>
-      <tbody>
-        <tr><td>Surface &amp; wrapper</td><td><code>--color-background-surface</code>, <code>--color-border-default</code>, <code>--radius-md</code>, <code>--shadow-xs</code></td></tr>
-        <tr><td>Head</td><td><code>--font-mono</code>, <code>--fs-xxs</code>, <code>--ls-caps</code>, <code>--color-foreground-muted</code>, <code>--color-border-subtle</code></td></tr>
-        <tr><td>Row hover / divider</td><td><code>--color-background-subtle</code>, <code>--color-border-subtle</code>, <code>--transition-fast</code></td></tr>
-        <tr><td>Selected row</td><td><code>--color-background-selected</code> (= brand-secondary-50)</td></tr>
-        <tr><td>Error row</td><td><code>--color-danger-50</code> via <code>color-mix</code></td></tr>
-        <tr><td>Numbers</td><td><code>tabular-nums</code>, <code>--color-feedback-success-foreground</code> / <code>danger-foreground</code> (deltas)</td></tr>
-        <tr><td>Lead tones</td><td><code>--color-feedback-{success,info,warning,danger}-{background,border,foreground}</code></td></tr>
-        <tr><td>Pagination</td><td><code>--color-brand-secondary-50</code> / <code>-200</code> / <code>-700</code> (current page), <code>--radius-sm</code></td></tr>
-        <tr><td>Skeleton</td><td><code>--color-border-subtle</code> / <code>-default</code> (theme-aware), <code>--ease-linear</code></td></tr>
-        <tr><td>Inverse</td><td><code>--color-background-inverse</code>, <code>--color-foreground-inverse-*</code>, <code>--color-border-inverse</code></td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- ─── 14 SUBROWS ─── -->
-  <section class="spec-section" id="subrows">
-    <h2><span class="n">14</span>Subrows — an item glued to an item</h2>
-    <p class="lede">For an entry that <strong>belongs to</strong> another and shares its columns: the fee under its payment, the reversal under its charge, the leg under its transfer. This is row hierarchy, not a detail panel — the child fills the parent's columns, so the pair reads as one block. The parent gives up its bottom border (that is what glues them), the child takes a sunken background and one type step down, and the last child of the group restores the rule.</p>
+  <!-- ─── 10 SUBROWS ─── -->
+  <section class="doc-section" id="subrows">
+    <h2><span class="num">10</span>Subrows — an item glued to an item</h2>
+    <p class="lead">For an entry that <strong>belongs to</strong> another and shares its columns: the fee under its payment, the reversal under its charge, the leg under its transfer. This is row hierarchy, not a detail panel — the child fills the parent's columns, so the pair reads as one block. The parent gives up its bottom border (that is what glues them), the child takes a sunken background and one type step down, and the last child of the group restores the rule.</p>
 
     <div class="spec">
       <div class="spec-head">
@@ -731,6 +597,127 @@
           </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Collapsible <code>.is-collapsible</code></h3><p>The same subrow, revealed on demand. A group starts closed with a count badge saying what is inside, and the chevron rotates as it opens. Reach for this when most rows have children and always-visible subrows would triple the table's height; keep §14 always-visible when the child is essential to reading the parent.</p></div>
+        <span class="spec-tag">interactive</span>
+      </div>
+      <div class="spec-canvas">
+        <div class="dt-wrap dt-responsive">
+        <table class="dt dt-md" id="collapse-demo">
+          <thead><tr><th>Transaction</th><th>Reference</th><th>Method</th><th>Value date</th><th class="dt-num">Amount</th></tr></thead>
+          <tbody>
+            <tr class="has-subrows is-collapsible is-open is-clickable" data-group="g1"
+                role="button" tabindex="0" aria-expanded="true" aria-controls="g1-a">
+              <td><span class="dt-cell-lead"><span class="dt-subrow-toggle" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span><span class="ic-tile" style="background:var(--color-feedback-danger-background); color:var(--color-feedback-danger-foreground)"><i data-lucide="arrow-up-right"></i></span><span class="dt-cell-stack"><span class="pri">Global Supplies LLC</span><span class="sub">Processing</span></span><span class="dt-subrow-count">1</span></span></td>
+              <td><span class="dt-id">TX-90412</span></td>
+              <td>ACH</td>
+              <td>12 Aug 2026</td>
+              <td class="dt-num">−$18,750.00</td>
+            </tr>
+            <tr class="dt-subrow is-collapsible is-last" id="g1-a">
+              <td><div class="dt-subrow-inner"><div class="dt-subrow-cell"><span class="dt-subrow-lead"><span class="ic-mini"><i data-lucide="receipt"></i></span><span class="txt">Same-day ACH fee</span><span class="dt-subrow-tag">Fee</span><span class="dt-subrow-status">Settled</span></span></div></div></td>
+              <td><div class="dt-subrow-inner"><div class="dt-subrow-cell"><span class="dt-id">FEE-90412-1</span></div></div></td>
+              <td><div class="dt-subrow-inner"><div class="dt-subrow-cell">ACH</div></div></td>
+              <td><div class="dt-subrow-inner"><div class="dt-subrow-cell">12 Aug 2026</div></div></td>
+              <td class="dt-num"><div class="dt-subrow-inner"><div class="dt-subrow-cell" style="justify-content:flex-end">−$3.00</div></div></td>
+            </tr>
+
+            <tr class="has-subrows is-collapsible is-clickable" data-group="g2"
+                role="button" tabindex="0" aria-expanded="false" aria-controls="g2-a g2-b">
+              <td><span class="dt-cell-lead"><span class="dt-subrow-toggle" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span><span class="ic-tile" style="background:var(--color-feedback-danger-background); color:var(--color-feedback-danger-foreground)"><i data-lucide="arrow-up-right"></i></span><span class="dt-cell-stack"><span class="pri">Meridian Trading Co</span><span class="sub">Settled</span></span><span class="dt-subrow-count">2</span></span></td>
+              <td><span class="dt-id">TX-90387</span></td>
+              <td>Wire</td>
+              <td>11 Aug 2026</td>
+              <td class="dt-num">−$4,200.00</td>
+            </tr>
+            <tr class="dt-subrow is-collapsible" id="g2-a">
+              <td><div class="dt-subrow-inner"><div class="dt-subrow-cell"><span class="dt-subrow-lead"><span class="ic-mini"><i data-lucide="receipt"></i></span><span class="txt">Wire fee</span><span class="dt-subrow-tag">Fee</span><span class="dt-subrow-status">Settled</span></span></div></div></td>
+              <td><div class="dt-subrow-inner"><div class="dt-subrow-cell"><span class="dt-id">FEE-90387-1</span></div></div></td>
+              <td><div class="dt-subrow-inner"><div class="dt-subrow-cell">Wire</div></div></td>
+              <td><div class="dt-subrow-inner"><div class="dt-subrow-cell">11 Aug 2026</div></div></td>
+              <td class="dt-num"><div class="dt-subrow-inner"><div class="dt-subrow-cell" style="justify-content:flex-end">−$12.00</div></div></td>
+            </tr>
+            <tr class="dt-subrow is-collapsible is-last" id="g2-b">
+              <td><div class="dt-subrow-inner"><div class="dt-subrow-cell"><span class="dt-subrow-lead"><span class="ic-mini"><i data-lucide="receipt"></i></span><span class="txt">FX spread</span><span class="dt-subrow-tag">Fee</span><span class="dt-subrow-status">Settled</span></span></div></div></td>
+              <td><div class="dt-subrow-inner"><div class="dt-subrow-cell"><span class="dt-id">FEE-90387-2</span></div></div></td>
+              <td><div class="dt-subrow-inner"><div class="dt-subrow-cell">Wire</div></div></td>
+              <td><div class="dt-subrow-inner"><div class="dt-subrow-cell">11 Aug 2026</div></div></td>
+              <td class="dt-num"><div class="dt-subrow-inner"><div class="dt-subrow-cell" style="justify-content:flex-end">−$8.40</div></div></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="note" style="margin-top:var(--space-4)">A <code>&lt;tr&gt;</code> cannot be animated and <code>display:grid</code> on a <code>&lt;td&gt;</code> destroys column alignment, so the transition lives on <code>.dt-subrow-inner</code> inside each cell — a grid going <code>grid-template-rows: 0fr → 1fr</code>. That needs no magic pixel height, so a subrow that wraps to two lines on mobile still animates correctly. Cell padding moves to <code>.dt-subrow-cell</code> for the same reason — and it starts at zero, arriving with the reveal: a grid item's padding counts toward its automatic minimum size, so leaving 8px on it floors the <code>0fr</code> track at 16px and a closed group still shows a gap. <code>min-height: 0</code> does not remove that floor; transitioning the padding does. Measured: 1px closed (the hairline alone) against 39px open.</p>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Detail panel <code>.dt-detail</code></h3><p>When the child is a <strong>different kind of thing</strong>, its columns cannot be the parent's — an audit trail has timestamp, actor and action, not amount and method. So the panel takes one <code>colspan</code> cell and lays itself out freely. Reach for a subrow when you want to scan a column across parent and child; reach for a panel when the parent's headers would be lies over the child's data.</p></div>
+        <span class="spec-tag">own columns</span>
+      </div>
+      <div class="spec-canvas">
+        <div class="dt-wrap dt-responsive">
+        <table class="dt dt-md" id="detail-demo">
+          <thead><tr><th>Transaction</th><th>Reference</th><th>Method</th><th class="dt-num">Amount</th></tr></thead>
+          <tbody>
+            <tr class="has-detail is-clickable is-open" role="button" tabindex="0" aria-expanded="true" aria-controls="d1">
+              <td><span class="dt-cell-lead"><span class="dt-subrow-toggle" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span><span class="ic-tile" style="background:var(--color-feedback-success-background); color:var(--color-feedback-success-foreground)"><i data-lucide="arrow-down-left"></i></span><span class="dt-cell-stack"><span class="pri">Northwind Traders</span><span class="sub">Settled</span></span></span></td>
+              <td><span class="dt-id">TX-90455</span></td>
+              <td>Wire</td>
+              <td class="dt-num">$42,000.00</td>
+            </tr>
+            <tr class="dt-detail is-open" id="d1">
+              <td colspan="4">
+                <div class="dt-subrow-inner">
+                  <div class="dt-detail-body">
+                    <div class="dt-detail-title">Settlement detail</div>
+                    <div class="dt-detail-grid">
+                      <div><dt>Originating bank</dt><dd>Citibank N.A. · New York</dd></div>
+                      <div><dt>Correspondent</dt><dd>Banco Itaú · São Paulo</dd></div>
+                      <div><dt>SWIFT / BIC</dt><dd><span class="dt-id">CITIUS33XXX</span></dd></div>
+                      <div><dt>Value date</dt><dd>14 Aug 2026</dd></div>
+                      <div><dt>Purpose code</dt><dd>Goods — trade settlement</dd></div>
+                      <div><dt>Compliance</dt><dd><span class="pill success sm">Cleared</span></dd></div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <tr class="has-detail is-clickable" role="button" tabindex="0" aria-expanded="false" aria-controls="d2">
+              <td><span class="dt-cell-lead"><span class="dt-subrow-toggle" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span><span class="ic-tile" style="background:var(--color-feedback-warning-background); color:var(--color-feedback-warning-foreground)"><i data-lucide="clock"></i></span><span class="dt-cell-stack"><span class="pri">Aurora Logistics</span><span class="sub">In review</span></span></span></td>
+              <td><span class="dt-id">TX-90461</span></td>
+              <td>ACH</td>
+              <td class="dt-num">$7,310.55</td>
+            </tr>
+            <tr class="dt-detail" id="d2">
+              <td colspan="4">
+                <div class="dt-subrow-inner">
+                  <div class="dt-detail-body">
+                    <div class="dt-detail-title">Audit trail — 3 events</div>
+                    <div class="dt-wrap">
+                      <table class="dt dt-sm">
+                        <thead><tr><th>Timestamp</th><th>Actor</th><th>Action</th></tr></thead>
+                        <tbody>
+                          <tr><td><span class="dt-id">14 Aug 09:12</span></td><td>system</td><td>Payment instruction received</td></tr>
+                          <tr><td><span class="dt-id">14 Aug 09:12</span></td><td>screening</td><td>Sanctions check — no hit</td></tr>
+                          <tr><td><span class="dt-id">14 Aug 11:40</span></td><td>a.pereira</td><td>Flagged for manual review</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="note" style="margin-top:var(--space-4)">Note the second panel: a <strong>nested table with its own <code>&lt;thead&gt;</code></strong>. That is the whole reason to choose a panel over a subrow — timestamp / actor / action have nothing to do with the parent's Reference / Method / Amount, so borrowing those headers would misrepresent the data. The reveal reuses §12b's mechanism (wrapper + <code>max-height</code> written by the handler), so the panel costs no new animation code.</p>
       </div>
     </div>
 
@@ -865,5 +852,200 @@
   })();
 </script>
 
+<script>
+(function () {
+  var tables = [].slice.call(document.querySelectorAll('#collapse-demo, #detail-demo'));
+  if (!tables.length) return;
+
+  /* A <td> has no definite height, so neither `grid-template-rows: 1fr` nor a
+     stylesheet max-height resolves — both computed to 0 and the group stayed
+     shut. The reveal therefore writes the target height on the element and lets
+     the CSS transition interpolate it. scrollHeight is read from the unclipped
+     content, so a subrow that wraps to two lines opens to its real height. */
+  function paint(row, open) {
+    var inner = row.querySelector('.dt-subrow-inner');
+    row.classList.toggle('is-open', open);
+    [].forEach.call(row.querySelectorAll('.dt-subrow-inner'), function (wrap) {
+      var cell = wrap.querySelector('.dt-subrow-cell, .dt-detail-body');
+      if (!cell) return;
+      var isPanel = cell.classList.contains('dt-detail-body');
+      cell.style.padding = open ? (isPanel ? '16px 20px 20px 0' : '8px 0') : '0';
+      cell.style.opacity = open ? '1' : '0';
+      wrap.style.maxHeight = open ? (cell.scrollHeight + 16) + 'px' : '0px';
+    });
+  }
+
+  function toggle(parent) {
+    var open = parent.getAttribute('aria-expanded') !== 'true';
+    parent.setAttribute('aria-expanded', String(open));
+    parent.classList.toggle('is-open', open);
+    parent.getAttribute('aria-controls').split(' ').forEach(function (id) {
+      var row = document.getElementById(id);
+      if (row) paint(row, open);
+    });
+  }
+
+  /* The whole row is the control: anywhere in the parent row toggles the group.
+     A row carrying an interactive child (link, menu button) would need those to
+     stopPropagation — nothing here does. */
+  tables.forEach(function (table) {
+  table.addEventListener('click', function (e) {
+    var parent = e.target.closest('tr.has-subrows.is-clickable, tr.has-detail.is-clickable');
+    if (parent) toggle(parent);
+  });
+
+  /* role="button" earns Enter and Space; Space must not scroll the page. */
+  table.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var parent = e.target.closest('tr.has-subrows.is-clickable, tr.has-detail.is-clickable');
+    if (!parent) return;
+    e.preventDefault();
+    toggle(parent);
+  });
+
+  [].forEach.call(table.querySelectorAll('tr.dt-subrow.is-collapsible, tr.dt-detail'), function (row) {
+    var owner = table.querySelector('[aria-controls~="' + row.id + '"]');
+    paint(row, !!owner && owner.getAttribute('aria-expanded') === 'true');
+  });
+  });
+})();
+</script>
+  <!-- ─── 11 DARK ─── -->
+  <section class="doc-section" id="inverse">
+    <h2><span class="num">11</span>Dark surfaces</h2>
+    <p class="lead">Drop <code>.on-inverse</code> on the table (or wrap it in <code>.dark</code>) for tables on ink/navy panels — used in the marketing site and modal overlays.</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Inverse table <code>.dt.on-inverse</code></h3><p>Head, borders, hover and stacked sub-text all retune to the inverse foreground tokens.</p></div><span class="spec-tag">Inverse</span></div>
+      <div class="spec-canvas" style="background: var(--color-background-inverse);">
+        <div class="scroll-x">
+        <table class="dt on-inverse">
+          <thead><tr><th>Counterparty</th><th>Method</th><th class="right">Volume</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr class="hov"><td><span class="dt-cell-lead"><span class="ic-tile"><i data-lucide="building-2"></i></span><span class="dt-cell-stack"><span class="pri">Aurora Logistics</span><span class="sub mono">acct_9f2a</span></span></span></td><td>Wire · SWIFT</td><td class="dt-num bold"><span class="ccy">USD</span>284,500.00</td><td><span class="pill success sm">Active</span></td></tr>
+            <tr class="hov"><td><span class="dt-cell-lead"><span class="ic-tile"><i data-lucide="globe"></i></span><span class="dt-cell-stack"><span class="pri">Belvo Pay LATAM</span><span class="sub mono">acct_3c71</span></span></span></td><td>Local rails</td><td class="dt-num bold"><span class="ccy">MXN</span>1,902,000.00</td><td><span class="pill success sm">Active</span></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 12 RESPONSIVE ─── -->
+  <section class="doc-section" id="responsive">
+    <h2><span class="num">12</span>Responsive &amp; mobile</h2>
+    <p class="lead">A grid of columns can't survive a 390px screen intact. Pick one of two strategies per table — never let columns silently crush.</p>
+
+    <table class="token-table" style="margin-bottom: var(--space-7);">
+      <thead><tr><th>Strategy</th><th>How</th><th>Use when</th></tr></thead>
+      <tbody>
+        <tr><td><strong>A · Scroll</strong></td><td>Wrap <code>.dt</code> in an <code>overflow-x:auto</code> element. The grid stays whole and pans sideways.</td><td>Comparison-heavy / numeric tables where column alignment is the point — ledgers, FX rates, reconciliation.</td></tr>
+        <tr><td><strong>B · Stack</strong> <code>.dt-responsive</code></td><td>Below 560px the wrapper collapses each row into a label : value card. Driven by a <strong>container query</strong>, so it also reflows inside drawers &amp; split-panes.</td><td>Action-oriented record lists the user taps into — transactions, counterparties, requests.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Stacked cards <code>.dt-responsive</code></h3><p>The same transactions table inside a phone frame. Every <code>&lt;td&gt;</code> carries a <code>data-label</code> that becomes the inline field label; the lead cell gets <code>.dt-card-title</code> to read as the card heading.</p></div>
+        <span class="spec-tag">Strategy B</span>
+      </div>
+      <div class="spec-canvas">
+        <div class="resp-stage">
+          <div class="resp-note">
+            <h4>What changes at &lt;560px</h4>
+            <p>The container query (not the viewport) drives the switch — resize a desktop window or open this table in a drawer and it reflows the same way.</p>
+            <ul>
+              <li><code>thead</code> is hidden; column names move inline via <code>data-label</code>.</li>
+              <li>Each <code>tr</code> becomes a bordered card with the lead cell as its title.</li>
+              <li>Numbers stay right-aligned opposite their label for fast scanning.</li>
+              <li>Status pills, deltas and IDs keep their exact tokens — no restyle.</li>
+            </ul>
+          </div>
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="phone-statusbar">
+                <span>9:41</span>
+                <span class="dots"><i data-lucide="signal"></i><i data-lucide="wifi"></i><i data-lucide="battery-full"></i></span>
+              </div>
+              <div class="phone-appbar">
+                <span class="ttl">Transactions</span>
+                <i data-lucide="sliders-horizontal"></i>
+              </div>
+              <div class="phone-body">
+                <div class="dt-responsive">
+                  <div class="dt-toolbar"><span class="count">6 transactions<span class="total">of 248</span></span></div>
+                  <table class="dt">
+                    <thead><tr><th>Counterparty</th><th>Type</th><th class="right">Amount</th><th>Reference</th><th>Status</th></tr></thead>
+                    <tbody>
+                      <tr class="hov">
+                        <td class="dt-card-title"><span class="dt-cell-lead"><span class="ic-round tone-success"><i data-lucide="arrow-down-left"></i></span>Aurora Logistics</span></td>
+                        <td data-label="Type">Pay-in ↓</td>
+                        <td data-label="Amount" class="dt-num bold"><span class="ccy">BRL</span>1,000.00</td>
+                        <td data-label="Reference" class="dt-id">N-741469</td>
+                        <td data-label="Status"><span class="pill success sm">Approved</span></td>
+                      </tr>
+                      <tr class="hov">
+                        <td class="dt-card-title"><span class="dt-cell-lead"><span class="ic-round tone-danger"><i data-lucide="arrow-up-right"></i></span>Northwind Co.</span></td>
+                        <td data-label="Type">Pay-out ↑</td>
+                        <td data-label="Amount" class="dt-num bold"><span class="ccy">USD</span>1,500.00</td>
+                        <td data-label="Reference" class="dt-id">N-741470</td>
+                        <td data-label="Status"><span class="pill warning sm">Pending</span></td>
+                      </tr>
+                      <tr class="hov">
+                        <td class="dt-card-title"><span class="dt-cell-lead"><span class="ic-round tone-success"><i data-lucide="arrow-down-left"></i></span>Belvo Pay LATAM</span></td>
+                        <td data-label="Type">Pay-in ↓</td>
+                        <td data-label="Amount" class="dt-num bold"><span class="ccy">MXN</span>25,400.00</td>
+                        <td data-label="Reference" class="dt-id">N-741472</td>
+                        <td data-label="Status"><span class="pill success sm">Approved</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 13 A11Y ─── -->
+  <section class="doc-section" id="a11y">
+    <h2><span class="num">13</span>Accessibility</h2>
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Requirement</th><th>How it's met</th></tr></thead>
+      <tbody>
+        <tr><td>Semantics</td><td>Real table elements</td><td>Native <code>&lt;table&gt;&lt;thead&gt;&lt;tbody&gt;&lt;th&gt;&lt;td&gt;</code> — never <code>&lt;div&gt;</code> grids. Screen readers announce row/column position.</td></tr>
+        <tr><td>Header scope</td><td>Column headers associated</td><td>Add <code>scope="col"</code> on <code>&lt;th&gt;</code> (and <code>scope="row"</code> for row headers) in production markup.</td></tr>
+        <tr><td>Sort state</td><td>Announced, not colour-only</td><td>Sortable header gets <code>aria-sort="ascending|descending"</code>; the chevron rotation mirrors it visually.</td></tr>
+        <tr><td>Selection</td><td>Checkboxes are real inputs</td><td>Use a real <code>&lt;input type="checkbox"&gt;</code> with a label (the demo uses styled stand-ins). Bulk toolbar appears with <code>aria-live="polite"</code>.</td></tr>
+        <tr><td>Row actions</td><td>Reachable by keyboard</td><td>Icon buttons carry <code>aria-label</code>; clickable rows expose the same action via a focusable control, not just the row click.</td></tr>
+        <tr><td>Empty / loading</td><td>Communicated to AT</td><td>Skeleton rows are <code>aria-hidden</code> with an <code>aria-busy="true"</code> table; empty state uses real text, not just an icon.</td></tr>
+        <tr><td>Contrast</td><td>Text ≥ 4.5:1, borders ≥ 3:1</td><td>All token-driven. Zebra tint stays above 3:1 against body text; status pills carry text labels, not colour alone.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─── 14 TOKENS ─── -->
+  <section class="doc-section" id="tokens">
+    <h2><span class="num">14</span>Tokens consumed</h2>
+    <table class="token-table">
+      <thead><tr><th>Concern</th><th>Tokens</th></tr></thead>
+      <tbody>
+        <tr><td>Surface &amp; wrapper</td><td><code>--color-background-surface</code>, <code>--color-border-default</code>, <code>--radius-md</code>, <code>--shadow-xs</code></td></tr>
+        <tr><td>Head</td><td><code>--font-mono</code>, <code>--fs-xxs</code>, <code>--ls-caps</code>, <code>--color-foreground-muted</code>, <code>--color-border-subtle</code></td></tr>
+        <tr><td>Row hover / divider</td><td><code>--color-background-subtle</code>, <code>--color-border-subtle</code>, <code>--transition-fast</code></td></tr>
+        <tr><td>Selected row</td><td><code>--color-background-selected</code> (= brand-secondary-50)</td></tr>
+        <tr><td>Error row</td><td><code>--color-danger-50</code> via <code>color-mix</code></td></tr>
+        <tr><td>Numbers</td><td><code>tabular-nums</code>, <code>--color-feedback-success-foreground</code> / <code>danger-foreground</code> (deltas)</td></tr>
+        <tr><td>Lead tones</td><td><code>--color-feedback-{success,info,warning,danger}-{background,border,foreground}</code></td></tr>
+        <tr><td>Pagination</td><td><code>--color-brand-secondary-50</code> / <code>-200</code> / <code>-700</code> (current page), <code>--radius-sm</code></td></tr>
+        <tr><td>Skeleton</td><td><code>--color-border-subtle</code> / <code>-default</code> (theme-aware), <code>--ease-linear</code></td></tr>
+        <tr><td>Inverse</td><td><code>--color-background-inverse</code>, <code>--color-foreground-inverse-*</code>, <code>--color-border-inverse</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+</main>
 </body>
 </html>
+

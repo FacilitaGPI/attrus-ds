@@ -5,8 +5,8 @@
      [data-ds-date-iso]     ISO date, e.g. "2026-08-18"
    Kept in sync with Cabiros' version.js. */
 (function () {
-  var VERSION = '1.0.11';
-  var RELEASE_DATE = '2026-08-24';   /* ISO — the display month is derived */
+  var VERSION = '1.0.12';
+  var RELEASE_DATE = '2026-08-25';   /* ISO — the display month is derived */
 
   window.ATTRUS_DS_VERSION = VERSION;
   window.ATTRUS_DS_DATE = RELEASE_DATE;

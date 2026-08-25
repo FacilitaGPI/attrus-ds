@@ -40,6 +40,19 @@ h6, .h6 { font-weight: var(--w-regular); font-size: var(--fs-lg);  line-height: 
   font-size-adjust: var(--font-mono-adjust); font-size: .92em; }
 
 /* Numbers that must line up in tables */
+/* Visually hidden but announced — for text that a screen reader needs and the
+   eye does not. The clip-rect technique, not display:none (which removes it from
+   the accessibility tree) and not width:0 (which some engines skip). */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .tabular { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' on, 'lnum' on; }
 
 /* ============================================================

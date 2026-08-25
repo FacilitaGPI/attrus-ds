@@ -266,8 +266,63 @@ export const DTCellLead: React.FC<{ lead: React.ReactNode; pri: React.ReactNode;
   </div>
 );
 
-/** Trailing actions cluster — `.dt-actions` (ghost icon buttons). */
-export const DTActions: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...rest }) => (
+/** Lead cell of a subrow — connector glyph, optional mini icon tile, label.
+    The glyph is a CSS ::before so it is neither copied with the text nor
+    announced as a character. `parentName` renders a visually-hidden prefix:
+    native table semantics carry no hierarchy, so the relationship is stated in
+    CONTENT rather than by claiming role="treegrid" without its keyboard model. */
+export const DTSubrowLead: React.FC<{
+  label: React.ReactNode;
+  icon?: React.ReactNode;
+  parentName?: string;
+} & React.HTMLAttributes<HTMLDivElement>> = ({ label, icon, parentName, className, ...rest }) => (
+  <div className={['dt-subrow-lead', className || ''].filter(Boolean).join(' ')} {...rest}>
+    {icon != null ? <span className="ic-mini">{icon}</span> : null}
+    <span className="txt">
+      {parentName ? <span className="sr-only">{'Item of ' + parentName + ': '}</span> : null}
+      {label}
+    </span>
+  </div>
+);
+
+/** Disclosure control for a collapsible subrow group — put it in the parent's
+    lead cell. Wire `controls` to the subrow's id so `aria-controls` resolves. */
+export const DTSubrowToggle: React.FC<{
+  expanded: boolean;
+  onToggle: () => void;
+  controls: string;
+  /** Announced as "Show 2 items" / "Hide 2 items". */
+  count?: number;
+  label?: string;
+} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'aria-expanded'>> = ({
+  expanded, onToggle, controls, count, label, className, ...rest
+}) => (
+  <button
+    type="button"
+    className={['dt-subrow-toggle', className || ''].filter(Boolean).join(' ')}
+    aria-expanded={expanded}
+    aria-controls={controls}
+    aria-label={(expanded ? 'Hide' : 'Show') + ' ' + (count != null ? count + ' ' : '') + (label || 'linked items')}
+    onClick={(e) => { e.stopPropagation(); onToggle(); }}
+    {...rest}
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="9 18 15 12 9 6" />
+    </svg>
+  </button>
+);
+
+/** Animated wrapper for a collapsible subrow's cell content. A <tr> cannot be
+    animated and display:grid on a <td> breaks column alignment, so the height
+    transition lives here: a grid going 0fr -> 1fr, which needs no magic pixel
+    value and therefore survives a two-line subrow on mobile. */
+export const DTSubrowCell: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className, ...rest }) => (
+  <div className="dt-subrow-inner" {...rest}>
+    <div className={['dt-subrow-cell', className || ''].filter(Boolean).join(' ')}>{children}</div>
+  </div>
+);
+
+/** Trailing actions cluster — `.dt-actions` (ghost icon buttons). */export const DTActions: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...rest }) => (
   <div className={['dt-actions', className || ''].filter(Boolean).join(' ')} {...rest} />
 );
 

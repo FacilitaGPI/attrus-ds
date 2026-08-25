@@ -68,6 +68,28 @@ export declare const DTCellStack: React.FC<{ pri: React.ReactNode; sec?: React.R
 export declare const DTCellLead: React.FC<{ lead: React.ReactNode; pri: React.ReactNode; sec?: React.ReactNode } & React.HTMLAttributes<HTMLDivElement>>;
 export declare const DTActions: React.FC<React.HTMLAttributes<HTMLDivElement>>;
 
+/** Lead cell of a subrow — connector glyph, optional mini icon tile, label.
+    `parentName` renders a visually-hidden "Item of <parent>:" prefix, since
+    native table semantics carry no hierarchy. */
+export declare const DTSubrowLead: React.FC<{
+  label: React.ReactNode;
+  icon?: React.ReactNode;
+  parentName?: string;
+} & React.HTMLAttributes<HTMLDivElement>>;
+
+/** Disclosure control for a collapsible subrow group — goes in the parent's
+    lead cell. `controls` must match the subrow's id. */
+export declare const DTSubrowToggle: React.FC<{
+  expanded: boolean;
+  onToggle: () => void;
+  controls: string;
+  count?: number;
+  label?: string;
+} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'aria-expanded'>>;
+
+/** Animated wrapper for a collapsible subrow's cell content (grid 0fr → 1fr). */
+export declare const DTSubrowCell: React.FC<React.HTMLAttributes<HTMLDivElement>>;
+
 export interface DTPaginationProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Left-side mono range text (e.g. "1–10 of 42"). */
   range?: React.ReactNode;

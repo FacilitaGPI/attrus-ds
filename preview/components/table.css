@@ -307,6 +307,15 @@
 
 /* Numbers — explicit class wins over per-cell .right alignment */
 .dt-num {
+  /* Amounts are what the eye hunts for in a ledger, so they carry the emphasis:
+     mono ExtraBold (--w-mono-emphasis). A monospaced face cannot widen — it must
+     keep its cell — so weight there buys ink, not width: which is why 800 reads
+     as emphasis without shouting.
+     The currency chip and any sub line stay regular — see below — so the pair
+     gives one strong figure against quiet context instead of a bold block. */
+  font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
+  font-weight: var(--w-mono-emphasis);
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum' on, 'lnum' on;
   text-align: right;
@@ -317,13 +326,16 @@
    by specificity); stacked cells in a numeric column align flex to the right. */
 .dt thead th.dt-num { text-align: right; }
 .dt td.dt-num .dt-cell-stack { align-items: flex-end; }
+/* Context under an amount stays regular, or the whole cell reads as emphasis */
+.dt td.dt-num .dt-cell-stack .sub { font-weight: var(--w-regular); }
 .dt-num .ccy {
   color: var(--color-foreground-muted);
   font-weight: var(--w-regular);
   margin-right: var(--space-2);
   font-size: var(--fs-sm);
 }
-.dt-num.bold { font-weight: var(--w-bold); font-size: var(--fs-base); }
+/* .bold now only steps the SIZE up — weight is already bold by default */
+.dt-num.bold { font-size: var(--fs-base); }
 .dt-num.delta-pos { color: var(--color-feedback-success-foreground); }
 .dt-num.delta-neg { color: var(--color-feedback-danger-foreground); }
 
@@ -760,4 +772,278 @@
   }
   .dt-responsive .dt tbody tr.dt-subrow > td { border-bottom: 0; padding-left: var(--space-4); }
   .dt-responsive .dt tbody tr.dt-subrow > td::before { display: none; }
+}
+
+/* ----------------------------------------------------------------
+   12b. COLLAPSIBLE SUBROWS — disclosure + animated reveal
+   ----------------------------------------------------------------
+   Same subrow vocabulary as §12, but the group starts closed and the parent
+   carries a disclosure control.
+
+   Structure:
+     <tr class="has-subrows is-collapsible is-open">
+       <td>… <button class="dt-subrow-toggle" aria-expanded="true"
+                     aria-controls="grp-1">chevron</button> …
+     <tr class="dt-subrow is-collapsible" id="grp-1">
+       <td><div class="dt-subrow-inner"><div class="dt-subrow-cell">…</div></div></td>
+
+   WHY THE DOUBLE WRAPPER: a <tr> cannot be animated. height/max-height on a row
+   is ignored by table layout, and display:grid on a <td> destroys column
+   alignment. So the animation lives on a wrapper INSIDE the cell:
+   .dt-subrow-inner is a grid animating grid-template-rows 0fr -> 1fr, and its
+   single child clips the overflow. That is the one height transition that needs
+   no magic pixel value, so a subrow can hold two lines on mobile and still
+   animate correctly.
+
+   Cell padding also lives on .dt-subrow-cell rather than the <td>: padding on
+   the cell would keep the row 24px tall when closed, leaving a visible gap.
+
+   Support: grid-template-rows interpolation needs Chrome 117+, Safari 17.4+,
+   Firefox 127+. Older engines skip the tween and snap open/closed — the
+   disclosure still works, it just does not animate.
+   ---------------------------------------------------------------- */
+
+/* Closed by default; .is-open on the SUBROW drives the reveal */
+.dt tbody tr.dt-subrow.is-collapsible > td {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+/* The reveal animates max-height on a clipped wrapper.
+   The modern `grid-template-rows: 0fr -> 1fr` pattern was tried first and does
+   NOT work inside a table cell: a <td> has no definite height, so 1fr has
+   nothing to resolve against and computes to 0px — the group stays shut. That is
+   a property of table layout, not a bug in the pattern.
+   The cost of max-height is a cap: --subrow-max is the tallest a subrow may grow
+   before it starts clipping. It is generous enough for two wrapped lines, and it
+   is a token so a product with taller subrows can raise it. */
+.dt-subrow-inner {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height var(--duration-slow) var(--ease-standard);
+}
+.dt tbody tr.dt-subrow.is-open .dt-subrow-inner { max-height: 120px; }  /* literal on purpose: a token here breaks until the cached colors_and_type.css refreshes */
+
+/* The padding the <td> gave up */
+.dt-subrow-cell {
+  /* Padding starts at zero and arrives with the reveal. A grid item's padding
+     counts toward its automatic minimum size, so 8px of vertical padding floors
+     the 0fr track at 16px and leaves a gap under a closed group — min-height:0
+     does not remove it. Transitioning the padding alongside the track is what
+     lets the row reach a true zero. */
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  /* Fade trails the height so the text does not appear before it has room */
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-standard),
+              padding var(--duration-slow) var(--ease-standard);
+}
+.dt tbody tr.dt-subrow.is-open .dt-subrow-cell {
+  padding: var(--space-3) 0;
+  opacity: 1;
+}
+
+/* A closed group must not glue to the parent — the parent keeps its own border
+   until the group opens, otherwise two collapsed rows read as one. */
+.dt tbody tr.has-subrows.is-collapsible:not(.is-open) > td {
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+/* Disclosure control — sits in the parent's lead cell */
+.dt-subrow-toggle {
+  flex-shrink: 0;
+  width: 20px; height: 20px;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-2xs);
+  background: transparent;
+  color: var(--color-foreground-muted);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.dt-subrow-toggle:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+.dt-subrow-toggle:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+.dt-subrow-toggle > i,
+.dt-subrow-toggle > svg {
+  width: 14px; height: 14px;
+  stroke-width: var(--icon-stroke);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+.dt-subrow-toggle[aria-expanded="true"] > i,
+.dt-subrow-toggle[aria-expanded="true"] > svg { transform: rotate(90deg); }
+
+/* Count badge beside the toggle — tells the user what is hidden before opening */
+.dt-subrow-count {
+  font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);
+  font-size: var(--fs-xxs);
+  color: var(--color-foreground-muted);
+  background: var(--color-background-subtle);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-pill);
+  padding: 0 var(--space-2);
+  flex-shrink: 0;
+}
+
+.dt.on-inverse .dt-subrow-toggle,
+.dark .dt .dt-subrow-toggle { color: var(--color-foreground-inverse-muted); }
+.dt.on-inverse .dt-subrow-toggle:hover,
+.dark .dt .dt-subrow-toggle:hover {
+  background: color-mix(in srgb, var(--color-pure-white) 8%, transparent);
+  color: var(--color-foreground-inverse-default);
+}
+.dt.on-inverse .dt-subrow-toggle:focus-visible,
+.dark .dt .dt-subrow-toggle:focus-visible { box-shadow: var(--shadow-focus-inverse); }
+.dt.on-inverse .dt-subrow-count,
+.dark .dt .dt-subrow-count {
+  background: transparent;
+  border-color: var(--color-border-inverse);
+  color: var(--color-foreground-inverse-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dt-subrow-inner,
+  .dt-subrow-cell,
+  .dt-subrow-toggle > i,
+  .dt-subrow-toggle > svg { transition: none; }
+}
+
+/* Mobile: the animation wrapper survives the card layout, but the inner cell
+   stacks instead of sitting on one line. */
+@media (max-width: 900px) {
+  .dt-responsive .dt tbody tr.dt-subrow.is-collapsible > td { padding-top: 0; padding-bottom: 0; }
+  .dt-responsive .dt-subrow-cell { flex-wrap: wrap; padding: var(--space-3) 0; }
+}
+
+/* ----------------------------------------------------------------
+   12c. ROW AS CONTROL — the whole parent row toggles the group
+   ----------------------------------------------------------------
+   With role="button" + tabindex on the <tr>, the row needs what a button has:
+   a pointer, and a visible focus ring. The chevron inside is aria-hidden and
+   pointer-events:none — otherwise one action would take two tab stops and the
+   click would land twice.
+   ---------------------------------------------------------------- */
+.dt tbody tr.has-subrows.is-clickable { cursor: pointer; }
+.dt tbody tr.has-subrows.is-clickable:focus-visible { outline: none; }
+.dt tbody tr.has-subrows.is-clickable:focus-visible > td { background: var(--color-background-hover); }
+.dt tbody tr.has-subrows.is-clickable:focus-visible > td:first-child { box-shadow: inset 3px 0 0 0 var(--color-border-focus); }
+.dt tbody tr.has-subrows.is-clickable .dt-subrow-toggle { pointer-events: none; }
+.dt tbody tr.has-subrows.is-clickable[aria-expanded="true"] .dt-subrow-toggle > svg { transform: rotate(90deg); }
+
+/* ----------------------------------------------------------------
+   12d. DETAIL PANEL — a child that is a DIFFERENT KIND of thing
+   ----------------------------------------------------------------
+   The other half of the hierarchy story. Use §12/§12b (.dt-subrow) when the
+   child shares the parent's columns because it is the same kind of thing — a
+   fee under a payment, a leg under a transfer: you want to scan the Amount
+   column and see both. Use THIS when the child has its own attributes and the
+   parent's headers would be lies: an audit trail (timestamp / actor / action),
+   KYC documents, delivery steps.
+
+   Structure:
+     <tr class="has-detail is-clickable" role="button" tabindex="0"
+         aria-expanded="false" aria-controls="d1">
+     <tr class="dt-detail" id="d1">
+       <td colspan="5">
+         <div class="dt-subrow-inner"><div class="dt-detail-body"> … </div></div>
+
+   The reveal mechanism is shared with §12b (the wrapper + max-height written by
+   the handler), so this costs no new animation code. What changes is the cell:
+   one colspan cell instead of one per column, which frees the layout entirely.
+
+   Inside, pick one:
+     .dt-detail-grid    key/value pairs — the default for record detail
+     .dt table          a nested table WITH ITS OWN <thead>, when children are
+                        many and need real column semantics
+     free markup        timeline, form, chart
+   ---------------------------------------------------------------- */
+
+.dt tbody tr.dt-detail > td {
+  padding: 0 0 0 calc(var(--space-5) + var(--subrow-indent));
+  background: var(--color-background-subtle);
+  border-bottom: 1px solid var(--color-border-default);
+}
+/* Glued to its parent, like a subrow: the pair reads as one block */
+.dt tbody tr.has-detail.is-open > td { border-bottom: 0; }
+
+.dt-detail-body {
+  padding: var(--space-4) var(--space-5) var(--space-5) 0;
+  /* Padding starts at zero and arrives with the reveal — same reason as
+     .dt-subrow-cell: a wrapper child's padding floors the collapsed height. */
+  padding: 0;
+  opacity: 0;
+  transition: opacity var(--duration-quick) var(--ease-standard),
+              padding var(--duration-slow) var(--ease-standard);
+}
+.dt tbody tr.dt-detail.is-open .dt-detail-body {
+  padding: var(--space-4) var(--space-5) var(--space-5) 0;
+  opacity: 1;
+}
+
+/* Optional heading above the panel content */
+.dt-detail-title {
+  font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
+  font-size: var(--fs-xxs);
+  font-weight: var(--w-regular);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+  margin-bottom: var(--space-3);
+}
+
+/* Key/value grid — the default panel content */
+.dt-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4) var(--space-6);
+}
+.dt-detail-grid > div { min-width: 0; }
+.dt-detail-grid dt {
+  font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
+  font-size: var(--fs-xxs);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+  margin-bottom: 2px;
+}
+.dt-detail-grid dd {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--color-foreground-default);
+}
+
+/* A nested table inside the panel keeps its own headers — that is the whole
+   point of reaching for a panel instead of a subrow. */
+.dt-detail-body > .dt-wrap { margin: 0; }
+.dt-detail-body .dt { background: var(--color-background-surface); }
+
+/* Dark surfaces */
+.dt.on-inverse tbody tr.dt-detail > td,
+.dark .dt tbody tr.dt-detail > td {
+  background: color-mix(in srgb, var(--color-pure-white) 4%, transparent);
+  border-bottom-color: var(--color-border-inverse);
+}
+.dt.on-inverse .dt-detail-grid dd,
+.dark .dt .dt-detail-grid dd { color: var(--color-foreground-inverse-default); }
+.dt.on-inverse .dt-detail-grid dt,
+.dark .dt .dt-detail-grid dt,
+.dt.on-inverse .dt-detail-title,
+.dark .dt .dt-detail-title { color: var(--color-foreground-inverse-muted); }
+
+/* Row-as-control affordances, shared with §12c */
+.dt tbody tr.has-detail.is-clickable { cursor: pointer; }
+.dt tbody tr.has-detail.is-clickable:hover > td { background: var(--color-background-hover); }
+.dt tbody tr.has-detail.is-clickable:focus-visible { outline: none; }
+.dt tbody tr.has-detail.is-clickable:focus-visible > td { background: var(--color-background-hover); }
+.dt tbody tr.has-detail.is-clickable:focus-visible > td:first-child { box-shadow: inset 3px 0 0 0 var(--color-border-focus); }
+.dt tbody tr.has-detail.is-clickable .dt-subrow-toggle { pointer-events: none; }
+.dt tbody tr.has-detail.is-clickable[aria-expanded="true"] .dt-subrow-toggle > svg { transform: rotate(90deg); }
+
+@media (max-width: 900px) {
+  .dt tbody tr.dt-detail > td { padding-left: var(--space-4); }
+  .dt-detail-grid { grid-template-columns: 1fr; }
 }
