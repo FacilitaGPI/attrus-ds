@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
 <link rel="stylesheet" href="components/sidebar.css?v=3">
+<link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="../theme-toggle.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
@@ -269,11 +270,20 @@
   .recipe .var { color: var(--color-success-700); }
   .recipe .muted { color: var(--color-foreground-muted); font-style: italic; }
   .pattern-name { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+  .sb-stage { display: flex; height: 260px; overflow: hidden; }
+  .sb-stage-rail { flex: 0 0 auto; }
+  .sb-stage-rail.is-over { margin-right: -220px; position: relative; z-index: 2; width: 220px; }
+  .sb-stage-scroll { flex: 1; overflow-y: auto; min-width: 0; }
+  .sb-filler { height: 520px; padding: var(--space-6) var(--space-6) var(--space-6) 240px; font-size: var(--fs-sm); color: var(--color-foreground-muted); background: repeating-linear-gradient(135deg, var(--color-background-subtle) 0 14px, var(--color-background-canvas) 14px 28px); }
+  .sb-filler.is-tinted { background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--color-brand-solid) 14%, transparent) 0 18px, color-mix(in srgb, var(--color-accent-solid) 12%, transparent) 18px 36px); }
+  .rules { margin: 0; padding-left: var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .rules strong { color: var(--color-foreground-default); }
 </style>
 </head>
 <body>
 
 <a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<a class="xlink is-doc" href="../components/AppSidebar/AppSidebar.html" title="Typed React bench for AppSidebar"><i data-lucide="code-2"></i>AppSidebar TSX</a>
 
 <main class="doc">
 
@@ -340,8 +350,63 @@
   </section>
 
   <!-- 02 VARIANTS -->
+  <section class="doc-section" id="glass">
+    <h2><span class="num">02</span>Glass variant</h2>
+    <p class="lead">Frosted rail instead of a solid panel: content scrolls behind it. Consumes the semantic <code>--glass-chrome</code> pair, so it flips to ink glass on dark with no extra rule.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Solid vs glass <code>.is-glass</code></h3><p>Scroll the content beside each rail. A sidebar is tall, so the blur samples a lot of moving content — which is exactly why the active item keeps an opaque backing instead of inheriting the translucent field.</p></div>
+        <span class="spec-tag">needs scroll</span>
+      </div>
+      <div class="spec-canvas" style="padding:0">
+        <div class="sb-stage">
+          <div class="sb-stage-rail"><div class="sb" style="height:100%">
+              <div class="sb-head"><img src="../assets/logo-attrus-dark.svg" alt="ATTRUS" style="height:14px"></div>
+              <div class="sb-body">
+                <div class="sb-section">Operations</div>
+                <div class="sb-item active"><i data-lucide="home" class="ic"></i><span class="label">Overview</span></div>
+                <div class="sb-item"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transactions</span><span class="sb-count">12</span></div>
+                <div class="sb-item"><i data-lucide="users" class="ic"></i><span class="label">Counterparties</span></div>
+              </div>
+              <div class="sb-foot"><span class="avatar">JD</span><span class="meta"><span class="name">Julia Dias</span><span class="org">Attrus</span></span></div>
+            </div></div>
+          <div class="sb-stage-scroll"><div class="sb-filler"><span>Solid — the rail owns its background</span></div></div>
+        </div>
+        <div class="sb-stage" style="border-top:1px solid var(--color-border-default)">
+          <div class="sb-stage-rail is-over"><div class="sb is-glass" style="height:100%">
+              <div class="sb-head"><img src="../assets/logo-attrus-dark.svg" alt="ATTRUS" style="height:14px"></div>
+              <div class="sb-body">
+                <div class="sb-section">Operations</div>
+                <div class="sb-item active"><i data-lucide="home" class="ic"></i><span class="label">Overview</span></div>
+                <div class="sb-item"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transactions</span><span class="sb-count">12</span></div>
+                <div class="sb-item"><i data-lucide="users" class="ic"></i><span class="label">Counterparties</span></div>
+              </div>
+              <div class="sb-foot"><span class="avatar">JD</span><span class="meta"><span class="name">Julia Dias</span><span class="org">Attrus</span></span></div>
+            </div></div>
+          <div class="sb-stage-scroll"><div class="sb-filler is-tinted"><span>Glass — content passes behind the rail</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>What it changes</h3><p>Three deliberate departures from the solid rail.</p></div>
+        <span class="spec-tag">judgement</span>
+      </div>
+      <div class="spec-canvas">
+        <ul class="rules">
+          <li><strong>The active item stays opaque.</strong> On a translucent field the selected tint would mix with whatever scrolls behind it and stop reading as selection.</li>
+          <li><strong>Head and foot get their own plane</strong> — a 40% surface wash, so the logo and the account block do not float on moving content.</li>
+          <li><strong>The right edge steps up to <code>--color-border-strong</code>.</strong> The sidebar has no bottom border, so that edge is the only boundary; a hairline vanishes over a blurred field.</li>
+          <li>Without <code>backdrop-filter</code> support the rail falls back to an <strong>opaque surface</strong> — a <code>@supports</code> guard, never a washed-out translucent panel.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <section class="doc-section" id="variants">
-    <h2><span class="num">02</span>Variants</h2>
+    <h2><span class="num">03</span>Variants</h2>
     <p class="lead">Three width modes. The expanded rail is the default; collapsed is for users who memorised the layout; mobile slides out from the left over a scrim.</p>
 
     <article class="spec">
@@ -448,7 +513,7 @@
 
   <!-- 03 STATES -->
   <section class="doc-section" id="states">
-    <h2><span class="num">03</span>Item states</h2>
+    <h2><span class="num">04</span>Item states</h2>
     <p class="lead">Five canonical states per item. Hover and active are colour shifts only — no layout movement, no padding-shift, no animations longer than <code>--duration-fast</code>.</p>
 
     <div class="spec">
@@ -479,7 +544,7 @@
 
   <!-- 04 DECORATION -->
   <section class="doc-section" id="decoration">
-    <h2><span class="num">04</span>Decoration — badges &amp; counters</h2>
+    <h2><span class="num">05</span>Decoration — badges &amp; counters</h2>
     <p class="lead">A row may carry <strong>one</strong> trailing decoration — a <strong>badge</strong> (qualitative: status / announcement) or a <strong>count</strong> (quantitative: how many). They answer different questions: a badge says <em>"something here needs your attention / is new"</em>; a count says <em>"there are N of these"</em>. Never put both on the same row, and never more than one badge.</p>
 
     <article class="spec">
@@ -553,7 +618,7 @@
 
   <!-- 05 SECTIONS / STRUCTURE -->
   <section class="doc-section" id="sections">
-    <h2><span class="num">05</span>Sections &amp; structure</h2>
+    <h2><span class="num">06</span>Sections &amp; structure</h2>
     <p class="lead">Group items into 2-3 sections by purpose. Order is fixed: product surfaces first, account / org second, integration / docs last.</p>
 
     <article class="spec">
@@ -676,7 +741,7 @@
 
   <!-- 06 IN CONTEXT -->
   <section class="doc-section" id="context">
-    <h2><span class="num">06</span>In context</h2>
+    <h2><span class="num">07</span>In context</h2>
     <p class="lead">Sidebar paired with a content surface. Notice how the active state on the rail anchors the user's attention without dominating the page header.</p>
 
     <div style="display: grid; grid-template-columns: 1fr; gap: var(--space-5);">
@@ -724,7 +789,7 @@
 
   <!-- 07 GROUPS & DROPDOWNS -->
   <section class="doc-section" id="groups">
-    <h2><span class="num">07</span>Groups &amp; dropdowns</h2>
+    <h2><span class="num">08</span>Groups &amp; dropdowns</h2>
     <p class="lead">When a top-level destination contains 3+ sub-pages, promote it to a <strong>group</strong> — a parent row with a chevron that reveals nested rows on click. Groups are <em>navigational</em> (each child is a destination), never <em>actional</em> (no commands inside).</p>
 
     <article class="spec">
@@ -853,7 +918,7 @@
 
   <!-- 08 MOTION -->
   <section class="doc-section" id="motion">
-    <h2><span class="num">08</span>Motion</h2>
+    <h2><span class="num">09</span>Motion</h2>
     <p class="lead">The sidebar has three motion responsibilities — width transition (collapse / expand), dropdown reveal, mobile drawer slide. Each uses a duration that fits its travel.</p>
 
     <article class="spec">
@@ -975,7 +1040,7 @@
 
   <!-- 09 A11Y -->
   <section class="doc-section" id="a11y">
-    <h2><span class="num">09</span>Keyboard &amp; accessibility</h2>
+    <h2><span class="num">10</span>Keyboard &amp; accessibility</h2>
     <p class="lead">The sidebar is a single navigation landmark. Every item is reachable by Tab; arrow keys move between items within the rail.</p>
 
     <table class="token-table">
@@ -997,7 +1062,7 @@
 
   <!-- 08 DON'TS -->
   <section class="doc-section" id="donts">
-    <h2><span class="num">10</span>Don'ts</h2>
+    <h2><span class="num">11</span>Don'ts</h2>
     <p class="lead">Six anti-patterns the sidebar consistently attracts. Each one breaks either muscle memory or readability.</p>
 
     <div class="dont-grid">
@@ -1137,7 +1202,7 @@
 
   <!-- 09 TOKENS -->
   <section class="doc-section" id="tokens">
-    <h2><span class="num">11</span>Tokens</h2>
+    <h2><span class="num">12</span>Tokens</h2>
     <p class="lead">All values resolve through the design system. No magic numbers.</p>
 
     <table class="token-table">

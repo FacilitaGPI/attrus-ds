@@ -1,0 +1,322 @@
+<!-- @dsCard group="Foundations" name="Demo card" subtitle="O padrão canônico para demonstrar componentes na documentação" viewport="1280x900" -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo card · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<link rel="stylesheet" href="components/tokens-doc.css?v=4">
+<link rel="stylesheet" href="components/demo-card.css?v=1">
+<link rel="stylesheet" href="components/buttons.css?v=4">
+<link rel="stylesheet" href="components/inputs.css?v=4">
+<link rel="stylesheet" href="components/status-pills.css?v=4">
+<link rel="stylesheet" href="components/cards.css?v=4">
+<link rel="stylesheet" href="components/topbar.css?v=5">
+<script src="../theme-toggle.js"></script>
+<script src="../version.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1080px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .page-theme { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); }
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-6); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-6); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-regular); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-6); }
+  pre { margin: 0; padding: var(--space-5) var(--space-6); background: var(--color-background-inverse); color: var(--color-foreground-inverse-default); border-radius: var(--radius-md); overflow-x: auto; font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); line-height: var(--lh-relaxed); }
+  pre .c { color: var(--color-foreground-inverse-muted); }
+  .tk { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; }
+  .tk th, .tk td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .tk thead th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); }
+  .tk tr:last-child td { border-bottom: 0; }
+  .tk td code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .doc-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-regular); }
+  /* a translucent panel, purely to demonstrate the checkered canvas */
+  .demo-glass-panel { padding: var(--space-5) var(--space-6); border-radius: var(--radius-md); background: var(--glass-chrome); color: var(--glass-chrome-fg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border: 1px solid var(--color-border-default); font-size: var(--fs-sm); }
+</style>
+</head>
+<body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<button class="page-theme" data-theme-toggle aria-label="Alternar tema">
+  <span data-theme-icon aria-hidden="true">☾</span>
+  <span data-theme-label>Dark</span>
+</button>
+
+<main class="doc">
+  <header class="doc-header">
+    <div>
+      <h1>Demo card</h1>
+      <p>A moldura canônica para mostrar um componente na documentação: um cabeçalho que diz o que está em cena e um palco recuado com a coisa viva. Toda doc page reinventava isso — <code>.spec</code>, <code>.listing-card</code>, <code>.row</code>, <code>.stage</code> — com padding, raio e tinta próprios, então o mesmo componente parecia diferente conforme a página aberta.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="layout-template"></i> padrão de doc</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#anatomy">01 Anatomia</a>
+    <a href="#surfaces">02 Superfícies</a>
+    <a href="#translucent">03 Translúcidos</a>
+    <a href="#layout">04 Layout</a>
+    <a href="#map">05 Referência</a>
+  </nav>
+
+  <!-- 01 -->
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">01</span>Anatomia</h2>
+    <p class="lead">Duas partes: cabeçalho e palco. O cabeçalho responde <em>o que</em> está em cena e <em>por que importa</em>; o palco isola o componente do resto da página, para o leitor saber onde a demo começa e termina.</p>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div>
+          <h3>Estrutura padrão <code>.demo-card</code></h3>
+          <p>O <code>h3</code> nomeia a demo e pode carregar a classe em <code>code</code>. O <code>p</code> explica o que observar — não repita o que o título já disse. A tag à direita é opcional e serve para rotular o eixo (tamanho, estado, variante).</p>
+        </div>
+        <span class="demo-card-tag">opcional</span>
+      </div>
+      <div class="demo-card-canvas">
+        <button class="btn btn-primary">Ação primária</button>
+        <button class="btn btn-secondary">Secundária</button>
+        <button class="btn btn-ghost">Ghost</button>
+      </div>
+    </div>
+
+    <pre><span class="c">&lt;!-- a moldura, sempre nesta ordem --&gt;</span>
+&lt;div class="demo-card"&gt;
+  &lt;div class="demo-card-head"&gt;
+    &lt;div&gt;
+      &lt;h3&gt;O que está em cena &lt;code&gt;.classe&lt;/code&gt;&lt;/h3&gt;
+      &lt;p&gt;O que observar, e por quê.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;span class="demo-card-tag"&gt;eixo&lt;/span&gt;   <span class="c">&lt;!-- opcional --&gt;</span>
+  &lt;/div&gt;
+  &lt;div class="demo-card-canvas"&gt;
+    <span class="c">&lt;!-- o componente vivo --&gt;</span>
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+  </section>
+
+  <!-- 02 -->
+  <section class="doc-section" id="surfaces">
+    <h2><span class="num">02</span>Superfícies do palco</h2>
+    <p class="lead">A escolha não é estética: é sobre o que o componente precisa <strong>atrás</strong> dele para ser lido corretamente. Um card sobre superfície tintada lê como dois cards; um componente translúcido sobre tinta chapada lê como opaco.</p>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div>
+          <h3>Padrão — <code>subtle</code></h3>
+          <p>O palco neutro. Serve para controles, pills, campos — qualquer coisa que não carregue superfície própria.</p>
+        </div>
+      </div>
+      <div class="demo-card-canvas">
+        <span class="pill success">Settled</span>
+        <span class="pill warning">Pending</span>
+        <input class="input" style="max-width:200px" value="Campo de texto" readonly>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div>
+          <h3>Plano <code>.is-plain</code></h3>
+          <p>Cor de canvas. Para componentes que <strong>já têm</strong> superfície — um card sobre palco tintado ganha uma segunda borda visual que não existe no produto.</p>
+        </div>
+        <span class="demo-card-tag">tem card próprio</span>
+      </div>
+      <div class="demo-card-canvas is-plain">
+        <div class="card" style="max-width:280px">
+          <div class="card-body">
+            <strong>Card do sistema</strong>
+            <p style="margin:var(--space-2) 0 0; font-size:var(--fs-sm); color:var(--color-foreground-secondary)">Sobre canvas, a borda do card é a única borda.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div>
+          <h3>Inverso <code>.is-inverse</code></h3>
+          <p>Superfície ink, para demonstrar variantes <code>.on-inverse</code>. O palco herda <code>--color-foreground-inverse-default</code>, então rótulos internos já nascem legíveis.</p>
+        </div>
+        <span class="demo-card-tag">on-inverse</span>
+      </div>
+      <div class="demo-card-canvas is-inverse">
+        <span class="pill brand on-inverse">Enterprise</span>
+        <button class="btn btn-inverse">Ação</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="doc-section" id="translucent">
+    <h2><span class="num">03</span>Componentes translúcidos</h2>
+    <p class="lead">Aqui a variante deixa de ser preferência e passa a ser correção. Vidro, scrim e blur sobre uma tinta chapada são <strong>indistinguíveis de opaco</strong> — a demo mostraria um painel sólido e o leitor não teria como saber que há transparência.</p>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div>
+          <h3>Xadrez <code>.is-checkered</code></h3>
+          <p>Os quadros provam que a transparência é real e mostram quanto do fundo sobrevive ao blur. Use para <code>--glass-*</code>, scrim, overlay e qualquer superfície com alfa.</p>
+        </div>
+        <span class="demo-card-tag">obrigatório p/ glass</span>
+      </div>
+      <div class="demo-card-canvas is-checkered">
+        <div class="demo-glass-panel">Painel em <code>--glass-chrome</code> — o xadrez atravessa o blur.</div>
+      </div>
+      <div class="demo-card-note">Compare com o palco padrão: sobre <code>subtle</code>, este mesmo painel pareceria uma superfície sólida cinza-clara.</div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div>
+          <h3>Xadrez tintado <code>.is-checkered.is-tinted</code></h3>
+          <p>Quadros em cor de marca e accent. Para vidro que deve mostrar <strong>matiz</strong> sangrando, não só claro e escuro — é o que revela se o blur está saturando ou lavando a cor de trás.</p>
+        </div>
+      </div>
+      <div class="demo-card-canvas is-checkered is-tinted">
+        <div class="demo-glass-panel">O matiz atravessa — ou não.</div>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div>
+          <h3>Xadrez sobre ink <code>.is-checkered.is-inverse</code></h3>
+          <p>Para translúcidos que vivem em superfície escura. Os quadros passam a white-alpha, porque xadrez claro sobre ink brigaria com o componente em vez de servir de fundo.</p>
+        </div>
+      </div>
+      <div class="demo-card-canvas is-checkered is-inverse">
+        <div class="demo-glass-panel" style="background: var(--glass-hero); color: var(--glass-hero-fg); border-color: var(--color-border-inverse)">Vidro sobre ink.</div>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div>
+          <h3>Rolagem <code>.is-scrolling</code></h3>
+          <p>Chrome sticky e fosco só significa algo com conteúdo passando por baixo. As faixas dão ao blur o que amostrar — sem isso, a demo prova apenas que o elemento existe.</p>
+        </div>
+        <span class="demo-card-tag">role para ver</span>
+      </div>
+      <div class="demo-card-canvas is-scrolling">
+        <div class="topbar is-glass is-sticky" style="top:0">
+          <button class="tb-control icon" aria-label="Menu"><i data-lucide="panel-left"></i></button>
+          <div class="pill-search"><i data-lucide="search"></i><input placeholder="Buscar" readonly><span class="kbd">⌘K</span></div>
+          <div class="tb-spacer"><div class="tb-avatar">JD</div></div>
+        </div>
+        <div class="demo-scroll-body"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="doc-section" id="layout">
+    <h2><span class="num">04</span>Layout do palco</h2>
+    <p class="lead">O padrão é uma fileira centrada com wrap. Os modificadores cobrem os casos que fogem disso — e o <code>.demo-item</code> rotula cada peça quando há mais de um estado em cena.</p>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div>
+          <h3>Estados rotulados <code>.demo-item</code></h3>
+          <p>Quando o palco mostra vários estados, cada um ganha legenda mono — o leitor não deveria precisar contar posições para saber qual é qual.</p>
+        </div>
+      </div>
+      <div class="demo-card-canvas" style="gap:var(--space-7)">
+        <div class="demo-item">
+          <span class="demo-item-label">padrão</span>
+          <input class="input" style="max-width:170px" value="Valor" readonly>
+        </div>
+        <div class="demo-item">
+          <span class="demo-item-label">inválido</span>
+          <input class="input is-invalid" style="max-width:170px" value="Valor" readonly>
+        </div>
+        <div class="demo-item">
+          <span class="demo-item-label">desabilitado</span>
+          <input class="input" style="max-width:170px" value="Valor" disabled>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div>
+          <h3>Empilhado <code>.is-stacked</code></h3>
+          <p>Para demos que ocupam a largura toda — barras, linhas de tabela, faixas. Os filhos esticam em vez de centralizar.</p>
+        </div>
+      </div>
+      <div class="demo-card-canvas is-stacked">
+        <div class="topbar is-sm" style="border:1px solid var(--color-border-default); border-radius:var(--radius-md)">
+          <span class="demo-item-label" style="padding-left:var(--space-3)">is-sm · 32px</span>
+          <div class="tb-spacer"><div class="tb-avatar">JD</div></div>
+        </div>
+        <div class="topbar" style="border:1px solid var(--color-border-default); border-radius:var(--radius-md)">
+          <span class="demo-item-label" style="padding-left:var(--space-3)">default · 40px</span>
+          <div class="tb-spacer"><div class="tb-avatar">JD</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div>
+          <h3>Full-bleed <code>.is-flush</code></h3>
+          <p>Sem padding, para chrome que precisa tocar a borda do card — topbar, sidebar, shell. O palco deixa de ser flex e vira bloco.</p>
+        </div>
+      </div>
+      <div class="demo-card-canvas is-flush">
+        <div class="topbar">
+          <button class="tb-control icon" aria-label="Menu"><i data-lucide="panel-left"></i></button>
+          <div class="pill-search"><i data-lucide="search"></i><input placeholder="Buscar" readonly></div>
+          <div class="tb-spacer"><button class="btn btn-primary">Nova transação</button><div class="tb-avatar">JD</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="doc-section" id="map">
+    <h2><span class="num">05</span>Referência</h2>
+    <p class="lead">Definido em <code>components/demo-card.css</code>. Importado pelo <code>styles.css</code>, então qualquer doc page que carregue o bundle já tem o padrão disponível.</p>
+
+    <table class="tk">
+      <thead><tr><th style="width:34%">Classe</th><th>Papel</th></tr></thead>
+      <tbody>
+        <tr><td><code>.demo-card</code></td><td>A moldura — superfície, borda, raio <code>--radius-lg</code>.</td></tr>
+        <tr><td><code>.demo-card-head</code></td><td>Cabeçalho: <code>h3</code> + <code>p</code> diretos, com <code>.demo-card-tag</code> opcional à direita.</td></tr>
+        <tr><td><code>.demo-card-canvas</code></td><td>O palco. Fileira centrada com wrap, <code>min-height: 120px</code>.</td></tr>
+        <tr><td><code>.demo-card-note</code></td><td>Ressalva abaixo do palco, quando ela pertence à demo e não à seção.</td></tr>
+        <tr><td colspan="2" style="background:var(--color-background-subtle); font-family:var(--font-mono); font-size-adjust:var(--font-mono-adjust); font-size:var(--fs-xxs); text-transform:uppercase; letter-spacing:var(--ls-caps); color:var(--color-foreground-muted)">Superfícies</td></tr>
+        <tr><td><code>.is-plain</code></td><td>Cor de canvas — para componentes com card próprio.</td></tr>
+        <tr><td><code>.is-inverse</code></td><td>Ink, para variantes <code>.on-inverse</code>.</td></tr>
+        <tr><td><code>.is-checkered</code></td><td><strong>Translúcidos.</strong> Xadrez que prova a transparência.</td></tr>
+        <tr><td><code>.is-checkered.is-tinted</code></td><td>Xadrez em marca/accent — mostra matiz atravessando o blur.</td></tr>
+        <tr><td><code>.is-checkered.is-inverse</code></td><td>Xadrez white-alpha sobre ink.</td></tr>
+        <tr><td><code>.is-scrolling</code></td><td>Faixas roláveis, para chrome sticky e fosco.</td></tr>
+        <tr><td><code>.is-grid</code></td><td>Grade de 8px, para demos de espaçamento e alinhamento.</td></tr>
+        <tr><td colspan="2" style="background:var(--color-background-subtle); font-family:var(--font-mono); font-size-adjust:var(--font-mono-adjust); font-size:var(--fs-xxs); text-transform:uppercase; letter-spacing:var(--ls-caps); color:var(--color-foreground-muted)">Layout</td></tr>
+        <tr><td><code>.is-stacked</code></td><td>Empilha e estica os filhos.</td></tr>
+        <tr><td><code>.is-start</code></td><td>Alinha ao topo em vez de centralizar.</td></tr>
+        <tr><td><code>.is-tall</code> · <code>.is-short</code></td><td>Palco de 320px · palco sem altura mínima.</td></tr>
+        <tr><td><code>.is-flush</code></td><td>Sem padding, para chrome full-bleed.</td></tr>
+        <tr><td><code>.demo-item</code> · <code>.demo-item-label</code></td><td>Sub-demo com legenda mono, para vários estados no mesmo palco.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer class="doc-foot">
+    <span>ATTRUS Design System · Demo card · <span data-ds-version></span></span>
+    <a href="index.html">← Voltar ao catálogo</a>
+  </footer>
+</main>
+<script>lucide.createIcons();</script>
+</body>
+</html>

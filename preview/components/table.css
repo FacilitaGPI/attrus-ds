@@ -12,14 +12,14 @@
        [.dt-pagination]        bottom — page nav + range
 
    Sizes:
-     .dt--sm    compact — 8 / 12 padding, fs-xs body, fs-xxs head
+     .dt-sm    compact — 8 / 12 padding, fs-xs body, fs-xxs head
      default    standard — 12 / 16 padding, fs-md body, fs-xxs head
-     .dt--lg    spacious — 16 / 20 padding, fs-md body, fs-xs head
+     .dt-lg    spacious — 16 / 20 padding, fs-md body, fs-xs head
 
    Density helpers:
-     .dt--zebra            alternating row backgrounds
-     .dt--sticky           thead sticks to top while scrolling
-     .dt--bordered         vertical column borders
+     .dt-zebra            alternating row backgrounds
+     .dt-sticky           thead sticks to top while scrolling
+     .dt-bordered         vertical column borders
 
    Cell helpers:
      .dt-cell-stack        primary line + sub line
@@ -63,8 +63,11 @@
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  padding: var(--space-4) var(--space-6);
-  min-height: 53px;
+  /* Box on the element, not on a descendant selector: the height must survive a
+     toolbar that is not a direct child of .dt-wrap, or the selecting state
+     renders 5px taller and the table jumps when the first row is ticked. */
+  height: 52px;
+  padding: 0 var(--space-5);
   box-sizing: border-box;
   border-bottom: 1px solid var(--color-border-subtle);
   background: var(--color-background-surface);
@@ -120,8 +123,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 28px;
-  min-width: 28px;
+  height: var(--control-h-xs);
+  min-width: var(--control-h-xs);
   padding: 0 var(--space-3);
   border: 1px solid var(--color-border-default);
   background: var(--color-background-surface);
@@ -136,6 +139,19 @@
     background var(--transition-fast),
     border-color var(--transition-fast),
     color var(--transition-fast);
+}
+/* The ellipsis is not a control: no box, no hover, no tab stop — a boxed gap
+   would read as a page you can go to. */
+.dt-pagination .page-gap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--space-5);
+  font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
+  font-size: var(--fs-xs);
+  color: var(--color-foreground-muted);
+  user-select: none;
 }
 .dt-pagination .page-btn:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
 .dt-pagination .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -185,23 +201,65 @@
 
 /* Sortable header */
 .dt-th-sort {
+  /* A sortable header must be keyboard-operable, so it is a <button> — which
+     arrives with the UA's Arial, grey fill and 2px border. Reset those and
+     inherit the <th>'s own typography, so the control looks like the header it
+     replaces rather than a button parked inside one. */
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  text-align: inherit;
+  display: inline-flex;
+  align-items: center;
   cursor: pointer;
   user-select: none;
   transition: color var(--transition-fast);
 }
+.dt-th-sort:focus-visible { outline: none; box-shadow: var(--shadow-focus); border-radius: var(--radius-xs); }
 .dt-th-sort:hover { color: var(--color-foreground-default); }
+.dt-th-sort { gap: var(--space-2); }
+/* The chevron is a CLIPPED SLOT holding both arrows stacked, and the track
+   slides between them. Rotating a single chevron 180° also reads as a direction
+   change, but it spins through horizontal — a moment where the glyph points at
+   neither value. Sliding keeps an arrow pointing the whole way: the outgoing one
+   leaves in the direction it means, the incoming one arrives from the opposite
+   edge, so the motion itself carries "ascending" or "descending".
+   Slot height must equal each arrow's height, or the track lands off-centre. */
 .dt-th-sort .chev {
-  display: inline-flex;
-  width: 10px;
-  height: 10px;
+  display: block;
+  width: var(--sort-chev, 10px);
+  height: var(--sort-chev, 10px);
   margin-left: var(--space-2);
-  vertical-align: -1px;
-  color: var(--color-foreground-placeholder);
-  stroke-width: var(--icon-stroke-bold);
-  transition: color var(--transition-fast), transform var(--transition-fast);
+  flex-shrink: 0;
+  overflow: hidden;
+  color: var(--color-foreground-muted);
+  transition: color var(--transition-fast);
 }
-.dt-th-sort.is-asc  .chev { color: var(--color-foreground-accent); transform: rotate(180deg); }
+.dt-th-sort .chev-track {
+  display: block;
+  /* Unsorted rests on the down arrow — the conventional "click to sort" hint. */
+  transform: translateY(calc(-1 * var(--sort-chev, 10px)));
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+.dt-th-sort .chev-track > svg,
+.dt-th-sort .chev-track > i {
+  display: block;
+  width: var(--sort-chev, 10px);
+  height: var(--sort-chev, 10px);
+}
+.dt-th-sort.is-asc  .chev-track { transform: translateY(0); }
+.dt-th-sort.is-desc .chev-track { transform: translateY(calc(-1 * var(--sort-chev, 10px))); }
+.dt-th-sort.is-asc  .chev,
 .dt-th-sort.is-desc .chev { color: var(--color-foreground-accent); }
+@media (prefers-reduced-motion: reduce) {
+  .dt-th-sort .chev-track { transition: none; }
+}
 
 /* ----------------------------------------------------------------
    4. BODY ROWS
@@ -305,6 +363,19 @@
 .dt-cell-lead > .ic-round > i, .dt-cell-lead > .ic-round > svg,
 .dt-cell-lead > .ic-round > svg { width: var(--icon-sm); height: var(--icon-sm); stroke-width: var(--icon-stroke-bold); }
 
+/* Trailing round icon — same badge, after the label.
+   Leading answers "what kind of row is this" and is scanned down the column;
+   trailing annotates the label itself ("verified", "has a note"), so it must
+   not enter the vertical scan. Hence margin-left:auto is NOT used: the badge
+   hugs the text instead of floating to the cell edge, where it would read as
+   a separate column. */
+.dt-cell-lead > .ic-round.is-trailing { order: 2; margin-left: var(--space-1); }
+.dt-cell-lead > .ic-round.is-sm { width: 20px; height: 20px; }
+.dt-cell-lead > .ic-round.is-sm > i,
+.dt-cell-lead > .ic-round.is-sm > svg { width: 11px; height: 11px; }
+/* The label must keep the shrink so a long name truncates before the badge */
+.dt-cell-lead > .ic-round.is-trailing ~ * { min-width: 0; }
+
 /* Numbers — explicit class wins over per-cell .right alignment */
 .dt-num {
   /* Amounts are what the eye hunts for in a ledger, so they carry the emphasis:
@@ -379,30 +450,30 @@
 /* ----------------------------------------------------------------
    6. SIZES
    ---------------------------------------------------------------- */
-.dt--sm thead th        { padding: var(--space-2) var(--space-4); }
-.dt--sm tbody td        { padding: var(--space-3) var(--space-4); font-size: var(--fs-sm); }
-.dt--sm .dt-cell-stack > .pri { font-size: var(--fs-sm); }
-.dt--sm .dt-cell-stack > .sub { font-size: var(--fs-xxs); }
-.dt--sm .dt-cell-lead > .ic-tile { width: 28px; height: 28px; border-radius: var(--radius-sm); }
-.dt--sm .dt-cell-lead > .ic-tile > i, .dt--sm .dt-cell-lead > .ic-tile > svg,
-.dt--sm .dt-cell-lead > .ic-tile > svg { width: var(--icon-sm); height: var(--icon-sm); }
+.dt-sm thead th        { padding: var(--space-2) var(--space-4); }
+.dt-sm tbody td        { padding: var(--space-3) var(--space-4); font-size: var(--fs-sm); }
+.dt-sm .dt-cell-stack > .pri { font-size: var(--fs-sm); }
+.dt-sm .dt-cell-stack > .sub { font-size: var(--fs-xxs); }
+.dt-sm .dt-cell-lead > .ic-tile { width: 28px; height: var(--control-h-xs); border-radius: var(--radius-sm); }
+.dt-sm .dt-cell-lead > .ic-tile > i, .dt-sm .dt-cell-lead > .ic-tile > svg,
+.dt-sm .dt-cell-lead > .ic-tile > svg { width: var(--icon-sm); height: var(--icon-sm); }
 
-.dt--lg thead th        { padding: var(--space-4) var(--space-6); font-size: var(--fs-xs); }
-.dt--lg tbody td        { padding: var(--space-5) var(--space-6); font-size: var(--fs-base); }
-.dt--lg .dt-cell-stack > .pri { font-size: var(--fs-base); }
-.dt--lg .dt-cell-lead > .ic-tile { width: 40px; height: 40px; }
+.dt-lg thead th        { padding: var(--space-4) var(--space-6); font-size: var(--fs-xs); }
+.dt-lg tbody td        { padding: var(--space-5) var(--space-6); font-size: var(--fs-base); }
+.dt-lg .dt-cell-stack > .pri { font-size: var(--fs-base); }
+.dt-lg .dt-cell-lead > .ic-tile { width: 40px; height: 40px; }
 
 
 /* ----------------------------------------------------------------
    7. DENSITY HELPERS
    ---------------------------------------------------------------- */
 /* Zebra — alternating bg */
-.dt--zebra tbody tr:nth-child(even):not(.is-selected):not(:hover) {
+.dt-zebra tbody tr:nth-child(even):not(.is-selected):not(:hover) {
   background: color-mix(in srgb, var(--color-background-subtle) 55%, var(--color-background-surface));
 }
 
 /* Sticky head */
-.dt--sticky thead th {
+.dt-sticky thead th {
   position: sticky;
   top: 0;
   z-index: 1;
@@ -411,8 +482,8 @@
 }
 
 /* Vertical column borders */
-.dt--bordered th + th,
-.dt--bordered td + td {
+.dt-bordered th + th,
+.dt-bordered td + td {
   border-left: 1px solid var(--color-border-subtle);
 }
 
@@ -559,15 +630,24 @@
   .dt-responsive .dt td { display: block; width: 100%; box-sizing: border-box; }
 
   /* Each row becomes a card */
+  .dt-responsive .dt tbody { padding-top: var(--space-3); }
   .dt-responsive .dt tbody tr {
     border: 1px solid var(--color-border-default);
     border-radius: var(--radius-md);
     background: var(--color-background-surface);
     padding: var(--space-2) var(--space-4);
-    margin-bottom: var(--space-3);
+    /* Inset horizontally, not just vertically. A card flush against the wrapper
+       edge reads as a table row that lost its table, and its own border lands
+       exactly on the wrapper's — two hairlines touching. The gutter is what makes
+       the stack read as cards. */
+    margin: 0 var(--space-3) var(--space-3);
+    /* Not width:100% — the block rule above sets it, and with side margins the
+       card would measure 100% PLUS the gutters and hang off the right edge.
+       auto lets it shrink to the space the margins leave. */
+    width: auto;
     box-shadow: var(--shadow-xs);
   }
-  .dt-responsive .dt tbody tr:last-child { margin-bottom: 0; border-bottom: 1px solid var(--color-border-default); }
+  .dt-responsive .dt tbody tr:last-child { margin-bottom: var(--space-3); border-bottom: 1px solid var(--color-border-default); }
 
   /* Each cell becomes a label : value line */
   .dt-responsive .dt tbody td {
@@ -764,7 +844,9 @@
    visibly hanging off its parent card. */
 @media (max-width: 900px) {
   .dt-responsive .dt tbody tr.dt-subrow {
-    margin: calc(-1 * var(--space-3)) var(--space-3) var(--space-3);
+    /* Pulls up under its parent card (which now carries a bottom gutter) and
+       keeps the same side inset, so parent and child read as one stack. */
+    margin: calc(-1 * var(--space-3)) var(--space-5) var(--space-3);
     border-radius: var(--shape-control);
     border: 1px solid var(--color-border-default);
     border-top: 0;
@@ -837,8 +919,11 @@
   min-width: 0;
   /* Fade trails the height so the text does not appear before it has room */
   opacity: 0;
-  transition: opacity var(--duration-fast) var(--ease-standard),
-              padding var(--duration-slow) var(--ease-standard);
+  /* Only opacity transitions. Animating padding too made the JS height read
+     race it: scrollHeight was sampled while padding was still ~0, so the target
+     undershot by the padding and clipped the last line. A padding snap is
+     invisible inside a clipped box. */
+  transition: opacity var(--duration-fast) var(--ease-standard);
 }
 .dt tbody tr.dt-subrow.is-open .dt-subrow-cell {
   padding: var(--space-3) 0;
@@ -974,8 +1059,7 @@
      .dt-subrow-cell: a wrapper child's padding floors the collapsed height. */
   padding: 0;
   opacity: 0;
-  transition: opacity var(--duration-quick) var(--ease-standard),
-              padding var(--duration-slow) var(--ease-standard);
+  transition: opacity var(--duration-base) var(--ease-standard);
 }
 .dt tbody tr.dt-detail.is-open .dt-detail-body {
   padding: var(--space-4) var(--space-5) var(--space-5) 0;
@@ -1046,4 +1130,200 @@
 @media (max-width: 900px) {
   .dt tbody tr.dt-detail > td { padding-left: var(--space-4); }
   .dt-detail-grid { grid-template-columns: 1fr; }
+}
+
+.demo-card-canvas .dt-wrap.dt-responsive { border-radius: var(--shape-container); overflow: hidden; }
+
+/* A table demo sits on a rounded card, so its wrapper echoes that radius —
+   square corners inside a rounded card read as a box in a box. Last in the
+   sheet so it wins over the base .dt-wrap declaration. */
+.demo-card-canvas .dt-wrap,
+.demo-card-canvas .dt-wrap.dt-responsive {
+  border-radius: var(--shape-container);
+  overflow: hidden;
+}
+
+/* ----------------------------------------------------------------
+   DETAIL CARD — a clickable surface for a key-value detail panel
+   ----------------------------------------------------------------
+   When the panel holds attributes of one record (not a list), the child is a
+   single object and should look like one: a card, not loose text on the row's
+   background. Clickable when the object has a destination of its own.
+   ---------------------------------------------------------------- */
+.dt-detail-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--color-background-surface);
+  border: var(--border-hairline) solid var(--color-border-default);
+  border-radius: var(--shape-container);
+  padding: var(--space-4) var(--space-5);
+  font: inherit;
+  color: inherit;
+}
+button.dt-detail-card,
+a.dt-detail-card { cursor: pointer; transition: border-color var(--transition-fast), background var(--transition-fast); }
+button.dt-detail-card:hover,
+a.dt-detail-card:hover { border-color: var(--color-border-strong); background: var(--color-background-hover); }
+button.dt-detail-card:focus-visible,
+a.dt-detail-card:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+
+/* ----------------------------------------------------------------
+   TOOLBAR & PAGINATION SEAM
+   ----------------------------------------------------------------
+   The toolbar and the pager are chrome for the SAME surface as the table, not
+   separate blocks stacked on it. A rule under the toolbar (or over the pager)
+   competes with the header row's own bottom border and with the last row's, so
+   the table reads as a third thing floating between two bars. The thead border
+   and the last row's border already mark where data starts and ends.
+   ---------------------------------------------------------------- */
+
+/* ----------------------------------------------------------------
+   TOOLBAR & PAGINATION — the standard
+   ----------------------------------------------------------------
+   Both are chrome for the SAME surface as the table and live INSIDE .dt-wrap.
+   Parked as a canvas sibling they float above the table with a dangling border.
+
+   Toolbar, three zones:
+     .dt-toolbar-lead      identity — title + count. State whether the count is
+                           total or filtered ("12 of 248"), or it lies under filter.
+     .dt-toolbar-filters   search + chips; takes the middle
+     .dt-toolbar-actions   margin-left:auto — export, columns, density.
+                           Never a flex:1 spacer: a spacer competing with the
+                           lead collapses it (same bug as the ActionBar).
+
+   Selection mode (.is-selecting) is the same bar in another state, not a new
+   bar: the lead becomes "3 selected" and the actions become bulk actions. The
+   height is preserved so the table does not jump when a row is ticked.
+
+   Footer is pagination only. Rows-per-page sits with the range, not in the
+   toolbar: it describes the page, and the toolbar describes the data.
+   ---------------------------------------------------------------- */
+.dt-wrap > .dt-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  height: 52px;
+  padding: 0 var(--space-5);
+  box-sizing: border-box;
+}
+.dt-toolbar.dt-toolbar-sm { height: 44px; padding: 0 var(--space-4); }
+.dt-toolbar-lead { display: inline-flex; align-items: baseline; gap: var(--space-2); min-width: 0; }
+.dt-toolbar-filters { display: inline-flex; align-items: center; gap: var(--space-2); min-width: 0; flex: 1 1 auto; }
+.dt-toolbar-actions { margin-left: auto; display: inline-flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
+/* Selection mode keeps the toolbar on the surface colour. The tint marks WHAT
+   is selected; repeating it on the chrome dilutes that signal and the bar stops
+   reading as chrome at all. The state is carried by content instead — the count
+   in brand, and bulk actions replacing the table actions. */
+.dt-toolbar.is-selecting .dt-toolbar-lead {
+  color: var(--color-foreground-brand);
+  font-weight: var(--w-bold);
+}
+
+.dt-wrap > .dt-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  height: 44px;
+  padding: 0 var(--space-5);
+  box-sizing: border-box;
+}
+.dt-pagination-range { color: var(--color-foreground-muted); }
+.dt-pagination-size { display: inline-flex; align-items: center; gap: var(--space-2); }
+/* RIGHT BY DEFAULT — the PAGER goes to the edge; the range and the rows-per-page
+   control stay together on the left, which is the reading order: what you are
+   looking at, then how much of it, then where to go next.
+   The earlier version pushed the last child whatever it was, so a footer with no
+   pager sent its own range to the right. Anchoring on the nav keeps the intent,
+   and the fallback below covers a caller who writes the pager with own markup. */
+.dt-pagination > nav:last-child,
+.dt-pagination > .pager:last-child { margin-left: auto; }
+.dt-pagination-nav { margin-left: auto; display: inline-flex; align-items: center; gap: var(--space-1); }
+
+/* .scroll-x creates its own scroll context, so the wrapper's overflow:hidden
+   cannot clip it and the wrapper's rounded corners show THROUGH the table.
+   Give the scroller the same radius on the corners it touches: top corners when
+   it follows a toolbar, bottom when a pager follows it, all four when alone. */
+.dt-wrap > .scroll-x { border-radius: inherit; }
+.dt-wrap > .dt-toolbar + .scroll-x { border-top-left-radius: 0; border-top-right-radius: 0; }
+.dt-wrap > .scroll-x:has(+ .dt-pagination) { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
+/* Vertical scroller: the wrapper cannot clip a descendant that scrolls, so its
+   rounded corners vanish behind the scrollbar gutter. The scroller carries the
+   radius on the edges it owns instead. */
+.dt-wrap > .dt-scroll-y,
+.dt-wrap > .scroll-x { border-radius: inherit; }
+.dt-wrap > .scroll-x { overflow-x: auto; overflow-y: hidden; }
+.dt-wrap > .dt-scroll-y { overflow-y: auto; overflow-x: hidden; }
+/* Any hand-rolled vertical scroller in a wrap gets the same treatment */
+.dt-wrap > [style*="overflow-y"] { border-radius: inherit; }
+.dt-wrap > .dt-toolbar + [style*="overflow-y"] { border-top-left-radius: 0; border-top-right-radius: 0; }
+.dt-wrap > [style*="overflow-y"]:has(+ .dt-pagination) { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.dt-wrap > .dt-toolbar + .dt-scroll-y { border-top-left-radius: 0; border-top-right-radius: 0; }
+.dt-wrap > .dt-scroll-y:has(+ .dt-pagination) { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
+/* ----------------------------------------------------------------
+   FRAME OWNERSHIP — the wrap only draws a border when nothing else bounds it
+   ----------------------------------------------------------------
+   .dt-wrap's border says "the table starts and ends here". A toolbar closes the
+   top, a pager closes the bottom, and a card/drawer closes all four — in those
+   cases the border is a second contour around a boundary that already reads.
+   Radius stays either way: it is what clips the thead corners.
+   ---------------------------------------------------------------- */
+.dt-wrap:has(> .dt-toolbar),
+.dt-wrap:has(> .dt-pagination) { border: 0; }
+/* Chrome carries the edge instead */
+.dt-wrap:has(> .dt-toolbar) > .dt-toolbar { border-top: var(--border-hairline) solid var(--color-border-default); }
+.dt-wrap:has(> .dt-pagination) > .dt-pagination { border-bottom: var(--border-hairline) solid var(--color-border-default); }
+/* Inside a card, drawer or modal the container is the frame */
+.demo-card-canvas .dt-wrap,
+.drawer-body .dt-wrap,
+.modal-body .dt-wrap { border: 0; }
+
+/* Checkbox column — fixed narrow gutter so the first data column starts at the
+   same x whether or not selection is on. */
+.dt .dt-check { width: 40px; padding-right: 0; }
+.dt .dt-check .check { margin: 0; }
+
+/* Size modifiers — the row scale. Restored after the dt-sm/-md/-lg alias cleanup
+   removed the only block that declared them. */
+.dt.dt-sm { font-size: var(--fs-xs); }
+.dt.dt-md { font-size: var(--fs-sm); }
+.dt.dt-lg { font-size: var(--fs-base); }
+
+/* ----------------------------------------------------------------
+   VOID FIGURES — a number that no longer counts
+   ----------------------------------------------------------------
+   A cancelled, reversed or voided amount is still worth showing: the reader
+   needs to know the transaction existed. Struck through says "this figure does
+   not count" in a way dimming alone cannot — muted grey reads as "secondary",
+   not as "annulled", and in a money column that difference matters.
+
+   Only figures are struck. Running the strike across a whole row would cross
+   out names and references too, which are still true; it is the VALUE that was
+   voided.
+
+   Applies automatically inside a muted row (the state that already means
+   cancelled or returned), and .is-void marks a single cell when the row itself
+   is still live.
+   ---------------------------------------------------------------- */
+.dt tbody tr.is-muted td.dt-num,
+.dt tbody td.dt-num.is-void {
+  text-decoration: line-through;
+  /* Hairline: the strike marks the figure as annulled, it does not cross it out.
+     At 1.5px over tabular mono bold the rule competes with the digits and the
+     amount stops being readable — which defeats the point of still showing it. */
+  text-decoration-thickness: var(--border-hairline);
+  text-decoration-color: var(--color-foreground-muted);
+  color: var(--color-foreground-secondary);
+}
+/* The currency chip is not part of the figure — striking it looks like damage */
+.dt tbody tr.is-muted td.dt-num .ccy,
+.dt tbody td.dt-num.is-void .ccy { text-decoration: none; }
+.dt.on-inverse tbody tr.is-muted td.dt-num,
+.dt.on-inverse tbody td.dt-num.is-void,
+.dark .dt tbody tr.is-muted td.dt-num,
+.dark .dt tbody td.dt-num.is-void {
+  text-decoration-color: var(--color-foreground-inverse-muted);
+  color: var(--color-foreground-inverse-secondary);
 }

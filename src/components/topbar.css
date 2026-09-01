@@ -5,26 +5,42 @@
    (preview/topbar.html). Token-driven → themes automatically.
 
    Class map:
-     .topbar               component root (52px bar, surface)
-     .tb-control           unified 32px control (button/pill base)
-     .tb-control.icon      icon-only square 32×32
-     .tb-control.primary   high-contrast CTA (inverse layer)
+     .topbar               component root (60px bar, surface)
+     .topbar.is-sm/.is-lg  bar density — retunes --tb-control-h (52 / 72px)
+     .topbar.is-compact    narrow layout at any viewport (see Compact below)
+     .topbar.is-glass      frosted chrome via --glass-chrome
+     .topbar.is-glass.is-sticky  pinned, which is what makes the blur mean anything
+     .tb-control           unified control, height = --tb-control-h
+     .tb-control.icon      icon-only square
+     .tb-control.sm/.lg    one-off control size (leaves bar height alone)
      .tb-live              live-session indicator (non-interactive)
-     .tb-live .dot         pulsing status dot
+     .tb-live .dot         status dot
      .tb-clock             mono elapsed-time readout
      .tb-flag-label        ENG / lang label inside a control
+     .tb-lang              language control — tagged so compact can hide it
      .tb-bell              notification button wrapper (badge anchor)
      .tb-bell .badge       unread red dot
-     .tb-avatar            user avatar chip (30px)
+     .tb-avatar            user avatar chip (32px)
+     .tb-mark-full         brand lockup (hidden when compact)
+     .tb-mark-symbol       brand glyph (hidden when compact)
      .tb-spacer            margin-left:auto group wrapper
+     .tb-account           avatar + identity trigger
+     .tb-account-id        name / company stack inside the trigger
+     .tb-account-menu      dropdown (head, -sep, -item, -item.is-danger)
 
-   Canonical control height: var(--tb-control-h) (default 36px). All bar
-   items (controls, search, account) read it, so they scale together.
+   The primary action is NOT a topbar class: use the canonical .btn .btn-primary
+   .btn-md (buttons.css) so the bar's CTA stays the system's button.
+
+   Canonical control height: var(--tb-control-h), which carries 40px as its own
+   fallback — a control used outside a .topbar still lands on the right box. All bar items
+   (controls, search, account) read it, so they scale together. 40px matches the
+   standard 40px input/button box used elsewhere, so a .tb-control and a .btn-md
+   in the same row align without per-instance tuning.
    ============================================================ */
 
 .topbar {
   height: 60px; flex-shrink: 0;
-  --tb-control-h: 36px;
+  --tb-control-h: var(--control-h-md);
   background: var(--color-background-surface);
   border-bottom: 1px solid var(--color-border-default);
   display: flex; align-items: center; gap: var(--space-2-5);
@@ -33,7 +49,7 @@
 
 /* Unified control — every interactive pill/button in the bar */
 .tb-control {
-  height: var(--tb-control-h); min-height: var(--tb-control-h); box-sizing: border-box;
+  height: var(--tb-control-h, var(--control-h-md)); min-height: var(--tb-control-h, var(--control-h-md)); box-sizing: border-box;
   display: inline-flex; align-items: center; gap: var(--space-2-5);
   padding: 0 var(--space-3-5);
   border-radius: var(--radius-sm-md);
@@ -48,17 +64,28 @@
 .tb-control svg, .tb-control i { width: 14px; height: 14px; stroke-width: var(--icon-stroke); flex-shrink: 0; }
 
 /* Icon-only square */
-.tb-control.icon { width: var(--tb-control-h); padding: 0; justify-content: center; }
+.tb-control.icon { width: var(--tb-control-h, var(--control-h-md)); padding: 0; justify-content: center; }
 
-/* The bar's primary action is the canonical button — use `.btn .btn-primary .btn-sm`
-   (buttons.css), NOT a topbar-local style. Kept out of here on purpose for single source. */
+/* The bar's primary action is the canonical .btn (buttons.css) — no topbar-local
+   button style. The bar does impose its own box on it, so the CTA tracks the
+   density instead of depending on the author picking the matching .btn-* class:
+   both now land on the same step of the height scale. */
+.topbar .btn { height: var(--tb-control-h, var(--control-h-md)); }
 
 /* Lang label inside a control */
 .tb-control .tb-flag-label { font-size: var(--fs-sm); font-weight: var(--w-regular); color: var(--color-foreground-secondary); }
 .tb-control .chev { opacity: .6; }
 .tb-control .chev svg, .tb-control .chev i { width: 11px; height: 11px; }
 
-/* Live indicator — looks like a control but is not interactive */
+/* Live indicator — looks like a control but is not interactive.
+   Baseline, not centre: the clock is mono --fs-xxs next to a sans --fs-sm label,
+   Alignment note: do NOT reach for align-items:baseline here. In a fixed-height
+   flex box it aligns the items to each other but glues the run to the top (10px
+   off centre in a 40px pill). The clock reading "higher" is a LEADING problem:
+   label is --fs-sm (18px box) beside a --fs-xxs clock (15px box), so centring
+   boxes of different heights centres the leading, not the glyphs. line-height:1
+   on both makes each box hug its letterforms, and the default centring lines
+   them up. */
 .tb-live { cursor: default; color: var(--color-foreground-secondary); }
 .tb-live:hover { border-color: var(--color-border-default); background: var(--color-background-surface); color: var(--color-foreground-secondary); }
 .tb-live .dot {
@@ -66,9 +93,10 @@
   background: var(--color-success-500);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-success-500) 15%, transparent);
 }
-.tb-live .lbl { font-size: var(--fs-sm); font-weight: var(--w-regular); }
+.tb-live .lbl { font-size: var(--fs-sm); font-weight: var(--w-regular); line-height: 1; }
 .tb-clock { font-family: var(--font-mono);
-  font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); margin-left: var(--space-1); }
+  font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); line-height: 1;
+  color: var(--color-foreground-muted); margin-left: var(--space-1); }
 
 /* Notification button + unread badge */
 .tb-bell .badge-anchor { position: relative; display: inline-flex; }
@@ -80,7 +108,8 @@
 
 /* Avatar chip */
 .tb-avatar {
-  width: 30px; height: 30px; border-radius: var(--radius-pill);
+  /* One step below the control — the relation it already had at md (40→32) */
+  width: var(--control-h-sm); height: var(--control-h-sm); border-radius: var(--radius-pill);
   background: var(--color-brand-solid); color: var(--color-brand-on-solid);
   font-size: var(--fs-xs); font-weight: var(--w-bold);
   display: inline-flex; align-items: center; justify-content: center;
@@ -91,17 +120,72 @@
 .tb-spacer { margin-left: auto; display: flex; align-items: center; gap: var(--space-3); }
 
 /* Search pill grows to fill the bar (component itself lives in inputs.css) */
-.topbar .pill-search { height: var(--tb-control-h); box-sizing: border-box; flex: 1; max-width: 520px; min-width: 0; }
+.topbar .pill-search { height: var(--tb-control-h, var(--control-h-md)); box-sizing: border-box; flex: 1; max-width: 520px; min-width: 0; }
 
-/* ===== Mobile ===== */
+/* ===== Compact / mobile =====
+   The collapse is driven by a MODIFIER, not only by the breakpoint. A media
+   query reads the viewport, so a bar rendered inside a narrow container — a doc
+   demo, a split pane, a drawer — would keep its desktop layout while visibly
+   lacking the room for it. `.is-compact` lets the consumer say "this bar is
+   narrow" directly, and the breakpoint simply opts every bar in below 720px.
+
+   Two collapses, both preserving the control box so no tap target shrinks:
+     1. brand off. Both marks hide: the menu button and the account already say
+        where you are, and a mark would eat room search and the CTA need.
+     2. search pill -> icon button. The input and the ⌘K hint hide and the glyph
+        centres in the same box. A bare icon would collapse to ~20px.
+   The language control and live clock hide outright: ambient status, not worth
+   a target at this width. */
+.topbar.is-compact { gap: var(--space-2); padding: 0 var(--space-3); }
+/* No brand at this width: the menu button and the account already say where
+   you are, and the mark would eat room the search and primary action need. */
+.topbar.is-compact .tb-mark-full,
+.topbar.is-compact .tb-mark-symbol { display: none; }
+.topbar.is-compact .pill-search {
+  flex: 0 0 var(--tb-control-h);
+  width: var(--tb-control-h);
+  max-width: none;
+  padding: 0;
+  justify-content: center;
+  cursor: pointer;
+}
+.topbar.is-compact .pill-search input,
+.topbar.is-compact .pill-search .kbd { display: none; }
+.topbar.is-compact .pill-search > i,
+.topbar.is-compact .pill-search > svg { margin: 0; }
+.topbar.is-compact .tb-live,
+.topbar.is-compact .tb-lang { display: none; }
+
+/* The breakpoint opts every bar in. Selectors mirror the block above on purpose:
+   plain CSS cannot hand a class to a media query, and a custom-property switch
+   for `display` would hide the intent. */
 @media (max-width: 720px) {
   .topbar { gap: var(--space-2); padding: 0 var(--space-3); }
+  .topbar .tb-mark-full,
+  .topbar .tb-mark-symbol { display: none; }
+  .topbar .pill-search {
+    flex: 0 0 var(--tb-control-h);
+    width: var(--tb-control-h);
+    max-width: none;
+    padding: 0;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .topbar .pill-search input,
+  .topbar .pill-search .kbd { display: none; }
+  .topbar .pill-search > i,
+  .topbar .pill-search > svg { margin: 0; }
+  .topbar .tb-live,
+  .topbar .tb-lang { display: none; }
 }
+
+/* Above the breakpoint the symbol stays out of the way */
+.topbar .tb-mark-symbol { display: none; }
 
 /* ===== Account menu (avatar + identity → dropdown) ===== */
 .tb-account-wrap { position: relative; margin-left: var(--space-1); }
 .tb-account {
-  height: var(--tb-control-h); min-height: var(--tb-control-h); box-sizing: border-box;
+  height: var(--tb-control-h, var(--control-h-md)); min-height: var(--tb-control-h, var(--control-h-md)); box-sizing: border-box;
   display: inline-flex; align-items: center; gap: var(--space-2);
   padding: 0 var(--space-3-5) 0 var(--space-2-5);
   border: 1px solid var(--color-border-default);
@@ -147,3 +231,79 @@
 .tb-account-menu-item.is-danger { color: var(--color-feedback-danger-foreground); }
 .tb-account-menu-item.is-danger svg, .tb-account-menu-item.is-danger i { color: var(--color-feedback-danger-foreground); }
 .tb-account-menu-item.is-danger:hover { background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); }
+
+/* ============================================================
+   GLASS VARIANT — .topbar.is-glass
+   ============================================================
+   Frosted chrome instead of a solid surface: the bar floats over content and
+   lets it show through. Consumes the semantic --glass-chrome pair, so it flips
+   to ink glass on dark with no per-theme rule here.
+
+   Two conditions it depends on, both easy to get wrong:
+   1. Something must scroll UNDER it. Over a flat canvas the blur has nothing to
+      sample and the bar just reads as a slightly muddier surface — use the solid
+      default there.
+   2. It must be sticky or fixed. A static frosted bar blurs whatever happens to
+      sit behind it in the layout, which is usually nothing.
+
+   The bottom hairline gets a touch more contrast than the solid variant: with a
+   translucent background the boundary is the only thing separating bar from
+   content. */
+.topbar.is-glass {
+  background: var(--glass-chrome);
+  color: var(--glass-chrome-fg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border-bottom-color: var(--color-border-strong);
+}
+/* Sticky is what makes the effect mean anything */
+.topbar.is-glass.is-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 800;
+}
+/* No backdrop-filter (older Safari, Firefox with the flag off): fall back to an
+   opaque surface rather than a washed-out translucent bar with unreadable text. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .topbar.is-glass { background: var(--color-background-surface); }
+}
+
+/* ============================================================
+   SIZES — bar-level and per-control
+   ============================================================
+   Everything in the bar reads --tb-control-h, so the honest lever is the BAR:
+   .is-sm / .is-lg retune the token and controls, search and account scale
+   together. Per-control .sm / .lg exist for the one-off case — a dense filter
+   pill beside standard controls — and deliberately do NOT change the bar height,
+   so a smaller control still sits centred in the same row.
+
+   Bar height tracks the control with room to breathe (control + 24px), which is
+   why it is set alongside the token rather than derived. */
+.topbar.is-sm { height: 56px; --tb-control-h: var(--control-h-sm); }
+.topbar.is-lg { height: 72px; --tb-control-h: var(--control-h-lg); }
+
+.topbar.is-sm .tb-control,
+.tb-control.sm { font-size: var(--fs-xs); padding: 0 var(--space-3); gap: var(--space-2); }
+.topbar.is-lg .tb-control,
+.tb-control.lg { font-size: var(--fs-md); padding: 0 var(--space-4-5); }
+
+/* Per-control override: height only, so it centres inside the standard row */
+.tb-control.sm { height: var(--control-h-sm); min-height: var(--control-h-sm); }
+.tb-control.lg { height: var(--control-h-lg); min-height: var(--control-h-lg); }
+.tb-control.sm.icon { width: var(--control-h-sm); }
+.tb-control.lg.icon { width: var(--control-h-lg); }
+.tb-control.sm > i, .tb-control.sm > svg,
+.tb-control.sm .badge-anchor > i, .tb-control.sm .badge-anchor > svg { width: 12px; height: 12px; }
+.tb-control.lg > i, .tb-control.lg > svg,
+.tb-control.lg .badge-anchor > i, .tb-control.lg .badge-anchor > svg { width: 18px; height: 18px; }
+
+/* Live indicator follows the same scale */
+.tb-live.sm .lbl { font-size: var(--fs-xs); }
+.tb-live.sm .dot { width: 5px; height: 5px; }
+.tb-live.lg .lbl { font-size: var(--fs-md); }
+.tb-live.lg .dot { width: 7px; height: 7px; }
+.tb-live.lg .tb-clock { font-size: var(--fs-xs); }
+
+/* Avatar and account keep pace with the bar */
+.topbar.is-sm .tb-avatar { width: var(--control-h-xs); height: var(--control-h-xs); font-size: 10px; }
+.topbar.is-lg .tb-avatar { width: var(--control-h-md); height: var(--control-h-md); font-size: var(--fs-sm); }

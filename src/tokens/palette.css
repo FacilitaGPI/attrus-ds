@@ -38,11 +38,16 @@
   --color-neutral-900: #0A0F1F;  /* inverse surface (never pure black) */
   --color-neutral-950: #05081A;  /* deepest inverse */
 
-  /* --- Inverse "ink" tones (variants of neutral-900/-950, used by inverse layer) --- */
-  --color-ink-base:    #0B1230;   /* near-black navy */
-  --color-ink-raised:  #111A3D;   /* card on inverse */
-  --color-ink-deep:    #0A1128;   /* deeper than base — wells, alt rows */
-  --color-ink-hover:   #15214A;   /* hover state on inverse */
+  /* --- Inverse "ink" tones (dark canvas + the base the inverse layer tints) ---
+     Hue 226 held, lightness of every step held, saturation cut 56–63% → ~16%.
+     Above ~30% the eye names a background "navy" instead of reading it as a
+     near-black; at 16% the blue stops being a colour and becomes a temperature.
+     Contrast survives the change: text on canvas 17.27 → 16.5, and card-vs-canvas
+     separation improves slightly (1.10 → 1.15). */
+  --color-ink-base:    #191B22;   /* near-black, faintly blue */
+  --color-ink-raised:  #21232D;   /* card on inverse */
+  --color-ink-deep:    #15171D;   /* deeper than base — wells, alt rows */
+  --color-ink-hover:   #282B37;   /* hover state on inverse */
 
   /* --- Brand primary · Navy (institutional — logo, headings, primary surfaces)
      10-stop scale anchored at -500: #002142 (ATTRUS Navy from brand book).

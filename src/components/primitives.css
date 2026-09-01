@@ -317,3 +317,71 @@
   color: var(--color-foreground-muted);
   margin-bottom: var(--space-2-5);
 }
+
+/* ----------------------------------------------------------------
+   PROGRESS — one tone scale, two shapes
+   ----------------------------------------------------------------
+   Shape and tone are independent axes. Shape answers "is the count
+   meaningful?" — a bar at 60% invites estimation, a filled 3rd segment states
+   "3 of 5". Tone answers "what does this progress mean?" and uses the same
+   semantic pairs as the pills, so a bar reads consistently with the status
+   beside it.
+
+   Both shapes resolve --progress-tone, so a tone is declared ONCE and works in
+   either. Adding a tone is a single line; it used to be two rules per tone and
+   a tone added to one shape silently missed the other.
+
+   Shapes:  .progress (continuous)  ·  .progress-seg (discrete steps)
+   Tones:   default (brand) · is-success · is-warning · is-danger · is-critical
+   Sizes:   is-sm 4px · default 6px · is-lg 10px
+   ---------------------------------------------------------------- */
+
+/* Tone scale — read by both shapes */
+.progress, .progress-seg { --progress-tone: var(--color-brand-solid); }
+.is-success  { --progress-tone: var(--color-feedback-success-foreground); }
+.is-warning  { --progress-tone: var(--color-feedback-warning-foreground); }
+.is-danger   { --progress-tone: var(--color-feedback-danger-foreground); }
+.is-critical { --progress-tone: var(--color-feedback-danger-foreground); }
+.is-info     { --progress-tone: var(--color-feedback-info-foreground); }
+
+/* Shape: continuous */
+.progress .progress-fill { background: var(--progress-tone); }
+/* the default tone keeps the brand gradient, which reads richer than flat navy */
+.progress:not([class*="is-success"]):not([class*="is-warning"]):not([class*="is-danger"]):not([class*="is-critical"]):not([class*="is-info"]) .progress-fill {
+  background: var(--grad-brand-soft);
+}
+
+/* Shape: segmented */
+.progress-seg { display: inline-flex; gap: var(--space-1); width: 100%; }
+.progress-seg > i {
+  flex: 1;
+  height: var(--progress-h, 6px);
+  border-radius: var(--radius-2xs);
+  background: var(--progress-track, var(--color-border-default));
+}
+.progress-seg > i.is-done { background: var(--progress-tone); }
+.progress-seg > i.is-current { background: color-mix(in srgb, var(--progress-tone) 45%, transparent); }
+
+/* Critical — danger that is also URGENT. Danger states a failed fact; critical
+   says the clock is running (a cut-off hours away, a limit about to bind). The
+   pulse is what separates them: colour alone cannot express time pressure, and
+   a table full of red would flatten the distinction. */
+.progress.is-critical .progress-fill,
+.progress-seg.is-critical > i.is-current {
+  animation: progress-critical 1.6s var(--ease-standard) infinite;
+}
+.progress.is-critical { box-shadow: 0 0 0 1px color-mix(in srgb, var(--progress-tone) 30%, transparent); }
+@keyframes progress-critical { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+
+/* Sizes */
+.progress.is-sm, .progress-seg.is-sm > i { --progress-h: 4px; }
+.progress.is-lg, .progress-seg.is-lg > i { --progress-h: 10px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .progress.is-critical .progress-fill,
+  .progress-seg.is-critical > i.is-current { animation: none; }
+}
+}
+/* Sizes */
+.progress.is-sm, .progress-seg.is-sm > i { --progress-h: 4px; }
+.progress.is-lg, .progress-seg.is-lg > i { --progress-h: 10px; }

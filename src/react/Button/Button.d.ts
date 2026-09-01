@@ -8,10 +8,10 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   variant?: ButtonVariant;
   /** Control height: xs=24, sm=32, md=40 (default), lg=48. */
   size?: ButtonSize;
+  /** Square, label-less button. `aria-label` is required. */
+  iconOnly?: boolean;
   /** Shows the canonical spinner and disables interaction. */
   loading?: boolean;
-  /** Square icon-only button (.btn-icon) — width locks to the height. */
-  iconOnly?: boolean;
   /** Leading slot — typically an <Icon/>. */
   icon?: React.ReactNode;
   /** Trailing slot — e.g. a chevron. */
@@ -23,3 +23,11 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export declare const Button: React.FC<ButtonProps>;
 export declare const ButtonGroup: React.FC<React.HTMLAttributes<HTMLDivElement>>;
 export default Button;
+
+export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
+  /** Names the cluster for assistive tech. */
+  'aria-label': string;
+}
+
+export declare const ButtonGroup: React.FC<ButtonGroupProps>;

@@ -45,6 +45,11 @@ export interface ComboboxProps {
   disabled?: boolean;
   /** Gallery/doc rendering: popover stays inline (not portaled). */
   static?: boolean;
+  /** Which trigger edge the portaled popover is pinned to. The popover treats
+      the trigger's width as a MINIMUM and grows with its content, so the growth
+      needs a direction: 'start' grows right (default), 'end' grows left. Use
+      'end' for a compact control near the right edge. */
+  align?: 'start' | 'end';
   className?: string;
   style?: React.CSSProperties;
   'aria-label'?: string;

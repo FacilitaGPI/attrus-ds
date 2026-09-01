@@ -7,7 +7,10 @@
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
-<link rel="stylesheet" href="components/inputs.css?v=3">
+<script src="../version.js"></script>
+<link rel="stylesheet" href="components/inputs.css?v=6">
+<link rel="stylesheet" href="components/number-input.css?v=6">
+<link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
   /* ============================================================
@@ -297,11 +300,45 @@
   .matrix .rl { color: var(--color-foreground-default); font-size: var(--fs-xs); }
   .spec-canvas.dark .matrix .h { color: var(--color-foreground-inverse-muted); }
   .spec-canvas.dark .matrix .rl { color: var(--color-foreground-inverse-default); }
+
+  /* profile-A chrome */
+  .view-controls { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); }
+  .product-select, .theme-toggle { height: var(--control-h-md); padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); }
+  .theme-toggle { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .theme-toggle [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+  .api { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--shape-container); padding: var(--space-6); margin-bottom: var(--space-9); box-shadow: var(--shadow-xs); }
+  .api-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-5) var(--space-6); }
+  .api-k { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-2); }
+  .api-v { display: block; font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); line-height: var(--lh-relaxed); word-break: break-word; }
+  .api-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .api-tags code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-brand); background: var(--color-brand-subtle); padding: 2px var(--space-2); border-radius: var(--radius-2xs); }
+  .api-prefer { margin: var(--space-5) 0 0; padding-top: var(--space-4); border-top: 1px solid var(--color-border-subtle); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .api-prefer strong { color: var(--color-foreground-default); }
+  .doc-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-10); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; }
+
+  /* Reference tables inside a demo card (intent / agents / behaviour) */
+  table.cls { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  table.cls th { text-align: left; padding: var(--space-3) var(--space-5); background: var(--color-background-subtle); border-bottom: 1px solid var(--color-border-default); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  table.cls td { padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); vertical-align: top; }
+  table.cls tr:last-child td { border-bottom: 0; }
+  table.cls td:first-child { color: var(--color-foreground-default); }
+  table.cls code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-brand); background: var(--color-brand-subtle); padding: 1px var(--space-2); border-radius: var(--radius-2xs); }
 </style>
 </head>
 <body>
+<div class="view-controls">
+  <a class="xlink" href="../components/Input/Input.html" title="Typed React bench for Input"><i data-lucide="code-2"></i>Input TSX</a>
+  
+  <select class="product-select" data-product-select aria-label="Preview product theme"></select>
+  <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+    <span data-theme-icon aria-hidden="true">☾</span>
+    <span data-theme-label>Dark</span>
+  </button>
+</div>
 
 <main class="doc">
+  <script type="application/json" id="ds-api">{"component":"Inputs & forms","import":"const { Input, Textarea, Select, Switch, Checkbox, Radio, DateTrigger, ChipsInput, Otp, FileDrop, FileRow, FileListBox, Slider } = ATTRUS","cssAnatomy":".field > label + control + .help","status":"stable","intent":"A field is a labelled question; the control is the shape of the answer. Choose by the data, not the look.","components":{"Input":"free text, one line","Textarea":"free text, many lines","Select":"one of ~2–7 fixed options","Radio":"one of 2–5, all worth showing","Checkbox":"on/off applied on submit, or a set","Switch":"on/off applied immediately","Slider":"a number where the range matters more than the digits","Otp":"a short fixed-length code","DateTrigger":"a date","ChipsInput":"a set of zero or more values","FileDrop":"file intake","FileRow":"one file with progress","FileListBox":"a list of files"},"sharedProps":["label","help","status","size","onInverse"],"statuses":["default","error","success","warning"],"sizes":["sm","md","lg"],"useInstead":{"Select with 40+ options":"Combobox","Switch inside a form that submits":"Checkbox","Input type=number for money":"Input with currency prefix","placeholder as the label":"the label prop","disabled to mean not-applicable":"remove the field or explain in help"},"antiPatterns":["hand-rolling a <label> around the control — breaks the htmlFor binding","error text in a sibling div — not announced","a red border with no message","colour alone for state","height overrides instead of size","placeholder carrying the format"],"constraints":["all thirteen are controlled — pass value and onChange","label and help are props, never surrounding markup","status drives border, help tone and aria-invalid together","size maps to --control-h-* shared with Button","onInverse is required on dark surfaces"],"shipped":["label↔control id binding","status→border/help/aria","size scale","onInverse variant","affix and group layout","focus-visible ring"],"mustImplement":["value/onChange","validation timing","error copy","submission","upload transport","masking and formatting"]}</script>
 
   <a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
 
@@ -316,22 +353,81 @@
     </div>
   </header>
 
+
+  <!-- ========== API ========== -->
+  <section class="api" aria-label="API summary">
+    <div class="api-grid">
+      <div class="api-col">
+        <div class="api-k">Import</div>
+        <code class="api-v">const { Input, Textarea, Select, Switch, Checkbox, Radio, DateTrigger, ChipsInput, Otp, FileDrop, FileRow, FileListBox, Slider } = ATTRUS</code>
+      </div>
+      <div class="api-col">
+        <div class="api-k">CSS anatomy</div>
+        <code class="api-v">.field &gt; label + control + .help</code>
+      </div>
+      <div class="api-col">
+        <div class="api-k">Shared props</div>
+        <div class="api-tags"><code>label</code><code>help</code><code>status</code><code>size</code><code>onInverse</code></div>
+      </div>
+      <div class="api-col">
+        <div class="api-k">Status</div>
+        <div class="api-tags"><code>default</code><code>error</code><code>success</code><code>warning</code></div>
+      </div>
+    </div>
+    <p class="api-prefer"><strong>Prefer:</strong> every control ships the same <code>.field</code> anatomy, so a label and its help text come from props — never hand-rolled around the input. Reach for <code>Select</code> under ~7 fixed options, <code>Combobox</code> when the list needs search, and <code>ChipsInput</code> when the answer is a set rather than one value.</p>
+  </section>
+
   <!-- ========== NAV ========== -->
   <nav class="doc-nav">
-    <a href="#anatomy">Anatomy</a>
-    <a href="#variants">Variants</a>
-    <a href="#sizes">Sizes</a>
-    <a href="#states">States</a>
-    <a href="#composition">Composition</a>
-    <a href="#on-inverse">On inverse</a>
-    <a href="#donts">Don'ts</a>
-    <a href="#a11y">Accessibility</a>
-    <a href="#tokens">Tokens</a>
+    <a href="#intent">01 Intent</a>
+    <a href="#anatomy">02 Anatomy</a>
+    <a href="#variants">03 Variants</a>
+    <a href="#sizes">04 Sizes</a>
+    <a href="#states">05 States</a>
+    <a href="#composition">06 Composition</a>
+    <a href="#on-inverse">07 On inverse</a>
+    <a href="#donts">08 Don'ts</a>
+    <a href="#a11y">09 Accessibility</a>
+    <a href="#agents">10 For agents</a>
+    <a href="#behaviour">11 Behaviour</a>
+    <a href="#tokens">12 Tokens</a>
   </nav>
 
   <!-- ========== ANATOMY ========== -->
-  <section class="doc-section" id="anatomy">
-    <h2><span class="num">01</span>Anatomy</h2>
+    <!-- ========== 01 INTENT ========== -->
+  <section class="doc-section" id="intent">
+    <h2><span class="num">01</span>Intent</h2>
+    <p class="lead">Thirteen controls, one anatomy. A field is a labelled question, and the control is only the shape of the answer — so the choice is decided by the shape of the data, not by how the control looks.</p>
+
+    <div class="demo-card">
+      <header class="demo-card-head">
+        <div><h3>Which control</h3><p>Pick by the answer's cardinality and whether the set is known.</p></div>
+        <span class="demo-card-tag">Decision</span>
+      </header>
+      <div class="demo-card-canvas is-flush">
+        <table class="cls">
+          <thead><tr><th>The answer is…</th><th>Use</th><th>Not</th></tr></thead>
+          <tbody>
+            <tr><td>Free text, one line</td><td><code>Input</code></td><td><code>Textarea</code> — a one-line answer in a box invites paragraphs</td></tr>
+            <tr><td>Free text, many lines</td><td><code>Textarea</code></td><td><code>Input</code> — the box is the affordance that says "go long"</td></tr>
+            <tr><td>One of ~2–7 fixed options</td><td><code>Select</code></td><td><code>Combobox</code> — search on seven items is friction</td></tr>
+            <tr><td>One of many, or a searchable set</td><td><code>Combobox</code></td><td><code>Select</code> — a 200-row native list is unusable</td></tr>
+            <tr><td>One of 2–5, all worth showing</td><td><code>Radio</code></td><td><code>Select</code> — hiding five options behind a click costs a tap and the comparison</td></tr>
+            <tr><td>A set — zero or more</td><td><code>ChipsInput</code> or <code>Checkbox</code> group</td><td><code>Select multiple</code> — nobody can operate it</td></tr>
+            <tr><td>On or off, applied immediately</td><td><code>Switch</code></td><td><code>Checkbox</code> — a switch promises the change already happened</td></tr>
+            <tr><td>On or off, applied on submit</td><td><code>Checkbox</code></td><td><code>Switch</code> — it lies about when the change lands</td></tr>
+            <tr><td>A number in a known range</td><td><code>Slider</code></td><td><code>Input type=number</code> — when the range matters more than the digits</td></tr>
+            <tr><td>A short code, fixed length</td><td><code>Otp</code></td><td><code>Input</code> — the cell count tells the user how long the code is</td></tr>
+            <tr><td>A date</td><td><code>DateTrigger</code></td><td>three <code>Select</code>s — day/month/year is a broken date picker</td></tr>
+            <tr><td>Files</td><td><code>FileDrop</code> + <code>FileListBox</code></td><td>a bare <code>input type=file</code> — no progress, no removal, no state</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+<section class="doc-section" id="anatomy">
+    <h2><span class="num">02</span>Anatomy</h2>
     <p class="lead">Every field is a vertical stack: <strong>label</strong>, <strong>field row</strong>, <strong>helper or error</strong>. The field row holds the input plus optional affixes (icons, prefix/suffix, trailing buttons). Spacing between rows is <code>--space-2</code>; between fields, <code>--space-5</code>.</p>
 
     <div class="anatomy">
@@ -393,19 +489,19 @@
 
   <!-- ========== VARIANTS ========== -->
   <section class="doc-section" id="variants">
-    <h2><span class="num">02</span>Variants</h2>
+    <h2><span class="num">03</span>Variants</h2>
     <p class="lead">Twenty variants, organised in five families: <strong>text fields</strong> (the <code>.input</code> base + affixes), <strong>structured fields</strong> (group, select, number-input, date), <strong>specialised fields</strong> (chips, OTP, file, slider), <strong>boolean</strong> (switch, checkbox, radio), and <strong>quiet</strong> (underline, pill search). All consume the same focus, error, disabled tokens.</p>
 
     <!-- ─────────── 1. Text · default ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Text <code>.input</code></h3>
           <p>The base text input. Use for any single-line free text — names, titles, descriptions. All other text-flavour variants (email, search, password) inherit its sizing and states.</p>
         </div>
         <span class="tag">Text · 1</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="state-grid">
           <div class="state-cell"><span class="lbl">Default</span><input class="input" placeholder="e.g. Maria Fernanda Costa" /></div>
           <div class="state-cell"><span class="lbl">Hover</span><input class="input" placeholder="e.g. Maria Fernanda Costa" style="border-color: var(--color-border-strong);" /></div>
@@ -415,7 +511,7 @@
           <div class="state-cell"><span class="lbl">Disabled</span><input class="input" value="Read-only value" disabled /></div>
         </div>
       </div>
-      <div class="spec-foot">
+      <div class="demo-card-canvas is-guidance">
         <div><h4>Use for</h4><ul>
           <li class="do"><i data-lucide="check"></i>Free-form single-line text — names, titles, references.</li>
           <li class="do"><i data-lucide="check"></i>Any field where the user types unconstrained.</li>
@@ -428,15 +524,15 @@
     </article>
 
     <!-- ─────────── 2. Email — pattern ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Email <code>type="email"</code></h3>
           <p>Same as Text but with semantic typing — triggers email keyboard on mobile, enables browser validation, and adds a <code>mail</code> leading icon by convention.</p>
         </div>
         <span class="tag">Text · 2</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="state-grid">
           <div class="state-cell"><span class="lbl">Default</span>
             <div class="affix lead-pad"><i data-lucide="mail" class="lead"></i>
@@ -459,15 +555,15 @@
     </article>
 
     <!-- ─────────── 3. Password — trailing reveal ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Password <code>type="password"</code></h3>
           <p>Masked input with a trailing reveal toggle. The reveal button is keyboard-focusable; clicking it switches the type between <code>password</code> and <code>text</code>.</p>
         </div>
         <span class="tag">Text · 3</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="state-grid">
           <div class="state-cell"><span class="lbl">Default</span>
             <div class="affix lead-pad trail-pad"><i data-lucide="lock" class="lead"></i>
@@ -494,15 +590,15 @@
     </article>
 
     <!-- ─────────── 4. Search ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Search <code>type="search"</code></h3>
           <p>Leading <code>search</code> icon, optional trailing clear button. The square-corner version pairs with toolbars; for global app search use the Pill variant below.</p>
         </div>
         <span class="tag">Text · 4</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="state-grid">
           <div class="state-cell"><span class="lbl">Default</span>
             <div class="affix lead-pad"><i data-lucide="search" class="lead"></i>
@@ -522,15 +618,15 @@
     </article>
 
     <!-- ─────────── 5. Prefix / suffix group ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Prefix / suffix <code>.group</code></h3>
           <p>Attached units that name what's being entered: currency, units, domain. The fix segments share the field's border but sit on <code>--color-background-subtle</code> to read as ornament, not input.</p>
         </div>
         <span class="tag">Structured · 1</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="state-grid">
           <div class="state-cell"><span class="lbl">Prefix only</span>
             <div class="group">
@@ -574,15 +670,15 @@
     </article>
 
     <!-- ─────────── 6. Select ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Select <code>.select</code></h3>
           <p>Native <code>&lt;select&gt;</code> styled to match the Text input. Trailing chevron rotates on open. Use for short, mutually exclusive lists (≤ 8 options); larger sets call for a Combobox.</p>
         </div>
         <span class="tag">Structured · 2</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="state-grid">
           <div class="state-cell"><span class="lbl">Default</span>
             <div class="select"><select class="input">
@@ -609,52 +705,52 @@
     </article>
 
     <!-- ─────────── 7. Number Input ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Number Input <code>.number-input</code></h3>
           <p>Numeric field with attached <code>−</code> / <code>+</code> buttons. Use for small, discrete quantities (count of users, days, items). Hide buttons at the boundaries via <code>disabled</code>. See the <a href="number-input.html" style="color: var(--color-foreground-highlight);">full Number Input spec</a> — and don't confuse with the navigation <a href="stepper.html" style="color: var(--color-foreground-highlight);">Stepper</a>.</p>
         </div>
         <span class="tag">Structured · 3</span>
       </header>
-      <div class="spec-canvas">
+      <div class="demo-card-canvas">
         <div class="stack">
           <span class="lbl" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps);">Default</span>
           <div class="number-input">
-            <button type="button" class="minus" aria-label="Decrease"><i data-lucide="minus" style="width:14px;height:14px;"></i></button>
-            <input type="number" value="3" />
-            <button type="button" class="plus" aria-label="Increase"><i data-lucide="plus" style="width:14px;height:14px;"></i></button>
+            <button type="button" class="number-input-btn" aria-label="Decrease"><i data-lucide="minus" style="width:14px;height:14px;"></i></button>
+            <input class="number-input-field" type="number" value="3" />
+            <button type="button" class="number-input-btn" aria-label="Increase"><i data-lucide="plus" style="width:14px;height:14px;"></i></button>
           </div>
         </div>
         <div class="stack">
           <span class="lbl" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps);">At minimum</span>
           <div class="number-input">
-            <button type="button" class="minus" aria-label="Decrease" disabled><i data-lucide="minus" style="width:14px;height:14px;"></i></button>
-            <input type="number" value="0" />
-            <button type="button" class="plus" aria-label="Increase"><i data-lucide="plus" style="width:14px;height:14px;"></i></button>
+            <button type="button" class="number-input-btn" aria-label="Decrease" disabled><i data-lucide="minus" style="width:14px;height:14px;"></i></button>
+            <input class="number-input-field" type="number" value="0" />
+            <button type="button" class="number-input-btn" aria-label="Increase"><i data-lucide="plus" style="width:14px;height:14px;"></i></button>
           </div>
         </div>
         <div class="stack">
           <span class="lbl" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps);">Focus</span>
           <div class="number-input" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);">
-            <button type="button" class="minus" aria-label="Decrease"><i data-lucide="minus" style="width:14px;height:14px;"></i></button>
-            <input type="number" value="12" />
-            <button type="button" class="plus" aria-label="Increase"><i data-lucide="plus" style="width:14px;height:14px;"></i></button>
+            <button type="button" class="number-input-btn" aria-label="Decrease"><i data-lucide="minus" style="width:14px;height:14px;"></i></button>
+            <input class="number-input-field" type="number" value="12" />
+            <button type="button" class="number-input-btn" aria-label="Increase"><i data-lucide="plus" style="width:14px;height:14px;"></i></button>
           </div>
         </div>
       </div>
     </article>
 
     <!-- ─────────── 8. Date / time trigger ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Date &amp; time trigger <code>.date-trigger</code></h3>
           <p>A button that opens a calendar or time picker (the picker itself isn't part of the input system). Mirrors text-input height &amp; states for visual continuity in form rows.</p>
         </div>
         <span class="tag">Structured · 4</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="state-grid">
           <div class="state-cell"><span class="lbl">Date · empty</span>
             <button type="button" class="date-trigger">
@@ -697,15 +793,15 @@
     </article>
 
     <!-- ─────────── 9. Textarea ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Textarea <code>textarea.input</code></h3>
           <p>Multi-line free text. Min-height 88px, vertically resizable. Use for memos, notes, descriptions — anything that may run over a single line.</p>
         </div>
         <span class="tag">Text · 5</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="grid-2">
           <div class="state-cell"><span class="lbl">Default</span>
             <textarea class="input" placeholder="Short description for your records…"></textarea>
@@ -718,15 +814,15 @@
     </article>
 
     <!-- ─────────── 10. Chips / multi-select ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Chips multi-select <code>.chips</code></h3>
           <p>Token input — selected values render as removable chips, an embedded text input lets the user add more. Good for tags, recipients, counterparties.</p>
         </div>
         <span class="tag">Specialised · 1</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="state-grid">
           <div class="state-cell"><span class="lbl">Empty</span>
             <div class="chips">
@@ -762,15 +858,15 @@
     </article>
 
     <!-- ─────────── 11. OTP ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>OTP <code>.otp</code></h3>
           <p>One cell per digit, monospaced, large type. Used for verification codes — usually 4 or 6 cells. Auto-advance focus on each digit; paste fills all cells.</p>
         </div>
         <span class="tag">Specialised · 2</span>
       </header>
-      <div class="spec-canvas">
+      <div class="demo-card-canvas">
         <div class="stack">
           <span class="lbl" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps);">Empty</span>
           <div class="otp">
@@ -793,15 +889,15 @@
     </article>
 
     <!-- ─────────── 12. File dropzone ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>File upload <code>.file-drop</code></h3>
           <p>Dashed-border dropzone with click-to-browse and drag-and-drop. Shows uploaded files as chips below; supports multi-file when allowed.</p>
         </div>
         <span class="tag">Specialised · 3</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="grid-2">
           <div class="state-cell"><span class="lbl">Empty</span>
             <div class="file-drop">
@@ -869,15 +965,15 @@
     </article>
 
     <!-- ─────────── 13. Slider ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Slider <code>.slider</code></h3>
           <p>Range input — a thumb sliding along a track. Use for continuous numeric values where exact precision isn't required (volume, opacity, rough thresholds). Pair with a numeric label that reflects the live value.</p>
         </div>
         <span class="tag">Specialised · 4</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="state-cell" style="width:100%; max-width: 420px;">
           <div style="display:flex; justify-content: space-between;">
             <span class="lbl">Default</span>
@@ -899,15 +995,15 @@
     </article>
 
     <!-- ─────────── 14. Switch ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Switch <code>.switch</code></h3>
           <p>Boolean toggle for an immediate on/off setting. Use only when the change takes effect <em>right away</em>; for booleans inside a form that the user submits later, use Checkbox.</p>
         </div>
         <span class="tag">Boolean · 1</span>
       </header>
-      <div class="spec-canvas">
+      <div class="demo-card-canvas">
         <div class="state-cell"><span class="lbl">Off</span>
           <label class="switch"><input type="checkbox" /><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-label">Auto-convert BRL</span></label>
         </div>
@@ -924,15 +1020,15 @@
     </article>
 
     <!-- ─────────── 15. Checkbox ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Checkbox <code>.check</code></h3>
           <p>Multi-select boolean. Use in lists where users pick zero, one, or many items, and inside forms for "I agree" type fields. Supports indeterminate state for parent rows in nested lists.</p>
         </div>
         <span class="tag">Boolean · 2</span>
       </header>
-      <div class="spec-canvas">
+      <div class="demo-card-canvas">
         <div class="state-cell"><span class="lbl">Unchecked</span>
           <label class="check"><input type="checkbox" /><span class="check-box"><i data-lucide="check"></i></span>I agree to the terms</label>
         </div>
@@ -952,15 +1048,15 @@
     </article>
 
     <!-- ─────────── 16. Radio ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Radio <code>.radio</code></h3>
           <p>Mutually exclusive single-select. Use when 2–5 options need to be visible side-by-side; with more options use a Select. Always group inside a <code>fieldset</code> with a <code>legend</code>.</p>
         </div>
         <span class="tag">Boolean · 3</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <fieldset style="border:0; padding:0; margin:0; display:flex; flex-direction:column; gap: var(--space-3);">
           <legend style="font-family: var(--font-sans); font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); margin-bottom: var(--space-2);">Settlement speed</legend>
           <label class="radio"><input type="radio" name="r-demo" /><span class="radio-dot"></span>Instant — within 30 seconds, fee 0.5%</label>
@@ -972,15 +1068,15 @@
     </article>
 
     <!-- ─────────── 17. Pill search ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Pill search <code>.pill-search</code></h3>
           <p>Fully-rounded search bar for global app search (⌘K / Ctrl-K). Use in the top nav or as a command palette trigger. Visually distinct from form fields so users recognise it as "search anywhere".</p>
         </div>
         <span class="tag">Quiet · 1</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="state-cell" style="width:100%; max-width: 480px;">
           <span class="lbl">Default</span>
           <div class="pill-search">
@@ -1009,15 +1105,15 @@
     </article>
 
     <!-- ─────────── 18. Underline (ghost) ─────────── -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Underline <code>.input.underline</code></h3>
           <p>Quiet variant — only a bottom rule. Use in dense data tables for inline editing, or in writing-focused interfaces (notes, titles) where the input shouldn't read as a "form field".</p>
         </div>
         <span class="tag">Quiet · 2</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="state-grid">
           <div class="state-cell"><span class="lbl">Default</span>
             <input class="input underline" placeholder="Add a reference…" />
@@ -1038,14 +1134,14 @@
 
   <!-- ========== SIZES ========== -->
   <section class="doc-section" id="sizes">
-    <h2><span class="num">03</span>Sizes</h2>
+    <h2><span class="num">04</span>Sizes</h2>
     <p class="lead">Three sizes — pick by surface density. <strong>Default</strong> (40px) for most product surfaces. <strong>Small</strong> (32px) for dense data tables and toolbars. <strong>Large</strong> (48px) for hero forms (sign-up, onboarding) and mobile-first contexts where touch targets must be generous.</p>
 
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div><h3>Side-by-side comparison</h3><p>All three sizes share the same focus, error, and disabled rules. Internal padding and font-size shift in lockstep so the visual rhythm stays clean.</p></div>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="grid-3">
           <div class="state-cell"><span class="lbl">Small · 32px <code style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); color: var(--color-foreground-accent);">.input-sm</code></span>
             <input class="input input-sm" placeholder="Small" />
@@ -1064,7 +1160,7 @@
           </div>
         </div>
       </div>
-      <div class="spec-foot" style="grid-template-columns: 1fr;">
+      <div class="demo-card-canvas is-guidance" style="grid-template-columns: 1fr;">
         <table class="token-table">
           <thead><tr><th>Size</th><th>Height</th><th>Padding-x</th><th>Font-size</th><th>Radius</th><th>Use for</th></tr></thead>
           <tbody>
@@ -1079,16 +1175,16 @@
 
   <!-- ========== STATES MATRIX ========== -->
   <section class="doc-section" id="states">
-    <h2><span class="num">04</span>States matrix</h2>
+    <h2><span class="num">05</span>States matrix</h2>
     <p class="lead">Five canonical states for every text-flavour field: <code>default</code>, <code>:hover</code> (border darkens), <code>:focus</code> (border becomes brand blue + 4px focus ring), <code>filled</code> (value present, neutral border), and validation <code>.is-error</code>. Disabled is universal — opacity 0.5, no interaction. Selection &amp; boolean controls collapse this to <em>off</em> / <em>on</em> / <em>focus</em> / <em>disabled</em>.</p>
 
     <!-- Light surfaces -->
-    <div class="spec">
-      <header class="spec-head">
+    <div class="demo-card">
+      <header class="demo-card-head">
         <div><h3>On light surfaces</h3><p>All variants used on <code>--color-background-canvas</code> / <code>--color-background-surface</code>.</p></div>
         <span class="tag">Light</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="matrix">
           <span class="h">Variant</span>
           <span class="h">Default</span>
@@ -1126,10 +1222,10 @@
           <span><div class="group is-error"><span class="fix l">USD</span><input value="-50" /></div></span>
 
           <span class="rl">Number Input</span>
-          <span><div class="number-input"><button type="button" class="minus"><i data-lucide="minus" style="width:14px;height:14px;"></i></button><input value="0" /><button type="button" class="plus"><i data-lucide="plus" style="width:14px;height:14px;"></i></button></div></span>
-          <span><div class="number-input" style="border-color: var(--color-border-strong);"><button type="button" class="minus"><i data-lucide="minus" style="width:14px;height:14px;"></i></button><input value="0" /><button type="button" class="plus"><i data-lucide="plus" style="width:14px;height:14px;"></i></button></div></span>
-          <span><div class="number-input" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);"><button type="button" class="minus"><i data-lucide="minus" style="width:14px;height:14px;"></i></button><input value="0" /><button type="button" class="plus"><i data-lucide="plus" style="width:14px;height:14px;"></i></button></div></span>
-          <span><div class="number-input"><button type="button" class="minus"><i data-lucide="minus" style="width:14px;height:14px;"></i></button><input value="12" /><button type="button" class="plus"><i data-lucide="plus" style="width:14px;height:14px;"></i></button></div></span>
+          <span><div class="number-input"><button type="button" class="number-input-btn"><i data-lucide="minus" style="width:14px;height:14px;"></i></button><input class="number-input-field" value="0" /><button type="button" class="number-input-btn"><i data-lucide="plus" style="width:14px;height:14px;"></i></button></div></span>
+          <span><div class="number-input" style="border-color: var(--color-border-strong);"><button type="button" class="number-input-btn"><i data-lucide="minus" style="width:14px;height:14px;"></i></button><input class="number-input-field" value="0" /><button type="button" class="number-input-btn"><i data-lucide="plus" style="width:14px;height:14px;"></i></button></div></span>
+          <span><div class="number-input" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);"><button type="button" class="number-input-btn"><i data-lucide="minus" style="width:14px;height:14px;"></i></button><input class="number-input-field" value="0" /><button type="button" class="number-input-btn"><i data-lucide="plus" style="width:14px;height:14px;"></i></button></div></span>
+          <span><div class="number-input"><button type="button" class="number-input-btn"><i data-lucide="minus" style="width:14px;height:14px;"></i></button><input class="number-input-field" value="12" /><button type="button" class="number-input-btn"><i data-lucide="plus" style="width:14px;height:14px;"></i></button></div></span>
           <span><span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-muted);">— n/a</span></span>
 
           <span class="rl">Date</span>
@@ -1150,12 +1246,12 @@
     </div>
 
     <!-- Boolean controls -->
-    <div class="spec">
-      <header class="spec-head">
+    <div class="demo-card">
+      <header class="demo-card-head">
         <div><h3>Boolean controls</h3><p>Switch / Checkbox / Radio compress the matrix to <em>off</em>, <em>on</em>, <em>focus</em>, <em>disabled</em>. There's no "filled" because the control <em>is</em> the value.</p></div>
         <span class="tag">Boolean</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="matrix" style="grid-template-columns: 130px repeat(4, minmax(0, 1fr));">
           <span class="h">Variant</span>
           <span class="h">Off</span>
@@ -1187,15 +1283,15 @@
 
   <!-- ========== COMPOSITION ========== -->
   <section class="doc-section" id="composition">
-    <h2><span class="num">05</span>Composition</h2>
+    <h2><span class="num">06</span>Composition</h2>
     <p class="lead">How fields combine into real forms. The atomic unit is the <strong>field</strong> — a label, the input itself, an optional helper or error message. Fields stack vertically inside a <strong>fieldset</strong>; fieldsets stack inside a <strong>form</strong>. Use grid for multi-column layouts (1 column on mobile, 2–3 on desktop), but never split a single logical field across columns.</p>
 
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div><h3>Field anatomy</h3><p>The smallest composable unit. <code>&lt;label&gt;</code> always sits above the input; helper or error text sits below. Required marker is a non-decorative asterisk in <code>--color-feedback-danger-foreground</code>.</p></div>
         <span class="tag">Field</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div class="grid-3">
           <div class="state-cell" style="max-width: 320px;">
             <span class="lbl">With helper</span>
@@ -1225,12 +1321,12 @@
       </div>
     </article>
 
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div><h3>Form layouts</h3><p>Single column for narrow surfaces (modals, side panels, mobile). Two columns at ≥ 720px when fields are short and related. Span full width for free-text and textareas.</p></div>
         <span class="tag">Form</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div style="width:100%; max-width: 760px; background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-7);">
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5);">
             <div class="field"><label for="c-fn">First name</label><input class="input" id="c-fn" value="Maria" /></div>
@@ -1257,12 +1353,12 @@
       </div>
     </article>
 
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div><h3>Inline filter bar</h3><p>Horizontal arrangement for table filters and toolbars. Use <code>.input-sm</code> sizing, no labels above — placeholder + leading icon convey purpose.</p></div>
         <span class="tag">Toolbar</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-col">
         <div style="width:100%; display:flex; flex-wrap: wrap; gap: var(--space-3); padding: var(--space-3); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-sm);">
           <div class="affix lead-pad" style="flex: 1 1 240px;"><i data-lucide="search" class="lead"></i><input class="input input-sm" type="search" placeholder="Search by ID, counterparty…" /></div>
           <div class="select" style="width: 160px;"><select class="input input-sm"><option>All statuses</option><option>Settled</option><option>Pending</option></select><i data-lucide="chevron-down" class="chev" style="right: var(--space-3);"></i></div>
@@ -1275,15 +1371,15 @@
 
   <!-- ========== ON INVERSE ========== -->
   <section class="doc-section" id="on-inverse">
-    <h2><span class="num">06</span>On inverse</h2>
+    <h2><span class="num">07</span>On inverse</h2>
     <p class="lead">Inputs on dark surfaces — sign-in screens, marketing forms, dashboards in dark mode. Border, background, and label colours flip to inverse tokens; focus colour stays brand blue (it has enough lightness to read on both). Validation colours don't change — error red and success green are tuned for both surfaces in the colour system.</p>
 
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div><h3>Dark surface — text fields</h3><p>Border switches to <code>--color-border-inverse</code>, background to <code>--color-background-inverse-subtle</code>, text to <code>--color-foreground-inverse-default</code>.</p></div>
         <span class="tag">Inverse</span>
       </header>
-      <div class="spec-canvas col dark">
+      <div class="demo-card-canvas is-col is-inverse">
         <div class="state-grid">
           <div class="state-cell"><span class="lbl">Default</span>
             <input class="input on-inverse" placeholder="Type something…" />
@@ -1308,12 +1404,12 @@
       </div>
     </article>
 
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div><h3>Dark surface — sign-in form</h3><p>A complete realistic example: hero form on inverse background. Label colour shifts to <code>--color-foreground-inverse-default</code>, helper to <code>--color-foreground-inverse-muted</code>.</p></div>
         <span class="tag">Inverse · Form</span>
       </header>
-      <div class="spec-canvas col dark center">
+      <div class="demo-card-canvas is-col is-inverse is-centred">
         <div style="width:100%; max-width: 380px; padding: var(--space-7); background: var(--color-background-inverse-subtle); border: 1px solid var(--color-border-inverse); border-radius: var(--radius-md); display:flex; flex-direction:column; gap: var(--space-5);">
           <div>
             <div style="font-family: var(--font-display); font-size: var(--fs-xxl); font-weight: var(--w-semibold); color: var(--color-foreground-inverse-default); letter-spacing: var(--ls-tight);">Welcome back</div>
@@ -1339,87 +1435,87 @@
 
   <!-- ========== DONT'S ========== -->
   <section class="doc-section" id="donts">
-    <h2><span class="num">07</span>Don'ts</h2>
+    <h2><span class="num">08</span>Don'ts</h2>
     <p class="lead">Patterns that look reasonable in isolation but break the system. Each example pairs the wrong with the right.</p>
 
     <div class="grid-2">
-      <article class="spec">
-        <header class="spec-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · placeholder as label</h3><p>Placeholder disappears on type. Users forget what the field was for, and screen readers don't always announce it.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
-        <div class="spec-canvas col" style="background: var(--color-feedback-danger-background);">
+      <article class="demo-card">
+        <header class="demo-card-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · placeholder as label</h3><p>Placeholder disappears on type. Users forget what the field was for, and screen readers don't always announce it.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
+        <div class="demo-card-canvas is-col" style="background: var(--color-feedback-danger-background);">
           <div class="state-cell"><input class="input" placeholder="Tax ID" value="00.000.000/0001-00" /></div>
         </div>
       </article>
-      <article class="spec">
-        <header class="spec-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · always label above</h3><p>Label persists. Placeholder shows format hint.</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
-        <div class="spec-canvas col" style="background: var(--color-feedback-success-background);">
+      <article class="demo-card">
+        <header class="demo-card-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · always label above</h3><p>Label persists. Placeholder shows format hint.</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
+        <div class="demo-card-canvas is-col" style="background: var(--color-feedback-success-background);">
           <div class="field"><label>Tax ID</label><input class="input" placeholder="00.000.000/0001-00" value="00.000.000/0001-00" /></div>
         </div>
       </article>
 
-      <article class="spec">
-        <header class="spec-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · red borders without text</h3><p>Colour alone fails for users with low colour vision. Error must be paired with a message.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
-        <div class="spec-canvas col" style="background: var(--color-feedback-danger-background);">
+      <article class="demo-card">
+        <header class="demo-card-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · red borders without text</h3><p>Colour alone fails for users with low colour vision. Error must be paired with a message.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
+        <div class="demo-card-canvas is-col" style="background: var(--color-feedback-danger-background);">
           <div class="field"><label>Email</label><input class="input is-error" value="maria@" /></div>
         </div>
       </article>
-      <article class="spec">
-        <header class="spec-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · pair colour with text</h3><p>Specific, actionable error message. Icon reinforces the state non-redundantly.</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
-        <div class="spec-canvas col" style="background: var(--color-feedback-success-background);">
+      <article class="demo-card">
+        <header class="demo-card-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · pair colour with text</h3><p>Specific, actionable error message. Icon reinforces the state non-redundantly.</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
+        <div class="demo-card-canvas is-col" style="background: var(--color-feedback-success-background);">
           <div class="field"><label>Email</label><input class="input is-error" value="maria@" /><span class="help err"><i data-lucide="alert-circle" style="width:12px;height:12px;vertical-align:-2px;margin-right:4px;"></i>Email must include a domain.</span></div>
         </div>
       </article>
 
-      <article class="spec">
-        <header class="spec-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · split a field across columns</h3><p>The label belongs to the input. Splitting them across columns confuses scanning and breaks responsive flow.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
-        <div class="spec-canvas col" style="background: var(--color-feedback-danger-background);">
+      <article class="demo-card">
+        <header class="demo-card-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · split a field across columns</h3><p>The label belongs to the input. Splitting them across columns confuses scanning and breaks responsive flow.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
+        <div class="demo-card-canvas is-col" style="background: var(--color-feedback-danger-background);">
           <div style="display:grid; grid-template-columns: 120px 1fr; gap: var(--space-4); align-items: center; width:100%; max-width:400px;">
             <label style="font-size: var(--fs-sm); color: var(--color-foreground-default);">Amount</label>
             <input class="input" placeholder="0.00" />
           </div>
         </div>
       </article>
-      <article class="spec">
-        <header class="spec-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · stack label above input</h3><p>Vertical pair — scans top-to-bottom, works at any width, accessible to AT.</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
-        <div class="spec-canvas col" style="background: var(--color-feedback-success-background);">
+      <article class="demo-card">
+        <header class="demo-card-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · stack label above input</h3><p>Vertical pair — scans top-to-bottom, works at any width, accessible to AT.</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
+        <div class="demo-card-canvas is-col" style="background: var(--color-feedback-success-background);">
           <div class="field" style="max-width: 280px;"><label>Amount</label><input class="input" placeholder="0.00" /></div>
         </div>
       </article>
 
-      <article class="spec">
-        <header class="spec-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · disabled looks like filled</h3><p>If a disabled input is too similar to a filled one, users try to edit it and get frustrated.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
-        <div class="spec-canvas col" style="background: var(--color-feedback-danger-background);">
+      <article class="demo-card">
+        <header class="demo-card-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · disabled looks like filled</h3><p>If a disabled input is too similar to a filled one, users try to edit it and get frustrated.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
+        <div class="demo-card-canvas is-col" style="background: var(--color-feedback-danger-background);">
           <input class="input" value="Locked value" style="background: var(--color-background-surface); color: var(--color-foreground-default);" />
         </div>
       </article>
-      <article class="spec">
-        <header class="spec-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · disabled has reduced opacity</h3><p>0.5 opacity + <code>not-allowed</code> cursor + <code>--color-background-subtle</code> read clearly as inactive.</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
-        <div class="spec-canvas col" style="background: var(--color-feedback-success-background);">
+      <article class="demo-card">
+        <header class="demo-card-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · disabled has reduced opacity</h3><p>0.5 opacity + <code>not-allowed</code> cursor + <code>--color-background-subtle</code> read clearly as inactive.</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
+        <div class="demo-card-canvas is-col" style="background: var(--color-feedback-success-background);">
           <input class="input" value="Locked value" disabled />
         </div>
       </article>
 
-      <article class="spec">
-        <header class="spec-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · use Switch for forms</h3><p>Switches imply immediate effect. In a form (where the user must press Save), they mislead the user into thinking the change has applied.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
-        <div class="spec-canvas col" style="background: var(--color-feedback-danger-background);">
+      <article class="demo-card">
+        <header class="demo-card-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · use Switch for forms</h3><p>Switches imply immediate effect. In a form (where the user must press Save), they mislead the user into thinking the change has applied.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
+        <div class="demo-card-canvas is-col" style="background: var(--color-feedback-danger-background);">
           <label class="switch"><input type="checkbox" checked /><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-label">I agree to the terms</span></label>
         </div>
       </article>
-      <article class="spec">
-        <header class="spec-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · use Checkbox for forms</h3><p>Checkbox state is captured on submit — matches the mental model of "I'll review and confirm".</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
-        <div class="spec-canvas col" style="background: var(--color-feedback-success-background);">
+      <article class="demo-card">
+        <header class="demo-card-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · use Checkbox for forms</h3><p>Checkbox state is captured on submit — matches the mental model of "I'll review and confirm".</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
+        <div class="demo-card-canvas is-col" style="background: var(--color-feedback-success-background);">
           <label class="check"><input type="checkbox" checked /><span class="check-box"><i data-lucide="check"></i></span>I agree to the terms</label>
         </div>
       </article>
 
-      <article class="spec">
-        <header class="spec-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · radio for boolean</h3><p>Two radio buttons for yes/no waste space and read as a setting in flux.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
-        <div class="spec-canvas col" style="background: var(--color-feedback-danger-background);">
+      <article class="demo-card">
+        <header class="demo-card-head"><div><h3 style="color: var(--color-feedback-danger-foreground);">Don't · radio for boolean</h3><p>Two radio buttons for yes/no waste space and read as a setting in flux.</p></div><span class="tag" style="background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); border-color: var(--color-danger-300);">Wrong</span></header>
+        <div class="demo-card-canvas is-col" style="background: var(--color-feedback-danger-background);">
           <fieldset style="border:0; padding:0; margin:0; display:flex; gap: var(--space-5);"><legend style="font-size: var(--fs-sm); color: var(--color-foreground-default); margin-bottom: var(--space-3);">Email me updates?</legend><label class="radio"><input type="radio" name="dn" /><span class="radio-dot"></span>Yes</label><label class="radio"><input type="radio" name="dn" /><span class="radio-dot"></span>No</label></fieldset>
         </div>
       </article>
-      <article class="spec">
-        <header class="spec-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · single checkbox</h3><p>One checkbox = one boolean. The label asks the question.</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
-        <div class="spec-canvas col" style="background: var(--color-feedback-success-background);">
+      <article class="demo-card">
+        <header class="demo-card-head"><div><h3 style="color: var(--color-feedback-success-foreground);">Do · single checkbox</h3><p>One checkbox = one boolean. The label asks the question.</p></div><span class="tag" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border-color: var(--color-success-300);">Right</span></header>
+        <div class="demo-card-canvas is-col" style="background: var(--color-feedback-success-background);">
           <label class="check"><input type="checkbox" /><span class="check-box"><i data-lucide="check"></i></span>Email me product updates</label>
         </div>
       </article>
@@ -1428,12 +1524,12 @@
 
   <!-- ========== ACCESSIBILITY ========== -->
   <section class="doc-section" id="a11y">
-    <h2><span class="num">08</span>Accessibility</h2>
+    <h2><span class="num">09</span>Accessibility</h2>
     <p class="lead">Inputs are the most-touched control type in any product. They must work flawlessly with keyboard, screen readers, voice control, and touch. The rules below are non-negotiable — every variant in this document already complies.</p>
 
-    <article class="spec">
-      <header class="spec-head"><div><h3>Requirements</h3><p>Mapped to WCAG 2.2 AA. Each rule has a concrete implementation.</p></div></header>
-      <div class="spec-foot" style="grid-template-columns: 1fr;">
+    <article class="demo-card">
+      <header class="demo-card-head"><div><h3>Requirements</h3><p>Mapped to WCAG 2.2 AA. Each rule has a concrete implementation.</p></div></header>
+      <div class="demo-card-canvas is-guidance" style="grid-template-columns: 1fr;">
         <table class="token-table">
           <thead><tr><th>Requirement</th><th>How we meet it</th><th>WCAG</th></tr></thead>
           <tbody>
@@ -1456,9 +1552,9 @@
       </div>
     </article>
 
-    <article class="spec">
-      <header class="spec-head"><div><h3>Keyboard cheat sheet</h3><p>Standard browser bindings — we don't override them. Custom controls (Combobox, Date picker) follow the WAI-ARIA APG patterns.</p></div></header>
-      <div class="spec-foot" style="grid-template-columns: 1fr;">
+    <article class="demo-card">
+      <header class="demo-card-head"><div><h3>Keyboard cheat sheet</h3><p>Standard browser bindings — we don't override them. Custom controls (Combobox, Date picker) follow the WAI-ARIA APG patterns.</p></div></header>
+      <div class="demo-card-canvas is-guidance" style="grid-template-columns: 1fr;">
         <table class="token-table">
           <thead><tr><th>Key</th><th>Action</th><th>Where</th></tr></thead>
           <tbody>
@@ -1478,13 +1574,108 @@
   </section>
 
   <!-- ========== TOKENS ========== -->
+  <!-- ========== AGENTS ========== -->
+  <section class="doc-section" id="agents">
+    <h2><span class="num">10</span>For agents</h2>
+    <p class="lead">One sentence settles most of it: <strong>a label and its help text are props, never markup you write around the control.</strong> Every one of the thirteen ships the same <code>.field</code> anatomy, so hand-rolling it means the label loses its <code>for</code> binding and the error text loses its announcement.</p>
+
+    <div class="demo-card">
+      <header class="demo-card-head">
+        <div><h3>Rules</h3><p>Each one exists because the alternative silently breaks a11y or state.</p></div>
+        <span class="demo-card-tag">Contract</span>
+      </header>
+      <div class="demo-card-canvas is-flush">
+        <table class="cls">
+          <thead><tr><th>Rule</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>Pass <code>label</code>, never wrap your own <code>&lt;label&gt;</code></td><td>The component generates the id and the <code>htmlFor</code> pair. A hand-rolled label has no binding, so clicking it does not focus the control and a screen reader reads an unlabelled field.</td></tr>
+            <tr><td>Pass <code>help</code> for error text, not a sibling <code>&lt;div&gt;</code></td><td><code>help</code> is wired to the control for announcement. A sibling div is invisible to assistive tech, so the user hears "invalid" with no reason.</td></tr>
+            <tr><td><code>status="error"</code> — never a red border by hand</td><td>Status drives border, help colour and the <code>aria-invalid</code> flag together. Styling only the border leaves the state unannounced.</td></tr>
+            <tr><td>Never colour alone for state</td><td>Error must reach the user as text in <code>help</code>. A red ring is invisible to a colour-blind user and to a screen reader alike.</td></tr>
+            <tr><td>Use <code>size</code>, never a height override</td><td>The three sizes are steps of <code>--control-h-*</code>, shared with Button and the topbar. An ad-hoc height breaks alignment in any row that mixes them.</td></tr>
+            <tr><td><code>onInverse</code> on dark surfaces</td><td>It repoints border, placeholder and help to the inverse ramp. Without it the field keeps light-surface colours and the placeholder falls under 2:1.</td></tr>
+            <tr><td>A required field says so in the label</td><td>The <code>.req</code> marker is rendered from the label, so <code>required</code> alone gives a browser tooltip and nothing the user can read up front.</td></tr>
+            <tr><td>Never <code>placeholder</code> as the label</td><td>It vanishes on first keystroke, so the user loses the question exactly when answering it — and it is not announced as a name.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <header class="demo-card-head">
+        <div><h3>Anti-patterns</h3><p>Each of these was found in real consuming code.</p></div>
+        <span class="demo-card-tag">Avoid</span>
+      </header>
+      <div class="demo-card-canvas is-flush">
+        <table class="cls">
+          <thead><tr><th>Instead of</th><th>Do</th></tr></thead>
+          <tbody>
+            <tr><td>A <code>Switch</code> inside a form that submits</td><td><code>Checkbox</code> — the switch says the change already applied, so the user does not press Save</td></tr>
+            <tr><td>A <code>Select</code> with 40 options</td><td><code>Combobox</code> — past roughly seven, scanning beats scrolling</td></tr>
+            <tr><td><code>Input type="number"</code> for money</td><td><code>Input</code> with a currency <code>prefix</code> — spinners on an amount are a mis-click waiting to happen</td></tr>
+            <tr><td>Placeholder text carrying the format</td><td><code>help</code> — the format must survive the first keystroke</td></tr>
+            <tr><td>Disabling a field to show it is not applicable</td><td>Remove it, or explain in <code>help</code> — a disabled field is unreadable and unfocusable, so the user cannot find out why</td></tr>
+            <tr><td>A red border with no message</td><td><code>status="error"</code> + <code>help</code> saying what to fix</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BEHAVIOUR ========== -->
+  <section class="doc-section" id="behaviour">
+    <h2><span class="num">11</span>Behaviour &amp; contract</h2>
+    <p class="lead">What the typed layer does for you, and what stays yours. Reading this the wrong way round is how a field ends up with a working border and a broken announcement.</p>
+
+    <div class="demo-card">
+      <header class="demo-card-head">
+        <div><h3>Ships in the components</h3><p>Present the moment you render them.</p></div>
+        <span class="demo-card-tag">Included</span>
+      </header>
+      <div class="demo-card-canvas is-flush">
+        <table class="cls">
+          <thead><tr><th>Behaviour</th><th>How</th></tr></thead>
+          <tbody>
+            <tr><td>Label ↔ control binding</td><td><code>React.useId()</code> generates the id; <code>htmlFor</code> and the input's <code>id</code> are paired automatically.</td></tr>
+            <tr><td>Status → border, help, aria</td><td>One <code>status</code> prop sets the border colour, the help tone and <code>aria-invalid</code> in the same pass.</td></tr>
+            <tr><td>Size scale</td><td><code>size</code> emits <code>input-sm</code> / <code>input-lg</code>, which read <code>--control-h-*</code> — the same steps Button uses.</td></tr>
+            <tr><td>Dark-surface variant</td><td><code>onInverse</code> emits <code>on-inverse</code>, repointing border, placeholder and help to the inverse ramp.</td></tr>
+            <tr><td>Affix and group layout</td><td>Passing <code>leadIcon</code> / <code>trailIcon</code> switches to <code>.affix</code>; <code>prefix</code> / <code>suffix</code> switches to <code>.group</code>. Padding follows.</td></tr>
+            <tr><td>Focus ring</td><td><code>:focus-visible</code> only, so a mouse click does not draw a ring but the keyboard always does.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <header class="demo-card-head">
+        <div><h3>You must implement</h3><p>The component cannot know these.</p></div>
+        <span class="demo-card-tag">Yours</span>
+      </header>
+      <div class="demo-card-canvas is-flush">
+        <table class="cls">
+          <thead><tr><th>Behaviour</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Value and change handling</td><td>All thirteen are controlled. Pass <code>value</code> and <code>onChange</code>; the component holds no state of its own.</td></tr>
+            <tr><td>Validation and when it runs</td><td>The component renders the status you give it. Deciding to validate on blur rather than on every keystroke is a product call.</td></tr>
+            <tr><td>Error copy</td><td><code>status="error"</code> paints; <code>help</code> explains. Only you know what to tell the user.</td></tr>
+            <tr><td>Submission and disabled-while-pending</td><td>Form wiring, and disabling the submit rather than the fields during a request.</td></tr>
+            <tr><td>File upload transport</td><td><code>FileDrop</code> reports the drop; <code>FileRow</code> renders progress from the number you pass. The request is yours.</td></tr>
+            <tr><td>Masking and formatting</td><td>Currency grouping, phone masks and date parsing are not in the component.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+
   <section class="doc-section" id="tokens">
-    <h2><span class="num">09</span>Tokens</h2>
+    <h2><span class="num">12</span>Tokens</h2>
     <p class="lead">Every value in this document resolves to a token from <code>colors_and_type.css</code>. Components contain zero hard-coded colours, sizes, or fonts. To rebrand the input system, change tokens — not selectors.</p>
 
-    <article class="spec">
-      <header class="spec-head"><div><h3>Colour</h3></div><span class="tag">Surface · Border · Text</span></header>
-      <div class="spec-foot" style="grid-template-columns: 1fr;">
+    <article class="demo-card">
+      <header class="demo-card-head"><div><h3>Colour</h3></div><span class="tag">Surface · Border · Text</span></header>
+      <div class="demo-card-canvas is-guidance" style="grid-template-columns: 1fr;">
         <table class="token-table">
           <thead><tr><th>Role</th><th>Token</th><th>Used in</th></tr></thead>
           <tbody>
@@ -1509,9 +1700,9 @@
       </div>
     </article>
 
-    <article class="spec">
-      <header class="spec-head"><div><h3>Type</h3></div><span class="tag">Family · Size · Weight</span></header>
-      <div class="spec-foot" style="grid-template-columns: 1fr;">
+    <article class="demo-card">
+      <header class="demo-card-head"><div><h3>Type</h3></div><span class="tag">Family · Size · Weight</span></header>
+      <div class="demo-card-canvas is-guidance" style="grid-template-columns: 1fr;">
         <table class="token-table">
           <thead><tr><th>Role</th><th>Token</th><th>Computed</th></tr></thead>
           <tbody>
@@ -1527,9 +1718,9 @@
       </div>
     </article>
 
-    <article class="spec">
-      <header class="spec-head"><div><h3>Spacing &amp; radii</h3></div><span class="tag">Layout</span></header>
-      <div class="spec-foot" style="grid-template-columns: 1fr;">
+    <article class="demo-card">
+      <header class="demo-card-head"><div><h3>Spacing &amp; radii</h3></div><span class="tag">Layout</span></header>
+      <div class="demo-card-canvas is-guidance" style="grid-template-columns: 1fr;">
         <table class="token-table">
           <thead><tr><th>Role</th><th>Token</th><th>Px</th></tr></thead>
           <tbody>
@@ -1546,9 +1737,9 @@
       </div>
     </article>
 
-    <article class="spec">
-      <header class="spec-head"><div><h3>Motion</h3></div><span class="tag">Transitions</span></header>
-      <div class="spec-foot" style="grid-template-columns: 1fr;">
+    <article class="demo-card">
+      <header class="demo-card-head"><div><h3>Motion</h3></div><span class="tag">Transitions</span></header>
+      <div class="demo-card-canvas is-guidance" style="grid-template-columns: 1fr;">
         <table class="token-table">
           <thead><tr><th>Property</th><th>Duration · Easing</th><th>Where</th></tr></thead>
           <tbody>
@@ -1562,6 +1753,11 @@
     </article>
   </section>
 
+
+  <footer class="doc-foot">
+    <span>Cabiros · ATTRUS Design System · <span data-ds-version></span></span>
+    <a href="index.html">← Back to catalog</a>
+  </footer>
 </main>
 <script>
   lucide.createIcons();
