@@ -284,7 +284,7 @@
 /* Mobile: footer actions stack full-width (doc §Header & Footer, variant 7) */
 @media (max-width: 560px) {
   .drawer-footer { flex-direction: column; align-items: stretch; gap: var(--space-2); padding-bottom: max(var(--space-4), env(safe-area-inset-bottom)); }
-  .drawer-footer .btn { width: 100%; justify-content: center; }
+  .drawer-footer .btn { width: 100%; justify-content: center; flex-shrink: 0; }
   .drawer-footer-aux { text-align: center; margin-bottom: var(--space-1); }
 }
 

@@ -7,7 +7,9 @@
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
-<link rel="stylesheet" href="components/buttons.css">
+<script src="../version.js"></script>
+<link rel="stylesheet" href="components/buttons.css?v=14">
+<link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
   /* ============================================================
@@ -124,22 +126,6 @@
   }
 
   /* ---------- spec card ---------- */
-  .spec {
-    background: var(--color-background-surface);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    margin-bottom: var(--space-6);
-    box-shadow: var(--shadow-xs);
-  }
-  .spec-head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--space-6);
-    padding: var(--space-5) var(--space-6);
-    border-bottom: 1px solid var(--color-border-subtle);
-  }
   .spec-head h3 {
     font-size: var(--fs-xl);
     font-weight: var(--w-bold);
@@ -179,16 +165,6 @@
     border-radius: var(--radius-pill);
     flex-shrink: 0;
   }
-
-  .spec-canvas {
-    padding: var(--space-7) var(--space-6);
-    background: var(--color-background-canvas);
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-5);
-    align-items: center;
-    border-bottom: 1px solid var(--color-border-subtle);
-  }
   .spec-canvas.dense { gap: var(--space-3); }
   .spec-canvas.col { flex-direction: column; align-items: flex-start; }
   .spec-canvas.dark { background: var(--color-background-inverse); }
@@ -210,14 +186,14 @@
   }
   .spec-canvas.dark .state-cell .lbl { color: var(--color-foreground-inverse-muted); }
 
-  .spec-foot {
+  .demo-guidance {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--space-6);
     padding: var(--space-5) var(--space-6);
     background: var(--color-background-surface);
   }
-  .spec-foot h4 {
+  .demo-guidance h4 {
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);
     font-size: var(--fs-xxs);
     font-weight: var(--w-semibold);
@@ -226,12 +202,12 @@
     letter-spacing: var(--ls-caps);
     margin: 0 0 var(--space-3);
   }
-  .spec-foot ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
-  .spec-foot li { font-size: var(--fs-sm); color: var(--color-foreground-secondary); display: flex; gap: var(--space-2); align-items: flex-start; }
-  .spec-foot li i, .spec-foot li svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); flex-shrink: 0; margin-top: 2px; }
-  .spec-foot li.do i, .spec-foot li.do svg    { color: var(--color-success-500); }
-  .spec-foot li.dont i, .spec-foot li.dont svg  { color: var(--color-danger-500); }
-  .spec-foot li.dont    { color: var(--color-foreground-secondary); }
+  .demo-guidance ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+  .demo-guidance li { font-size: var(--fs-sm); color: var(--color-foreground-secondary); display: flex; gap: var(--space-2); align-items: flex-start; }
+  .demo-guidance li i, .demo-guidance li svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); flex-shrink: 0; margin-top: 2px; }
+  .demo-guidance li.do i, .demo-guidance li.do svg    { color: var(--color-success-500); }
+  .demo-guidance li.dont i, .demo-guidance li.dont svg  { color: var(--color-danger-500); }
+  .demo-guidance li.dont    { color: var(--color-foreground-secondary); }
 
   /* ---------- anatomy figure ---------- */
   .anatomy {
@@ -379,13 +355,51 @@
   .spec-canvas.dark .matrix .h,
   .spec-canvas.dark .matrix .rl { color: var(--color-foreground-inverse-muted); }
   .spec-canvas.dark .matrix .rl { color: var(--color-foreground-inverse-default); }
+  /* view controls */
+  .view-controls { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); }
+  .product-select { height: 40px; padding: 0 var(--space-8) 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); -webkit-appearance: none; appearance: none; }
+  .page-theme { display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); }
+  .page-theme [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+
+  /* API panel */
+  .api { background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); padding: var(--space-6); margin-bottom: var(--space-8); box-shadow: var(--shadow-xs); }
+  .api-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: var(--space-5) var(--space-6); }
+  .api-k { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-2); }
+  .api-v { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .api-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .api-tags code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-accent); background: var(--color-brand-subtle); padding: 2px var(--space-2); border-radius: var(--radius-2xs); }
+  .api-prefer { margin: var(--space-5) 0 0; padding-top: var(--space-4); border-top: var(--border-hairline) solid var(--color-border-subtle); font-size: var(--fs-sm); line-height: var(--lh-relaxed); color: var(--color-foreground-secondary); }
+  .api-prefer strong { color: var(--color-foreground-brand); }
+
+  /* generic doc table */
+  table.g { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  table.g th, table.g td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: var(--border-hairline) solid var(--color-border-subtle); vertical-align: top; }
+  table.g thead th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); }
+  table.g tr:last-child td { border-bottom: 0; }
+  table.g code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+
+  /* doc footer */
+  .doc-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: var(--border-hairline) solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-regular); }
+  /* the one modifier with no canonical equivalent: brand gradient behind inverse demos */
+  .demo-card-canvas.is-brand { background: var(--grad-brand); }
 </style>
 </head>
 <body>
 
 <main class="doc">
 
-  <a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+  <div class="view-controls">
+  <a class="xlink" href="../components/Button/Button.html" title="Typed React bench for Button"><i data-lucide="code-2"></i>Button TSX</a>
+  
+  <select class="product-select" data-product-select aria-label="Preview product theme"></select>
+  <button class="page-theme" data-theme-toggle aria-label="Toggle theme">
+    <span data-theme-icon aria-hidden="true">☾</span>
+    <span data-theme-label>Dark</span>
+  </button>
+</div>
+
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
 
   <!-- ========== HEADER ========== -->
   <header class="doc-header">
@@ -399,21 +413,96 @@
   </header>
 
   <!-- ========== NAV ========== -->
+  <script type="application/json" id="ds-api">{"component":"Button","import":"const { Button, ButtonGroup } = ATTRUS","cssClass":".btn","status":"stable","intent":"Commits an action in place. If the click navigates it is a link; if it holds a value it is a control.","variants":["primary","secondary","tertiary","ghost","link","danger","danger-outline","success","inverse"],"sizes":["xs","sm","md","lg"],"props":[{"name":"variant","type":"ButtonVariant","default":"primary"},{"name":"size","type":"'xs' | 'sm' | 'md' | 'lg'","default":"md"},{"name":"iconOnly","type":"boolean","default":"false","note":"requires aria-label"},{"name":"loading","type":"boolean","default":"false"},{"name":"icon","type":"ReactNode"},{"name":"iconRight","type":"ReactNode"},{"name":"onInverse","type":"boolean","default":"false"},{"name":"disabled","type":"boolean","default":"false"}],"useWhen":{"primary":"the one committing action of a view — max one","secondary":"a real action that is not the point; safe to repeat","tertiary":"dense toolbars where outlines would stack into lines","ghost":"inside a table row or card","link":"action sitting inside a sentence","danger":"destructive in a dialog, paired with a cancelling secondary","danger-outline":"destructive at row level","inverse":"on a permanently dark surface","iconOnly":"icon with no label — always with aria-label","ButtonGroup":"2–4 related choices acting as one control"},"useInstead":{"<a>":"the click changes the URL or opens a document","Switch":"the click holds an on/off value","ToggleChip":"the click toggles a filter","Combobox":"the click picks one of several values","Tabs":"the click switches a view"},"antiPatterns":["two or more primary in one view — neither reads as the action","iconOnly without aria-label — the button has no accessible name","danger as the dialog default — Enter destroys data","a button that navigates — breaks middle-click, copy-link and back","mixed variants inside ButtonGroup — breaks the shared border","hardcoded height, radius or border — detaches from the control scale","disabled with no explanation — a dead end","loading that replaces the label — erases what is happening"],"constraints":["height comes from --control-h-xs/-sm/-md/-lg; never a literal","radius is --radius-pill; buttons are fully rounded by brand stance","border is --border-hairline","variant and size are the only two axes — no colour or font overrides","on dark surfaces use onInverse, not a colour override"],"behaviour":{"shipped":["focus-visible ring","native disabled handling","loading keeps label and locks width, sets aria-busy","icon sizing per size step","iconOnly locks width to height","ButtonGroup collapses radii, overlaps borders, sets role=group"],"mustImplement":["aria-label on iconOnly","aria-label on ButtonGroup","one variant across group children","the loading flag","confirmation dialog for destructive actions","why a button is disabled"]},"a11y":{"element":"native <button>; type=button unless it submits","keyboard":"Enter and Space activate — native, do not reimplement","focus":":focus-visible only","iconOnly":"aria-label required, verb phrase"}}</script>
+
+  <section class="api" aria-label="API summary">
+    <div class="api-grid">
+      <div class="api-col">
+        <div class="api-k">Import</div>
+        <code class="api-v">const { Button, ButtonGroup } = ATTRUS</code>
+      </div>
+      <div class="api-col">
+        <div class="api-k">CSS class</div>
+        <code class="api-v">.btn + .btn-&lt;variant&gt;</code>
+      </div>
+      <div class="api-col">
+        <div class="api-k">Variants</div>
+        <div class="api-tags"><code>primary</code><code>secondary</code><code>tertiary</code><code>ghost</code><code>link</code><code>danger</code><code>danger-outline</code><code>success</code><code>inverse</code></div>
+      </div>
+      <div class="api-col">
+        <div class="api-k">Key props</div>
+        <div class="api-tags"><code>variant</code><code>size</code><code>iconOnly</code><code>loading</code><code>icon</code><code>iconRight</code><code>onInverse</code><code>disabled</code></div>
+      </div>
+    </div>
+    <p class="api-prefer"><strong>Prefer:</strong> one <code>primary</code> per view — it marks the committing action, so a second one splits the decision. Reach for <code>secondary</code> when an action is real but not the point, <code>ghost</code> inside table rows and cards where a border would compete with the row, and <code>link</code> only when the action sits inside a sentence. A destructive action pairs <code>danger</code> with a <code>secondary</code> that cancels; it is never the dialog default.</p>
+  </section>
+
   <nav class="doc-nav">
-    <a href="#anatomy">Anatomy</a>
-    <a href="#variants">Variants</a>
-    <a href="#sizes">Sizes</a>
-    <a href="#states">States</a>
-    <a href="#composition">Composition</a>
-    <a href="#on-inverse">On inverse</a>
-    <a href="#donts">Don'ts</a>
-    <a href="#a11y">Accessibility</a>
-    <a href="#tokens">Tokens</a>
+    <a href="#intent">01 Intent</a>
+    <a href="#anatomy">02 Anatomy</a>
+    <a href="#variants">03 Variants</a>
+    <a href="#sizes">04 Sizes</a>
+    <a href="#states">05 States matrix</a>
+    <a href="#composition">06 Composition</a>
+    <a href="#on-inverse">07 On inverse — composition examples</a>
+    <a href="#donts">08 Don'ts</a>
+    <a href="#a11y">09 Accessibility</a>
+    <a href="#agents">10 For agents</a>
+    <a href="#behaviour">11 Behaviour &amp; contract</a>
+    <a href="#classmap">12 Class map</a>
+    <a href="#tokens">13 Tokens consumed</a>
   </nav>
 
   <!-- ========== ANATOMY ========== -->
-  <section class="doc-section" id="anatomy">
-    <h2><span class="num">01</span>Anatomy</h2>
+    <!-- INTENT -->
+  <section class="doc-section" id="intent">
+    <h2><span class="num">01</span>Intent</h2>
+    <p class="lead">A button commits an action in place. If the click navigates, it is a link; if it holds a value, it is a control. Getting that distinction right removes most of the wrong picks below.</p>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>Use when · use instead</h3><p>The decision is the variant, not the component — nine variants exist so weight matches consequence.</p></div>
+        <span class="demo-card-tag">decision</span>
+      </div>
+      <div class="demo-card-canvas is-flush">
+        <table class="g">
+          <thead><tr><th style="width:34%">Situation</th><th>Reach for</th></tr></thead>
+          <tbody>
+            <tr><td>The one committing action of a view — submit, confirm, send</td><td><code>primary</code>. One per view: a second splits the decision and neither reads as the point.</td></tr>
+            <tr><td>A real action that is not the point — cancel, save draft, export</td><td><code>secondary</code>. Safe to repeat; it does not compete.</td></tr>
+            <tr><td>Dense toolbar where outlines would stack into a grid of lines</td><td><code>tertiary</code> — tonal fill, no border.</td></tr>
+            <tr><td>Action inside a table row or card</td><td><code>ghost</code>. A bordered button there competes with the row itself.</td></tr>
+            <tr><td>Action that sits inside a sentence</td><td><code>link</code>. Still a button semantically — it does not navigate.</td></tr>
+            <tr><td>Destructive, in a dialog</td><td><code>danger</code> paired with a <code>secondary</code> that cancels. Never the dialog default.</td></tr>
+            <tr><td>Destructive, at row level</td><td><code>danger-outline</code> — same meaning, less weight.</td></tr>
+            <tr><td>On a permanently dark surface</td><td><code>inverse</code>, or <code>onInverse</code> on any variant.</td></tr>
+            <tr><td>Icon with no label — toolbar, row action</td><td><code>iconOnly</code> <strong>plus <code>aria-label</code></strong>.</td></tr>
+            <tr><td>2–4 related choices that act as one control</td><td><code>ButtonGroup</code>, children sharing one variant.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>Not a button</h3><p>Three cases where a button is the wrong element, whatever it looks like.</p></div>
+        <span class="demo-card-tag">boundary</span>
+      </div>
+      <div class="demo-card-canvas is-flush">
+        <table class="g">
+          <thead><tr><th style="width:34%">If the click…</th><th>Use</th></tr></thead>
+          <tbody>
+            <tr><td>Changes the URL or opens a document</td><td><code>&lt;a&gt;</code>. Style it <code>btn-link</code> if it should read as a link, but the element must be an anchor — middle-click, copy-link and back all depend on it.</td></tr>
+            <tr><td>Holds an on/off value</td><td><code>Switch</code>, or a <code>ToggleChip</code> for a filter. A button fires and forgets; it has no state to read back.</td></tr>
+            <tr><td>Picks one of several values</td><td><code>Combobox</code>, radio group, or <code>Tabs</code> if it switches a view.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+<section class="doc-section" id="anatomy">
+    <h2><span class="num">02</span>Anatomy</h2>
     <p class="lead">A button is built from three optional parts inside a pill container. Order is <strong>leading icon → label → trailing icon</strong>; never break this order. Icons are optional but the label is mandatory unless the button is in <code>.btn-icon</code> mode.</p>
 
     <div class="anatomy">
@@ -456,19 +545,19 @@
 
   <!-- ========== VARIANTS ========== -->
   <section class="doc-section" id="variants">
-    <h2><span class="num">02</span>Variants</h2>
+    <h2><span class="num">03</span>Variants</h2>
     <p class="lead">Nine semantic variants form a clear hierarchy. Use only one Primary per view; surround it with Secondary, Tertiary or Ghost. Reserve Danger / Success for irreversible or strongly affirmative actions.</p>
 
     <!-- Primary -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Primary <code>.btn-primary</code></h3>
           <p>The single most important action on a view. One per context. Brand-blue solid.</p>
         </div>
         <span class="tag">Hierarchy 1</span>
       </header>
-      <div class="spec-canvas">
+      <div class="demo-card-canvas">
         <div class="state-grid">
           <div class="state-cell"><button class="btn btn-primary">New transaction</button><span class="lbl">Default</span></div>
           <div class="state-cell"><button class="btn btn-primary" style="background: var(--color-brand-secondary-600);">New transaction</button><span class="lbl">Hover</span></div>
@@ -478,13 +567,13 @@
           <div class="state-cell"><button class="btn btn-primary is-loading">New transaction</button><span class="lbl">Loading</span></div>
         </div>
       </div>
-      <div class="spec-canvas dense">
+      <div class="demo-card-canvas is-short">
         <button class="btn btn-primary"><i data-lucide="plus"></i>New transaction</button>
         <button class="btn btn-primary">Continue<i data-lucide="arrow-right"></i></button>
         <button class="btn btn-primary"><i data-lucide="download"></i>Export<i data-lucide="chevron-down"></i></button>
         <button class="btn btn-primary btn-icon" aria-label="Add"><i data-lucide="plus"></i></button>
       </div>
-      <div class="spec-foot">
+      <div class="demo-guidance">
         <div>
           <h4>Use when</h4>
           <ul>
@@ -503,15 +592,15 @@
     </article>
 
     <!-- Secondary -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Secondary <code>.btn-secondary</code></h3>
           <p>Soft neutral fill with a hairline border. Pairs with Primary as the lower-emphasis alternative. Cancel, dismiss, secondary export.</p>
         </div>
         <span class="tag">Hierarchy 2</span>
       </header>
-      <div class="spec-canvas">
+      <div class="demo-card-canvas">
         <div class="state-grid">
           <div class="state-cell"><button class="btn btn-secondary">Clear filters</button><span class="lbl">Default</span></div>
           <div class="state-cell"><button class="btn btn-secondary" style="background: var(--color-background-hover); border-color: var(--color-border-strong);">Clear filters</button><span class="lbl">Hover</span></div>
@@ -521,12 +610,12 @@
           <div class="state-cell"><button class="btn btn-secondary is-loading">Clear filters</button><span class="lbl">Loading</span></div>
         </div>
       </div>
-      <div class="spec-canvas dense">
+      <div class="demo-card-canvas is-short">
         <button class="btn btn-secondary"><i data-lucide="filter"></i>Filters</button>
         <button class="btn btn-secondary"><i data-lucide="download"></i>Download CSV</button>
         <button class="btn btn-secondary btn-icon" aria-label="More"><i data-lucide="more-horizontal"></i></button>
       </div>
-      <div class="spec-foot">
+      <div class="demo-guidance">
         <div>
           <h4>Use when</h4>
           <ul>
@@ -545,15 +634,15 @@
     </article>
 
     <!-- Tertiary -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Tertiary <code>.btn-tertiary</code></h3>
           <p>Soft neutral fill, borderless — quieter than Secondary. A low-emphasis affirmative; “Save draft” next to “Publish”.</p>
         </div>
         <span class="tag">Hierarchy 2.5</span>
       </header>
-      <div class="spec-canvas">
+      <div class="demo-card-canvas">
         <div class="state-grid">
           <div class="state-cell"><button class="btn btn-tertiary">Save draft</button><span class="lbl">Default</span></div>
           <div class="state-cell"><button class="btn btn-tertiary" style="background: color-mix(in srgb, var(--color-foreground-default) 12%, transparent);">Save draft</button><span class="lbl">Hover</span></div>
@@ -566,15 +655,15 @@
     </article>
 
     <!-- Ghost -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Ghost <code>.btn-ghost</code></h3>
           <p>No chrome until hover. For low-priority controls embedded in dense surfaces — toolbars, list rows, dialogs.</p>
         </div>
         <span class="tag">Hierarchy 3</span>
       </header>
-      <div class="spec-canvas">
+      <div class="demo-card-canvas">
         <div class="state-grid">
           <div class="state-cell"><button class="btn btn-ghost">Cancel</button><span class="lbl">Default</span></div>
           <div class="state-cell"><button class="btn btn-ghost" style="background: var(--color-background-hover); color: var(--color-foreground-default);">Cancel</button><span class="lbl">Hover</span></div>
@@ -583,7 +672,7 @@
           <div class="state-cell"><button class="btn btn-ghost" disabled>Cancel</button><span class="lbl">Disabled</span></div>
         </div>
       </div>
-      <div class="spec-canvas dense">
+      <div class="demo-card-canvas is-short">
         <button class="btn btn-ghost"><i data-lucide="x"></i>Dismiss</button>
         <button class="btn btn-ghost btn-icon" aria-label="Close"><i data-lucide="x"></i></button>
         <button class="btn btn-ghost btn-icon" aria-label="More options"><i data-lucide="more-horizontal"></i></button>
@@ -592,15 +681,15 @@
     </article>
 
     <!-- Link -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Link <code>.btn-link</code></h3>
           <p>A button styled as inline text. For "Learn more", "Read docs", inline help. No padding, no chrome.</p>
         </div>
         <span class="tag">Hierarchy 4</span>
       </header>
-      <div class="spec-canvas">
+      <div class="demo-card-canvas">
         <div class="state-grid">
           <div class="state-cell"><button class="btn btn-link">Learn more</button><span class="lbl">Default</span></div>
           <div class="state-cell"><button class="btn btn-link" style="color: var(--color-brand-secondary-700); text-decoration: underline; text-underline-offset: 2px;">Learn more</button><span class="lbl">Hover</span></div>
@@ -611,15 +700,15 @@
     </article>
 
     <!-- Danger -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Danger <code>.btn-danger</code></h3>
           <p>Destructive solid. Reserve for irreversible actions — Delete account, Wipe data. Always pair with a confirm step.</p>
         </div>
         <span class="tag">Destructive</span>
       </header>
-      <div class="spec-canvas">
+      <div class="demo-card-canvas">
         <div class="state-grid">
           <div class="state-cell"><button class="btn btn-danger">Delete account</button><span class="lbl">Default</span></div>
           <div class="state-cell"><button class="btn btn-danger" style="background: var(--color-danger-700);">Delete account</button><span class="lbl">Hover</span></div>
@@ -632,15 +721,15 @@
     </article>
 
     <!-- Danger outline -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Danger outline <code>.btn-danger-outline</code></h3>
           <p>Destructive but contextual. Inline "Remove from list", "Revoke access" — actions that don't carry account-level weight.</p>
         </div>
         <span class="tag">Destructive · 2</span>
       </header>
-      <div class="spec-canvas">
+      <div class="demo-card-canvas">
         <div class="state-grid">
           <div class="state-cell"><button class="btn btn-danger-outline">Remove</button><span class="lbl">Default</span></div>
           <div class="state-cell"><button class="btn btn-danger-outline" style="background: var(--color-feedback-danger-background); border-color: var(--color-danger-500);">Remove</button><span class="lbl">Hover</span></div>
@@ -651,15 +740,15 @@
     </article>
 
     <!-- Success -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Success <code>.btn-success</code></h3>
           <p>Strong positive — Approve, Confirm payment. Rare. Most positive actions should be Primary; reserve this for high-stakes approvals.</p>
         </div>
         <span class="tag">Affirmative</span>
       </header>
-      <div class="spec-canvas">
+      <div class="demo-card-canvas">
         <div class="state-grid">
           <div class="state-cell"><button class="btn btn-success">Approve</button><span class="lbl">Default</span></div>
           <div class="state-cell"><button class="btn btn-success" style="background: var(--color-success-700);">Approve</button><span class="lbl">Hover</span></div>
@@ -671,15 +760,15 @@
     </article>
 
     <!-- Inverse -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Inverse <code>.btn-inverse</code></h3>
           <p>White pill on dark or brand surfaces. The Primary equivalent when the surface is navy/inverse.</p>
         </div>
         <span class="tag">Inverse · 1</span>
       </header>
-      <div class="spec-canvas dark">
+      <div class="demo-card-canvas is-inverse">
         <div class="state-grid">
           <div class="state-cell"><button class="btn btn-inverse">Get started</button><span class="lbl">Default</span></div>
           <div class="state-cell"><button class="btn btn-inverse" style="background: var(--color-neutral-100); color: var(--color-brand-secondary-800);">Get started</button><span class="lbl">Hover</span></div>
@@ -692,15 +781,15 @@
     </article>
 
     <!-- Secondary on inverse -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Secondary on inverse <code>.btn-secondary.on-inverse</code></h3>
           <p>Outline pill for dark/brand surfaces. The Secondary equivalent when the surface is inverse — pairs with <code>.btn-inverse</code>.</p>
         </div>
         <span class="tag">Inverse · 2</span>
       </header>
-      <div class="spec-canvas dark">
+      <div class="demo-card-canvas is-inverse">
         <div class="state-grid">
           <div class="state-cell"><button class="btn btn-secondary on-inverse">Talk to sales</button><span class="lbl">Default</span></div>
           <div class="state-cell"><button class="btn btn-secondary on-inverse" style="background: var(--color-background-inverse-hover); border-color: var(--color-foreground-inverse-secondary);">Talk to sales</button><span class="lbl">Hover</span></div>
@@ -713,15 +802,15 @@
     </article>
 
     <!-- Ghost on inverse -->
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div>
           <h3>Ghost on inverse <code>.btn-ghost.on-inverse</code></h3>
           <p>Invisible until hover, on dark/brand surfaces. For toolbars and low-priority actions inside inverse panels.</p>
         </div>
         <span class="tag">Inverse · 3</span>
       </header>
-      <div class="spec-canvas dark">
+      <div class="demo-card-canvas is-inverse">
         <div class="state-grid">
           <div class="state-cell"><button class="btn btn-ghost on-inverse">Learn more</button><span class="lbl">Default</span></div>
           <div class="state-cell"><button class="btn btn-ghost on-inverse" style="background: var(--color-background-inverse-hover); color: var(--color-foreground-inverse-default);">Learn more</button><span class="lbl">Hover</span></div>
@@ -735,11 +824,11 @@
 
   <!-- ========== SIZES ========== -->
   <section class="doc-section" id="sizes">
-    <h2><span class="num">03</span>Sizes</h2>
+    <h2><span class="num">04</span>Sizes</h2>
     <p class="lead">Four sizes — driven by container density. <strong>Default is <code>md</code> (40px tall)</strong>. Use <code>xs</code> only inside chips/dense tables. Reserve <code>lg</code> for hero CTAs.</p>
 
-    <div class="spec">
-      <div class="spec-canvas col" style="align-items: center;">
+    <div class="demo-card">
+      <div class="demo-card-canvas is-stacked" style="align-items: center;">
         <div class="row">
           <button class="btn btn-primary btn-xs"><i data-lucide="plus"></i>XS · 24px</button>
           <button class="btn btn-primary btn-sm"><i data-lucide="plus"></i>SM · 32px</button>
@@ -768,16 +857,16 @@
 
   <!-- ========== STATES ========== -->
   <section class="doc-section" id="states">
-    <h2><span class="num">04</span>States matrix</h2>
+    <h2><span class="num">05</span>States matrix</h2>
     <p class="lead">Every variant supports the same six states. <code>:hover</code> brightens or fills, <code>:active</code> deepens further, <code>:focus-visible</code> projects a 4px focus ring tinted by the variant's semantic family, <code>[disabled]</code> drops to 50% opacity, <code>.is-loading</code> hides content and shows a spinner without changing width.</p>
 
     <!-- Light-surface variants -->
-    <div class="spec">
-      <header class="spec-head">
+    <div class="demo-card">
+      <header class="demo-card-head">
         <div><h3>On light surfaces</h3><p>All variants designed for <code>--color-background-canvas</code> / <code>--color-background-surface</code>.</p></div>
         <span class="tag">Light</span>
       </header>
-      <div class="spec-canvas col">
+      <div class="demo-card-canvas is-stacked">
         <div class="matrix">
           <span class="h">Variant</span>
           <span class="h">Default</span>
@@ -855,12 +944,12 @@
     </div>
 
     <!-- Inverse-surface variants -->
-    <div class="spec">
-      <header class="spec-head">
+    <div class="demo-card">
+      <header class="demo-card-head">
         <div><h3>On inverse / brand surfaces</h3><p>Variants designed for <code>--color-background-inverse</code> / <code>--color-background-inverse-brand</code>.</p></div>
         <span class="tag">Inverse</span>
       </header>
-      <div class="spec-canvas col dark">
+      <div class="demo-card-canvas is-inverse is-stacked">
         <div class="matrix">
           <span class="h">Variant</span>
           <span class="h">Default</span>
@@ -900,34 +989,34 @@
 
   <!-- ========== COMPOSITION ========== -->
   <section class="doc-section" id="composition">
-    <h2><span class="num">05</span>Composition</h2>
+    <h2><span class="num">06</span>Composition</h2>
     <p class="lead">Buttons rarely live alone. Three established patterns: <strong>action pairs</strong> (form footer), <strong>toolbars</strong> (mixed ghost/secondary), and <strong>segmented groups</strong> (one logical control split into mutually-exclusive options).</p>
 
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div><h3>Form footer</h3><p>Right-aligned. Cancel as Ghost on the left, Primary on the right. Never reverse the order.</p></div>
       </header>
-      <div class="spec-canvas" style="justify-content: flex-end;">
+      <div class="demo-card-canvas" style="justify-content: flex-end;">
         <button class="btn btn-ghost">Cancel</button>
         <button class="btn btn-primary">Save changes</button>
       </div>
     </article>
 
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div><h3>Destructive confirmation</h3><p>Cancel as Ghost. Destructive action solid, focus-ring tinted danger.</p></div>
       </header>
-      <div class="spec-canvas" style="justify-content: flex-end;">
+      <div class="demo-card-canvas" style="justify-content: flex-end;">
         <button class="btn btn-ghost">Cancel</button>
         <button class="btn btn-danger"><i data-lucide="trash-2"></i>Delete account</button>
       </div>
     </article>
 
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div><h3>Toolbar</h3><p>Ghost icon-only buttons grouped tightly with secondary text actions for context.</p></div>
       </header>
-      <div class="spec-canvas dense">
+      <div class="demo-card-canvas is-short">
         <button class="btn btn-secondary"><i data-lucide="filter"></i>Filters</button>
         <button class="btn btn-secondary"><i data-lucide="calendar"></i>Last 30 days</button>
         <button class="btn btn-ghost btn-icon" aria-label="Refresh"><i data-lucide="refresh-cw"></i></button>
@@ -937,11 +1026,11 @@
       </div>
     </article>
 
-    <article class="spec">
-      <header class="spec-head">
+    <article class="demo-card">
+      <header class="demo-card-head">
         <div><h3>Segmented group <code>.btn-group</code></h3><p>One logical control with mutually-exclusive options. Use Secondary as base.</p></div>
       </header>
-      <div class="spec-canvas">
+      <div class="demo-card-canvas">
         <div class="btn-group">
           <button class="btn btn-secondary">Day</button>
           <button class="btn btn-secondary" style="background: var(--color-background-press);">Week</button>
@@ -954,14 +1043,14 @@
 
   <!-- ========== ON INVERSE ========== -->
   <section class="doc-section" id="on-inverse">
-    <h2><span class="num">06</span>On inverse — composition examples</h2>
+    <h2><span class="num">07</span>On inverse — composition examples</h2>
     <p class="lead">When buttons sit on <code>--color-background-inverse</code> or <code>--color-background-inverse-brand</code>, default Secondary and Ghost become invisible — apply <code>.on-inverse</code>. Full state details for each inverse variant live in <a href="#variants" style="color: var(--color-foreground-highlight);">Variants</a> and <a href="#states" style="color: var(--color-foreground-highlight);">States matrix</a>; this section shows them composed together.</p>
 
-    <div class="spec">
-      <header class="spec-head">
+    <div class="demo-card">
+      <header class="demo-card-head">
         <div><h3>Inverse panel</h3><p>Three-tier hierarchy on a dark surface. Inverse → Secondary on inverse → Ghost on inverse.</p></div>
       </header>
-      <div class="spec-canvas dark">
+      <div class="demo-card-canvas is-inverse">
         <div class="row">
           <button class="btn btn-inverse">Primary</button>
           <button class="btn btn-secondary on-inverse">Secondary</button>
@@ -971,11 +1060,11 @@
       </div>
     </div>
 
-    <div class="spec">
-      <header class="spec-head">
+    <div class="demo-card">
+      <header class="demo-card-head">
         <div><h3>Brand hero</h3><p>Same hierarchy on the brand-blue surface (<code>--color-background-inverse-brand</code>).</p></div>
       </header>
-      <div class="spec-canvas brand">
+      <div class="demo-card-canvas is-brand">
         <div class="row">
           <button class="btn btn-inverse">Get started</button>
           <button class="btn btn-secondary on-inverse">Talk to sales</button>
@@ -987,7 +1076,7 @@
 
   <!-- ========== DON'TS ========== -->
   <section class="doc-section" id="donts">
-    <h2><span class="num">07</span>Don'ts</h2>
+    <h2><span class="num">08</span>Don'ts</h2>
     <p class="lead">Common pitfalls. Each undermines the visual hierarchy or the accessibility contract the component depends on.</p>
 
     <div class="dont-grid">
@@ -1020,7 +1109,7 @@
 
   <!-- ========== ACCESSIBILITY ========== -->
   <section class="doc-section" id="a11y">
-    <h2><span class="num">08</span>Accessibility</h2>
+    <h2><span class="num">09</span>Accessibility</h2>
 
     <table class="token-table">
       <thead><tr><th>Concern</th><th>Requirement</th><th>How it's met</th></tr></thead>
@@ -1037,8 +1126,132 @@
   </section>
 
   <!-- ========== TOKENS ========== -->
+  <!-- FOR AGENTS -->
+  <section class="doc-section" id="agents">
+    <h2><span class="num">10</span>For agents</h2>
+    <p class="lead">Rules an agent can apply without judgement. Each anti-pattern below is a real failure seen in consuming code, with the reason it fails rather than a bare prohibition.</p>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>Anti-patterns</h3><p>What to avoid, and what breaks when you do it.</p></div>
+        <span class="demo-card-tag">avoid</span>
+      </div>
+      <div class="demo-card-canvas is-flush">
+        <table class="g">
+          <thead><tr><th style="width:38%">Anti-pattern</th><th>Why it fails</th></tr></thead>
+          <tbody>
+            <tr><td>Two or more <code>primary</code> in one view</td><td>Primary means "this is the action". Two of them means neither is, and the user has to read both labels to decide — which is the work the variant was supposed to do.</td></tr>
+            <tr><td><code>iconOnly</code> without <code>aria-label</code></td><td>There is no text node, so the button has no accessible name. A screen reader announces "button" and nothing else. This is why <code>iconOnly</code> is a prop and not a bare class.</td></tr>
+            <tr><td><code>danger</code> as the default action in a dialog</td><td>Destruction should require intent. Making it the default means Enter destroys data.</td></tr>
+            <tr><td>A button that navigates</td><td>Breaks middle-click, copy-link, back and open-in-new-tab. Use <code>&lt;a class="btn btn-link"&gt;</code> when it should look like a button but go somewhere.</td></tr>
+            <tr><td>Mixed variants inside <code>ButtonGroup</code></td><td>The group overlaps borders by one hairline so the row reads as a single control. Different variants break the shared border and it reads as three loose buttons.</td></tr>
+            <tr><td>Hardcoding height, radius or border</td><td>The button reads <code>--control-h-*</code>, <code>--radius-pill</code> and <code>--border-hairline</code>. A literal detaches it from the control scale, so it stops lining up with inputs and selects beside it.</td></tr>
+            <tr><td><code>disabled</code> with no explanation</td><td>A dead control with no reason is a dead end. State why nearby, or keep it enabled and explain on submit.</td></tr>
+            <tr><td><code>loading</code> without keeping the label</td><td>Swapping the label for a spinner erases what is happening. <code>loading</code> keeps the label and locks the width, so the row does not reflow.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>Rules for agents</h3><p>Apply in order.</p></div>
+        <span class="demo-card-tag">rules</span>
+      </div>
+      <div class="demo-card-canvas is-flush">
+        <table class="g">
+          <tbody>
+            <tr><td><strong>1</strong></td><td>Decide the element first: commits in place → <code>Button</code>; navigates → <code>&lt;a&gt;</code>; holds a value → <code>Switch</code> / <code>ToggleChip</code> / <code>Combobox</code>.</td></tr>
+            <tr><td><strong>2</strong></td><td>Count the primaries in the view. If more than one, demote all but the committing action to <code>secondary</code>.</td></tr>
+            <tr><td><strong>3</strong></td><td>If the button has no visible text, set <code>iconOnly</code> and write <code>aria-label</code> as a verb phrase — "Delete row", not "Trash".</td></tr>
+            <tr><td><strong>4</strong></td><td>Never set <code>height</code>, <code>border-radius</code>, <code>font-size</code> or colour on <code>.btn</code>. Pick a <code>size</code> and a <code>variant</code>; those are the only two axes.</td></tr>
+            <tr><td><strong>5</strong></td><td>On a dark surface use <code>onInverse</code>, not a colour override — the inverse layer keeps navy text on the white fill in both themes.</td></tr>
+            <tr><td><strong>6</strong></td><td>For an async action, drive <code>loading</code> from the request state; do not also set <code>disabled</code> (loading already blocks the click).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEHAVIOUR -->
+  <section class="doc-section" id="behaviour">
+    <h2><span class="num">11</span>Behaviour &amp; contract</h2>
+    <p class="lead">What the component does for you, and what remains yours. The split matters: consuming the CSS alone gives you appearance, not behaviour.</p>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>Ships in <code>Button.tsx</code></h3><p>Present whichever way you consume it — these live in CSS or in the element itself.</p></div>
+        <span class="demo-card-tag">shipped</span>
+      </div>
+      <div class="demo-card-canvas is-flush">
+        <table class="g">
+          <tbody>
+            <tr><td><strong>Focus ring</strong></td><td><code>:focus-visible</code> only, so a mouse click leaves no ring while keyboard focus is always visible.</td></tr>
+            <tr><td><strong>Disabled handling</strong></td><td>The native attribute blocks click, submit and focus; the CSS drops opacity and sets <code>cursor: not-allowed</code>.</td></tr>
+            <tr><td><strong>Loading</strong></td><td>Spinner replaces the leading icon, label stays, width locks — no reflow mid-request. Sets <code>aria-busy</code> and blocks the click.</td></tr>
+            <tr><td><strong>Icon sizing</strong></td><td>Icons inherit from <code>--icon-*</code> per size, so a 24px button never gets an 18px glyph.</td></tr>
+            <tr><td><strong>Square lock</strong></td><td><code>iconOnly</code> ties width to height at every size — the button cannot go oblong.</td></tr>
+            <tr><td><strong>Group geometry</strong></td><td><code>ButtonGroup</code> collapses inner radii and overlaps borders by one hairline; it also sets <code>role="group"</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>You must implement</h3><p>The component cannot know these.</p></div>
+        <span class="demo-card-tag">yours</span>
+      </div>
+      <div class="demo-card-canvas is-flush">
+        <table class="g">
+          <tbody>
+            <tr><td><strong><code>aria-label</code> on <code>iconOnly</code></strong></td><td>Required. A verb phrase naming the action.</td></tr>
+            <tr><td><strong><code>aria-label</code> on <code>ButtonGroup</code></strong></td><td>Required — names the cluster: "View mode", "Alignment".</td></tr>
+            <tr><td><strong>One variant per group</strong></td><td>The component does not police its children.</td></tr>
+            <tr><td><strong>Loading state</strong></td><td>You own the flag; the button only renders it.</td></tr>
+            <tr><td><strong>Confirmation for destruction</strong></td><td><code>danger</code> is a colour, not a guard. Add the dialog.</td></tr>
+            <tr><td><strong>Why a button is disabled</strong></td><td>Nearby text, tooltip, or validation on submit.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLASS MAP -->
+  <section class="doc-section" id="classmap">
+    <h2><span class="num">12</span>Class map</h2>
+    <p class="lead">Every class the component ships, and what each one is for. A class absent from this table is not part of the contract.</p>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>Vocabulary</h3><p>13 classes across base, variant, modifier, size and grouping.</p></div>
+        <span class="demo-card-tag">reference</span>
+      </div>
+      <div class="demo-card-canvas is-flush">
+        <table class="g">
+          <thead><tr><th style="width:26%">Class</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code>.btn</code></td><td>Base — every button starts here. Sets the 40px box, hairline border, pill radius, focus ring and disabled handling.</td></tr>
+            <tr><td><code>.btn-primary</code></td><td>Brand fill — the one committing action per view.</td></tr>
+            <tr><td><code>.btn-secondary</code></td><td>Neutral outline — the alternative to primary; safe to repeat.</td></tr>
+            <tr><td><code>.btn-tertiary</code></td><td>Subtle tonal fill — dense toolbars where an outline would add too many lines.</td></tr>
+            <tr><td><code>.btn-ghost</code></td><td>Transparent until hover — table rows and cards, where a bordered button competes with the row.</td></tr>
+            <tr><td><code>.btn-link</code></td><td>Reads as a link, behaves as a button. For actions that belong inside a sentence.</td></tr>
+            <tr><td><code>.btn-danger</code></td><td>Destructive fill. Never the default in a dialog — pair with a secondary that cancels.</td></tr>
+            <tr><td><code>.btn-danger-outline</code></td><td>Destructive with less weight, for a row-level delete.</td></tr>
+            <tr><td><code>.btn-success</code></td><td>Confirming fill. Rare — success is usually feedback, not an action.</td></tr>
+            <tr><td><code>.btn-inverse</code></td><td>White fill for dark surfaces. Text stays navy in both themes (see the on-inverse section).</td></tr>
+            <tr><td><code>.btn-icon</code></td><td>Square, label-less. Width locks to the height, so it stays square at every size. <strong>Requires <code>aria-label</code></strong>.</td></tr>
+            <tr><td><code>.btn-xs · .btn-sm · .btn-lg</code></td><td>Height steps from the shared control scale (24 / 32 / 48px). Default <code>md</code> needs no class.</td></tr>
+            <tr><td><code>.btn-group</code></td><td>Segmented cluster: radii collapse to the ends and borders overlap by one hairline. All children must share a variant.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
   <section class="doc-section" id="tokens">
-    <h2><span class="num">09</span>Tokens consumed</h2>
+    <h2><span class="num">13</span>Tokens consumed</h2>
     <p class="lead">Every value in <code>buttons.css</code> traces back to a token defined in <code>colors_and_type.css</code>. Change it there, every button updates.</p>
 
     <table class="token-table">
@@ -1059,6 +1272,10 @@
     </table>
   </section>
 
+  <footer class="doc-foot">
+    <span>ATTRUS Design System · Button · <span data-ds-version></span></span>
+    <a href="index.html">← Back to catalog</a>
+  </footer>
 </main>
 
 <script>lucide.createIcons();</script>

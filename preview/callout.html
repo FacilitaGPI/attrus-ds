@@ -5,8 +5,9 @@
 <title>Callout · ATTRUS Design System</title>
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
-<link rel="stylesheet" href="components/buttons.css">
-<link rel="stylesheet" href="components/callout.css">
+<link rel="stylesheet" href="components/buttons.css?v=3">
+<link rel="stylesheet" href="components/callout.css?v=8">
+<link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="../theme-toggle.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
@@ -54,10 +55,27 @@
 
   .doc-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
   .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+  /* API summary + agentic contract tables */
+  .api { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-5) var(--space-6); margin-bottom: var(--space-8); box-shadow: var(--shadow-xs); }
+  .api-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: var(--space-5) var(--space-6); }
+  .api-k { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+  .api-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .api-tags code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-accent); background: var(--color-brand-subtle); padding: 2px var(--space-2); border-radius: var(--radius-2xs); }
+  .api-prefer { margin: var(--space-5) 0 0; padding-top: var(--space-4); border-top: 1px solid var(--color-border-subtle); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .api-prefer strong { color: var(--color-foreground-brand); }
+  .api-prefer code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .cls { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  .cls th, .cls td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .cls thead th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .cls tbody td:first-child { width: 34%; color: var(--color-foreground-default); }
+  .cls tbody td:last-child { color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .cls tr:last-child td { border-bottom: 0; }
+  .cls code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
 </style>
 </head>
 <body>
 <a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<a class="xlink is-doc" href="../components/Callout/Callout.html" title="Typed React bench for Callout"><i data-lucide="code-2"></i>Callout TSX</a>
 
 <button class="page-theme" data-theme-toggle aria-label="Toggle theme">
   <span data-theme-icon aria-hidden="true">☾</span>
@@ -74,6 +92,28 @@
     <span class="doc-meta-pill"><i data-lucide="git-merge"></i> Single source</span>
   </header>
 
+  <section class="api" aria-label="API summary">
+    <div class="api-grid">
+      <div class="api-col">
+        <div class="api-k">Import</div>
+        <div class="api-tags"><code>const { Callout } = ATTRUS</code></div>
+      </div>
+      <div class="api-col">
+        <div class="api-k">CSS class</div>
+        <div class="api-tags"><code>.callout</code></div>
+      </div>
+      <div class="api-col">
+        <div class="api-k">Variants</div>
+        <div class="api-tags"><code>tone info|warn|success|danger|neutral</code><code>small</code><code>bar</code><code>rounded</code><code>inline</code><code>onInverse</code></div>
+      </div>
+      <div class="api-col">
+        <div class="api-k">Key props</div>
+        <div class="api-tags"><code>tone?</code><code>icon?</code><code>title?</code><code>actions?</code><code>onDismiss?</code><code>small?</code><code>bar?</code><code>inline?</code></div>
+      </div>
+    </div>
+    <p class="api-prefer"><strong>Prefer</strong> a callout for a <em>block-level</em> aside tied to nearby content. For transient feedback after an action use <code>Toast</code>; for a blocking decision use <code>Modal</code>; for emphasis inside a sentence use the accent-text patterns. Never stack two callouts.</p>
+  </section>
+
   <nav class="doc-nav">
     <a href="#tones">01 Tones</a>
     <a href="#sizes">02 Sizes</a>
@@ -82,8 +122,12 @@
     <a href="#bar">05 Alert bar</a>
     <a href="#inline">06 Inline &amp; on-inverse</a>
     <a href="#usage">07 Usage</a>
-    <a href="#map">08 Class map</a>
+    <a href="#agents">08 For agents</a>
+    <a href="#behaviour">09 Behaviour</a>
+    <a href="#map">10 Class map</a>
   </nav>
+
+  <script type="application/json" id="ds-api">{"component":"Callout","import":"const { Callout } = ATTRUS","cssClass":".callout","status":"stable","intent":"A block-level, persistent, non-blocking aside tied to nearby content: tips, warnings, results, caveats.","variants":["info","warn","success","danger","neutral","small","bar","rounded","inline","onInverse"],"props":[{"name":"tone","type":"'info' | 'warn' | 'success' | 'danger' | 'neutral'","default":"info","note":"Semantic — drives role"},{"name":"icon","type":"ReactNode","note":"Required in practice; layout reserves the slot"},{"name":"title","type":"ReactNode","note":"Switches to the vertical rich layout"},{"name":"actions","type":"ReactNode","note":"Max 2, secondary/ghost only"},{"name":"onDismiss","type":"() => void","note":"Renders the × when passed"},{"name":"small","type":"boolean","default":"false"},{"name":"bar","type":"boolean","default":"false","note":"Full-bleed page-level alert"},{"name":"rounded","type":"boolean","default":"false","note":"Requires bar"},{"name":"inline","type":"boolean","default":"false","note":"Content-sized, single line"},{"name":"onInverse","type":"boolean","default":"false","note":"Dark surfaces only"}],"useWhen":["The message is tied to content the reader can see","It must persist across scroll and re-render","It does not block the flow"],"useInstead":[{"when":"Transient confirmation after an action","use":"Toast"},{"when":"The flow must stop until a decision is made","use":"Modal"},{"when":"A single field is invalid","use":"Input error/hint"},{"when":"Emphasis on a phrase inside running text","use":"accent-text / highlight patterns"}],"antiPatterns":["Two or more callouts in sequence","danger tone for anything that is not an error","A callout for field-level validation","More than two sentences of body copy","Primary buttons inside actions","bar inside a card or panel (use rounded)","Choosing tone for its colour rather than its meaning"],"constraints":["One callout per view region","Body copy <= 2 sentences","actions <= 2 buttons, secondary or ghost only","Always pass icon","Never set role by hand","onInverse only on a dark surface","rounded requires bar"],"behaviour":{"shippedInTsx":["role=\"alert\" when tone is danger, role=\"status\" otherwise","Layout switches to vertical when title or actions is present","Tone class always emitted, including the info default","Dismiss button renders only with onDismiss, pre-labelled"],"cssOnlyMustImplement":["role=\"alert\" / role=\"status\" by tone",".callout-icon class on the icon element","Dismiss button aria-label, handler and removal","Focus move before removing a focused callout"],"presentationalOnly":["The tint and border are decorative; meaning comes from role","The icon does not set tone colour on its own — the tone class does"]}}</script>
 
   <!-- 01 TONES -->
   <section class="doc-section" id="tones">
@@ -148,7 +192,7 @@
     <div class="spec">
       <div class="spec-head"><div><h3>Structure</h3></div><span class="spec-tag">Markup</span></div>
       <div class="spec-body">
-        <div class="callout"><i data-lucide="git-merge"></i><div class="callout-body">Defined once in <code>components/callout.css</code> and consumed by every doc page and product surface — edit the CSS and all callouts move together. See <a href="index.html">the catalog</a>.</div></div>
+        <div class="callout"><i data-lucide="git-merge"></i><div class="callout-body">Defined once in <code>components/callout.css?v=8</code> and consumed by every doc page and product surface — edit the CSS and all callouts move together. See <a href="index.html">the catalog</a>.</div></div>
         <div class="code"><span class="c">&lt;!-- info (default) --&gt;</span>
 <span class="t">&lt;div</span> class=<span class="t">"callout"</span><span class="t">&gt;</span>
   <span class="t">&lt;i</span> data-lucide=<span class="t">"info"</span><span class="t">&gt;&lt;/i&gt;</span>
@@ -305,10 +349,113 @@
     </div>
   </section>
 
-  <!-- 08 CLASS MAP -->
+  <!-- 08 FOR AGENTS -->
+  <section class="doc-section" id="agents">
+    <h2><span class="num">08</span>For agents</h2>
+    <p class="lead">The decision rules an agent needs before reaching for this component — when it is the right answer, when a different component is, and what will look correct while being wrong.</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Use when</h3><p>All three must hold, or the answer is another component.</p></div><span class="spec-tag">Intent</span></div>
+      <div class="spec-body">
+        <table class="cls">
+          <tbody>
+            <tr><td><strong>The message is tied to nearby content</strong></td><td>It explains, qualifies or warns about something the reader can see. A message about the whole session belongs in a toast; a message about the whole account belongs in a page-level bar.</td></tr>
+            <tr><td><strong>It should persist</strong></td><td>The reader may need it again after scrolling or a re-render. Anything that should disappear on its own is a <code>Toast</code>.</td></tr>
+            <tr><td><strong>It does not block</strong></td><td>The reader can ignore it and continue. If the flow must stop until a choice is made, that is a <code>Modal</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Use instead</h3><p>Four routes away from this component.</p></div><span class="spec-tag">Precedence</span></div>
+      <div class="spec-body">
+        <table class="cls">
+          <thead><tr><th>Situation</th><th>Component</th></tr></thead>
+          <tbody>
+            <tr><td>Confirmation right after an action, self-dismissing</td><td><code>Toast</code></td></tr>
+            <tr><td>The flow must stop until the reader decides</td><td><code>Modal</code></td></tr>
+            <tr><td>A field is invalid — the message belongs to that field</td><td><code>Input</code> <code>error</code> / <code>hint</code></td></tr>
+            <tr><td>Emphasis on a phrase inside running text</td><td>accent-text / highlight patterns</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Anti-patterns</h3><p>Each of these renders without error, which is why they survive review.</p></div><span class="spec-tag">Avoid</span></div>
+      <div class="spec-body">
+        <table class="cls">
+          <thead><tr><th>Anti-pattern</th><th>Why it fails</th></tr></thead>
+          <tbody>
+            <tr><td>Two or more callouts in sequence</td><td>A callout earns attention by being the only interruption. Stacked, they become a list with decorative boxes — and the reader skips all of them.</td></tr>
+            <tr><td><code>danger</code> for anything that is not an error</td><td>Danger is the strongest tone and also the only one that sets <code>role="alert"</code>. Spending it on emphasis means the next real error announces nothing new.</td></tr>
+            <tr><td>A callout for field validation</td><td>It sits away from the field, so the reader has to map the message back to the input. Field-level error text is anchored where the fix happens.</td></tr>
+            <tr><td>Paragraphs of body copy</td><td>The box implies "read this now". If it takes more than two sentences, it is content, not an aside — put it in the page.</td></tr>
+            <tr><td>Primary buttons in <code>actions</code></td><td>A primary CTA inside a note competes with the page's own primary action. Use secondary or ghost.</td></tr>
+            <tr><td><code>bar</code> inside a card or panel</td><td>The bar is a full-bleed page-level device: square corners, side borders removed. In a container it reads as a broken card — use <code>rounded</code> if you truly need it there.</td></tr>
+            <tr><td>Tone chosen for colour</td><td>Tone is semantic and is read by assistive tech through <code>role</code>. Picking <code>success</code> because green fits the layout is a lie to the screen reader.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Rules for agents</h3><p>Deterministic constraints — safe to apply without judgement.</p></div><span class="spec-tag">Constraints</span></div>
+      <div class="spec-body">
+        <table class="cls">
+          <tbody>
+            <tr><td>One callout per view region</td><td>If a second is needed, merge the messages or promote one to a page-level bar.</td></tr>
+            <tr><td>Body copy ≤ 2 sentences</td><td>Beyond that, use <code>title</code> for the claim and keep the body short.</td></tr>
+            <tr><td><code>actions</code> ≤ 2 buttons</td><td>Secondary or ghost only. More than two turns a note into a form.</td></tr>
+            <tr><td>Always pass <code>icon</code></td><td>The layout reserves the leading slot; without an icon the text hangs on an indent with nothing in it. Use a Lucide glyph matching the tone.</td></tr>
+            <tr><td>Never set <code>role</code> by hand</td><td>The component derives it from tone — see Behaviour. Overriding it desynchronises the visual tone from what is announced.</td></tr>
+            <tr><td><code>onInverse</code> only on a dark surface</td><td>It swaps the tint for a glassy translucent fill and light text; on a light surface the text drops out of contrast.</td></tr>
+            <tr><td><code>rounded</code> requires <code>bar</code></td><td>On its own it does nothing — the default box already has a radius.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 BEHAVIOUR -->
+  <section class="doc-section" id="behaviour">
+    <h2><span class="num">09</span>Behaviour &amp; contract</h2>
+    <p class="lead">What the component does on its own, and what falls to you when consuming the CSS directly. Copying the markup does not buy the behaviour.</p>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>Ships in <code>Callout.tsx</code></h3><p>Automatic — do not re-implement.</p></div><span class="spec-tag">Shipped</span></div>
+      <div class="spec-body">
+        <table class="cls">
+          <tbody>
+            <tr><td><code>role</code> derived from tone</td><td><code>danger</code> renders <code>role="alert"</code> — assertive, interrupts the screen reader. Every other tone renders <code>role="status"</code> — polite, announced at the next pause. This is the reason tone is semantic and not decorative.</td></tr>
+            <tr><td>Layout switches on content</td><td>Passing <code>title</code> or <code>actions</code> wraps the body in <code>.callout-content</code> (vertical stack). Without them the body renders flat, so a one-line note never pays for the richer structure.</td></tr>
+            <tr><td>Tone class always emitted</td><td>Even <code>info</code>, the default — <code>.callout-info</code> is what <code>.on-inverse</code> pairs with in CSS, so omitting it would break the dark treatment.</td></tr>
+            <tr><td>Dismiss is conditional</td><td>The × button renders only when <code>onDismiss</code> is passed, already labelled <code>aria-label="Dismiss"</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head"><div><h3>CSS only — you must implement</h3><p>Using the classes without the component.</p></div><span class="spec-tag">Your job</span></div>
+      <div class="spec-body">
+        <table class="cls">
+          <tbody>
+            <tr><td><code>role="alert"</code> / <code>role="status"</code></td><td>Nothing in the CSS announces anything. A danger callout without <code>role="alert"</code> is invisible to a screen reader.</td></tr>
+            <tr><td><code>.callout-icon</code> on the icon</td><td>The TSX takes the icon as a slot and expects the caller to carry the class; a bare <code>&lt;svg&gt;</code> gets no sizing or tone colour.</td></tr>
+            <tr><td>Dismiss wiring</td><td>The <code>&lt;button class="callout-dismiss"&gt;</code> needs its own <code>aria-label</code> and click handler, plus whatever removes the node.</td></tr>
+            <tr><td>Focus after dismissal</td><td>Removing the node while focus is inside it drops focus to the document. Move focus to a sensible neighbour first.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 CLASS MAP -->
   <section class="doc-section" id="map">
-    <h2><span class="num">08</span>Class map</h2>
-    <p class="lead">The full vocabulary, defined in <code>components/callout.css</code>.</p>
+    <h2><span class="num">10</span>Class map</h2>
+    <p class="lead">The full vocabulary, defined in <code>components/callout.css?v=8</code>.</p>
     <div class="spec">
       <div class="spec-head"><div><h3>Reference <code>callout.css</code></h3></div><span class="spec-tag">Single source</span></div>
       <div style="padding:var(--space-2) var(--space-2) var(--space-4)">

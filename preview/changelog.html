@@ -68,15 +68,100 @@
 
   <header class="doc-header">
     <div class="eyebrow">ATTRUS Design System</div>
-    <h1>Changelog <span class="ver-badge" data-ds-version>v1.0.11</span></h1>
+    <h1>Changelog <span class="ver-badge" data-ds-version>v1.0.13</span></h1>
     <p>Every notable change to the design system, grouped by release. Versioning follows <a href="https://semver.org" style="color:var(--color-foreground-accent)">SemVer</a>; the version number lives in <code style="font-family:var(--font-mono);font-size:0.85em">version.js</code> and is mirrored across the catalog and index pages.</p>
   </header>
+
+  <!-- ============ v1.0.13 ============ -->
+  <section class="release">
+    <div class="release-head">
+      <h2>1.0.13</h2>
+      <span class="tag current">Current</span>
+    </div>
+    <div class="release-date">2026-09-01 · benches that verify instead of demonstrate</div>
+
+    <div class="change-group added">
+      <h3><i data-lucide="plus-circle"></i> Added</h3>
+      <ul>
+        <li><b>Parity harness in the component benches</b> — <code>Button</code> (31/31) and <code>DataTable</code> (24/24) stopped being galleries and became reports. Two kinds of check: <b>derived</b> ones generated from the doc page's own <code>#ds-api</code> contract, fetched rather than copied, so they grow when the doc grows; and <b>anatomy</b> ones written by hand for the promises the doc makes in prose that no class check can see — sort is a real <code>&lt;button&gt;</code>, the spinner is optically centred, an annulled amount is struck but its currency chip is not. A showcase can only demonstrate what its author remembered to write; a harness is what turns "mirrored" into something verified.</li>
+        <li><b><code>--border-hairline</code></b> — every 1px rule in the system was a literal. Naming it makes the weight adjustable in one place, so a product theme wanting crisper separation does not touch fourteen component files.</li>
+        <li><b><code>--control-h-xs</code> / <code>-sm</code> / <code>-md</code> / <code>-lg</code></b> (24 / 32 / 40 / 48px) — the box every in-line control shares, in multiples of 8 so a control, a button and an input on one row align without per-instance tuning. Padding-based items (<code>.sb-item</code>, <code>.tab</code>) stay out on purpose: they are list and navigation rows, not in-line controls.</li>
+        <li><b>Annulled amounts</b> — <code>.dt-num.is-void</code>, and <code>tr.is-muted td.dt-num</code>, strike the figure. Greying it out reads as "secondary", and a cancelled value is not secondary, it is annulled. Only the figure is struck: the name and reference are still true, and striking the currency chip looks like a rendering fault. The rule is 1.5px, because the default weight disappears against mono bold and reads as an artefact.</li>
+        <li><b>Doc ↔ bench cross-links</b> — the spec lives in <code>preview/</code> and the typed bench in <code>components/</code>, so reaching one from the other meant knowing both paths. A <code>.xlink</code> pill now sits beside the back control in both directions, across 24 pairs.</li>
+        <li>Three doc pages: <b>Smart search</b>, <b>Doc page guidelines</b> and <b>Demo card</b>.</li>
+      </ul>
+    </div>
+
+    <div class="change-group changed">
+      <h3><i data-lucide="refresh-cw"></i> Changed</h3>
+      <ul>
+        <li><b>The inverse layer is now a temperature, not a colour.</b> The <code>--color-ink-*</code> tones keep hue 226 and their lightness but lose most of their saturation (56–63% → ~16%), and the brand mix behind <code>--color-background-inverse</code>, <code>-surface</code>, <code>-subtle</code> and <code>-selected</code> drops from 24/30/18/22% to 11/14/8/10%. Above roughly 30% the eye names a background "navy" instead of reading it as a near-black. Contrast survives: text on canvas moves 17.27 → 16.5, and card-against-canvas separation improves slightly, 1.10 → 1.15.</li>
+        <li><b>Table on narrow viewports</b> — the demo card takes a horizontal gutter so it no longer sits flush against the wrapper wall, where the two hairlines touched and read as one thick rule; the toolbar stacks instead of overflowing.</li>
+        <li><code>--subrow-indent</code> 24px → 16px.</li>
+      </ul>
+    </div>
+
+    <div class="change-group fixed">
+      <h3><i data-lucide="wrench"></i> Fixed</h3>
+      <ul>
+        <li><b>Five components shipped CSS the package never imported.</b> <code>action-bar</code>, <code>ambient</code>, <code>animated-bg</code>, <code>sel-card</code> and <code>toggle-chip</code> were present in <code>src/components/</code> but absent from the barrel, so anyone installing <code>@attrus-ds/core</code> got the markup contract and none of the styling. All five are now imported.</li>
+        <li><b>The subrow reveal clipped its last line.</b> The target height was read as <code>scrollHeight</code> while the padding was still transitioning from zero, so the animation always landed short by exactly the padding — 36px in a detail panel, 16px in a subrow. Padding no longer transitions (the snap is invisible inside a clipped box) and is applied before measuring.</li>
+        <li><b>The toolbar jumped when the first row was selected</b> — 57px against 52px. Its box lived on <code>.dt-wrap &gt; .dt-toolbar</code>, so a toolbar that was not a direct child fell through to the base rule. The box moved onto the element itself, and the promise now holds wherever the toolbar sits.</li>
+        <li>The doc contract claimed size modifiers use a double hyphen (<code>.dt--sm</code>); CSS and TSX use a single one and <code>.dt--</code> appears in no rule. The harness caught it on its first run, and the wrong side was the documentation.</li>
+      </ul>
+    </div>
+
+    <div class="change-group">
+      <h3><i data-lucide="info"></i> Notes</h3>
+      <ul>
+        <li><b>The benches are not mirrored into this package.</b> They load a browser bundle that only exists in the source repo, so the <code>.xlink</code> pills added to the preview pages point at paths present upstream and absent here — the same gap the components hub already had. Reaching parity means shipping a bench runner, not copying files.</li>
+        <li>The sync tool now preserves this changelog instead of mirroring it. Releases are cut here, against the npm package, and the upstream file has no knowledge of them; a blind mirror deleted 1.0.11 and 1.0.12. <code>demo-card.css</code> is likewise held back from <code>src/components/</code> — it styles the documentation chrome, not a product component.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ v1.0.12 ============ -->
+  <section class="release">
+    <div class="release-head">
+      <h2>1.0.12</h2>
+    </div>
+    <div class="release-date">2026-08-25 · hierarchy in the table</div>
+
+    <div class="change-group added">
+      <h3><i data-lucide="plus-circle"></i> Added</h3>
+      <ul>
+        <li><b>Collapsible subrows</b> (table §12b) — the same subrow vocabulary as §12, but the group starts closed and the parent carries a disclosure control: <code>.dt-subrow-toggle</code> with <code>aria-expanded</code>/<code>aria-controls</code>, an optional <code>.dt-subrow-count</code> badge that says what is hidden before opening, and <code>.dt-subrow-inner</code> wrapping the reveal.</li>
+        <li><b>Row as control</b> (§12c) — <code>.has-subrows.is-clickable</code> turns the whole parent row into the toggle. With <code>role="button"</code> and a tabindex the row needs what a button has, so it gets a pointer and a visible focus ring; the chevron inside becomes <code>aria-hidden</code> and <code>pointer-events:none</code>, or one action would cost two tab stops and the click would land twice.</li>
+        <li><b><code>.dt-detail</code></b> (§12d) — the other half of the hierarchy story. Reach for a subrow when the child shares the parent's columns because it is the same kind of thing (a fee under a payment); reach for a detail panel when the child has its own attributes and the parent's headers would be lies (an audit trail, KYC documents, delivery steps). One <code>colspan</code> cell frees the layout: <code>.dt-detail-grid</code> for key/value pairs, or a nested <code>.dt</code> with its own <code>&lt;thead&gt;</code>.</li>
+        <li><b><code>--w-mono-emphasis</code></b> — the weight amounts use, kept separate from <code>--w-bold</code> because the two families are tuned apart: a future mono swap re-tunes this one line without disturbing the sans scale.</li>
+        <li><b><code>.sr-only</code></b> — visually hidden but announced, using the clip-rect technique rather than <code>display:none</code> (which drops the node from the accessibility tree) or <code>width:0</code> (which some engines skip).</li>
+        <li>React: <code>DTSubrowLead</code>, <code>DTSubrowToggle</code> and <code>DTSubrowCell</code>. <code>DTSubrowLead</code> takes a <code>parentName</code> and renders a hidden “Item of &lt;parent&gt;:” prefix — native table semantics carry no hierarchy, so a screen reader has no other way to hear that a row is a child.</li>
+      </ul>
+    </div>
+
+    <div class="change-group changed">
+      <h3><i data-lucide="refresh-cw"></i> Changed</h3>
+      <ul>
+        <li><b>Amounts now carry the emphasis by default.</b> <code>.dt-num</code> renders in mono at <code>--w-mono-emphasis</code>: a monospaced face cannot widen — it must keep its cell — so weight there buys ink, not width. The currency chip and any sub line stay regular, so the pair gives one strong figure against quiet context instead of a bold block.</li>
+        <li><code>.dt-num.bold</code> consequently only steps the <b>size</b> up; the weight is already there.</li>
+      </ul>
+    </div>
+
+    <div class="change-group">
+      <h3><i data-lucide="info"></i> Notes</h3>
+      <ul>
+        <li><b>The modern reveal pattern does not work inside a table.</b> <code>grid-template-rows: 0fr → 1fr</code> was tried first: a <code>&lt;td&gt;</code> has no definite height, so <code>1fr</code> has nothing to resolve against and computes to <code>0px</code> — the group simply stays shut. That is a property of table layout, not a bug in the pattern. The reveal animates <code>max-height</code> on a clipped wrapper instead, which costs a cap: an open subrow may grow to <b>120px</b>, generous enough for two wrapped lines, beyond which it clips. The value is a literal — the surrounding comment calls it <code>--subrow-max</code>, but no such token is declared yet; promoting it is the obvious follow-up for a product with taller subrows.</li>
+        <li>The animation lives on a wrapper <i>inside</i> the cell for the same reason a <code>&lt;tr&gt;</code> cannot be animated directly: height on a row is ignored by table layout, and <code>display:grid</code> on a <code>&lt;td&gt;</code> destroys column alignment. Cell padding moved to <code>.dt-subrow-cell</code> too — padding on the <code>&lt;td&gt;</code> would keep a closed row 24px tall and leave a visible gap.</li>
+        <li>Measured before settling on 700: <code>700</code> and <code>800</code> resolve to the <b>same face</b> in the mono family (ink 48.00 for both, against 44.00 regular), so 800 bought nothing visually. 700 is what the browser draws and what the <code>@import</code> requests.</li>
+        <li><code>prefers-reduced-motion</code> disables every transition in the disclosure. Older engines that skip the tween still open and close — the failure mode is graceful.</li>
+      </ul>
+    </div>
+  </section>
 
   <!-- ============ v1.0.11 ============ -->
   <section class="release">
     <div class="release-head">
       <h2>1.0.11</h2>
-      <span class="tag current">Current</span>
     </div>
     <div class="release-date">2026-08-24 · publish pipeline on protected main</div>
 

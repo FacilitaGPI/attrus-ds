@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
 <script src="../version.js"></script>
-<link rel="stylesheet" href="components/tokens-doc.css?v=2">
+<link rel="stylesheet" href="components/tokens-doc.css?v=3">
 <link rel="icon" href="../assets/icon-attrus-dark.svg">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
@@ -607,6 +607,16 @@
         <span class="ds-card-foot">typescript.html<i data-lucide="arrow-up-right"></i></span>
       </a>
 
+      <a class="ds-card" href="demo-card.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="layout-template"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Demo card</h3>
+        <p>The canonical frame for showing a component in the docs — header, recessed stage, and the canvas variants that make translucent components readable.</p>
+        <span class="ds-card-foot">demo-card.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
       <a class="ds-card" href="composition.html">
         <div class="ds-card-top">
           <span class="ds-card-icon"><i data-lucide="layout-template"></i></span>
@@ -663,14 +673,14 @@
         <p>Type-ahead picker. Single or multi-select.</p>
       </a>
 
-      <a class="ds-card" href="combobox.html">
+      <a class="ds-card" href="smart-search.html">
         <div class="ds-card-top">
           <span class="ds-card-icon"><i data-lucide="command"></i></span>
           <span class="ds-card-tag is-new">New</span>
         </div>
         <h3>Smart search</h3>
-        <p>⌘K command palette — 8 canonical states (suggestions, grouped results, ID disambiguation, loading, error). Typed as SmartSearch.</p>
-        <span class="ds-card-foot">combobox.html §03<i data-lucide="arrow-up-right"></i></span>
+        <p>⌘K command palette — 8 canonical states, composed from props. Global scope: searches across entities, unlike Combobox which fills a field.</p>
+        <span class="ds-card-foot">smart-search.html<i data-lucide="arrow-up-right"></i></span>
       </a>
 
       <a class="ds-card" href="cards.html">
@@ -977,6 +987,60 @@
       </a>
     </div>
   </section>
+  <!-- 05 · INTERNAL -->
+  <section class="ds-section" id="internal">
+    <div class="ds-section-head">
+      <div class="ds-section-title">
+        <span class="num">05</span>
+        <h2>Internal</h2>
+      </div>
+      <span class="ds-section-meta">Process, not product · not for consumers</span>
+    </div>
+    <p class="ds-section-blurb">How this documentation is built and kept honest. Nothing here ships to a consuming product — it is the working method behind the system, kept alongside it so the next author finds it.</p>
+
+    <div class="ds-grid">
+      <a class="ds-card" href="doc-guidelines.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="wrench"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Doc page guidelines</h3>
+        <p>Three page profiles, the fixed chrome, the ten component sections, and the <code>#ds-api</code> contract that makes a page readable by an agent.</p>
+        <span class="ds-card-foot">doc-guidelines.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="demo-card.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="square-dashed"></i></span>
+          <span class="ds-card-tag">Kit</span>
+        </div>
+        <h3>Demo card</h3>
+        <p>The canonical demo frame and its stages — including the checkered one that translucent components need to be judged at all.</p>
+        <span class="ds-card-foot">demo-card.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="for-ai.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="bot"></i></span>
+          <span class="ds-card-tag">Agents</span>
+        </div>
+        <h3>For AI agents</h3>
+        <p>System-wide precedence rules — prefer the canonical component, never recreate what exists, which component wins in a tie.</p>
+        <span class="ds-card-foot">for-ai.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+
+      <a class="ds-card" href="../tools/drift-linter.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="scan-line"></i></span>
+          <span class="ds-card-tag">Tool</span>
+        </div>
+        <h3>Drift linter</h3>
+        <p>Three axes: CSS variants against TSX union types, bench coverage per component, and the theming guardrail on product files.</p>
+        <span class="ds-card-foot">tools/drift-linter.html<i data-lucide="arrow-up-right"></i></span>
+      </a>
+    </div>
+  </section>
+
 
   <footer class="ds-foot">
     <span>Cabiros · ATTRUS Design System · <span data-ds-version>v1.0.0</span> · <span data-ds-date>—</span></span>
