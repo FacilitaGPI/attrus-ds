@@ -1,0 +1,719 @@
+<!-- @dsCard group="Components" name="Smart search" subtitle="Global ⌘K palette — 8 canonical states" viewport="1280x900" -->
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Smart search" subtitle="⌘K command palette — 8 canonical states" viewport="1280x1000" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Smart search · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<script src="../theme-toggle.js"></script>
+<link rel="stylesheet" href="components/combobox.css?v=14">
+<link rel="stylesheet" href="components/smart-search.css?v=7">
+<link rel="stylesheet" href="components/demo-card.css?v=5">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill svg, .doc-meta-pill i { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+
+  .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-7); }
+
+  /* State grid — 8 stacked cards for the smart searchbar walkthrough */
+  .state-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: var(--space-5); }
+  .state-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-xs); display: flex; flex-direction: column; }
+  .state-head { padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: baseline; gap: var(--space-3); }
+  .state-head .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .state-head h3 { font-size: var(--fs-md); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0; }
+  .state-head p { font-size: var(--fs-sm); color: var(--color-foreground-muted); margin: 0 0 0 auto; }
+  .state-canvas { padding: var(--space-7) var(--space-5); background: var(--color-background-subtle); flex: 1; display: flex; justify-content: center; align-items: flex-start; }
+
+  /* Smart-search rules now live in components/smart-search.css (single source) */
+
+  /* Listing combobox card (general purpose) */
+  .listing-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); box-shadow: var(--shadow-xs); }
+  .listing-head { padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+  .listing-head h3 { font-size: var(--fs-lg); font-weight: var(--w-bold); margin: 0 0 var(--space-1); }
+  .listing-head p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); margin: 0; }
+  .listing-canvas { padding: var(--space-8) var(--space-6) var(--space-16); background: var(--color-background-subtle); display: flex; justify-content: center; align-items: flex-start; min-height: 460px; border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+  .listing-canvas .combobox.is-open { align-self: flex-start; }
+
+  .anatomy-list { padding: var(--space-6); }
+  .anatomy-list ol { padding-left: 0; margin: 0; counter-reset: anat; list-style: none; }
+  .anatomy-list li { counter-increment: anat; margin-bottom: var(--space-3); padding-left: var(--space-7); position: relative; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-sm); }
+  .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 2px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
+
+  .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; margin-top: var(--space-4); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .token-table tr:last-child td { border-bottom: none; }
+  .token-table code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
+
+  .principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); }
+  .principle { padding: var(--space-5); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); }
+  .principle .ic { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-brand); margin-bottom: var(--space-3); }
+  .principle .ic svg, .principle .ic i { width: 15px; height: 15px; stroke-width: var(--icon-stroke); }
+  .principle strong { display: block; font-size: var(--fs-md); font-weight: var(--w-bold); color: var(--color-foreground-default); margin-bottom: var(--space-2); letter-spacing: var(--ls-title); }
+  .principle p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .cls { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  .cls th, .cls td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: var(--border-hairline) solid var(--color-border-subtle); vertical-align: top; }
+  .cls thead th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .cls tbody td:first-child { width: 36%; color: var(--color-foreground-default); }
+  .cls tbody td:last-child { color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .cls tr:last-child td { border-bottom: 0; }
+  .cls code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .sub { font-size: var(--fs-md); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: var(--space-8) 0 var(--space-3); }
+  .body { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 74ch; margin: 0 0 var(--space-4); }
+  .body code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .doc-section > .cls, .doc-section > .callout, .doc-section > table { margin-bottom: var(--space-6); }
+  .doc-section > *:last-child { margin-bottom: 0; }
+  .view-controls { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); }
+  .page-theme { display: inline-flex; align-items: center; gap: var(--space-2); height: var(--control-h-md); padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); }
+  .page-theme:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background: var(--color-background-hover); }
+  .page-theme [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+  /* API panel + prose blocks carry the same card surface as the demos */
+  .api { background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-5) var(--space-6); box-shadow: var(--shadow-xs); margin-bottom: var(--space-6); }
+  .api-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: var(--space-5) var(--space-6); }
+  .api-k { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+  .api-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .api-tags code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-accent); background: var(--color-brand-subtle); padding: 2px var(--space-2); border-radius: var(--radius-2xs); }
+  .api-prefer { margin: var(--space-5) 0 0; padding-top: var(--space-4); border-top: var(--border-hairline) solid var(--color-border-subtle); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .api-prefer strong { color: var(--color-foreground-brand); }
+  .doc-section > h3.sub { margin-top: var(--space-8); }
+</style>
+</head>
+<body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<div class="view-controls">
+  <a class="xlink" href="../components/SmartSearch/SmartSearch.html" title="Typed React bench for SmartSearch"><i data-lucide="code-2"></i>SmartSearch TSX</a>
+  
+  <button class="page-theme" data-theme-toggle aria-label="Toggle theme">
+    <span data-theme-icon aria-hidden="true">☾</span>
+    <span data-theme-label>Dark</span>
+  </button>
+</div>
+
+<main class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Smart search</h1>
+      <p>The global ⌘K command palette — one field that searches across entities, jumps to records and runs commands. Distinct from <a href="combobox.html">Combobox</a>, which fills a field.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="command"></i> Stable</span>
+  </header>
+
+  <section class="api" aria-label="API summary">
+    <div class="api-grid">
+      <div class="api-col"><div class="api-k">Import</div><div class="api-tags"><code>const { SmartSearch } = ATTRUS</code></div></div>
+      <div class="api-col"><div class="api-k">CSS class</div><div class="api-tags"><code>.ss</code></div></div>
+      <div class="api-col"><div class="api-k">States</div><div class="api-tags"><code>inactive</code><code>active</code><code>word</code><code>similar</code><code>id</code><code>partial id</code><code>no results</code><code>loading</code></div></div>
+      <div class="api-col"><div class="api-k">Key props</div><div class="api-tags"><code>query</code><code>sections[]</code><code>chips?</code><code>hint?</code><code>typeButtons?</code><code>empty?</code><code>loading?</code><code>static?</code></div></div>
+    </div>
+    <p class="api-prefer"><strong>Prefer</strong> the palette when the target could be anywhere in the product. When the choice fills a form field use <code>Combobox</code>; when it filters a list already on screen use <code>SearchPill</code>. One palette per application.</p>
+  </section>
+
+  <script type="application/json" id="ds-api">{"component":"SmartSearch","import":"const { SmartSearch } = ATTRUS","cssClass":".ss","status":"stable","intent":"The global ⌘K command palette: one field that searches across entities, jumps to records and runs commands.","variants":["inactive","active","word","similar","id","partial-id","no-results","loading","recent"],"props":[{"name":"query","type":"string","note":"Controlled input value"},{"name":"sections","type":"SSSection[]","note":"variant: 'recent' renders .ss-recent — quieter history styling"},{"name":"chips","type":"ReactNode","note":"Scope filters above the list"},{"name":"hint","type":"ReactNode","note":"Interpretation line (\"looks like an ID\")"},{"name":"typeButtons","type":"ReactNode","note":"Disambiguation when an ID matches several entities"},{"name":"empty","type":"ReactNode","note":"Zero-state illustration + copy"},{"name":"loading","type":"boolean"},{"name":"footer","type":"ReactNode","note":"Keyboard hint row — labels only"},{"name":"static","type":"boolean","note":"Gallery rendering, no portal"},{"name":"emptyQuery","type":"string","note":"renders .ss-no-result with the term emphasised"}],"useWhen":["The target is anywhere in the product, not in one field","The user knows what they want and would rather type than navigate","Results span more than one entity type"],"useInstead":[{"when":"The choice fills a form field","use":"Combobox"},{"when":"Fewer than 5 fixed options","use":"native select"},{"when":"Filtering a list already on screen","use":"SearchPill + ToggleChip"},{"when":"Multi-select of tags","use":"ToggleChip"}],"antiPatterns":["Using it as a field-level picker — it portals over the page and steals focus","Opening it without a ⌘K binding, leaving the palette unreachable by keyboard","Results from a single entity type (a plain filtered list is clearer)","Copying the footer kbd chips without wiring the keys they advertise","More than ~7 items per section without grouping"],"constraints":["One palette per application","Always bind ⌘K / Ctrl+K to open and Esc to close","Section labels are mono uppercase, one word where possible","The footer chips are labels — they do not create behaviour","static only for documentation galleries","Never nest inside Drawer, Modal or a table cell — the palette owns the screen while open; use Combobox instead"],"behaviour":{"shippedInTsx":["Renders whichever slices it receives, in canonical order","Portals over the page so it escapes any overflow ancestor","static keeps it inline for galleries"],"cssOnlyMustImplement":["⌘K / Ctrl+K global binding and Esc to close","Arrow navigation, Enter to commit, aria-activedescendant","Scroll-into-view for the active item","Focus return to the trigger on close","Debounced query and the loading state"],"presentationalOnly":[".ss-kbd chips — labels for ⌘K / ↵ / esc; they bind nothing",".ss-typebtn — styling only; marking one active does not filter",".ss-result-label — a slot; the component does not count results",".ss-clear — renders the affordance; clearing and refocusing is the consumer's"]}}</script>
+
+  <nav class="doc-nav">
+    <a href="#intent">01 Intent</a>
+    <a href="#states">02 The eight states</a>
+    <a href="#anatomy">03 Anatomy</a>
+    <a href="#variants">04 Variants</a>
+    <a href="#agents">05 For agents</a>
+    <a href="#behaviour">06 Behaviour</a>
+    <a href="#presentational">07 Presentational</a>
+    <a href="#classmap">08 Class map</a>
+    <a href="combobox.html">Combobox →</a>
+  </nav>
+
+<section class="doc-section" id="intent">
+    <h2><span class="num">01</span>Intent</h2>
+    <p class="lead">A global command palette. It searches <em>across</em> the product — counterparties, transactions, accounts, actions — and takes over the screen while open. It does not fill a field.</p>
+
+    <h3 class="sub">Use when</h3>
+    <p class="body">All three hold: the user is <strong>navigating</strong> rather than entering data; the search spans <strong>more than one entity type</strong>; and the entry point is <strong>global</strong> — a keyboard shortcut or a persistent search affordance, not a control inside a form.</p>
+
+    <h3 class="sub">Use instead</h3>
+    <table class="token-table">
+      <thead><tr><th>When</th><th>Use</th></tr></thead>
+      <tbody>
+        <tr><td>The choice writes into a field</td><td><a href="combobox.html">Combobox</a> — the palette portals over the page and takes focus, which would cover the very input being filled.</td></tr>
+        <tr><td>Filtering a table already on screen</td><td>The table's own search — a palette that replaces the view loses the context the user is filtering.</td></tr>
+        <tr><td>One entity type, short list</td><td><code>Combobox</code> or a native <code>select</code>. A palette for eight known options is ceremony.</td></tr>
+        <tr><td>Free text the user is composing</td><td><code>Input</code>. The palette commits a destination, not a value.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Context</h3>
+    <p class="body">The palette is the product's answer to "I know what I want, I do not know where it lives." It is opened by <code>⌘K</code> from anywhere, so it must assume no surrounding layout — it floats, dims what is behind it, and returns the user to where they were. Because it is reachable at all times, it is also the component most likely to be opened <em>by accident</em>: the inactive and empty states carry as much weight as the results state.</p>
+  </section>
+
+  <section class="doc-section" id="states">
+    <h2><span class="num">02</span>Smart searchbar — 8 canonical states</h2>
+    <p class="lead">A global command palette opened by <kbd class="ss-kbd">⌘K</kbd>. Every state below ships in the kit — the bar moves through them as the user types.</p>
+
+    <div class="state-grid">
+
+      <!-- 01 INACTIVE -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">01</span><h3>Inactive</h3><p>before focus</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input ss-input-flat">
+              <i data-lucide="search"></i>
+              <input type="text" placeholder="Search or run a command" disabled />
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 02 ACTIVE STATE -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">02</span><h3>Active</h3><p>empty input, suggestions visible</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input">
+              <i data-lucide="search"></i>
+              <input type="text" placeholder="Search or run a command" autofocus />
+            </div>
+            <div class="ss-section">
+              <div class="ss-section-label">Suggestions</div>
+              <div class="ss-chips">
+                <span class="ss-chip"><i data-lucide="search"></i>Find something by ID</span>
+                <span class="ss-chip"><i data-lucide="send"></i>Create a payout</span>
+                <span class="ss-chip"><i data-lucide="wallet"></i>Add funds</span>
+                <span class="ss-chip"><i data-lucide="file-plus"></i>Create a Settlement</span>
+                <span class="ss-chip"><i data-lucide="user-plus"></i>Add a new counterparty</span>
+              </div>
+            </div>
+            <div class="ss-section ss-recent">
+              <div class="ss-section-label">Recent searches</div>
+              <ul class="ss-list">
+                <li class="ss-list-item"><span class="icon-leading"><i data-lucide="clock"></i></span><span class="text"><span class="label">Acme S.A.</span></span></li>
+                <li class="ss-list-item"><span class="icon-leading"><i data-lucide="clock"></i></span><span class="text"><span class="label">Payout 2026-04</span></span></li>
+                <li class="ss-list-item"><span class="icon-leading"><i data-lucide="clock"></i></span><span class="text"><span class="label">CNPJ 12.345.678</span></span></li>
+              </ul>
+            </div>
+            <footer class="ss-foot">
+              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+      <!-- 03 SEARCH BY WORD -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">03</span><h3>Search by word</h3><p>matched a keyword → grouped results</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input">
+              <i data-lucide="search"></i>
+              <input type="text" value="payout" />
+              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
+            </div>
+            <div class="ss-section">
+              <div class="ss-section-label">Actions</div>
+              <ul class="ss-list">
+                <li class="ss-list-item is-active">
+                  <span class="icon-leading brand"><i data-lucide="send"></i></span>
+                  <span class="text">
+                    <span class="label">Create payout</span>
+                    <span class="meta">Send money to a recipient</span>
+                  </span>
+                  <span class="icon-trailing"><i data-lucide="arrow-right"></i></span>
+                </li>
+              </ul>
+            </div>
+            <div class="ss-section">
+              <div class="ss-section-label">API Documentation</div>
+              <ul class="ss-list">
+                <li class="ss-list-item">
+                  <span class="icon-leading"><i data-lucide="file-code"></i></span>
+                  <span class="text">
+                    <span class="label">Payout API reference</span>
+                    <span class="meta">Endpoints, authentication and webhooks</span>
+                  </span>
+                  <span class="icon-trailing"><i data-lucide="external-link"></i></span>
+                </li>
+              </ul>
+            </div>
+            <div class="ss-section">
+              <div class="ss-section-label">FAQ</div>
+              <ul class="ss-list">
+                <li class="ss-list-item">
+                  <span class="icon-leading"><i data-lucide="help-circle"></i></span>
+                  <span class="text">
+                    <span class="label">Criar Payout</span>
+                    <span class="meta">Nova transação de saída → Payment …</span>
+                  </span>
+                  <span class="icon-trailing"><i data-lucide="arrow-right"></i></span>
+                </li>
+                <li class="ss-list-item">
+                  <span class="icon-leading"><i data-lucide="help-circle"></i></span>
+                  <span class="text">
+                    <span class="label">Payout processing times</span>
+                    <span class="meta">Cut-off times and processing durations</span>
+                  </span>
+                  <span class="icon-trailing"><i data-lucide="external-link"></i></span>
+                </li>
+                <li class="ss-list-item">
+                  <span class="icon-leading"><i data-lucide="help-circle"></i></span>
+                  <span class="text">
+                    <span class="label">How to create a payout</span>
+                    <span class="meta">Step-by-step guide</span>
+                  </span>
+                  <span class="icon-trailing"><i data-lucide="external-link"></i></span>
+                </li>
+              </ul>
+            </div>
+            <footer class="ss-foot">
+              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+      <!-- 04 SIMILAR MATCH -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">04</span><h3>Similar match</h3><p>no exact hit → did-you-mean</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input">
+              <i data-lucide="search"></i>
+              <input type="text" value="sadasdsa" />
+              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
+            </div>
+            <div class="ss-section">
+              <div class="ss-result-label"><span class="l">Result (0)</span></div>
+              <div class="ss-no-result">No results for "<strong>sadasdsa</strong>".</div>
+              <div class="ss-hint">
+                <span class="icon-leading"><i data-lucide="help-circle"></i></span>
+                <span class="body">Are you looking for <strong>sandsa</strong>?</span>
+              </div>
+            </div>
+            <footer class="ss-foot">
+              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+      <!-- 05 ID SEARCH — DISAMBIGUATION -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">05</span><h3>ID search</h3><p>recognised UUID → asks what type</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input">
+              <i data-lucide="search"></i>
+              <input type="text" value="C5715326-BD84-45BF-8AD4-64B9E550A047" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs);" />
+              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
+            </div>
+            <div class="ss-section">
+              <div class="ss-result-label"><span class="l">Result</span></div>
+              <div class="ss-hint" style="margin-bottom: var(--space-3);">
+                <span class="icon-leading"><i data-lucide="info"></i></span>
+                <span class="body"><code>C5715326-…</code> is an <strong>ID</strong>. What are you looking for?</span>
+              </div>
+              <div class="ss-typebtns">
+                <button class="ss-typebtn" type="button"><i data-lucide="arrow-left-right"></i><span class="grow">Transaction</span><i data-lucide="chevron-right" class="chev"></i></button>
+                <button class="ss-typebtn" type="button"><i data-lucide="user"></i><span class="grow">Counterparty</span><i data-lucide="chevron-right" class="chev"></i></button>
+                <button class="ss-typebtn" type="button"><i data-lucide="wallet"></i><span class="grow">Account</span><i data-lucide="chevron-right" class="chev"></i></button>
+                <button class="ss-typebtn" type="button"><i data-lucide="zap"></i><span class="grow">Wire</span><i data-lucide="chevron-right" class="chev"></i></button>
+              </div>
+            </div>
+            <footer class="ss-foot">
+              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+      <!-- 06 ID SEARCH — INVALID -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">05b</span><h3>ID search · partial</h3><p>looks like an ID but is incomplete</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input">
+              <i data-lucide="search"></i>
+              <input type="text" value="C5715326" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);" />
+              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
+            </div>
+            <div class="ss-section">
+              <div class="ss-result-label"><span class="l">Result</span></div>
+              <div class="ss-no-result">No results for "<strong>C5715326</strong>".</div>
+              <div class="ss-hint">
+                <span class="icon-leading"><i data-lucide="info"></i></span>
+                <span class="body">If you're trying to find something by <strong>ID</strong>, insert the full ID following the type of the ID or just the ID.<br><br>Ex: <code>Transaction C123456-123131-1232131-13123131</code></span>
+              </div>
+            </div>
+            <footer class="ss-foot">
+              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+      <!-- 07 NO FOUND -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">06</span><h3>No results</h3><p>nothing — and nothing similar enough</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input">
+              <i data-lucide="search"></i>
+              <input type="text" value="sadasdsa" />
+              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
+            </div>
+            <div class="ss-section">
+              <div class="ss-result-label"><span class="l">Result</span></div>
+              <div class="ss-no-result">No results for "<strong>sadasdsa</strong>".</div>
+            </div>
+            <footer class="ss-foot">
+              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+      <!-- 08 LOADING -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">07</span><h3>Loading</h3><p>fetching results</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input">
+              <i data-lucide="loader-2" style="animation: spin 1s linear infinite;"></i>
+              <input type="text" value="sadasdsa" />
+              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
+            </div>
+            <div class="ss-section">
+              <div class="ss-illo">
+                <svg class="illustration" viewBox="0 0 120 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="ss-belt-fade" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+                      <stop offset=".30" stop-color="#fff" stop-opacity="1"/>
+                      <stop offset=".70" stop-color="#fff" stop-opacity="1"/>
+                      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+                    </linearGradient>
+                    <mask id="ss-belt-mask"><rect x="0" y="0" width="120" height="84" fill="url(#ss-belt-fade)"/></mask>
+                  </defs>
+                  <g mask="url(#ss-belt-mask)">
+                    <g class="doc-belt">
+                    <g transform="translate(43 0)">
+                      <rect x="0" y="16" width="34" height="44" rx="5" fill="var(--color-background-canvas)" stroke="var(--color-border-default)"/>
+                      <rect x="7" y="23" width="20" height="3" rx="1.5" fill="var(--color-neutral-200)"/>
+                      <rect x="7" y="30" width="14" height="3" rx="1.5" fill="var(--color-neutral-150)"/>
+                      <rect x="7" y="37" width="17" height="3" rx="1.5" fill="var(--color-neutral-150)"/>
+                      <circle cx="17" cy="50" r="5.5" stroke="var(--color-brand-secondary-400)" stroke-width="1.5" fill="none"/>
+                      <path d="M21 54 L24.5 57.5" stroke="var(--color-brand-secondary-400)" stroke-width="1.5" stroke-linecap="round"/>
+                    </g>
+                    <g transform="translate(85 0)">
+                      <rect x="0" y="16" width="34" height="44" rx="5" fill="var(--color-background-canvas)" stroke="var(--color-border-default)"/>
+                      <rect x="7" y="23" width="20" height="3" rx="1.5" fill="var(--color-neutral-200)"/>
+                      <rect x="7" y="30" width="14" height="3" rx="1.5" fill="var(--color-neutral-150)"/>
+                      <rect x="7" y="37" width="17" height="3" rx="1.5" fill="var(--color-neutral-150)"/>
+                      <circle cx="17" cy="50" r="5.5" stroke="var(--color-brand-secondary-400)" stroke-width="1.5" fill="none"/>
+                      <path d="M21 54 L24.5 57.5" stroke="var(--color-brand-secondary-400)" stroke-width="1.5" stroke-linecap="round"/>
+                    </g>
+                    <g transform="translate(127 0)">
+                      <rect x="0" y="16" width="34" height="44" rx="5" fill="var(--color-background-canvas)" stroke="var(--color-border-default)"/>
+                      <rect x="7" y="23" width="20" height="3" rx="1.5" fill="var(--color-neutral-200)"/>
+                      <rect x="7" y="30" width="14" height="3" rx="1.5" fill="var(--color-neutral-150)"/>
+                      <rect x="7" y="37" width="17" height="3" rx="1.5" fill="var(--color-neutral-150)"/>
+                      <circle cx="17" cy="50" r="5.5" stroke="var(--color-brand-secondary-400)" stroke-width="1.5" fill="none"/>
+                      <path d="M21 54 L24.5 57.5" stroke="var(--color-brand-secondary-400)" stroke-width="1.5" stroke-linecap="round"/>
+                    </g>
+                    <g transform="translate(1 0)">
+                      <rect x="0" y="16" width="34" height="44" rx="5" fill="var(--color-background-canvas)" stroke="var(--color-border-default)"/>
+                      <rect x="7" y="23" width="20" height="3" rx="1.5" fill="var(--color-neutral-200)"/>
+                      <rect x="7" y="30" width="14" height="3" rx="1.5" fill="var(--color-neutral-150)"/>
+                      <rect x="7" y="37" width="17" height="3" rx="1.5" fill="var(--color-neutral-150)"/>
+                      <circle cx="17" cy="50" r="5.5" stroke="var(--color-brand-secondary-400)" stroke-width="1.5" fill="none"/>
+                      <path d="M21 54 L24.5 57.5" stroke="var(--color-brand-secondary-400)" stroke-width="1.5" stroke-linecap="round"/>
+                    </g>
+                    </g>
+                  </g>
+                </svg>
+                <div class="title">Searching…</div>
+              </div>
+            </div>
+            <div class="ss-section">
+              <div class="ss-skeleton">
+                <div class="ss-skel-row"><div class="ss-skel-circle ss-skel-shimmer"></div><div class="ss-skel-bars"><div class="ss-skel-bar long ss-skel-shimmer"></div><div class="ss-skel-bar short ss-skel-shimmer"></div></div></div>
+                <div class="ss-skel-row"><div class="ss-skel-circle ss-skel-shimmer"></div><div class="ss-skel-bars"><div class="ss-skel-bar long ss-skel-shimmer"></div><div class="ss-skel-bar short ss-skel-shimmer"></div></div></div>
+                <div class="ss-skel-row"><div class="ss-skel-circle ss-skel-shimmer"></div><div class="ss-skel-bars"><div class="ss-skel-bar long ss-skel-shimmer"></div><div class="ss-skel-bar short ss-skel-shimmer"></div></div></div>
+              </div>
+            </div>
+            <footer class="ss-foot">
+              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+      <!-- 09 ERROR -->
+      <article class="state-card">
+        <header class="state-head"><span class="num">08</span><h3>Error</h3><p>fetch failed — retry available</p></header>
+        <div class="state-canvas">
+          <div class="ss">
+            <div class="ss-input">
+              <i data-lucide="search"></i>
+              <input type="text" value="sadasdsa" />
+              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
+            </div>
+            <div class="ss-section">
+              <div class="ss-result-label"><span class="l">Result</span></div>
+              <div class="ss-illo">
+                <svg class="illustration" viewBox="0 0 120 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="20" y="20" width="80" height="48" rx="6" fill="var(--color-feedback-danger-background)" stroke="var(--color-feedback-danger-border)"/>
+                  <path d="M40 36 L48 44 M48 36 L40 44" stroke="var(--color-feedback-danger-foreground)" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M60 30 L80 30 M60 38 L74 38 M60 46 L72 46 M60 54 L70 54" stroke="var(--color-feedback-danger-foreground)" stroke-width="2" stroke-linecap="round" stroke-opacity="0.35"/>
+                </svg>
+                <div class="title">Something went wrong</div>
+                <div class="body">We couldn't complete your request right now. Please try again in a few seconds.</div>
+              </div>
+            </div>
+            <footer class="ss-foot">
+              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
+              <span class="sep"></span>
+              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- 04 ANATOMY -->
+  
+
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">03</span>Anatomy</h2>
+    <p class="lead">One input and a stack of optional blocks. The eight states in §02 are not eight components — they are this structure with different blocks present.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Part</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td><code>.ss</code></td><td>Root panel. Caps at <code>380px</code> — a comfortable reading measure, narrow enough not to blanket the page behind it.</td></tr>
+        <tr><td><code>.ss-input</code> · <code>.ss-input-flat</code></td><td>The query row. <code>-flat</code> drops the border for when the palette sits inside a framed surface.</td></tr>
+        <tr><td><code>.ss-clear</code> · <code>.ss-kbd</code></td><td>Clear affordance and the shortcut label. The <code>kbd</code> is a <strong>label</strong> — it does not bind the key.</td></tr>
+        <tr><td><code>.ss-section</code> · <code>.ss-section-label</code></td><td>Grouping unit. Every block below is a section.</td></tr>
+        <tr><td><code>.ss-chips</code> · <code>.ss-chip</code></td><td>Suggested actions — the "you can also do this" row.</td></tr>
+        <tr><td><code>.ss-result-label</code></td><td>"RESULTS (N)" line. The count is the consumer's to compute.</td></tr>
+        <tr><td><code>.ss-list</code> · <code>.ss-list-item</code></td><td>Result rows. The row is the control.</td></tr>
+        <tr><td><code>.ss-recent</code></td><td>Section modifier for history — leading icons shrink to bare glyphs so past searches read below live results instead of competing with them.</td></tr>
+        <tr><td><code>.ss-no-result</code></td><td>Empty line naming the failed term. Emitted by the <code>emptyQuery</code> prop.</td></tr>
+        <tr><td><code>.ss-hint</code></td><td>Tip card — ID format help, or a "did you mean" suggestion.</td></tr>
+        <tr><td><code>.ss-typebtns</code> · <code>.ss-typebtn</code></td><td>Type filters shown when a query is ambiguous.</td></tr>
+        <tr><td><code>.ss-illo</code></td><td>Illustration block for empty and error states.</td></tr>
+        <tr><td><code>.ss-skeleton</code> and <code>-row</code> · <code>-circle</code> · <code>-bar</code> · <code>-bars</code> · <code>-shimmer</code></td><td>Loading placeholder. Fixed at three rows — the same height a loaded list occupies, so the panel does not jump when results arrive.</td></tr>
+        <tr><td><code>.ss-foot</code></td><td>Keyboard legend strip.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="doc-section" id="variants">
+    <h2><span class="num">04</span>Variants &amp; composition</h2>
+    <p class="lead">The palette has no size or tone variants — it is one shape. What varies is <em>which blocks are present</em>, and that is driven by props rather than modifier classes.</p>
+
+    <table class="token-table">
+      <thead><tr><th>Prop</th><th>Renders</th></tr></thead>
+      <tbody>
+        <tr><td><code>chips</code></td><td>Suggested-action row. Use for the two or three things people do most, not a menu.</td></tr>
+        <tr><td><code>sections</code> + <code>variant: 'recent'</code></td><td>Result groups; the <code>recent</code> variant styles history more quietly.</td></tr>
+        <tr><td><code>resultLabel</code></td><td>The count line above the list.</td></tr>
+        <tr><td><code>emptyQuery</code></td><td>The no-result line, with the term emphasised.</td></tr>
+        <tr><td><code>hint</code></td><td>Tip card — pair with <code>typeButtons</code> when a query is ambiguous.</td></tr>
+        <tr><td><code>typeButtons</code></td><td>Type filters. Only useful when the query genuinely matches more than one entity.</td></tr>
+        <tr><td><code>empty</code> · <code>error</code> · <code>loading</code></td><td>The three non-result states. They are mutually exclusive: <code>loading</code> wins, then <code>error</code>, then <code>empty</code>.</td></tr>
+        <tr><td><code>flat</code></td><td>Drops the panel border for use inside an already-framed surface.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-neutral callout-sm">
+      <i data-lucide="info" class="callout-icon"></i>
+      <div class="callout-body">Composition rule: the palette owns the whole screen while open, so it composes with <strong>nothing</strong>. Do not place it inside a Drawer, a Modal or a table cell — if it needs to live inside another surface, the component you want is <a href="combobox.html">Combobox</a>.</div>
+    </div>
+  </section>
+
+  <section class="doc-section" id="agents">
+    <h2><span class="num">05</span>For agents</h2>
+    <p class="lead">The palette is the most tempting component to misuse, because a search field looks like a search field. What separates it from a Combobox is scope: this one owns the whole product and takes over the screen to do it.</p>
+
+    <div class="demo-card">
+      <div class="demo-card-head"><div><h3>Use when</h3><p>All three must hold.</p></div><span class="demo-card-tag">Intent</span></div>
+      <div class="demo-card-canvas">
+        <table class="token-table"><tbody>
+          <tr><td><strong>The target could be anywhere</strong></td><td>A record, a screen, a command. If the answer is always in one field, that is a <code>Combobox</code>.</td></tr>
+          <tr><td><strong>Typing beats navigating</strong></td><td>The user knows the name or the ID. A palette rewards intent; it does not help discovery.</td></tr>
+          <tr><td><strong>Results span entity types</strong></td><td>Counterparties, transactions, settings in one list. A single type is better served by a filtered list.</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-card-head"><div><h3>Use instead</h3></div><span class="demo-card-tag">Precedence</span></div>
+      <div class="demo-card-canvas">
+        <table class="token-table">
+          <thead><tr><th>Situation</th><th>Component</th></tr></thead>
+          <tbody>
+            <tr><td>The choice fills a form field</td><td><code>Combobox</code></td></tr>
+            <tr><td>Fewer than 5 fixed options</td><td>native <code>select</code></td></tr>
+            <tr><td>Filtering a list already on screen</td><td><code>SearchPill</code> + <code>ToggleChip</code></td></tr>
+            <tr><td>Multi-select of tags</td><td><code>ToggleChip</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-card-head"><div><h3>Anti-patterns</h3><p>Each renders without error.</p></div><span class="demo-card-tag">Avoid</span></div>
+      <div class="demo-card-canvas">
+        <table class="token-table">
+          <thead><tr><th>Anti-pattern</th><th>Why it fails</th></tr></thead>
+          <tbody>
+            <tr><td>Using it as a field-level picker</td><td>It portals over the page and takes focus. Inside a form it hides the field the user was filling.</td></tr>
+            <tr><td>No ⌘K binding</td><td>A palette reachable only by clicking an icon is a search box with extra layers. The shortcut <em>is</em> the pattern.</td></tr>
+            <tr><td>Results from one entity type</td><td>The grouping machinery adds nothing, and the takeover costs the user their context.</td></tr>
+            <tr><td>Copying the footer chips</td><td>They are captions. Copying them promises keys that nothing listens for — see Behaviour.</td></tr>
+            <tr><td>Long ungrouped lists</td><td>Past roughly seven rows the user scans instead of reading. Group, or narrow the query.</td></tr>
+            <tr><td>Two palettes in one app</td><td>The shortcut can only belong to one, so the second is unreachable by the means that defines it.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-card-head"><div><h3>Rules for agents</h3></div><span class="demo-card-tag">Constraints</span></div>
+      <div class="demo-card-canvas">
+        <table class="token-table"><tbody>
+          <tr><td>One palette per application</td><td>It owns ⌘K globally.</td></tr>
+          <tr><td>Always bind ⌘K / Ctrl+K and Esc</td><td>Open and close. Without both the palette is a trap.</td></tr>
+          <tr><td>Section labels: mono uppercase, one word</td><td>They are signposts, not sentences.</td></tr>
+          <tr><td>≈7 items per section</td><td>Beyond that, group further.</td></tr>
+          <tr><td><code>static</code> only in documentation</td><td>It disables the portal, so in production the palette would be trapped by any <code>overflow</code> ancestor.</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <section class="doc-section" id="behaviour">
+    <h2><span class="num">06</span>Behaviour &amp; contract</h2>
+    <p class="lead">The palette carries more unshipped behaviour than any other component here — most of what makes it feel instant is the consumer's job.</p>
+
+    <div class="demo-card">
+      <div class="demo-card-head"><div><h3>Ships in <code>SmartSearch.tsx</code></h3></div><span class="demo-card-tag">Shipped</span></div>
+      <div class="demo-card-canvas">
+        <table class="token-table"><tbody>
+          <tr><td>State composes from props</td><td>The eight states are not a <code>state</code> enum — the component renders whichever slices it receives, in canonical order. Passing <code>hint</code> + <code>typeButtons</code> <em>is</em> the "id" state.</td></tr>
+          <tr><td>Portals over the page</td><td>Escapes any <code>overflow</code> ancestor, the same fix Modal and Drawer needed.</td></tr>
+          <tr><td><code>static</code> keeps it inline</td><td>So a doc gallery can show several states side by side without them stacking on the body.</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-card-head"><div><h3>You must implement</h3><p>Whether you use the CSS or the component.</p></div><span class="demo-card-tag">Your job</span></div>
+      <div class="demo-card-canvas">
+        <table class="token-table"><tbody>
+          <tr><td>⌘K / Ctrl+K and Esc</td><td>The component does not register global keys — that belongs to the app shell.</td></tr>
+          <tr><td>Arrow navigation and Enter</td><td>Plus <code>aria-activedescendant</code>, or a screen reader hears nothing as the selection moves.</td></tr>
+          <tr><td>Scroll-into-view</td><td>Only when the active item leaves the viewport, or it fights the mouse.</td></tr>
+          <tr><td>Focus return</td><td>Send focus back to the trigger on close, otherwise tab order restarts at the top of the page.</td></tr>
+          <tr><td>Debounce and loading</td><td>Query timing and when to show <code>loading</code> are yours.</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </section>
+    <section class="doc-section" id="presentational">
+    <h2><span class="num">07</span>Presentational only</h2>
+    <p class="lead">Four pieces look like controls and are not. Each has been copied at least once in this project on the assumption that the markup carried the behaviour.</p>
+    <table class="token-table">
+      <thead><tr><th>Element</th><th>What it does not do</th></tr></thead>
+      <tbody>
+        <tr><td><code>.ss-kbd</code> chips</td><td>Labels. They describe <code>⌘K</code>, <code>↵</code>, <code>esc</code>; they bind nothing. The listener is yours.</td></tr>
+        <tr><td><code>.ss-typebtn</code></td><td>Styling only. Marking one active does not filter — the type filter is the consumer's.</td></tr>
+        <tr><td><code>.ss-result-label</code></td><td>A slot. "RESULTS (12)" is a string you compute; the component does not count.</td></tr>
+        <tr><td><code>.ss-clear</code></td><td>Renders the affordance. Clearing the query and refocusing the input is yours.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="doc-section" id="classmap">
+    <h2><span class="num">08</span>Class map</h2>
+    <p class="lead">Every class in <code>smart-search.css</code>. If a class is there and not here, one of the two is wrong.</p>
+    <table class="token-table">
+      <thead><tr><th>Class</th><th>Owns</th></tr></thead>
+      <tbody>
+        <tr><td><code>.ss</code></td><td>Root panel, <code>380px</code> cap.</td></tr>
+        <tr><td><code>.ss-input</code> · <code>.ss-input-flat</code></td><td>Query row; <code>-flat</code> drops the border.</td></tr>
+        <tr><td><code>.ss-clear</code></td><td>Clear affordance.</td></tr>
+        <tr><td><code>.ss-kbd</code></td><td>Shortcut label — presentational.</td></tr>
+        <tr><td><code>.ss-section</code> · <code>.ss-section-label</code></td><td>Grouping unit and its header.</td></tr>
+        <tr><td><code>.ss-chips</code> · <code>.ss-chip</code></td><td>Suggested-action row.</td></tr>
+        <tr><td><code>.ss-result-label</code></td><td>Count line; the number is the consumer's.</td></tr>
+        <tr><td><code>.ss-list</code> · <code>.ss-list-item</code></td><td>Result rows — the row is the control.</td></tr>
+        <tr><td><code>.ss-recent</code></td><td>History modifier; quiets leading icons.</td></tr>
+        <tr><td><code>.ss-no-result</code></td><td>Empty line naming the term (<code>emptyQuery</code>).</td></tr>
+        <tr><td><code>.ss-hint</code></td><td>Tip / did-you-mean card.</td></tr>
+        <tr><td><code>.ss-typebtns</code> · <code>.ss-typebtn</code></td><td>Type filters for ambiguous queries.</td></tr>
+        <tr><td><code>.ss-illo</code></td><td>Empty and error illustration block.</td></tr>
+        <tr><td><code>.ss-skeleton</code> · <code>-row</code> · <code>-circle</code> · <code>-bar</code> · <code>-bars</code> · <code>-shimmer</code></td><td>Loading placeholder, fixed at three rows so the panel does not jump.</td></tr>
+        <tr><td><code>.ss-foot</code></td><td>Keyboard legend strip.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer class="doc-foot">
+    <span>ATTRUS Design System · Smart search · <span data-ds-version></span></span>
+    <a href="index.html">← Design system</a>
+  </footer>
+
+</main>
+<script>lucide.createIcons();</script>
+</body>
+</html>

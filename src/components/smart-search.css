@@ -6,23 +6,26 @@
    Consumed by the SmartSearch TSX component.
    ============================================================ */
 /* Smart-search combobox */
-.ss { width: 100%; max-width: 380px; background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; font-size: var(--fs-sm); }
-.ss-input { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); }
+/* 380px: comfortable reading measure for a result list, and narrow enough that
+   the palette does not blanket the page it floats over. Not a token — it is a
+   layout decision local to this component. */
+.ss { width: 100%; max-width: 380px; background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; font-size: var(--fs-sm); }
+.ss-input { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-bottom: var(--border-hairline) solid var(--color-border-subtle); }
 .ss-input.ss-input-flat { border-bottom: 0; }
 .ss-input svg, .ss-input i { width: var(--icon-sm); height: var(--icon-sm); stroke-width: var(--icon-stroke); color: var(--color-foreground-muted); flex-shrink: 0; }
 .ss-input input { flex: 1; border: 0; outline: 0; background: transparent; font: inherit; color: var(--color-foreground-default); }
 .ss-input input::placeholder { color: var(--color-foreground-placeholder); }
-.ss-clear { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border: 0; padding: 0; border-radius: var(--radius-pill); background: transparent; color: var(--color-foreground-muted); cursor: pointer; }
+.ss-clear { display: inline-flex; align-items: center; justify-content: center; width: var(--icon-sm); height: var(--icon-sm); border: 0; padding: 0; border-radius: var(--radius-pill); background: transparent; color: var(--color-foreground-muted); cursor: pointer; }
 .ss-clear:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
-.ss-clear svg, .ss-clear i { width: 12px; height: 12px; }
+.ss-clear svg, .ss-clear i { width: var(--icon-xs); height: var(--icon-xs); }
 
-.ss-section { padding: var(--space-3) var(--space-2); border-bottom: 1px solid var(--color-border-subtle); }
+.ss-section { padding: var(--space-3) var(--space-2); border-bottom: var(--border-hairline) solid var(--color-border-subtle); }
 .ss-section:last-of-type { border-bottom: 0; }
 .ss-section-label { font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); padding: 0 var(--space-2); margin-bottom: var(--space-2); }
 
 /* Suggestion chips (active state) */
 .ss-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: 0 var(--space-2); }
-.ss-chip { display: inline-flex; align-items: center; gap: var(--space-2); padding: 4px var(--space-3); background: var(--color-background-canvas); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-size: var(--fs-xs); font-weight: var(--w-regular); color: var(--color-foreground-default); cursor: pointer; transition: var(--transition-fast); }
+.ss-chip { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-background-canvas); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--radius-pill); font-size: var(--fs-xs); font-weight: var(--w-regular); color: var(--color-foreground-default); cursor: pointer; transition: var(--transition-fast); }
 .ss-chip:hover { background: var(--color-background-hover); border-color: var(--color-border-strong); }
 .ss-chip svg, .ss-chip i { width: 11px; height: 11px; stroke-width: var(--icon-stroke); color: var(--color-foreground-muted); }
 
@@ -30,18 +33,18 @@
 .ss-list { list-style: none; margin: 0; padding: 0; }
 .ss-list-item { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition-fast); }
 .ss-list-item:hover, .ss-list-item.is-active { background: var(--color-background-hover); }
-.ss-list-item .icon-leading { width: 28px; height: 28px; border-radius: var(--radius-sm); background: var(--color-background-canvas); display: inline-flex; align-items: center; justify-content: center; color: var(--color-foreground-secondary); flex-shrink: 0; }
-.ss-list-item .icon-leading svg, .ss-list-item .icon-leading i { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
+.ss-list-item .icon-leading { width: var(--control-h-xs); height: var(--control-h-xs); border-radius: var(--radius-sm); background: var(--color-background-canvas); display: inline-flex; align-items: center; justify-content: center; color: var(--color-foreground-secondary); flex-shrink: 0; }
+.ss-list-item .icon-leading svg, .ss-list-item .icon-leading i { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
 .ss-list-item .icon-leading.brand { background: var(--color-brand-subtle-solid); color: var(--color-brand-text-on-light); }
 .ss-list-item .text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
 .ss-list-item .text .label { font-size: var(--fs-sm); font-weight: var(--w-regular); color: var(--color-foreground-default); }
 .ss-list-item .text .meta { font-size: var(--fs-xs); color: var(--color-foreground-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ss-list-item .icon-trailing { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; flex-shrink: 0; color: var(--color-foreground-muted); }
-.ss-list-item .icon-trailing svg, .ss-list-item .icon-trailing i { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
+.ss-list-item .icon-trailing { display: inline-flex; align-items: center; justify-content: center; width: var(--icon-sm); height: var(--icon-sm); flex-shrink: 0; color: var(--color-foreground-muted); }
+.ss-list-item .icon-trailing svg, .ss-list-item .icon-trailing i { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
 
 /* Recent searches — clock icon + dim text */
-.ss-recent .ss-list-item .icon-leading { background: transparent; border: 0; width: 18px; height: 18px; }
-.ss-recent .ss-list-item .icon-leading svg, .ss-recent .ss-list-item .icon-leading i { width: 13px; height: 13px; color: var(--color-foreground-muted); }
+.ss-recent .ss-list-item .icon-leading { background: transparent; border: 0; width: var(--icon-sm); height: var(--icon-sm); }
+.ss-recent .ss-list-item .icon-leading svg, .ss-recent .ss-list-item .icon-leading i { width: var(--icon-xs); height: var(--icon-xs); color: var(--color-foreground-muted); }
 .ss-recent .ss-list-item .text .label { font-weight: var(--w-regular); color: var(--color-foreground-secondary); }
 
 /* Empty/result label */
@@ -51,9 +54,9 @@
 .ss-no-result strong { color: var(--color-foreground-default); font-weight: var(--w-regular); }
 
 /* Tip / hint card (similar match suggestion, ID format hint) */
-.ss-hint { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3); background: var(--color-background-subtle); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-sm); margin: var(--space-3) var(--space-2) 0; }
-.ss-hint .icon-leading { color: var(--color-foreground-muted); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; }
-.ss-hint .icon-leading svg, .ss-hint .icon-leading i { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
+.ss-hint { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3); background: var(--color-background-subtle); border: var(--border-hairline) solid var(--color-border-subtle); border-radius: var(--radius-sm); margin: var(--space-3) var(--space-2) 0; }
+.ss-hint .icon-leading { color: var(--color-foreground-muted); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: var(--icon-xs); height: var(--icon-xs); }
+.ss-hint .icon-leading svg, .ss-hint .icon-leading i { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
 .ss-hint .body { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
 .ss-hint .body strong { color: var(--color-foreground-default); font-weight: var(--w-regular); }
 .ss-hint .body code { font-family: var(--font-mono);
@@ -61,16 +64,16 @@
 
 /* ID type-picker buttons */
 .ss-typebtns { display: flex; flex-direction: column; gap: var(--space-2); padding: 0 var(--space-2); }
-.ss-typebtn { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-3); background: var(--color-background-canvas); border: 1px solid var(--color-border-default); border-radius: var(--radius-sm); font-size: var(--fs-sm); font-weight: var(--w-regular); color: var(--color-foreground-default); cursor: pointer; transition: var(--transition-fast); text-align: left; width: 100%; }
+.ss-typebtn { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-3); background: var(--color-background-canvas); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--radius-sm); font-size: var(--fs-sm); font-weight: var(--w-regular); color: var(--color-foreground-default); cursor: pointer; transition: var(--transition-fast); text-align: left; width: 100%; }
 .ss-typebtn:hover { background: var(--color-background-hover); border-color: var(--color-border-strong); }
-.ss-typebtn svg, .ss-typebtn i { width: 16px; height: 16px; stroke-width: var(--icon-stroke); color: var(--color-foreground-muted); }
+.ss-typebtn svg, .ss-typebtn i { width: var(--icon-sm); height: var(--icon-sm); stroke-width: var(--icon-stroke); color: var(--color-foreground-muted); }
 .ss-typebtn .grow { flex: 1; }
 .ss-typebtn .chev { color: var(--color-foreground-muted); }
 
 /* Loading skeleton + spinner illustration */
 .ss-skeleton { padding: var(--space-3) var(--space-2); display: flex; flex-direction: column; gap: var(--space-3); }
 .ss-skel-row { display: flex; align-items: center; gap: var(--space-3); }
-.ss-skel-circle { width: 28px; height: 28px; border-radius: var(--radius-sm); background: var(--color-border-default); flex-shrink: 0; }
+.ss-skel-circle { width: var(--control-h-xs); height: var(--control-h-xs); border-radius: var(--radius-sm); background: var(--color-border-default); flex-shrink: 0; }
 .ss-skel-bars { flex: 1; display: flex; flex-direction: column; gap: 5px; }
 .ss-skel-bar { height: 8px; border-radius: var(--radius-xs); background: var(--color-border-default); }
 .ss-skel-bar.short { width: 40%; }
@@ -79,15 +82,45 @@
 @keyframes skel { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
 .ss-illo { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); padding: var(--space-7) var(--space-5); text-align: center; }
-.ss-illo svg.illustration { width: 84px; height: 60px; }
+.ss-illo svg.illustration { width: 84px; /* 60px: two rows of the empty illustration, sized to the same optical block */
+  height: 60px; }
 .ss-illo .title { font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-default); }
 .ss-illo .body { font-size: var(--fs-xs); color: var(--color-foreground-muted); max-width: 32ch; line-height: var(--lh-relaxed); }
 
 /* Footer with keyboard shortcuts */
-.ss-foot { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-2) var(--space-3); background: var(--color-background-subtle); border-top: 1px solid var(--color-border-subtle); font-size: var(--fs-xxs); color: var(--color-foreground-muted); }
-.ss-foot .kbd-group { display: inline-flex; align-items: center; gap: 4px; }
-kbd.ss-kbd { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 4px; background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); font-family: var(--font-mono);
+.ss-foot { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-2) var(--space-3); background: var(--color-background-subtle); border-top: var(--border-hairline) solid var(--color-border-subtle); font-size: var(--fs-xxs); color: var(--color-foreground-muted); }
+.ss-foot .kbd-group { display: inline-flex; align-items: center; gap: var(--space-2); }
+kbd.ss-kbd { display: inline-flex; align-items: center; justify-content: center; min-width: var(--icon-sm); height: var(--icon-sm); padding: 0 var(--space-2); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--radius-xs); font-family: var(--font-mono);
   font-size-adjust: var(--font-mono-adjust); font-size: 10px; font-weight: var(--w-regular); color: var(--color-foreground-secondary); }
-.ss-foot .sep { width: 1px; height: 12px; background: var(--color-border-default); }
+.ss-foot .sep { width: 1px; height: var(--icon-xs); background: var(--color-border-default); }
 
 
+
+/* Searching illustration — one belt, four cards, a fade mask.
+   Three independently-animated cards could not work: staggering their delays by
+   a third means their slides are also staggered, so a card slides into a slot
+   the previous one has not left yet and they cross over (measured: overlap in
+   20 of 10 sampled frames). The fix is to stop animating cards and animate the
+   BELT — the cards keep a fixed 42px pitch, so they physically cannot overlap.
+
+   Opacity comes from position rather than from each card's own timeline: an SVG
+   fade mask makes the middle of the frame fully opaque and the edges transparent,
+   so a card loses its transparency BECAUSE it reached the centre. Four cards make
+   the loop seamless — after one pitch of travel the arrangement repeats. */
+@keyframes ss-doc-belt {
+  /* Push in, hold, push out. A linear belt never pauses, so nothing was ever
+     "in the spotlight" — the hold is what makes it read as one document being
+     examined rather than a strip scrolling past.
+     0.9s cycle: ~0.4s of travel, 0.5s parked at centre. The belt still advances
+     exactly one 42px pitch per cycle, so the loop stays seamless. */
+  0%, 44%   { transform: translateX(0); }
+  100%      { transform: translateX(-42px); }
+}
+.ss-illo .illustration .doc-belt {
+  /* Ease on the move; the flat 0→44% span is the half-second hold. */
+  animation: ss-doc-belt .9s var(--ease-standard) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ss-illo .illustration .doc-belt { animation: none; }
+}

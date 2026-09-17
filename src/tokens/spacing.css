@@ -18,7 +18,18 @@
   --space-7:   24px;
   --space-8:   32px;
   /* Indent step for a table subrow, multiplied by its depth (see table.css §12) */
-  --subrow-indent: 24px;  /* @kind spacing */
+  --subrow-indent: 16px;  /* @kind spacing */
+
+  /* Control height scale — the box every in-line control shares.
+     Multiples of 8, so a control, a button and an input on the same row align
+     without per-instance tuning. Named to match the button sizes, because those
+     were the de-facto scale before this existed: .btn-xs/-sm/(md)/-lg.
+     Padding-based items (.sb-item, .tab) stay out of this on purpose — they are
+     list and navigation rows, not in-line controls. */
+  --control-h-xs: 24px;  /* @kind spacing */
+  --control-h-sm: 32px;  /* @kind spacing */
+  --control-h-md: 40px;  /* @kind spacing */  /* default */
+  --control-h-lg: 48px;  /* @kind spacing */
   --space-9:   40px;
   --space-10:  48px;
   --space-12:  64px;

@@ -12,6 +12,8 @@ export interface SSItem {
 }
 
 export interface SSSection {
+  /** `recent` renders `.ss-recent` — history styling, quieter than results. */
+  variant?: 'default' | 'recent';
   /** Uppercase section label (e.g. "Counterparties"). */
   label?: React.ReactNode;
   items: SSItem[];
@@ -26,6 +28,8 @@ export interface SSTypeButton {
 }
 
 export interface SmartSearchProps {
+  /** Empty-state line — renders `.ss-no-result` with the term emphasised. */
+  emptyQuery?: string;
   value: string;
   onChange?: (value: string) => void;
   placeholder?: string;

@@ -7,6 +7,10 @@ import * as React from 'react';
  */
 
 export interface SearchPillProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+  /** Field height: 'md' (40px, default) or 'sm' (32px). Named fieldSize because
+      the native input `size` attribute means character count, not height. Use
+      'sm' inside a toolbar, where a 40px field towers over 32px buttons. */
+  fieldSize?: 'sm' | 'md';
   /** Keyboard hint rendered as a .kbd chip (e.g. "⌘K"). */
   shortcut?: string;
   /** Leading icon — defaults to the canonical search glyph. */
@@ -26,11 +30,12 @@ const SearchGlyph: React.FC = () => (
 export const SearchPill: React.FC<SearchPillProps> = ({
   shortcut,
   icon,
+  fieldSize = 'md',
   wrapperClassName,
   wrapperStyle,
   ...rest
 }) => (
-  <div className={['pill-search', wrapperClassName || ''].filter(Boolean).join(' ')} style={wrapperStyle}>
+  <div className={['pill-search', fieldSize === 'sm' ? 'pill-search-sm' : '', wrapperClassName || ''].filter(Boolean).join(' ')} style={wrapperStyle}>
     {icon != null ? icon : <SearchGlyph />}
     <input type="search" {...rest} />
     {shortcut ? <span className="kbd">{shortcut}</span> : null}

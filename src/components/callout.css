@@ -44,13 +44,34 @@
   gap: var(--space-3);
   padding: var(--space-4) var(--space-5);
   border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--callout-tint) 8%, var(--color-background-surface));
-  border: 1px solid color-mix(in srgb, var(--callout-tint) 22%, transparent);
+  /* Quieter by default: the tint carries the tone and the hairline just closes
+     the shape. 22% read as a hard rule around a note that should recede — the
+     icon and the copy are what should be seen first. */
+  background: color-mix(in srgb, var(--callout-tint) 5%, var(--color-background-surface));
+  border: 1px solid color-mix(in srgb, var(--callout-tint) 12%, transparent);
 }
+
+.callout-icon > svg,
+.callout-icon > i,
+.callout > svg,
+.callout > i {
+  /* Lucide emits a 24px svg with no intrinsic size; without this it overflows
+     the 18px slot whether it IS the slot or sits inside one. */
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.callout-sm .callout-icon > svg,
+.callout-sm .callout-icon > i { width: 16px; height: 16px; }
 
 .callout > i,
 .callout > svg,
 .callout-icon {
+  flex-shrink: 0;
+  align-self: flex-start;
+  /* Optical: pull the 18px glyph onto the cap line of the first row of text
+     (line-height 15.6px), rather than centring it on the whole block. */
+  margin-top: -1px;
   width: 18px;
   height: 18px;
   flex-shrink: 0;
@@ -112,13 +133,22 @@
    .btn-ghost → picks up the tone for text/hover.
    .btn-danger / .btn-primary stay canonical (solid) for strong/destructive. */
 .callout-actions .btn-secondary {
-  background: color-mix(in srgb, var(--callout-tint) 14%, var(--color-background-surface));
-  border-color: color-mix(in srgb, var(--callout-tint) 34%, transparent);
-  color: var(--callout-fg);
+  /* Kept in step with the box (5% / 12%): at 14% fill and a 34% border the
+     action was louder than the note holding it. The fill is what makes the
+     button findable here; the border only needs to close the shape. */
+  background: color-mix(in srgb, var(--callout-tint) 10%, var(--color-background-surface));
+  border-color: color-mix(in srgb, var(--callout-tint) 18%, transparent);
+  /* Label reads as text, not as tone. It used to inherit --callout-fg (sky by
+     default), which put a blue label at ~4.3:1 on a 10% fill — the box already
+     says what kind of note this is, so the action only has to be readable.
+     Tonal variants below re-assert their own fg, where the colour IS the message. */
+  color: var(--color-foreground-default);
 }
 .callout-actions .btn-secondary:hover {
-  background: color-mix(in srgb, var(--callout-tint) 22%, var(--color-background-surface));
-  border-color: color-mix(in srgb, var(--callout-tint) 50%, transparent);
+  /* Hover moves the fill, not the border — a border that jumps 18→50% reads as
+     the control changing shape rather than responding. */
+  background: color-mix(in srgb, var(--callout-tint) 16%, var(--color-background-surface));
+  border-color: color-mix(in srgb, var(--callout-tint) 28%, transparent);
 }
 .callout-actions .btn-ghost { color: var(--callout-fg); }
 .callout-actions .btn-ghost:hover { background: color-mix(in srgb, var(--callout-tint) 12%, transparent); color: var(--callout-fg); }
@@ -150,6 +180,12 @@
 .callout-danger  { --callout-tint: var(--color-danger-500);  --callout-fg: var(--color-feedback-danger-foreground); }
 .callout-neutral { --callout-tint: var(--color-neutral-500);  --callout-fg: var(--color-foreground-muted); }
 
+/* Tonal actions: on warn / success / danger the hue is the message, so the label
+   takes the tone back. Neutral and info keep the plain text colour. */
+.callout-warn .callout-actions .btn-secondary,
+.callout-success .callout-actions .btn-secondary,
+.callout-danger .callout-actions .btn-secondary { color: var(--callout-fg); }
+
 /* ---- compact size ---- */
 .callout-sm { padding: var(--space-3) var(--space-4); gap: var(--space-2-5); }
 .callout-sm > i, .callout-sm > svg, .callout-sm .callout-icon { width: 16px; height: 16px; }
@@ -172,7 +208,7 @@
 .callout-bar .callout-title { font-size: var(--fs-sm); }
 
 /* rounded alert bar (when not edge-to-edge) */
-.callout-bar.callout-rounded { border-radius: var(--radius-md); border-left-width: 3px; border-top: 1px solid color-mix(in srgb, var(--callout-tint) 22%, transparent); border-right: 1px solid color-mix(in srgb, var(--callout-tint) 22%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--callout-tint) 22%, transparent); }
+.callout-bar.callout-rounded { border-radius: var(--radius-md); border-left-width: 3px; border-top: 1px solid color-mix(in srgb, var(--callout-tint) 12%, transparent); border-right: 1px solid color-mix(in srgb, var(--callout-tint) 12%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--callout-tint) 12%, transparent); }
 
 /* ---- Inline: content-sized, single-line (badges, hero notices) ---- */
 .callout-inline { display: inline-flex; width: auto; align-items: center; }
@@ -194,3 +230,4 @@
 .callout-danger.on-inverse  { --callout-fg-inv: var(--color-danger-300); }
 .callout-info.on-inverse    { --callout-fg-inv: var(--color-brand-accent-300); }
 .callout-neutral.on-inverse { --callout-fg-inv: var(--color-foreground-inverse-muted); }
+

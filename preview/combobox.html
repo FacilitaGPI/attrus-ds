@@ -7,8 +7,10 @@
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
-<link rel="stylesheet" href="components/combobox.css">
-<link rel="stylesheet" href="components/smart-search.css">
+<script src="../version.js"></script>
+<link rel="stylesheet" href="components/combobox.css?v=15">
+<link rel="stylesheet" href="components/smart-search.css?v=15">
+<link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
   body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
@@ -38,7 +40,7 @@
   .state-head p { font-size: var(--fs-sm); color: var(--color-foreground-muted); margin: 0 0 0 auto; }
   .state-canvas { padding: var(--space-7) var(--space-5); background: var(--color-background-subtle); flex: 1; display: flex; justify-content: center; align-items: flex-start; }
 
-  /* Smart-search rules now live in components/smart-search.css (single source) */
+  /* Smart-search rules now live in components/smart-search.css?v=15 (single source) */
 
   /* Listing combobox card (general purpose) */
   .listing-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); box-shadow: var(--shadow-xs); }
@@ -66,13 +68,54 @@
   .principle .ic svg, .principle .ic i { width: 15px; height: 15px; stroke-width: var(--icon-stroke); }
   .principle strong { display: block; font-size: var(--fs-md); font-weight: var(--w-bold); color: var(--color-foreground-default); margin-bottom: var(--space-2); letter-spacing: var(--ls-title); }
   .principle p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .view-controls { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); }
+  .page-theme { display: inline-flex; align-items: center; gap: var(--space-2); height: var(--control-h-md); padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); }
+  .page-theme [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+  .api { background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-5) var(--space-6); margin-bottom: var(--space-8); box-shadow: var(--shadow-xs); }
+  .api-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: var(--space-5) var(--space-6); }
+  .api-k { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+  .api-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .api-tags code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-accent); background: var(--color-brand-subtle); padding: 2px var(--space-2); border-radius: var(--radius-2xs); }
+  .api-prefer { margin: var(--space-5) 0 0; padding-top: var(--space-4); border-top: var(--border-hairline) solid var(--color-border-subtle); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .api-prefer strong { color: var(--color-foreground-brand); }
+  .api-prefer code, .api-prefer a { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  /* Block rhythm — the page owns the gap between blocks, since components ship
+     no outer margin (doc-guidelines §08). */
+  .doc-section > .listing-card,
+  .doc-section > .demo-row,
+  .doc-section > .spec,
+  .doc-section > .callout,
+  .doc-section > table { margin-bottom: var(--space-6); }
+  .doc-section > *:last-child { margin-bottom: 0; }
+
+  .doc-foot { margin-top: var(--space-12); padding-top: var(--space-5); border-top: var(--border-hairline) solid var(--color-border-default); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; }
+  .cls { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  .cls th, .cls td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: var(--border-hairline) solid var(--color-border-subtle); vertical-align: top; }
+  .cls thead th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .cls tbody td:first-child { width: 36%; color: var(--color-foreground-default); }
+  .cls tbody td:last-child { color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .cls tr:last-child td { border-bottom: 0; }
+  .cls code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .sub { font-size: var(--fs-md); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: var(--space-8) 0 var(--space-3); }
+  .body { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 74ch; margin: 0 0 var(--space-4); }
+  .body code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
 </style>
 </head>
 <body>
 
 <main class="doc">
+  <script type="application/json" id="ds-api">{"component":"Combobox","import":"const { Combobox } = ATTRUS","cssClass":".combobox","status":"stable","intent":"Single-select form control with filtering — the choice writes into a field.","variants":["searchable","filters","meta","footMeta","footer","static","is-invalid","is-disabled"],"props":[{"name":"options","type":"ComboOption[]","note":"label, value, meta?, trailing?, group?, disabled?"},{"name":"value","type":"string"},{"name":"onChange","type":"(value: string) => void"},{"name":"searchable","type":"boolean","default":"false","note":"turn on above ~8 options"},{"name":"placeholder","type":"string"},{"name":"status","type":"'default' | 'error'"},{"name":"disabled","type":"boolean"},{"name":"static","type":"boolean","default":"false","note":"render popover inline — doc galleries only, never production"},{"name":"filters","type":"ReactNode"},{"name":"meta","type":"ReactNode"},{"name":"footMeta","type":"ReactNode"},{"name":"footer","type":"ReactNode"},{"name":"onFooterClick","type":"() => void"}],"useWhen":["The choice writes into a field","The list is long enough that scanning fails (~8+ options)","Exactly one value is selected"],"useInstead":[{"when":"Under ~5 fixed options","use":"native <select>"},{"when":"Searching across entities, not filling a field","use":"SmartSearch"},{"when":"More than one value","use":"ToggleChip group"},{"when":"Options need a description","use":"SelectableCard"},{"when":"Free text with suggestions","use":"Input with suggestion list"}],"antiPatterns":["Rendering the popover inline inside a scrolling ancestor — it gets clipped; static is for galleries only","Using it inside Drawer/Modal without preserving the 9200 layer that clears scrim 9000 and panel 9100","Copying the footer kbd chips and expecting keyboard navigation — they are labels","Omitting aria-activedescendant in a CSS-only build — the highlight moves silently","Unmarked disabled options — arrow navigation walks a filtered list and they become dead stops","Hand-rolled red border instead of .is-invalid — the default focus ring overpaints it","Expecting the TSX to emit .combobox-avatar — no prop renders it"],"constraints":["One combobox open at a time","searchable above ~8 options","Popover caps at 320px (~7 rows)","Trigger stays --control-h-md (40px) to align with inputs and buttons","Never nest interactive content inside an option — the row is the control"],"behaviour":{"shippedInTsx":["Popover portalled to body with fixed coords, repositioned on scroll/resize","Arrow navigation via handler on the wrapper, not the input — works from trigger and search field","Esc listener on document, because the popover is portalled","Active option scrolled into view only when it has left the window","Disabled options skipped by navigating a filtered selectable list","Hover and keyboard share one .is-active highlight","Outside-click checks wrapper and portalled popover","Case-insensitive filter over label and meta, with empty state and reachable footer"],"cssOnlyMustImplement":["Toggle .is-open — the popover is display:none without it","Arrow / Enter / Esc key handling","aria-activedescendant on the input and id per option","role=\"listbox\" / role=\"option\" and aria-selected","Return focus to the trigger on close","Positioning tied to the trigger rect if you portal it yourself"],"presentationalOnly":["Footer kbd chips — labels, not bindings","Chevron rotation — driven by .is-open","Option check — reflects .is-selected, does not select","meta / footMeta slots — the count is yours","Filter chips — styling only; filtering is yours"]}}</script>
 
   <a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<div class="view-controls">
+  <a class="xlink" href="../components/Combobox/Combobox.html" title="Typed React bench for Combobox"><i data-lucide="code-2"></i>Combobox TSX</a>
+  
+  <button class="page-theme" data-theme-toggle aria-label="Toggle theme">
+    <span data-theme-icon aria-hidden="true">☾</span>
+    <span data-theme-label>Dark</span>
+  </button>
+</div>
 
   <header class="doc-header">
     <div>
@@ -82,13 +125,27 @@
     <span class="doc-meta-pill"><i data-lucide="check-circle-2"></i>Ready</span>
   </header>
 
+  <section class="api" aria-label="API summary">
+    <div class="api-grid">
+      <div class="api-col"><div class="api-k">Import</div><div class="api-tags"><code>const { Combobox } = ATTRUS</code></div></div>
+      <div class="api-col"><div class="api-k">CSS class</div><div class="api-tags"><code>.combobox</code></div></div>
+      <div class="api-col"><div class="api-k">Variants</div><div class="api-tags"><code>searchable</code><code>filters</code><code>meta</code><code>footMeta</code><code>footer</code><code>static</code><code>is-invalid</code><code>is-disabled</code></div></div>
+      <div class="api-col"><div class="api-k">Key props</div><div class="api-tags"><code>options[]</code><code>value?</code><code>onChange?</code><code>searchable?</code><code>placeholder?</code><code>status?</code><code>disabled?</code><code>static?</code></div></div>
+    </div>
+    <p class="api-prefer"><strong>Prefer</strong> a combobox when the choice <em>fills a field</em> and the list is long enough to need filtering. Under 5 fixed options use a native <code>select</code>; for global search across entities use <a href="smart-search.html">Smart search</a>; for multi-select use <code>ToggleChip</code>.</p>
+  </section>
+
   <nav class="doc-nav">
     <a href="#purpose">01 Purpose</a>
-    <a href="#listing">02 Listing combobox</a>
-    <a href="#smart">03 Smart searchbar — 8 states</a>
-    <a href="#anatomy">04 Anatomy</a>
-    <a href="#a11y">05 Keyboard & a11y</a>
-    <a href="#tokens">06 Tokens</a>
+    <a href="#listing">02 Listing</a>
+    <a href="#anatomy">03 Anatomy</a>
+    <a href="#states">04 States</a>
+    <a href="#a11y">05 Accessibility</a>
+    <a href="#agents">06 For agents</a>
+    <a href="#behaviour">07 Behaviour</a>
+    <a href="#classmap">08 Class map</a>
+    <a href="#tokens">09 Tokens</a>
+    <a href="smart-search.html">Smart search →</a>
   </nav>
 
   <!-- 01 PURPOSE -->
@@ -280,338 +337,8 @@
   </section>
 
   <!-- 03 SMART SEARCHBAR — THE 8 STATES -->
-  <section class="doc-section" id="smart">
-    <h2><span class="num">03</span>Smart searchbar — 8 canonical states</h2>
-    <p class="lead">A global command palette opened by <kbd class="ss-kbd">⌘K</kbd>. Every state below ships in the kit — the bar moves through them as the user types.</p>
-
-    <div class="state-grid">
-
-      <!-- 01 INACTIVE -->
-      <article class="state-card">
-        <header class="state-head"><span class="num">01</span><h3>Inactive</h3><p>before focus</p></header>
-        <div class="state-canvas">
-          <div class="ss">
-            <div class="ss-input ss-input-flat">
-              <i data-lucide="search"></i>
-              <input type="text" placeholder="Search or run a command" disabled />
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- 02 ACTIVE STATE -->
-      <article class="state-card">
-        <header class="state-head"><span class="num">02</span><h3>Active</h3><p>empty input, suggestions visible</p></header>
-        <div class="state-canvas">
-          <div class="ss">
-            <div class="ss-input">
-              <i data-lucide="search"></i>
-              <input type="text" placeholder="Search or run a command" autofocus />
-            </div>
-            <div class="ss-section">
-              <div class="ss-section-label">Suggestions</div>
-              <div class="ss-chips">
-                <span class="ss-chip"><i data-lucide="search"></i>Find something by ID</span>
-                <span class="ss-chip"><i data-lucide="send"></i>Create a payout</span>
-                <span class="ss-chip"><i data-lucide="wallet"></i>Add funds</span>
-                <span class="ss-chip"><i data-lucide="file-plus"></i>Create a Settlement</span>
-                <span class="ss-chip"><i data-lucide="user-plus"></i>Add a new counterparty</span>
-              </div>
-            </div>
-            <div class="ss-section ss-recent">
-              <div class="ss-section-label">Recent searches</div>
-              <ul class="ss-list">
-                <li class="ss-list-item"><span class="icon-leading"><i data-lucide="clock"></i></span><span class="text"><span class="label">Acme S.A.</span></span></li>
-                <li class="ss-list-item"><span class="icon-leading"><i data-lucide="clock"></i></span><span class="text"><span class="label">Payout 2026-04</span></span></li>
-                <li class="ss-list-item"><span class="icon-leading"><i data-lucide="clock"></i></span><span class="text"><span class="label">CNPJ 12.345.678</span></span></li>
-              </ul>
-            </div>
-            <footer class="ss-foot">
-              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
-              <span class="sep"></span>
-              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
-              <span class="sep"></span>
-              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
-            </footer>
-          </div>
-        </div>
-      </article>
-
-      <!-- 03 SEARCH BY WORD -->
-      <article class="state-card">
-        <header class="state-head"><span class="num">03</span><h3>Search by word</h3><p>matched a keyword → grouped results</p></header>
-        <div class="state-canvas">
-          <div class="ss">
-            <div class="ss-input">
-              <i data-lucide="search"></i>
-              <input type="text" value="payout" />
-              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
-            </div>
-            <div class="ss-section">
-              <div class="ss-section-label">Actions</div>
-              <ul class="ss-list">
-                <li class="ss-list-item is-active">
-                  <span class="icon-leading brand"><i data-lucide="send"></i></span>
-                  <span class="text">
-                    <span class="label">Create payout</span>
-                    <span class="meta">Send money to a recipient</span>
-                  </span>
-                  <span class="icon-trailing"><i data-lucide="arrow-right"></i></span>
-                </li>
-              </ul>
-            </div>
-            <div class="ss-section">
-              <div class="ss-section-label">API Documentation</div>
-              <ul class="ss-list">
-                <li class="ss-list-item">
-                  <span class="icon-leading"><i data-lucide="file-code"></i></span>
-                  <span class="text">
-                    <span class="label">Payout API reference</span>
-                    <span class="meta">Endpoints, authentication and webhooks</span>
-                  </span>
-                  <span class="icon-trailing"><i data-lucide="external-link"></i></span>
-                </li>
-              </ul>
-            </div>
-            <div class="ss-section">
-              <div class="ss-section-label">FAQ</div>
-              <ul class="ss-list">
-                <li class="ss-list-item">
-                  <span class="icon-leading"><i data-lucide="help-circle"></i></span>
-                  <span class="text">
-                    <span class="label">Criar Payout</span>
-                    <span class="meta">Nova transação de saída → Payment …</span>
-                  </span>
-                  <span class="icon-trailing"><i data-lucide="arrow-right"></i></span>
-                </li>
-                <li class="ss-list-item">
-                  <span class="icon-leading"><i data-lucide="help-circle"></i></span>
-                  <span class="text">
-                    <span class="label">Payout processing times</span>
-                    <span class="meta">Cut-off times and processing durations</span>
-                  </span>
-                  <span class="icon-trailing"><i data-lucide="external-link"></i></span>
-                </li>
-                <li class="ss-list-item">
-                  <span class="icon-leading"><i data-lucide="help-circle"></i></span>
-                  <span class="text">
-                    <span class="label">How to create a payout</span>
-                    <span class="meta">Step-by-step guide</span>
-                  </span>
-                  <span class="icon-trailing"><i data-lucide="external-link"></i></span>
-                </li>
-              </ul>
-            </div>
-            <footer class="ss-foot">
-              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
-              <span class="sep"></span>
-              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
-              <span class="sep"></span>
-              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
-            </footer>
-          </div>
-        </div>
-      </article>
-
-      <!-- 04 SIMILAR MATCH -->
-      <article class="state-card">
-        <header class="state-head"><span class="num">04</span><h3>Similar match</h3><p>no exact hit → did-you-mean</p></header>
-        <div class="state-canvas">
-          <div class="ss">
-            <div class="ss-input">
-              <i data-lucide="search"></i>
-              <input type="text" value="sadasdsa" />
-              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
-            </div>
-            <div class="ss-section">
-              <div class="ss-result-label"><span class="l">Result (0)</span></div>
-              <div class="ss-no-result">No results for "<strong>sadasdsa</strong>".</div>
-              <div class="ss-hint">
-                <span class="icon-leading"><i data-lucide="help-circle"></i></span>
-                <span class="body">Are you looking for <strong>sandsa</strong>?</span>
-              </div>
-            </div>
-            <footer class="ss-foot">
-              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
-              <span class="sep"></span>
-              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
-              <span class="sep"></span>
-              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
-            </footer>
-          </div>
-        </div>
-      </article>
-
-      <!-- 05 ID SEARCH — DISAMBIGUATION -->
-      <article class="state-card">
-        <header class="state-head"><span class="num">05</span><h3>ID search</h3><p>recognised UUID → asks what type</p></header>
-        <div class="state-canvas">
-          <div class="ss">
-            <div class="ss-input">
-              <i data-lucide="search"></i>
-              <input type="text" value="C5715326-BD84-45BF-8AD4-64B9E550A047" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs);" />
-              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
-            </div>
-            <div class="ss-section">
-              <div class="ss-result-label"><span class="l">Result</span></div>
-              <div class="ss-hint" style="margin-bottom: var(--space-3);">
-                <span class="icon-leading"><i data-lucide="info"></i></span>
-                <span class="body"><code>C5715326-…</code> is an <strong>ID</strong>. What are you looking for?</span>
-              </div>
-              <div class="ss-typebtns">
-                <button class="ss-typebtn" type="button"><i data-lucide="arrow-left-right"></i><span class="grow">Transaction</span><i data-lucide="chevron-right" class="chev"></i></button>
-                <button class="ss-typebtn" type="button"><i data-lucide="user"></i><span class="grow">Counterparty</span><i data-lucide="chevron-right" class="chev"></i></button>
-                <button class="ss-typebtn" type="button"><i data-lucide="wallet"></i><span class="grow">Account</span><i data-lucide="chevron-right" class="chev"></i></button>
-                <button class="ss-typebtn" type="button"><i data-lucide="zap"></i><span class="grow">Wire</span><i data-lucide="chevron-right" class="chev"></i></button>
-              </div>
-            </div>
-            <footer class="ss-foot">
-              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
-              <span class="sep"></span>
-              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
-              <span class="sep"></span>
-              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
-            </footer>
-          </div>
-        </div>
-      </article>
-
-      <!-- 06 ID SEARCH — INVALID -->
-      <article class="state-card">
-        <header class="state-head"><span class="num">05b</span><h3>ID search · partial</h3><p>looks like an ID but is incomplete</p></header>
-        <div class="state-canvas">
-          <div class="ss">
-            <div class="ss-input">
-              <i data-lucide="search"></i>
-              <input type="text" value="C5715326" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);" />
-              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
-            </div>
-            <div class="ss-section">
-              <div class="ss-result-label"><span class="l">Result</span></div>
-              <div class="ss-no-result">No results for "<strong>C5715326</strong>".</div>
-              <div class="ss-hint">
-                <span class="icon-leading"><i data-lucide="info"></i></span>
-                <span class="body">If you're trying to find something by <strong>ID</strong>, insert the full ID following the type of the ID or just the ID.<br><br>Ex: <code>Transaction C123456-123131-1232131-13123131</code></span>
-              </div>
-            </div>
-            <footer class="ss-foot">
-              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
-              <span class="sep"></span>
-              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
-              <span class="sep"></span>
-              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
-            </footer>
-          </div>
-        </div>
-      </article>
-
-      <!-- 07 NO FOUND -->
-      <article class="state-card">
-        <header class="state-head"><span class="num">06</span><h3>No results</h3><p>nothing — and nothing similar enough</p></header>
-        <div class="state-canvas">
-          <div class="ss">
-            <div class="ss-input">
-              <i data-lucide="search"></i>
-              <input type="text" value="sadasdsa" />
-              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
-            </div>
-            <div class="ss-section">
-              <div class="ss-result-label"><span class="l">Result</span></div>
-              <div class="ss-no-result">No results for "<strong>sadasdsa</strong>".</div>
-            </div>
-            <footer class="ss-foot">
-              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
-              <span class="sep"></span>
-              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
-              <span class="sep"></span>
-              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
-            </footer>
-          </div>
-        </div>
-      </article>
-
-      <!-- 08 LOADING -->
-      <article class="state-card">
-        <header class="state-head"><span class="num">07</span><h3>Loading</h3><p>fetching results</p></header>
-        <div class="state-canvas">
-          <div class="ss">
-            <div class="ss-input">
-              <i data-lucide="loader-2" style="animation: spin 1s linear infinite;"></i>
-              <input type="text" value="sadasdsa" />
-              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
-            </div>
-            <div class="ss-section">
-              <div class="ss-illo">
-                <svg class="illustration" viewBox="0 0 120 84" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="14" y="14" width="38" height="48" rx="6" fill="var(--color-background-canvas)" stroke="var(--color-border-default)"/>
-                  <rect x="22" y="22" width="22" height="3" rx="1.5" fill="var(--color-neutral-200)"/>
-                  <rect x="22" y="30" width="16" height="3" rx="1.5" fill="var(--color-neutral-150)"/>
-                  <rect x="22" y="38" width="20" height="3" rx="1.5" fill="var(--color-neutral-150)"/>
-                  <rect x="68" y="14" width="38" height="48" rx="6" fill="var(--color-brand-secondary-50)" stroke="var(--color-brand-secondary-200)"/>
-                  <circle cx="87" cy="34" r="9" stroke="var(--color-brand-secondary-500)" stroke-width="2" fill="none"/>
-                  <path d="M94 41 L100 47" stroke="var(--color-brand-secondary-500)" stroke-width="2" stroke-linecap="round"/>
-                  <rect x="76" y="50" width="22" height="3" rx="1.5" fill="var(--color-brand-secondary-200)"/>
-                </svg>
-                <div class="title">Searching…</div>
-              </div>
-            </div>
-            <div class="ss-section">
-              <div class="ss-skeleton">
-                <div class="ss-skel-row"><div class="ss-skel-circle ss-skel-shimmer"></div><div class="ss-skel-bars"><div class="ss-skel-bar long ss-skel-shimmer"></div><div class="ss-skel-bar short ss-skel-shimmer"></div></div></div>
-                <div class="ss-skel-row"><div class="ss-skel-circle ss-skel-shimmer"></div><div class="ss-skel-bars"><div class="ss-skel-bar long ss-skel-shimmer"></div><div class="ss-skel-bar short ss-skel-shimmer"></div></div></div>
-                <div class="ss-skel-row"><div class="ss-skel-circle ss-skel-shimmer"></div><div class="ss-skel-bars"><div class="ss-skel-bar long ss-skel-shimmer"></div><div class="ss-skel-bar short ss-skel-shimmer"></div></div></div>
-              </div>
-            </div>
-            <footer class="ss-foot">
-              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
-              <span class="sep"></span>
-              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
-              <span class="sep"></span>
-              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
-            </footer>
-          </div>
-        </div>
-      </article>
-
-      <!-- 09 ERROR -->
-      <article class="state-card">
-        <header class="state-head"><span class="num">08</span><h3>Error</h3><p>fetch failed — retry available</p></header>
-        <div class="state-canvas">
-          <div class="ss">
-            <div class="ss-input">
-              <i data-lucide="search"></i>
-              <input type="text" value="sadasdsa" />
-              <button class="ss-clear" type="button" aria-label="Clear"><i data-lucide="x"></i></button>
-            </div>
-            <div class="ss-section">
-              <div class="ss-result-label"><span class="l">Result</span></div>
-              <div class="ss-illo">
-                <svg class="illustration" viewBox="0 0 120 84" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="20" y="20" width="80" height="48" rx="6" fill="var(--color-feedback-danger-background)" stroke="var(--color-feedback-danger-border)"/>
-                  <path d="M40 36 L48 44 M48 36 L40 44" stroke="var(--color-feedback-danger-foreground)" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M60 30 L80 30 M60 38 L74 38 M60 46 L72 46 M60 54 L70 54" stroke="var(--color-feedback-danger-foreground)" stroke-width="2" stroke-linecap="round" stroke-opacity="0.35"/>
-                </svg>
-                <div class="title">Something went wrong</div>
-                <div class="body">We couldn't complete your request right now. Please try again in a few seconds.</div>
-              </div>
-            </div>
-            <footer class="ss-foot">
-              <span class="kbd-group"><kbd class="ss-kbd">↑</kbd><kbd class="ss-kbd">↓</kbd> Navigate</span>
-              <span class="sep"></span>
-              <span class="kbd-group"><kbd class="ss-kbd">↵</kbd> Open</span>
-              <span class="sep"></span>
-              <span class="kbd-group"><kbd class="ss-kbd">esc</kbd> Close</span>
-            </footer>
-          </div>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- 04 ANATOMY -->
   <section class="doc-section" id="anatomy">
-    <h2><span class="num">04</span>Anatomy</h2>
+    <h2><span class="num">03</span>Anatomy</h2>
     <p class="lead">Both modes share the same six pieces — only the body content swaps.</p>
 
     <div class="listing-card">
@@ -628,7 +355,80 @@
     </div>
   </section>
 
-  <!-- 05 KEYBOARD / A11Y -->
+  <!-- 05 EMPTY & PLACEHOLDER -->
+  <section class="doc-section" id="states">
+    <h2><span class="num">04</span>Empty &amp; placeholder</h2>
+    <p class="lead">The two states a build needs before the happy path: what the trigger looks like before a choice, and what the list says when a search finds nothing.</p>
+
+    <div class="listing-card">
+      <div class="listing-head">
+        <h3>Placeholder — before a choice</h3>
+        <p>Muted text stands in for the value at the same weight as a real one, so only colour separates them and the trigger keeps its shape whether filled or empty.</p>
+      </div>
+      <div class="listing-canvas">
+        <div class="combobox" style="max-width: 360px;">
+          <button class="combobox-trigger" type="button">
+            <i data-lucide="building-2" class="combobox-trigger-icon"></i>
+            <span class="combobox-value"><span class="combobox-placeholder">Select a counterparty…</span></span>
+            <i data-lucide="chevron-down" class="combobox-chevron"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="listing-card">
+      <div class="listing-head">
+        <h3>No results — search finds nothing</h3>
+        <p>The zero-state names what was searched, and the footer action stays reachable — so a search that fails becomes the fastest path to creating the record.</p>
+      </div>
+      <div class="listing-canvas" style="min-height: 320px; align-items: flex-start;">
+        <div class="combobox is-open" style="max-width: 360px;">
+          <button class="combobox-trigger" type="button">
+            <span class="combobox-value"><span class="combobox-placeholder">Select a counterparty…</span></span>
+            <i data-lucide="chevron-down" class="combobox-chevron"></i>
+          </button>
+          <div class="combobox-popover">
+            <div class="combobox-search">
+              <i data-lucide="search" class="combobox-search-icon"></i>
+              <input type="text" value="Zyx Holdings" />
+            </div>
+            <div class="combobox-empty">
+              <strong>No counterparty found</strong>
+              Nothing matches “Zyx Holdings”.
+            </div>
+            <div class="combobox-footer">
+              <button class="combobox-footer-action" type="button"><i data-lucide="plus"></i> Create “Zyx Holdings”</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="listing-card">
+      <div class="listing-head">
+        <h3>Disabled and invalid</h3>
+        <p><code>.is-disabled</code> drops the trigger to a subtle surface; <code>.is-invalid</code> borrows the danger border and swaps the focus ring, so the error survives focus instead of being hidden by it.</p>
+      </div>
+      <div class="listing-canvas">
+        <div style="display: flex; gap: var(--space-5); flex-wrap: wrap; align-items: flex-start;">
+          <div class="combobox is-disabled" style="max-width: 220px;">
+            <button class="combobox-trigger" type="button" disabled>
+              <span class="combobox-value">BRL account</span>
+              <i data-lucide="chevron-down" class="combobox-chevron"></i>
+            </button>
+          </div>
+          <div class="combobox is-invalid" style="max-width: 220px;">
+            <button class="combobox-trigger" type="button" aria-invalid="true">
+              <span class="combobox-value"><span class="combobox-placeholder">Required</span></span>
+              <i data-lucide="chevron-down" class="combobox-chevron"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 KEYBOARD / A11Y -->
   <section class="doc-section" id="a11y">
     <h2><span class="num">05</span>Keyboard &amp; accessibility</h2>
     <p class="lead">Combobox is keyboard-first; the smart searchbar is a global command (<kbd class="ss-kbd">⌘K</kbd>) — it must be operable without a mouse.</p>
@@ -646,9 +446,224 @@
     </table>
   </section>
 
-  <!-- 06 TOKENS -->
+    <div class="demo-card" style="margin-top:var(--space-5)">
+      <div class="demo-card-head">
+        <div>
+          <h3>Who implements this</h3>
+          <p>The <code>kbd</code> chips in the popover footer are <strong>labels</strong> — static markup naming the shortcuts. They describe behaviour; they do not provide it. What you get depends on how you consume the component.</p>
+        </div>
+        <span class="demo-card-tag">contract</span>
+      </div>
+
+      <div class="demo-card-canvas is-stacked is-short">
+        <table class="token-table">
+          <thead><tr><th style="width:26%">Consuming as</th><th style="width:16%">Keyboard</th><th>You must implement</th></tr></thead>
+          <tbody>
+            <tr><td><code>DS.Combobox</code></td><td>works</td><td>Nothing. The chips describe real behaviour.</td></tr>
+            <tr><td>CSS only <code>.combobox-*</code></td><td>nothing</td><td>Everything in the “must implement” list below.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo-card-canvas is-stacked" style="border-top:1px solid var(--color-border-subtle)">
+        <div class="demo-item" style="align-items:stretch">
+          <span class="demo-item-label">Ships in Combobox.tsx</span>
+          <table class="token-table">
+            <thead><tr><th style="width:34%">Behaviour</th><th>How it is built</th></tr></thead>
+            <tbody>
+              <tr><td><kbd class="ss-kbd">↓</kbd> <kbd class="ss-kbd">↑</kbd> move active</td><td><code>onWrapKeyDown</code> walks the <code>selectable</code> array and sets <code>.is-active</code>. Mounted on the <strong>wrapper</strong>, not the input, so arrows work from the trigger and the search field alike.</td></tr>
+              <tr><td><kbd class="ss-kbd">enter</kbd> commits</td><td>Reads the active value, fires <code>onChange</code>, closes the popover.</td></tr>
+              <tr><td><kbd class="ss-kbd">esc</kbd> closes</td><td>A <code>document</code> keydown listener, so it fires even when focus sits inside the portaled popover.</td></tr>
+              <tr><td>Active item stays visible</td><td>Compares <code>offsetTop</code> against the list’s scroll window and nudges <code>scrollTop</code> — only when the item is out of view, so it never fights the mouse.</td></tr>
+              <tr><td>Disabled options are skipped</td><td>Navigation runs over <code>selectable</code> (filtered), not the raw options — so a disabled row is never a dead stop.</td></tr>
+              <tr><td>Hover and keyboard agree</td><td><code>onMouseEnter</code> sets the same <code>.is-active</code>, so pointer and keyboard share one cursor instead of showing two highlights.</td></tr>
+              <tr><td>Popover escapes clipping</td><td>Portals to <code>document.body</code> at fixed coords, repositioned on scroll and resize. <code>static</code> keeps it inline for doc galleries.</td></tr>
+              <tr><td>Outside click closes</td><td><code>mousedown</code> on <code>document</code>, checking both the wrapper and the portaled popover — a click inside the floating list must not dismiss it.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="demo-card-canvas is-stacked" style="border-top:1px solid var(--color-border-subtle)">
+        <div class="demo-item" style="align-items:stretch">
+          <span class="demo-item-label">CSS only — you must implement</span>
+          <table class="token-table">
+            <thead><tr><th style="width:34%">Concern</th><th>What is required</th></tr></thead>
+            <tbody>
+              <tr><td>Open / close state</td><td>Toggle <code>.is-open</code> on the root and keep <code>aria-expanded</code> on the trigger in sync.</td></tr>
+              <tr><td>Keyboard navigation</td><td>Arrows, Enter, Esc — including skipping <code>.is-disabled</code> rows.</td></tr>
+              <tr><td>Active descendant</td><td><code>aria-activedescendant</code> on the input pointing at the active option’s <code>id</code>. Without it a screen reader announces nothing as the arrows move.</td></tr>
+              <tr><td>Scroll into view</td><td>Keep the active option inside the scrollable list.</td></tr>
+              <tr><td>Focus return</td><td>On close, focus goes back to the trigger — otherwise the tab order restarts at the top of the page.</td></tr>
+              <tr><td>Dismissal</td><td>Outside click and Esc, both accounting for wherever the popover is rendered.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="demo-card-canvas is-stacked" style="border-top:1px solid var(--color-border-subtle)">
+        <div class="demo-item" style="align-items:stretch">
+          <span class="demo-item-label">Presentational only — looks like a control, is not</span>
+          <table class="token-table">
+            <thead><tr><th style="width:34%">Element</th><th>What it actually is</th></tr></thead>
+            <tbody>
+              <tr><td><code>kbd.ss-kbd</code> in <code>.ss-foot</code></td><td>A caption naming a shortcut. Copying it grants no key handling.</td></tr>
+              <tr><td><code>.combobox-chevron</code></td><td>Rotation comes from <code>.is-open</code> on the root — the chevron does not toggle anything by itself.</td></tr>
+              <tr><td><code>.combobox-option-check</code></td><td>Opacity is driven by <code>.is-selected</code>; it reflects state rather than setting it.</td></tr>
+              <tr><td><code>.combobox-meta</code>, <code>.combobox-foot-meta</code></td><td>Text slots. The result count is yours to compute.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="demo-card-note">This split is also in the page’s <code>#ds-api</code> JSON under <code>behaviour</code> — <code>shippedInTsx</code>, <code>cssOnlyMustImplement</code> and <code>presentationalOnly</code> — so an agent reading the contract sees the same three lists without parsing prose.</div>
+    </div>
+
+  <!-- 07 TOKENS -->
+  <section class="doc-section" id="agents">
+    <h2><span class="num">06</span>For agents</h2>
+    <p class="lead">A combobox fills a field. That single sentence resolves most of the wrong choices below — the component is a form control, not a way to search the product.</p>
+
+    <h3 class="sub">Use when</h3>
+    <p class="body">All three must hold: the choice <strong>writes into a field</strong>, the list is <strong>long enough that scanning fails</strong> (roughly 8+ options), and <strong>exactly one</strong> value is selected. Fail any one and something else is the right component.</p>
+
+    <h3 class="sub">Use instead</h3>
+    <table class="cls">
+      <thead><tr><th>When</th><th>Use</th></tr></thead>
+      <tbody>
+        <tr><td>Under ~5 fixed options</td><td>Native <code>&lt;select&gt;</code> — it gets platform keyboard, mobile wheel and zero JS for free. A combobox here is more code for less behaviour.</td></tr>
+        <tr><td>Searching across entities, not filling a field</td><td><a href="smart-search.html">SmartSearch</a> — it portals over the page and takes focus, which is correct for navigation and wrong for a field, since it covers the very input being filled.</td></tr>
+        <tr><td>More than one value</td><td><code>ToggleChip</code> group — selected state stays visible without a popover, so the user sees all choices at once.</td></tr>
+        <tr><td>Options need a description to choose between</td><td><code>SelectableCard</code> — an option row truncates; a card gives the description room.</td></tr>
+        <tr><td>Free text with suggestions</td><td>Plain <code>Input</code> with a suggestion list. A combobox commits a value from a closed set; it is not an autocomplete for arbitrary text.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Anti-patterns</h3>
+    <table class="cls">
+      <thead><tr><th>Do not</th><th>Why it fails</th></tr></thead>
+      <tbody>
+        <tr><td>Render <code>.combobox-popover</code> inline inside a scrolling ancestor</td><td>It gets clipped by any <code>overflow</code> in the chain. The TSX portals it to <code>&lt;body&gt;</code> for exactly this reason — <code>static</code> is for doc galleries, not production.</td></tr>
+        <tr><td>Use it as a picker inside a Drawer or Modal without checking layering</td><td>The popover sits at <code>z-index: 9200</code> to clear the scrim (9000) and drawer panel (9100). Reparenting it under a different stacking context loses that.</td></tr>
+        <tr><td>Copy the footer markup expecting keyboard navigation</td><td>The <code>kbd</code> chips are labels. Arrow keys, Enter and Esc live in the TSX; rendering the classes yourself buys the appearance of behaviour, not the behaviour.</td></tr>
+        <tr><td>Leave <code>aria-activedescendant</code> off a CSS-only build</td><td>The visual <code>.is-active</code> highlight moves while the screen reader announces nothing — the list becomes unusable without sight.</td></tr>
+        <tr><td>Put a disabled option in the middle of a list without <code>.is-disabled</code></td><td>Arrow navigation walks a filtered <code>selectable</code> array. A disabled row that is not marked becomes a dead stop in the keyboard path.</td></tr>
+        <tr><td>Swap <code>.is-invalid</code> for a red border of your own</td><td>The class also changes the focus ring to danger. A hand-rolled border is overpainted by the default focus ring, so the error disappears exactly when the user is fixing it.</td></tr>
+        <tr><td>Use <code>.combobox-avatar</code> and expect the TSX to emit it</td><td>It does not — the class exists in the CSS but no prop renders it. Pass it in your own trigger content, or the identity tile silently loses its styling.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Rules</h3>
+    <table class="cls">
+      <thead><tr><th>Rule</th><th>Reason</th></tr></thead>
+      <tbody>
+        <tr><td>One combobox open at a time</td><td>Two portalled popovers at the same z-index resolve by DOM order, not by which one the user opened.</td></tr>
+        <tr><td>Turn on <code>searchable</code> above ~8 options</td><td>Below that the search row costs more height than it saves scanning.</td></tr>
+        <tr><td>Popover caps at <code>320px</code> (~7 rows)</td><td>Past that the user scans instead of reading, and the popover starts covering the field it belongs to.</td></tr>
+        <tr><td>Trigger stays <code>--control-h-md</code> (40px)</td><td>It must line up with inputs and buttons on the same row; the height comes from the shared control scale.</td></tr>
+        <tr><td>Never nest interactive content in an option</td><td>The row is the control. A button inside it needs <code>stopPropagation</code> and still breaks arrow navigation.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="doc-section" id="behaviour">
+    <h2><span class="num">07</span>Behaviour — who implements what</h2>
+    <p class="lead">The gap between consuming <code>DS.Combobox</code> and rendering the classes yourself is large, and it is all keyboard and focus. This is the list.</p>
+
+    <h3 class="sub">Ships in Combobox.tsx</h3>
+    <table class="cls">
+      <thead><tr><th>Behaviour</th><th>How it is built</th></tr></thead>
+      <tbody>
+        <tr><td>Popover portalled to <code>&lt;body&gt;</code></td><td><code>createPortal</code> with fixed coords from the trigger rect, repositioned on scroll and resize — so no ancestor <code>overflow</code> can clip it.</td></tr>
+        <tr><td>Arrow key navigation</td><td><code>onWrapKeyDown</code> is mounted on the <strong>wrapper</strong>, not the input, so it works whether focus sits on the trigger or in the search field.</td></tr>
+        <tr><td>Esc closes</td><td>Listener on <code>document</code> — the popover is portalled, so a wrapper-scoped handler would never see the event.</td></tr>
+        <tr><td>Scroll the active option into view</td><td>Compares <code>offsetTop</code> against the scroll window and only pushes when the item has actually left it, so it does not fight the mouse.</td></tr>
+        <tr><td>Disabled options skipped</td><td>Navigation runs over a filtered <code>selectable</code> list, so a disabled row is never a dead stop.</td></tr>
+        <tr><td>Hover and keyboard share <code>.is-active</code></td><td>One highlight, not two competing ones.</td></tr>
+        <tr><td>Outside click closes</td><td>Checks the wrapper <em>and</em> the portalled popover — a click inside the floating list must not dismiss it.</td></tr>
+        <tr><td>Filtering</td><td>Case-insensitive match over label and meta; empty result renders <code>.combobox-empty</code> with the footer still reachable.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">CSS only — you must implement</h3>
+    <table class="cls">
+      <thead><tr><th>Missing</th><th>Consequence if skipped</th></tr></thead>
+      <tbody>
+        <tr><td>Open/close state on <code>.is-open</code></td><td>The popover is <code>display: none</code> until the class is present. Nothing opens.</td></tr>
+        <tr><td>Arrow / Enter / Esc handling</td><td>Keyboard users cannot reach or commit an option.</td></tr>
+        <tr><td><code>aria-activedescendant</code> on the input, <code>id</code> per option</td><td>The highlight moves silently for screen readers.</td></tr>
+        <tr><td><code>role="listbox"</code> / <code>role="option"</code> + <code>aria-selected</code></td><td>The list is announced as a group of divs.</td></tr>
+        <tr><td>Return focus to the trigger on close</td><td>Tab order restarts at the top of the page.</td></tr>
+        <tr><td>Positioning if you portal it yourself</td><td>Without fixed coords tied to the trigger rect, the popover drifts on scroll.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Presentational only</h3>
+    <table class="cls">
+      <thead><tr><th>Element</th><th>What it does not do</th></tr></thead>
+      <tbody>
+        <tr><td><code>kbd</code> chips in the footer</td><td>Labels. They describe shortcuts; they do not bind them.</td></tr>
+        <tr><td><code>.combobox-chevron</code></td><td>Rotation comes from <code>.is-open</code> on the root. It is not a button.</td></tr>
+        <tr><td><code>.combobox-option-check</code></td><td>Reflects <code>.is-selected</code>. Adding the check does not select anything.</td></tr>
+        <tr><td><code>.combobox-meta</code> / <code>-foot-meta</code></td><td>Slots. The result count is yours to compute.</td></tr>
+        <tr><td><code>.combobox-filter-chip</code></td><td>Styling only — <code>.is-active</code> and the filtering it implies are the consumer's.</td></tr>
+      </tbody>
+    </table>
+
+    <p class="body" style="margin-top: var(--space-6)">The same three lists exist as JSON in <code>#ds-api</code> on this page, so an agent reads the contract without parsing prose.</p>
+  </section>
+
+  <section class="doc-section" id="classmap">
+    <h2><span class="num">08</span>Class map</h2>
+    <p class="lead">Every class the component ships, and what it owns. If a class is in <code>combobox.css</code> and not here, one of the two is wrong.</p>
+
+    <h3 class="sub">Trigger</h3>
+    <table class="cls">
+      <thead><tr><th>Class</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td><code>.combobox</code></td><td>Root. Establishes the positioning context and carries <code>.is-open</code>, <code>.is-disabled</code>, <code>.is-invalid</code>.</td></tr>
+        <tr><td><code>.combobox-trigger</code></td><td>The field itself — <code>--control-h-md</code>, so it lines up with inputs and buttons on the same row.</td></tr>
+        <tr><td><code>.combobox-trigger-icon</code></td><td>Leading icon slot, <code>--icon-sm</code>.</td></tr>
+        <tr><td><code>.combobox-avatar</code></td><td>Identity tile, <code>--control-h-xs</code>. <strong>Not emitted by the TSX</strong> — pass it in your own trigger content.</td></tr>
+        <tr><td><code>.combobox-value</code></td><td>Selected label, truncates.</td></tr>
+        <tr><td><code>.combobox-placeholder</code></td><td>Empty state of the value slot, muted.</td></tr>
+        <tr><td><code>.combobox-chevron</code></td><td>Disclosure glyph. Rotation is driven by <code>.is-open</code> on the root — it is not a button.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Popover</h3>
+    <table class="cls">
+      <thead><tr><th>Class</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td><code>.combobox-popover</code></td><td>Floating panel at <code>z-index: 9200</code> — above scrim (9000) and drawer panel (9100), so it survives inside an overlay. Caps at <code>320px</code>.</td></tr>
+        <tr><td><code>.combobox-search</code> · <code>-search-icon</code></td><td>Filter row, <code>--control-h-sm</code>. Stays fixed while the list scrolls.</td></tr>
+        <tr><td><code>.combobox-filters</code> · <code>-filter-chip</code> · <code>.count</code></td><td>Optional chip row. Styling only — <code>.is-active</code> and the filtering it implies are the consumer's.</td></tr>
+        <tr><td><code>.combobox-meta</code></td><td>Result count line. A slot; the number is yours.</td></tr>
+        <tr><td><code>.combobox-list</code></td><td>The scrolling region — <code>flex: 1</code>, so search and footer stay put.</td></tr>
+        <tr><td><code>.combobox-group-label</code></td><td>Group header, mono uppercase.</td></tr>
+        <tr><td><code>.combobox-empty</code></td><td>Zero-result state. The footer stays reachable, so a failed search becomes the fastest path to creating the record.</td></tr>
+        <tr><td><code>.combobox-foot-meta</code></td><td>Note under the list.</td></tr>
+        <tr><td><code>.combobox-footer</code> · <code>-footer-action</code></td><td>Escape hatch — "Create …".</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Option</h3>
+    <table class="cls">
+      <thead><tr><th>Class</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td><code>.combobox-option</code></td><td>The row is the control. Never nest interactive content inside it.</td></tr>
+        <tr><td><code>.combobox-option-content</code> · <code>-label</code> · <code>-meta</code></td><td>Primary line and its secondary detail.</td></tr>
+        <tr><td><code>.combobox-option-trailing</code></td><td>Right-aligned value, mono.</td></tr>
+        <tr><td><code>.combobox-option-check</code></td><td>Reflects <code>.is-selected</code>. Adding it does not select anything.</td></tr>
+        <tr><td><code>.combobox-option.is-active</code></td><td>Keyboard cursor. Shares its treatment with hover so there is one highlight, not two.</td></tr>
+        <tr><td><code>.combobox-option.is-selected</code></td><td>Committed value — selected surface, accent text, check visible.</td></tr>
+        <tr><td><code>.combobox-option.is-disabled</code></td><td>Skipped by arrow navigation. Unmarked disabled rows become dead stops.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
   <section class="doc-section" id="tokens">
-    <h2><span class="num">06</span>Tokens</h2>
+    <h2><span class="num">09</span>Tokens</h2>
     <p class="lead">All values resolve through the design system. No magic numbers.</p>
 
     <table class="token-table">
@@ -672,6 +687,11 @@
     </table>
   </section>
 
+
+  <footer class="doc-foot">
+    <span>ATTRUS Design System · Combobox · <span data-ds-version></span></span>
+    <a href="index.html">← Design system</a>
+  </footer>
 </main>
 
 <script>

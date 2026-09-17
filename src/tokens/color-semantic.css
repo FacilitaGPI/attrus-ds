@@ -87,7 +87,7 @@
   --color-scrim:                       rgba(10, 15, 31, 0.32);
   --scrim-blur:                        6px;
   --color-background-inverse-press:    color-mix(in srgb, var(--color-ink-hover) 70%, var(--color-pure-white));
-  --color-background-inverse-selected: color-mix(in srgb, var(--color-brand-solid) 22%, var(--color-ink-base));
+  --color-background-inverse-selected: color-mix(in srgb, var(--color-brand-solid) 10%, var(--color-ink-base));
   --color-background-inverse-brand:    var(--color-brand-solid);   /* CTA / hero with brand weight — follows product */
 
   /* Foreground (text + icons) on LIGHT surfaces */
@@ -119,6 +119,10 @@
   --color-border-default:   color-mix(in srgb, var(--color-ink-base) 7%,  transparent);
   --color-border-strong:    color-mix(in srgb, var(--color-ink-base) 12%, transparent);
   --color-border-focus:     var(--color-accent-solid);   /* per-theme accent (Sky default) — follows the product's accent */
+  /* Hairline width. Every 1px rule in the system was a literal; naming it makes
+     the weight adjustable in one place — and a product theme that wants crisper
+     separation can raise it without touching 14 component files. */
+  --border-hairline: 1px;  /* @kind spacing */
   --color-border-accent:    var(--color-accent-solid);
   --color-border-success:   var(--color-success-500);
   --color-border-warning:   var(--color-warning-500);

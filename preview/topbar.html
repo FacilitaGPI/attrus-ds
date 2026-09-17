@@ -5,10 +5,11 @@
 <title>Top bar · ATTRUS Design System</title>
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
-<link rel="stylesheet" href="components/inputs.css">
-<link rel="stylesheet" href="components/buttons.css">
-<link rel="stylesheet" href="components/topbar.css">
-<link rel="stylesheet" href="components/callout.css">
+<link rel="stylesheet" href="components/inputs.css?v=10">
+<link rel="stylesheet" href="components/buttons.css?v=10">
+<link rel="stylesheet" href="components/topbar.css?v=10">
+<link rel="stylesheet" href="components/callout.css?v=3">
+<link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="../theme-toggle.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
@@ -113,10 +114,20 @@
 
   .doc-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
   .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+  .glass-stage { height: 200px; overflow: hidden; position: relative; }
+  .glass-stage-scroll { height: 100%; overflow-y: auto; }
+  .glass-filler { height: 420px; padding: var(--space-6); display: flex; justify-content: center; font-size: var(--fs-sm); color: var(--color-foreground-muted); background: repeating-linear-gradient(135deg, var(--color-background-subtle) 0 14px, var(--color-background-canvas) 14px 28px); }
+  .glass-filler.is-tinted { background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--color-brand-solid) 14%, transparent) 0 18px, color-mix(in srgb, var(--color-accent-solid) 12%, transparent) 18px 36px); }
+  .rules { margin: 0; padding-left: var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .rules strong { color: var(--color-foreground-default); }
+  .size-row + .size-row { margin-top: var(--space-7); padding-top: var(--space-6); border-top: 1px solid var(--color-border-subtle); }
+  .size-demo { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+  #controls .spec-canvas { gap: var(--space-7) var(--space-8); }
 </style>
 </head>
 <body>
 <a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<a class="xlink is-doc" href="../components/AppTopbar/AppTopbar.html" title="Typed React bench for AppTopbar"><i data-lucide="code-2"></i>AppTopbar TSX</a>
 
 <button class="page-theme" data-theme-toggle aria-label="Toggle theme">
   <span data-theme-icon aria-hidden="true">☾</span>
@@ -135,10 +146,13 @@
 
   <nav class="doc-nav">
     <a href="#anatomy">01 Anatomy</a>
-    <a href="#controls">02 Controls</a>
-    <a href="#live">03 Live indicator</a>
-    <a href="#mobile">04 Mobile</a>
-    <a href="#map">05 Class map</a>
+    <a href="#glass">02 Glass</a>
+    <a href="#controls">03 Controls</a>
+    <a href="#live">04 Live indicator</a>
+    <a href="#account">05 Account</a>
+    <a href="#sizes">06 Bar sizes</a>
+    <a href="#mobile">07 Mobile</a>
+    <a href="#map">08 Class map</a>
   </nav>
 
   <!-- 01 ANATOMY -->
@@ -157,14 +171,14 @@
       <div class="spec-canvas">
         <div class="bar-frame">
           <div class="topbar">
-            <button class="btn btn-primary btn-sm"><i data-lucide="plus"></i> New transaction</button>
+            <button class="btn btn-primary btn-md"><i data-lucide="plus"></i> New transaction</button>
             <div class="pill-search">
               <i data-lucide="search"></i>
               <input placeholder="Search or ask something" readonly />
               <span class="kbd">⌘K</span>
             </div>
             <div class="tb-spacer">
-              <button class="tb-control" style="padding:0 var(--space-3)">
+              <button class="tb-control tb-lang" style="padding:0 var(--space-3)">
                 <img src="../assets/flags/EUA-rounded.svg" alt="" style="width:14px;height:14px;border-radius:50%"/>
                 <span class="tb-flag-label">ENG</span>
                 <span class="chev"><i data-lucide="chevron-down"></i></span>
@@ -180,9 +194,67 @@
     </div>
   </section>
 
-  <!-- 02 CONTROLS -->
+  <!-- 02 GLASS -->
+  <section class="doc-section" id="glass">
+    <h2><span class="num">02</span>Glass variant</h2>
+    <p class="lead">Frosted chrome instead of a solid surface: the bar floats and lets content show through. It consumes the semantic <code>--glass-chrome</code> pair, so it flips to ink glass on dark with no extra rule.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Solid vs glass <code>.is-glass</code></h3><p>Both bars over the same scrolling content. The glass one only earns its keep when something moves underneath — scroll the strip below to see it work.</p></div>
+        <span class="spec-tag">needs scroll</span>
+      </div>
+      <div class="spec-canvas" style="padding:0">
+        <div class="glass-stage">
+          <div class="glass-stage-scroll">
+            <div class="topbar">
+            <button class="btn btn-primary btn-md"><i data-lucide="plus"></i> New transaction</button>
+            <div class="pill-search"><i data-lucide="search"></i><input placeholder="Search or ask something" readonly /><span class="kbd">⌘K</span></div>
+            <div class="tb-spacer">
+              <div class="tb-control tb-live"><span class="dot"></span><span class="lbl">Live</span><span class="tb-clock">0:19</span></div>
+              <button class="tb-control icon" aria-label="Help"><i data-lucide="info"></i></button>
+              <div class="tb-avatar">JD</div>
+            </div>
+          </div>
+            <div class="glass-filler"><span>Solid — the bar owns its background</span></div>
+          </div>
+        </div>
+        <div class="glass-stage" style="border-top:1px solid var(--color-border-default)">
+          <div class="glass-stage-scroll">
+            <div class="topbar is-glass is-sticky">
+            <button class="btn btn-primary btn-md"><i data-lucide="plus"></i> New transaction</button>
+            <div class="pill-search"><i data-lucide="search"></i><input placeholder="Search or ask something" readonly /><span class="kbd">⌘K</span></div>
+            <div class="tb-spacer">
+              <div class="tb-control tb-live"><span class="dot"></span><span class="lbl">Live</span><span class="tb-clock">0:19</span></div>
+              <button class="tb-control icon" aria-label="Help"><i data-lucide="info"></i></button>
+              <div class="tb-avatar">JD</div>
+            </div>
+          </div>
+            <div class="glass-filler is-tinted"><span>Glass — content passes behind the bar</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>When it fails</h3><p>Two conditions the variant depends on, both easy to miss.</p></div>
+        <span class="spec-tag">judgement</span>
+      </div>
+      <div class="spec-canvas">
+        <ul class="rules">
+          <li><strong>Something must scroll under it.</strong> Over a flat canvas the blur has nothing to sample and the bar just reads as a muddier surface — use the solid default there.</li>
+          <li><strong>It must be sticky or fixed</strong> (<code>.is-sticky</code>). A static frosted bar blurs whatever happens to sit behind it in the layout, which is usually nothing.</li>
+          <li>Without <code>backdrop-filter</code> support the bar falls back to an <strong>opaque surface</strong> rather than a washed-out translucent one — a <code>@supports</code> guard, so text never lands on a semi-transparent field.</li>
+          <li>The bottom hairline steps up to <code>--color-border-strong</code>: with a translucent background the boundary is the only thing separating bar from content.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 CONTROLS -->
   <section class="doc-section" id="controls">
-    <h2><span class="num">02</span>Controls</h2>
+    <h2><span class="num">03</span>Controls</h2>
     <p class="lead">Three forms of the same building block. Default for labelled actions, <code>.icon</code> for square icon-only buttons. The bar's single call to action is the <strong>canonical</strong> <code>.btn-primary</code> from the button system — not a top-bar-local style.</p>
 
     <div class="spec">
@@ -196,7 +268,7 @@
       <div class="spec-canvas center">
         <div>
           <div class="demo-label">Default · labelled</div>
-          <button class="tb-control" style="padding:0 var(--space-3)">
+          <button class="tb-control tb-lang" style="padding:0 var(--space-3)">
             <img src="../assets/flags/EUA-rounded.svg" alt="" style="width:14px;height:14px;border-radius:50%"/>
             <span class="tb-flag-label">ENG</span>
             <span class="chev"><i data-lucide="chevron-down"></i></span>
@@ -222,9 +294,42 @@
     </div>
   </section>
 
-  <!-- 03 LIVE -->
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Control sizes <code>.sm</code> · <code>.lg</code></h3><p>Height only, so a smaller control still sits centred in a standard row. To scale the whole bar — controls, search and account together — use <code>.topbar.is-sm</code> / <code>.is-lg</code> instead, which retunes <code>--tb-control-h</code>.</p></div>
+        <span class="spec-tag">one-off</span>
+      </div>
+      <div class="spec-canvas" style="display:block">
+        <div class="size-row">
+          <div class="demo-label">sm — 32px · dense pill beside standard controls</div>
+          <div class="size-demo">
+            <button class="tb-control sm"><i data-lucide="filter"></i> Filter</button>
+            <button class="tb-control sm icon" aria-label="Help"><i data-lucide="info"></i></button>
+            <div class="tb-control tb-live sm"><span class="dot"></span><span class="lbl">Live</span><span class="tb-clock">0:19</span></div>
+          </div>
+        </div>
+        <div class="size-row">
+          <div class="demo-label">default — 40px · matches the standard input/button box</div>
+          <div class="size-demo">
+            <button class="tb-control"><i data-lucide="filter"></i> Filter</button>
+            <button class="tb-control icon" aria-label="Help"><i data-lucide="info"></i></button>
+            <div class="tb-control tb-live"><span class="dot"></span><span class="lbl">Live</span><span class="tb-clock">0:19</span></div>
+          </div>
+        </div>
+        <div class="size-row">
+          <div class="demo-label">lg — 48px · touch-first surfaces</div>
+          <div class="size-demo">
+            <button class="tb-control lg"><i data-lucide="filter"></i> Filter</button>
+            <button class="tb-control lg icon" aria-label="Help"><i data-lucide="info"></i></button>
+            <div class="tb-control tb-live lg"><span class="dot"></span><span class="lbl">Live</span><span class="tb-clock">0:19</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- 04 LIVE -->
   <section class="doc-section" id="live">
-    <h2><span class="num">03</span>Live indicator</h2>
+    <h2><span class="num">04</span>Live indicator</h2>
     <p class="lead">A non-interactive control that signals an active real-time session. Same pill shell as the buttons so it sits in rhythm, but with a steady success dot and a monospace elapsed clock — never a hover state.</p>
 
     <div class="spec">
@@ -242,29 +347,93 @@
     </div>
   </section>
 
-  <!-- 04 MOBILE -->
+  <!-- 05 ACCOUNT -->
+  <section class="doc-section" id="account">
+    <h2><span class="num">05</span>Account menu</h2>
+    <p class="lead">The right end of the bar: avatar plus identity as one trigger, opening a dropdown. Showing the name and company in the bar itself — rather than an avatar alone — is what removes the duplicate identity block the sidebar used to carry.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Trigger and menu <code>.tb-account</code></h3><p>The trigger reads <code>--tb-control-h</code> like every other bar item, so it stays in the row's rhythm. <code>.is-open</code> holds the hover treatment while the menu is up, so the trigger does not look inert under its own dropdown.</p></div>
+        <span class="spec-tag">Interactive</span>
+      </div>
+      <div class="spec-canvas" style="min-height:320px">
+        <div class="tb-account-wrap">
+          <button class="tb-account is-open" aria-expanded="true" aria-haspopup="menu">
+            <span class="tb-avatar">JD</span>
+            <span class="tb-account-id"><span class="nm">Julia Dias</span><span class="co">Attrus</span></span>
+            <span class="chev"><i data-lucide="chevron-down"></i></span>
+          </button>
+          <div class="tb-account-menu" role="menu">
+            <div class="tb-account-menu-head">
+              <span class="tb-avatar lg">JD</span>
+              <span class="tb-account-menu-id"><span class="nm">Julia Dias</span><span class="co">julia@attrus.com</span></span>
+            </div>
+            <div class="tb-account-menu-sep"></div>
+            <button class="tb-account-menu-item" role="menuitem"><i data-lucide="user"></i> Profile</button>
+            <button class="tb-account-menu-item" role="menuitem"><i data-lucide="building-2"></i> Organisation</button>
+            <button class="tb-account-menu-item" role="menuitem"><i data-lucide="settings"></i> Settings</button>
+            <div class="tb-account-menu-sep"></div>
+            <button class="tb-account-menu-item is-danger" role="menuitem"><i data-lucide="log-out"></i> Sign out</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 BAR SIZES -->
+  <section class="doc-section" id="sizes">
+    <h2><span class="num">06</span>Bar sizes</h2>
+    <p class="lead">Every item in the bar reads <code>--tb-control-h</code>, so the real lever is the bar: <code>.is-sm</code> and <code>.is-lg</code> retune the token and controls, search and account scale together. Per-control <code>.sm</code>/<code>.lg</code> stay available for the one-off pill, and deliberately leave the bar height alone.</p>
+
+    <div class="spec">
+      <div class="spec-head">
+        <div><h3>Three densities <code>.is-sm</code> · <code>.is-lg</code></h3><p>56 / 60 / 72px, with 32 / 40 / 48px controls — the sm / md / lg steps of the shared height scale. The bar height tracks the control with room to breathe rather than hugging it, which is why it is set next to the token instead of derived from it.</p></div>
+        <span class="spec-tag">App shell</span>
+      </div>
+      <div class="spec-canvas" style="display:flex; flex-direction:column; gap:var(--space-5)">
+        <div>
+          <div class="demo-label">is-sm — 56px bar, 32px controls</div>
+          <div class="bar-frame"><div class="topbar is-sm"><button class="btn btn-primary btn-sm"><i data-lucide="plus"></i> New</button><div class="pill-search"><i data-lucide="search"></i><input placeholder="Search" readonly /></div><div class="tb-spacer"><div class="tb-control tb-live"><span class="dot"></span><span class="lbl">Live</span><span class="tb-clock">0:19</span></div><button class="tb-control icon" aria-label="Help"><i data-lucide="info"></i></button><div class="tb-avatar">JD</div></div></div></div>
+        </div>
+        <div>
+          <div class="demo-label">default — 60px bar, 40px controls</div>
+          <div class="bar-frame"><div class="topbar"><button class="btn btn-primary btn-sm"><i data-lucide="plus"></i> New</button><div class="pill-search"><i data-lucide="search"></i><input placeholder="Search" readonly /></div><div class="tb-spacer"><div class="tb-control tb-live"><span class="dot"></span><span class="lbl">Live</span><span class="tb-clock">0:19</span></div><button class="tb-control icon" aria-label="Help"><i data-lucide="info"></i></button><div class="tb-avatar">JD</div></div></div></div>
+        </div>
+        <div>
+          <div class="demo-label">is-lg — 72px bar, 48px controls</div>
+          <div class="bar-frame"><div class="topbar is-lg"><button class="btn btn-primary btn-md"><i data-lucide="plus"></i> New</button><div class="pill-search"><i data-lucide="search"></i><input placeholder="Search" readonly /></div><div class="tb-spacer"><div class="tb-control tb-live"><span class="dot"></span><span class="lbl">Live</span><span class="tb-clock">0:19</span></div><button class="tb-control icon" aria-label="Help"><i data-lucide="info"></i></button><div class="tb-avatar">JD</div></div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 MOBILE -->
   <section class="doc-section" id="mobile">
-    <h2><span class="num">04</span>Mobile</h2>
-    <p class="lead">Below 720px the bar collapses: the menu button and brand mark lead, the utility cluster drops to a single primary-action icon plus the avatar, and search shrinks to a glyph-first pill.</p>
+    <h2><span class="num">07</span>Mobile</h2>
+    <p class="lead">Below 720px the bar collapses to three things: the menu button, the search icon and the account. The brand comes off entirely — the menu and the account already say where you are — and the language control and live clock hide as ambient status. Everything keeps the 40px control box, so no tap target shrinks.</p>
 
     <div class="spec">
       <div class="spec-head">
         <div>
           <h3>Compact bar</h3>
-          <p>Menu toggle replaces the collapsed sidebar; secondary controls hide to protect the tap targets.</p>
+          <p>The brand comes off entirely and the search pill drops to its icon, keeping the 40px control box so no tap target shrinks. The menu button and the account already identify the app, so a mark at this width would only cost room the search and primary action need. The language control and the live clock hide: they are ambient status, not worth a target at this width. The frame below carries <code>.is-compact</code> — the same collapse the 720px breakpoint applies, available as a modifier so a bar in a narrow container can opt in without waiting for the viewport.</p>
         </div>
         <span class="spec-tag">≤ 720px</span>
       </div>
       <div class="spec-canvas">
         <div class="bar-frame" style="max-width:380px">
-          <div class="topbar" style="gap:var(--space-2); padding:0 var(--space-3)">
+          <div class="topbar is-compact">
             <button class="tb-control icon" aria-label="Open menu"><i data-lucide="panel-left"></i></button>
-            <img src="../assets/logo-attrus-dark.svg" alt="ATTRUS" style="height:16px" data-logo-mark/>
-            <div class="pill-search" style="flex:1">
+            <img class="tb-mark-symbol" src="../assets/icon-attrus-dark.svg" alt="ATTRUS" style="height:20px" data-logo-symbol>
+            <img class="tb-mark-full" src="../assets/logo-attrus-dark.svg" alt="ATTRUS" style="height:16px" data-logo-mark>
+            <div class="pill-search" role="button" tabindex="0" aria-label="Search">
               <i data-lucide="search"></i>
               <input placeholder="Search" readonly />
+              <span class="kbd">⌘K</span>
             </div>
             <div class="tb-spacer">
+              <div class="tb-control tb-live"><span class="dot"></span><span class="lbl">Live</span><span class="tb-clock">0:19</span></div>
               <button class="tb-control icon" aria-label="New transaction"><i data-lucide="plus"></i></button>
               <div class="tb-avatar">JD</div>
             </div>
@@ -274,9 +443,9 @@
     </div>
   </section>
 
-  <!-- 05 CLASS MAP -->
+  <!-- 08 CLASS MAP -->
   <section class="doc-section" id="map">
-    <h2><span class="num">05</span>Class map</h2>
+    <h2><span class="num">08</span>Class map</h2>
     <p class="lead">The full vocabulary. Defined once in <code>components/topbar.css</code> and consumed by both this page and the live app shell — edit the CSS and both move together.</p>
 
     <div class="spec">
@@ -296,7 +465,17 @@
             <tr><td><code>.tb-flag-label</code> · <code>.chev</code></td><td>Language label and disclosure chevron.</td></tr>
             <tr><td><code>.tb-bell</code> · <code>.badge</code></td><td>Notification button and unread dot.</td></tr>
             <tr><td><code>.tb-avatar</code></td><td>30px user avatar chip.</td></tr>
+            <tr><td><code>.tb-mark-full</code> · <code>.tb-mark-symbol</code></td><td>Brand lockup and glyph. Both hide on the compact bar; keep them for wider layouts where the mark still fits.</td></tr>
+            <tr><td><code>.is-compact</code></td><td>Forces the narrow layout at any viewport — brand hidden, icon-only search, ambient status hidden.</td></tr>
+            <tr><td><code>.is-sm</code> · <code>.is-lg</code></td><td>Bar density — retunes <code>--tb-control-h</code> so every item scales together.</td></tr>
+            <tr><td><code>.tb-control.sm</code> · <code>.lg</code></td><td>One-off control size from the shared scale; leaves the bar height alone.</td></tr>
             <tr><td><code>.tb-spacer</code></td><td>Right-aligned cluster wrapper (<code>margin-left:auto</code>).</td></tr>
+            <tr><td><code>.is-glass</code> · <code>.is-sticky</code></td><td>Frosted chrome via <code>--glass-chrome</code>; sticky is what makes the blur mean anything.</td></tr>
+            <tr><td><code>.tb-account-wrap</code></td><td>Positioning context for the dropdown.</td></tr>
+            <tr><td><code>.tb-account</code> · <code>.is-open</code></td><td>Avatar + identity trigger; <code>.is-open</code> holds the hover treatment while the menu is up.</td></tr>
+            <tr><td><code>.tb-account-id</code></td><td>Name / company stack inside the trigger (<code>.nm</code>, <code>.co</code>).</td></tr>
+            <tr><td><code>.tb-account-menu</code></td><td>Dropdown surface — <code>-head</code>, <code>-id</code>, <code>-sep</code>, <code>-item</code>, <code>-item.is-danger</code>.</td></tr>
+            <tr><td><code>.tb-lang</code></td><td>Language control — tagged so the compact bar can hide it.</td></tr>
             <tr><td><code>.pill-search</code></td><td>Global search — lives in <code>inputs.css</code>.</td></tr>
           </tbody>
         </table>
@@ -322,8 +501,15 @@
   // swap the mobile-demo mark with theme
   function syncMarks(){
     var dark = window.ATTRUSTheme && window.ATTRUSTheme.get() === 'dark';
+    var tone = dark ? 'light' : 'dark';
+    /* Two hooks, not one: [data-logo-mark] is the wordmark and
+       [data-logo-symbol] is the glyph. Sharing a hook meant the compact bar's
+       symbol got rewritten to the lockup on load. */
     document.querySelectorAll('[data-logo-mark]').forEach(function(img){
-      img.src = '../assets/logo-attrus-' + (dark ? 'light' : 'dark') + '.svg';
+      img.src = '../assets/logo-attrus-' + tone + '.svg';
+    });
+    document.querySelectorAll('[data-logo-symbol]').forEach(function(img){
+      img.src = '../assets/icon-attrus-' + tone + '.svg';
     });
   }
   window.addEventListener('attrus-theme', syncMarks);

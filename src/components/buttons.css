@@ -39,9 +39,9 @@
   flex-shrink: 0;
 
   /* Box — default size = md (40px tall) */
-  height: 40px;
+  height: var(--control-h-md);
   padding: 0 var(--space-5);
-  border: 1px solid transparent;
+  border: var(--border-hairline) solid transparent;
   border-radius: var(--radius-pill);
 
   /* Type */
@@ -93,7 +93,7 @@
    2. SIZES
    ---------------------------------------------------------------- */
 .btn-xs {
-  height: 24px;
+  height: var(--control-h-xs);
   padding: 0 var(--space-3);
   font-size: var(--fs-sm);
   gap: var(--space-1);
@@ -101,16 +101,16 @@
 .btn-xs > i, .btn-xs > svg, .btn-xs > svg { width: var(--icon-xs); height: var(--icon-xs); }
 
 .btn-sm {
-  height: 32px;
+  height: var(--control-h-sm);
   padding: 0 var(--space-4);
   font-size: var(--fs-md);
 }
 .btn-sm > i, .btn-sm > svg, .btn-sm > svg { width: var(--icon-xs); height: var(--icon-xs); }
 
-/* default = md (40px) — defined in .btn */
+/* default = md — .btn reads var(--control-h-md) */
 
 .btn-lg {
-  height: 48px;
+  height: var(--control-h-lg);
   padding: 0 var(--space-6);
   font-size: var(--fs-base);
   gap: var(--space-3);
@@ -122,10 +122,10 @@
    3. ICON-ONLY MODIFIER
    ---------------------------------------------------------------- */
 .btn-icon { padding: 0; aspect-ratio: 1 / 1; }
-.btn-icon.btn-xs { width: 24px; }
-.btn-icon.btn-sm { width: 32px; }
-.btn-icon          { width: 40px; }
-.btn-icon.btn-lg { width: 48px; }
+.btn-icon.btn-xs { width: var(--control-h-xs); }
+.btn-icon.btn-sm { width: var(--control-h-sm); }
+.btn-icon          { width: var(--control-h-md); }
+.btn-icon.btn-lg { width: var(--control-h-lg); }
 
 
 /* ----------------------------------------------------------------
@@ -199,6 +199,21 @@
 .btn-danger:focus-visible { box-shadow: var(--shadow-focus-danger); }
 
 
+/* DANGER GHOST — destructive inside chrome (toolbars, row actions).
+   The outline variant carries a border and its own surface, which is right for
+   the primary action of a dialog but too heavy for a bar: two framed buttons on
+   a 52px toolbar outweigh the data below them. This keeps the danger colour as
+   the only signal. */
+.btn-danger-ghost {
+  background: transparent;
+  color: var(--color-danger-500);
+  border-color: transparent;
+}
+.btn-danger-ghost:hover { background: var(--color-feedback-danger-background); color: var(--color-danger-600); }
+.btn-danger-ghost:active { background: color-mix(in srgb, var(--color-danger-500) 16%, transparent); }
+.btn-danger-ghost:focus-visible { box-shadow: var(--shadow-focus-danger); }
+.btn-danger-ghost[disabled] { color: var(--color-foreground-disabled); background: transparent; }
+
 /* DANGER OUTLINE — destructive contextual */
 .btn-danger-outline {
   background: var(--color-background-surface);
@@ -264,21 +279,37 @@
 .btn.is-loading::after {
   content: "";
   position: absolute;
-  top: 50%; left: 50%;
+  /* Centred with calc, not top:50% + negative margin: a blanket `margin: 0`
+     from page or reset CSS silently kills the offset and drops the spinner
+     below centre, while the percentage still resolves. calc cannot be reset
+     away, and it avoids transform, which the spin animation owns. */
+  /* Optical, not geometric: the ring's transparent top segment shifts the
+     visible arc's mass down-left of the box centre, so the box is nudged back
+     by half a border width. box-sizing keeps the 2px border inside the
+     declared size, otherwise the circle is 18px in a 14px slot. */
+  top: calc(50% - (var(--icon-sm) / 2) - 1px);
+  left: calc(50% - (var(--icon-sm) / 2) + 1px);
+  margin: 0;
   width: var(--icon-sm);
   height: var(--icon-sm);
-  margin: calc(var(--icon-sm) / -2) 0 0 calc(var(--icon-sm) / -2);
+  box-sizing: border-box;
   border: 2px solid currentColor;
   border-top-color: transparent;
   border-radius: var(--radius-pill);
-  animation: btn-spin var(--duration-slower) linear infinite;
-  /* Re-introduce currentColor where the variant set it; ::after inherits the parent's color BEFORE the !important override */
+  animation: btn-spin 0.6s linear infinite;
   color: var(--color-foreground-default);
 }
+
 .btn-primary.is-loading::after,
 .btn-danger.is-loading::after,
 .btn-success.is-loading::after { color: var(--color-pure-white); }
 .btn-tertiary.is-loading::after { color: var(--color-foreground-default); }
+/* On a dark surface the spinner has to invert with the button: the default ring
+   is --color-foreground-default, which on an inverse-tinted fill is nearly the
+   same value and the spinner disappears. */
+.btn.on-inverse.is-loading::after,
+.btn-inverse.is-loading::after { color: var(--color-foreground-inverse-default); }
+.btn-inverse.is-loading::after { color: var(--color-brand-text-on-light); }
 
 @keyframes btn-spin {
   to { transform: rotate(360deg); }
@@ -296,6 +327,6 @@
 }
 .btn-group .btn:first-child { border-top-left-radius: var(--radius-pill); border-bottom-left-radius: var(--radius-pill); }
 .btn-group .btn:last-child  { border-top-right-radius: var(--radius-pill); border-bottom-right-radius: var(--radius-pill); }
-.btn-group .btn + .btn { margin-left: -1px; }
+.btn-group .btn + .btn { margin-left: calc(var(--border-hairline) * -1); }
 .btn-group .btn:focus-visible,
 .btn-group .btn:hover { z-index: 1; }

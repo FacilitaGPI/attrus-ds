@@ -21,6 +21,13 @@
   --w-regular: 400;  /* @kind font */
   --w-bold: 700;  /* @kind font */
   --w-black: 900;  /* @kind font */
+  /* Mono emphasis — the weight amounts use. Kept separate from --w-bold (which
+     means Lato 700) because the two families are tuned apart: a future mono swap
+     re-tunes this one line without disturbing the sans scale.
+     Measured: 700 and 800 resolve to the SAME face here (ink 48.00 for both,
+     against 44.00 regular), so 800 bought nothing visually. 700 is the honest
+     value — it is what the browser draws and what the import requests. */
+  --w-mono-emphasis: 700;  /* @kind font */
   /* RETIRED — Lato has no Medium, SemiBold or ExtraBold. Requesting them from
      Google Fonts returns nothing and the browser rounds silently (500→400,
      600→700, 800→900), so the scale advertised 7 steps while rendering 4.

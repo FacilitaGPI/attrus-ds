@@ -100,7 +100,7 @@
   /* Box — default size = md (40px tall) */
   width: 100%;
   box-sizing: border-box;
-  height: 40px;
+  height: var(--control-h-md);
   padding: 0 var(--space-4);
   border: 1px solid var(--color-border-default);
   border-radius: var(--shape-control);
@@ -170,13 +170,13 @@ textarea.input {
    3. SIZES
    ---------------------------------------------------------------- */
 .input-sm {
-  height: 32px;
+  height: var(--control-h-sm);
   padding: 0 var(--space-3);
   font-size: var(--fs-sm);
   border-radius: var(--radius-xs);
 }
 .input-lg {
-  height: 48px;
+  height: var(--control-h-lg);
   padding: 0 var(--space-5);
   font-size: var(--fs-lg);
   border-radius: var(--radius-md);
@@ -239,7 +239,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   display: flex;
   align-items: stretch;
   width: 100%;
-  height: 40px;
+  height: var(--control-h-md);
   border: 1px solid var(--color-border-default);
   border-radius: var(--shape-control);
   background: var(--color-background-surface);
@@ -289,7 +289,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  height: 40px;
+  height: var(--control-h-md);
   padding: 0 var(--space-4);
   border: 1px solid var(--color-border-default);
   border-radius: var(--radius-pill);
@@ -299,6 +299,17 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
     box-shadow var(--transition-fast),
     background var(--transition-fast);
 }
+/* Dense variant. The default 40px field is right on a page; inside a 52px
+   toolbar beside 32px buttons it reads as the odd one out, and there was no
+   modifier to reach for — so callers either lived with the mismatch or set a
+   height inline. */
+.pill-search-sm {
+  height: var(--control-h-sm);
+  padding: 0 var(--space-3);
+  gap: var(--space-2);
+}
+.pill-search-sm > input { font-size: var(--fs-sm); }
+.pill-search-sm > i, .pill-search-sm > svg { width: var(--icon-xs); height: var(--icon-xs); }
 .pill-search:hover { border-color: var(--color-border-strong); }
 .pill-search:focus-within {
   border-color: var(--color-border-focus);
@@ -363,10 +374,10 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: var(--space-2-5);
   align-items: center;
-  min-height: 40px;
-  padding: 5px 8px;
+  min-height: var(--control-h-md);
+  padding: var(--space-2-5) var(--space-3);
   border: 1px solid var(--color-border-default);
   border-radius: var(--shape-control);
   background: var(--color-background-surface);
@@ -382,7 +393,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .chip {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-2);
   height: 26px;
   padding: 0 4px 0 10px;
   background: var(--color-background-subtle);
@@ -417,7 +428,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .chip-x:hover { background: var(--color-border-default); color: var(--color-foreground-default); }
 .chips > input {
   flex: 1;
-  min-width: 80px;
+  min-width: calc(var(--control-h-md) * 2);
   height: 26px;
   border: 0;
   outline: none;
@@ -464,8 +475,8 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
    ---------------------------------------------------------------- */
 .otp { display: inline-flex; gap: var(--space-2); }
 .otp > input {
-  width: 40px;
-  height: 48px;
+  width: var(--control-h-md);
+  height: var(--control-h-lg);
   text-align: center;
   font-family: var(--font-mono);
   font-size-adjust: var(--font-mono-adjust);
@@ -494,6 +505,9 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 }
 .switch-track {
   position: relative;
+  /* Literal on purpose: track 20 − thumb 16 − inset 2×2 centres the knob exactly.
+     These are internal geometry, not icon sizes — mapping them to --icon-* broke
+     the vertical centring when the token did not happen to equal 20px. */
   width: 36px;
   height: 20px;
   border-radius: var(--radius-pill);
@@ -553,6 +567,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 }
 .check input { position: absolute; opacity: 0; pointer-events: none; }
 .check-box {
+  position: relative;
   width: 18px;
   height: 18px;
   border: 1px solid var(--color-border-strong);
@@ -568,12 +583,28 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
     border-color var(--transition-fast),
     box-shadow var(--transition-fast);
 }
-.check-box svg { width: 14px; height: 14px; stroke-width: 3; opacity: 0; transform: scale(0.8); transition: opacity var(--transition-fast), transform var(--transition-fast); }
+.check-box svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: 3; opacity: 0; transform: scale(0.8); transition: opacity var(--transition-fast), transform var(--transition-fast); }
 .check input:checked ~ .check-box {
   background: var(--color-brand-solid);
   border-color: var(--color-brand-solid);
 }
 .check input:checked ~ .check-box svg { opacity: 1; transform: scale(1); }
+/* CSS-drawn tick — used when no <svg> is supplied, so the component does not
+   depend on consumer markup to show its own state. */
+.check-box::before {
+  content: '';
+  position: absolute;
+  width: 4px; height: 7.5px;
+  border: solid var(--color-foreground-on-solid);
+  border-width: 0 1.75px 1.75px 0;
+  transform: rotate(45deg) scale(0.8);
+  margin-top: -1px;
+  opacity: 0;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+.check input:checked ~ .check-box::before { opacity: 1; transform: rotate(45deg) scale(1); }
+.check-box:has(svg)::before,
+.check input:indeterminate ~ .check-box::before { content: none; }
 .check input:indeterminate ~ .check-box {
   background: var(--color-brand-solid);
   border-color: var(--color-brand-solid);
@@ -668,7 +699,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   justify-content: space-between;
   gap: var(--space-3);
   width: 100%;
-  height: 40px;
+  height: var(--control-h-md);
   padding: 0 var(--space-4);
   border: 1px solid var(--color-border-default);
   border-radius: var(--shape-control);
@@ -804,8 +835,8 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 
 .file-icon {
   position: relative;
-  width: 40px;
-  height: 48px;
+  width: var(--control-h-md);
+  height: var(--control-h-lg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -826,7 +857,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   transform: translateX(-50%);
   font-family: var(--font-mono);
   font-size-adjust: var(--font-mono-adjust);
-  font-size: 8px;
+  font-size: var(--fs-xxs);
   font-weight: var(--w-bold);
   letter-spacing: 0.04em;
   line-height: 1;
@@ -840,7 +871,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-1);
 }
 .file-name {
   font-family: var(--font-sans);
@@ -877,7 +908,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .file-status {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-2);
   padding: 3px var(--space-2);
   border-radius: var(--radius-pill);
   font-family: var(--font-mono);
@@ -906,7 +937,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   transition: background var(--transition-fast), color var(--transition-fast);
 }
 .file-remove:hover { background: var(--color-background-subtle); color: var(--color-foreground-default); }
-.file-remove > svg, .file-remove > i { width: 14px; height: 14px; }
+.file-remove > svg, .file-remove > i { width: var(--icon-xs); height: var(--icon-xs); }
 
 
 /* ----------------------------------------------------------------
@@ -961,8 +992,10 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
    ---------------------------------------------------------------- */
 /* Field + selection controls on a permanently-dark surface (hero, onboarding).
    Without these, every dark surface had to override colour inline. */
-.field.on-inverse .field-label { color: var(--color-foreground-inverse-default); }
-.field.on-inverse .field-help  { color: var(--color-foreground-inverse-muted); }
+/* The TSX emits a bare <label> element and a .help class — there is no
+   .field-label / .field-help vocabulary, so target what actually ships. */
+.field.on-inverse > label { color: var(--color-foreground-inverse-default); }
+.field.on-inverse .help  { color: var(--color-foreground-inverse-muted); }
 
 .switch.on-inverse .switch-track {
   background: color-mix(in srgb, var(--color-pure-white) 18%, transparent);

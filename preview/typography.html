@@ -7,9 +7,12 @@
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
-<link rel="stylesheet" href="components/tokens-doc.css">
+<link rel="stylesheet" href="components/tokens-doc.css?v=3">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
+  .alias-table { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); margin: var(--space-3) 0; }
+  .alias-table .alias { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-secondary); }
+  .alias-table code { color: var(--color-foreground-accent); }
 </style>
 </head>
 <body>
@@ -21,7 +24,7 @@
   <header class="doc-header">
     <div>
       <h1>Typography</h1>
-      <p>Lato across the system — humanist sans with seven weights. JetBrains Mono for IDs, codes, and tabular numbers. The type scale runs from 10px caption micro through 72px hero display.</p>
+      <p>Lato across the system — humanist sans with four real weights. JetBrains Mono for IDs, codes, and tabular numbers. The type scale runs from 10px caption micro through 72px hero display.</p>
     </div>
     <div class="doc-meta">
       <span class="doc-meta-pill"><i data-lucide="type"></i>Type</span>
@@ -30,7 +33,7 @@
 
 <section class="doc-section" id="typography">
     <h2><span class="num">06</span>Typography</h2>
-    <p class="lead">Lato across the system — humanist sans with seven weights. JetBrains Mono for IDs, codes, and tabular numbers where alignment matters. The type scale runs from <code>10px</code> caption micro through <code>72px</code> hero display.</p>
+    <p class="lead">Lato across the system — humanist sans with four real weights. JetBrains Mono for IDs, codes, and tabular numbers where alignment matters. The type scale runs from <code>10px</code> caption micro through <code>72px</code> hero display.</p>
 
     <h3 class="sub">Families</h3>
     <div class="family-grid">
@@ -44,7 +47,7 @@
         <span class="label">Mono · IDs, codes, tabular</span>
         <span class="name">JetBrains Mono</span>
         <span class="demo">Aa Bb 1234 — €¥</span>
-        <span class="var">--font-mono</span>
+        <span class="var">--font-mono · 400 + 700 · --font-mono-adjust</span>
       </div>
     </div>
 
@@ -52,11 +55,21 @@
     <div class="weight-grid">
       <div class="weight-cell"><div class="demo" style="font-weight: var(--w-light);">Aa</div><div class="key">--w-light</div><div class="num">300</div></div>
       <div class="weight-cell"><div class="demo" style="font-weight: var(--w-regular);">Aa</div><div class="key">--w-regular</div><div class="num">400</div></div>
-      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-medium);">Aa</div><div class="key">--w-medium</div><div class="num">500</div></div>
-      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-semibold);">Aa</div><div class="key">--w-semibold</div><div class="num">600</div></div>
       <div class="weight-cell"><div class="demo" style="font-weight: var(--w-bold);">Aa</div><div class="key">--w-bold</div><div class="num">700</div></div>
-      <div class="weight-cell"><div class="demo" style="font-weight: var(--w-extrabold);">Aa</div><div class="key">--w-extrabold</div><div class="num">800</div></div>
       <div class="weight-cell"><div class="demo" style="font-weight: var(--w-black);">Aa</div><div class="key">--w-black</div><div class="num">900</div></div>
+    </div>
+
+    <div class="callout callout-warn" style="margin-top: var(--space-5)">
+      <div class="callout-icon"><i data-lucide="alert-triangle"></i></div>
+      <div class="callout-body">
+        <strong>Three weight tokens are deprecated aliases.</strong> Lato ships Thin, Light, Regular, Bold and Black — there is no Medium and no SemiBold. Asking Google Fonts for 500 or 600 returns nothing and the browser rounds silently, so the scale used to advertise seven steps while rendering four. <code>--w-semibold</code> was the most used token in the system and rendered <em>bold</em> everywhere, which is why the UI read heavier than the scale implied.
+        <div class="alias-table">
+          <span class="alias"><code>--w-medium</code> → <code>--w-regular</code> (400)</span>
+          <span class="alias"><code>--w-semibold</code> → <code>--w-regular</code> (400)</span>
+          <span class="alias"><code>--w-extrabold</code> → <code>--w-black</code> (900)</span>
+        </div>
+        They resolve rather than break, so a consuming project keeps working — but new code must use one of the four real weights above.
+      </div>
     </div>
 
     <h3 class="sub">Scale <span class="meta">— 14 stops</span></h3>
@@ -67,9 +80,9 @@
         <div class="tokens"><span class="k">--fs-8xl</span> · <span class="k">--w-black</span><br/><span class="k">--ls-display</span></div>
       </div>
       <div class="type-row">
-        <div class="label"><span class="ttl">Display LG</span><span class="px">56px / 800</span></div>
-        <div class="sample" style="font-family: var(--font-display); font-weight: var(--w-extrabold); font-size: var(--fs-7xl); letter-spacing: var(--ls-display); line-height: var(--lh-tight);">Aa Headline</div>
-        <div class="tokens"><span class="k">--fs-7xl</span> · <span class="k">--w-extrabold</span></div>
+        <div class="label"><span class="ttl">Display LG</span><span class="px">56px / 900</span></div>
+        <div class="sample" style="font-family: var(--font-display); font-weight: var(--w-black); font-size: var(--fs-7xl); letter-spacing: var(--ls-display); line-height: var(--lh-tight);">Aa Headline</div>
+        <div class="tokens"><span class="k">--fs-7xl</span> · <span class="k">--w-black</span></div>
       </div>
       <div class="type-row">
         <div class="label"><span class="ttl">Display</span><span class="px">40px / 700</span></div>
@@ -92,13 +105,13 @@
         <div class="tokens"><span class="k">--fs-3xl</span></div>
       </div>
       <div class="type-row">
-        <div class="label"><span class="ttl">H4</span><span class="px">20px / 600</span></div>
-        <div class="sample" style="font-weight: var(--w-semibold); font-size: var(--fs-2xl); letter-spacing: var(--ls-title); line-height: var(--lh-snug);">Heading 4</div>
-        <div class="tokens"><span class="k">--fs-2xl</span> · <span class="k">--w-semibold</span></div>
+        <div class="label"><span class="ttl">H4</span><span class="px">20px / 400</span></div>
+        <div class="sample" style="font-weight: var(--w-regular); font-size: var(--fs-2xl); letter-spacing: var(--ls-title); line-height: var(--lh-snug);">Heading 4</div>
+        <div class="tokens"><span class="k">--fs-2xl</span> · <span class="k">--w-regular</span></div>
       </div>
       <div class="type-row">
-        <div class="label"><span class="ttl">H5</span><span class="px">18px / 600</span></div>
-        <div class="sample" style="font-weight: var(--w-semibold); font-size: var(--fs-xl); line-height: var(--lh-snug);">Heading 5</div>
+        <div class="label"><span class="ttl">H5</span><span class="px">18px / 400</span></div>
+        <div class="sample" style="font-weight: var(--w-regular); font-size: var(--fs-xl); line-height: var(--lh-snug);">Heading 5</div>
         <div class="tokens"><span class="k">--fs-xl</span></div>
       </div>
       <div class="type-row">
@@ -123,12 +136,12 @@
       </div>
       <div class="type-row">
         <div class="label"><span class="ttl">Overline</span><span class="px">11px / caps</span></div>
-        <div class="sample" style="font-size: var(--fs-xs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-semibold);">Overline label</div>
+        <div class="sample" style="font-size: var(--fs-xs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-regular);">Overline label</div>
         <div class="tokens"><span class="k">--fs-xs</span> · <span class="k">--ls-caps</span></div>
       </div>
       <div class="type-row">
         <div class="label"><span class="ttl">Micro</span><span class="px">10px</span></div>
-        <div class="sample" style="font-size: var(--fs-xxs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-semibold);">Micro · table head</div>
+        <div class="sample" style="font-size: var(--fs-xxs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-regular);">Micro · table head</div>
         <div class="tokens"><span class="k">--fs-xxs</span></div>
       </div>
     </div>
@@ -137,23 +150,23 @@
     <p class="intro">Used wherever alignment matters more than character density — confirmation IDs, hashes, currency rows, keycaps. Tracks the sans scale at major break points but uses tighter weights and tabular figures.</p>
     <div class="type-stack">
       <div class="type-row">
-        <div class="label"><span class="ttl">Mono XL</span><span class="px">28px / 500 · IDs hero</span></div>
-        <div class="sample" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-medium); font-size: var(--fs-4xl); letter-spacing: -.01em;">N-741469-0x1A4F</div>
+        <div class="label"><span class="ttl">Mono XL</span><span class="px">28px / 400 · IDs hero</span></div>
+        <div class="sample" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-regular); font-size: var(--fs-4xl); letter-spacing: -.01em;">N-741469-0x1A4F</div>
         <div class="tokens"><span class="k">--font-mono</span> · <span class="k">--fs-4xl</span></div>
       </div>
       <div class="type-row">
-        <div class="label"><span class="ttl">Mono LG</span><span class="px">20px / 500 · metric tag</span></div>
-        <div class="sample" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-medium); font-size: var(--fs-2xl);">USD · 1,500.00</div>
+        <div class="label"><span class="ttl">Mono LG</span><span class="px">20px / 400 · metric tag</span></div>
+        <div class="sample" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-regular); font-size: var(--fs-2xl);">USD · 1,500.00</div>
         <div class="tokens"><span class="k">--fs-2xl</span></div>
       </div>
       <div class="type-row">
-        <div class="label"><span class="ttl">Mono MD</span><span class="px">16px / 500 · code, txid</span></div>
-        <div class="sample" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-medium); font-size: var(--fs-lg);">E10789035202604102003MIP45JG</div>
+        <div class="label"><span class="ttl">Mono MD</span><span class="px">16px / 400 · code, txid</span></div>
+        <div class="sample" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-regular); font-size: var(--fs-lg);">E10789035202604102003MIP45JG</div>
         <div class="tokens"><span class="k">--fs-lg</span></div>
       </div>
       <div class="type-row">
-        <div class="label"><span class="ttl">Mono</span><span class="px">14px / 500 · default</span></div>
-        <div class="sample" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-medium); font-size: var(--fs-base);">CP-847123  ·  BRL → USD  ·  6.38765</div>
+        <div class="label"><span class="ttl">Mono</span><span class="px">14px / 400 · default</span></div>
+        <div class="sample" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-regular); font-size: var(--fs-base);">CP-847123  ·  BRL → USD  ·  6.38765</div>
         <div class="tokens"><span class="k">--fs-base</span></div>
       </div>
       <div class="type-row">
@@ -167,8 +180,8 @@
         <div class="tokens"><span class="k">--fs-xs</span></div>
       </div>
       <div class="type-row">
-        <div class="label"><span class="ttl">Mono KBD</span><span class="px">10px / 500 · keycap</span></div>
-        <div class="sample"><span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-medium); font-size: var(--fs-xxs); border:1px solid var(--color-border-default); padding:1px 6px; border-radius: var(--radius-2xs); color: var(--color-foreground-muted); margin-right: 6px;">⌘K</span><span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-medium); font-size: var(--fs-xxs); border:1px solid var(--color-border-default); padding:1px 6px; border-radius: var(--radius-2xs); color: var(--color-foreground-muted); margin-right: 6px;">ESC</span><span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-medium); font-size: var(--fs-xxs); border:1px solid var(--color-border-default); padding:1px 6px; border-radius: var(--radius-2xs); color: var(--color-foreground-muted);">↵</span></div>
+        <div class="label"><span class="ttl">Mono KBD</span><span class="px">10px / 400 · keycap</span></div>
+        <div class="sample"><span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-regular); font-size: var(--fs-xxs); border:1px solid var(--color-border-default); padding:1px 6px; border-radius: var(--radius-2xs); color: var(--color-foreground-muted); margin-right: 6px;">⌘K</span><span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-regular); font-size: var(--fs-xxs); border:1px solid var(--color-border-default); padding:1px 6px; border-radius: var(--radius-2xs); color: var(--color-foreground-muted); margin-right: 6px;">ESC</span><span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-regular); font-size: var(--fs-xxs); border:1px solid var(--color-border-default); padding:1px 6px; border-radius: var(--radius-2xs); color: var(--color-foreground-muted);">↵</span></div>
         <div class="tokens"><span class="k">--fs-xxs</span> · keycap</div>
       </div>
     </div>
@@ -215,7 +228,7 @@
       </div>
       <div class="metric">
         <div class="key">--ls-caps (+8%)</div>
-        <div class="demo" style="text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-semibold);">Aa overline caps</div>
+        <div class="demo" style="text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-regular);">Aa overline caps</div>
       </div>
     </div>
   </section>

@@ -192,3 +192,36 @@
   background: var(--color-background-subtle);
   padding: 1px 6px; border-radius: var(--radius-xs);
 }
+
+/* ============================================================
+   GLASS VARIANT — .sb.is-glass
+   ============================================================
+   Same idea as .topbar.is-glass, with one extra concern: a sidebar is tall, so
+   the blur samples a lot of moving content and the active-item tint has to stay
+   legible against all of it. The active row therefore keeps an opaque backing
+   instead of inheriting the translucent field.
+
+   The right edge is the boundary here (the sidebar has no bottom border), so it
+   takes the stronger token for the same reason the topbar's hairline does. */
+.sb.is-glass {
+  background: var(--glass-chrome);
+  color: var(--glass-chrome-fg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border-right-color: var(--color-border-strong);
+}
+/* Active item must not dissolve into the blur */
+.sb.is-glass .sb-item.active {
+  background: var(--color-background-selected);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+/* Head and foot read as their own planes over a translucent field */
+.sb.is-glass .sb-head,
+.sb.is-glass .sb-foot {
+  background: color-mix(in srgb, var(--color-background-surface) 40%, transparent);
+  border-color: var(--color-border-default);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sb.is-glass { background: var(--color-background-surface); }
+}

@@ -1,0 +1,298 @@
+/* ============================================================
+   DEMO CARD — components/demo-card.css
+   ============================================================
+   The canonical frame for showing a component inside documentation: a titled
+   header explaining what is on show, and a recessed canvas holding the live
+   thing. Every doc page had been re-inventing this — .spec / .listing-card /
+   .row / .stage, each with its own padding, radius and canvas tint — so the
+   same component looked different depending on which page you opened.
+
+   Structure:
+     .demo-card
+     ├── .demo-card-head            title + description (+ optional tag)
+     │   ├── h3                     what this demo shows
+     │   ├── p                      why it matters / what to notice
+     │   └── .demo-card-tag         optional right-aligned label
+     └── .demo-card-canvas          the recessed stage
+         └── your component
+
+   Canvas variants — pick by what the component needs BEHIND it:
+     (default)          subtle surface — the neutral stage
+     .is-plain          canvas colour, for components that already carry a card
+     .is-inverse        ink surface, for .on-inverse variants
+     .is-checkered      checkerboard, for TRANSLUCENT components (glass, scrim,
+                        blur): a flat tint cannot show transparency, and a
+                        translucent panel over one looks solid
+     .is-scrolling      scrollable striped content, for sticky/frosted chrome
+                        that only means anything with something moving under it
+     .is-grid           blueprint grid, for spacing and layout demos
+
+   Layout modifiers:
+     .is-stacked        children stack vertically (default is a centred row)
+     .is-start          align to the top instead of centring
+     .is-tall / .is-short   taller or shorter stage
+     .is-flush          no padding, for full-bleed chrome (topbar, app shell)
+   ============================================================ */
+
+.demo-card {
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+  margin-bottom: var(--space-5);
+}
+
+/* ---------- Header ---------- */
+.demo-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.demo-card-head h3 {
+  font-size: var(--fs-lg);
+  font-weight: var(--w-bold);
+  letter-spacing: var(--ls-title);
+  margin: 0 0 var(--space-1);
+}
+.demo-card-head h3 code {
+  font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
+  font-size: var(--fs-sm);
+  font-weight: var(--w-regular);
+  color: var(--color-foreground-brand);
+  background: var(--color-brand-subtle);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-xs);
+  margin-left: var(--space-2);
+}
+.demo-card-head p {
+  font-size: var(--fs-sm);
+  color: var(--color-foreground-secondary);
+  line-height: var(--lh-relaxed);
+  margin: 0;
+  max-width: 64ch;
+}
+.demo-card-head p code {
+  font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
+  font-size: var(--fs-xs);
+  color: var(--color-foreground-accent);
+}
+.demo-card-tag {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
+  font-size: var(--fs-xxs);
+  font-weight: var(--w-regular);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+  white-space: nowrap;
+}
+
+/* ---------- Canvas ---------- */
+.demo-card-canvas {
+  padding: var(--space-7) var(--space-6);
+  background: var(--color-background-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  min-height: 120px;
+}
+
+/* Layout modifiers */
+.demo-card-canvas.is-stacked {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-5);
+}
+.demo-card-canvas.is-start { align-items: flex-start; }
+.demo-card-canvas.is-tall { min-height: 320px; }
+.demo-card-canvas.is-short { min-height: 0; padding: var(--space-5) var(--space-6); }
+.demo-card-canvas.is-flush { padding: 0; display: block; }
+
+/* ---------- Canvas surfaces ---------- */
+
+/* Plain: the component already carries its own card, so a tinted stage behind
+   it would read as a second card. */
+.demo-card-canvas.is-plain { background: var(--color-background-canvas); }
+
+/* Inverse: for .on-inverse variants. */
+.demo-card-canvas.is-inverse {
+  background: var(--color-background-inverse);
+  color: var(--color-foreground-inverse-default);
+}
+
+/* Checkered: the ONLY honest stage for a translucent component. A glass panel
+   over a flat tint is indistinguishable from an opaque one — the checkerboard
+   is what proves the transparency is real, and shows how much of the backdrop
+   survives the blur. Two gradients make the squares; the size token keeps them
+   from competing with the component. */
+.demo-card-canvas.is-checkered {
+  --demo-check: 12px;
+  background-color: var(--color-background-canvas);
+  background-image:
+    linear-gradient(45deg, var(--color-background-subtle) 25%, transparent 25%, transparent 75%, var(--color-background-subtle) 75%),
+    linear-gradient(45deg, var(--color-background-subtle) 25%, transparent 25%, transparent 75%, var(--color-background-subtle) 75%);
+  background-size: calc(var(--demo-check) * 2) calc(var(--demo-check) * 2);
+  background-position: 0 0, var(--demo-check) var(--demo-check);
+}
+/* On ink, for translucent components that live on dark surfaces */
+.demo-card-canvas.is-checkered.is-inverse {
+  background-color: var(--color-background-inverse);
+  background-image:
+    linear-gradient(45deg, var(--color-overlay-white-08) 25%, transparent 25%, transparent 75%, var(--color-overlay-white-08) 75%),
+    linear-gradient(45deg, var(--color-overlay-white-08) 25%, transparent 25%, transparent 75%, var(--color-overlay-white-08) 75%);
+}
+/* Colour bands behind the checkerboard — for glass that should show hue
+   bleeding through, not just light and dark. */
+.demo-card-canvas.is-checkered.is-tinted {
+  background-image:
+    linear-gradient(45deg, var(--color-brand-subtle) 25%, transparent 25%, transparent 75%, var(--color-brand-subtle) 75%),
+    linear-gradient(45deg, var(--color-accent-subtle) 25%, transparent 25%, transparent 75%, var(--color-accent-subtle) 75%);
+}
+
+/* Scrolling: sticky and frosted chrome only means something with content
+   passing beneath it. The stripes give the blur something to sample. */
+.demo-card-canvas.is-scrolling {
+  padding: 0;
+  display: block;
+  max-height: 300px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--color-background-canvas);
+}
+.demo-card-canvas.is-scrolling .demo-scroll-body {
+  height: 620px;
+  background: repeating-linear-gradient(
+    180deg,
+    var(--color-brand-subtle) 0 28px,
+    var(--color-background-canvas) 28px 56px,
+    var(--color-accent-subtle) 56px 84px,
+    var(--color-background-canvas) 84px 112px
+  );
+}
+
+/* Grid: blueprint lines, for spacing and alignment demos. */
+.demo-card-canvas.is-grid {
+  background-color: var(--color-background-canvas);
+  background-image:
+    linear-gradient(var(--color-border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+
+/* ---------- Row of labelled sub-demos ----------
+   For showing several states side by side inside one canvas: each gets a mono
+   caption so the reader knows which is which without counting. */
+.demo-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+.demo-item > .demo-item-label {
+  font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
+  font-size: var(--fs-xxs);
+  font-weight: var(--w-regular);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+}
+.demo-card-canvas.is-inverse .demo-item > .demo-item-label { color: var(--color-foreground-inverse-muted); }
+
+/* ---------- Note under a canvas ----------
+   For the caveat that belongs with the demo rather than in the section lead. */
+.demo-card-note {
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--color-border-subtle);
+  font-size: var(--fs-xs);
+  color: var(--color-foreground-muted);
+  line-height: var(--lh-relaxed);
+}
+.demo-card-note code {
+  font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
+  color: var(--color-foreground-accent);
+}
+
+/* Guidance panel — the Use when / Avoid pair that sits under a demo. It is
+   content, not a stage, so it drops the canvas tint and keeps only the divider
+   that separates it from the demo above. */
+.demo-card-canvas.is-guidance {
+  background: var(--color-background-surface);
+  border-top: 1px solid var(--color-border-subtle);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-5) var(--space-6);
+}
+.demo-card-canvas.is-guidance h4 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--w-bold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+}
+.demo-card-canvas.is-guidance ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
+.demo-card-canvas.is-guidance li { display: flex; gap: var(--space-2); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-snug); }
+.demo-card-canvas.is-guidance li > i,
+.demo-card-canvas.is-guidance li > svg { width: var(--icon-xs); height: var(--icon-xs); flex-shrink: 0; margin-top: 3px; stroke-width: var(--icon-stroke); }
+.demo-card-canvas.is-guidance li.do > i,
+.demo-card-canvas.is-guidance li.do > svg { color: var(--color-feedback-success-foreground); }
+.demo-card-canvas.is-guidance li.dont > i,
+.demo-card-canvas.is-guidance li.dont > svg { color: var(--color-feedback-danger-foreground); }
+
+/* Centred stage — for a single specimen that should sit in the middle of the
+   canvas rather than flow from the left edge (a form card, a modal shell). */
+.demo-card-canvas.is-centred { align-items: center; justify-content: center; }
+
+/* ----------------------------------------------------------------
+   CROSS-LINK — doc page <-> TSX bench
+   ----------------------------------------------------------------
+   The two halves of a component live in different trees: the spec in preview/
+   and the typed bench in components/. Before this, moving between them meant
+   knowing both paths, so the bench was effectively invisible from the docs.
+   One pill, same shape in both directions, pinned beside the existing chrome.
+   ---------------------------------------------------------------- */
+.xlink {
+  display: inline-flex;
+  /* border-box so the declared height INCLUDES the hairline — without it the
+     pill measured 42px beside 40px siblings in .view-controls. */
+  box-sizing: border-box;
+  align-items: center;
+  gap: var(--space-2);
+  height: 40px;
+  padding: 0 var(--space-4);
+  background: var(--color-background-surface);
+  color: var(--color-foreground-secondary);
+  border: var(--border-hairline) solid var(--color-border-default);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
+  font-size: var(--fs-xxs);
+  font-weight: var(--w-regular);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-fast);
+}
+.xlink:hover { color: var(--color-foreground-brand); border-color: var(--color-brand-border); }
+.xlink:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+.xlink svg, .xlink i { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
+/* Both variants sit beside a fixed back control, so they are fixed too. The
+   left offsets clear each back pill: the bench says "Components", the doc says
+   "Design system", which is wider. */
+.xlink.is-bench { position: fixed; top: 16px; left: 141px; z-index: 1000; height: 38px; }
+/* Height matches .doc-back (36px) so the two read as one row, not two pills
+   of different weight. */
+.xlink.is-doc { position: fixed; top: var(--space-5); left: 152px; z-index: 1000; height: 36px; }

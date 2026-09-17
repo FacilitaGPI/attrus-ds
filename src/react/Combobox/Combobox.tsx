@@ -53,6 +53,12 @@ export interface ComboboxProps {
   /** Gallery/doc rendering: popover stays inline (absolute under the trigger),
       not portaled. Use inside relative frames for side-by-side examples. */
   static?: boolean;
+  /** Which trigger edge the portaled popover is pinned to. It matches the
+      trigger's width as a MINIMUM and grows with its content, so the growth has
+      to have a direction: 'start' grows right (default), 'end' grows left. Use
+      'end' for a compact control near the right edge, where growing right would
+      run off the viewport. */
+  align?: 'start' | 'end';
   className?: string;
   style?: React.CSSProperties;
   'aria-label'?: string;
@@ -93,6 +99,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
   emptySub,
   disabled = false,
   static: isStatic = false,
+  align = 'start',
   className,
   style,
   ...rest
@@ -102,14 +109,15 @@ export const Combobox: React.FC<ComboboxProps> = ({
   const [active, setActive] = React.useState<string | null>(null);
   const wrapRef = React.useRef<HTMLDivElement>(null);
   const popRef = React.useRef<HTMLDivElement>(null);
-  const [pos, setPos] = React.useState<{ left: number; top: number; width: number } | null>(null);
+  const [pos, setPos] = React.useState<{ left: number; right: number; top: number; width: number } | null>(null);
 
   // Position the portaled popover under the trigger (fixed coords from rect).
+  // Both edges are captured because `align` decides which one anchors.
   React.useLayoutEffect(() => {
     if (!open || isStatic) return undefined;
     const place = () => {
       const r = wrapRef.current?.getBoundingClientRect();
-      if (r) setPos({ left: r.left, top: r.bottom + 8, width: r.width });
+      if (r) setPos({ left: r.left, right: window.innerWidth - r.right, top: r.bottom + 8, width: r.width });
     };
     place();
     window.addEventListener('scroll', place, true);
@@ -284,8 +292,22 @@ export const Combobox: React.FC<ComboboxProps> = ({
       {open && pos
         ? createPortal(
             <div
-              className={['combobox', 'is-open', status === 'error' ? 'is-invalid' : ''].filter(Boolean).join(' ')}
-              style={{ position: 'fixed', left: pos.left, top: pos.top, width: pos.width, margin: 0, zIndex: 7000 }}
+              className={['combobox', 'is-open', status === 'error' ? 'is-invalid' : '', className || ''].filter(Boolean).join(' ')}
+              style={{
+                /* MIN-width, not width: matching the trigger is right for a form
+                   field, but as a fixed width it traps the list — a 50px chip
+                   crushes its own options with no floor to rescue them. The
+                   trigger sets the floor; content sets the rest. */
+                position: 'fixed',
+                top: pos.top,
+                ...(align === 'end' ? { right: pos.right } : { left: pos.left }),
+                minWidth: pos.width,
+                margin: 0,
+                zIndex: 7000,
+                /* The consumer's own style comes last so it can override the
+                   floor when the content still needs more room. */
+                ...style,
+              }}
               onKeyDown={onWrapKeyDown}
             >
               <div className="combobox-popover" ref={popRef} style={{ position: 'static' }}>{popoverInner}</div>

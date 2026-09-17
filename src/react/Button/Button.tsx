@@ -24,10 +24,12 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   variant?: ButtonVariant;
   /** Control height: xs=24, sm=32, md=40 (default), lg=48. */
   size?: ButtonSize;
+  /** Square, label-less button. `aria-label` is REQUIRED — an icon-only
+      control has no text node, so without it the button is unnamed to a screen
+      reader. That requirement is why this is a prop and not a bare class. */
+  iconOnly?: boolean;
   /** Shows the canonical spinner and disables interaction. */
   loading?: boolean;
-  /** Square icon-only button (.btn-icon) — width locks to the height. */
-  iconOnly?: boolean;
   /** Leading slot — typically an <Icon/>. */
   icon?: React.ReactNode;
   /** Trailing slot — e.g. a chevron. */
@@ -40,8 +42,8 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   size = 'md',
-  loading = false,
   iconOnly = false,
+  loading = false,
   icon,
   iconRight,
   onInverse = false,
@@ -76,7 +78,13 @@ export default Button;
 
 /** Segmented / toolbar cluster — children must be <Button>s (`.btn-group`):
  *  outer corners pill-rounded, inner seams collapsed. */
-export const ButtonGroup: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, children, ...rest }) => (
+export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
+  /** Names the cluster for assistive tech — "View mode", "Alignment". */
+  'aria-label': string;
+}
+
+export const ButtonGroup: React.FC<ButtonGroupProps> = ({ className, children, ...rest }) => (
   <div role="group" className={['btn-group', className || ''].filter(Boolean).join(' ')} {...rest}>
     {children}
   </div>

@@ -17,11 +17,11 @@
   align-items: center;
   gap: var(--space-3);
   width: 100%;
-  height: 40px;
+  height: var(--control-h-md);
   padding: 0 var(--space-3) 0 var(--space-4);
   background: var(--color-background-surface);
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-sm);
+  border: var(--border-hairline) solid var(--color-border-default);
+  border-radius: var(--shape-control);
   font-family: var(--font-sans);
   font-size: var(--fs-sm);
   font-weight: var(--w-regular);
@@ -53,7 +53,7 @@
   font-weight: var(--w-regular);
 }
 .combobox-chevron {
-  width: 16px; height: 16px;
+  width: var(--icon-sm); height: var(--icon-sm);
   stroke-width: var(--icon-stroke);
   color: var(--color-foreground-muted);
   flex-shrink: 0;
@@ -63,7 +63,7 @@
 
 /* Leading icon variant */
 .combobox-trigger-icon {
-  width: 16px; height: 16px;
+  width: var(--icon-sm); height: var(--icon-sm);
   stroke-width: var(--icon-stroke);
   color: var(--color-foreground-secondary);
   flex-shrink: 0;
@@ -71,7 +71,7 @@
 
 /* Avatar inside trigger (counterparty selector pattern) */
 .combobox-avatar {
-  width: 24px; height: 24px;
+  width: var(--control-h-xs); height: var(--control-h-xs);
   border-radius: var(--radius-pill);
   background: var(--color-brand-subtle-solid);
   color: var(--color-brand-text-on-light);
@@ -87,14 +87,27 @@
   position: absolute;
   top: calc(100% + var(--space-2));
   left: 0;
-  right: 0;
-  z-index: 7000;
+  /* Trigger width is the FLOOR, not the ceiling. Pinning both edges made the
+     popover exactly as wide as the trigger, so a 50px chip crushed its own
+     options with nothing to rescue them. min-width keeps the form-field look
+     (popover aligns with the field) while letting content set the real width. */
+  min-width: 100%;
+  width: max-content;
+  max-width: min(420px, calc(100vw - var(--space-6)));
+  /* Layer 9200 — ABOVE the scrim (9000) and the drawer panel (9100). A combobox
+     opened inside a drawer or modal must render over that surface, not behind
+     its veil; at 7000 the popover was trapped under the scrim in exactly the
+     case where a picker is most needed. Tooltip 8000 sits below for the same
+     reason it sits below a modal: it annotates, it does not collect input. */
+  z-index: 9200;
   background: var(--color-background-surface);
-  border: 1px solid var(--color-border-default);
+  border: var(--border-hairline) solid var(--color-border-default);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-xl);
   display: none;
   flex-direction: column;
+  /* ~7 rows before the list scrolls. Past that the user scans instead of
+     reading, and the popover starts covering the field it belongs to. */
   max-height: 320px;
 }
 .combobox.is-open .combobox-popover { display: flex; }
@@ -103,16 +116,16 @@
 .combobox-search {
   position: relative;
   padding: var(--space-3);
-  border-bottom: 1px solid var(--color-border-subtle);
+  border-bottom: var(--border-hairline) solid var(--color-border-subtle);
   flex-shrink: 0;
 }
 .combobox-search input {
   width: 100%;
   box-sizing: border-box;
-  height: 32px;
+  height: var(--control-h-sm);
   padding: 0 var(--space-3) 0 var(--space-7);
   background: var(--color-background-canvas);
-  border: 1px solid var(--color-border-default);
+  border: var(--border-hairline) solid var(--color-border-default);
   border-radius: var(--radius-xs);
   font-family: var(--font-sans);
   font-size: var(--fs-sm);
@@ -129,7 +142,7 @@
   left: calc(var(--space-3) + var(--space-2));
   top: 50%;
   transform: translateY(-50%);
-  width: 14px; height: 14px;
+  width: var(--icon-xs); height: var(--icon-xs);
   stroke-width: var(--icon-stroke);
   color: var(--color-foreground-muted);
   pointer-events: none;
@@ -203,7 +216,7 @@
 }
 
 .combobox-option-check {
-  width: 16px; height: 16px;
+  width: var(--icon-sm); height: var(--icon-sm);
   stroke-width: 2.4;
   color: var(--color-foreground-accent);
   flex-shrink: 0;
@@ -236,7 +249,7 @@
 /* Footer (e.g. "Create new …") */
 .combobox-footer {
   padding: var(--space-2);
-  border-top: 1px solid var(--color-border-subtle);
+  border-top: var(--border-hairline) solid var(--color-border-subtle);
   flex-shrink: 0;
 }
 .combobox-footer-action {
@@ -249,7 +262,7 @@
   margin-top: 0;
   width: calc(100% - var(--space-4));
   background: var(--color-background-surface);
-  border: 1px solid var(--color-border-default);
+  border: var(--border-hairline) solid var(--color-border-default);
   border-radius: var(--radius-sm);
   font-family: var(--font-sans);
   font-size: var(--fs-sm);
@@ -273,13 +286,13 @@
 }
 .combobox-footer-action svg,
 .combobox-footer-action i {
-  width: 14px;
-  height: 14px;
+  width: var(--icon-xs);
+  height: var(--icon-xs);
   stroke-width: var(--icon-stroke);
   color: var(--color-foreground-secondary);
 }
 .combobox-footer-action i, .combobox-footer-action svg {
-  width: 16px; height: 16px;
+  width: var(--icon-sm); height: var(--icon-sm);
   stroke-width: var(--icon-stroke);
 }
 
@@ -305,15 +318,15 @@
    foot meta (below list). Exposed via Combobox props
    `filters` / `meta` / `footMeta`.
    ---------------------------------------------------------------- */
-.combobox-filters { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-3); border-bottom: 1px solid var(--color-border-subtle); }
-.combobox-filter-chip { display: inline-flex; align-items: center; gap: var(--space-2); padding: 4px var(--space-3); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: var(--w-regular); color: var(--color-foreground-secondary); cursor: pointer; transition: var(--transition-fast); }
+.combobox-filters { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-3); border-bottom: var(--border-hairline) solid var(--color-border-subtle); }
+.combobox-filter-chip { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: var(--w-regular); color: var(--color-foreground-secondary); cursor: pointer; transition: var(--transition-fast); }
 .combobox-filter-chip:hover { background: var(--color-background-hover); border-color: var(--color-border-strong); color: var(--color-foreground-default); }
 .combobox-filter-chip.is-active { background: var(--color-background-selected); border-color: var(--color-brand-border); color: var(--color-foreground-brand); font-weight: var(--w-regular); }
 .combobox-filter-chip .count { font-family: var(--font-mono);
   font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); }
 .combobox-filter-chip.is-active .count { color: var(--color-foreground-brand); }
-.combobox-meta { padding: var(--space-2) var(--space-3) var(--space-1); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-subtle); }
-.combobox-foot-meta { padding: var(--space-2) var(--space-3); font-size: var(--fs-xs); color: var(--color-foreground-muted); border-top: 1px solid var(--color-border-subtle); }
+.combobox-meta { padding: var(--space-2) var(--space-3) var(--space-1); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: var(--border-hairline) solid var(--color-border-subtle); }
+.combobox-foot-meta { padding: var(--space-2) var(--space-3); font-size: var(--fs-xs); color: var(--color-foreground-muted); border-top: var(--border-hairline) solid var(--color-border-subtle); }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {

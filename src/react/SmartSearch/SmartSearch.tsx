@@ -34,6 +34,9 @@ export interface SSItem {
 }
 
 export interface SSSection {
+  /** `recent` renders `.ss-recent`: leading icons shrink to bare glyphs so
+      history reads below live results instead of competing with them. */
+  variant?: 'default' | 'recent';
   /** Uppercase section label (e.g. "Counterparties"). */
   label?: React.ReactNode;
   items: SSItem[];
@@ -48,6 +51,9 @@ export interface SSTypeButton {
 }
 
 export interface SmartSearchProps {
+  /** Empty-state line, rendered as `.ss-no-result` with the term emphasised.
+      Pass the query so the message can name what failed. */
+  emptyQuery?: string;
   value: string;
   onChange?: (value: string) => void;
   placeholder?: string;
@@ -101,6 +107,7 @@ export const SmartSearch: React.FC<SmartSearchProps> = ({
   sections,
   onSelect,
   resultLabel,
+  emptyQuery,
   hint,
   typeButtons,
   onTypeSelect,
@@ -192,11 +199,17 @@ export const SmartSearch: React.FC<SmartSearchProps> = ({
       ) : null}
 
       {sections && sections.length ? sections.map((s, i) => (
-        <div key={i} className="ss-section">
+        <div key={i} className={'ss-section' + (s.variant === 'recent' ? ' ss-recent' : '')}>
           {s.label != null ? <div className="ss-section-label">{s.label}</div> : null}
           <ul className="ss-list">{s.items.map(renderItem)}</ul>
         </div>
       )) : null}
+
+      {emptyQuery != null ? (
+        <div className="ss-section">
+          <div className="ss-no-result">No results for "<strong>{emptyQuery}</strong>".</div>
+        </div>
+      ) : null}
 
       {hint != null ? (
         <div className="ss-section"><div className="ss-hint">{hint}</div></div>

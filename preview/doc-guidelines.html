@@ -1,0 +1,566 @@
+<!-- @dsCard group="Internal" name="Doc page guidelines" subtitle="How to author a documentation page — internal, not part of the shipped system" viewport="1280x1000" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doc page guidelines · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<link rel="stylesheet" href="components/tokens-doc.css?v=3">
+<link rel="stylesheet" href="components/callout.css?v=3">
+<link rel="stylesheet" href="components/demo-card.css?v=3">
+<script src="../theme-toggle.js"></script>
+<script src="../version.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
+  .doc { max-width: 1060px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+
+  .view-controls { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); }
+  .page-theme { display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); }
+  .page-theme [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
+
+  .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-6); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-6); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-warning-background); color: var(--color-feedback-warning-foreground); border: 1px solid var(--color-feedback-warning-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
+
+  .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-8); }
+  .doc-nav a { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); text-decoration: none; padding: var(--space-2) var(--space-3); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); }
+  .doc-nav a:hover { color: var(--color-foreground-brand); border-color: var(--color-brand-border); background: var(--color-brand-subtle); }
+
+  .doc-section { margin-bottom: var(--space-10); scroll-margin-top: var(--space-6); }
+  .doc-section > h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-3); display: flex; align-items: baseline; gap: var(--space-3); }
+  .doc-section > h2 .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); color: var(--color-foreground-muted); }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 74ch; margin: 0 0 var(--space-6); }
+
+  h3.sub { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: var(--space-8) 0 var(--space-3); }
+  h3.sub:first-of-type { margin-top: 0; }
+  p.body { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 74ch; margin: 0 0 var(--space-4); }
+
+  .g { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-5); }
+  .g th, .g td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
+  .g thead th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); }
+  .g tr:last-child td { border-bottom: 0; }
+  .g td:first-child { color: var(--color-foreground-default); }
+  .g td:last-child { color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .g code, code.t { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .g .req { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .g .req.yes { color: var(--color-feedback-success-foreground); }
+  .g .req.cond { color: var(--color-feedback-warning-foreground); }
+  .g .num-col { width: 42px; font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); color: var(--color-foreground-muted); }
+
+  pre.code { margin: 0 0 var(--space-5); padding: var(--space-5); background: var(--color-background-inverse); color: var(--color-foreground-inverse-default); border-radius: var(--radius-md); overflow-x: auto; font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); line-height: var(--lh-relaxed); }
+  pre.code .c { color: var(--color-foreground-inverse-muted); }
+  pre.code .k { color: var(--color-brand-accent-300); }
+
+  .profiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-6); }
+  .profile { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-5); }
+  .profile .tag { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-brand); background: var(--color-brand-subtle); padding: 2px var(--space-2); border-radius: var(--radius-2xs); }
+  .profile h4 { font-size: var(--fs-lg); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: var(--space-3) 0 var(--space-2); }
+  .profile p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-3); }
+  .profile .count { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); }
+
+  /* Block rhythm — the doc page owns spacing BETWEEN blocks, because a
+     component must not carry outer margin (see §08). Every direct child of a
+     section that is a block gets the same gap, so nothing can touch. */
+  .doc-section > .callout,
+  .doc-section > table.g,
+  .doc-section > pre.code,
+  .doc-section > .profiles,
+  .doc-section > .demo-card { margin-bottom: var(--space-6); }
+  .doc-section > *:last-child { margin-bottom: 0; }
+  /* A callout answering the paragraph above it belongs to that paragraph */
+  .doc-section > p + .callout { margin-top: calc(var(--space-2) * -1); }
+
+  .doc-foot { margin-top: var(--space-12); padding-top: var(--space-5); border-top: 1px solid var(--color-border-default); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<div class="view-controls">
+  <button class="page-theme" data-theme-toggle aria-label="Toggle theme">
+    <span data-theme-icon aria-hidden="true">☾</span>
+    <span data-theme-label>Dark</span>
+  </button>
+</div>
+
+<main class="doc">
+
+  <header class="doc-header">
+    <div>
+      <h1>Doc page guidelines</h1>
+      <p>How to author a page in this documentation set. Internal — this is the process behind the system, not a part of it. Nothing here ships to a consuming product.</p>
+    </div>
+    <span class="doc-meta-pill"><i data-lucide="wrench"></i> Internal</span>
+  </header>
+
+  <nav class="doc-nav">
+    <a href="#why">01 Why</a>
+    <a href="#profiles">02 Profiles</a>
+    <a href="#chrome">03 Chrome</a>
+    <a href="#component">04 Component page</a>
+    <a href="#token">05 Token page</a>
+    <a href="#contract">06 ds-api</a>
+    <a href="#kit">07 Doc kit</a>
+    <a href="#surfaces">08 Surfaces</a>
+    <a href="#rhythm">09 Rhythm</a>
+    <a href="#coverage">10 Coverage</a>
+    <a href="#lifecycle">11 Lifecycle</a>
+    <a href="#writing">12 Writing rules</a>
+    <a href="#checklist">13 Checklist</a>
+  </nav>
+
+  <!-- 01 -->
+  <section class="doc-section" id="why">
+    <h2><span class="num">01</span>Why this exists</h2>
+    <p class="lead">A design system is consumed twice: by a person reading a page, and by an agent reading a contract. The second reader is new, and it changes what a doc page owes. An agent cannot infer that <code class="t">danger</code> is wrong for emphasis, or that two callouts in a row defeat both — it needs those stated.</p>
+
+    <div class="callout callout-warn">
+      <i data-lucide="alert-triangle" class="callout-icon"></i>
+      <div class="callout-body">An audit of the 50 pages found the full pattern on <strong>6</strong>, partial on <strong>8</strong>, and minimal on <strong>36</strong> — and the complete ones were the most recently written. The heaviest-used components (Button, Input, Table, Tabs, Toast) were the least documented, so the agentic contract covered exactly what an agent reaches for least.</div>
+    </div>
+
+    <p class="body">Two working rules come out of that. <strong>State the negative:</strong> a page that lists only what a component does leaves every misuse available. <strong>Separate shipped behaviour from your job:</strong> copying markup does not buy keyboard nav or ARIA, and a page that does not say so invites a broken copy.</p>
+  </section>
+
+  <!-- 02 -->
+  <section class="doc-section" id="profiles">
+    <h2><span class="num">02</span>Three profiles</h2>
+    <p class="lead">One mould does not fit. A spacing page has no props and no anti-patterns; forcing the component structure onto it produces empty sections, and empty sections teach people to skim.</p>
+
+    <div class="profiles">
+      <div class="profile">
+        <span class="tag">Profile A</span>
+        <h4>Component</h4>
+        <p>Anything a consumer instantiates: Button, Input, Table, Drawer, Callout. Carries props, states and behaviour, so it carries the full contract.</p>
+        <span class="count">10 sections · #ds-api required</span>
+      </div>
+      <div class="profile">
+        <span class="tag">Profile B</span>
+        <h4>Token / foundation</h4>
+        <p>A scale rather than a thing: colour, spacing, radii, shadows, typography, motion. The decision is <em>which step</em>, not which props.</p>
+        <span class="count">5 sections · reduced #ds-api</span>
+      </div>
+      <div class="profile">
+        <span class="tag">Profile C</span>
+        <h4>Guide</h4>
+        <p>Prose with a point of view: theming, composition, naming, this page. Structure follows the argument; only the chrome is fixed.</p>
+        <span class="count">Free structure · chrome required</span>
+      </div>
+    </div>
+
+    <p class="body">Pick the profile before writing. Most mistakes in the current set are a component page missing sections, or a token page padded with sections it never needed.</p>
+  </section>
+
+  <!-- 03 -->
+  <section class="doc-section" id="chrome">
+    <h2><span class="num">03</span>Chrome — all three profiles</h2>
+    <p class="lead">Fixed order, top to bottom. Every item earns its place: the card registers the page, the controls make dark mode verifiable, the contract makes the page machine-readable.</p>
+
+    <table class="g">
+      <thead><tr><th class="num-col">#</th><th>Element</th><th>Why it is required</th></tr></thead>
+      <tbody>
+        <tr><td class="num-col">1</td><td><code>@dsCard</code> comment</td><td>First line of the file. Registers the page in the catalog and supplies its thumbnail — without it the page exists but nobody finds it.</td></tr>
+        <tr><td class="num-col">2</td><td><code>.doc-back</code></td><td>Return to the index. The only element already on all 50 pages.</td></tr>
+        <tr><td class="num-col">3</td><td><code>.view-controls</code></td><td>Theme toggle, plus the product selector on pages where matiz matters. A page without it cannot demonstrate its own dark mode — today 36 pages cannot.</td></tr>
+        <tr><td class="num-col">4</td><td><code>.doc-header</code></td><td><code>h1</code>, a one-sentence lead, and a <code>.doc-meta-pill</code> carrying status: Stable, Beta, Deprecated or Internal.</td></tr>
+        <tr><td class="num-col">5</td><td><code>.api</code> panel</td><td>Profiles A and B. Import, CSS class, variants, key props, and a <strong>Prefer</strong> line. The panel is the human contract.</td></tr>
+        <tr><td class="num-col">6</td><td><code>#ds-api</code> JSON</td><td>The machine contract — same facts, no prose to interpret. See §06.</td></tr>
+        <tr><td class="num-col">7</td><td><code>.doc-nav</code></td><td>Numbered anchors. <strong>Numbers must match the section badges</strong> — drift here caused three separate bugs in this set.</td></tr>
+        <tr><td class="num-col">8</td><td>Sections</td><td>Per profile, §04 and §05.</td></tr>
+        <tr><td class="num-col">9</td><td><code>.doc-foot</code></td><td>Page name, <code>data-ds-version</code> hook, link back. Never a hardcoded version or date.</td></tr>
+      </tbody>
+    </table>
+
+    <p class="body"><strong>Where the file goes.</strong> Doc pages live flat in <code>preview/</code>, named after the component in kebab-case (<code>preview/toggle-chip.html</code>). Canonical CSS goes in <code>preview/components/</code>. Do not scaffold from scratch — copy the closest page in the same profile and replace its content, so the chrome stays identical by construction rather than by discipline.</p>
+
+    <div class="callout callout-neutral callout-sm">
+      <i data-lucide="info" class="callout-icon"></i>
+      <div class="callout-body">Load every <code>components/*.css</code> with a cache-buster (<code>?v=N</code>). Un-versioned sheets cost three separate debugging rounds in this project — measurements were taken against CSS that no longer existed on disk.</div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="doc-section" id="component">
+    <h2><span class="num">04</span>Profile A — component page</h2>
+    <p class="lead">Ten sections. The order moves from decision to detail: an agent that stops reading after §01 should already know whether this is the right component.</p>
+
+    <table class="g">
+      <thead><tr><th class="num-col">#</th><th>Section</th><th>Req</th><th>Contents</th></tr></thead>
+      <tbody>
+        <tr><td class="num-col">01</td><td>Intent</td><td><span class="req yes">yes</span></td><td>One sentence of what it is. <strong>Use when</strong> — three conditions that must all hold. <strong>Use instead</strong> — routes to other components when they do not.</td></tr>
+        <tr><td class="num-col">02</td><td>Anatomy</td><td><span class="req yes">yes</span></td><td>Structure tree plus one demo with each part labelled. Name every slot the consumer can fill.</td></tr>
+        <tr><td class="num-col">03</td><td>Variants</td><td><span class="req yes">yes</span></td><td>One row per variant: what it changes and when to reach for it. Not a gallery — a decision table.</td></tr>
+        <tr><td class="num-col">04</td><td>Sizes</td><td><span class="req cond">cond</span></td><td>Only if there is a scale. Show the <code>--control-h-*</code> token, not a literal — a page that prints 40px while the token says otherwise is the drift we keep fixing.</td></tr>
+        <tr><td class="num-col">05</td><td>States</td><td><span class="req yes">yes</span></td><td>hover · active · focus-visible · disabled · loading · error — whichever exist. Disabled and focus are the two most often skipped and most often wrong.</td></tr>
+        <tr><td class="num-col">06</td><td>Composition</td><td><span class="req cond">cond</span></td><td>How it sits with other components, and which pairings are wrong. Include the case that looks fine and breaks — a bar inside a card, a spacer beside a stepper.</td></tr>
+        <tr><td class="num-col">07</td><td>On inverse</td><td><span class="req yes">yes</span></td><td>Dark surface treatment. State the measured contrast, not "looks fine" — most contrast bugs in this system were invisible until measured.</td></tr>
+        <tr><td class="num-col">08</td><td>For agents</td><td><span class="req yes">yes</span></td><td><strong>Anti-patterns</strong> (what fails and why it survives review) and <strong>Rules</strong> (deterministic constraints an agent can apply without judgement).</td></tr>
+        <tr><td class="num-col">09</td><td>Behaviour</td><td><span class="req yes">yes</span></td><td>Three blocks: ships in TSX · CSS-only must implement · presentational only. This is what stops a copied footer from becoming a promise nobody keeps.</td></tr>
+        <tr><td class="num-col">10</td><td>Class map</td><td><span class="req yes">yes</span></td><td>Every class in the CSS with its role. If a class exists and is not here, one of the two is wrong.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Writing the anti-patterns</h3>
+    <p class="body">This is the section that makes a page agentic, and the easiest to write badly. Each row needs the failure <em>and</em> the mechanism — "don't stack callouts" is a rule to memorise; "stacked, they become a list with decorative boxes and the reader skips all of them" is a reason that generalises.</p>
+    <p class="body">Prefer anti-patterns that <strong>render without error</strong>. Those are the ones that survive review and reach production. A misuse that throws is already caught by the compiler.</p>
+  </section>
+
+  <!-- 05 -->
+  <section class="doc-section" id="token">
+    <h2><span class="num">05</span>Profile B — token page</h2>
+    <p class="lead">Five sections. The reader's question is not "how do I call this" but "which step do I pick, and why not the one next to it".</p>
+
+    <table class="g">
+      <thead><tr><th class="num-col">#</th><th>Section</th><th>Contents</th></tr></thead>
+      <tbody>
+        <tr><td class="num-col">01</td><td>Scale</td><td>Every step: token, value, intended use. Include the measured rendering when it can differ from the declaration — the weight scale advertised seven steps and drew four.</td></tr>
+        <tr><td class="num-col">02</td><td>Semantics</td><td>Which token for which intention, and the raw-versus-semantic rule: raw scales are for authoring tokens, semantic tokens are for components.</td></tr>
+        <tr><td class="num-col">03</td><td>In context</td><td>The tokens applied to real UI. A wall of swatches shows the palette; it does not show that two adjacent steps are indistinguishable at 1×.</td></tr>
+        <tr><td class="num-col">04</td><td>For agents</td><td>Anti-patterns (raw where a semantic exists; off-scale values; a token the typeface does not contain) and how to choose between neighbouring steps.</td></tr>
+        <tr><td class="num-col">05</td><td>Reference</td><td>The complete table, copyable, matching the export.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 06 -->
+  <section class="doc-section" id="contract">
+    <h2><span class="num">06</span>The <code>#ds-api</code> contract</h2>
+    <p class="lead">A JSON block near the top of the page. It repeats what the prose says, with nothing left to interpretation — an agent should never have to parse a paragraph to learn that <code class="t">rounded</code> requires <code class="t">bar</code>.</p>
+
+    <pre class="code"><span class="c">&lt;script type="application/json" id="ds-api"&gt;</span>
+{
+  <span class="k">"component"</span>: "Callout",
+  <span class="k">"import"</span>: "const { Callout } = ATTRUS",
+  <span class="k">"cssClass"</span>: ".callout",
+  <span class="k">"status"</span>: "stable",
+  <span class="k">"intent"</span>: <span class="c">// one sentence</span>
+  <span class="k">"variants"</span>: [],
+  <span class="k">"props"</span>: [{ "name", "type", "default", "note" }],
+  <span class="k">"useWhen"</span>: [],        <span class="c">// conditions that must all hold</span>
+  <span class="k">"useInstead"</span>: [{ "when", "use" }],
+  <span class="k">"antiPatterns"</span>: [],
+  <span class="k">"constraints"</span>: [],    <span class="c">// deterministic, no judgement needed</span>
+  <span class="k">"behaviour"</span>: {
+    <span class="k">"shippedInTsx"</span>: [],
+    <span class="k">"cssOnlyMustImplement"</span>: [],
+    <span class="k">"presentationalOnly"</span>: []
+  }
+}
+<span class="c">&lt;/script&gt;</span></pre>
+
+    <p class="body">Profile B swaps <code class="t">props</code> and <code class="t">behaviour</code> for <code class="t">tokens[]</code> and <code class="t">chooseBy[]</code>. Profile C needs no contract.</p>
+
+    <div class="callout callout-info callout-sm">
+      <i data-lucide="git-merge" class="callout-icon"></i>
+      <div class="callout-body">The panel and the JSON are <strong>generated</strong> by <code>tools/gen-api.cjs</code> from the <code>.d.ts</code> plus <code>tools/api-meta.json</code>. Hand-editing either one works until the next regeneration overwrites it — put non-derivable fields (<code>intent</code>, <code>antiPatterns</code>, <code>constraints</code>) in <code>api-meta.json</code> and run the generator.</div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="doc-section" id="kit">
+    <h2><span class="num">07</span>The doc kit</h2>
+    <p class="lead">Documentation components, so a page composes instead of reinventing. Today each page declares its own table class — <code class="t">.cls</code>, <code class="t">.tk</code>, <code class="t">.map</code>, <code class="t">.g</code> — which is why they drift.</p>
+
+    <h3 class="sub">Demonstration</h3>
+    <table class="g">
+      <thead><tr><th>Component</th><th>Use</th></tr></thead>
+      <tbody>
+        <tr><td><code>.demo-card</code> + <code>-head</code> <code>-canvas</code> <code>-note</code></td><td>The canonical frame for any demo. Head states what is shown; note carries the caveat.</td></tr>
+        <tr><td><code>.is-plain</code></td><td>Component already has its own card — no second surface.</td></tr>
+        <tr><td><code>.is-inverse</code></td><td>Demonstrating an <code>.on-inverse</code> variant.</td></tr>
+        <tr><td><code>.is-checkered</code></td><td><strong>Required for translucent components.</strong> Glass over flat paint is indistinguishable from opaque — the stage has to carry the pattern the blur samples.</td></tr>
+        <tr><td><code>.is-scrolling</code></td><td>Sticky or frosted chrome. Gives the blur something to move against; a static frosted bar demonstrates nothing.</td></tr>
+        <tr><td><code>.is-grid</code></td><td>Spacing and layout demos.</td></tr>
+        <tr><td><code>.demo-item</code></td><td>When one stage shows several states, each gets a mono caption. The reader should not count positions.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Contract and tables</h3>
+    <table class="g">
+      <thead><tr><th>Component</th><th>Use</th></tr></thead>
+      <tbody>
+        <tr><td><code>.api</code> <code>.api-grid</code> <code>.api-col</code> <code>.api-k</code> <code>.api-tags</code></td><td>The API panel. One column per fact group.</td></tr>
+        <tr><td><code>.api-prefer</code></td><td>The <strong>Prefer</strong> line — the single most useful sentence on the page for an agent.</td></tr>
+        <tr><td><code>.doc-table</code></td><td>Base table. Replaces the per-page classes.</td></tr>
+        <tr><td><code>.doc-table.is-2col</code></td><td>Anti-pattern → why it fails. Also do/don't pairs.</td></tr>
+        <tr><td><code>.doc-table.is-tokens</code></td><td>Token · value · use.</td></tr>
+        <tr><td><code>.doc-table.is-contract</code></td><td>Behaviour · how it is built. The "how" is what stops re-implementation.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Guidance</h3>
+    <table class="g">
+      <thead><tr><th>Component</th><th>Use</th></tr></thead>
+      <tbody>
+        <tr><td><code>.callout</code></td><td>Caveats inside the doc. Use the real component — the docs should eat their own cooking.</td></tr>
+        <tr><td><code>.do-dont</code></td><td>Side-by-side visual pair. Stronger than prose when the failure is spatial.</td></tr>
+        <tr><td><code>.rule-list</code></td><td>Numbered deterministic constraints.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 08 -->
+  <section class="doc-section" id="surfaces">
+    <h2><span class="num">08</span>Surfaces — nothing floats</h2>
+    <p class="lead">Every block on a doc page sits on a surface. A page where the demos have cards and the prose does not reads as unfinished, because the eye takes the bare text for a gap between things rather than a thing itself.</p>
+
+    <div class="callout callout-warn">
+      <i data-lucide="alert-triangle" class="callout-icon"></i>
+      <div class="callout-body">The SmartSearch page shipped with six carded demos and eleven bare tables — then over-corrected, putting a card around the page title too, which stole the entry point from the first demo. Nothing was broken and every value was right — it simply looked like a draft next to <code>buttons.html</code>. Surface is not decoration; it is what tells the reader where one block ends.</div>
+    </div>
+
+    <h3 class="sub">The rule</h3>
+    <p class="body"><strong>Content sits on a card. Titles do not.</strong> Anything that renders substance — a demo, a table, the API panel — carries a surface, because the surface is what marks where the block begins and ends. The page title with its description, and each section title with its lead, stay bare on the canvas.</p>
+
+    <table class="g">
+      <thead><tr><th>Element</th><th>Surface</th><th>Reasoning</th></tr></thead>
+      <tbody>
+        <tr><td>Page <code>h1</code> + description</td><td><strong>Bare</strong></td><td>The title is the way in. Boxing it makes it compete with the first demo for that role, and the reader loses the top of the page.</td></tr>
+        <tr><td>Section <code>h2</code> + <code>.lead</code></td><td><strong>Bare</strong></td><td>A lead introduces the blocks under it. Give it a card and the section reads as four blocks where the first one is prose — the hierarchy flattens.</td></tr>
+        <tr><td>Demo, table, API panel</td><td><strong>Card</strong></td><td>These are the blocks. Without a surface the reader takes bare content for the gap between things rather than a thing itself.</td></tr>
+      </tbody>
+    </table>
+
+    <p class="body">The asymmetry is the point: bare type reads as structure, carded content reads as substance. A page that boxes everything has no hierarchy left, and a page that boxes nothing looks unfinished.</p>
+
+    <h3 class="sub">The four surfaces</h3>
+    <table class="g">
+      <thead><tr><th>Block</th><th>Class</th><th>Carries</th></tr></thead>
+      <tbody>
+        <tr><td>Page title</td><td><code>.doc-header</code></td><td><strong>No surface.</strong> The title and its lead sit bare on the canvas — a card around them competes with the first demo for the reader's entry point.</td></tr>
+        <tr><td>API contract</td><td><code>.api</code></td><td>Same surface, tighter padding. It is a reference panel, not a demo.</td></tr>
+        <tr><td>A demo</td><td><code>.demo-card</code></td><td>Head + canvas + optional note. The canvas picks its own stage — see §07.</td></tr>
+        <tr><td>A table</td><td><code>.token-table</code></td><td>Surface with <code>overflow: hidden</code> so the radius clips the first and last rows.</td></tr>
+        <tr><td>Section lead</td><td><code>.lead</code></td><td><strong>No surface.</strong> A section's title and lead are also bare — they introduce the blocks below rather than being one.</td></tr>
+        <tr><td>Body prose</td><td><code>.body</code></td><td>Bare as well. Prose earns a surface only inside a card, where the card supplies it.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">One surface, never two</h3>
+    <p class="body">A table inside a <code>.demo-card-canvas</code> must drop its own surface — the card already supplies one, and nesting them produces a frame inside a frame with a double hairline down the middle. The rule is a one-line override on the page:</p>
+
+    <pre class="code"><span class="c">/* The card owns the surface; the table inside it does not */</span>
+.demo-card-canvas .token-table {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}</pre>
+
+    <p class="body">The same applies to a callout inside a card, or a code block inside a demo canvas. Ask which element owns the box, and strip the surface from everything inside it.</p>
+
+    <h3 class="sub">A page must declare what it uses</h3>
+    <p class="body">The chrome classes are <strong>not</strong> global. <code>.doc-header</code>, <code>.api</code>, <code>.token-table</code>, <code>.page-theme</code> and <code>.lead</code> are declared in each page's own <code>&lt;style&gt;</code> block — only <code>demo-card.css</code> and the component sheets come from <code>styles.css</code>. A page that uses a class it never declared renders as the browser default and looks like a draft: the SmartSearch toggle rendered as a native button, and its tables sat with no surface, because both classes existed in the markup and nowhere in the CSS.</p>
+
+    <div class="callout callout-neutral callout-sm">
+      <i data-lucide="info" class="callout-icon"></i>
+      <div class="callout-body">This is why §03 says to copy the nearest page of the same profile rather than scaffold. The chrome arrives complete, and the classes you write are already declared.</div>
+    </div>
+
+    <h3 class="sub">Stylesheet order</h3>
+    <p class="body">Four links, in this order, and the reason is cascade: tokens must exist before anything reads them, the theme file overrides token values, and the component sheets read the result. The page's own <code>&lt;style&gt;</code> comes last so it can adjust without <code>!important</code>.</p>
+
+    <pre class="code"><span class="c">1</span> ../colors_and_type.css        <span class="c">tokens</span>
+<span class="c">2</span> ../themes/index.css?v=1       <span class="c">product overrides</span>
+<span class="c">3</span> components/&lt;name&gt;.css?v=N     <span class="c">the component under test</span>
+<span class="c">4</span> &lt;style&gt; … &lt;/style&gt;            <span class="c">page chrome</span></pre>
+
+    <p class="body">Every <code>components/*.css</code> link carries <code>?v=N</code>. Without it the browser serves a cached sheet and every measurement you take is against CSS that no longer exists on disk — this cost three rounds of debugging on the table subrow reveal, where an inline <code>38px</code> lost to a <code>max-height: 0</code> that had already been deleted.</p>
+
+    <h3 class="sub">Table naming — pick one</h3>
+    <p class="body">This set accumulated four names for the same table: <code>.cls</code>, <code>.tk</code>, <code>.map</code> and <code>.g</code>. Each was declared locally in one page, and two of them declared no surface at all — which is exactly how a page ends up with loose content while looking correct in the source. <strong><code>.token-table</code> is the name</strong>, matching <code>buttons.html</code>, the largest page in the set.</p>
+
+    <table class="g">
+      <thead><tr><th>Table use</th><th>Columns</th></tr></thead>
+      <tbody>
+        <tr><td>Class map</td><td>Class → what it owns. Not "description" — owning is what distinguishes a real map from a restatement of the name.</td></tr>
+        <tr><td>Anti-patterns</td><td>Anti-pattern → why it fails. The second column must name the failure, not repeat the rule.</td></tr>
+        <tr><td>Behaviour contract</td><td>Behaviour → how it is built. The reader needs the mechanism to know whether their own version matches.</td></tr>
+        <tr><td>Tokens</td><td>Concern → tokens. Grouped by concern, so a change has one row to check.</td></tr>
+        <tr><td>Precedence</td><td>Situation → component. Short enough to scan in a tie-break.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Card or table?</h3>
+    <table class="g">
+      <thead><tr><th>Content</th><th>Use</th><th>Because</th></tr></thead>
+      <tbody>
+        <tr><td>Rendered component, any state</td><td><code>.demo-card</code></td><td>It needs a stage, and the stage has to be chosen — checkered for translucency, inverse for dark variants, scrolling for sticky chrome.</td></tr>
+        <tr><td>Rows of the same shape</td><td><code>.token-table</code></td><td>The reader scans a column. A card per row would hide the comparison the table exists to make.</td></tr>
+        <tr><td>A rule with a rendered example</td><td>Card containing a table</td><td>Card supplies the surface and the label; the table carries the rows. Strip the table's surface.</td></tr>
+        <tr><td>One paragraph of reasoning</td><td>Bare <code>.body</code></td><td>Prose is connective tissue, not a block. Rhythm (§09) keeps it from touching what follows.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-neutral callout-sm">
+      <i data-lucide="info" class="callout-icon"></i>
+      <div class="callout-body">Titles and leads are the exception, and the only one: they are bare by design. Everything else that renders content — demos, tables, the API panel — carries a surface. Walking a section's children, anything with content and no <code>background</code> that is not a heading or a lead is floating.</div>
+    </div>
+  </section>
+
+
+  <section class="doc-section" id="rhythm">
+    <h2><span class="num">09</span>Vertical rhythm &amp; visual refinement</h2>
+    <p class="lead">The most common defect in this set is not a wrong colour — it is two blocks touching. A component correctly ships no outer margin, so if the page does not own the space between blocks, nothing does.</p>
+
+    <div class="callout callout-warn">
+      <i data-lucide="alert-triangle" class="callout-icon"></i>
+      <div class="callout-body">This page had the bug while describing it. The callout in §01 sat flush against the paragraph below it — measured gap <strong>0px</strong> — because <code>.callout</code> declares no margin and no page rule supplied one. That is the whole failure mode in one line.</div>
+    </div>
+
+    <h3 class="sub">Why components ship no outer margin</h3>
+    <p class="body">A component cannot know what sits above or below it, so any margin it carries is wrong somewhere: doubled next to a sibling that also has one, unwanted as the last child of a card, fighting a grid <code>gap</code>. The rule is <strong>the container owns the space between its children</strong>. The consequence for a doc page is that it must declare that space explicitly — a page that only styles its own components will have blocks colliding.</p>
+
+    <h3 class="sub">The rhythm scale</h3>
+    <p class="body">Four steps, and the relationship between them is what reads as structure: the gap between sections must be clearly larger than the gap inside one, or the reader cannot tell where a section ends.</p>
+
+    <table class="g">
+      <thead><tr><th>Between</th><th>Token</th><th>Reasoning</th></tr></thead>
+      <tbody>
+        <tr><td>Two sections</td><td><code>--space-10</code></td><td>The largest gap on the page. It has to beat every internal gap or the sections merge.</td></tr>
+        <tr><td>Section lead → first block</td><td><code>--space-6</code></td><td>Enough to separate the prose from the evidence.</td></tr>
+        <tr><td>Two blocks in a section</td><td><code>--space-6</code></td><td>Same as above — sibling blocks are peers.</td></tr>
+        <tr><td>Sub-heading → its block</td><td><code>--space-3</code></td><td>Tight, because the heading belongs to what follows. Its <em>top</em> margin is large (<code>--space-8</code>): a heading is far from what it leaves and close to what it introduces.</td></tr>
+        <tr><td>A callout answering the paragraph above</td><td>negative <code>--space-2</code></td><td>Deliberate. When a callout qualifies the sentence before it, the default gap makes it look like a new topic — pulling it up binds them.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Where blocks collide</h3>
+    <table class="g">
+      <thead><tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr><td>Two blocks flush against each other</td><td>Neither declares a margin on the facing edge — typical when one is a component and the other a bare <code>&lt;p&gt;</code>.</td><td>Give the <em>section</em> a rule for its block children, not the component a margin.</td></tr>
+        <tr><td>Extra space at the bottom of a card or section</td><td>The last child still carries its margin.</td><td><code>&gt; *:last-child { margin-bottom: 0 }</code> on the container.</td></tr>
+        <tr><td>Doubled gap between two paragraphs</td><td>One carries <code>margin-bottom</code>, the next <code>margin-top</code>, and they do not collapse across a flex or grid parent.</td><td>Pick one direction and use it everywhere. This set uses <code>margin-bottom</code> only.</td></tr>
+        <tr><td>A heading closer to the text above than below</td><td>Symmetric margins on the heading.</td><td>Asymmetric: large top, small bottom. Proximity is what assigns the heading to a block.</td></tr>
+        <tr><td>Uneven gaps in a row of demos</td><td>Margins on the items instead of <code>gap</code> on the parent.</td><td>Use <code>gap</code>. It survives an item being removed or reordered; margins do not.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Refinements worth a second pass</h3>
+    <table class="g">
+      <thead><tr><th>Check</th><th>What to look for</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Optical alignment</strong></td><td>Two type sizes on one row centre their <em>boxes</em>, not their letters — the smaller one floats up. The live indicator in the topbar needed <code>line-height: 1</code> on both children before the clock sat on the label's baseline. Any row mixing sizes deserves this look.</td></tr>
+        <tr><td><strong>Hairline weight</strong></td><td>A border inside a tinted box competes with the tint. The Callout default went from 22% to 12% ink because the outline was drawing a rule around a note meant to recede.</td></tr>
+        <tr><td><strong>Emphasis hierarchy</strong></td><td>Inside one block, the order should be surface → border → text. If the border is the loudest thing, the block reads as a control rather than a note.</td></tr>
+        <tr><td><strong>Nested emphasis</strong></td><td>A button inside a callout must be quieter than the callout, which is quieter than the page. Its fill went 14% → 10% for exactly this reason.</td></tr>
+        <tr><td><strong>Line length</strong></td><td>Cap body copy near 74ch. A lead spanning the full 1060px is measurably harder to track back to the next line.</td></tr>
+        <tr><td><strong>Truncation</strong></td><td>Any single-line label in a flexible container needs <code>min-width: 0</code> on the flex item plus <code>text-overflow</code> on the text. Missing either one lets labels overlap instead of truncating.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">How to check it</h3>
+    <p class="body">Read the gaps, do not eyeball them. Walk a section's children and measure the real distance between consecutive boxes: <code>next.getBoundingClientRect().top − prev.getBoundingClientRect().bottom</code>. A <strong>0</strong> is a collision, and a value that does not appear in the rhythm scale is an accident. This is how the callout on this very page was found.</p>
+  </section>
+
+
+  <section class="doc-section" id="coverage">
+    <h2><span class="num">10</span>What every demo must cover</h2>
+    <p class="lead">A page can hold ten cards and still miss the states that break in production. These four are the ones this project shipped bugs in, each because a demo did not exist to reveal them.</p>
+
+    <table class="g">
+      <thead><tr><th>Dimension</th><th>Why it needs its own demo</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Both themes</strong></td><td>Not a screenshot in one and a claim about the other. Tokens that resolve to a fixed light value read at 1.05:1 on ink — <code>--color-brand-text</code> did exactly that across eight consumers, and only measurement in dark found it.</td></tr>
+        <tr><td><strong>Narrow width</strong></td><td>Show the component at its collapse point, and use the modifier (<code>.is-compact</code>) rather than trusting the viewport: a media query cannot see that the component sits in a split pane or a drawer, so the desktop layout survives into a container with no room for it.</td></tr>
+        <tr><td><strong>Reduced motion</strong></td><td>Anything that animates needs <code>prefers-reduced-motion</code> in the CSS and a line saying so. A reveal built on a height transition becomes a jump — which is correct, and should be stated rather than discovered.</td></tr>
+        <tr><td><strong>Overflowing content</strong></td><td>Long labels, two-line wraps, big numbers. Stepper labels overlapped into "AtivaçãoRecebimento" because every demo used short words; the fix was truncation, but the miss was the demo.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-neutral callout-sm">
+      <i data-lucide="info" class="callout-icon"></i>
+      <div class="callout-body">Text direction is not covered by this system yet. If RTL becomes a requirement, it joins this table — and every <code>margin-left</code>, <code>padding-left</code> and <code>::before</code> connector in the component CSS becomes a logical-property migration.</div>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section class="doc-section" id="lifecycle">
+    <h2><span class="num">11</span>Lifecycle — the page is not the only artefact</h2>
+    <p class="lead">A component lives in five places. Touching one and not the others is how this set accumulated drift: the weight migration updated CSS, TSX and the app, and left the typography page advertising a scale that no longer existed.</p>
+
+    <table class="g">
+      <thead><tr><th>Artefact</th><th>Where</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td>Canonical CSS</td><td><code>preview/components/&lt;name&gt;.css</code></td><td>The visual source of truth. Everything else follows it.</td></tr>
+        <tr><td>Typed component</td><td><code>components/&lt;Name&gt;/&lt;Name&gt;.tsx</code> + <code>.d.ts</code></td><td>Props, behaviour, ARIA. The <code>.d.ts</code> feeds the generated API panel.</td></tr>
+        <tr><td>Bench</td><td><code>components/&lt;Name&gt;/&lt;Name&gt;.html</code></td><td>Proves the props are wired. A CSS class can be styled correctly while the prop never reaches it.</td></tr>
+        <tr><td>Doc page</td><td><code>preview/&lt;name&gt;.html</code></td><td>The spec a person consults and an agent parses.</td></tr>
+        <tr><td>Catalog card</td><td><code>preview/index.html</code> + <code>@dsCard</code></td><td>Without it the page exists and nobody finds it.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">Adding a prop touches five files</h3>
+    <p class="body">The <code>.d.ts</code>, the CSS, the bench, the doc spec, and the generated contract. Skipping the bench is the expensive one: verifying with <code>classList.add</code> in the console proves the <em>CSS</em> works, not that the <em>prop</em> is connected — a prop that falls through to <code>...rest</code> leaks as a lowercase DOM attribute and looks fine in a screenshot.</p>
+
+    <h3 class="sub">Adding a token touches five files too</h3>
+    <p class="body"><code>colors_and_type.css</code>, both export JSONs, the export README, and the two count surfaces on the homepage. Verify the count by <strong>measuring</strong> the <code>:root</code> block, never by incrementing the number you remember.</p>
+
+    <h3 class="sub">Deprecating</h3>
+    <p class="body">Keep the old name resolving to the new one, mark it in the CSS comment, and say so on the page — the three phantom weight tokens survive as aliases so consuming projects do not break, while new code is told to use the four real ones. Then record it in the changelog with the measurement that justified the change, so the next author does not re-run the same test.</p>
+  </section>
+
+
+  <section class="doc-section" id="writing">
+    <h2><span class="num">12</span>Writing rules</h2>
+    <p class="lead">The prose carries as much of the contract as the tables. These are the habits that made the difference across this set.</p>
+
+    <table class="g">
+      <thead><tr><th>Rule</th><th>Because</th></tr></thead>
+      <tbody>
+        <tr><td>State the mechanism, not just the verdict</td><td>"Don't use danger for emphasis" is memorised. "Danger is the only tone that sets <code>role="alert"</code>, so spending it means the next real error announces nothing new" generalises to cases the page never listed.</td></tr>
+        <tr><td>Give measured numbers</td><td>"Good contrast" is unfalsifiable. "4.26:1 on the tinted fill" can be checked, and caught when it regresses.</td></tr>
+        <tr><td>Name the failure that renders</td><td>A misuse that throws is caught by tooling. Document the ones that look correct.</td></tr>
+        <tr><td>Never hardcode a number that lives in a token</td><td>Page and token drift, the page loses, and it is copied anyway. Use the hook or name the token.</td></tr>
+        <tr><td>Say who implements what</td><td>Every page describing keyboard behaviour must say whether it ships or is the consumer's job. Otherwise a copied footer becomes an unkept promise.</td></tr>
+        <tr><td>One idea per demo card</td><td>A card showing four things teaches none. Split it, and let the head sentence say which one this is.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 09 -->
+  <section class="doc-section" id="checklist">
+    <h2><span class="num">13</span>Before you publish</h2>
+    <p class="lead">Fourteen checks. The first four are mechanical and have each broken a page in this set.</p>
+
+    <table class="g">
+      <thead><tr><th class="num-col">#</th><th>Check</th></tr></thead>
+      <tbody>
+        <tr><td class="num-col">1</td><td>Nav numbers match section badges, and every anchor resolves.</td></tr>
+        <tr><td class="num-col">2</td><td>One <code>&lt;main&gt;</code>, opened and closed; no section outside it.</td></tr>
+        <tr><td class="num-col">3</td><td>Every <code>components/*.css</code> link carries <code>?v=N</code>.</td></tr>
+        <tr><td class="num-col">4</td><td>No hardcoded version, date or token count — use the hooks.</td></tr>
+        <tr><td class="num-col">5</td><td>Theme toggle present, and the page verified in <strong>both</strong> themes.</td></tr>
+        <tr><td class="num-col">6</td><td>Every class in the component CSS appears in the class map.</td></tr>
+        <tr><td class="num-col">7</td><td><code>#ds-api</code> parses, and its facts match the panel.</td></tr>
+        <tr><td class="num-col">8</td><td>Anti-patterns and constraints filled — not a placeholder.</td></tr>
+        <tr><td class="num-col">9</td><td>Every <code>aria-label</code> is a human phrase, never a CSS class name. Generated demos inherit this mistake in bulk.</td></tr>
+        <tr><td class="num-col">10</td><td>Demos cover both themes, the narrow width, reduced motion and overflowing content (§10).</td></tr>
+        <tr><td class="num-col">11</td><td>The other four artefacts are in sync — CSS, TSX, bench, catalog card (§11).</td></tr>
+        <tr><td class="num-col">12</td><td>Demos, tables and the API panel sit on a surface; titles and leads stay bare; no surface nests inside another (§08).</td></tr>
+        <tr><td class="num-col">13</td><td>No two blocks touch — every gap in a section matches the rhythm scale (§09).</td></tr>
+        <tr><td class="num-col">14</td><td>Anything measured on the page was measured <em>after</em> the last change, not inferred from an earlier run.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-info">
+      <i data-lucide="shield-check" class="callout-icon"></i>
+      <div class="callout-body"><strong>Enforce, don't remember.</strong> Checks 1, 3, 6 and 7 are mechanical enough for <code>tools/drift-linter.html</code> to own: fail when a component page has no <code>#ds-api</code>, when a CSS class is missing from its class map, or when a stylesheet link is unversioned. Without that, the next page is written outside the pattern and the audit repeats.</div>
+    </div>
+  </section>
+
+  <footer class="doc-foot">
+    <span>ATTRUS Design System · Internal · <span data-ds-version></span></span>
+    <a href="index.html">← Design system</a>
+  </footer>
+
+</main>
+<script>lucide.createIcons();</script>
+</body>
+</html>
