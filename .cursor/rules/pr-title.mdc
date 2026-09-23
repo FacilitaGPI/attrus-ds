@@ -1,0 +1,34 @@
+---
+description: GitHub PR title convention (org check Validate PR Title)
+alwaysApply: true
+---
+
+# PR titles
+
+Org check **Validate PR Title**. Use this format in `gh pr create --title` and when renaming a PR. Do not use `fix:`, `feat:`, or Conventional Commits prefixes.
+
+## Format
+
+- With Jira: `<TICKET-ID>: <Short description>`
+- Without Jira (chores only): `chore: <Short description>`
+
+Ticket projects: `IGP`, `FPAY`, `FPTT`, `ISG`, `ITG`, `LP`, `SOL` (e.g. `FPTT-1315`).
+
+Description: sentence case after the colon, no trailing period, keep it short.
+
+```
+# BAD
+fix: disable npm provenance for private GitHub repo
+feat: add button variant
+FPTT-1315 add alerts
+chore:Add org checks
+
+# GOOD
+LP-248: Add dynamic reset password URL support
+FPTT-1315: Clear Dependabot alerts
+SOL-12: Update solutions landing page
+chore: Disable npm provenance for private GitHub repo
+chore: Add organization-wide PR naming checks
+```
+
+If the work has a Jira key, always use the ticket form. Use `chore:` only when there is no ticket.
