@@ -1338,3 +1338,45 @@ a.dt-detail-card:focus-visible { outline: none; box-shadow: var(--shadow-focus);
   text-decoration-color: var(--color-foreground-inverse-muted);
   color: var(--color-foreground-inverse-secondary);
 }
+
+/* ----------------------------------------------------------------
+   OUTLINE PILL — .dt-outline
+   ----------------------------------------------------------------
+   A hairline pill that WRAPS an inline combo (flag + label, icon + code,
+   corridor) so it reads as one token in the cell rather than loose parts.
+   It is a container, not a status: no fill, no tone — tone belongs to .pill.
+   Use it where the combo is a categorical value the eye compares down the
+   column (market, rail, jurisdiction). Do not wrap the row's own name: that is
+   the identity of the row, not a value in it.
+   ---------------------------------------------------------------- */
+.dt-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 24px;
+  padding: 0 var(--space-3) 0 var(--space-2);
+  border: var(--border-hairline) solid var(--color-border-default);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-foreground-default);
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--w-regular);
+  line-height: 1;
+  white-space: nowrap;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+/* No leading media → balanced inset */
+.dt-outline:not(:has(> .flag, > svg, > i, > .ic-mini)) { padding: 0 var(--space-3); }
+.dt-outline > .flag { width: 16px; height: 16px; border-radius: var(--radius-pill); flex-shrink: 0; }
+.dt-outline > svg,
+.dt-outline > i { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); color: var(--color-foreground-muted); flex-shrink: 0; }
+/* A mono code inside the pill (ISO, rail) keeps the pill's height */
+.dt-outline .code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); }
+.dt-outline-sm { height: 20px; font-size: var(--fs-xxs); }
+.dt-outline-sm > .flag { width: 14px; height: 14px; }
+/* Several pills in one cell — a set (e.g. supported rails) */
+.dt-outline-set { display: inline-flex; flex-wrap: wrap; gap: var(--space-2); }
+.dt.on-inverse .dt-outline,
+.dark .dt .dt-outline { border-color: var(--color-border-inverse); color: var(--color-foreground-inverse-default); }

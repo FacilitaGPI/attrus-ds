@@ -170,3 +170,8 @@ export declare const DTParentRow: React.FC<DTParentRowProps>;
 export declare const DTPagination: React.FC<DTPaginationProps>;
 
 export default DataTable;
+
+/** Outline pill — .dt-outline. Wraps flag/icon + label (+ mono code) as one token. */
+export declare const DTOutline: React.FC<{ flag?: string; icon?: React.ReactNode; code?: React.ReactNode; size?: 'sm' | 'md'; children?: React.ReactNode } & React.HTMLAttributes<HTMLSpanElement>>;
+/** Set of outline pills in one cell — .dt-outline-set. */
+export declare const DTOutlineSet: React.FC<React.HTMLAttributes<HTMLSpanElement>>;
