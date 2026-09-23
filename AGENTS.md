@@ -114,7 +114,7 @@ Lucide in preview is CDN-only. Icons are **not** a package dependency.
 
 Semver: patch = fix, minor = additive, major = breaking token/API.
 
-Do not bump `package.json` as the publish source of truth. Create a GitHub release tagged `vX.Y.Z`; `.github/workflows/publish.yml` syncs the tag into `package.json` and publishes. See `.cursor/rules/package-version-release.mdc`.
+Merging to `main` publishes the next sequential **patch** (`publish.yml`): npm + GitHub release `vX.Y.Z`. Do not create releases by hand. Do not bump `package.json` as the publish source of truth — CI opens a follow-up version PR. Explicit version / retries: `workflow_dispatch`. See `.cursor/rules/package-version-release.mdc`.
 
 Never put `NODE_AUTH_TOKEN` in `.npmrc` (breaks OIDC).
 

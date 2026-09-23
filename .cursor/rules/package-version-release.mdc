@@ -6,20 +6,17 @@ globs: package.json,.github/workflows/publish.yml
 
 # Release version (automated in CI)
 
-Do **not** rely on manually bumping `package.json` before a GitHub release.
+Do **not** create GitHub releases by hand and do **not** bump `package.json` as the publish source of truth.
 
-`.github/workflows/publish.yml` resolves the publish version automatically:
+`.github/workflows/publish.yml` runs on **push to `main`** (and optional `workflow_dispatch`):
 
-- **GitHub release** → version comes from the release tag (`v1.0.1` → `1.0.1`), synced into `package.json` before build/publish
-- **Manual workflow run** → optional `version` input, otherwise uses current `package.json`
+1. Next sequential **patch** after the highest of git tags, npm, and `package.json` (`1.0.16` → `1.0.17`)
+2. Publishes `@attrus-ds/core` via OIDC trusted publishing (no provenance; repo is private)
+3. Creates GitHub release `vX.Y.Z` (also triggers Teams notify)
+4. Opens `chore: bump version to X.Y.Z` so `package.json` on `main` catches up
 
-After a successful release publish, CI commits the version bump to `main`.
+Merging that bump PR does **not** publish again (commit message skip).
 
-## Creating a release
+Manual retry: Actions → **Publish to npm** → Run workflow, optional explicit `version`.
 
-1. Create a GitHub release with tag `vX.Y.Z` (tag is the source of truth).
-2. CI publishes that version to npm — no Cursor or local bump required.
-
-## Optional local bump
-
-Bump `package.json` only when preparing changes on a branch before release, or when running `workflow_dispatch` without a `version` input.
+Minor/major: not auto. Publish a patch, or pass an explicit version on `workflow_dispatch`.
