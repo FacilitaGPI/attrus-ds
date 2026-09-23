@@ -83,9 +83,13 @@ jobs:
             echo "already_published=false" >> "$GITHUB_OUTPUT"
           fi
 
+      # Provenance/Sigstore only supports public GitHub repos. Trusted publishing
+      # still auto-attaches provenance unless it is explicitly disabled.
       - name: Publish to npm
         if: steps.npm_check.outputs.already_published != 'true'
-        run: npm publish --provenance --access public
+        env:
+          NPM_CONFIG_PROVENANCE: "false"
+        run: npm publish --access public
 
   sync-version-on-main:
     name: Sync version on main
