@@ -13,7 +13,10 @@
   background: var(--color-background-surface);
   border: 1px solid var(--color-border-default);
   border-radius: var(--shape-container);
-  box-shadow: var(--shadow-xs);
+  /* Flat at rest: the hairline border separates the card from the canvas.
+     Shadow is reserved for what floats (.raised, .floating) and for the
+     interaction feedback on .interactive:hover. */
+  box-shadow: none;
   color: var(--color-foreground-default);
   font-family: var(--font-sans);
   /* base padding kicks in only when the card holds direct content
@@ -258,7 +261,8 @@
 }
 .card.interactive:active {
   transform: translateY(0);
-  box-shadow: var(--shadow-xs);
+  /* Press returns the card to its flat resting state */
+  box-shadow: none;
 }
 .card.interactive:focus-visible {
   outline: none;

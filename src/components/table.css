@@ -56,7 +56,8 @@
   border: 1px solid var(--color-border-default);
   border-radius: var(--shape-container);
   overflow: hidden;
-  box-shadow: var(--shadow-xs);
+  /* Flat at rest — the hairline border is the separation */
+  box-shadow: none;
 }
 
 .dt-toolbar {
@@ -645,7 +646,8 @@
        card would measure 100% PLUS the gutters and hang off the right edge.
        auto lets it shrink to the space the margins leave. */
     width: auto;
-    box-shadow: var(--shadow-xs);
+    /* Stacked cards are resting surfaces too: border only */
+    box-shadow: none;
   }
   .dt-responsive .dt tbody tr:last-child { margin-bottom: var(--space-3); border-bottom: 1px solid var(--color-border-default); }
 
@@ -1263,19 +1265,22 @@ a.dt-detail-card:focus-visible { outline: none; box-shadow: var(--shadow-focus);
 .dt-wrap > .dt-scroll-y:has(+ .dt-pagination) { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 
 /* ----------------------------------------------------------------
-   FRAME OWNERSHIP — the wrap only draws a border when nothing else bounds it
+   FRAME OWNERSHIP
    ----------------------------------------------------------------
-   .dt-wrap's border says "the table starts and ends here". A toolbar closes the
-   top, a pager closes the bottom, and a card/drawer closes all four — in those
-   cases the border is a second contour around a boundary that already reads.
-   Radius stays either way: it is what clips the thead corners.
+   Product rule: a table ALWAYS has its border — with a toolbar, with a pager,
+   with both or with neither. The base .dt-wrap rule draws it, and a toolbar or
+   pager does not replace it: they sit inside the frame and divide themselves
+   from the body with their own seam (toolbar border-bottom, pager border-top).
+
+   An earlier version zeroed the wrap border whenever a toolbar or pager was
+   present, on the theory that "the pager closes the bottom and the toolbar the
+   top". But it zeroed all FOUR sides, so every paginated table lost its sides
+   and top and was left with a shadow and a bottom rule — Counterparties had a
+   frame and Payment Requests did not.
+
+   The one real exception is a table sitting inside a container that is already
+   the frame; there the wrap border would be a second contour.
    ---------------------------------------------------------------- */
-.dt-wrap:has(> .dt-toolbar),
-.dt-wrap:has(> .dt-pagination) { border: 0; }
-/* Chrome carries the edge instead */
-.dt-wrap:has(> .dt-toolbar) > .dt-toolbar { border-top: var(--border-hairline) solid var(--color-border-default); }
-.dt-wrap:has(> .dt-pagination) > .dt-pagination { border-bottom: var(--border-hairline) solid var(--color-border-default); }
-/* Inside a card, drawer or modal the container is the frame */
 .demo-card-canvas .dt-wrap,
 .drawer-body .dt-wrap,
 .modal-body .dt-wrap { border: 0; }

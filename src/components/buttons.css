@@ -330,3 +330,72 @@
 .btn-group .btn + .btn { margin-left: calc(var(--border-hairline) * -1); }
 .btn-group .btn:focus-visible,
 .btn-group .btn:hover { z-index: 1; }
+
+/* Seam for borderless fills. Primary, tertiary, ghost, danger and inverse carry a
+   TRANSPARENT border, so with the one-hairline overlap above there is nothing to
+   divide the segments — the group reads as one long button. The divider is drawn
+   in currentColor so it contrasts with any fill without a per-variant token.
+
+   These variants also drop the overlap. It exists to merge two visible borders
+   into one; with no border to merge it only stacks the two fills on a 1px strip,
+   and on a translucent fill (tertiary, ghost hover, the on-inverse surfaces) that
+   strip paints twice — a divider visibly thicker than the bordered variants'. */
+.btn-group .btn-primary + .btn-primary,
+.btn-group .btn-tertiary + .btn-tertiary,
+.btn-group .btn-ghost + .btn-ghost,
+.btn-group .btn-danger + .btn-danger,
+.btn-group .btn-inverse + .btn-inverse {
+  margin-left: 0;
+  box-shadow: inset var(--border-hairline) 0 0 0 color-mix(in srgb, currentColor 22%, transparent);
+}
+
+/* Selected segment. One rule for every variant: an overlay of the variant's own
+   text colour. It darkens a light fill and lightens a dark one, so "selected"
+   stays legible on primary, secondary, danger and inverse alike.
+
+   Drawn as an INSET shadow, not a background layer: a background paints under
+   the border too, so on a bordered variant the selected segment's hairlines
+   picked up the tint and read thicker than the rest of the group. An inset
+   shadow stays inside the border and leaves every seam the same weight.
+   aria-pressed is the state: it is what a screen reader announces for a toggle
+   in a segmented control, and styling from it keeps markup and look in step. */
+.btn-group .btn[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 999px color-mix(in srgb, currentColor 14%, transparent);
+  font-weight: var(--w-bold);
+  /* The overlay stops at the border, and the next segment overlaps this one by a
+     hairline — so without this the selected segment ended in a 1px light strip
+     (its own untinted border, covered by the neighbour's fill). Lifting it above
+     its neighbours and drawing its border in the seam colour closes the edge:
+     the selected segment reads as one tinted block with a clean outline. */
+  position: relative;
+  z-index: 1;
+  border-color: color-mix(in srgb, currentColor 22%, transparent);
+}
+/* Borderless variants paint the overlay as a background instead. Their 1px
+   border is TRANSPARENT, and an inset shadow stops at the border — so it left a
+   1px untinted ring around the selected segment, most visible on its right edge.
+   With no hairline to thicken, tinting the border box is exactly right here. */
+.btn-group .btn-primary[aria-pressed="true"],
+.btn-group .btn-tertiary[aria-pressed="true"],
+.btn-group .btn-ghost[aria-pressed="true"],
+.btn-group .btn-danger[aria-pressed="true"],
+.btn-group .btn-inverse[aria-pressed="true"] {
+  background-image: linear-gradient(color-mix(in srgb, currentColor 14%, transparent), color-mix(in srgb, currentColor 14%, transparent));
+  /* borderless: keep the border transparent — the fill already covers it */
+  border-color: transparent;
+}
+/* The tinted block is its own divider on borderless variants, so neither it nor
+   the segment after it draws a seam. A seam there sits one pixel inside the
+   neighbour's transparent border and leaves a light pixel between the tint and
+   the line — a doubled edge on both sides of the selected segment. */
+.btn-group .btn-primary[aria-pressed="true"],
+.btn-group .btn-tertiary[aria-pressed="true"],
+.btn-group .btn-ghost[aria-pressed="true"],
+.btn-group .btn-danger[aria-pressed="true"],
+.btn-group .btn-inverse[aria-pressed="true"],
+.btn-group .btn-primary[aria-pressed="true"] + .btn-primary,
+.btn-group .btn-tertiary[aria-pressed="true"] + .btn-tertiary,
+.btn-group .btn-ghost[aria-pressed="true"] + .btn-ghost,
+.btn-group .btn-danger[aria-pressed="true"] + .btn-danger,
+.btn-group .btn-inverse[aria-pressed="true"] + .btn-inverse { box-shadow: none; }
+

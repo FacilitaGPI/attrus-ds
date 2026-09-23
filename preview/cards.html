@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
-<link rel="stylesheet" href="components/cards.css?v=3">
+<link rel="stylesheet" href="components/cards.css?v=4">
 <link rel="stylesheet" href="components/buttons.css?v=3">
 <link rel="stylesheet" href="components/status-pills.css?v=3">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
@@ -151,9 +151,9 @@
 
       <div class="anatomy-callouts">
         <div class="anatomy-callout"><span class="num">1</span><span class="name">Surface</span><span class="desc"><code>--color-background-surface</code> · the container fill.</span></div>
-        <div class="anatomy-callout"><span class="num">2</span><span class="name">Border</span><span class="desc"><code>--color-border-default</code> · 1px hairline. Pairs with shadow.</span></div>
+        <div class="anatomy-callout"><span class="num">2</span><span class="name">Border</span><span class="desc"><code>--color-border-default</code> · 1px hairline. The separation at rest.</span></div>
         <div class="anatomy-callout"><span class="num">3</span><span class="name">Radius</span><span class="desc"><code>--radius-md</code> · 10px softness.</span></div>
-        <div class="anatomy-callout"><span class="num">4</span><span class="name">Elevation</span><span class="desc"><code>--shadow-xs</code> · the default lift.</span></div>
+        <div class="anatomy-callout"><span class="num">4</span><span class="name">Elevation</span><span class="desc"><code>none</code> at rest — the border separates. Shadow only on <code>.raised</code>, <code>.floating</code> and hover.</span></div>
         <div class="anatomy-callout"><span class="num">5</span><span class="name">Header</span><span class="desc">Title + meta + action — divided from body.</span></div>
         <div class="anatomy-callout"><span class="num">6</span><span class="name">Body</span><span class="desc">Primary content — narrative or data.</span></div>
         <div class="anatomy-callout"><span class="num">7</span><span class="name">Footer</span><span class="desc">Tinted, secondary actions or metadata.</span></div>
@@ -166,7 +166,7 @@
         <tr><td>Background</td><td>White (light theme) / dark graphite (inverse)</td><td class="k">--color-background-surface · --color-background-inverse</td></tr>
         <tr><td>Border</td><td>1px hairline</td><td class="k">--color-border-default</td></tr>
         <tr><td>Radius</td><td>10px softly rounded</td><td class="k">--radius-md</td></tr>
-        <tr><td>Shadow</td><td>1px blue-tinted lift</td><td class="k">--shadow-xs</td></tr>
+        <tr><td>Shadow</td><td>None at rest — flat surface, hairline border separates</td><td class="k">none</td></tr>
         <tr><td>Padding (default)</td><td>20px / 24px (content-bearing card)</td><td class="k">--space-5 · --space-6</td></tr>
         <tr><td>Padding (slots)</td><td>Each slot brings its own</td><td class="k">--space-5 · --space-6 (header/body) · --space-4 · --space-6 (footer)</td></tr>
         <tr><td>Header divider</td><td>1px subtle line</td><td class="k">--color-border-subtle</td></tr>
@@ -182,7 +182,7 @@
     <p class="lead">Eight surface variants. Pick by <strong>what role the container plays</strong>, not by how it should look. The system handles colour and elevation for you.</p>
 
     <article class="spec">
-      <header class="spec-head"><div><h3>Default <code>.card</code></h3><p>White surface, hairline border, soft xs shadow. The workhorse — use this for 80% of cards.</p></div><span class="tag">default</span></header>
+      <header class="spec-head"><div><h3>Default <code>.card</code></h3><p>White surface, hairline border, <strong>no shadow at rest</strong>. The workhorse — use this for 80% of cards. Shadow is reserved for what floats (<code>.raised</code>, <code>.floating</code>) and for interaction feedback.</p></div><span class="tag">default</span></header>
       <div class="spec-canvas">
         <div style="width: 100%; max-width: 320px;"><article class="card"><div class="card-stat"><span class="stat-label">Total balance · USD</span><span class="stat-value">1,250,000.00</span><span class="stat-delta up"><i data-lucide="arrow-up-right"></i>+8.4%</span></div></article></div>
       </div>
@@ -452,7 +452,7 @@
         <a class="card interactive" href="#layouts"><header class="card-header"><div><h3>Compliance queue</h3><p>7 flagged</p></div><i data-lucide="arrow-right" style="width:16px; height:16px; color: var(--color-foreground-muted);"></i></header></a>
       </div>
       <div class="spec-foot">
-        <div><h4>Triggers</h4><ul><li><strong>:hover</strong> — border darkens, sm shadow, -1px translate</li><li><strong>:focus-visible</strong> — 4px focus ring</li><li><strong>:active</strong> — translate returns, shadow back to xs</li></ul></div>
+        <div><h4>Triggers</h4><ul><li><strong>:hover</strong> — border darkens, sm shadow, -1px translate</li><li><strong>:focus-visible</strong> — 4px focus ring</li><li><strong>:active</strong> — translate resets, returns to the flat resting state (no shadow)</li></ul></div>
         <div><h4>Wiring</h4><ul><li class="do"><i data-lucide="check"></i>Use <code>&lt;a&gt;</code> with a real <code>href</code></li><li class="do"><i data-lucide="check"></i>Or <code>&lt;button&gt;</code> for non-nav actions</li><li class="dont"><i data-lucide="x"></i>Never wrap a card in <code>onclick</code>'d <code>&lt;div&gt;</code></li></ul></div>
       </div>
     </article>
@@ -508,7 +508,7 @@
     <div class="dont-grid">
       <div class="dont-card">
         <div class="dont-card-canvas"><article class="card raised" style="box-shadow: var(--shadow-xl); width: 220px;"><div class="card-stat"><span class="stat-label">MRR</span><span class="stat-value">R$ 4.82M</span></div></article></div>
-        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't over-elevate stat cards.</strong> A KPI card never needs more than xs shadow. Heavy lift competes with real elevation hierarchy.</p></div>
+        <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't over-elevate stat cards.</strong> A KPI card is a resting surface: it takes no shadow at all. Heavy lift competes with real elevation hierarchy.</p></div>
       </div>
       <div class="dont-card">
         <div class="dont-card-canvas"><article class="card" style="border-radius: 0; width: 220px;"><div class="card-stat"><span class="stat-label">Sharp corners</span><span class="stat-value">0px</span></div></article></div>
@@ -572,7 +572,7 @@
         <tr><td>Focus border</td><td class="k">--color-border-focus</td><td>Interactive focus</td></tr>
         <tr><td>Inverse border</td><td class="k">--color-border-inverse</td><td><code>.inverse</code> hairline</td></tr>
         <tr><td>Radius</td><td class="k">--radius-md (10px)</td><td>All cards</td></tr>
-        <tr><td>Default shadow</td><td class="k">--shadow-xs</td><td>Default lift</td></tr>
+        <tr><td>Default shadow</td><td class="k">none</td><td>Resting surfaces are flat — the border separates</td></tr>
         <tr><td>Hover shadow</td><td class="k">--shadow-sm</td><td>Interactive hover</td></tr>
         <tr><td>Raised shadow</td><td class="k">--shadow-md</td><td><code>.raised</code></td></tr>
         <tr><td>Floating shadow</td><td class="k">--shadow-lg</td><td><code>.floating</code></td></tr>
