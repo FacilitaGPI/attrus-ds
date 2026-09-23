@@ -3,6 +3,10 @@ import * as React from 'react';
 export type InputSize = 'sm' | 'md' | 'lg';
 export type InputStatus = 'default' | 'error' | 'success' | 'warning';
 
+export type InputAddon =
+  | { type: 'select'; options: Array<string | { value: string; label: React.ReactNode }>; value?: string; onChange?: (value: string) => void; 'aria-label': string }
+  | { type: 'button'; label: React.ReactNode; icon?: React.ReactNode; onClick?: () => void; primary?: boolean; disabled?: boolean; 'aria-label'?: string };
+
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'prefix'> {
   /** Field label (renders the .field wrapper). */
   label?: React.ReactNode;
@@ -24,6 +28,12 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   prefix?: React.ReactNode;
   /** Attached suffix cell — .group .fix.r (e.g. ".00"). */
   suffix?: React.ReactNode;
+  /** Interactive segment before the field — selector or button (combo input). */
+  before?: InputAddon;
+  /** Interactive segment after the field — selector or button (combo input). */
+  after?: InputAddon;
+  /** Shape of an attached group: rectangle, rounded ends, or bottom rule only. */
+  groupShape?: 'default' | 'pill' | 'underline';
   /** Dark-surface treatment (.on-inverse). */
   onInverse?: boolean;
   /** Quiet read-only: value only, no border (.is-readonly). */

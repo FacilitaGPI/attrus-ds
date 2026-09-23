@@ -64,11 +64,14 @@
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  /* Box on the element, not on a descendant selector: the height must survive a
-     toolbar that is not a direct child of .dt-wrap, or the selecting state
-     renders 5px taller and the table jumps when the first row is ticked. */
-  height: 52px;
-  padding: 0 var(--space-5);
+  /* Height comes from a vertical inset around the controls, not a fixed box. A
+     fixed 52px left 6px above and below a 40px field — the control read as
+     jammed against the rules. The inset now guarantees breathing room for any
+     control size, and min-height keeps the bar steady when it holds only text,
+     so the selecting state (same controls) still does not make the table jump.
+     Box on the element, not a descendant selector, so it holds anywhere. */
+  min-height: calc(var(--control-h-sm) + 2 * var(--space-5) + var(--border-hairline));
+  padding: var(--space-5) var(--space-5);
   box-sizing: border-box;
   border-bottom: 1px solid var(--color-border-subtle);
   background: var(--color-background-surface);
@@ -1205,11 +1208,14 @@ a.dt-detail-card:focus-visible { outline: none; box-shadow: var(--shadow-focus);
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  height: 52px;
-  padding: 0 var(--space-5);
+  min-height: calc(var(--control-h-sm) + 2 * var(--space-5) + var(--border-hairline));
+  padding: var(--space-5) var(--space-5);
   box-sizing: border-box;
 }
-.dt-toolbar.dt-toolbar-sm { height: 44px; padding: 0 var(--space-4); }
+/* Dense: tighter inset, same principle — 12px above and below the controls
+   (16px at md). --space-4 is 12px; the earlier --space-3 was only 8px, which
+   is what left the dense bar jammed. */
+.dt-toolbar.dt-toolbar-sm { min-height: calc(var(--control-h-sm) + 2 * var(--space-4) + var(--border-hairline)); padding: var(--space-4) var(--space-4); }
 .dt-toolbar-lead { display: inline-flex; align-items: baseline; gap: var(--space-2); min-width: 0; }
 .dt-toolbar-filters { display: inline-flex; align-items: center; gap: var(--space-2); min-width: 0; flex: 1 1 auto; }
 .dt-toolbar-actions { margin-left: auto; display: inline-flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
