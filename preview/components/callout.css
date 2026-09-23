@@ -201,7 +201,13 @@
   padding: var(--space-3) var(--space-6);
   border-left: 3px solid var(--callout-tint);   /* accent rule for scannability */
 }
-.callout-bar > i, .callout-bar > svg, .callout-bar .callout-icon { margin-top: 0; }
+/* The base rule pins the icon (and the dismiss) to the first line with
+   align-self: flex-start — right for a multi-line callout. A bar centres its
+   row with align-items: center, but align-self on the item beats align-items
+   on the container, so without resetting it here the icon stays at the top
+   while the text and the actions centre (18px vs 25px in a 50px bar). */
+.callout-bar > i, .callout-bar > svg, .callout-bar .callout-icon { margin-top: 0; align-self: center; }
+.callout-bar .callout-dismiss { align-self: center; }
 .callout-bar .callout-content { flex-direction: row; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
 .callout-bar .callout-actions { margin-top: 0; margin-left: auto; }
 .callout-bar .callout-dismiss { align-self: center; margin-top: 0; }

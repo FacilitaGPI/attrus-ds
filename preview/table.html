@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
 <script src="../version.js"></script>
-<link rel="stylesheet" href="components/table.css?v=62">
+<link rel="stylesheet" href="components/table.css?v=70">
 <link rel="stylesheet" href="components/callout.css?v=53">
 <link rel="stylesheet" href="components/inputs.css?v=58">
 <link rel="stylesheet" href="components/buttons.css?v=53">
@@ -642,6 +642,36 @@
                 <td></td>
                 <td>A cross-border corridor. Keep the arrow between the two flags and repeat the ISO codes as text — direction is the meaning, and it must survive without colour or images.</td>
               </tr>
+              <tr>
+                <td><span class="dt-id dt-no-tab">.dt-outline</span></td>
+                <td><span class="dt-outline"><img class="flag" src="../assets/flags/Brazil-rounded.svg" alt="" />Brazil</span></td>
+                <td></td>
+                <td>Hairline pill that wraps an inline combo so it reads as <strong>one token</strong>. Use for a categorical value the eye compares down the column — market, jurisdiction, rail. No fill and no tone: it is a container, not a status (that is <code>.pill</code>).</td>
+              </tr>
+              <tr>
+                <td><span class="dt-id dt-no-tab">.dt-outline</span> + code</td>
+                <td><span class="dt-outline"><img class="flag" src="../assets/flags/EUA-rounded.svg" alt="" />United States<span class="code">USD</span></span></td>
+                <td></td>
+                <td>Flag, name and ISO code together. The code stays mono and muted so the name leads.</td>
+              </tr>
+              <tr>
+                <td><span class="dt-id dt-no-tab">.dt-outline</span> corridor</td>
+                <td><span class="dt-outline"><img class="flag" src="../assets/flags/Brazil-rounded.svg" alt="" /><span class="code">BR</span><i data-lucide="arrow-right"></i><img class="flag" src="../assets/flags/Mexico-rounded.svg" alt="" /><span class="code">MX</span></span></td>
+                <td></td>
+                <td>A corridor as a single token. Codes are repeated as text so direction survives without the images.</td>
+              </tr>
+              <tr>
+                <td><span class="dt-id dt-no-tab">.dt-outline</span> + icon</td>
+                <td><span class="dt-outline"><i data-lucide="zap"></i>Pix</span></td>
+                <td></td>
+                <td>Icon + label for a rail or channel. Same shape as the flag version, so a mixed column stays aligned.</td>
+              </tr>
+              <tr>
+                <td><span class="dt-id dt-no-tab">.dt-outline-set</span></td>
+                <td><span class="dt-outline-set"><span class="dt-outline dt-outline-sm"><i data-lucide="zap"></i>Pix</span><span class="dt-outline dt-outline-sm">TED</span><span class="dt-outline dt-outline-sm">SWIFT</span></span></td>
+                <td></td>
+                <td>Several values in one cell — supported rails, enabled markets. Use <code>.dt-outline-sm</code> so the set fits the row height. Past three, show a count instead.</td>
+              </tr>
 
               <tr class="dt-row-divider"><td colspan="4">Value &amp; direction</td></tr>
               <tr>
@@ -1111,7 +1141,7 @@
 
     <div class="demo-card">
       <div class="demo-card-head"><div><h3>Grouped by date <code>.dt-row-divider</code></h3><p>A full-width mono overline row separates each group.</p></div><span class="demo-card-tag">Grouping</span></div>
-      <div class="demo-card-canvas is-flush">>
+      <div class="demo-card-canvas is-flush">
         <div class="scroll-x">
         <div class="dt-wrap">
           <table class="dt">

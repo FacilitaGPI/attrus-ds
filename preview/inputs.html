@@ -8,7 +8,9 @@
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
 <script src="../version.js"></script>
-<link rel="stylesheet" href="components/inputs.css?v=6">
+<link rel="stylesheet" href="components/inputs.css?v=12">
+<link rel="stylesheet" href="components/buttons.css?v=20">
+<link rel="stylesheet" href="components/tabs.css?v=6">
 <link rel="stylesheet" href="components/number-input.css?v=6">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="https://unpkg.com/lucide@latest"></script>
@@ -338,7 +340,7 @@
 </div>
 
 <main class="doc">
-  <script type="application/json" id="ds-api">{"component":"Inputs & forms","import":"const { Input, Textarea, Select, Switch, Checkbox, Radio, DateTrigger, ChipsInput, Otp, FileDrop, FileRow, FileListBox, Slider } = ATTRUS","cssAnatomy":".field > label + control + .help","status":"stable","intent":"A field is a labelled question; the control is the shape of the answer. Choose by the data, not the look.","components":{"Input":"free text, one line","Textarea":"free text, many lines","Select":"one of ~2–7 fixed options","Radio":"one of 2–5, all worth showing","Checkbox":"on/off applied on submit, or a set","Switch":"on/off applied immediately","Slider":"a number where the range matters more than the digits","Otp":"a short fixed-length code","DateTrigger":"a date","ChipsInput":"a set of zero or more values","FileDrop":"file intake","FileRow":"one file with progress","FileListBox":"a list of files"},"sharedProps":["label","help","status","size","onInverse"],"statuses":["default","error","success","warning"],"sizes":["sm","md","lg"],"useInstead":{"Select with 40+ options":"Combobox","Switch inside a form that submits":"Checkbox","Input type=number for money":"Input with currency prefix","placeholder as the label":"the label prop","disabled to mean not-applicable":"remove the field or explain in help"},"antiPatterns":["hand-rolling a <label> around the control — breaks the htmlFor binding","error text in a sibling div — not announced","a red border with no message","colour alone for state","height overrides instead of size","placeholder carrying the format"],"constraints":["all thirteen are controlled — pass value and onChange","label and help are props, never surrounding markup","status drives border, help tone and aria-invalid together","size maps to --control-h-* shared with Button","onInverse is required on dark surfaces"],"shipped":["label↔control id binding","status→border/help/aria","size scale","onInverse variant","affix and group layout","focus-visible ring"],"mustImplement":["value/onChange","validation timing","error copy","submission","upload transport","masking and formatting"]}</script>
+  <script type="application/json" id="ds-api">{"component":"Inputs & forms","import":"const { Input, Textarea, Select, Switch, Checkbox, Radio, DateTrigger, ChipsInput, Otp, FileDrop, FileRow, FileListBox, Slider } = ATTRUS","cssAnatomy":".field > label + control + .help","status":"stable","intent":"A field is a labelled question; the control is the shape of the answer. Choose by the data, not the look.","components":{"Input":"free text, one line","Textarea":"free text, many lines","Select":"one of ~2–7 fixed options","Radio":"one of 2–5, all worth showing","Checkbox":"on/off applied on submit, or a set","Switch":"on/off applied immediately","Slider":"a number where the range matters more than the digits","Otp":"a short fixed-length code","DateTrigger":"a date","ChipsInput":"a set of zero or more values","FileDrop":"file intake","FileRow":"one file with progress","FileListBox":"a list of files","Input (combo)":"a value qualified by a selector, or consumed by one action — before/after addons"},"sharedProps":["label","help","status","size","onInverse"],"statuses":["default","error","success","warning"],"sizes":["sm","md","lg"],"useInstead":{"Select with 40+ options":"Combobox","Switch inside a form that submits":"Checkbox","Input type=number for money":"Input with currency prefix","placeholder as the label":"the label prop","disabled to mean not-applicable":"remove the field or explain in help"},"antiPatterns":["hand-rolling a <label> around the control — breaks the htmlFor binding","error text in a sibling div — not announced","a red border with no message","colour alone for state","height overrides instead of size","placeholder carrying the format"],"constraints":["all thirteen are controlled — pass value and onChange","label and help are props, never surrounding markup","status drives border, help tone and aria-invalid together","size maps to --control-h-* shared with Button","onInverse is required on dark surfaces","an addon is a control; static text belongs in prefix/suffix — on the same side the addon wins"],"shipped":["label↔control id binding","status→border/help/aria","size scale","onInverse variant","affix and group layout","focus-visible ring","combo addons (before/after) on all three field shapes"],"mustImplement":["value/onChange","validation timing","error copy","submission","upload transport","masking and formatting"],"addonTypes":["select","button"],"groupShapes":["default","pill","underline"]}</script>
 
   <a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
 
@@ -664,6 +666,89 @@
               <span class="fix l"><i data-lucide="at-sign" style="width:14px;height:14px;"></i></span>
               <input placeholder="username" />
             </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ─────────── 5b. Combo input ─────────── -->
+    <article class="demo-card">
+      <header class="demo-card-head">
+        <div>
+          <h3>Combo input <code>.fix-select</code> · <code>.fix-btn</code></h3>
+          <p>When the attached cell is a <strong>control</strong>, not a label: a selector that qualifies the value (currency, country code, unit) or an action that consumes it (Copy, Apply, Search). It keeps the group's single outline and focus ring, but gets its own hit area, hover and an inset focus ring. Use <code>.is-primary</code> only when the button is <em>the</em> action of the field. The same segments ride on all three field shapes — switch above: <code>.group.is-pill</code> rounds the ends and the end segments trace the curve; <code>.group.underline</code> drops fill and seams, and the primary action becomes brand text, because a filled block on a quiet field shouts.</p>
+        </div>
+        <span class="tabs tabs-pill tabs-sm is-animated" role="tablist" aria-label="Field shape" id="combo-shape">
+          <span class="tab-indicator" aria-hidden="true"></span>
+          <button type="button" class="tab" role="tab" aria-selected="true" data-shape="">Default</button>
+          <button type="button" class="tab" role="tab" aria-selected="false" data-shape="is-pill">Pill</button>
+          <button type="button" class="tab" role="tab" aria-selected="false" data-shape="underline">Underline</button>
+        </span>
+      </header>
+      <div class="demo-card-canvas is-stacked" id="combo-canvas">
+        <div class="state-grid">
+          <div class="state-cell"><span class="lbl">Selector before</span>
+            <div class="group">
+              <span class="fix-select l">
+                <select aria-label="Currency"><option>USD</option><option>EUR</option><option>BRL</option><option>MXN</option></select>
+                <i class="chev" data-lucide="chevron-down"></i>
+              </span>
+              <input placeholder="0.00" aria-label="Amount" />
+            </div>
+          </div>
+          <div class="state-cell"><span class="lbl">Selector after</span>
+            <div class="group">
+              <input value="250" aria-label="Weight" />
+              <span class="fix-select r">
+                <select aria-label="Unit"><option>kg</option><option>lb</option><option>t</option></select>
+                <i class="chev" data-lucide="chevron-down"></i>
+              </span>
+            </div>
+          </div>
+          <div class="state-cell"><span class="lbl">Button after</span>
+            <div class="group">
+              <input value="attrus.com/pay/acme-9f2" readonly aria-label="Payment link" />
+              <button type="button" class="fix-btn r"><i data-lucide="copy"></i>Copy</button>
+            </div>
+          </div>
+          <div class="state-cell"><span class="lbl">Primary action</span>
+            <div class="group">
+              <input placeholder="Promo code" aria-label="Promo code" />
+              <button type="button" class="fix-btn r is-primary">Apply</button>
+            </div>
+          </div>
+          <div class="state-cell"><span class="lbl">Selector + button</span>
+            <div class="group">
+              <span class="fix-select l">
+                <select aria-label="Country code"><option>+55</option><option>+52</option><option>+57</option><option>+1</option></select>
+                <i class="chev" data-lucide="chevron-down"></i>
+              </span>
+              <input placeholder="11 98765-4321" aria-label="Phone" />
+              <button type="button" class="fix-btn r">Verify</button>
+            </div>
+          </div>
+          <div class="state-cell"><span class="lbl">Disabled button</span>
+            <div class="group">
+              <input placeholder="Promo code" aria-label="Promo code" />
+              <button type="button" class="fix-btn r" disabled>Apply</button>
+            </div>
+          </div>
+        </div>
+        <div class="demo-card-guidance">
+          <div>
+            <h4>Use when</h4>
+            <ul>
+              <li class="do">The value is meaningless without the qualifier — an amount needs its currency, a phone needs its country code.</li>
+              <li class="do">The action consumes exactly this field — Copy a link, Apply a code, Verify a number.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Avoid when</h4>
+            <ul>
+              <li class="dont">The attached text never changes — use a static <code>.fix</code>, a control that cannot be operated is noise.</li>
+              <li class="dont">The button submits the whole form — that is a form action, it belongs in the footer, not glued to one field.</li>
+              <li class="dont">More than one button per side — split into a field and a separate button group.</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -1082,7 +1167,7 @@
           <div class="pill-search">
             <i data-lucide="search"></i>
             <input placeholder="Search or ask something…" />
-            <span class="kbd">⌘K</span>
+            <span class="kbd"><kbd>⌘</kbd><kbd>K</kbd></span>
           </div>
         </div>
         <div class="state-cell" style="width:100%; max-width: 480px;">
@@ -1090,7 +1175,7 @@
           <div class="pill-search" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);">
             <i data-lucide="search"></i>
             <input placeholder="Search or ask something…" />
-            <span class="kbd">⌘K</span>
+            <span class="kbd"><kbd>⌘</kbd><kbd>K</kbd></span>
           </div>
         </div>
         <div class="state-cell" style="width:100%; max-width: 480px;">
@@ -1098,7 +1183,56 @@
           <div class="pill-search">
             <i data-lucide="search"></i>
             <input value="Q1 invoices over $10k" />
-            <span class="kbd">⌘K</span>
+            <span class="kbd"><kbd>⌘</kbd><kbd>K</kbd></span>
+          </div>
+        </div>
+        <div class="state-cell" style="width:100%; max-width: 480px;">
+          <span class="lbl">Small · toolbar</span>
+          <div class="pill-search pill-search-sm">
+            <i data-lucide="search"></i>
+            <input placeholder="Reference or counterparty" />
+            <span class="kbd"><kbd>⌘</kbd><kbd>K</kbd></span>
+          </div>
+        </div>
+        <div class="state-cell" style="width:100%; max-width: 480px;">
+          <span class="lbl">Scope selector before</span>
+          <div class="pill-search">
+            <span class="fix-select l">
+              <select aria-label="Search scope"><option>All</option><option>Payments</option><option>Counterparties</option><option>Invoices</option></select>
+              <i class="chev" data-lucide="chevron-down"></i>
+            </span>
+            <input placeholder="Search or ask something…" aria-label="Search" />
+            <span class="kbd"><kbd>⌘</kbd><kbd>K</kbd></span>
+          </div>
+        </div>
+        <div class="state-cell" style="width:100%; max-width: 480px;">
+          <span class="lbl">Search button after</span>
+          <div class="pill-search">
+            <i data-lucide="search"></i>
+            <input placeholder="Reference, name or amount" aria-label="Search" />
+            <button type="button" class="fix-btn r is-primary">Search</button>
+          </div>
+        </div>
+        <div class="state-cell" style="width:100%; max-width: 480px;">
+          <span class="lbl">Selector + button</span>
+          <div class="pill-search">
+            <span class="fix-select l">
+              <select aria-label="Search scope"><option>Payments</option><option>Counterparties</option><option>Invoices</option></select>
+              <i class="chev" data-lucide="chevron-down"></i>
+            </span>
+            <input placeholder="Reference or amount" aria-label="Search" />
+            <button type="button" class="fix-btn r">Search</button>
+          </div>
+        </div>
+        <div class="state-cell" style="width:100%; max-width: 480px;">
+          <span class="lbl">Small · selector + button</span>
+          <div class="pill-search pill-search-sm">
+            <span class="fix-select l">
+              <select aria-label="Search scope"><option>All</option><option>Payments</option></select>
+              <i class="chev" data-lucide="chevron-down"></i>
+            </span>
+            <input placeholder="Search" aria-label="Search" />
+            <button type="button" class="fix-btn r is-primary">Go</button>
           </div>
         </div>
       </div>
@@ -1763,6 +1897,33 @@
   lucide.createIcons();
   const indet = document.getElementById('indet-cb');
   if (indet) indet.indeterminate = true;
+</script>
+<script>
+(function () {
+  var group = document.getElementById('combo-shape');
+  var canvas = document.getElementById('combo-canvas');
+  if (!group || !canvas) return;
+  function place() {
+    var a = group.querySelector('[aria-selected="true"]');
+    if (!a) return;
+    group.style.setProperty('--ind-x', a.offsetLeft + 'px');
+    group.style.setProperty('--ind-w', a.offsetWidth + 'px');
+  }
+  group.addEventListener('click', function (e) {
+    var b = e.target.closest('.tab');
+    if (!b) return;
+    [].forEach.call(group.querySelectorAll('.tab'), function (t) { t.setAttribute('aria-selected', String(t === b)); });
+    var shape = b.getAttribute('data-shape');
+    [].forEach.call(canvas.querySelectorAll('.group'), function (g) {
+      g.classList.remove('is-pill', 'underline');
+      if (shape) g.classList.add(shape);
+    });
+    place();
+  });
+  place();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+  window.addEventListener('resize', place);
+})();
 </script>
 </body>
 </html>

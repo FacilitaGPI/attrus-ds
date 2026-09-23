@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
 <script src="../version.js"></script>
-<link rel="stylesheet" href="components/buttons.css?v=14">
+<link rel="stylesheet" href="components/buttons.css?v=19">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
@@ -383,6 +383,16 @@
   .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-regular); }
   /* the one modifier with no canonical equivalent: brand gradient behind inverse demos */
   .demo-card-canvas.is-brand { background: var(--grad-brand); }
+  .grp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(440px, 1fr)); gap: var(--space-5) var(--space-7); }
+  .grp-row { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); }
+  .grp-pair { display: flex; flex-wrap: wrap; gap: var(--space-5); }
+  .grp-state { display: flex; flex-direction: column; gap: var(--space-2); }
+  .grp-state-lbl { font-size: var(--fs-xxs); color: var(--color-foreground-muted); }
+  .demo-card-canvas.is-inverse .grp-state-lbl { color: var(--color-foreground-inverse-muted); }
+  .grp-lbl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); }
+  .grp-lbl code { color: var(--color-foreground-accent); }
+  .demo-card-canvas.is-inverse .grp-lbl { color: var(--color-foreground-inverse-muted); }
+  .demo-card-canvas.is-inverse .grp-lbl code { color: var(--color-foreground-inverse-default); }
 </style>
 </head>
 <body>
@@ -1028,15 +1038,229 @@
 
     <article class="demo-card">
       <header class="demo-card-head">
-        <div><h3>Segmented group <code>.btn-group</code></h3><p>One logical control with mutually-exclusive options. Use Secondary as base.</p></div>
+        <div><h3>Segmented group <code>.btn-group</code></h3><p>One logical control with mutually-exclusive options. Every variant groups; <strong>Secondary is the default choice</strong> — reach for a filled variant only when the group itself is the primary action of the surface. The selected segment is <code>aria-pressed="true"</code>, which is both the state a screen reader announces and the hook the style reads.</p></div>
+        <span class="demo-card-tag">all variants</span>
       </header>
-      <div class="demo-card-canvas">
-        <div class="btn-group">
-          <button class="btn btn-secondary">Day</button>
-          <button class="btn btn-secondary" style="background: var(--color-background-press);">Week</button>
-          <button class="btn btn-secondary">Month</button>
-          <button class="btn btn-secondary">Year</button>
+      <div class="demo-card-canvas is-stacked">
+        <div class="grp-grid">
+          <div class="grp-row">
+            <span class="grp-lbl"><code>.btn-secondary</code></span>
+            <div class="grp-pair">
+              <div class="grp-state">
+                <span class="grp-state-lbl">rest</span>
+                <div class="btn-group" role="group" aria-label="View period — secondary — rest">
+                  <button class="btn btn-secondary" aria-pressed="false">Day</button>
+                  <button class="btn btn-secondary" aria-pressed="false">Week</button>
+                  <button class="btn btn-secondary" aria-pressed="false">Month</button>
+                </div>
+              </div>
+              <div class="grp-state">
+                <span class="grp-state-lbl">Week selected</span>
+                <div class="btn-group" role="group" aria-label="View period — secondary — Week selected">
+                  <button class="btn btn-secondary" aria-pressed="false">Day</button>
+                  <button class="btn btn-secondary" aria-pressed="true">Week</button>
+                  <button class="btn btn-secondary" aria-pressed="false">Month</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grp-row">
+            <span class="grp-lbl"><code>.btn-tertiary</code></span>
+            <div class="grp-pair">
+              <div class="grp-state">
+                <span class="grp-state-lbl">rest</span>
+                <div class="btn-group" role="group" aria-label="View period — tertiary — rest">
+                  <button class="btn btn-tertiary" aria-pressed="false">Day</button>
+                  <button class="btn btn-tertiary" aria-pressed="false">Week</button>
+                  <button class="btn btn-tertiary" aria-pressed="false">Month</button>
+                </div>
+              </div>
+              <div class="grp-state">
+                <span class="grp-state-lbl">Week selected</span>
+                <div class="btn-group" role="group" aria-label="View period — tertiary — Week selected">
+                  <button class="btn btn-tertiary" aria-pressed="false">Day</button>
+                  <button class="btn btn-tertiary" aria-pressed="true">Week</button>
+                  <button class="btn btn-tertiary" aria-pressed="false">Month</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grp-row">
+            <span class="grp-lbl"><code>.btn-ghost</code></span>
+            <div class="grp-pair">
+              <div class="grp-state">
+                <span class="grp-state-lbl">rest</span>
+                <div class="btn-group" role="group" aria-label="View period — ghost — rest">
+                  <button class="btn btn-ghost" aria-pressed="false">Day</button>
+                  <button class="btn btn-ghost" aria-pressed="false">Week</button>
+                  <button class="btn btn-ghost" aria-pressed="false">Month</button>
+                </div>
+              </div>
+              <div class="grp-state">
+                <span class="grp-state-lbl">Week selected</span>
+                <div class="btn-group" role="group" aria-label="View period — ghost — Week selected">
+                  <button class="btn btn-ghost" aria-pressed="false">Day</button>
+                  <button class="btn btn-ghost" aria-pressed="true">Week</button>
+                  <button class="btn btn-ghost" aria-pressed="false">Month</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grp-row">
+            <span class="grp-lbl"><code>.btn-primary</code></span>
+            <div class="grp-pair">
+              <div class="grp-state">
+                <span class="grp-state-lbl">rest</span>
+                <div class="btn-group" role="group" aria-label="View period — primary — rest">
+                  <button class="btn btn-primary" aria-pressed="false">Day</button>
+                  <button class="btn btn-primary" aria-pressed="false">Week</button>
+                  <button class="btn btn-primary" aria-pressed="false">Month</button>
+                </div>
+              </div>
+              <div class="grp-state">
+                <span class="grp-state-lbl">Week selected</span>
+                <div class="btn-group" role="group" aria-label="View period — primary — Week selected">
+                  <button class="btn btn-primary" aria-pressed="false">Day</button>
+                  <button class="btn btn-primary" aria-pressed="true">Week</button>
+                  <button class="btn btn-primary" aria-pressed="false">Month</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grp-row">
+            <span class="grp-lbl"><code>.btn-danger</code></span>
+            <div class="grp-pair">
+              <div class="grp-state">
+                <span class="grp-state-lbl">rest</span>
+                <div class="btn-group" role="group" aria-label="View period — danger — rest">
+                  <button class="btn btn-danger" aria-pressed="false">Day</button>
+                  <button class="btn btn-danger" aria-pressed="false">Week</button>
+                  <button class="btn btn-danger" aria-pressed="false">Month</button>
+                </div>
+              </div>
+              <div class="grp-state">
+                <span class="grp-state-lbl">Week selected</span>
+                <div class="btn-group" role="group" aria-label="View period — danger — Week selected">
+                  <button class="btn btn-danger" aria-pressed="false">Day</button>
+                  <button class="btn btn-danger" aria-pressed="true">Week</button>
+                  <button class="btn btn-danger" aria-pressed="false">Month</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grp-row">
+            <span class="grp-lbl"><code>.btn-danger-outline</code></span>
+            <div class="grp-pair">
+              <div class="grp-state">
+                <span class="grp-state-lbl">rest</span>
+                <div class="btn-group" role="group" aria-label="View period — danger outline — rest">
+                  <button class="btn btn-danger-outline" aria-pressed="false">Day</button>
+                  <button class="btn btn-danger-outline" aria-pressed="false">Week</button>
+                  <button class="btn btn-danger-outline" aria-pressed="false">Month</button>
+                </div>
+              </div>
+              <div class="grp-state">
+                <span class="grp-state-lbl">Week selected</span>
+                <div class="btn-group" role="group" aria-label="View period — danger outline — Week selected">
+                  <button class="btn btn-danger-outline" aria-pressed="false">Day</button>
+                  <button class="btn btn-danger-outline" aria-pressed="true">Week</button>
+                  <button class="btn btn-danger-outline" aria-pressed="false">Month</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+    </article>
+
+    <article class="demo-card">
+      <header class="demo-card-head">
+        <div><h3>Group on inverse</h3><p>On <code>--color-background-inverse</code>, Secondary and Ghost need <code>.on-inverse</code> or their segments disappear into the panel. Inverse is the white fill for the one group that must lead on a dark surface.</p></div>
+        <span class="demo-card-tag">inverse</span>
+      </header>
+      <div class="demo-card-canvas is-inverse is-stacked">
+        <div class="grp-grid">
+          <div class="grp-row">
+            <span class="grp-lbl"><code>.btn-secondary</code> <code>.on-inverse</code></span>
+            <div class="grp-pair">
+              <div class="grp-state">
+                <span class="grp-state-lbl">rest</span>
+                <div class="btn-group" role="group" aria-label="View period — secondary on inverse — rest">
+                  <button class="btn btn-secondary on-inverse" aria-pressed="false">Day</button>
+                  <button class="btn btn-secondary on-inverse" aria-pressed="false">Week</button>
+                  <button class="btn btn-secondary on-inverse" aria-pressed="false">Month</button>
+                </div>
+              </div>
+              <div class="grp-state">
+                <span class="grp-state-lbl">Week selected</span>
+                <div class="btn-group" role="group" aria-label="View period — secondary on inverse — Week selected">
+                  <button class="btn btn-secondary on-inverse" aria-pressed="false">Day</button>
+                  <button class="btn btn-secondary on-inverse" aria-pressed="true">Week</button>
+                  <button class="btn btn-secondary on-inverse" aria-pressed="false">Month</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grp-row">
+            <span class="grp-lbl"><code>.btn-ghost</code> <code>.on-inverse</code></span>
+            <div class="grp-pair">
+              <div class="grp-state">
+                <span class="grp-state-lbl">rest</span>
+                <div class="btn-group" role="group" aria-label="View period — ghost on inverse — rest">
+                  <button class="btn btn-ghost on-inverse" aria-pressed="false">Day</button>
+                  <button class="btn btn-ghost on-inverse" aria-pressed="false">Week</button>
+                  <button class="btn btn-ghost on-inverse" aria-pressed="false">Month</button>
+                </div>
+              </div>
+              <div class="grp-state">
+                <span class="grp-state-lbl">Week selected</span>
+                <div class="btn-group" role="group" aria-label="View period — ghost on inverse — Week selected">
+                  <button class="btn btn-ghost on-inverse" aria-pressed="false">Day</button>
+                  <button class="btn btn-ghost on-inverse" aria-pressed="true">Week</button>
+                  <button class="btn btn-ghost on-inverse" aria-pressed="false">Month</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grp-row">
+            <span class="grp-lbl"><code>.btn-inverse</code></span>
+            <div class="grp-pair">
+              <div class="grp-state">
+                <span class="grp-state-lbl">rest</span>
+                <div class="btn-group" role="group" aria-label="View period — inverse — rest">
+                  <button class="btn btn-inverse" aria-pressed="false">Day</button>
+                  <button class="btn btn-inverse" aria-pressed="false">Week</button>
+                  <button class="btn btn-inverse" aria-pressed="false">Month</button>
+                </div>
+              </div>
+              <div class="grp-state">
+                <span class="grp-state-lbl">Week selected</span>
+                <div class="btn-group" role="group" aria-label="View period — inverse — Week selected">
+                  <button class="btn btn-inverse" aria-pressed="false">Day</button>
+                  <button class="btn btn-inverse" aria-pressed="true">Week</button>
+                  <button class="btn btn-inverse" aria-pressed="false">Month</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="demo-card">
+      <header class="demo-card-head">
+        <div><h3>Seams and selection</h3><p>Two rules make every variant group correctly, instead of one rule per variant.</p></div>
+        <span class="demo-card-tag">how it works</span>
+      </header>
+      <div class="demo-card-canvas is-flush">
+        <table class="g">
+          <thead><tr><th>Concern</th><th>Rule</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>Seam</td><td>Borderless variants draw an inset hairline in <code>currentColor</code> 22%</td><td>Primary, tertiary, ghost, danger and inverse have a transparent border, so the one-hairline overlap left nothing between segments — the group read as one long button. <code>currentColor</code> contrasts with any fill without a token per variant. These variants also drop the one-hairline overlap: with no border to merge, it only painted two fills on the same 1px and doubled the divider on translucent fills.</td></tr>
+            <tr><td>Selected</td><td><code>[aria-pressed="true"]</code> overlays the variant's own text colour at 14% as an <strong>inset shadow</strong>, plus bold</td><td>The old demo painted the selected segment with a neutral press colour inline, which only works on light fills. An overlay of the text colour darkens a light fill and lightens a dark one, so one rule serves every variant and both themes.</td></tr>
+            <tr><td>Link</td><td>Not grouped</td><td><code>.btn-link</code> has no box, so there is nothing to join — a row of links is navigation, not a segmented control.</td></tr>
+          </tbody>
+        </table>
       </div>
     </article>
   </section>

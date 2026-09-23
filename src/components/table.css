@@ -56,18 +56,22 @@
   border: 1px solid var(--color-border-default);
   border-radius: var(--shape-container);
   overflow: hidden;
-  box-shadow: var(--shadow-xs);
+  /* Flat at rest — the hairline border is the separation */
+  box-shadow: none;
 }
 
 .dt-toolbar {
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  /* Box on the element, not on a descendant selector: the height must survive a
-     toolbar that is not a direct child of .dt-wrap, or the selecting state
-     renders 5px taller and the table jumps when the first row is ticked. */
-  height: 52px;
-  padding: 0 var(--space-5);
+  /* Height comes from a vertical inset around the controls, not a fixed box. A
+     fixed 52px left 6px above and below a 40px field — the control read as
+     jammed against the rules. The inset now guarantees breathing room for any
+     control size, and min-height keeps the bar steady when it holds only text,
+     so the selecting state (same controls) still does not make the table jump.
+     Box on the element, not a descendant selector, so it holds anywhere. */
+  min-height: calc(var(--control-h-sm) + 2 * var(--space-5) + var(--border-hairline));
+  padding: var(--space-5) var(--space-5);
   box-sizing: border-box;
   border-bottom: 1px solid var(--color-border-subtle);
   background: var(--color-background-surface);
@@ -645,7 +649,8 @@
        card would measure 100% PLUS the gutters and hang off the right edge.
        auto lets it shrink to the space the margins leave. */
     width: auto;
-    box-shadow: var(--shadow-xs);
+    /* Stacked cards are resting surfaces too: border only */
+    box-shadow: none;
   }
   .dt-responsive .dt tbody tr:last-child { margin-bottom: var(--space-3); border-bottom: 1px solid var(--color-border-default); }
 
@@ -1203,11 +1208,14 @@ a.dt-detail-card:focus-visible { outline: none; box-shadow: var(--shadow-focus);
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  height: 52px;
-  padding: 0 var(--space-5);
+  min-height: calc(var(--control-h-sm) + 2 * var(--space-5) + var(--border-hairline));
+  padding: var(--space-5) var(--space-5);
   box-sizing: border-box;
 }
-.dt-toolbar.dt-toolbar-sm { height: 44px; padding: 0 var(--space-4); }
+/* Dense: tighter inset, same principle — 12px above and below the controls
+   (16px at md). --space-4 is 12px; the earlier --space-3 was only 8px, which
+   is what left the dense bar jammed. */
+.dt-toolbar.dt-toolbar-sm { min-height: calc(var(--control-h-sm) + 2 * var(--space-4) + var(--border-hairline)); padding: var(--space-4) var(--space-4); }
 .dt-toolbar-lead { display: inline-flex; align-items: baseline; gap: var(--space-2); min-width: 0; }
 .dt-toolbar-filters { display: inline-flex; align-items: center; gap: var(--space-2); min-width: 0; flex: 1 1 auto; }
 .dt-toolbar-actions { margin-left: auto; display: inline-flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
@@ -1263,19 +1271,22 @@ a.dt-detail-card:focus-visible { outline: none; box-shadow: var(--shadow-focus);
 .dt-wrap > .dt-scroll-y:has(+ .dt-pagination) { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 
 /* ----------------------------------------------------------------
-   FRAME OWNERSHIP — the wrap only draws a border when nothing else bounds it
+   FRAME OWNERSHIP
    ----------------------------------------------------------------
-   .dt-wrap's border says "the table starts and ends here". A toolbar closes the
-   top, a pager closes the bottom, and a card/drawer closes all four — in those
-   cases the border is a second contour around a boundary that already reads.
-   Radius stays either way: it is what clips the thead corners.
+   Product rule: a table ALWAYS has its border — with a toolbar, with a pager,
+   with both or with neither. The base .dt-wrap rule draws it, and a toolbar or
+   pager does not replace it: they sit inside the frame and divide themselves
+   from the body with their own seam (toolbar border-bottom, pager border-top).
+
+   An earlier version zeroed the wrap border whenever a toolbar or pager was
+   present, on the theory that "the pager closes the bottom and the toolbar the
+   top". But it zeroed all FOUR sides, so every paginated table lost its sides
+   and top and was left with a shadow and a bottom rule — Counterparties had a
+   frame and Payment Requests did not.
+
+   The one real exception is a table sitting inside a container that is already
+   the frame; there the wrap border would be a second contour.
    ---------------------------------------------------------------- */
-.dt-wrap:has(> .dt-toolbar),
-.dt-wrap:has(> .dt-pagination) { border: 0; }
-/* Chrome carries the edge instead */
-.dt-wrap:has(> .dt-toolbar) > .dt-toolbar { border-top: var(--border-hairline) solid var(--color-border-default); }
-.dt-wrap:has(> .dt-pagination) > .dt-pagination { border-bottom: var(--border-hairline) solid var(--color-border-default); }
-/* Inside a card, drawer or modal the container is the frame */
 .demo-card-canvas .dt-wrap,
 .drawer-body .dt-wrap,
 .modal-body .dt-wrap { border: 0; }
@@ -1327,3 +1338,45 @@ a.dt-detail-card:focus-visible { outline: none; box-shadow: var(--shadow-focus);
   text-decoration-color: var(--color-foreground-inverse-muted);
   color: var(--color-foreground-inverse-secondary);
 }
+
+/* ----------------------------------------------------------------
+   OUTLINE PILL — .dt-outline
+   ----------------------------------------------------------------
+   A hairline pill that WRAPS an inline combo (flag + label, icon + code,
+   corridor) so it reads as one token in the cell rather than loose parts.
+   It is a container, not a status: no fill, no tone — tone belongs to .pill.
+   Use it where the combo is a categorical value the eye compares down the
+   column (market, rail, jurisdiction). Do not wrap the row's own name: that is
+   the identity of the row, not a value in it.
+   ---------------------------------------------------------------- */
+.dt-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 24px;
+  padding: 0 var(--space-3) 0 var(--space-2);
+  border: var(--border-hairline) solid var(--color-border-default);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-foreground-default);
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--w-regular);
+  line-height: 1;
+  white-space: nowrap;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+/* No leading media → balanced inset */
+.dt-outline:not(:has(> .flag, > svg, > i, > .ic-mini)) { padding: 0 var(--space-3); }
+.dt-outline > .flag { width: 16px; height: 16px; border-radius: var(--radius-pill); flex-shrink: 0; }
+.dt-outline > svg,
+.dt-outline > i { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); color: var(--color-foreground-muted); flex-shrink: 0; }
+/* A mono code inside the pill (ISO, rail) keeps the pill's height */
+.dt-outline .code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); }
+.dt-outline-sm { height: 20px; font-size: var(--fs-xxs); }
+.dt-outline-sm > .flag { width: 14px; height: 14px; }
+/* Several pills in one cell — a set (e.g. supported rails) */
+.dt-outline-set { display: inline-flex; flex-wrap: wrap; gap: var(--space-2); }
+.dt.on-inverse .dt-outline,
+.dark .dt .dt-outline { border-color: var(--color-border-inverse); color: var(--color-foreground-inverse-default); }

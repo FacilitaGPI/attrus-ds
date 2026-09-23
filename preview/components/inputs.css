@@ -281,6 +281,95 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .group.is-error          { border-color: var(--color-border-danger); }
 .group.is-error:focus-within { box-shadow: var(--shadow-focus-danger); }
 
+/* ----------------------------------------------------------------
+   5b. COMBO — an interactive segment attached to the field
+   ----------------------------------------------------------------
+   .fix is static text ("USD", ".com"). When the attached cell is a CONTROL —
+   a unit/currency/country selector before the value, or an action after it
+   (Copy, Apply, Search) — it needs its own hit area, hover and focus ring, and
+   it must keep the group's single outline. Two segment types:
+
+     .fix-select.l|.r   native <select> + .chev, reads as a cell of the field
+     .fix-btn.l|.r      <button>; add .is-primary when it is THE action
+
+   The same segments attach to .pill-search (see §6). Both sit inside .group, so they inherit its height, radius clip and the one
+   focus ring on :focus-within; their own focus is an inset ring so it cannot
+   be clipped by the group's overflow.
+   ---------------------------------------------------------------- */
+:is(.group, .pill-search) > .fix-select,
+:is(.group, .pill-search) > .fix-btn {
+  flex-shrink: 0;
+  background: var(--color-background-subtle);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+:is(.group, .pill-search) > .fix-select.l,
+:is(.group, .pill-search) > .fix-btn.l { border-right: var(--border-hairline) solid var(--color-border-default); }
+:is(.group, .pill-search) > .fix-select.r,
+:is(.group, .pill-search) > .fix-btn.r { border-left: var(--border-hairline) solid var(--color-border-default); }
+
+:is(.group, .pill-search) > .fix-select { position: relative; display: flex; align-items: stretch; }
+:is(.group, .pill-search) > .fix-select > select {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 100%;
+  margin: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  /* room on the right for the chevron */
+  padding: 0 calc(var(--space-4) + var(--icon-xs) + var(--space-1)) 0 var(--space-4);
+  color: var(--color-foreground-default);
+  font-family: var(--font-mono);
+  font-size-adjust: var(--font-mono-adjust);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+:is(.group, .pill-search) > .fix-select > .chev {
+  position: absolute;
+  top: 50%;
+  right: var(--space-3);
+  width: var(--icon-xs);
+  height: var(--icon-xs);
+  transform: translateY(-50%);
+  color: var(--color-foreground-muted);
+  pointer-events: none;
+}
+:is(.group, .pill-search) > .fix-select:hover { background: var(--color-background-hover); }
+:is(.group, .pill-search) > .fix-select > select:focus-visible { box-shadow: inset 0 0 0 2px var(--color-border-focus); }
+
+:is(.group, .pill-search) > .fix-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 100%;
+  margin: 0;
+  padding: 0 var(--space-4);
+  border-top: 0;
+  border-bottom: 0;
+  color: var(--color-foreground-secondary);
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: var(--w-regular);
+  white-space: nowrap;
+  cursor: pointer;
+}
+:is(.group, .pill-search) > .fix-btn.l { border-left: 0; }
+:is(.group, .pill-search) > .fix-btn.r { border-right: 0; }
+:is(.group, .pill-search) > .fix-btn svg,
+:is(.group, .pill-search) > .fix-btn i { width: var(--icon-sm); height: var(--icon-sm); stroke-width: var(--icon-stroke); }
+:is(.group, .pill-search) > .fix-btn:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+:is(.group, .pill-search) > .fix-btn:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--color-border-focus); }
+:is(.group, .pill-search) > .fix-btn:disabled { cursor: not-allowed; color: var(--color-foreground-disabled); background: var(--color-background-sunken); }
+/* The field's one decisive action — filled, so it is found without reading */
+:is(.group, .pill-search) > .fix-btn.is-primary {
+  background: var(--color-brand-solid);
+  color: var(--color-foreground-on-solid);
+  border-color: var(--color-brand-solid);
+}
+:is(.group, .pill-search) > .fix-btn.is-primary:hover { background: var(--color-brand-solid-hover); color: var(--color-foreground-on-solid); }
+:is(.group, .pill-search) > .fix-btn.is-primary:focus-visible { box-shadow: inset 0 0 0 2px var(--color-foreground-on-solid); }
+
 
 /* ----------------------------------------------------------------
    6. PILL SEARCH (⌘K-style)
@@ -335,19 +424,74 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 }
 .pill-search > input::placeholder { color: var(--color-foreground-placeholder); }
 .kbd {
+  /* A fixed box, not text with padding. With padding alone the chip was 19px
+     tall on a 15px line box, the ⌘ glyph and the letter sat on different
+     optical baselines, and caps letter-spacing added trailing space that pushed
+     the pair off-centre. Height + min-width + centred flex fix all three. */
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  gap: 2px;
+  box-sizing: border-box;
+  height: 20px;
+  min-width: 20px;
+  padding: 0 var(--space-2);
+  flex-shrink: 0;
   font-family: var(--font-mono);
   font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xxs);
   font-weight: var(--w-regular);
+  line-height: 1;
+  letter-spacing: 0;
   color: var(--color-foreground-muted);
   background: var(--color-background-subtle);
-  border: 1px solid var(--color-border-default);
+  border: var(--border-hairline) solid var(--color-border-default);
   border-radius: var(--radius-2xs);
-  padding: 1px var(--space-2);
-  letter-spacing: var(--ls-caps);
 }
+/* Split keys: <span class="kbd"><kbd>⌘</kbd><kbd>K</kbd></span> — each glyph
+   gets its own centred cell, so a symbol and a letter share one baseline. */
+.kbd > kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1ch;
+  font: inherit;
+  line-height: 1;
+}
+.pill-search-sm .kbd { height: 18px; min-width: 18px; padding: 0 var(--space-1); }
+/* On a pill the trailing chip sits against a ROUND end, so the inset that
+   reads as even is the vertical one, not the field's horizontal padding:
+   (40 − 20) / 2 at md, (32 − 18) / 2 at sm. The border sits outside the
+   content height on both axes, so it cancels out — measured 11/11 and 8/8. */
+.pill-search:has(> .kbd:last-child) { padding-right: calc((var(--control-h-md) - 20px) / 2); }
+.pill-search-sm:has(> .kbd:last-child) { padding-right: calc((var(--control-h-sm) - 18px) / 2); }
+
+/* Combo on the pill — a selector or button flush with a rounded end. The pill
+   clips them to its radius; the end the segment touches loses its padding, and
+   the segment adds a little extra on that side so its content clears the curve. */
+.pill-search:has(> .fix-select, > .fix-btn) { overflow: hidden; }
+.pill-search:has(> :is(.fix-select, .fix-btn):first-child) { padding-left: 0; }
+.pill-search:has(> :is(.fix-select, .fix-btn):last-child) { padding-right: 0; }
+.pill-search > .fix-select,
+.pill-search > .fix-btn { align-self: stretch; height: auto; }
+.pill-search > .fix-select:first-child > select { padding-left: var(--space-5); }
+.pill-search > .fix-select:last-child > select { padding-right: calc(var(--space-5) + var(--icon-xs) + var(--space-1)); }
+.pill-search > .fix-select:last-child > .chev { right: var(--space-4); }
+.pill-search > .fix-btn:first-child { padding-left: var(--space-5); }
+.pill-search > .fix-btn:last-child { padding-right: var(--space-5); }
+/* The segment's own corners must follow the pill's round end. Clipping by the
+   pill's overflow only trims the paint OUTSIDE the curve — the inset focus ring
+   and the pressed fill are drawn on the segment's box, which was square, so they
+   showed straight corners inside a rounded field. Rounding the outer side of the
+   segment (and of the select it wraps) makes every state trace the pill. */
+.pill-search > .fix-btn:first-child,
+.pill-search > .fix-select:first-child,
+.pill-search > .fix-select:first-child > select { border-radius: var(--radius-pill) 0 0 var(--radius-pill); }
+.pill-search > .fix-btn:last-child,
+.pill-search > .fix-select:last-child,
+.pill-search > .fix-select:last-child > select { border-radius: 0 var(--radius-pill) var(--radius-pill) 0; }
+.pill-search-sm > .fix-btn,
+.pill-search-sm > .fix-select > select { font-size: var(--fs-xs); }
 
 
 /* ----------------------------------------------------------------
@@ -366,6 +510,74 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   box-shadow: none;
 }
 .input.underline.is-error { border-bottom-color: var(--color-border-danger); }
+
+/* ----------------------------------------------------------------
+   7b. GROUP SHAPES — the combo input in pill and underline form
+   ----------------------------------------------------------------
+   .group is the rectangular field. Two shape modifiers carry the same combo
+   segments (.fix / .fix-select / .fix-btn) onto the other two field shapes, so
+   a page that uses pill or underline inputs does not have to drop back to a
+   rectangle the moment a field needs a selector or a button.
+
+     .group.is-pill      rounded ends; end segments trace the curve
+     .group.underline    bottom rule only; segments lose fill and seams
+   ---------------------------------------------------------------- */
+.group.is-pill { border-radius: var(--radius-pill); }
+.group.is-pill > input:first-child { padding-left: var(--space-5); }
+.group.is-pill > input:last-child { padding-right: var(--space-5); }
+.group.is-pill > .fix:first-child,
+.group.is-pill > .fix-btn:first-child { padding-left: var(--space-5); }
+.group.is-pill > .fix:last-child,
+.group.is-pill > .fix-btn:last-child { padding-right: var(--space-5); }
+.group.is-pill > .fix-select:first-child > select { padding-left: var(--space-5); }
+/* End segments round their outer side, so focus rings and fills trace the pill
+   instead of drawing square corners inside it. */
+.group.is-pill > :is(.fix, .fix-btn, .fix-select):first-child,
+.group.is-pill > .fix-select:first-child > select { border-radius: var(--radius-pill) 0 0 var(--radius-pill); }
+.group.is-pill > :is(.fix, .fix-btn, .fix-select):last-child,
+.group.is-pill > .fix-select:last-child > select { border-radius: 0 var(--radius-pill) var(--radius-pill) 0; }
+
+/* Underline: the rule IS the field. Segments sit on the canvas, keep their text
+   and chevron, and are separated from the value by space instead of a seam — a
+   vertical line on a borderless field reads as a stray mark. */
+.group.underline {
+  border: 0;
+  border-bottom: var(--border-hairline) solid var(--color-border-default);
+  border-radius: 0;
+  background: transparent;
+  gap: var(--space-3);
+}
+.group.underline:focus-within { border-bottom-color: var(--color-border-focus); box-shadow: none; }
+.group.underline.is-error { border-bottom-color: var(--color-border-danger); }
+.group.underline.is-error:focus-within { box-shadow: none; }
+.group.underline > input { padding: 0; }
+.group.underline > :is(.fix, .fix-select, .fix-btn) {
+  background: transparent;
+  border-left: 0;
+  border-right: 0;
+}
+.group.underline > .fix { padding: 0; }
+.group.underline > .fix-select > select { padding-left: 0; }
+.group.underline > .fix-btn { padding: 0 var(--space-2); border-radius: var(--radius-xs); }
+.group.underline > .fix-btn:last-child { margin-right: calc(-1 * var(--space-2)); }
+.group.underline > .fix-btn:hover { background: var(--color-background-hover); }
+/* A filled block on a quiet field shouts — the primary action becomes brand text */
+.group.underline > .fix-btn.is-primary { background: transparent; color: var(--color-foreground-brand); font-weight: var(--w-bold); }
+.group.underline > .fix-btn.is-primary:hover { background: var(--color-background-hover); color: var(--color-foreground-brand); }
+/* Focus on an underline field is the rule turning focus-blue — nothing else. The
+   segments' inset rings (right on a boxed field) drew a rectangle on a field that
+   has no box, so they are dropped here. Which segment holds focus is still shown,
+   by underlining its own label in the focus colour: the one mark this shape
+   already speaks. */
+.group.underline > .fix-select > select:focus-visible,
+.group.underline > .fix-btn:focus-visible,
+.group.underline > .fix-btn.is-primary:focus-visible {
+  box-shadow: none;
+  text-decoration: underline;
+  text-decoration-color: var(--color-border-focus);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
 
 
 /* ----------------------------------------------------------------

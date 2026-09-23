@@ -285,6 +285,29 @@ export function DataTable<T>({
   );
 }
 
+
+/** Outline pill — `.dt-outline`: a hairline pill that wraps an inline combo
+    (flag + label, icon + label, corridor) so it reads as one token. A container,
+    not a status: no fill, no tone. `code` renders a trailing mono ISO/rail code. */
+export const DTOutline: React.FC<{
+  flag?: string;
+  icon?: React.ReactNode;
+  code?: React.ReactNode;
+  size?: 'sm' | 'md';
+  children?: React.ReactNode;
+} & React.HTMLAttributes<HTMLSpanElement>> = ({ flag, icon, code, size = 'md', children, className, ...rest }) => (
+  <span className={['dt-outline', size === 'sm' ? 'dt-outline-sm' : '', className || ''].filter(Boolean).join(' ')} {...rest}>
+    {flag ? <img className="flag" src={flag} alt="" /> : icon}
+    {children}
+    {code != null ? <span className="code">{code}</span> : null}
+  </span>
+);
+
+/** Several outline pills in one cell — `.dt-outline-set`. */
+export const DTOutlineSet: React.FC<React.HTMLAttributes<HTMLSpanElement>> = ({ className, ...rest }) => (
+  <span className={['dt-outline-set', className || ''].filter(Boolean).join(' ')} {...rest} />
+);
+
 export default DataTable;
 
 /* ----------------------------------------------------------------

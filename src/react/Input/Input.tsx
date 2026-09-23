@@ -8,6 +8,7 @@ import * as React from 'react';
  *   .field > label + control + .help        (when label/help given)
  *   .affix.lead-pad/.trail-pad              (when leadIcon/trailIcon given)
  *   .group > .fix.l + input + .fix.r        (when prefix/suffix given)
+ *   .group > .fix-select|.fix-btn + input   (when before/after given — combo input)
  *
  * Note: prefix/suffix (.group) and leadIcon/trailIcon (.affix) are
  * mutually exclusive — group wins if both are passed. Sizes apply to
@@ -16,6 +17,30 @@ import * as React from 'react';
 
 export type InputSize = 'sm' | 'md' | 'lg';
 export type InputStatus = 'default' | 'error' | 'success' | 'warning';
+
+/** An interactive segment attached to the field (`.group > .fix-select` /
+    `.fix-btn`). Static text belongs in `prefix`/`suffix`; use an addon only
+    when the cell is a CONTROL — a qualifier the user picks, or an action that
+    consumes this field. */
+export type InputAddon =
+  | {
+      type: 'select';
+      options: Array<string | { value: string; label: React.ReactNode }>;
+      value?: string;
+      onChange?: (value: string) => void;
+      /** Required: the select has no visible label of its own. */
+      'aria-label': string;
+    }
+  | {
+      type: 'button';
+      label: React.ReactNode;
+      icon?: React.ReactNode;
+      onClick?: () => void;
+      /** Filled — only when this is THE action of the field. */
+      primary?: boolean;
+      disabled?: boolean;
+      'aria-label'?: string;
+    };
 
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'prefix'> {
   /** Field label (renders the .field wrapper). */
@@ -38,12 +63,55 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   prefix?: React.ReactNode;
   /** Attached suffix cell — .group .fix.r (e.g. ".00"). */
   suffix?: React.ReactNode;
+  /** Interactive segment BEFORE the field — selector or button (combo input).
+      Takes the slot prefix would use; pass one or the other, not both. */
+  before?: InputAddon;
+  /** Interactive segment AFTER the field — selector or button (combo input). */
+  after?: InputAddon;
+  /** Shape of an attached group (prefix/suffix/before/after): the rectangular
+      field, rounded ends (.group.is-pill) or bottom-rule only (.group.underline). */
+  groupShape?: 'default' | 'pill' | 'underline';
   /** Dark-surface treatment (.on-inverse). */
   onInverse?: boolean;
   /** Quiet read-only: value only, no border (.is-readonly). */
   readOnlyQuiet?: boolean;
   /** Quiet / ghost input — bottom hairline only (`.input.underline`). */
   underline?: boolean;
+}
+
+function renderAddon(a: InputAddon, side: 'l' | 'r'): React.ReactNode {
+  if (a.type === 'select') {
+    return (
+      <span className={'fix-select ' + side}>
+        <select
+          aria-label={a['aria-label']}
+          value={a.value}
+          onChange={a.onChange ? (e) => a.onChange!(e.target.value) : undefined}
+        >
+          {a.options.map((o) =>
+            typeof o === 'string'
+              ? <option key={o} value={o}>{o}</option>
+              : <option key={o.value} value={o.value}>{o.label}</option>
+          )}
+        </select>
+        <svg className="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </span>
+    );
+  }
+  return (
+    <button
+      type="button"
+      className={['fix-btn', side, a.primary ? 'is-primary' : ''].filter(Boolean).join(' ')}
+      onClick={a.onClick}
+      disabled={a.disabled}
+      aria-label={a['aria-label']}
+    >
+      {a.icon}
+      {a.label}
+    </button>
+  );
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -57,6 +125,9 @@ export const Input: React.FC<InputProps> = ({
   trailLabel,
   prefix,
   suffix,
+  before,
+  after,
+  groupShape = 'default',
   onInverse = false,
   readOnlyQuiet = false,
   underline = false,
@@ -65,7 +136,15 @@ export const Input: React.FC<InputProps> = ({
   ...rest
 }) => {
   const autoId = React.useId();
-  const inputId = id || (label ? autoId : undefined);
+  const inputId = id || (label || help != null ? autoId : undefined);
+  /* The doc promises that status drives border, help tone AND aria-invalid
+     together, and that help is announced with the field. Neither was wired: a
+     screen reader heard "Amount, edit text" with no error and no hint. */
+  const helpId = help != null ? (inputId || autoId) + '-help' : undefined;
+  const a11y = {
+    'aria-invalid': status === 'error' ? true : undefined,
+    'aria-describedby': [rest['aria-describedby'], helpId].filter(Boolean).join(' ') || undefined,
+  } as const;
 
   const inputCls = [
     'input',
@@ -82,13 +161,15 @@ export const Input: React.FC<InputProps> = ({
 
   let control: React.ReactNode;
 
-  if (prefix != null || suffix != null) {
-    // Attached group — the inner input is styled by `.group > input`.
+  if (prefix != null || suffix != null || before != null || after != null) {
+    // Attached group — the inner input is styled by `.group > input`. An addon
+    // wins over static text on the same side: a cell is either a label or a
+    // control, never both.
     control = (
-      <div className={['group', status === 'error' ? 'is-error' : ''].filter(Boolean).join(' ')}>
-        {prefix != null ? <span className="fix l">{prefix}</span> : null}
-        <input id={inputId} readOnly={readOnlyQuiet || rest.readOnly} {...rest} />
-        {suffix != null ? <span className="fix r">{suffix}</span> : null}
+      <div className={['group', groupShape === 'pill' ? 'is-pill' : '', groupShape === 'underline' ? 'underline' : '', status === 'error' ? 'is-error' : ''].filter(Boolean).join(' ')}>
+        {before != null ? renderAddon(before, 'l') : prefix != null ? <span className="fix l">{prefix}</span> : null}
+        <input id={inputId} readOnly={readOnlyQuiet || rest.readOnly} {...rest} {...a11y} />
+        {after != null ? renderAddon(after, 'r') : suffix != null ? <span className="fix r">{suffix}</span> : null}
       </div>
     );
   } else if (leadIcon != null || trailIcon != null || onTrailClick) {
@@ -102,7 +183,7 @@ export const Input: React.FC<InputProps> = ({
     control = (
       <div className={affixCls}>
         {leadIcon != null ? <span className="lead">{leadIcon}</span> : null}
-        <input id={inputId} className={inputCls} readOnly={readOnlyQuiet || rest.readOnly} {...rest} />
+        <input id={inputId} className={inputCls} readOnly={readOnlyQuiet || rest.readOnly} {...rest} {...a11y} />
         {onTrailClick ? (
           <button type="button" className="trail-btn" aria-label={trailLabel || 'Action'} onClick={onTrailClick}>
             {trailIcon}
@@ -113,7 +194,7 @@ export const Input: React.FC<InputProps> = ({
       </div>
     );
   } else {
-    control = <input id={inputId} className={inputCls} readOnly={readOnlyQuiet || rest.readOnly} {...rest} />;
+    control = <input id={inputId} className={inputCls} readOnly={readOnlyQuiet || rest.readOnly} {...rest} {...a11y} />;
   }
 
   if (label == null && help == null) return <React.Fragment>{control}</React.Fragment>;
@@ -131,7 +212,7 @@ export const Input: React.FC<InputProps> = ({
     <div className="field">
       {label != null ? <label htmlFor={inputId}>{label}</label> : null}
       {control}
-      {help != null ? <div className={helpCls}>{help}</div> : null}
+      {help != null ? <div className={helpCls} id={helpId}>{help}</div> : null}
     </div>
   );
 };
@@ -148,6 +229,7 @@ const fieldWrap = (
   status: InputStatus,
   id: string | undefined,
   control: React.ReactNode,
+  helpId?: string,
 ) => {
   if (label == null && help == null) return <React.Fragment>{control}</React.Fragment>;
   const helpCls = ['help', status === 'error' ? 'is-error' : '', status === 'success' ? 'is-success' : '', status === 'warning' ? 'is-warning' : ''].filter(Boolean).join(' ');

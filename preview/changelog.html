@@ -68,15 +68,54 @@
 
   <header class="doc-header">
     <div class="eyebrow">ATTRUS Design System</div>
-    <h1>Changelog <span class="ver-badge" data-ds-version>v1.0.13</span></h1>
+    <h1>Changelog <span class="ver-badge" data-ds-version>v1.0.16</span></h1>
     <p>Every notable change to the design system, grouped by release. Versioning follows <a href="https://semver.org" style="color:var(--color-foreground-accent)">SemVer</a>; the version number lives in <code style="font-family:var(--font-mono);font-size:0.85em">version.js</code> and is mirrored across the catalog and index pages.</p>
   </header>
+
+  <!-- ============ v1.0.16 ============ -->
+  <section class="release">
+    <div class="release-head">
+      <h2>1.0.16</h2>
+      <span class="tag current">Current</span>
+    </div>
+    <div class="release-date">2026-09-23 · combo input, button group and flat resting surfaces (includes Cabiros 1.0.15)</div>
+
+    <div class="change-group added">
+      <h3><i data-lucide="plus-circle"></i> Added</h3>
+      <ul>
+        <li><b>Combo input</b>: <code>Input</code> and <code>SearchPill</code> take <code>before</code> / <code>after</code> addons — a selector or a button attached to the field (<code>InputAddon</code>). <code>SearchPill</code> uses them for a scope selector and a Search button.</li>
+        <li><code>Input</code> <code>groupShape</code>: <code>default</code>, <code>pill</code> or <code>underline</code> for an attached group; end segments follow the rounded ends, focus rings included.</li>
+        <li>Split keyboard shortcuts: <code>SearchPill</code> <code>shortcut</code> accepts an array and renders one <code>&lt;kbd&gt;</code> per key.</li>
+        <li><b>Button group</b>: every variant groups, with a seam on borderless fills and one selected-state rule driven by <code>aria-pressed</code>.</li>
+        <li><b>DataTable</b> <code>.dt-outline</code>: a hairline pill that wraps flag or icon + label (+ mono code) as one token in a cell — market, rail, corridor — with <code>.dt-outline-sm</code> and <code>.dt-outline-set</code>; <code>DTOutline</code> / <code>DTOutlineSet</code> in TSX.</li>
+        <li><b>Parity harness</b> for Input, including <code>aria-invalid</code> and <code>aria-describedby</code>.</li>
+      </ul>
+    </div>
+
+    <div class="change-group changed">
+      <h3><i data-lucide="refresh-cw"></i> Changed</h3>
+      <ul>
+        <li><b>Resting surfaces are flat</b>: <code>.card</code>, <code>.dt-wrap</code> and <code>.sb</code> drop their resting shadow; the hairline border separates them from the canvas. Shadow stays on what floats (<code>.raised</code>, <code>.floating</code>) and on interaction feedback. Shadow tokens are unchanged.</li>
+        <li>Table toolbar height comes from a vertical inset around the controls instead of a fixed 52px, so controls no longer sit against the rules; the dense toolbar follows the same rule.</li>
+      </ul>
+    </div>
+
+    <div class="change-group fixed">
+      <h3><i data-lucide="bug"></i> Fixed</h3>
+      <ul>
+        <li>A table <b>always keeps its border</b>, with or without a toolbar or pager — paginated tables no longer lose their frame.</li>
+        <li>Callout alert bar: the icon and the dismiss button are vertically centred with the text and actions.</li>
+        <li>Keyboard chip is a fixed box, aligned with the pill's round end.</li>
+        <li>Stray <code>&gt;</code> glyph in the flush demo of <code>table.html</code>.</li>
+      </ul>
+    </div>
+  </section>
 
   <!-- ============ v1.0.13 ============ -->
   <section class="release">
     <div class="release-head">
       <h2>1.0.13</h2>
-      <span class="tag current">Current</span>
+      <span class="tag">Patch</span>
     </div>
     <div class="release-date">2026-09-01 · benches that verify instead of demonstrate</div>
 
