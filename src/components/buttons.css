@@ -361,7 +361,8 @@
    in a segmented control, and styling from it keeps markup and look in step. */
 .btn-group .btn[aria-pressed="true"] {
   box-shadow: inset 0 0 0 999px color-mix(in srgb, currentColor 14%, transparent);
-  font-weight: var(--w-bold);
+  /* No weight change: the fill already marks the selection, and a bolder label
+     widens the segment on toggle, nudging every neighbour sideways. */
   /* The overlay stops at the border, and the next segment overlaps this one by a
      hairline — so without this the selected segment ended in a 1px light strip
      (its own untinted border, covered by the neighbour's fill). Lifting it above

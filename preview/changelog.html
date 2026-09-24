@@ -68,17 +68,41 @@
 
   <header class="doc-header">
     <div class="eyebrow">ATTRUS Design System</div>
-    <h1>Changelog <span class="ver-badge" data-ds-version>v1.0.16</span></h1>
+    <h1>Changelog <span class="ver-badge" data-ds-version>v1.0.20</span></h1>
     <p>Every notable change to the design system, grouped by release. Versioning follows <a href="https://semver.org" style="color:var(--color-foreground-accent)">SemVer</a>; the version number lives in <code style="font-family:var(--font-mono);font-size:0.85em">version.js</code> and is mirrored across the catalog and index pages.</p>
   </header>
+
+  <!-- ============ v1.0.20 ============ -->
+  <section class="release">
+    <div class="release-head">
+      <h2>1.0.20</h2>
+      <span class="tag current">Current</span>
+    </div>
+    <div class="release-date">2026-09-24 · published to npm as @attrus-ds/core</div>
+
+    <div class="change-group added">
+      <h3><i data-lucide="plus-circle"></i> Added</h3>
+      <ul>
+        <li>Combo input button addon takes <code>variant</code> — any Button variant: <code>primary</code>, <code>secondary</code>, <code>tertiary</code>, <code>ghost</code>, <code>danger</code>, <code>danger-outline</code>, <code>success</code>. <code>primary: true</code> still works and is deprecated.</li>
+      </ul>
+    </div>
+
+    <div class="change-group changed">
+      <h3><i data-lucide="refresh-cw"></i> Changed</h3>
+      <ul>
+        <li>The combo input button is an inner button — inset from the field's edge, with its own border and rounding — instead of a flush segment. The selector stays attached to the field.</li>
+        <li>Button group: the selected segment no longer turns bold; the fill marks the selection, and the label keeps its width so neighbours do not shift.</li>
+      </ul>
+    </div>
+  </section>
 
   <!-- ============ v1.0.16 ============ -->
   <section class="release">
     <div class="release-head">
       <h2>1.0.16</h2>
-      <span class="tag current">Current</span>
+      <span class="tag">Release</span>
     </div>
-    <div class="release-date">2026-09-23 · combo input, button group and flat resting surfaces (includes Cabiros 1.0.15)</div>
+    <div class="release-date">2026-09-23 · reached npm as 1.0.19 — combo input, button group and flat resting surfaces (includes Cabiros 1.0.15)</div>
 
     <div class="change-group added">
       <h3><i data-lucide="plus-circle"></i> Added</h3>

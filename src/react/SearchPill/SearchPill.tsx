@@ -63,7 +63,7 @@ function renderAddon(a: InputAddon, side: 'l' | 'r'): React.ReactNode {
     );
   }
   return (
-    <button type="button" className={['fix-btn', side, a.primary ? 'is-primary' : ''].filter(Boolean).join(' ')}
+    <button type="button" className={['fix-btn', side, (() => { const v = a.variant || (a.primary ? 'primary' : 'secondary'); return v === 'secondary' ? '' : 'is-' + v; })()].filter(Boolean).join(' ')}
       onClick={a.onClick} disabled={a.disabled} aria-label={a['aria-label']}>
       {a.icon}
       {a.label}

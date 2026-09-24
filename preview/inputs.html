@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
 <script src="../version.js"></script>
-<link rel="stylesheet" href="components/inputs.css?v=12">
+<link rel="stylesheet" href="components/inputs.css?v=16">
 <link rel="stylesheet" href="components/buttons.css?v=20">
 <link rel="stylesheet" href="components/tabs.css?v=6">
 <link rel="stylesheet" href="components/number-input.css?v=6">
@@ -340,7 +340,7 @@
 </div>
 
 <main class="doc">
-  <script type="application/json" id="ds-api">{"component":"Inputs & forms","import":"const { Input, Textarea, Select, Switch, Checkbox, Radio, DateTrigger, ChipsInput, Otp, FileDrop, FileRow, FileListBox, Slider } = ATTRUS","cssAnatomy":".field > label + control + .help","status":"stable","intent":"A field is a labelled question; the control is the shape of the answer. Choose by the data, not the look.","components":{"Input":"free text, one line","Textarea":"free text, many lines","Select":"one of ~2–7 fixed options","Radio":"one of 2–5, all worth showing","Checkbox":"on/off applied on submit, or a set","Switch":"on/off applied immediately","Slider":"a number where the range matters more than the digits","Otp":"a short fixed-length code","DateTrigger":"a date","ChipsInput":"a set of zero or more values","FileDrop":"file intake","FileRow":"one file with progress","FileListBox":"a list of files","Input (combo)":"a value qualified by a selector, or consumed by one action — before/after addons"},"sharedProps":["label","help","status","size","onInverse"],"statuses":["default","error","success","warning"],"sizes":["sm","md","lg"],"useInstead":{"Select with 40+ options":"Combobox","Switch inside a form that submits":"Checkbox","Input type=number for money":"Input with currency prefix","placeholder as the label":"the label prop","disabled to mean not-applicable":"remove the field or explain in help"},"antiPatterns":["hand-rolling a <label> around the control — breaks the htmlFor binding","error text in a sibling div — not announced","a red border with no message","colour alone for state","height overrides instead of size","placeholder carrying the format"],"constraints":["all thirteen are controlled — pass value and onChange","label and help are props, never surrounding markup","status drives border, help tone and aria-invalid together","size maps to --control-h-* shared with Button","onInverse is required on dark surfaces","an addon is a control; static text belongs in prefix/suffix — on the same side the addon wins"],"shipped":["label↔control id binding","status→border/help/aria","size scale","onInverse variant","affix and group layout","focus-visible ring","combo addons (before/after) on all three field shapes"],"mustImplement":["value/onChange","validation timing","error copy","submission","upload transport","masking and formatting"],"addonTypes":["select","button"],"groupShapes":["default","pill","underline"]}</script>
+  <script type="application/json" id="ds-api">{"component":"Inputs & forms","import":"const { Input, Textarea, Select, Switch, Checkbox, Radio, DateTrigger, ChipsInput, Otp, FileDrop, FileRow, FileListBox, Slider } = ATTRUS","cssAnatomy":".field > label + control + .help","status":"stable","intent":"A field is a labelled question; the control is the shape of the answer. Choose by the data, not the look.","components":{"Input":"free text, one line","Textarea":"free text, many lines","Select":"one of ~2–7 fixed options","Radio":"one of 2–5, all worth showing","Checkbox":"on/off applied on submit, or a set","Switch":"on/off applied immediately","Slider":"a number where the range matters more than the digits","Otp":"a short fixed-length code","DateTrigger":"a date","ChipsInput":"a set of zero or more values","FileDrop":"file intake","FileRow":"one file with progress","FileListBox":"a list of files","Input (combo)":"a value qualified by a selector, or consumed by one action — before/after addons"},"sharedProps":["label","help","status","size","onInverse"],"statuses":["default","error","success","warning"],"sizes":["sm","md","lg"],"useInstead":{"Select with 40+ options":"Combobox","Switch inside a form that submits":"Checkbox","Input type=number for money":"Input with currency prefix","placeholder as the label":"the label prop","disabled to mean not-applicable":"remove the field or explain in help"},"antiPatterns":["hand-rolling a <label> around the control — breaks the htmlFor binding","error text in a sibling div — not announced","a red border with no message","colour alone for state","height overrides instead of size","placeholder carrying the format"],"constraints":["all thirteen are controlled — pass value and onChange","label and help are props, never surrounding markup","status drives border, help tone and aria-invalid together","size maps to --control-h-* shared with Button","onInverse is required on dark surfaces","an addon is a control; static text belongs in prefix/suffix — on the same side the addon wins"],"shipped":["label↔control id binding","status→border/help/aria","size scale","onInverse variant","affix and group layout","focus-visible ring","combo addons (before/after) on all three field shapes"],"mustImplement":["value/onChange","validation timing","error copy","submission","upload transport","masking and formatting"],"addonTypes":["select","button"],"groupShapes":["default","pill","underline"],"addonVariants":["primary","secondary","tertiary","ghost","danger","danger-outline","success"]}</script>
 
   <a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
 
@@ -426,6 +426,21 @@
         </table>
       </div>
     </div>
+    <div class="demo-card">
+      <header class="demo-card-head"><div><h3>Button addon variants <code>.fix-btn.is-*</code></h3><p>The inset button takes the same emphasis ladder as Button, with the same tokens — pick the one this action would have if it stood beside the field. <code>primary</code> only when it is THE action of the field; <code>link</code> and <code>inverse</code> are not offered.</p></div><span class="demo-card-tag">variant</span></header>
+      <div class="demo-card-canvas is-stacked">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:var(--space-4); width:100%">
+          <div class="field"><label>primary</label><div class="group"><input class="input" placeholder="Value" aria-label="Value"><button type="button" class="fix-btn r is-primary">Apply</button></div></div>
+          <div class="field"><label>secondary (default)</label><div class="group"><input class="input" placeholder="Value" aria-label="Value"><button type="button" class="fix-btn r">Verify</button></div></div>
+          <div class="field"><label>tertiary</label><div class="group"><input class="input" placeholder="Value" aria-label="Value"><button type="button" class="fix-btn r is-tertiary">Preview</button></div></div>
+          <div class="field"><label>ghost</label><div class="group"><input class="input" placeholder="Value" aria-label="Value"><button type="button" class="fix-btn r is-ghost">Copy</button></div></div>
+          <div class="field"><label>danger</label><div class="group"><input class="input" placeholder="Value" aria-label="Value"><button type="button" class="fix-btn r is-danger">Revoke</button></div></div>
+          <div class="field"><label>danger-outline</label><div class="group"><input class="input" placeholder="Value" aria-label="Value"><button type="button" class="fix-btn r is-danger-outline">Remove</button></div></div>
+          <div class="field"><label>success</label><div class="group"><input class="input" placeholder="Value" aria-label="Value"><button type="button" class="fix-btn r is-success">Confirm</button></div></div>
+        </div>
+      </div>
+    </div>
+
   </section>
 
 <section class="doc-section" id="anatomy">

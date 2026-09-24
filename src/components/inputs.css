@@ -1302,3 +1302,121 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   background: color-mix(in srgb, var(--color-pure-white) 6%, transparent);
   border-color: var(--color-border-inverse);
 }
+
+/* ----------------------------------------------------------------
+   INSET ACTION BUTTON — .fix-btn reads as a button, not a label
+   ----------------------------------------------------------------
+   A flush segment (divider + field fill) is the right language for a
+   SELECTOR: it qualifies the value, so it belongs to the field's surface, and
+   the chevron already says "dropdown". But the same treatment on an ACTION
+   made it read as a static label glued to the field. An action is its own
+   control, so it sits INSIDE the field as a button: inset from the edge,
+   its own border and radius, its own fill. .fix-select is untouched.
+   The inset is 6px on every side; the button's radius is the field's minus
+   that inset, so the two curves stay concentric.
+   ---------------------------------------------------------------- */
+:is(.group, .pill-search) > .fix-btn {
+  --fix-inset: 6px;
+  align-self: stretch;
+  height: auto;
+  margin: var(--fix-inset);
+  padding: 0 var(--space-3);
+  border: var(--border-hairline) solid var(--color-border-default);
+  /* Concentric (field radius − inset) comes out ~2px on a 6px field, which
+     reads as a square chip. Floor it at --radius-xs so it still reads as a
+     button; the curves stay visually parallel at this size. */
+  border-radius: max(var(--radius-xs), calc(var(--shape-control) - var(--fix-inset)));
+  background: var(--color-background-surface);
+  color: var(--color-foreground-default);
+  box-shadow: none;
+}
+/* the flush-segment dividers do not apply to a button that has its own border */
+:is(.group, .pill-search) > .fix-btn.l,
+:is(.group, .pill-search) > .fix-btn.r { border: var(--border-hairline) solid var(--color-border-default); }
+:is(.group, .pill-search) > .fix-btn.l { margin-right: 0; }
+:is(.group, .pill-search) > .fix-btn.r { margin-left: 0; }
+:is(.group, .pill-search) > .fix-btn:hover { background: var(--color-background-hover); border-color: var(--color-border-strong); color: var(--color-foreground-default); }
+:is(.group, .pill-search) > .fix-btn:active { background: var(--color-background-press); }
+:is(.group, .pill-search) > .fix-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--color-border-focus); }
+:is(.group, .pill-search) > .fix-btn.is-primary {
+  background: var(--color-brand-solid);
+  border-color: transparent;
+  color: var(--color-foreground-on-solid);
+}
+:is(.group, .pill-search) > .fix-btn.is-primary:hover { background: var(--color-brand-solid-hover); border-color: transparent; color: var(--color-foreground-on-solid); }
+:is(.group, .pill-search) > .fix-btn.is-primary:focus-visible { box-shadow: 0 0 0 2px var(--color-border-focus); }
+
+/* Pill field → pill button (concentric), and the end-padding the flush
+   segment needed to clear the round cap is no longer needed */
+:is(.group.is-pill, .pill-search) > .fix-btn,
+:is(.group.is-pill, .pill-search) > .fix-btn:first-child,
+:is(.group.is-pill, .pill-search) > .fix-btn:last-child { border-radius: var(--radius-pill); padding: 0 var(--space-4); }
+/* the pill clips its children for the flush selector; a clipped focus ring
+   on the inset button would be cut, so the ring is drawn inside instead */
+.pill-search > .fix-btn:focus-visible,
+.pill-search > .fix-btn.is-primary:focus-visible { box-shadow: inset 0 0 0 2px var(--color-border-focus); }
+.pill-search > .fix-btn.is-primary:focus-visible { box-shadow: inset 0 0 0 2px var(--color-foreground-on-solid), 0 0 0 0 transparent; }
+
+/* Underline field → a compact bordered button on the rule, not floating text */
+.group.underline > .fix-btn {
+  align-self: center;
+  height: calc(100% - 12px);
+  margin: 0 0 0 var(--space-2);
+  padding: 0 var(--space-3);
+  border: var(--border-hairline) solid var(--color-border-default);
+  border-radius: var(--shape-control);
+  background: var(--color-background-surface);
+  color: var(--color-foreground-default);
+  font-weight: var(--w-regular);
+  text-decoration: none;
+}
+.group.underline > .fix-btn:first-child { margin: 0 var(--space-2) 0 0; }
+.group.underline > .fix-btn:last-child { margin-right: 0; }
+.group.underline > .fix-btn.is-primary { background: var(--color-brand-solid); border-color: transparent; color: var(--color-foreground-on-solid); font-weight: var(--w-regular); }
+.group.underline > .fix-btn.is-primary:hover { background: var(--color-brand-solid-hover); color: var(--color-foreground-on-solid); }
+.group.underline > .fix-btn:focus-visible,
+.group.underline > .fix-btn.is-primary:focus-visible { box-shadow: 0 0 0 2px var(--color-border-focus); text-decoration: none; }
+
+/* on-inverse keeps the same shape, tinted for dark surfaces */
+.group.on-inverse > .fix-btn:not(.is-primary),
+.pill-search.on-inverse > .fix-btn:not(.is-primary) {
+  background: color-mix(in srgb, var(--color-pure-white) 8%, transparent);
+  border-color: var(--color-border-inverse);
+  color: var(--color-foreground-inverse-default);
+}
+
+/* ----------------------------------------------------------------
+   ADDON VARIANTS — the inset button speaks the Button vocabulary
+   ----------------------------------------------------------------
+   .fix-btn takes the same emphasis ladder as .btn, with the same tokens, so
+   "Apply" inside a field and "Apply" beside it read identically:
+     (none) / .is-secondary   neutral surface + hairline border (default)
+     .is-primary              brand fill — THE action of this field
+     .is-tertiary             soft neutral fill, borderless — quiet affirmative
+     .is-ghost                nothing until hover — secondary tools (copy, clear)
+     .is-danger               destructive solid
+     .is-danger-outline       destructive, contextual
+     .is-success              strong positive (rare)
+   Not offered: .link (it would read as a label again — the problem this button
+   exists to solve) and .inverse (the field's own on-inverse handles dark).
+   ---------------------------------------------------------------- */
+:is(.group, .pill-search) > .fix-btn.is-tertiary {
+  background: color-mix(in srgb, var(--color-foreground-default) 7%, transparent);
+  border-color: transparent;
+  color: var(--color-foreground-default);
+}
+:is(.group, .pill-search) > .fix-btn.is-tertiary:hover { background: color-mix(in srgb, var(--color-foreground-default) 12%, transparent); border-color: transparent; }
+:is(.group, .pill-search) > .fix-btn.is-ghost { background: transparent; border-color: transparent; color: var(--color-foreground-secondary); }
+:is(.group, .pill-search) > .fix-btn.is-ghost:hover { background: var(--color-background-hover); border-color: transparent; color: var(--color-foreground-default); }
+:is(.group, .pill-search) > .fix-btn.is-danger { background: var(--color-danger-500); border-color: transparent; color: var(--color-foreground-on-solid); }
+:is(.group, .pill-search) > .fix-btn.is-danger:hover { background: var(--color-danger-700); border-color: transparent; color: var(--color-foreground-on-solid); }
+:is(.group, .pill-search) > .fix-btn.is-danger-outline { background: var(--color-background-surface); border-color: var(--color-feedback-danger-border); color: var(--color-danger-500); }
+:is(.group, .pill-search) > .fix-btn.is-danger-outline:hover { background: var(--color-feedback-danger-background); border-color: var(--color-danger-500); color: var(--color-danger-500); }
+:is(.group, .pill-search) > .fix-btn.is-success { background: var(--color-success-500); border-color: transparent; color: var(--color-foreground-on-solid); }
+:is(.group, .pill-search) > .fix-btn.is-success:hover { background: var(--color-success-700); border-color: transparent; color: var(--color-foreground-on-solid); }
+/* the underline rules above set a surface fill; restate the variants there */
+.group.underline > .fix-btn.is-tertiary { background: color-mix(in srgb, var(--color-foreground-default) 7%, transparent); border-color: transparent; }
+.group.underline > .fix-btn.is-ghost { background: transparent; border-color: transparent; color: var(--color-foreground-secondary); }
+.group.underline > .fix-btn.is-danger { background: var(--color-danger-500); border-color: transparent; color: var(--color-foreground-on-solid); }
+.group.underline > .fix-btn.is-danger-outline { background: var(--color-background-surface); border-color: var(--color-feedback-danger-border); color: var(--color-danger-500); }
+.group.underline > .fix-btn.is-success { background: var(--color-success-500); border-color: transparent; color: var(--color-foreground-on-solid); }
