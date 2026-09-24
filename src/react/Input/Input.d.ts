@@ -3,9 +3,15 @@ import * as React from 'react';
 export type InputSize = 'sm' | 'md' | 'lg';
 export type InputStatus = 'default' | 'error' | 'success' | 'warning';
 
+export type InputAddonVariant =
+  | 'primary' | 'secondary' | 'tertiary' | 'ghost'
+  | 'danger' | 'danger-outline' | 'success';
+
 export type InputAddon =
   | { type: 'select'; options: Array<string | { value: string; label: React.ReactNode }>; value?: string; onChange?: (value: string) => void; 'aria-label': string }
-  | { type: 'button'; label: React.ReactNode; icon?: React.ReactNode; onClick?: () => void; primary?: boolean; disabled?: boolean; 'aria-label'?: string };
+  | { type: 'button'; label: React.ReactNode; icon?: React.ReactNode; onClick?: () => void; variant?: InputAddonVariant;
+      /** @deprecated use variant: 'primary' */
+      primary?: boolean; disabled?: boolean; 'aria-label'?: string };
 
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'prefix'> {
   /** Field label (renders the .field wrapper). */

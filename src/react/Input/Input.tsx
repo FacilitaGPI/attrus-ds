@@ -22,6 +22,13 @@ export type InputStatus = 'default' | 'error' | 'success' | 'warning';
     `.fix-btn`). Static text belongs in `prefix`/`suffix`; use an addon only
     when the cell is a CONTROL — a qualifier the user picks, or an action that
     consumes this field. */
+/** Button emphasis available to an addon. Same names and tokens as Button;
+    'link' and 'inverse' are left out — a link inside a field reads as a label,
+    and dark surfaces are the field's own on-inverse job. */
+export type InputAddonVariant =
+  | 'primary' | 'secondary' | 'tertiary' | 'ghost'
+  | 'danger' | 'danger-outline' | 'success';
+
 export type InputAddon =
   | {
       type: 'select';
@@ -36,7 +43,10 @@ export type InputAddon =
       label: React.ReactNode;
       icon?: React.ReactNode;
       onClick?: () => void;
-      /** Filled — only when this is THE action of the field. */
+      /** Emphasis — the Button ladder, minus link/inverse. Default 'secondary'.
+          'primary' only when this is THE action of the field. */
+      variant?: InputAddonVariant;
+      /** @deprecated use variant: 'primary' */
       primary?: boolean;
       disabled?: boolean;
       'aria-label'?: string;
@@ -103,7 +113,7 @@ function renderAddon(a: InputAddon, side: 'l' | 'r'): React.ReactNode {
   return (
     <button
       type="button"
-      className={['fix-btn', side, a.primary ? 'is-primary' : ''].filter(Boolean).join(' ')}
+      className={['fix-btn', side, (() => { const v = a.variant || (a.primary ? 'primary' : 'secondary'); return v === 'secondary' ? '' : 'is-' + v; })()].filter(Boolean).join(' ')}
       onClick={a.onClick}
       disabled={a.disabled}
       aria-label={a['aria-label']}
