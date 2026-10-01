@@ -142,9 +142,11 @@
 .btn-primary:focus-visible { box-shadow: var(--shadow-focus); }
 
 
-/* SECONDARY — soft neutral fill + hairline border */
+/* SECONDARY — hairline border, no resting fill. The fill arrives on hover:
+   a filled secondary at rest competed with the primary for weight, and on a
+   subtle surface it read as a disabled block rather than a button. */
 .btn-secondary {
-  background: var(--color-background-subtle);
+  background: transparent;
   color: var(--color-foreground-default);
   border-color: var(--color-border-default);
 }
@@ -216,7 +218,7 @@
 
 /* DANGER OUTLINE — destructive contextual */
 .btn-danger-outline {
-  background: var(--color-background-surface);
+  background: transparent;
   color: var(--color-danger-500);
   border-color: var(--color-feedback-danger-border);
 }

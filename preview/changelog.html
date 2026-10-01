@@ -68,15 +68,49 @@
 
   <header class="doc-header">
     <div class="eyebrow">ATTRUS Design System</div>
-    <h1>Changelog <span class="ver-badge" data-ds-version>v1.0.20</span></h1>
+    <h1>Changelog <span class="ver-badge" data-ds-version>v1.1.0</span></h1>
     <p>Every notable change to the design system, grouped by release. Versioning follows <a href="https://semver.org" style="color:var(--color-foreground-accent)">SemVer</a>; the version number lives in <code style="font-family:var(--font-mono);font-size:0.85em">version.js</code> and is mirrored across the catalog and index pages.</p>
   </header>
+
+  <!-- ============ v1.1.0 ============ -->
+  <section class="release">
+    <div class="release-head">
+      <h2>1.1.0</h2>
+      <span class="tag current">Current</span>
+    </div>
+    <div class="release-date">2026-09-30 · first minor · published to npm as @attrus-ds/core</div>
+
+    <div class="change-group">
+      <h3><i data-lucide="info"></i> Why a minor</h3>
+      <ul>
+        <li>Several releases from 1.0.6 to 1.0.20 added components and props under a patch number. Under semantic versioning a backward-compatible feature is a <b>minor</b>, so 1.1.0 realigns the number with what shipped. Nothing here breaks a consumer: every retired token is still a deprecated alias.</li>
+        <li>From here on: <b>minor</b> for a new component or prop, <b>patch</b> for a fix only, <b>major</b> reserved for removing the deprecated aliases.</li>
+      </ul>
+    </div>
+
+    <div class="change-group added">
+      <h3><i data-lucide="plus-circle"></i> Added since 1.0.0 (shipped as patches)</h3>
+      <ul>
+        <li>Components: <code>SelectableCard</code>, <code>ToggleChip</code>, <code>ActionBar</code>, <code>AmbientBackdrop</code>, <code>AnimatedBackdrop</code>.</li>
+        <li>Input: combo addons (<code>before</code> / <code>after</code>, select or button with any <code>variant</code>), <code>groupShape</code> default · pill · underline. <code>SearchPill</code> takes the same addons and a split <code>shortcut</code>.</li>
+        <li>DataTable: subrows (always-visible and collapsible), detail panel, <code>DTOutline</code> / <code>DTOutlineSet</code>, selection mode, rows-per-page, animated sort.</li>
+        <li>Stepper <code>labelSize</code>; theming axis <code>data-product</code> with Enterprise and Business.</li>
+      </ul>
+    </div>
+
+    <div class="change-group changed">
+      <h3><i data-lucide="refresh-cw"></i> Changed in this release</h3>
+      <ul>
+        <li><code>.btn-secondary</code> and <code>.btn-danger-outline</code> have no resting fill — the hairline border is the button at rest and the fill arrives on hover. A filled secondary competed with the primary for weight and read as a disabled block on a subtle surface.</li>
+      </ul>
+    </div>
+  </section>
 
   <!-- ============ v1.0.20 ============ -->
   <section class="release">
     <div class="release-head">
       <h2>1.0.20</h2>
-      <span class="tag current">Current</span>
+      <span class="tag">Patch</span>
     </div>
     <div class="release-date">2026-09-24 · published to npm as @attrus-ds/core</div>
 
