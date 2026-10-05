@@ -126,9 +126,11 @@ export declare const DTSubrowLead: React.FC<{
 /** Disclosure control for a collapsible subrow group — goes in the parent's
     lead cell. `controls` must match the subrow's id. */
 export declare const DTSubrowToggle: React.FC<{
-  expanded: boolean;
-  onToggle: () => void;
-  controls: string;
+  expanded?: boolean;
+  onToggle?: () => void;
+  controls?: string;
+  /** Holds the chevron's 20px on a row without children, so names align. */
+  spacer?: boolean;
   count?: number;
   label?: string;
 } & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'aria-expanded'>>;
@@ -157,6 +159,10 @@ export interface DTParentRowProps extends React.HTMLAttributes<HTMLTableRowEleme
   open?: boolean;
   onToggle?: () => void;
   controls?: string;
+  /** "toggle" (default): the row is the disclosure. "open": the row opens
+      something and only the chevron collapses — use DTRowButton for the name. */
+  rowAction?: 'toggle' | 'open';
+  onOpen?: () => void;
 }
 export declare const DTId: React.FC<React.HTMLAttributes<HTMLSpanElement>>;
 export declare const DTCheckCell: React.FC<React.TdHTMLAttributes<HTMLTableCellElement>>;
@@ -166,6 +172,12 @@ export declare const DTDetailGrid: React.FC<React.HTMLAttributes<HTMLDivElement>
 export declare const DTScrollY: React.FC<React.HTMLAttributes<HTMLDivElement>>;
 
 export declare const DTParentRow: React.FC<DTParentRowProps>;
+
+/** Keyboard handle for a rowAction="open" row: the name as a <button>. */
+/** "Showing n of total" strip above DTToolbar; renders only while filtered. */
+export declare const DTFilteredBand: React.FC<{ filtered: boolean; children?: React.ReactNode; className?: string }>;
+
+export declare const DTRowButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>>;
 
 export declare const DTPagination: React.FC<DTPaginationProps>;
 

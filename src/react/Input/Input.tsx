@@ -176,7 +176,7 @@ export const Input: React.FC<InputProps> = ({
     // wins over static text on the same side: a cell is either a label or a
     // control, never both.
     control = (
-      <div className={['group', groupShape === 'pill' ? 'is-pill' : '', groupShape === 'underline' ? 'underline' : '', status === 'error' ? 'is-error' : ''].filter(Boolean).join(' ')}>
+      <div className={['group', size === 'sm' ? 'group-sm' : '', groupShape === 'pill' ? 'is-pill' : '', groupShape === 'underline' ? 'underline' : '', status === 'error' ? 'is-error' : ''].filter(Boolean).join(' ')}>
         {before != null ? renderAddon(before, 'l') : prefix != null ? <span className="fix l">{prefix}</span> : null}
         <input id={inputId} readOnly={readOnlyQuiet || rest.readOnly} {...rest} {...a11y} />
         {after != null ? renderAddon(after, 'r') : suffix != null ? <span className="fix r">{suffix}</span> : null}

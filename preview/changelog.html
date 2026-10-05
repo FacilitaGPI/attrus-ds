@@ -68,15 +68,74 @@
 
   <header class="doc-header">
     <div class="eyebrow">ATTRUS Design System</div>
-    <h1>Changelog <span class="ver-badge" data-ds-version>v1.1.0</span></h1>
+    <h1>Changelog <span class="ver-badge" data-ds-version>v1.2.0</span></h1>
     <p>Every notable change to the design system, grouped by release. Versioning follows <a href="https://semver.org" style="color:var(--color-foreground-accent)">SemVer</a>; the version number lives in <code style="font-family:var(--font-mono);font-size:0.85em">version.js</code> and is mirrored across the catalog and index pages.</p>
   </header>
+
+  <!-- ============ v1.2.0 ============ -->
+  <section class="release">
+    <div class="release-head"><h2>1.2.0</h2><span class="tag current">Current</span></div>
+    <div class="release-date">2026-10-05 · minor · ledger and table filters, from the Portal Client V3 statement; button hover glow; optical alignment · published to npm as @attrus-ds/core</div>
+    <div class="change-group added">
+      <h3><i data-lucide="plus-circle"></i> Added</h3>
+      <ul>
+        <li><b>DTFilters</b> — the table's search + period bar, <code>mode="apply"</code> (draft committed by Apply or Enter, second row with Apply / Clear / applied pills, ✕ marks a pill for removal with undo) or <code>mode="live"</code> (applies as you go, text debounced). Scopes are configurable; <code>matchesDigits</code> makes a value search ignore formatting.</li>
+        <li><b>DateRangePicker</b> — presets + two date fields; the panel is portaled so a <code>.dt-wrap</code> cannot clip it; <code>size="sm"</code> for toolbars.</li>
+        <li><b>DTFilteredBand</b> — the "Showing n of total" strip above the toolbar, only while a filter is applied.</li>
+        <li><b>DTParentRow <code>rowAction="toggle" | "open"</code></b> and <b>DTRowButton</b> — with <code>open</code> the row opens a detail and only the chevron collapses; default unchanged.</li>
+        <li><b><code>&lt;DTSubrowToggle spacer /&gt;</code></b> — keeps the chevron's 20px on rows without children, so names align.</li>
+        <li><b>Combobox <code>size="sm"</code> and <code>iconOnly</code></b>, plus <code>icon</code> on each option — an icon-only trigger that still announces its value.</li>
+        <li><b>Ledger</b> pattern page and <b>Table filters</b> page, with the sort control (icon-only Combobox) documented on the latter.</li>
+        <li><b>Optical-lift tokens</b> — <code>--optical-lift-sans</code>, <code>--optical-lift-caps</code> and <code>--optical-lift-sm</code> (0.6px at 10px), tuned by eye, centre a pill label on its dot without moving the dot. <code>Pill</code> marks an all-caps label <code>is-caps</code> on its own; static pages wrap labels in <code>.pill-label</code>.</li>
+      </ul>
+    </div>
+    <div class="change-group changed">
+      <h3><i data-lucide="refresh-cw"></i> Changed</h3>
+      <ul>
+        <li><b>Button hover glow.</b> <code>.btn-primary</code>, <code>.btn-danger</code> and <code>.btn-success</code> emit light on hover — three centred layers of the fill colour lifted toward white plus a 1px top highlight, flat at rest. It eases in over 280ms and out over 360ms, dims on press, stacks under the focus ring, and never shows on disabled or grouped segments. The primary glows in the accent, since navy is too dark to read as light. Neutral variants stay flat.</li>
+        <li><b>Search actions are disabled while the field is empty</b>, and Enter does nothing until there is text — in the toolbar, the standalone searchbars and the live filter bar.</li>
+      </ul>
+    </div>
+    <div class="change-group fixed">
+      <h3><i data-lucide="bug"></i> Fixed</h3>
+      <ul>
+        <li><code>.dt-row-divider-meta</code> had no rule since it shipped — the meta now sits right-aligned, muted and tabular.</li>
+        <li>Toolbar actions stay on the first row when the filters grow a second one.</li>
+        <li>A Combobox trigger icon kept its native 24px and spilled out of the 16px slot.</li>
+        <li>The <code>DateRangePicker</code> trigger follows the canonical <code>.date-trigger</code> anatomy — icon and value together on the left, chevron on the right — instead of floating the label to the middle.</li>
+        <li>An icon-only Combobox no longer stretches inside a flex container, so its list opens right under the trigger.</li>
+        <li>Closed subrows drew their own hairlines, which stacked under the parent and read as a heavier underline on every expandable row. A closed group now draws nothing; the parent's hairline is the only separator.</li>
+        <li>A field marked <code>.input</code> inside a <code>.group</code> drew its own focus halo, clipped into an inner band that stopped short of the inset button. The group owns the ring.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ v1.1.1 ============ -->
+  <section class="release">
+    <div class="release-head">
+      <h2>1.1.1</h2>
+      <span class="tag">Patch</span>
+    </div>
+    <div class="release-date">2026-10-02 · patch · not published on its own — ships to npm in 1.2.0</div>
+
+    <div class="change-group fixed">
+      <h3><i data-lucide="bug"></i> Fixed</h3>
+      <ul>
+        <li><b>Small callout (<code>.callout-sm</code>) — icon and dismiss now sit on the first line of text.</b> The small size kept the offsets tuned for the normal one (an 18px glyph on a ~15.6px line), so on its 14.3px line the icon sat 2px and the X 4px below the text, and the 26px dismiss stretched a one-line callout to 42px.</li>
+        <li>Measured, one line, centre from the top — before: text 16.1 · icon 18 · X 20 · height 42. After: text 16.1 · icon 16.2 · X 16.2 · height 33.2 (identical with or without dismiss). Same in light and dark.</li>
+        <li>The dismiss lays out as 20px but keeps a 26px hit area through <code>::before</code>, so the target does not shrink. Multi-line messages keep both pinned to line one.</li>
+        <li><b>Normal callout — same class of offset.</b> The base icon rule declared <code>margin-top</code> twice (<code>-1px</code>, then <code>1px</code>, which won), leaving the icon 2.2px below the first line, 2.5px below a title, and the dismiss 3.5px low. Icon and dismiss offsets now derive from the first line's own tokens — body (<code>--fs-sm × --lh-snug</code>) or title (<code>--fs-md × --lh-tight</code>) — and the dismiss hands back its overhang so it does not stretch a one-line callout. Across all 26 callouts on the doc page the worst residual is 0.4px, in light and dark. <code>.callout-bar</code> is untouched.</li>
+        <li><b>Tags and badges — optical centring.</b> Pills were already exact (caps within 0.1px of centre across all four sizes). Labels that inherited a tall line-height and sat as inline boxes drifted: <code>.sb-count</code>, <code>.dt-subrow-count</code>, <code>.demo-card-tag</code> (JetBrains Mono, 0.7px high) and the sidebar <code>.badge</code> (0.6–0.8px high). They now follow the pill model — line-height 1 inside a fixed-height flex box — at their existing heights, and land within 0.2px.</li>
+        <li><code>.dt-outline</code> and <code>.toggle-chip-sm</code> put 11px Lato in a 24px box, where pixel-snapping left the bare label 0.6px below the flag or icon. The row lifts half a pixel and hands it back to the glyphs, so only the label moves: glyph-to-label is now within 0.1px.</li>
+      </ul>
+    </div>
+  </section>
 
   <!-- ============ v1.1.0 ============ -->
   <section class="release">
     <div class="release-head">
       <h2>1.1.0</h2>
-      <span class="tag current">Current</span>
+      <span class="tag">Minor</span>
     </div>
     <div class="release-date">2026-09-30 · first minor · published to npm as @attrus-ds/core</div>
 

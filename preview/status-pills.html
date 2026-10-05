@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
-<link rel="stylesheet" href="components/status-pills.css?v=3">
+<link rel="stylesheet" href="components/status-pills.css?v=11">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
@@ -203,11 +203,11 @@
     <article class="spec">
       <header class="spec-head"><div><h3>Success <code>.success</code></h3><p>The record is in a final, healthy state. Transaction released, counterparty approved, document validated. <strong>End-state of a happy path.</strong></p></div><span class="tag">success</span></header>
       <div class="spec-canvas dense">
-        <span class="pill success"><span class="dot"></span>Approved</span>
-        <span class="pill success"><span class="dot"></span>Released</span>
-        <span class="pill success"><span class="dot"></span>Available</span>
-        <span class="pill success"><span class="dot"></span>Received</span>
-        <span class="pill success"><span class="dot"></span>Settled</span>
+        <span class="pill success"><span class="dot"></span><span class="pill-label">Approved</span></span>
+        <span class="pill success"><span class="dot"></span><span class="pill-label">Released</span></span>
+        <span class="pill success"><span class="dot"></span><span class="pill-label">Available</span></span>
+        <span class="pill success"><span class="dot"></span><span class="pill-label">Received</span></span>
+        <span class="pill success"><span class="dot"></span><span class="pill-label">Settled</span></span>
       </div>
       <div class="spec-foot">
         <div><h4>Use for</h4><ul><li class="do"><i data-lucide="check"></i>Final, irreversible positive state</li><li class="do"><i data-lucide="check"></i>Funds available, KYC complete</li><li class="do"><i data-lucide="check"></i>Audit-ready, fully settled</li></ul></div>
@@ -218,11 +218,11 @@
     <article class="spec">
       <header class="spec-head"><div><h3>Warning <code>.warning</code></h3><p>The record needs attention but isn't broken. Pending review, on hold, awaiting input. <strong>Action expected — but not urgent.</strong></p></div><span class="tag">warning</span></header>
       <div class="spec-canvas dense">
-        <span class="pill warning"><span class="dot"></span>Pending</span>
-        <span class="pill warning"><span class="dot"></span>Under review</span>
-        <span class="pill warning"><span class="dot"></span>Funds on hold</span>
-        <span class="pill warning"><span class="dot"></span>To receive</span>
-        <span class="pill warning"><span class="dot"></span>Awaiting docs</span>
+        <span class="pill warning"><span class="dot"></span><span class="pill-label">Pending</span></span>
+        <span class="pill warning"><span class="dot"></span><span class="pill-label">Under review</span></span>
+        <span class="pill warning"><span class="dot"></span><span class="pill-label">Funds on hold</span></span>
+        <span class="pill warning"><span class="dot"></span><span class="pill-label">To receive</span></span>
+        <span class="pill warning"><span class="dot"></span><span class="pill-label">Awaiting docs</span></span>
       </div>
       <div class="spec-foot">
         <div><h4>Use for</h4><ul><li class="do"><i data-lucide="check"></i>Transient state requiring follow-up</li><li class="do"><i data-lucide="check"></i>Manual review queues</li><li class="do"><i data-lucide="check"></i>Time-bound holds &amp; checkpoints</li></ul></div>
@@ -233,11 +233,11 @@
     <article class="spec">
       <header class="spec-head"><div><h3>Danger <code>.danger</code></h3><p>The record is in a failed, blocked, or rejected state. Compliance reproved, payment bounced, deadline missed. <strong>Negative end-state.</strong></p></div><span class="tag">danger</span></header>
       <div class="spec-canvas dense">
-        <span class="pill danger"><span class="dot"></span>Reproved</span>
-        <span class="pill danger"><span class="dot"></span>Failed</span>
-        <span class="pill danger"><span class="dot"></span>Bounced</span>
-        <span class="pill danger"><span class="dot"></span>Blocked</span>
-        <span class="pill danger"><span class="dot"></span>Overdue</span>
+        <span class="pill danger"><span class="dot"></span><span class="pill-label">Reproved</span></span>
+        <span class="pill danger"><span class="dot"></span><span class="pill-label">Failed</span></span>
+        <span class="pill danger"><span class="dot"></span><span class="pill-label">Bounced</span></span>
+        <span class="pill danger"><span class="dot"></span><span class="pill-label">Blocked</span></span>
+        <span class="pill danger"><span class="dot"></span><span class="pill-label">Overdue</span></span>
       </div>
       <div class="spec-foot">
         <div><h4>Use for</h4><ul><li class="do"><i data-lucide="check"></i>Final negative outcome</li><li class="do"><i data-lucide="check"></i>Compliance / fraud rejections</li><li class="do"><i data-lucide="check"></i>Past SLA / deadline breaches</li></ul></div>
@@ -248,11 +248,11 @@
     <article class="spec">
       <header class="spec-head"><div><h3>Info <code>.info</code></h3><p>Neutral, non-evaluative metadata. Tags, channels, regions, types. <strong>Says what something is, not how it's doing.</strong></p></div><span class="tag">info</span></header>
       <div class="spec-canvas dense">
-        <span class="pill info">PIX</span>
-        <span class="pill info">TED</span>
-        <span class="pill info">Boleto</span>
-        <span class="pill info">USD</span>
-        <span class="pill info">Tier 1</span>
+        <span class="pill info"><span class="pill-label is-caps">PIX</span></span>
+        <span class="pill info"><span class="pill-label is-caps">TED</span></span>
+        <span class="pill info"><span class="pill-label">Boleto</span></span>
+        <span class="pill info"><span class="pill-label is-caps">USD</span></span>
+        <span class="pill info"><span class="pill-label">Tier 1</span></span>
       </div>
       <div class="spec-foot">
         <div><h4>Use for</h4><ul><li class="do"><i data-lucide="check"></i>Categorical metadata (channel, type, currency)</li><li class="do"><i data-lucide="check"></i>Tags &amp; filters</li><li class="do"><i data-lucide="check"></i>Read-only labels</li></ul></div>
@@ -263,11 +263,11 @@
     <article class="spec">
       <header class="spec-head"><div><h3>Neutral <code>.neutral</code></h3><p>Inactive or deprioritised states. Cancelled, archived, draft, identified. <strong>The record exists but isn't part of the active flow.</strong></p></div><span class="tag">neutral</span></header>
       <div class="spec-canvas dense">
-        <span class="pill neutral">Cancelled</span>
-        <span class="pill neutral">Archived</span>
-        <span class="pill neutral">Draft</span>
-        <span class="pill neutral">Identified</span>
-        <span class="pill neutral">Inactive</span>
+        <span class="pill neutral"><span class="pill-label">Cancelled</span></span>
+        <span class="pill neutral"><span class="pill-label">Archived</span></span>
+        <span class="pill neutral"><span class="pill-label">Draft</span></span>
+        <span class="pill neutral"><span class="pill-label">Identified</span></span>
+        <span class="pill neutral"><span class="pill-label">Inactive</span></span>
       </div>
       <div class="spec-foot">
         <div><h4>Use for</h4><ul><li class="do"><i data-lucide="check"></i>Records out of the active pipeline</li><li class="do"><i data-lucide="check"></i>Soft-deleted, draft, paused</li><li class="do"><i data-lucide="check"></i>"Known but not assessed yet"</li></ul></div>
@@ -278,10 +278,10 @@
     <article class="spec">
       <header class="spec-head"><div><h3>Brand <code>.brand</code></h3><p>The record is currently being processed by Attrus systems. Specifically reserved for "in our hands" states. <strong>Use sparingly — it's a strong signal.</strong></p></div><span class="tag">brand</span></header>
       <div class="spec-canvas dense">
-        <span class="pill brand"><span class="dot"></span>Processing</span>
-        <span class="pill brand"><span class="dot"></span>In analysis</span>
-        <span class="pill brand"><span class="dot"></span>Routing</span>
-        <span class="pill brand"><span class="dot"></span>Queued</span>
+        <span class="pill brand"><span class="dot"></span><span class="pill-label">Processing</span></span>
+        <span class="pill brand"><span class="dot"></span><span class="pill-label">In analysis</span></span>
+        <span class="pill brand"><span class="dot"></span><span class="pill-label">Routing</span></span>
+        <span class="pill brand"><span class="dot"></span><span class="pill-label">Queued</span></span>
       </div>
       <div class="spec-foot">
         <div><h4>Use for</h4><ul><li class="do"><i data-lucide="check"></i>Active processing inside Attrus</li><li class="do"><i data-lucide="check"></i>States the platform owns</li><li class="do"><i data-lucide="check"></i>Differentiate from external "pending"</li></ul></div>
@@ -299,21 +299,21 @@
     <table class="tax-table">
       <thead><tr><th>Domain</th><th>Status</th><th>Variant</th><th>Example record</th></tr></thead>
       <tbody>
-        <tr><td class="domain">Compliance</td><td><span class="pill success"><span class="dot"></span>Approved</span></td><td class="ex">success</td><td class="ex">KYC passed, counterparty cleared</td></tr>
-        <tr><td class="domain">Compliance</td><td><span class="pill warning"><span class="dot"></span>Under review</span></td><td class="ex">warning</td><td class="ex">Manual analyst queue</td></tr>
-        <tr><td class="domain">Compliance</td><td><span class="pill danger"><span class="dot"></span>Reproved</span></td><td class="ex">danger</td><td class="ex">Sanctions hit, document mismatch</td></tr>
-        <tr><td class="domain">Compliance</td><td><span class="pill neutral">Identified</span></td><td class="ex">neutral</td><td class="ex">Captured but not yet evaluated</td></tr>
-        <tr><td class="domain">Transactions</td><td><span class="pill success"><span class="dot"></span>Released</span></td><td class="ex">success</td><td class="ex">Outbound payment cleared</td></tr>
-        <tr><td class="domain">Transactions</td><td><span class="pill success"><span class="dot"></span>Received</span></td><td class="ex">success</td><td class="ex">Inbound payment settled</td></tr>
-        <tr><td class="domain">Transactions</td><td><span class="pill warning"><span class="dot"></span>Funds on hold</span></td><td class="ex">warning</td><td class="ex">Compliance lock pending review</td></tr>
-        <tr><td class="domain">Transactions</td><td><span class="pill brand"><span class="dot"></span>Processing</span></td><td class="ex">brand</td><td class="ex">Inside Attrus routing engine</td></tr>
-        <tr><td class="domain">Transactions</td><td><span class="pill danger"><span class="dot"></span>Bounced</span></td><td class="ex">danger</td><td class="ex">Beneficiary rejection</td></tr>
-        <tr><td class="domain">Transactions</td><td><span class="pill neutral">Cancelled</span></td><td class="ex">neutral</td><td class="ex">User-initiated cancel before send</td></tr>
-        <tr><td class="domain">Balances</td><td><span class="pill success"><span class="dot"></span>Available</span></td><td class="ex">success</td><td class="ex">Spendable balance</td></tr>
-        <tr><td class="domain">Balances</td><td><span class="pill warning"><span class="dot"></span>To receive</span></td><td class="ex">warning</td><td class="ex">Scheduled inbound</td></tr>
-        <tr><td class="domain">Documents</td><td><span class="pill success"><span class="dot"></span>Validated</span></td><td class="ex">success</td><td class="ex">OCR + signature pass</td></tr>
-        <tr><td class="domain">Documents</td><td><span class="pill warning"><span class="dot"></span>Awaiting docs</span></td><td class="ex">warning</td><td class="ex">User upload required</td></tr>
-        <tr><td class="domain">Documents</td><td><span class="pill neutral">Draft</span></td><td class="ex">neutral</td><td class="ex">Saved but not submitted</td></tr>
+        <tr><td class="domain">Compliance</td><td><span class="pill success"><span class="dot"></span><span class="pill-label">Approved</span></span></td><td class="ex">success</td><td class="ex">KYC passed, counterparty cleared</td></tr>
+        <tr><td class="domain">Compliance</td><td><span class="pill warning"><span class="dot"></span><span class="pill-label">Under review</span></span></td><td class="ex">warning</td><td class="ex">Manual analyst queue</td></tr>
+        <tr><td class="domain">Compliance</td><td><span class="pill danger"><span class="dot"></span><span class="pill-label">Reproved</span></span></td><td class="ex">danger</td><td class="ex">Sanctions hit, document mismatch</td></tr>
+        <tr><td class="domain">Compliance</td><td><span class="pill neutral"><span class="pill-label">Identified</span></span></td><td class="ex">neutral</td><td class="ex">Captured but not yet evaluated</td></tr>
+        <tr><td class="domain">Transactions</td><td><span class="pill success"><span class="dot"></span><span class="pill-label">Released</span></span></td><td class="ex">success</td><td class="ex">Outbound payment cleared</td></tr>
+        <tr><td class="domain">Transactions</td><td><span class="pill success"><span class="dot"></span><span class="pill-label">Received</span></span></td><td class="ex">success</td><td class="ex">Inbound payment settled</td></tr>
+        <tr><td class="domain">Transactions</td><td><span class="pill warning"><span class="dot"></span><span class="pill-label">Funds on hold</span></span></td><td class="ex">warning</td><td class="ex">Compliance lock pending review</td></tr>
+        <tr><td class="domain">Transactions</td><td><span class="pill brand"><span class="dot"></span><span class="pill-label">Processing</span></span></td><td class="ex">brand</td><td class="ex">Inside Attrus routing engine</td></tr>
+        <tr><td class="domain">Transactions</td><td><span class="pill danger"><span class="dot"></span><span class="pill-label">Bounced</span></span></td><td class="ex">danger</td><td class="ex">Beneficiary rejection</td></tr>
+        <tr><td class="domain">Transactions</td><td><span class="pill neutral"><span class="pill-label">Cancelled</span></span></td><td class="ex">neutral</td><td class="ex">User-initiated cancel before send</td></tr>
+        <tr><td class="domain">Balances</td><td><span class="pill success"><span class="dot"></span><span class="pill-label">Available</span></span></td><td class="ex">success</td><td class="ex">Spendable balance</td></tr>
+        <tr><td class="domain">Balances</td><td><span class="pill warning"><span class="dot"></span><span class="pill-label">To receive</span></span></td><td class="ex">warning</td><td class="ex">Scheduled inbound</td></tr>
+        <tr><td class="domain">Documents</td><td><span class="pill success"><span class="dot"></span><span class="pill-label">Validated</span></span></td><td class="ex">success</td><td class="ex">OCR + signature pass</td></tr>
+        <tr><td class="domain">Documents</td><td><span class="pill warning"><span class="dot"></span><span class="pill-label">Awaiting docs</span></span></td><td class="ex">warning</td><td class="ex">User upload required</td></tr>
+        <tr><td class="domain">Documents</td><td><span class="pill neutral"><span class="pill-label">Draft</span></span></td><td class="ex">neutral</td><td class="ex">Saved but not submitted</td></tr>
       </tbody>
     </table>
   </section>
@@ -329,34 +329,34 @@
       <div class="spec-canvas">
         <div class="matrix cols-3">
           <span class="rl">Success</span>
-          <span class="c"><span class="pill success sm"><span class="dot"></span>Approved</span></span>
-          <span class="c"><span class="pill success"><span class="dot"></span>Approved</span></span>
-          <span class="c"><span class="pill success lg"><span class="dot"></span>Approved</span></span>
+          <span class="c"><span class="pill success sm"><span class="dot"></span><span class="pill-label">Approved</span></span></span>
+          <span class="c"><span class="pill success"><span class="dot"></span><span class="pill-label">Approved</span></span></span>
+          <span class="c"><span class="pill success lg"><span class="dot"></span><span class="pill-label">Approved</span></span></span>
 
           <span class="rl">Warning</span>
-          <span class="c"><span class="pill warning sm"><span class="dot"></span>Pending</span></span>
-          <span class="c"><span class="pill warning"><span class="dot"></span>Pending</span></span>
-          <span class="c"><span class="pill warning lg"><span class="dot"></span>Pending</span></span>
+          <span class="c"><span class="pill warning sm"><span class="dot"></span><span class="pill-label">Pending</span></span></span>
+          <span class="c"><span class="pill warning"><span class="dot"></span><span class="pill-label">Pending</span></span></span>
+          <span class="c"><span class="pill warning lg"><span class="dot"></span><span class="pill-label">Pending</span></span></span>
 
           <span class="rl">Danger</span>
-          <span class="c"><span class="pill danger sm"><span class="dot"></span>Reproved</span></span>
-          <span class="c"><span class="pill danger"><span class="dot"></span>Reproved</span></span>
-          <span class="c"><span class="pill danger lg"><span class="dot"></span>Reproved</span></span>
+          <span class="c"><span class="pill danger sm"><span class="dot"></span><span class="pill-label">Reproved</span></span></span>
+          <span class="c"><span class="pill danger"><span class="dot"></span><span class="pill-label">Reproved</span></span></span>
+          <span class="c"><span class="pill danger lg"><span class="dot"></span><span class="pill-label">Reproved</span></span></span>
 
           <span class="rl">Info</span>
-          <span class="c"><span class="pill info sm">PIX</span></span>
-          <span class="c"><span class="pill info">PIX</span></span>
-          <span class="c"><span class="pill info lg">PIX</span></span>
+          <span class="c"><span class="pill info sm"><span class="pill-label is-caps">PIX</span></span></span>
+          <span class="c"><span class="pill info"><span class="pill-label is-caps">PIX</span></span></span>
+          <span class="c"><span class="pill info lg"><span class="pill-label is-caps">PIX</span></span></span>
 
           <span class="rl">Neutral</span>
-          <span class="c"><span class="pill neutral sm">Cancelled</span></span>
-          <span class="c"><span class="pill neutral">Cancelled</span></span>
-          <span class="c"><span class="pill neutral lg">Cancelled</span></span>
+          <span class="c"><span class="pill neutral sm"><span class="pill-label">Cancelled</span></span></span>
+          <span class="c"><span class="pill neutral"><span class="pill-label">Cancelled</span></span></span>
+          <span class="c"><span class="pill neutral lg"><span class="pill-label">Cancelled</span></span></span>
 
           <span class="rl">Brand</span>
-          <span class="c"><span class="pill brand sm"><span class="dot"></span>Processing</span></span>
-          <span class="c"><span class="pill brand"><span class="dot"></span>Processing</span></span>
-          <span class="c"><span class="pill brand lg"><span class="dot"></span>Processing</span></span>
+          <span class="c"><span class="pill brand sm"><span class="dot"></span><span class="pill-label">Processing</span></span></span>
+          <span class="c"><span class="pill brand"><span class="dot"></span><span class="pill-label">Processing</span></span></span>
+          <span class="c"><span class="pill brand lg"><span class="dot"></span><span class="pill-label">Processing</span></span></span>
         </div>
       </div>
     </article>
@@ -401,8 +401,8 @@
           <table class="mock-table">
             <thead><tr><th>Counterparty</th><th>Amount</th><th>Status</th></tr></thead>
             <tbody>
-              <tr><td>Açai Brasil S.A.</td><td class="mono">R$ 184,200.00</td><td><span class="pill success sm"><span class="dot"></span>Released</span></td></tr>
-              <tr><td>Granjas do Vale Ltda.</td><td class="mono">R$ 42,800.00</td><td><span class="pill warning sm"><span class="dot"></span>Pending</span></td></tr>
+              <tr><td>Açai Brasil S.A.</td><td class="mono">R$ 184,200.00</td><td><span class="pill success sm"><span class="dot"></span><span class="pill-label">Released</span></span></td></tr>
+              <tr><td>Granjas do Vale Ltda.</td><td class="mono">R$ 42,800.00</td><td><span class="pill warning sm"><span class="dot"></span><span class="pill-label">Pending</span></span></td></tr>
             </tbody>
           </table>
         </div>
@@ -414,7 +414,7 @@
               <div style="font-size: var(--fs-md); font-weight: var(--w-semibold);">Açai Brasil S.A.</div>
               <div style="font-size: var(--fs-sm); color: var(--color-foreground-secondary); margin-top: 2px;">PIX · R$ 184,200.00</div>
             </div>
-            <span class="pill success"><span class="dot"></span>Released</span>
+            <span class="pill success"><span class="dot"></span><span class="pill-label">Released</span></span>
           </div>
         </div>
 
@@ -422,8 +422,8 @@
           <span class="rl" style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps);">lg — in record header</span>
           <div style="padding: var(--space-6); background: var(--color-background-canvas); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap;">
             <h3 style="font-size: var(--fs-3xl); font-weight: var(--w-bold); margin: 0; letter-spacing: var(--ls-title);">TX-19847</h3>
-            <span class="pill warning lg"><span class="dot"></span>Funds on hold</span>
-            <span class="pill info lg">PIX</span>
+            <span class="pill warning lg"><span class="dot"></span><span class="pill-label">Funds on hold</span></span>
+            <span class="pill info lg"><span class="pill-label is-caps">PIX</span></span>
           </div>
         </div>
 
@@ -440,36 +440,36 @@
     <article class="spec">
       <header class="spec-head"><div><h3>Subtle · default</h3><p>Tinted background, deep foreground, soft border. Reads quietly — works in tables and lists without competing with content.</p></div><span class="tag">default</span></header>
       <div class="spec-canvas dense">
-        <span class="pill success"><span class="dot"></span>Approved</span>
-        <span class="pill warning"><span class="dot"></span>Pending</span>
-        <span class="pill danger"><span class="dot"></span>Reproved</span>
-        <span class="pill info">PIX</span>
-        <span class="pill neutral">Cancelled</span>
-        <span class="pill brand"><span class="dot"></span>Processing</span>
+        <span class="pill success"><span class="dot"></span><span class="pill-label">Approved</span></span>
+        <span class="pill warning"><span class="dot"></span><span class="pill-label">Pending</span></span>
+        <span class="pill danger"><span class="dot"></span><span class="pill-label">Reproved</span></span>
+        <span class="pill info"><span class="pill-label is-caps">PIX</span></span>
+        <span class="pill neutral"><span class="pill-label">Cancelled</span></span>
+        <span class="pill brand"><span class="dot"></span><span class="pill-label">Processing</span></span>
       </div>
     </article>
 
     <article class="spec">
       <header class="spec-head"><div><h3>Solid <code>.solid</code></h3><p>Filled with the variant's primary tint. Highest salience — reserve for one or two row callouts (e.g. blocked transactions you want the eye to find first).</p></div><span class="tag">solid</span></header>
       <div class="spec-canvas dense">
-        <span class="pill solid success"><span class="dot"></span>Approved</span>
-        <span class="pill solid warning"><span class="dot"></span>Pending</span>
-        <span class="pill solid danger"><span class="dot"></span>Reproved</span>
-        <span class="pill solid info">PIX</span>
-        <span class="pill solid neutral">Cancelled</span>
-        <span class="pill solid brand"><span class="dot"></span>Processing</span>
+        <span class="pill solid success"><span class="dot"></span><span class="pill-label">Approved</span></span>
+        <span class="pill solid warning"><span class="dot"></span><span class="pill-label">Pending</span></span>
+        <span class="pill solid danger"><span class="dot"></span><span class="pill-label">Reproved</span></span>
+        <span class="pill solid info"><span class="pill-label is-caps">PIX</span></span>
+        <span class="pill solid neutral"><span class="pill-label">Cancelled</span></span>
+        <span class="pill solid brand"><span class="dot"></span><span class="pill-label">Processing</span></span>
       </div>
     </article>
 
     <article class="spec">
       <header class="spec-head"><div><h3>Outline <code>.outline</code></h3><p>Transparent fill, full-strength border. Useful on photographic / busy backgrounds where any tinted fill clashes.</p></div><span class="tag">outline</span></header>
       <div class="spec-canvas dense">
-        <span class="pill outline success"><span class="dot"></span>Approved</span>
-        <span class="pill outline warning"><span class="dot"></span>Pending</span>
-        <span class="pill outline danger"><span class="dot"></span>Reproved</span>
-        <span class="pill outline info">PIX</span>
-        <span class="pill outline neutral">Cancelled</span>
-        <span class="pill outline brand"><span class="dot"></span>Processing</span>
+        <span class="pill outline success"><span class="dot"></span><span class="pill-label">Approved</span></span>
+        <span class="pill outline warning"><span class="dot"></span><span class="pill-label">Pending</span></span>
+        <span class="pill outline danger"><span class="dot"></span><span class="pill-label">Reproved</span></span>
+        <span class="pill outline info"><span class="pill-label is-caps">PIX</span></span>
+        <span class="pill outline neutral"><span class="pill-label">Cancelled</span></span>
+        <span class="pill outline brand"><span class="dot"></span><span class="pill-label">Processing</span></span>
       </div>
     </article>
   </section>
@@ -483,9 +483,9 @@
     <article class="spec">
       <header class="spec-head"><div><h3>Read-only (base)</h3><p>The default. No hover, no focus, no cursor change. The pill is a label, not a button.</p></div><span class="tag">default</span></header>
       <div class="spec-canvas dense">
-        <span class="pill success"><span class="dot"></span>Approved</span>
-        <span class="pill warning"><span class="dot"></span>Pending</span>
-        <span class="pill danger"><span class="dot"></span>Reproved</span>
+        <span class="pill success"><span class="dot"></span><span class="pill-label">Approved</span></span>
+        <span class="pill warning"><span class="dot"></span><span class="pill-label">Pending</span></span>
+        <span class="pill danger"><span class="dot"></span><span class="pill-label">Reproved</span></span>
       </div>
     </article>
 
@@ -506,10 +506,10 @@
     <article class="spec">
       <header class="spec-head"><div><h3>Removable — tag</h3><p>Add a trailing <code>.pill-x</code> button when the user can clear the value (active filters, tokenised input).</p></div><span class="tag">removable</span></header>
       <div class="spec-canvas dense">
-        <span class="pill info">PIX <button class="pill-x" aria-label="Remove PIX"><i data-lucide="x"></i></button></span>
-        <span class="pill info">USD <button class="pill-x" aria-label="Remove USD"><i data-lucide="x"></i></button></span>
-        <span class="pill info">Tier 1 <button class="pill-x" aria-label="Remove Tier 1"><i data-lucide="x"></i></button></span>
-        <span class="pill warning"><span class="dot"></span>Pending <button class="pill-x" aria-label="Remove pending filter"><i data-lucide="x"></i></button></span>
+        <span class="pill info"><span class="pill-label is-caps">PIX</span><button class="pill-x" aria-label="Remove PIX"><i data-lucide="x"></i></button></span>
+        <span class="pill info"><span class="pill-label is-caps">USD</span><button class="pill-x" aria-label="Remove USD"><i data-lucide="x"></i></button></span>
+        <span class="pill info"><span class="pill-label">Tier 1</span><button class="pill-x" aria-label="Remove Tier 1"><i data-lucide="x"></i></button></span>
+        <span class="pill warning"><span class="dot"></span><span class="pill-label">Pending</span><button class="pill-x" aria-label="Remove pending filter"><i data-lucide="x"></i></button></span>
       </div>
     </article>
 
@@ -535,11 +535,11 @@
         <table class="mock-table">
           <thead><tr><th>Date</th><th>Counterparty</th><th>Amount</th><th>Channel</th><th>Status</th></tr></thead>
           <tbody>
-            <tr><td class="mono">2026-04-12</td><td>Açai Brasil S.A.</td><td class="mono" style="text-align:right">R$ 184,200.00</td><td><span class="pill info sm">PIX</span></td><td><span class="pill success sm"><span class="dot"></span>Released</span></td></tr>
-            <tr><td class="mono">2026-04-12</td><td>Granjas do Vale Ltda.</td><td class="mono" style="text-align:right">R$ 42,800.00</td><td><span class="pill info sm">TED</span></td><td><span class="pill warning sm"><span class="dot"></span>Funds on hold</span></td></tr>
-            <tr><td class="mono">2026-04-11</td><td>Mineração Sertão MG</td><td class="mono" style="text-align:right">R$ 1,920,000.00</td><td><span class="pill info sm">SWIFT</span></td><td><span class="pill brand sm"><span class="dot"></span>Processing</span></td></tr>
-            <tr><td class="mono">2026-04-11</td><td>Comércio Litoral S.A.</td><td class="mono" style="text-align:right">R$ 8,400.00</td><td><span class="pill info sm">PIX</span></td><td><span class="pill danger sm"><span class="dot"></span>Bounced</span></td></tr>
-            <tr><td class="mono">2026-04-10</td><td>Supermercado Norte</td><td class="mono" style="text-align:right">R$ 76,500.00</td><td><span class="pill info sm">Boleto</span></td><td><span class="pill neutral sm">Cancelled</span></td></tr>
+            <tr><td class="mono">2026-04-12</td><td>Açai Brasil S.A.</td><td class="mono" style="text-align:right">R$ 184,200.00</td><td><span class="pill info sm"><span class="pill-label is-caps">PIX</span></span></td><td><span class="pill success sm"><span class="dot"></span><span class="pill-label">Released</span></span></td></tr>
+            <tr><td class="mono">2026-04-12</td><td>Granjas do Vale Ltda.</td><td class="mono" style="text-align:right">R$ 42,800.00</td><td><span class="pill info sm"><span class="pill-label is-caps">TED</span></span></td><td><span class="pill warning sm"><span class="dot"></span><span class="pill-label">Funds on hold</span></span></td></tr>
+            <tr><td class="mono">2026-04-11</td><td>Mineração Sertão MG</td><td class="mono" style="text-align:right">R$ 1,920,000.00</td><td><span class="pill info sm"><span class="pill-label is-caps">SWIFT</span></span></td><td><span class="pill brand sm"><span class="dot"></span><span class="pill-label">Processing</span></span></td></tr>
+            <tr><td class="mono">2026-04-11</td><td>Comércio Litoral S.A.</td><td class="mono" style="text-align:right">R$ 8,400.00</td><td><span class="pill info sm"><span class="pill-label is-caps">PIX</span></span></td><td><span class="pill danger sm"><span class="dot"></span><span class="pill-label">Bounced</span></span></td></tr>
+            <tr><td class="mono">2026-04-10</td><td>Supermercado Norte</td><td class="mono" style="text-align:right">R$ 76,500.00</td><td><span class="pill info sm"><span class="pill-label">Boleto</span></span></td><td><span class="pill neutral sm"><span class="pill-label">Cancelled</span></span></td></tr>
           </tbody>
         </table>
       </div>
@@ -550,8 +550,8 @@
       <div class="spec-canvas col" style="background: var(--color-background-surface); padding: var(--space-8) var(--space-6);">
         <div style="display:flex; align-items:center; gap: var(--space-4); flex-wrap:wrap;">
           <h2 style="font-size: var(--fs-3xl); font-weight: var(--w-bold); margin:0; letter-spacing: var(--ls-title);">TX-19847</h2>
-          <span class="pill warning lg"><span class="dot"></span>Funds on hold</span>
-          <span class="pill info lg">PIX</span>
+          <span class="pill warning lg"><span class="dot"></span><span class="pill-label">Funds on hold</span></span>
+          <span class="pill info lg"><span class="pill-label is-caps">PIX</span></span>
         </div>
         <p style="font-size: var(--fs-md); color: var(--color-foreground-secondary); margin: var(--space-2) 0 0; line-height: var(--lh-relaxed);">R$ 184,200.00 to <strong>Açai Brasil S.A.</strong> — held pending compliance review. Expected release within 24h.</p>
       </div>
@@ -570,9 +570,9 @@
         </div>
         <div class="mock-filter-bar" role="group" aria-label="Active filters" style="margin-top: var(--space-3);">
           <span class="lbl">Active</span>
-          <span class="pill info">PIX <button class="pill-x" aria-label="Remove PIX"><i data-lucide="x"></i></button></span>
-          <span class="pill info">USD <button class="pill-x" aria-label="Remove USD"><i data-lucide="x"></i></button></span>
-          <span class="pill warning"><span class="dot"></span>Pending <button class="pill-x" aria-label="Remove pending"><i data-lucide="x"></i></button></span>
+          <span class="pill info"><span class="pill-label is-caps">PIX</span><button class="pill-x" aria-label="Remove PIX"><i data-lucide="x"></i></button></span>
+          <span class="pill info"><span class="pill-label is-caps">USD</span><button class="pill-x" aria-label="Remove USD"><i data-lucide="x"></i></button></span>
+          <span class="pill warning"><span class="dot"></span><span class="pill-label">Pending</span><button class="pill-x" aria-label="Remove pending"><i data-lucide="x"></i></button></span>
         </div>
       </div>
     </article>
@@ -581,10 +581,10 @@
       <header class="spec-head"><div><h3>Counterparty list row</h3><p>Pill on the right; name on the left. Pill width is intrinsic — never stretch it to fill space.</p></div><span class="tag">list row</span></header>
       <div class="spec-canvas col" style="background: var(--color-background-surface);">
         <div class="mock-list">
-          <div class="mock-list-row"><span class="ttl">Açai Brasil S.A.</span><span class="pill success sm"><span class="dot"></span>Approved</span></div>
-          <div class="mock-list-row"><span class="ttl">Granjas do Vale Ltda.</span><span class="pill warning sm"><span class="dot"></span>Under review</span></div>
-          <div class="mock-list-row"><span class="ttl">Mineração Sertão MG</span><span class="pill neutral sm">Identified</span></div>
-          <div class="mock-list-row"><span class="ttl">Comércio Litoral S.A.</span><span class="pill danger sm"><span class="dot"></span>Reproved</span></div>
+          <div class="mock-list-row"><span class="ttl">Açai Brasil S.A.</span><span class="pill success sm"><span class="dot"></span><span class="pill-label">Approved</span></span></div>
+          <div class="mock-list-row"><span class="ttl">Granjas do Vale Ltda.</span><span class="pill warning sm"><span class="dot"></span><span class="pill-label">Under review</span></span></div>
+          <div class="mock-list-row"><span class="ttl">Mineração Sertão MG</span><span class="pill neutral sm"><span class="pill-label">Identified</span></span></div>
+          <div class="mock-list-row"><span class="ttl">Comércio Litoral S.A.</span><span class="pill danger sm"><span class="dot"></span><span class="pill-label">Reproved</span></span></div>
         </div>
       </div>
     </article>
@@ -599,22 +599,22 @@
     <article class="spec">
       <header class="spec-head"><div><h3>All variants on dark</h3><p>Background uses <code>color-mix</code> at 18% of the variant base; text uses the inverse foreground role.</p></div><span class="tag">on-inverse</span></header>
       <div class="spec-canvas dark dense">
-        <span class="pill success on-inverse"><span class="dot"></span>Approved</span>
-        <span class="pill warning on-inverse"><span class="dot"></span>Pending</span>
-        <span class="pill danger on-inverse"><span class="dot"></span>Reproved</span>
-        <span class="pill info on-inverse">PIX</span>
-        <span class="pill neutral on-inverse">Cancelled</span>
-        <span class="pill brand on-inverse"><span class="dot"></span>Processing</span>
+        <span class="pill success on-inverse"><span class="dot"></span><span class="pill-label">Approved</span></span>
+        <span class="pill warning on-inverse"><span class="dot"></span><span class="pill-label">Pending</span></span>
+        <span class="pill danger on-inverse"><span class="dot"></span><span class="pill-label">Reproved</span></span>
+        <span class="pill info on-inverse"><span class="pill-label is-caps">PIX</span></span>
+        <span class="pill neutral on-inverse"><span class="pill-label">Cancelled</span></span>
+        <span class="pill brand on-inverse"><span class="dot"></span><span class="pill-label">Processing</span></span>
       </div>
     </article>
 
     <article class="spec">
       <header class="spec-head"><div><h3>Hero / brand surface</h3><p>Same modifier — inherits well over <code>--color-background-inverse-brand</code> too. No extra class needed.</p></div><span class="tag">brand bg</span></header>
       <div class="spec-canvas brand dense">
-        <span class="pill success on-inverse"><span class="dot"></span>Approved</span>
-        <span class="pill warning on-inverse"><span class="dot"></span>Pending</span>
-        <span class="pill danger on-inverse"><span class="dot"></span>Reproved</span>
-        <span class="pill info on-inverse">PIX</span>
+        <span class="pill success on-inverse"><span class="dot"></span><span class="pill-label">Approved</span></span>
+        <span class="pill warning on-inverse"><span class="dot"></span><span class="pill-label">Pending</span></span>
+        <span class="pill danger on-inverse"><span class="dot"></span><span class="pill-label">Reproved</span></span>
+        <span class="pill info on-inverse"><span class="pill-label is-caps">PIX</span></span>
       </div>
     </article>
   </section>
@@ -635,15 +635,15 @@
         <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't use a pill as a primary action.</strong> Pills classify; buttons act. If clicking changes state, it must be a button.</p></div>
       </div>
       <div class="dont-card">
-        <div class="dont-card-canvas"><span class="pill solid success"><span class="dot"></span>Released</span><span class="pill solid warning"><span class="dot"></span>Pending</span><span class="pill solid danger"><span class="dot"></span>Bounced</span><span class="pill solid info">PIX</span></div>
+        <div class="dont-card-canvas"><span class="pill solid success"><span class="dot"></span><span class="pill-label">Released</span></span><span class="pill solid warning"><span class="dot"></span><span class="pill-label">Pending</span></span><span class="pill solid danger"><span class="dot"></span><span class="pill-label">Bounced</span></span><span class="pill solid info"><span class="pill-label is-caps">PIX</span></span></div>
         <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't use solid as default.</strong> Five solid pills in one row is visual noise. Subtle is the default; solid is the exception.</p></div>
       </div>
       <div class="dont-card">
-        <div class="dont-card-canvas"><span class="pill info"><span class="dot"></span>RELEASED · 2024-04-12 · R$ 184,200.00</span></div>
+        <div class="dont-card-canvas"><span class="pill info"><span class="dot"></span><span class="pill-label is-caps">RELEASED · 2024-04-12 · R$ 184,200.00</span></span></div>
         <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't stuff metadata into the label.</strong> One status word. Domain data lives in adjacent table cells.</p></div>
       </div>
       <div class="dont-card">
-        <div class="dont-card-canvas"><span class="pill warning"><span class="dot"></span>Approved</span><span class="pill success"><span class="dot"></span>Reproved</span></div>
+        <div class="dont-card-canvas"><span class="pill warning"><span class="dot"></span><span class="pill-label">Approved</span></span><span class="pill success"><span class="dot"></span><span class="pill-label">Reproved</span></span></div>
         <div class="dont-card-body"><i data-lucide="x-circle"></i><p><strong>Don't mismatch variant and meaning.</strong> Approved is success; Reproved is danger. The taxonomy is the contract.</p></div>
       </div>
       <div class="dont-card">

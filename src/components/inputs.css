@@ -248,6 +248,36 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
     border-color var(--transition-fast),
     box-shadow var(--transition-fast);
 }
+/* Small field — the toolbar size (32px), for a search with its own action */
+.group.group-sm { height: var(--control-h-sm); box-sizing: border-box; }
+.group.group-sm > input { font-size: var(--fs-sm); padding: 0 var(--space-3); }
+/* The inset button is tuned for the 40px field; at 32px it keeps a 24px box of
+   its own (4px clear of each edge) and centres its label with line-height 1,
+   instead of inheriting a height that left the text low. */
+.group.group-sm > .fix-btn {
+  height: 24px;
+  align-self: center;
+  margin-top: 0;
+  margin-bottom: 0;
+  /* 1px of bottom padding lifts the label 0.5px: Lato at 11px sits low by its
+     lowercase mass in a box this small, the same correction as the sm pill. */
+  padding: 0 var(--space-3) 1px;
+  font-size: var(--fs-xs);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+.group.group-sm > .fix-btn:last-child { margin-right: 3px; }
+.group.group-sm > .fix-btn:first-child { margin-left: 3px; }
+/* field-in-group focus */
+/* A field marked .input inside a group still matched .input:focus and drew its
+   own 4px halo — clipped by the group, it showed as an inner band that stopped
+   short of the inset button, notched by the field's own rounded corners. The
+   group owns the ring; the field inside it draws none. */
+.group > .input,
+.group > .input:focus,
+.group > .input:focus-visible { box-shadow: none; border-radius: 0; }
 .group:focus-within {
   border-color: var(--color-border-focus);
   box-shadow: var(--shadow-focus);
@@ -1420,3 +1450,25 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .group.underline > .fix-btn.is-danger { background: var(--color-danger-500); border-color: transparent; color: var(--color-foreground-on-solid); }
 .group.underline > .fix-btn.is-danger-outline { background: var(--color-background-surface); border-color: var(--color-feedback-danger-border); color: var(--color-danger-500); }
 .group.underline > .fix-btn.is-success { background: var(--color-success-500); border-color: transparent; color: var(--color-foreground-on-solid); }
+
+/* Small search pill — 32px, with the same 24px inset button as .group-sm.
+   Appended last so it outranks the inset-button block, which is tuned for 40px. */
+.pill-search.pill-search-sm { box-sizing: border-box; }
+.pill-search.pill-search-sm:has(> .fix-btn:last-child) { padding-right: 0; }
+.pill-search.pill-search-sm > .fix-btn {
+  height: 24px; align-self: center; margin-top: 0; margin-bottom: 0;
+  padding: 0 var(--space-3) 1px; font-size: var(--fs-xs); line-height: 1;
+  display: inline-flex; align-items: center; box-sizing: border-box;
+}
+.pill-search.pill-search-sm > .fix-btn:last-child { margin-right: 4px; }
+
+/* Disabled wins over every variant — the variant rules above are more specific
+   than the base :disabled, so without this a disabled tertiary kept its fill and
+   still read as clickable. */
+:is(.group, .pill-search) > .fix-btn:disabled,
+:is(.group, .pill-search) > .fix-btn[class*="is-"]:disabled {
+  background: transparent;
+  border-color: transparent;
+  color: var(--color-foreground-disabled);
+  cursor: not-allowed;
+}

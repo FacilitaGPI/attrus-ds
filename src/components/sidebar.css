@@ -226,3 +226,11 @@
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .sb.is-glass { background: var(--color-background-surface); }
 }
+
+/* Optical centring for small labels. A badge that inherits a tall line-height
+   (15px on 10px type) is centred on its LINE BOX, and JetBrains Mono carries its
+   ink high in that box — the caps sat 0.7px above centre. The pill model fixes it:
+   line-height 1 inside a fixed-height flex box, which centres the glyph's em box.
+   Heights are unchanged. */
+.sb-count { display: inline-flex; align-items: center; line-height: 1; height: 17px; padding-top: 0; padding-bottom: 0; box-sizing: border-box; }
+.sb-item .badge { display: inline-flex; align-items: center; line-height: 1; height: 15px; padding-top: 0; padding-bottom: 0; box-sizing: border-box; }

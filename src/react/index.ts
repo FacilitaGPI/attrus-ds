@@ -21,6 +21,8 @@ export * from "./Callout/Callout";
 export * from "./Card/Card";
 export * from "./Combobox/Combobox";
 export * from "./DataTable/DataTable";
+export * from "./DateRangePicker/DateRangePicker";
+export * from "./DTFilters/DTFilters";
 export * from "./Drawer/Drawer";
 export * from "./Input/Input";
 export * from "./Modal/Modal";

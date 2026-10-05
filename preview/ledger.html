@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ledger · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<link rel="stylesheet" href="components/buttons.css?v=20">
+<link rel="stylesheet" href="components/status-pills.css">
+<link rel="stylesheet" href="components/combobox.css?v=4">
+<link rel="stylesheet" href="components/table.css?v=75">
+<link rel="stylesheet" href="components/demo-card.css?v=6">
+<script src="../theme-toggle.js"></script>
+<script src="../version.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .page-theme { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; }
+  .doc-header { padding-bottom: var(--space-7); border-bottom: var(--border-hairline) solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 64ch; }
+  .doc-section { margin-bottom: var(--space-12); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); margin-right: var(--space-3); }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-6); }
+  .spec-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  .spec-table th, .spec-table td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: var(--border-hairline) solid var(--color-border-subtle); vertical-align: top; line-height: var(--lh-relaxed); }
+  .spec-table thead th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); }
+  .spec-table tr:last-child td { border-bottom: 0; }
+  .spec-table code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .opened { margin-top: var(--space-3); font-size: var(--fs-sm); color: var(--color-foreground-secondary); min-height: 1.4em; }
+  .opened strong { color: var(--color-foreground-default); }
+  .sort-stage { min-height: 230px; display: flex; justify-content: flex-end; align-items: flex-start; padding: var(--space-6); }
+</style>
+</head>
+<body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<button class="page-theme" data-theme-toggle aria-label="Toggle theme"><span data-theme-icon aria-hidden="true">☾</span> <span data-theme-label>Dark</span></button>
+
+<main class="doc">
+  <header class="doc-header">
+    <h1>Ledger</h1>
+    <p>A pattern, not a component: a statement table where one entry can produce another that belongs to it — the fee a transfer charged, the reversal of a charge. It is assembled from DataTable pieces and needs no ledger-specific API.</p>
+  </header>
+
+  <section class="doc-section" id="demo">
+    <h2><span class="num">01</span>The pattern</h2>
+    <p class="lead">Four days, seven transfers, two with a fee (one collapsed), one failed, one returned, one pending. Click a row to open its detail; only the chevron collapses a fee.</p>
+    <div class="demo-card">
+      <div class="demo-card-head"><div><h3>Statement, newest first</h3><p>rowAction="open" — the row opens a drawer, the chevron toggles the group. Collapse fees folds every group at once.</p></div><span class="demo-card-tag">live</span></div>
+      <div class="demo-card-canvas is-flush">
+        <div class="dt-wrap" id="ledger"><div class="dt-toolbar"><div class="dt-toolbar-lead"><span class="dt-toolbar-title">Statement</span><span class="dt-toolbar-count">7 transfers · 2 fees</span></div>
+  <div class="dt-toolbar-actions">
+    <div class="combobox combobox-sm is-icon-only"><button type="button" class="combobox-trigger" aria-label="Sort: Date, newest first"><span class="combobox-trigger-icon"><i data-lucide="calendar-arrow-down"></i></span><span class="combobox-value sr-only">Date, newest first</span><svg class="combobox-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button></div>
+    <button class="btn btn-secondary btn-sm" data-collapse-all><i data-lucide="chevrons-down-up"></i><span>Collapse fees</span></button>
+    <button class="btn btn-secondary btn-sm"><i data-lucide="file-spreadsheet"></i>CSV</button>
+    <button class="btn btn-secondary btn-sm"><i data-lucide="file-text"></i>PDF</button>
+  </div></div>
+          <div class="scroll-x"><table class="dt"><thead><tr><th>Description</th><th>Time</th><th>Method</th><th>Status</th><th class="dt-num">Amount</th><th class="dt-num">Balance</th></tr></thead><tbody>
+<tr class="dt-row-divider"><td colspan="6">Friday, Mar 13, 2026<span class="dt-row-divider-meta">2 transfers · day net −40,125.00</span></td></tr>
+<tr class="is-actionable" data-name="Belvo Pay LATAM">
+  <td><span class="dt-cell-lead"><span class="dt-subrow-toggle is-spacer" aria-hidden="true"></span><span class="ic-tile" style="background:var(--color-feedback-success-background); color:var(--color-feedback-success-foreground)"><i data-lucide="arrow-down-left"></i></span><span class="dt-cell-stack"><button class="dt-row-button pri">Belvo Pay LATAM</button><span class="sub">TX-90533 · ACH · REF 8812</span></span></span></td>
+  <td>11:20 AM</td><td>ACH</td><td><span class="pill warning sm"><span class="pill-label">Pending</span></span></td><td class="dt-num delta-pos">+12,340.00</td>
+  <td class="dt-num dt-balance is-empty">—</td>
+</tr>
+<tr class="has-subrows is-collapsible is-actionable" data-name="Kestrel Metals">
+  <td><span class="dt-cell-lead"><button class="dt-subrow-toggle" aria-expanded="false" aria-controls="fee-TX-90521" aria-label="Show 1 fee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg></button><span class="ic-tile" style="background:var(--color-background-subtle); color:var(--color-foreground-secondary)"><i data-lucide="arrow-up-right"></i></span><span class="dt-cell-stack"><button class="dt-row-button pri">Kestrel Metals</button><span class="sub">TX-90521 · Wire · INV-2291</span></span></span></td>
+  <td>9:05 AM</td><td>Wire</td><td><span class="pill success sm"><span class="pill-label">Settled</span></span></td><td class="dt-num"><span class="dt-cell-stack"><span class="pri">−40,095.00</span><span class="sub">total −40,125.00 with fee</span></span></td>
+  <td class="dt-num dt-balance">108,955.00</td>
+</tr>
+<tr class="dt-subrow is-collapsible is-last" id="fee-TX-90521">
+  <td><div class="dt-subrow-inner"><div class="dt-subrow-cell"><span class="dt-subrow-lead"><span class="sr-only">Item of Kestrel Metals: </span><span class="ic-mini"><i data-lucide="receipt"></i></span><span class="txt">Outgoing wire fee</span><span class="dt-subrow-tag">Fee</span></span></div></div></td>
+  <td><div class="dt-subrow-inner"><div class="dt-subrow-cell">9:05 AM</div></div></td><td><div class="dt-subrow-inner"><div class="dt-subrow-cell">Wire</div></div></td><td><div class="dt-subrow-inner"><div class="dt-subrow-cell"><span class="dt-subrow-status">Charged with the transfer</span></div></div></td>
+  <td class="dt-num"><div class="dt-subrow-inner"><div class="dt-subrow-cell" style="justify-content:flex-end">−30.00</div></div></td>
+  <td class="dt-num dt-balance"><div class="dt-subrow-inner"><div class="dt-subrow-cell" style="justify-content:flex-end">108,925.00</div></div></td>
+</tr>
+<tr class="dt-row-divider"><td colspan="6">Thursday, Mar 12, 2026<span class="dt-row-divider-meta">2 transfers · day net −18,450.00</span></td></tr>
+<tr class="is-actionable is-muted" data-name="Atlas Freight">
+  <td><span class="dt-cell-lead"><span class="dt-subrow-toggle is-spacer" aria-hidden="true"></span><span class="ic-tile" style="background:var(--color-feedback-success-background); color:var(--color-feedback-success-foreground)"><i data-lucide="arrow-down-left"></i></span><span class="dt-cell-stack"><button class="dt-row-button pri">Atlas Freight</button><span class="sub">TX-90498 · Wire · RET-0093</span></span></span></td>
+  <td>3:40 PM</td><td>Wire</td><td><span class="pill neutral sm"><span class="pill-label">Returned</span></span></td><td class="dt-num">+9,800.00</td>
+  <td class="dt-num dt-balance is-empty">—</td>
+</tr>
+<tr class="has-subrows is-collapsible is-actionable is-open" data-name="Global Supplies LLC">
+  <td><span class="dt-cell-lead"><button class="dt-subrow-toggle" aria-expanded="true" aria-controls="fee-TX-90477" aria-label="Hide 1 fee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg></button><span class="ic-tile" style="background:var(--color-background-subtle); color:var(--color-foreground-secondary)"><i data-lucide="arrow-up-right"></i></span><span class="dt-cell-stack"><button class="dt-row-button pri">Global Supplies LLC</button><span class="sub">TX-90477 · Wire · PO-55120</span></span></span></td>
+  <td>10:15 AM</td><td>Wire</td><td><span class="pill success sm"><span class="pill-label">Settled</span></span></td><td class="dt-num"><span class="dt-cell-stack"><span class="pri">−18,425.00</span><span class="sub">total −18,450.00 with fee</span></span></td>
+  <td class="dt-num dt-balance">149,075.00</td>
+</tr>
+<tr class="dt-subrow is-collapsible is-last is-open" id="fee-TX-90477">
+  <td><div class="dt-subrow-inner"><div class="dt-subrow-cell"><span class="dt-subrow-lead"><span class="sr-only">Item of Global Supplies LLC: </span><span class="ic-mini"><i data-lucide="receipt"></i></span><span class="txt">Outgoing wire fee</span><span class="dt-subrow-tag">Fee</span></span></div></div></td>
+  <td><div class="dt-subrow-inner"><div class="dt-subrow-cell">10:15 AM</div></div></td><td><div class="dt-subrow-inner"><div class="dt-subrow-cell">Wire</div></div></td><td><div class="dt-subrow-inner"><div class="dt-subrow-cell"><span class="dt-subrow-status">Charged with the transfer</span></div></div></td>
+  <td class="dt-num"><div class="dt-subrow-inner"><div class="dt-subrow-cell" style="justify-content:flex-end">−25.00</div></div></td>
+  <td class="dt-num dt-balance"><div class="dt-subrow-inner"><div class="dt-subrow-cell" style="justify-content:flex-end">149,050.00</div></div></td>
+</tr>
+<tr class="dt-row-divider"><td colspan="6">Wednesday, Mar 11, 2026<span class="dt-row-divider-meta">2 transfers · day net −15,000.00</span></td></tr>
+<tr class="is-actionable is-muted" data-name="Northwind Parts">
+  <td><span class="dt-cell-lead"><span class="dt-subrow-toggle is-spacer" aria-hidden="true"></span><span class="ic-tile" style="background:var(--color-background-subtle); color:var(--color-foreground-secondary)"><i data-lucide="arrow-up-right"></i></span><span class="dt-cell-stack"><button class="dt-row-button pri">Northwind Parts</button><span class="sub">TX-90452 · ACH · INV-7740</span></span></span></td>
+  <td>2:10 PM</td><td>ACH</td><td><span class="pill danger sm"><span class="pill-label">Failed</span></span></td><td class="dt-num">−4,200.00</td>
+  <td class="dt-num dt-balance is-empty">—</td>
+</tr>
+<tr class="is-actionable" data-name="USD Reserve">
+  <td><span class="dt-cell-lead"><span class="dt-subrow-toggle is-spacer" aria-hidden="true"></span><span class="ic-tile" style="background:var(--color-feedback-info-background); color:var(--color-feedback-info-foreground)"><i data-lucide="arrow-left-right"></i></span><span class="dt-cell-stack"><button class="dt-row-button pri">USD Reserve</button><span class="sub">TX-90431 · Internal · ••4410</span></span></span></td>
+  <td>9:30 AM</td><td>Internal</td><td><span class="pill success sm"><span class="pill-label">Settled</span></span></td><td class="dt-num">−15,000.00</td>
+  <td class="dt-num dt-balance">167,500.00</td>
+</tr>
+<tr class="dt-row-divider"><td colspan="6">Tuesday, Mar 10, 2026<span class="dt-row-divider-meta">1 transfer · day net +62,500.00</span></td></tr>
+<tr class="is-actionable" data-name="Meridian Trading Co">
+  <td><span class="dt-cell-lead"><span class="dt-subrow-toggle is-spacer" aria-hidden="true"></span><span class="ic-tile" style="background:var(--color-feedback-success-background); color:var(--color-feedback-success-foreground)"><i data-lucide="arrow-down-left"></i></span><span class="dt-cell-stack"><button class="dt-row-button pri">Meridian Trading Co</button><span class="sub">TX-90402 · ACH · REF 3301</span></span></span></td>
+  <td>11:00 AM</td><td>ACH</td><td><span class="pill success sm"><span class="pill-label">Settled</span></span></td><td class="dt-num delta-pos">+62,500.00</td>
+  <td class="dt-num dt-balance">182,500.00</td>
+</tr>
+          </tbody></table></div>
+        </div>
+      </div>
+    </div>
+    <div class="opened" id="opened" aria-live="polite"></div>
+  </section>
+
+  <section class="doc-section" id="anatomy">
+    <h2><span class="num">02</span>Anatomy</h2>
+    <p class="lead">Each part maps onto an existing DataTable piece. The pattern is in how they combine.</p>
+    <div class="demo-card"><div class="demo-card-canvas is-flush"><table class="spec-table">
+      <thead><tr><th>Part</th><th>Piece</th><th>Rule</th></tr></thead>
+      <tbody>
+        <tr><td>Day divider</td><td><code>DTGroupDivider meta</code></td><td>Day on the left; on the right, muted and tabular, the count and the day's net of settled entries.</td></tr>
+        <tr><td>Parent row</td><td><code>DTParentRow kind="subrows" rowAction="open"</code></td><td>Columns Description · Time · Method · Status · Amount · Balance. A click opens the detail.</td></tr>
+        <tr><td>Chevron</td><td><code>DTSubrowToggle</code> / <code>spacer</code></td><td>Only on a row with a fee. A row without one keeps the 20px with <code>spacer</code>, so names stay aligned.</td></tr>
+        <tr><td>Direction tile</td><td><code>.ic-tile</code></td><td>Money in success · internal transfer info · money out neutral. Tone carries direction, never status.</td></tr>
+        <tr><td>Name</td><td><code>DTRowButton</code></td><td>The keyboard handle for opening — a real button that looks like the text.</td></tr>
+        <tr><td>Amount</td><td><code>.dt-num</code></td><td>Mono. In: <code>.delta-pos</code>. Out: default. Failed or returned: the row is <code>.is-muted</code> and the figure is struck. With a fee, a muted second line: "total −18,450.00 with fee".</td></tr>
+        <tr><td>Balance</td><td><code>.dt-num.dt-balance</code></td><td>The balance after the entry, regular and muted. Only settled entries have one; the rest show "—".</td></tr>
+        <tr><td>Fee</td><td><code>DTSubrowLead</code> · <code>DTSubrowMeta</code> · <code>DTSubrowCell</code></td><td>Its own entry: receipt icon, name, "Fee" tag, time, "Charged with the transfer", amount and balance.</td></tr>
+      </tbody></table></div></div>
+  </section>
+
+  <section class="doc-section" id="order">
+    <h2><span class="num">03</span>Ordering</h2>
+    <p class="lead">Sort is an icon-only Combobox in the toolbar actions. Sorted by amount, the day dividers go (a day no longer groups anything) and Time shows the date. A fee stays under its transfer in every order.</p>
+    <div class="demo-card">
+      <div class="demo-card-head"><div><h3>Sort control, open</h3><p>Combobox <code>size="sm" iconOnly align="end"</code>. The trigger is the glyph of the order in use; the list carries the text.</p></div><span class="demo-card-tag">iconOnly</span></div>
+      <div class="demo-card-canvas"><div class="sort-stage"><div class="combobox combobox-sm is-icon-only is-open" style="position:relative">
+  <button type="button" class="combobox-trigger" aria-haspopup="listbox" aria-expanded="true" aria-label="Sort"><span class="combobox-trigger-icon"><i data-lucide="calendar-arrow-down"></i></span><span class="combobox-value sr-only">Date, newest first</span><svg class="combobox-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+  <div class="combobox-popover" style="right:0; left:auto; min-width:220px"><ul class="combobox-list" role="listbox">
+    <li class="combobox-option is-selected" role="option" aria-selected="true"><span class="combobox-option-icon"><i data-lucide="calendar-arrow-down"></i></span><span class="combobox-option-content"><span class="combobox-option-label">Date, newest first</span></span><svg class="combobox-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></li>
+    <li class="combobox-option" role="option" aria-selected="false"><span class="combobox-option-icon"><i data-lucide="calendar-arrow-up"></i></span><span class="combobox-option-content"><span class="combobox-option-label">Date, oldest first</span></span><svg class="combobox-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></li>
+    <li class="combobox-option" role="option" aria-selected="false"><span class="combobox-option-icon"><i data-lucide="arrow-down-wide-narrow"></i></span><span class="combobox-option-content"><span class="combobox-option-label">Amount, high to low</span></span><svg class="combobox-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></li>
+    <li class="combobox-option" role="option" aria-selected="false"><span class="combobox-option-icon"><i data-lucide="arrow-up-narrow-wide"></i></span><span class="combobox-option-content"><span class="combobox-option-label">Amount, low to high</span></span><svg class="combobox-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></li>
+  </ul></div>
+</div></div></div>
+    </div>
+    <div class="demo-card" style="margin-top:var(--space-5)">
+      <div class="demo-card-head"><div><h3>Amount, high to low</h3><p>No dividers; Time reads "Mar 13, 9:05 AM".</p></div><span class="demo-card-tag">by value</span></div>
+      <div class="demo-card-canvas is-flush"><div class="dt-wrap"><div class="scroll-x"><table class="dt"><thead><tr><th>Description</th><th>Time</th><th>Method</th><th>Status</th><th class="dt-num">Amount</th><th class="dt-num">Balance</th></tr></thead><tbody>
+<tr class="is-actionable" data-name="Meridian Trading Co">
+  <td><span class="dt-cell-lead"><span class="dt-subrow-toggle is-spacer" aria-hidden="true"></span><span class="ic-tile" style="background:var(--color-feedback-success-background); color:var(--color-feedback-success-foreground)"><i data-lucide="arrow-down-left"></i></span><span class="dt-cell-stack"><button class="dt-row-button pri">Meridian Trading Co</button><span class="sub">TX-90402 · ACH · REF 3301</span></span></span></td>
+  <td>Mar 10, 11:00 AM</td><td>ACH</td><td><span class="pill success sm"><span class="pill-label">Settled</span></span></td><td class="dt-num delta-pos">+62,500.00</td>
+  <td class="dt-num dt-balance">182,500.00</td>
+</tr>
+<tr class="has-subrows is-collapsible is-actionable" data-name="Kestrel Metals">
+  <td><span class="dt-cell-lead"><button class="dt-subrow-toggle" aria-expanded="false" aria-controls="v-fee-TX-90521" aria-label="Show 1 fee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg></button><span class="ic-tile" style="background:var(--color-background-subtle); color:var(--color-foreground-secondary)"><i data-lucide="arrow-up-right"></i></span><span class="dt-cell-stack"><button class="dt-row-button pri">Kestrel Metals</button><span class="sub">TX-90521 · Wire · INV-2291</span></span></span></td>
+  <td>Mar 13, 9:05 AM</td><td>Wire</td><td><span class="pill success sm"><span class="pill-label">Settled</span></span></td><td class="dt-num"><span class="dt-cell-stack"><span class="pri">−40,095.00</span><span class="sub">total −40,125.00 with fee</span></span></td>
+  <td class="dt-num dt-balance">108,955.00</td>
+</tr>
+<tr class="dt-subrow is-collapsible is-last" id="v-fee-TX-90521">
+  <td><div class="dt-subrow-inner"><div class="dt-subrow-cell"><span class="dt-subrow-lead"><span class="sr-only">Item of Kestrel Metals: </span><span class="ic-mini"><i data-lucide="receipt"></i></span><span class="txt">Outgoing wire fee</span><span class="dt-subrow-tag">Fee</span></span></div></div></td>
+  <td><div class="dt-subrow-inner"><div class="dt-subrow-cell">Mar 13, 9:05 AM</div></div></td><td><div class="dt-subrow-inner"><div class="dt-subrow-cell">Wire</div></div></td><td><div class="dt-subrow-inner"><div class="dt-subrow-cell"><span class="dt-subrow-status">Charged with the transfer</span></div></div></td>
+  <td class="dt-num"><div class="dt-subrow-inner"><div class="dt-subrow-cell" style="justify-content:flex-end">−30.00</div></div></td>
+  <td class="dt-num dt-balance"><div class="dt-subrow-inner"><div class="dt-subrow-cell" style="justify-content:flex-end">108,925.00</div></div></td>
+</tr>
+<tr class="has-subrows is-collapsible is-actionable" data-name="Global Supplies LLC">
+  <td><span class="dt-cell-lead"><button class="dt-subrow-toggle" aria-expanded="false" aria-controls="v-fee-TX-90477" aria-label="Show 1 fee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg></button><span class="ic-tile" style="background:var(--color-background-subtle); color:var(--color-foreground-secondary)"><i data-lucide="arrow-up-right"></i></span><span class="dt-cell-stack"><button class="dt-row-button pri">Global Supplies LLC</button><span class="sub">TX-90477 · Wire · PO-55120</span></span></span></td>
+  <td>Mar 12, 10:15 AM</td><td>Wire</td><td><span class="pill success sm"><span class="pill-label">Settled</span></span></td><td class="dt-num"><span class="dt-cell-stack"><span class="pri">−18,425.00</span><span class="sub">total −18,450.00 with fee</span></span></td>
+  <td class="dt-num dt-balance">149,075.00</td>
+</tr>
+<tr class="dt-subrow is-collapsible is-last" id="v-fee-TX-90477">
+  <td><div class="dt-subrow-inner"><div class="dt-subrow-cell"><span class="dt-subrow-lead"><span class="sr-only">Item of Global Supplies LLC: </span><span class="ic-mini"><i data-lucide="receipt"></i></span><span class="txt">Outgoing wire fee</span><span class="dt-subrow-tag">Fee</span></span></div></div></td>
+  <td><div class="dt-subrow-inner"><div class="dt-subrow-cell">Mar 12, 10:15 AM</div></div></td><td><div class="dt-subrow-inner"><div class="dt-subrow-cell">Wire</div></div></td><td><div class="dt-subrow-inner"><div class="dt-subrow-cell"><span class="dt-subrow-status">Charged with the transfer</span></div></div></td>
+  <td class="dt-num"><div class="dt-subrow-inner"><div class="dt-subrow-cell" style="justify-content:flex-end">−25.00</div></div></td>
+  <td class="dt-num dt-balance"><div class="dt-subrow-inner"><div class="dt-subrow-cell" style="justify-content:flex-end">149,050.00</div></div></td>
+</tr>
+<tr class="is-actionable" data-name="USD Reserve">
+  <td><span class="dt-cell-lead"><span class="dt-subrow-toggle is-spacer" aria-hidden="true"></span><span class="ic-tile" style="background:var(--color-feedback-info-background); color:var(--color-feedback-info-foreground)"><i data-lucide="arrow-left-right"></i></span><span class="dt-cell-stack"><button class="dt-row-button pri">USD Reserve</button><span class="sub">TX-90431 · Internal · ••4410</span></span></span></td>
+  <td>Mar 11, 9:30 AM</td><td>Internal</td><td><span class="pill success sm"><span class="pill-label">Settled</span></span></td><td class="dt-num">−15,000.00</td>
+  <td class="dt-num dt-balance">167,500.00</td>
+</tr>
+<tr class="is-actionable" data-name="Belvo Pay LATAM">
+  <td><span class="dt-cell-lead"><span class="dt-subrow-toggle is-spacer" aria-hidden="true"></span><span class="ic-tile" style="background:var(--color-feedback-success-background); color:var(--color-feedback-success-foreground)"><i data-lucide="arrow-down-left"></i></span><span class="dt-cell-stack"><button class="dt-row-button pri">Belvo Pay LATAM</button><span class="sub">TX-90533 · ACH · REF 8812</span></span></span></td>
+  <td>Mar 13, 11:20 AM</td><td>ACH</td><td><span class="pill warning sm"><span class="pill-label">Pending</span></span></td><td class="dt-num delta-pos">+12,340.00</td>
+  <td class="dt-num dt-balance is-empty">—</td>
+</tr>
+      </tbody></table></div></div></div>
+    </div>
+  </section>
+
+  <section class="doc-section" id="filtered">
+    <h2><span class="num">04</span>Filtered band</h2>
+    <p class="lead">A thin neutral strip above the toolbar that appears only while a filter is applied — a status tab other than All counts. It replaces the toolbar's count when the total does not need a fixed place; keep the lead count when it does.</p>
+    <div class="demo-card">
+      <div class="demo-card-head"><div><h3>Applied</h3><p><code>DTFilteredBand filtered</code> · Filter 13px · fs-xs · tabular · background-subtle · aria-live="polite"</p></div><span class="demo-card-tag">is-open</span></div>
+      <div class="demo-card-canvas is-flush"><div class="dt-wrap"><div class="dt-filtered is-open"><div class="dt-filtered-inner" aria-live="polite"><i data-lucide="filter"></i><span>Showing 3 of 8 transfers · 2 fees</span></div></div><div class="dt-toolbar"><div class="dt-toolbar-lead"><span class="dt-toolbar-title">Statement</span></div></div></div></div>
+    </div>
+    <div class="demo-card" style="margin-top:var(--space-5)">
+      <div class="demo-card-head"><div><h3>Not filtered</h3><p>The band is in the DOM but takes no space (grid 0fr).</p></div><span class="demo-card-tag">closed</span></div>
+      <div class="demo-card-canvas is-flush"><div class="dt-wrap"><div class="dt-filtered" aria-hidden="true"><div class="dt-filtered-inner" aria-live="polite"><i data-lucide="filter"></i><span></span></div></div><div class="dt-toolbar"><div class="dt-toolbar-lead"><span class="dt-toolbar-title">Statement</span><span class="dt-toolbar-count">8 transfers · 2 fees</span></div></div></div></div>
+    </div>
+  </section>
+
+  <section class="doc-section" id="rules">
+    <h2><span class="num">05</span>Rules</h2>
+    <div class="demo-card"><div class="demo-card-canvas is-flush"><table class="spec-table">
+      <thead><tr><th>When</th><th>Do</th></tr></thead>
+      <tbody>
+        <tr><td>Use it</td><td>Statements and ledgers where an entry generates another that belongs to it. A flat list of payments is a plain table.</td></tr>
+        <tr><td>Running balance</td><td>The fee is always newer than its transfer at the same instant, so the transfer's balance comes first and the fee's balance is lower.</td></tr>
+        <tr><td>Row click</td><td><code>rowAction="open"</code> when the row has a detail drawer; <code>"toggle"</code> (the default) when the group is the only thing to reveal.</td></tr>
+        <tr><td>Accessibility</td><td>Native table, no treegrid. The fee carries an sr-only "Item of &lt;parent&gt;:" prefix; the chevron has <code>aria-expanded</code> and <code>aria-controls</code> pointing at the fee row; the name is a button. Motion respects <code>prefers-reduced-motion</code>.</td></tr>
+      </tbody></table></div></div>
+  </section>
+</main>
+
+<script>
+lucide.createIcons();
+(function () {
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function paint(row, open) {
+    row.classList.toggle('is-open', open);
+    [].forEach.call(row.querySelectorAll('.dt-subrow-inner'), function (wrap) {
+      var cell = wrap.querySelector('.dt-subrow-cell');
+      if (reduce) wrap.style.transition = 'none';
+      cell.style.padding = open ? '8px 0' : '0';
+      cell.style.opacity = open ? '1' : '0';
+      wrap.style.maxHeight = open ? (cell.scrollHeight + 16) + 'px' : '0px';
+    });
+  }
+  function setGroup(btn, open) {
+    var parent = btn.closest('tr');
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', (open ? 'Hide' : 'Show') + ' 1 fee');
+    parent.classList.toggle('is-open', open);
+    var sub = document.getElementById(btn.getAttribute('aria-controls'));
+    if (sub) paint(sub, open);
+  }
+  document.querySelectorAll('.dt-subrow-toggle[aria-controls]').forEach(function (b) {
+    var sub = document.getElementById(b.getAttribute('aria-controls'));
+    if (sub) paint(sub, b.getAttribute('aria-expanded') === 'true');
+    b.addEventListener('click', function (e) { e.stopPropagation(); setGroup(b, b.getAttribute('aria-expanded') !== 'true'); });
+  });
+  var out = document.getElementById('opened');
+  function openRow(tr) { out.innerHTML = 'Would open the detail drawer for <strong>' + tr.getAttribute('data-name') + '</strong>.'; }
+  document.querySelectorAll('tr.is-actionable').forEach(function (tr) { tr.addEventListener('click', function () { openRow(tr); }); });
+  document.querySelectorAll('.dt-row-button').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); openRow(b.closest('tr')); }); });
+  var all = document.querySelector('[data-collapse-all]');
+  all.addEventListener('click', function () {
+    var toggles = document.querySelectorAll('#ledger .dt-subrow-toggle[aria-controls]');
+    var anyOpen = [].some.call(toggles, function (t) { return t.getAttribute('aria-expanded') === 'true'; });
+    toggles.forEach(function (t) { setGroup(t, !anyOpen); });
+    all.querySelector('span').textContent = anyOpen ? 'Expand fees' : 'Collapse fees';
+    all.querySelector('svg, i').outerHTML = '<i data-lucide="' + (anyOpen ? 'chevrons-up-down' : 'chevrons-down-up') + '"></i>';
+    lucide.createIcons();
+  });
+})();
+</script>
+</body>
+</html>

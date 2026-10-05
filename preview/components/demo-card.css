@@ -296,3 +296,10 @@
 /* Height matches .doc-back (36px) so the two read as one row, not two pills
    of different weight. */
 .xlink.is-doc { position: fixed; top: var(--space-5); left: 152px; z-index: 1000; height: 36px; }
+
+/* Optical centring for small labels. A badge that inherits a tall line-height
+   (15px on 10px type) is centred on its LINE BOX, and JetBrains Mono carries its
+   ink high in that box — the caps sat 0.7px above centre. The pill model fixes it:
+   line-height 1 inside a fixed-height flex box, which centres the glyph's em box.
+   Heights are unchanged. */
+.demo-card-tag { display: inline-flex; align-items: center; line-height: 1; height: 15px; }

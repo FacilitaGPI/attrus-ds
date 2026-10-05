@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Table filters · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<link rel="stylesheet" href="components/buttons.css?v=20">
+<link rel="stylesheet" href="components/status-pills.css">
+<link rel="stylesheet" href="components/combobox.css?v=4">
+<link rel="stylesheet" href="components/table.css?v=75">
+<link rel="stylesheet" href="components/demo-card.css?v=6">
+<link rel="stylesheet" href="components/filters.css?v=4">
+<link rel="stylesheet" href="components/inputs.css?v=730101">
+<link rel="stylesheet" href="components/tabs.css">
+<script src="../theme-toggle.js"></script>
+<script src="../version.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .page-theme { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; }
+  .doc-header { padding-bottom: var(--space-7); border-bottom: var(--border-hairline) solid var(--color-border-default); margin-bottom: var(--space-10); }
+  .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
+  .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 64ch; }
+  .doc-section { margin-bottom: var(--space-12); }
+  .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); margin: 0 0 var(--space-2); }
+  .doc-section h2 .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); margin-right: var(--space-3); }
+  .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0 0 var(--space-6); }
+  .spec-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  .spec-table th, .spec-table td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: var(--border-hairline) solid var(--color-border-subtle); vertical-align: top; line-height: var(--lh-relaxed); }
+  .spec-table thead th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); }
+  .spec-table tr:last-child td { border-bottom: 0; }
+  .spec-table code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .opened { margin-top: var(--space-3); font-size: var(--fs-sm); color: var(--color-foreground-secondary); min-height: 1.4em; }
+  .opened strong { color: var(--color-foreground-default); }
+  .sort-stage { min-height: 230px; display: flex; justify-content: flex-end; align-items: flex-start; padding: var(--space-6); }
+</style>
+</head>
+<body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<button class="page-theme" data-theme-toggle aria-label="Toggle theme"><span data-theme-icon aria-hidden="true">☾</span> <span data-theme-label>Dark</span></button>
+
+<main class="doc">
+  <header class="doc-header">
+    <h1>Table filters</h1>
+    <p><code>DTFilters</code> — the search + period bar of a data table, in DTToolbar's filters zone. One component, two commit models. Status tabs sit above the table, outside this bar, and always apply at once.</p>
+  </header>
+
+  <section class="doc-section" id="apply">
+    <h2><span class="num">01</span>mode="apply"</h2>
+    <p class="lead">The controls edit a draft; the table changes only on Apply filters or Enter. Use it for large or server-side lists, where each change costs a request.</p>
+    <div class="demo-card"><div class="demo-card-head"><div><h3>Empty</h3><p>No second row — nothing pending, nothing applied.</p></div><span class="demo-card-tag">empty</span></div><div class="demo-card-canvas is-flush" style="padding-top:var(--space-8)"><div class="dt-wrap"><div class="dt-toolbar"><div class="dt-filters"><div class="dt-filters-row"><div class="dt-filters-scope"><span class="dt-filters-scope-label">Search by</span><div class="btn-group" role="group"><button class="btn btn-secondary btn-sm" aria-pressed="false">Name</button><button class="btn btn-secondary btn-sm" aria-pressed="false">ID</button><button class="btn btn-secondary btn-sm" aria-pressed="false">Value</button></div><div class="dt-filters-field"><input class="input input-sm" value="" placeholder="Amount, e.g. 40,095.00" inputmode="decimal"></div></div><div class="date-range date-range-sm is-portal"><button class="date-trigger"><span class="date-range-label"><i data-lucide="calendar-range"></i><span class="placeholder">Period</span></span><i data-lucide="chevron-down"></i></button></div></div><div class="dt-filters-apply"><div class="dt-filters-apply-inner"><span class="dt-filters-applywrap"><button class="btn btn-primary btn-sm" disabled><i data-lucide="filter"></i><span>Apply filters</span></button><span class="dt-filters-hint"></span></span></div></div></div><div class="dt-toolbar-actions"><button class="btn btn-secondary btn-sm"><i data-lucide="file-spreadsheet"></i>CSV</button></div></div></div></div></div>
+    <div class="demo-card" style="margin-top:var(--space-5)"><div class="demo-card-head"><div><h3>Pending</h3><p>A search typed and not applied: the second row opens, Apply is live and the hint balloon shows.</p></div><span class="demo-card-tag">dirty</span></div><div class="demo-card-canvas is-flush" style="padding-top:var(--space-8)"><div class="dt-wrap"><div class="dt-toolbar"><div class="dt-filters"><div class="dt-filters-row"><div class="dt-filters-scope"><span class="dt-filters-scope-label">Search by</span><div class="btn-group" role="group"><button class="btn btn-secondary btn-sm" aria-pressed="false">Name</button><button class="btn btn-secondary btn-sm" aria-pressed="false">ID</button><button class="btn btn-secondary btn-sm" aria-pressed="true">Value</button></div><div class="dt-filters-field is-open"><input class="input input-sm" value="40095" placeholder="Amount, e.g. 40,095.00" inputmode="decimal"></div></div><div class="date-range date-range-sm is-portal"><button class="date-trigger"><span class="date-range-label"><i data-lucide="calendar-range"></i><span class="placeholder">Period</span></span><i data-lucide="chevron-down"></i></button></div></div><div class="dt-filters-apply is-open"><div class="dt-filters-apply-inner"><span class="dt-filters-applywrap"><button class="btn btn-primary btn-sm"><i data-lucide="filter"></i><span>Apply filters</span></button><span class="dt-filters-hint is-visible">You have changes that are not applied yet.</span></span></div></div></div><div class="dt-toolbar-actions"><button class="btn btn-secondary btn-sm"><i data-lucide="file-spreadsheet"></i>CSV</button></div></div></div></div></div>
+    <div class="demo-card" style="margin-top:var(--space-5)"><div class="demo-card-head"><div><h3>Applied, one pill marked for removal</h3><p>Clear filters appears once something is applied. A ✕ leaves the pill dashed and struck, with undo, until the next Apply. The band above the toolbar reports the result.</p></div><span class="demo-card-tag">applied</span></div><div class="demo-card-canvas is-flush" style="padding-top:var(--space-8)"><div class="dt-wrap"><div class="dt-filtered is-open"><div class="dt-filtered-inner"><i data-lucide="filter"></i><span>Showing 3 of 8</span></div></div><div class="dt-toolbar"><div class="dt-filters"><div class="dt-filters-row"><div class="dt-filters-scope"><span class="dt-filters-scope-label">Search by</span><div class="btn-group" role="group"><button class="btn btn-secondary btn-sm" aria-pressed="false">Name</button><button class="btn btn-secondary btn-sm" aria-pressed="false">ID</button><button class="btn btn-secondary btn-sm" aria-pressed="false">Value</button></div><div class="dt-filters-field"><input class="input input-sm" value="" placeholder="Amount, e.g. 40,095.00" inputmode="decimal"></div></div><div class="date-range date-range-sm is-portal"><button class="date-trigger"><span class="date-range-label"><i data-lucide="calendar-range"></i><span class="placeholder">Period</span></span><i data-lucide="chevron-down"></i></button></div></div><div class="dt-filters-apply is-open"><div class="dt-filters-apply-inner"><span class="dt-filters-applywrap"><button class="btn btn-primary btn-sm"><i data-lucide="filter"></i><span>Apply filters</span></button><span class="dt-filters-hint is-visible">You have changes that are not applied yet.</span></span><button class="btn btn-ghost btn-sm">Clear filters</button><span class="dt-filters-vsep"></span><span class="dt-filter-pill dt-filters-item is-pending"><span class="dt-filter-pill-label">Value: "40095"</span><button class="dt-filter-pill-action" aria-label="Undo removal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button></span><span class="dt-filter-pill dt-filters-item"><span class="dt-filter-pill-label">Period: Mar 10 – Mar 13</span><button class="dt-filter-pill-action" aria-label="Remove filter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></span></div></div></div><div class="dt-toolbar-actions"><button class="btn btn-secondary btn-sm"><i data-lucide="file-spreadsheet"></i>CSV</button></div></div></div></div></div>
+  </section>
+
+  <section class="doc-section" id="live">
+    <h2><span class="num">02</span>mode="live"</h2>
+    <p class="lead">No second row: the period and the scope apply at once, the text after a 250ms debounce. Pills are optional (<code>showPills</code>); they sit in the same second row as apply mode and their ✕ removes now. Use it for small local lists, where filtering is free.</p>
+    <div class="demo-card"><div class="demo-card-head"><div><h3>Live, with pills</h3><p>Same second row under the same hairline, holding only the pills — nothing to apply, so no Apply or Clear. The ✕ removes now.</p></div><span class="demo-card-tag">live</span></div><div class="demo-card-canvas is-flush" style="padding-top:var(--space-8)"><div class="dt-wrap"><div class="dt-toolbar"><div class="dt-filters"><div class="dt-filters-row"><div class="dt-filters-scope"><span class="dt-filters-scope-label">Search by</span><div class="btn-group" role="group"><button class="btn btn-secondary btn-sm" aria-pressed="true">Name</button><button class="btn btn-secondary btn-sm" aria-pressed="false">ID</button><button class="btn btn-secondary btn-sm" aria-pressed="false">Value</button></div><div class="dt-filters-field is-open"><div class="group group-sm"><input value="Kestrel" placeholder="Search name" aria-label="Search by name" data-search-gate><button type="button" class="fix-btn r is-tertiary" disabled>Search</button></div></div></div><div class="date-range date-range-sm is-portal"><button class="date-trigger"><span class="date-range-label"><i data-lucide="calendar-range"></i><span>Mar 10 – Mar 13, 2026</span></span><i data-lucide="chevron-down"></i></button></div></div><div class="dt-filters-apply is-live is-open"><div class="dt-filters-apply-inner"><span class="dt-filter-pill dt-filters-item"><span class="dt-filter-pill-label">Name: "Kestrel"</span><button class="dt-filter-pill-action" aria-label="Remove filter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></span><span class="dt-filter-pill dt-filters-item"><span class="dt-filter-pill-label">Period: Mar 10 – Mar 13</span><button class="dt-filter-pill-action" aria-label="Remove filter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></span></div></div></div><div class="dt-toolbar-actions"><button class="btn btn-secondary btn-sm"><i data-lucide="file-spreadsheet"></i>CSV</button></div></div></div></div></div>
+  </section>
+
+  <section class="doc-section" id="sort">
+    <h2><span class="num">03</span>Sort control</h2>
+    <p class="lead">Sort sits in the toolbar actions, first in the order Sort · Expand/Collapse · exports. It is a Combobox with an icon-only trigger: the glyph is the order in use, the list carries the text.</p>
+    <div class="demo-card">
+      <div class="demo-card-head"><div><h3>Open</h3><p><code>Combobox size="sm" iconOnly align="end"</code>, every option with an <code>icon</code>. The label stays in the trigger as sr-only, so it is announced as "Sort: Date, newest first".</p></div><span class="demo-card-tag">iconOnly</span></div>
+      <div class="demo-card-canvas"><div class="sort-stage"><div class="combobox combobox-sm is-icon-only is-open" style="position:relative">
+  <button type="button" class="combobox-trigger" aria-haspopup="listbox" aria-expanded="true" aria-label="Sort"><span class="combobox-trigger-icon"><i data-lucide="calendar-arrow-down"></i></span><span class="combobox-value sr-only">Date, newest first</span><svg class="combobox-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+  <div class="combobox-popover" style="right:0; left:auto; min-width:220px"><ul class="combobox-list" role="listbox">
+    <li class="combobox-option is-selected" role="option" aria-selected="true"><span class="combobox-option-icon"><i data-lucide="calendar-arrow-down"></i></span><span class="combobox-option-content"><span class="combobox-option-label">Date, newest first</span></span><svg class="combobox-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></li>
+    <li class="combobox-option" role="option" aria-selected="false"><span class="combobox-option-icon"><i data-lucide="calendar-arrow-up"></i></span><span class="combobox-option-content"><span class="combobox-option-label">Date, oldest first</span></span><svg class="combobox-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></li>
+    <li class="combobox-option" role="option" aria-selected="false"><span class="combobox-option-icon"><i data-lucide="arrow-down-wide-narrow"></i></span><span class="combobox-option-content"><span class="combobox-option-label">Amount, high to low</span></span><svg class="combobox-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></li>
+    <li class="combobox-option" role="option" aria-selected="false"><span class="combobox-option-icon"><i data-lucide="arrow-up-narrow-wide"></i></span><span class="combobox-option-content"><span class="combobox-option-label">Amount, low to high</span></span><svg class="combobox-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></li>
+  </ul></div>
+</div></div></div>
+    </div>
+    <div class="demo-card" style="margin-top:var(--space-5)"><div class="demo-card-canvas is-flush"><table class="spec-table">
+      <thead><tr><th>Option</th><th>Icon</th></tr></thead><tbody>
+        <tr><td>Date, newest first</td><td><code>CalendarArrowDown</code></td></tr>
+        <tr><td>Date, oldest first</td><td><code>CalendarArrowUp</code></td></tr>
+        <tr><td>Amount, high to low</td><td><code>ArrowDownWideNarrow</code></td></tr>
+        <tr><td>Amount, low to high</td><td><code>ArrowUpNarrowWide</code></td></tr>
+      </tbody></table></div></div>
+  </section>
+
+  <section class="doc-section" id="rules">
+    <h2><span class="num">04</span>Rules</h2>
+    <div class="demo-card"><div class="demo-card-canvas is-flush"><table class="spec-table">
+      <thead><tr><th>Part</th><th>Rule</th></tr></thead><tbody>
+        <tr><td>Scopes</td><td>Configured per screen (<code>scopes</code>). Picking one opens the field with a width animation and focuses it; picking it again closes it and clears the text.</td></tr>
+        <tr><td>Value scope</td><td><code>inputMode="decimal"</code>, and filter with <code>matchesDigits</code>: "40095", "40,095.00" and "40.095,00" all find the same amount.</td></tr>
+        <tr><td>Period</td><td><code>DateRangePicker size="sm"</code>, portaled — a <code>.dt-wrap</code> clips overflow.</td></tr>
+        <tr><td>Enter (apply)</td><td>Applies from the field, the date trigger or with nothing focused. Buttons and pills keep their own Enter.</td></tr>
+        <tr><td>Order of the second row</td><td>Apply · Clear filters · a vertical rule · the applied pills. Items enter and leave in 180ms with a 6px slide.</td></tr>
+        <tr><td>Accessibility</td><td>Scope buttons use <code>aria-pressed</code>; the closed field is <code>aria-hidden</code> and out of the tab order; every pill action has a label. Motion respects <code>prefers-reduced-motion</code>.</td></tr>
+      </tbody></table></div></div>
+    <p class="opened">Interactive version: <a href="../components/DTFilters/DTFilters.html">DTFilters bench ↗</a></p>
+  </section>
+</main>
+<script>lucide.createIcons();</script>
+<script>
+/* A Search action has nothing to act on until the field holds text: it starts
+   disabled and follows the value, and Enter does nothing while it is empty. */
+function gateSearch(input){
+  var btn = input.parentElement.querySelector('.fix-btn');
+  if (!btn) return;
+  var sync = function(){ btn.disabled = !input.value.trim(); };
+  input.addEventListener('input', sync);
+  input.addEventListener('keydown', function(e){ if (e.key === 'Enter' && !input.value.trim()) e.preventDefault(); });
+  sync();
+}
+document.querySelectorAll('[data-search-gate]').forEach(gateSearch);
+</script>
+</body>
+</html>
