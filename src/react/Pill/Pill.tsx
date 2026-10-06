@@ -64,7 +64,9 @@ export const Pill: React.FC<PillProps> = ({
     <React.Fragment>
       {dot ? <span className="dot" /> : null}
       {icon}
-      {children != null ? <span className="pill-label">{children}</span> : null}
+      {children != null ? (
+        <span className={typeof children === 'string' && /[A-Z]/.test(children) && children === children.toUpperCase() ? 'pill-label is-caps' : 'pill-label'}>{children}</span>
+      ) : null}
       {onRemove ? (
         <span
           className="pill-x"

@@ -8,11 +8,11 @@
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
 <script src="../version.js"></script>
-<link rel="stylesheet" href="components/inputs.css?v=16">
+<link rel="stylesheet" href="components/inputs.css?v=729840">
 <link rel="stylesheet" href="components/buttons.css?v=20">
 <link rel="stylesheet" href="components/tabs.css?v=6">
 <link rel="stylesheet" href="components/number-input.css?v=6">
-<link rel="stylesheet" href="components/demo-card.css?v=5">
+<link rel="stylesheet" href="components/demo-card.css?v=6">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
   /* ============================================================
@@ -769,6 +769,25 @@
       </div>
     </article>
 
+    <!-- ─────────── 5c. Combo input · small ─────────── -->
+    <article class="demo-card">
+      <header class="demo-card-head">
+        <div>
+          <h3>Small <code>.group.group-sm</code> · <code>.pill-search-sm</code></h3>
+          <p>The toolbar size: a 32px field that lines up with the 32px buttons and date trigger around it. The inset button keeps its own 24px box, 4px clear of each edge, instead of inheriting a height tuned for the 40px field. Use a quiet variant here — <code>is-tertiary</code> or <code>is-ghost</code>: a search in a toolbar is not the screen's call to action. The button stays <code>disabled</code> until something is typed — there is nothing to search yet. Type in the fields to see it switch on. TSX: <code>size="sm"</code> on <code>Input</code>, <code>fieldSize="sm"</code> on <code>SearchPill</code>.</p>
+        </div>
+        <span class="demo-card-tag">size</span>
+      </header>
+      <div class="demo-card-canvas is-stacked">
+        <div class="state-grid">
+          <div class="state-cell"><span class="lbl">Field · tertiary action</span>
+            <div class="group group-sm"><input placeholder="Reference or counterparty" aria-label="Search" data-search-gate><button type="button" class="fix-btn r is-tertiary" disabled>Search</button></div></div>
+          <div class="state-cell"><span class="lbl">Pill · ghost action</span>
+            <div class="pill-search pill-search-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg><input type="search" placeholder="Search" aria-label="Search" data-search-gate><button type="button" class="fix-btn r is-ghost" disabled>Search</button></div></div>
+        </div>
+      </div>
+    </article>
+
     <!-- ─────────── 6. Select ─────────── -->
     <article class="demo-card">
       <header class="demo-card-head">
@@ -1224,8 +1243,8 @@
           <span class="lbl">Search button after</span>
           <div class="pill-search">
             <i data-lucide="search"></i>
-            <input placeholder="Reference, name or amount" aria-label="Search" />
-            <button type="button" class="fix-btn r is-primary">Search</button>
+            <input placeholder="Reference, name or amount" aria-label="Search" data-search-gate>
+            <button type="button" class="fix-btn r is-primary" disabled>Search</button>
           </div>
         </div>
         <div class="state-cell" style="width:100%; max-width: 480px;">
@@ -1235,8 +1254,8 @@
               <select aria-label="Search scope"><option>Payments</option><option>Counterparties</option><option>Invoices</option></select>
               <i class="chev" data-lucide="chevron-down"></i>
             </span>
-            <input placeholder="Reference or amount" aria-label="Search" />
-            <button type="button" class="fix-btn r">Search</button>
+            <input placeholder="Reference or amount" aria-label="Search" data-search-gate>
+            <button type="button" class="fix-btn r" disabled>Search</button>
           </div>
         </div>
         <div class="state-cell" style="width:100%; max-width: 480px;">
@@ -1939,6 +1958,25 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
   window.addEventListener('resize', place);
 })();
+</script>
+<script>
+document.querySelectorAll('[data-search-gate]').forEach(function (inp) {
+  var btn = inp.parentElement.querySelector('.fix-btn');
+  inp.addEventListener('input', function () { btn.disabled = !inp.value.trim(); });
+});
+</script>
+<script>
+/* A Search action has nothing to act on until the field holds text, so it starts
+   disabled and follows the value. Enter also does nothing while it is empty. */
+function gateSearch(input){
+  var btn = input.parentElement.querySelector('.fix-btn');
+  if (!btn) return;
+  var sync = function(){ btn.disabled = !input.value.trim(); };
+  input.addEventListener('input', sync);
+  input.addEventListener('keydown', function(e){ if (e.key === 'Enter' && !input.value.trim()) e.preventDefault(); });
+  sync();
+}
+document.querySelectorAll('[data-search-gate]').forEach(gateSearch);
 </script>
 </body>
 </html>

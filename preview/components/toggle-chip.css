@@ -135,3 +135,12 @@
   flex-wrap: wrap;
   gap: var(--space-2);
 }
+
+/* The label is bare text in the flex row and inherited the page line-height,
+   which put it 0.2–0.6px below centre. line-height 1 centres its em box. */
+.toggle-chip { line-height: 1; }  /* label */
+/* Same optical nudge as .dt-outline: 11px Lato in a 24px box snaps its caps
+   0.6px low. Lift the row half a pixel and hand it back to the glyphs, so only
+   the bare label moves. */
+.toggle-chip-sm { padding-bottom: 1px; }
+.toggle-chip-sm > svg, .toggle-chip-sm > i, .toggle-chip-sm > .toggle-chip-count { margin-top: 1px; }

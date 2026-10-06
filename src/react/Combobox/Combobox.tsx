@@ -20,6 +20,9 @@ export interface ComboOption {
   disabled?: boolean;
   /** Text used by the search filter when label isn't a plain string. */
   searchText?: string;
+  /** Leading glyph in the list — and the WHOLE trigger when the combobox is
+      `iconOnly` (the icon is the value in use, e.g. a sort order). */
+  icon?: React.ReactNode;
 }
 
 export type ComboboxStatus = 'default' | 'error';
@@ -59,6 +62,12 @@ export interface ComboboxProps {
       'end' for a compact control near the right edge, where growing right would
       run off the viewport. */
   align?: 'start' | 'end';
+  /** sm = 32px trigger (--control-h-sm), for a table toolbar beside sm buttons. */
+  size?: 'sm' | 'md';
+  /** Trigger shows only the selected option's icon + chevron; the label stays in
+      the DOM as sr-only, so the trigger is still announced by value. The list
+      keeps icon + text. Give every option an `icon`. */
+  iconOnly?: boolean;
   className?: string;
   style?: React.CSSProperties;
   'aria-label'?: string;
@@ -89,6 +98,8 @@ export const Combobox: React.FC<ComboboxProps> = ({
   searchPlaceholder = 'Search…',
   icon,
   status = 'default',
+  size = 'md',
+  iconOnly = false,
   filters,
   meta,
   footMeta,
@@ -212,6 +223,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
           setQ('');
         }}
       >
+        {o.icon != null ? <span className="combobox-option-icon" aria-hidden="true">{o.icon}</span> : null}
         <span className="combobox-option-content">
           <span className="combobox-option-label">{o.label}</span>
           {o.meta != null ? <span className="combobox-option-meta">{o.meta}</span> : null}
@@ -258,7 +270,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
   const tree = (
     <div
       ref={wrapRef}
-      className={['combobox', open ? 'is-open' : '', status === 'error' ? 'is-invalid' : '', className || ''].filter(Boolean).join(' ')}
+      className={['combobox', open ? 'is-open' : '', status === 'error' ? 'is-invalid' : '', size === 'sm' ? 'combobox-sm' : '', iconOnly ? 'is-icon-only' : '', className || ''].filter(Boolean).join(' ')}
       style={style}
       onKeyDown={onWrapKeyDown}
     >
@@ -271,8 +283,10 @@ export const Combobox: React.FC<ComboboxProps> = ({
         onClick={() => { setOpen((o) => !o); setActive(value); }}
         {...rest}
       >
-        {icon != null ? <span className="combobox-trigger-icon">{icon}</span> : null}
-        <span className="combobox-value">
+        {iconOnly
+          ? <span className="combobox-trigger-icon">{(selected && selected.icon) != null ? selected!.icon : icon}</span>
+          : icon != null ? <span className="combobox-trigger-icon">{icon}</span> : null}
+        <span className={iconOnly ? 'combobox-value sr-only' : 'combobox-value'}>
           {selected ? selected.label : <span className="combobox-placeholder">{placeholder}</span>}
         </span>
         <Chevron />
@@ -292,7 +306,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
       {open && pos
         ? createPortal(
             <div
-              className={['combobox', 'is-open', status === 'error' ? 'is-invalid' : '', className || ''].filter(Boolean).join(' ')}
+              className={['combobox', 'is-open', status === 'error' ? 'is-invalid' : '', size === 'sm' ? 'combobox-sm' : '', className || ''].filter(Boolean).join(' ')}
               style={{
                 /* MIN-width, not width: matching the trigger is right for a form
                    field, but as a fixed width it traps the list — a 50px chip

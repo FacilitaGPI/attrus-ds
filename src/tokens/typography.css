@@ -14,6 +14,13 @@
      Swapping the mono family = change the two lines above/below (and a product
      theme may override the pair). Set to `none` to disable the whole mechanism. */
   --font-mono-adjust: 0.5065;  /* @kind font */
+  /* Optical lift for short labels in a fixed-height box (pills, tags, badges).
+     Tuned by eye: at md and lg the label already reads centred on its dot, so
+     both are 0. The sm pill is the exception — at 10px Lato's baseline lands on
+     a fractional pixel and snaps down, leaving the text ~1px low in a 20px box. */
+  --optical-lift-sans: 0em;  /* @kind font */
+  --optical-lift-caps: 0em;  /* @kind font */
+  --optical-lift-sm: 0.06em;  /* @kind font */  /* 0.6px at 10px — tuned by eye */
   --font-display: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Weights (per manual) */

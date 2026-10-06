@@ -117,7 +117,7 @@
         <span class="index-card-desc">Horizontal, vertical, dashed, labelled. Three weights.</span>
       </a>
       <a class="index-card" href="#pill">
-        <div class="index-card-preview"><span class="pill success"><span class="dot"></span>Settled</span></div>
+        <div class="index-card-preview"><span class="pill success"><span class="dot"></span><span class="pill-label">Settled</span></span></div>
         <span class="index-card-name">Pill</span>
         <span class="index-card-desc">Compact status badge. 6 tones, 3 sizes, dot + icon variants.</span>
       </a>
@@ -419,12 +419,12 @@
         </div>
       </div>
       <div class="spec-canvas">
-        <span class="pill success"><span class="dot"></span>Settled</span>
-        <span class="pill warning"><span class="dot"></span>Pending</span>
-        <span class="pill danger"><span class="dot"></span>Failed</span>
-        <span class="pill info"><span class="dot"></span>Processing</span>
-        <span class="pill neutral"><span class="dot"></span>Draft</span>
-        <span class="pill brand"><span class="dot"></span>Live</span>
+        <span class="pill success"><span class="dot"></span><span class="pill-label">Settled</span></span>
+        <span class="pill warning"><span class="dot"></span><span class="pill-label">Pending</span></span>
+        <span class="pill danger"><span class="dot"></span><span class="pill-label">Failed</span></span>
+        <span class="pill info"><span class="dot"></span><span class="pill-label">Processing</span></span>
+        <span class="pill neutral"><span class="dot"></span><span class="pill-label">Draft</span></span>
+        <span class="pill brand"><span class="dot"></span><span class="pill-label">Live</span></span>
       </div>
     </div>
 
@@ -436,9 +436,9 @@
         </div>
       </div>
       <div class="spec-canvas">
-        <span class="pill success sm">Settled</span>
-        <span class="pill success">Settled</span>
-        <span class="pill success lg">Settled</span>
+        <span class="pill success sm"><span class="pill-label">Settled</span></span>
+        <span class="pill success"><span class="pill-label">Settled</span></span>
+        <span class="pill success lg"><span class="pill-label">Settled</span></span>
       </div>
     </div>
 
@@ -450,9 +450,9 @@
         </div>
       </div>
       <div class="spec-canvas spec-canvas-stack">
-        <div class="row"><span class="legend" style="width: 100px; margin: 0;">dot</span><span class="pill success"><span class="dot"></span>Settled</span><span class="pill warning"><span class="dot"></span>Pending</span><span class="pill danger"><span class="dot"></span>Failed</span></div>
-        <div class="row"><span class="legend" style="width: 100px; margin: 0;">icon</span><span class="pill success"><i data-lucide="check"></i>Approved</span><span class="pill warning"><i data-lucide="clock"></i>Awaiting</span><span class="pill danger"><i data-lucide="x"></i>Failed</span></div>
-        <div class="row"><span class="legend" style="width: 100px; margin: 0;">bare</span><span class="pill neutral">PIX</span><span class="pill neutral">SWIFT</span><span class="pill neutral">ACH</span><span class="pill neutral">WIRE</span></div>
+        <div class="row"><span class="legend" style="width: 100px; margin: 0;">dot</span><span class="pill success"><span class="dot"></span><span class="pill-label">Settled</span></span><span class="pill warning"><span class="dot"></span><span class="pill-label">Pending</span></span><span class="pill danger"><span class="dot"></span><span class="pill-label">Failed</span></span></div>
+        <div class="row"><span class="legend" style="width: 100px; margin: 0;">icon</span><span class="pill success"><i data-lucide="check"></i><span class="pill-label">Approved</span></span><span class="pill warning"><i data-lucide="clock"></i><span class="pill-label">Awaiting</span></span><span class="pill danger"><i data-lucide="x"></i><span class="pill-label">Failed</span></span></div>
+        <div class="row"><span class="legend" style="width: 100px; margin: 0;">bare</span><span class="pill neutral"><span class="pill-label is-caps">PIX</span></span><span class="pill neutral"><span class="pill-label is-caps">SWIFT</span></span><span class="pill neutral"><span class="pill-label is-caps">ACH</span></span><span class="pill neutral"><span class="pill-label is-caps">WIRE</span></span></div>
       </div>
     </div>
   </section>
@@ -514,7 +514,7 @@
 
       <div class="dont-card">
         <div class="dont-card-canvas">
-          <span class="pill" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); text-transform: none; font-family: var(--font-sans); font-weight: var(--w-medium); letter-spacing: 0;">Settled successfully</span>
+          <span class="pill" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); text-transform: none; font-family: var(--font-sans); font-weight: var(--w-medium); letter-spacing: 0;"><span class="pill-label">Settled successfully</span></span>
         </div>
         <div class="dont-card-body">
           <i data-lucide="x-circle"></i>

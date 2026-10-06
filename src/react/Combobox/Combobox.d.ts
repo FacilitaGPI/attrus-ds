@@ -13,6 +13,7 @@ export interface ComboOption {
   disabled?: boolean;
   /** Text used by the search filter when label isn't a plain string. */
   searchText?: string;
+  icon?: React.ReactNode;
 }
 
 export type ComboboxStatus = 'default' | 'error';
@@ -50,6 +51,8 @@ export interface ComboboxProps {
       needs a direction: 'start' grows right (default), 'end' grows left. Use
       'end' for a compact control near the right edge. */
   align?: 'start' | 'end';
+  size?: 'sm' | 'md';
+  iconOnly?: boolean;
   className?: string;
   style?: React.CSSProperties;
   'aria-label'?: string;

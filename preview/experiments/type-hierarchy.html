@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Experimento · Hierarquia tipográfica · ATTRUS</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<link rel="stylesheet" href="../../themes/index.css?v=1">
+<link rel="stylesheet" href="../components/demo-card.css?v=6">
+<link rel="stylesheet" href="../components/buttons.css?v=20">
+<link rel="stylesheet" href="../components/cards.css">
+<link rel="stylesheet" href="../components/callout.css?v=13">
+<link rel="stylesheet" href="../components/toast.css">
+<link rel="stylesheet" href="../components/overlays.css">
+<script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1120px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .doc-head { margin-bottom: var(--space-8); }
+  .doc-head .eyebrow { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-accent); }
+  .doc-head h1 { font-size: var(--fs-4xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: var(--space-2) 0 var(--space-3); }
+  .doc-head p { font-size: var(--fs-base); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 70ch; margin: 0; }
+  .theme-btn { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; height: 36px; padding: 0 var(--space-4); border-radius: var(--radius-pill); border: var(--border-hairline) solid var(--color-border-default); background: var(--color-background-surface); color: var(--color-foreground-secondary); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; }
+  section { margin-bottom: var(--space-10); }
+  section > h2 { font-size: var(--fs-2xl); font-weight: var(--w-bold); margin: 0 0 var(--space-2); }
+  section > p { font-size: var(--fs-md); color: var(--color-foreground-secondary); margin: 0 0 var(--space-5); max-width: 72ch; line-height: var(--lh-relaxed); }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+  @media (max-width: 860px) { .pair { grid-template-columns: 1fr; } }
+  .col-lbl { display: flex; align-items: center; gap: var(--space-2); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+  .col-lbl .dot { width: 8px; height: 8px; border-radius: var(--radius-pill); background: var(--color-border-strong); }
+  .col-lbl.is-new { color: var(--color-foreground-accent); }
+  .col-lbl.is-new .dot { background: var(--color-accent-solid); }
+  .stack { display: flex; flex-direction: column; gap: var(--space-4); }
+  .roles { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  .roles th, .roles td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: var(--border-hairline) solid var(--color-border-subtle); vertical-align: middle; }
+  .roles thead th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); }
+  .roles tr:last-child td { border-bottom: 0; }
+  .roles code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .roles .spec { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-secondary); white-space: nowrap; }
+
+  /* ---------- static frames so overlays render in flow ---------- */
+  .panel { background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); overflow: hidden; }
+  .panel .modal-header, .panel .drawer-header { position: static; }
+  .toast-static { position: static !important; transform: none !important; opacity: 1 !important; max-width: none; }
+  .mini-card { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); }
+  .mini-card .row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+
+  /* ======================================================================
+     CURRENT — what components render today, reproduced for the mini card
+     ====================================================================== */
+  .ty-cur .mc-title { font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-default); }
+  .ty-cur .mc-body  { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-snug); }
+  .ty-cur .mc-meta  { font-size: var(--fs-sm); color: var(--color-foreground-muted); }
+  .ty-cur .mc-label { font-size: var(--fs-sm); color: var(--color-foreground-secondary); }
+
+  /* ======================================================================
+     PROPOSED — semantic text roles. Each adjacent level differs on at
+     least two of three axes: size, weight, colour.
+     ====================================================================== */
+  .ty-new {
+    --t-title-fs: var(--fs-base);   --t-title-w: var(--w-bold);    --t-title-lh: var(--lh-tight);
+    --t-body-fs:  var(--fs-md);     --t-body-lh: var(--lh-snug);
+    --t-meta-fs:  var(--fs-sm);
+    --t-label-fs: var(--fs-sm);
+    --t-gap:      var(--space-2-5);
+  }
+  /* mini card */
+  .ty-new .mc-title { font-size: var(--t-title-fs); font-weight: var(--t-title-w); line-height: var(--t-title-lh); color: var(--color-foreground-default); }
+  .ty-new .mc-body  { font-size: var(--t-body-fs); line-height: var(--t-body-lh); color: var(--color-foreground-secondary); }
+  .ty-new .mc-meta  { font-size: var(--t-meta-fs); color: var(--color-foreground-muted); }
+  .ty-new .mc-label { font-size: var(--t-label-fs); color: var(--color-foreground-default); }
+  .ty-new .mini-card { gap: var(--t-gap); }
+
+  /* callout */
+  .ty-new .callout-title { font-size: var(--t-title-fs); font-weight: var(--t-title-w); line-height: var(--t-title-lh); }
+  .ty-new .callout-content { gap: var(--t-gap); }
+  .ty-new .callout-body { font-size: var(--t-body-fs); line-height: var(--t-body-lh); }
+  .ty-new .callout-body strong { font-weight: var(--w-bold); }
+  /* keep the icon and X on the new first line */
+  .ty-new .callout:not(.callout-bar):not(.callout-sm) > svg { margin-top: calc((var(--fs-md) * var(--lh-snug) - 18px) / 2); }
+  .ty-new .callout:has(.callout-title):not(.callout-sm):not(.callout-bar) > svg { margin-top: calc((var(--fs-base) * var(--lh-tight) - 18px) / 2); }
+  .ty-new .callout:not(.callout-bar):not(.callout-sm) .callout-dismiss { margin-top: calc((var(--fs-md) * var(--lh-snug) - 26px) / 2); margin-bottom: calc((var(--fs-md) * var(--lh-snug) - 26px) / 2); }
+  .ty-new .callout:has(.callout-title):not(.callout-bar):not(.callout-sm) .callout-dismiss { margin-top: calc((var(--fs-base) * var(--lh-tight) - 26px) / 2); margin-bottom: calc((var(--fs-base) * var(--lh-tight) - 26px) / 2); }
+  .ty-new .callout-sm .callout-body { font-size: var(--fs-sm); }
+  .ty-new .callout-sm > svg { margin-top: calc((var(--fs-sm) * var(--lh-snug) - 16px) / 2); }
+  .ty-new .callout-sm .callout-dismiss { margin-top: calc((var(--fs-sm) * var(--lh-snug) - 20px) / 2); margin-bottom: calc((var(--fs-sm) * var(--lh-snug) - 20px) / 2); }
+
+  /* toast */
+  .ty-new .toast-title { font-size: var(--t-title-fs); font-weight: var(--t-title-w); }
+  .ty-new .toast-desc  { font-size: var(--t-body-fs); line-height: var(--t-body-lh); }
+
+  /* drawer / modal header */
+  .ty-new .drawer-title, .ty-new .modal-title { font-weight: var(--w-bold); }
+  .ty-new .drawer-subtitle, .ty-new .modal-subtitle { font-size: var(--t-meta-fs); color: var(--color-foreground-muted); }
+</style>
+</head>
+<body>
+<button class="theme-btn" data-theme-toggle><span data-theme-label>Dark</span></button>
+
+<main class="doc">
+  <header class="doc-head">
+    <div class="eyebrow">Experimento · não faz parte do DS</div>
+    <h1>Hierarquia tipográfica</h1>
+    <p>Atual à esquerda e proposta à direita, nos mesmos componentes e com o mesmo texto. Na proposta, dois níveis vizinhos diferem em pelo menos dois de três eixos: tamanho, peso e cor. Hoje título e corpo diferem só em 1px e na cor.</p>
+  </header>
+
+  <section>
+    <h2>Papéis</h2>
+    <p>Os componentes passam a usar estes papéis em vez de combinar tamanho, peso e cor por conta própria.</p>
+    <div class="demo-card">
+      <div class="demo-card-canvas is-flush">
+        <table class="roles">
+          <thead><tr><th>Papel</th><th>Uso</th><th>Atual</th><th>Proposta</th></tr></thead>
+          <tbody>
+            <tr><td><code>title</code></td><td>Título de card, callout e toast</td><td class="spec">callout e card 13 · 400 · toast 12 · 400</td><td class="spec">14 · 700 · default</td></tr>
+            <tr><td><code>heading</code></td><td>Título de drawer e modal (já hierárquico)</td><td class="spec">16 · 700 · default</td><td class="spec">sem mudança</td></tr>
+            <tr><td><code>body</code></td><td>Texto corrido</td><td class="spec">12 · 400 · secondary</td><td class="spec">13 · 400 · secondary</td></tr>
+            <tr><td><code>emphasis</code></td><td><code>&lt;strong&gt;</code> no meio do texto</td><td class="spec">herda · 400 · default</td><td class="spec">herda · 700 · default</td></tr>
+            <tr><td><code>label</code></td><td>Rótulo de campo ou dado</td><td class="spec">12 · 400 · secondary</td><td class="spec">12 · 400 · default</td></tr>
+            <tr><td><code>meta</code></td><td>Data, contagem, detalhe</td><td class="spec">12 · 400 · muted</td><td class="spec">12 · 400 · muted</td></tr>
+            <tr><td><code>gap</code></td><td>Espaço entre título e corpo</td><td class="spec">4px</td><td class="spec">6px</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Callout</h2>
+    <p>O caso mais visível: no atual, o título quase não se distingue do corpo, e o <code>&lt;strong&gt;</code> do início da frase é só uma mudança de cor.</p>
+    <div class="pair">
+      <div class="ty-cur">
+        <div class="col-lbl"><span class="dot"></span>Atual</div>
+        <div class="stack">
+          <div class="callout callout-warn"><svg data-lucide="alert-triangle"></svg>
+            <div class="callout-content">
+              <div class="callout-title">Documentos pendentes</div>
+              <div class="callout-body">Envie o contrato social e o comprovante de endereço para liberar transferências acima de US$ 10.000.</div>
+              <div class="callout-actions"><button class="btn btn-secondary btn-sm">Enviar documentos</button></div>
+            </div>
+            <button class="callout-dismiss" aria-label="Dismiss"><svg data-lucide="x"></svg></button>
+          </div>
+          <div class="callout"><svg data-lucide="info"></svg><div class="callout-body"><strong>Câmbio travado.</strong> A taxa de 5,4120 vale por 30 minutos a partir da confirmação.</div></div>
+          <div class="callout callout-neutral callout-sm"><svg data-lucide="info"></svg><div class="callout-body"><strong>Horário bancário.</strong> TEDs após 17h liquidam no próximo dia útil.</div><button class="callout-dismiss" aria-label="Dismiss"><svg data-lucide="x"></svg></button></div>
+        </div>
+      </div>
+      <div class="ty-new">
+        <div class="col-lbl is-new"><span class="dot"></span>Proposta</div>
+        <div class="stack">
+          <div class="callout callout-warn"><svg data-lucide="alert-triangle"></svg>
+            <div class="callout-content">
+              <div class="callout-title">Documentos pendentes</div>
+              <div class="callout-body">Envie o contrato social e o comprovante de endereço para liberar transferências acima de US$ 10.000.</div>
+              <div class="callout-actions"><button class="btn btn-secondary btn-sm">Enviar documentos</button></div>
+            </div>
+            <button class="callout-dismiss" aria-label="Dismiss"><svg data-lucide="x"></svg></button>
+          </div>
+          <div class="callout"><svg data-lucide="info"></svg><div class="callout-body"><strong>Câmbio travado.</strong> A taxa de 5,4120 vale por 30 minutos a partir da confirmação.</div></div>
+          <div class="callout callout-neutral callout-sm"><svg data-lucide="info"></svg><div class="callout-body"><strong>Horário bancário.</strong> TEDs após 17h liquidam no próximo dia útil.</div><button class="callout-dismiss" aria-label="Dismiss"><svg data-lucide="x"></svg></button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Card de dado</h2>
+    <p>Título, rótulo, valor e meta. No atual, rótulo e meta se confundem com o corpo. Na proposta, o rótulo fica na cor default, a meta fica muted e o título sobe de peso.</p>
+    <div class="pair">
+      <div class="ty-cur">
+        <div class="col-lbl"><span class="dot"></span>Atual</div>
+        <div class="card"><div class="mini-card">
+          <div class="mc-title">Conta USD · Chase</div>
+          <div class="mc-body">Recebimentos internacionais e pagamentos a fornecedores no exterior.</div>
+          <div class="row"><span class="mc-label">Saldo disponível</span><span class="mc-label">US$ 248.900,00</span></div>
+          <div class="mc-meta">Atualizado há 3 minutos</div>
+        </div></div>
+      </div>
+      <div class="ty-new">
+        <div class="col-lbl is-new"><span class="dot"></span>Proposta</div>
+        <div class="card"><div class="mini-card">
+          <div class="mc-title">Conta USD · Chase</div>
+          <div class="mc-body">Recebimentos internacionais e pagamentos a fornecedores no exterior.</div>
+          <div class="row"><span class="mc-label">Saldo disponível</span><span class="mc-label">US$ 248.900,00</span></div>
+          <div class="mc-meta">Atualizado há 3 minutos</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Toast</h2>
+    <p>No toast o tempo de leitura é curto: o título precisa ser lido primeiro.</p>
+    <div class="pair">
+      <div class="ty-cur">
+        <div class="col-lbl"><span class="dot"></span>Atual</div>
+        <div class="toast toast-success toast-static" role="status">
+          <span class="toast-icon"><i data-lucide="check-circle-2"></i></span>
+          <div class="toast-body"><div class="toast-title">Transferência enviada</div><div class="toast-desc">US$ 18.750,00 para Global Supplies LLC · liquida hoje.</div></div>
+        </div>
+      </div>
+      <div class="ty-new">
+        <div class="col-lbl is-new"><span class="dot"></span>Proposta</div>
+        <div class="toast toast-success toast-static" role="status">
+          <span class="toast-icon"><i data-lucide="check-circle-2"></i></span>
+          <div class="toast-body"><div class="toast-title">Transferência enviada</div><div class="toast-desc">US$ 18.750,00 para Global Supplies LLC · liquida hoje.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Cabeçalho de drawer</h2>
+    <p>O título do drawer já é 16px em bold e não muda. A única mudança é o subtítulo, que passa ao papel meta (cor muted). Assim título e subtítulo diferem nos três eixos: tamanho, peso e cor.</p>
+    <div class="pair">
+      <div class="ty-cur">
+        <div class="col-lbl"><span class="dot"></span>Atual</div>
+        <div class="panel"><div class="drawer-header"><div class="drawer-header-text"><div class="drawer-title">Detalhes da transação</div><div class="drawer-subtitle">TX-90412 · 12 ago 2026</div></div></div></div>
+      </div>
+      <div class="ty-new">
+        <div class="col-lbl is-new"><span class="dot"></span>Proposta</div>
+        <div class="panel"><div class="drawer-header"><div class="drawer-header-text"><div class="drawer-title">Detalhes da transação</div><div class="drawer-subtitle">TX-90412 · 12 ago 2026</div></div></div></div>
+      </div>
+    </div>
+  </section>
+</main>
+<script>lucide.createIcons();</script>
+</body>
+</html>

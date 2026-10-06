@@ -431,22 +431,27 @@ export const DTSubrowLead: React.FC<{
 /** Disclosure control for a collapsible subrow group — put it in the parent's
     lead cell. Wire `controls` to the subrow's id so `aria-controls` resolves. */
 export const DTSubrowToggle: React.FC<{
-  expanded: boolean;
-  onToggle: () => void;
-  controls: string;
+  expanded?: boolean;
+  onToggle?: () => void;
+  controls?: string;
+  /** Holds the chevron's 20px on a row WITHOUT children, so names in a column
+      line up whether or not the row expands. Renders nothing interactive. */
+  spacer?: boolean;
   /** Announced as "Show 2 items" / "Hide 2 items". */
   count?: number;
   label?: string;
 } & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'aria-expanded'>> = ({
-  expanded, onToggle, controls, count, label, className, ...rest
-}) => (
+  expanded = false, onToggle, controls, count, label, spacer, className, ...rest
+}) => spacer ? (
+  <span className={['dt-subrow-toggle', 'is-spacer', className || ''].filter(Boolean).join(' ')} aria-hidden="true" />
+) : (
   <button
     type="button"
     className={['dt-subrow-toggle', className || ''].filter(Boolean).join(' ')}
     aria-expanded={expanded}
     aria-controls={controls}
     aria-label={(expanded ? 'Hide' : 'Show') + ' ' + (count != null ? count + ' ' : '') + (label || 'linked items')}
-    onClick={(e) => { e.stopPropagation(); onToggle(); }}
+    onClick={(e) => { e.stopPropagation(); if (onToggle) onToggle(); }}
     {...rest}
   >
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -682,23 +687,74 @@ export interface DTParentRowProps extends React.HTMLAttributes<HTMLTableRowEleme
   /** The group's kind: subrows share the parent's columns, a detail panel does not. */
   kind?: 'subrows' | 'detail';
   open?: boolean;
-  /** Whole-row disclosure — adds role/tabindex and the pointer affordance. */
+  /** Whole-row disclosure (rowAction="toggle") — adds role/tabindex and the
+      pointer affordance. With rowAction="open" only the chevron toggles. */
   onToggle?: () => void;
   controls?: string;
+  /** What a click on the ROW does.
+      "toggle" (default) — the row is the disclosure; the chevron is decorative.
+      "open" — the row opens something (a detail drawer); only the chevron
+      (DTSubrowToggle) collapses the group. The row is not a button itself —
+      put the name in a DTRowButton so the action has a keyboard handle. */
+  rowAction?: 'toggle' | 'open';
+  /** Called when rowAction="open" and the row is clicked. */
+  onOpen?: () => void;
 }
-export const DTParentRow: React.FC<DTParentRowProps> = ({ children, kind = 'subrows', open, onToggle, controls, className, ...rest }) => (
-  <tr
-    className={[kind === 'detail' ? 'has-detail' : 'has-subrows', onToggle ? 'is-collapsible is-clickable' : '', open ? 'is-open' : '', className || ''].filter(Boolean).join(' ')}
-    role={onToggle ? 'button' : undefined}
-    tabIndex={onToggle ? 0 : undefined}
-    aria-expanded={onToggle ? !!open : undefined}
-    aria-controls={controls}
-    onClick={onToggle}
-    onKeyDown={onToggle ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onToggle(); } } : undefined}
+export const DTParentRow: React.FC<DTParentRowProps> = ({ children, kind = 'subrows', open, onToggle, controls, rowAction = 'toggle', onOpen, className, ...rest }) => {
+  const opens = rowAction === 'open';
+  const toggles = !opens && !!onToggle;
+  return (
+    <tr
+      className={[
+        kind === 'detail' ? 'has-detail' : 'has-subrows',
+        onToggle ? 'is-collapsible' : '',
+        toggles ? 'is-clickable' : '',
+        opens ? 'is-actionable' : '',
+        open ? 'is-open' : '',
+        className || '',
+      ].filter(Boolean).join(' ')}
+      role={toggles ? 'button' : undefined}
+      tabIndex={toggles ? 0 : undefined}
+      aria-expanded={toggles ? !!open : undefined}
+      aria-controls={toggles ? controls : undefined}
+      onClick={toggles ? onToggle : opens ? onOpen : undefined}
+      onKeyDown={toggles ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onToggle!(); } } : undefined}
+      {...rest}
+    >
+      {children}
+    </tr>
+  );
+};
+
+/** "Showing n of total" strip, first child of .dt-wrap above DTToolbar. Renders
+    only while `filtered` (any applied filter, incl. a status tab other than All);
+    takes no space otherwise. The live region announces the new count. */
+export const DTFilteredBand: React.FC<{
+  filtered: boolean;
+  /** e.g. "Showing 3 of 8" — or the long form "Showing 3 of 8 transfers · 2 fees". */
+  children?: React.ReactNode;
+  className?: string;
+}> = ({ filtered, children, className }) => (
+  <div className={['dt-filtered', filtered ? 'is-open' : '', className || ''].filter(Boolean).join(' ')} aria-hidden={!filtered}>
+    <div className="dt-filtered-inner" aria-live="polite">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" /></svg>
+      <span>{filtered ? children : null}</span>
+    </div>
+  </div>
+);
+
+/** The keyboard handle of a row whose click opens something (rowAction="open"):
+    the name rendered as a real <button> that looks like the text it replaces. It
+    stops propagation so the row's own onClick does not fire a second time. */
+export const DTRowButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({ children, className, onClick, ...rest }) => (
+  <button
+    type="button"
+    className={['dt-row-button', className || ''].filter(Boolean).join(' ')}
+    onClick={(e) => { e.stopPropagation(); if (onClick) onClick(e); }}
     {...rest}
   >
     {children}
-  </tr>
+  </button>
 );
 
 /* Slot markers, set after both declarations exist. DataTable reads these to tell

@@ -270,7 +270,22 @@
    ---------------------------------------------------------------- */
 .dt tbody tr {
   border-bottom: 1px solid var(--color-border-subtle);
-  transition: background var(--transition-fast);
+}
+/* Row hover fades in and out. Hover is painted on the <tr> by some rules and on
+   its cells by others (subrow groups, detail rows, actionable rows), so both
+   carry the transition — a fade on the row alone left those snapping. In is
+   quick so the row answers the pointer; out is slower so moving down a column
+   reads as one continuous wash instead of a flicker. */
+.dt tbody tr,
+.dt tbody tr > td {
+  transition: background-color var(--duration-slower) var(--ease-standard);
+}
+.dt tbody tr:hover,
+.dt tbody tr:hover > td {
+  transition-duration: var(--duration-base);
+}
+@media (prefers-reduced-motion: reduce) {
+  .dt tbody tr, .dt tbody tr > td { transition: none; }
 }
 .dt tbody tr:last-child { border-bottom: 0; }
 
@@ -935,11 +950,9 @@
   opacity: 1;
 }
 
-/* A closed group must not glue to the parent — the parent keeps its own border
-   until the group opens, otherwise two collapsed rows read as one. */
-.dt tbody tr.has-subrows.is-collapsible:not(.is-open) > td {
-  border-bottom: 1px solid var(--color-border-default);
-}
+/* A closed group keeps only the row's own hairline — the chevron already says
+   there is more. A second border on the cells stacked on top of it and read as
+   a heavier underline under every expandable row. */
 
 /* Disclosure control — sits in the parent's lead cell */
 .dt-subrow-toggle {
@@ -1218,7 +1231,11 @@ a.dt-detail-card:focus-visible { outline: none; box-shadow: var(--shadow-focus);
 .dt-toolbar.dt-toolbar-sm { min-height: calc(var(--control-h-sm) + 2 * var(--space-4) + var(--border-hairline)); padding: var(--space-4) var(--space-4); }
 .dt-toolbar-lead { display: inline-flex; align-items: baseline; gap: var(--space-2); min-width: 0; }
 .dt-toolbar-filters { display: inline-flex; align-items: center; gap: var(--space-2); min-width: 0; flex: 1 1 auto; }
-.dt-toolbar-actions { margin-left: auto; display: inline-flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
+.dt-toolbar-actions { margin-left: auto; display: inline-flex; align-items: center; gap: var(--space-2); flex-shrink: 0;
+  /* Pinned to the FIRST row: when the filters grow a second row (an apply bar,
+     a wrapped chip set) the actions must not drift down to the middle. Order is
+     sort | expand/collapse | exports. */
+  align-self: flex-start; }
 /* Selection mode keeps the toolbar on the surface colour. The tint marks WHAT
    is selected; repeating it on the chrome dilutes that signal and the bar stops
    reading as chrome at all. The state is carried by content instead — the count
@@ -1380,3 +1397,100 @@ a.dt-detail-card:focus-visible { outline: none; box-shadow: var(--shadow-focus);
 .dt-outline-set { display: inline-flex; flex-wrap: wrap; gap: var(--space-2); }
 .dt.on-inverse .dt-outline,
 .dark .dt .dt-outline { border-color: var(--color-border-inverse); color: var(--color-foreground-inverse-default); }
+
+/* Optical centring for small labels. A badge that inherits a tall line-height
+   (15px on 10px type) is centred on its LINE BOX, and JetBrains Mono carries its
+   ink high in that box — the caps sat 0.7px above centre. The pill model fixes it:
+   line-height 1 inside a fixed-height flex box, which centres the glyph's em box.
+   Heights are unchanged. */
+.dt-subrow-count { display: inline-flex; align-items: center; line-height: 1; height: 17px; padding-top: 0; padding-bottom: 0; box-sizing: border-box; }
+/* Optical nudge. Lato's cap centre sits ~0.3px below its em centre at 11px and
+   pixel-snapping doubled it, so the bare label read 0.6px below the flag. The
+   label is bare text and cannot be targeted, so the row lifts by half a pixel
+   (1px off the bottom of a fixed-height box) and the flag / icon are handed that
+   half-pixel back — only the text moves. */
+.dt-outline { line-height: 1; padding-bottom: 1px; }
+.dt-outline > .flag, .dt-outline > svg, .dt-outline > i, .dt-outline > img { margin-top: 1px; }
+
+/* ----------------------------------------------------------------
+   GROUP DIVIDER META — the summary on the right of a day/section divider
+   ---------------------------------------------------------------- */
+/* Shipped in DTGroupDivider since 1.0.13 with no rule, so the meta ran straight
+   into the label. Floated right (a <td> cannot be a flex row without breaking the
+   table), muted, tabular so day totals line up down the ledger. */
+.dt-row-divider-meta {
+  float: right;
+  margin-left: var(--space-4);
+  color: var(--color-foreground-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ----------------------------------------------------------------
+   ROW ACTION "OPEN" — the row opens something; only the chevron toggles
+   ---------------------------------------------------------------- */
+.dt tbody tr.has-subrows.is-actionable,
+.dt tbody tr.has-detail.is-actionable { cursor: pointer; }
+.dt tbody tr.is-actionable:hover > td { background: var(--color-background-hover); }
+/* The chevron is a live control here (unlike rowAction="toggle"). */
+.dt tbody tr.is-actionable .dt-subrow-toggle { pointer-events: auto; }
+/* The name as a button: looks like the text it replaces, owns the focus ring. */
+.dt-row-button {
+  appearance: none; background: none; border: 0; padding: 0; margin: 0;
+  font: inherit; color: inherit; text-align: inherit; letter-spacing: inherit;
+  cursor: pointer; border-radius: var(--radius-xs);
+}
+.dt-row-button:hover { text-decoration: underline; text-underline-offset: 2px; }
+.dt-row-button:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+
+/* ----------------------------------------------------------------
+   TOGGLE SPACER — the chevron's footprint on a row without children
+   ---------------------------------------------------------------- */
+.dt-subrow-toggle.is-spacer { display: inline-block; width: 20px; height: 20px; flex-shrink: 0; pointer-events: none; }
+
+/* ----------------------------------------------------------------
+   LEDGER PATTERN — running balance column
+   ---------------------------------------------------------------- */
+/* Any open-action row (with or without children) takes the pointer; the
+   has-subrows-only rule above covers the parent of a group. */
+.dt tbody tr.is-actionable { cursor: pointer; }
+/* The balance after the entry: the same mono figure as the amount, demoted to
+   regular weight and muted — it is context, the amount is the fact. An entry
+   that has not settled moved no money, so it shows "—" (.is-empty). */
+.dt td.dt-num.dt-balance { font-weight: var(--w-regular); color: var(--color-foreground-muted); }
+.dt td.dt-num.dt-balance.is-empty { color: var(--color-foreground-disabled); }
+/* A void row's balance is not struck: there is nothing to annul, just no value. */
+.dt tbody tr.is-muted td.dt-num.dt-balance { text-decoration: none; }
+
+/* ----------------------------------------------------------------
+   FILTERED BAND — "Showing n of total", above the toolbar
+   ----------------------------------------------------------------
+   A thin strip inside .dt-wrap, above DTToolbar, that exists only while a filter
+   is applied (a status tab other than All counts). Neutral on purpose: it is a
+   state note, not an alert. grid 0fr → 1fr so it takes no space when closed.
+   Use it when the count does not need a fixed place in the toolbar lead; keep
+   the lead count when the total is always worth reading. */
+.dt-filtered {
+  display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-base) var(--ease-entrance);
+}
+.dt-filtered.is-open { grid-template-rows: 1fr; }
+.dt-filtered-inner {
+  min-height: 0; overflow: hidden;
+  display: flex; align-items: center; gap: var(--space-2);
+  background: var(--color-background-subtle);
+  color: var(--color-foreground-secondary);
+  font-size: var(--fs-xs); line-height: 1; font-variant-numeric: tabular-nums;
+}
+.dt-filtered.is-open .dt-filtered-inner {
+  padding: var(--space-2) var(--space-5);
+  border-bottom: var(--border-hairline) solid var(--color-border-subtle);
+}
+.dt-filtered-inner > svg { width: 13px; height: 13px; flex-shrink: 0; stroke-width: var(--icon-stroke); }
+@media (prefers-reduced-motion: reduce) { .dt-filtered { transition: none; } }
+
+/* A closed subrow is a 1px-tall row that still carried its own hairlines (the
+   row's, and the group-closing one on .is-last), so they stacked under the
+   parent's and read as a heavier underline. Closed, it draws nothing; the
+   parent's hairline is the only separator until the group opens. */
+.dt tbody tr.dt-subrow.is-collapsible:not(.is-open),
+.dt tbody tr.dt-subrow.is-collapsible:not(.is-open) > td { border-bottom: 0; border-top: 0; }

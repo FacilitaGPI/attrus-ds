@@ -42,12 +42,19 @@
   align-self: center;
 }
 
-/* Label wrapper — runtime-injected; nudges text up 0.5px to compensate for
-   Lato's optical descender offset, leaving the dot at geometric centre. */
+/* Label lift — moves the text only, so dot, icon and remove stay centred on the
+   box. Sentence-case Lato reads by its lowercase mass, which a box that centres
+   the cap band leaves ~1.2px low; the token lands the label between the cap and
+   x-height bands, where the eye places it. */
 .pill > .pill-label {
   display: inline-block;
-  transform: translateY(-0.5px);
+  transform: translateY(calc(-1 * var(--optical-lift-sans, 0em)));
 }
+/* All caps reads by the cap band, which is already level with the dot. */
+.pill > .pill-label.is-caps,
+.pill.is-caps > .pill-label,
+.pill[style*="uppercase"] > .pill-label,
+.pill > .pill-label[style*="uppercase"] { transform: translateY(calc(-1 * var(--optical-lift-caps, 0em))); }
 
 /* Trailing icon (e.g. clock, arrow) */
 .pill > i, .pill > svg,
@@ -205,3 +212,15 @@
   cursor: not-allowed;
   pointer-events: none;
 }
+
+/* Optical centre for mixed-case labels. Glyphs were centred on the CAP height
+   (geometric error 0.06px), but labels are sentence case — "Approved",
+   "Pending" — and the eye weighs the x-height, ~0.11em lower, so the label read
+   low against the dot. Glyphs drop half that gap (0.055em ≈ 0.6px at 11px),
+   landing between cap and x-height. In em, so it scales with every pill size. */
+.pill > .dot, .pill > svg, .pill > i, .pill > .pill-x, .pill > button { transform: translateY(0.055em); }
+
+/* sm only: the 10px baseline snaps down a pixel in a 20px box, so the label —
+   in either case — gets its own lift. */
+.pill.sm > .pill-label,
+.pill.sm > .pill-label.is-caps { transform: translateY(calc(-1 * var(--optical-lift-sm, 0.06em))); }

@@ -69,15 +69,21 @@
 .callout-icon {
   flex-shrink: 0;
   align-self: flex-start;
-  /* Optical: pull the 18px glyph onto the cap line of the first row of text
-     (line-height 15.6px), rather than centring it on the whole block. */
-  margin-top: -1px;
   width: 18px;
   height: 18px;
-  flex-shrink: 0;
-  margin-top: 1px;
+  /* Centre the 18px glyph on the FIRST line of text, not on the block. The
+     offset derives from that line's own tokens, so it holds if the type scale
+     changes. (This rule used to declare margin-top twice — -1px, then 1px —
+     and the second won, leaving the icon 2.2px below the line.) */
+  margin-top: calc((var(--fs-sm) * var(--lh-snug) - 18px) / 2);
   color: var(--callout-fg);
   stroke-width: var(--icon-stroke);
+}
+/* Rich callout: the first line is the title, which sits on its own scale */
+.callout:has(.callout-title):not(.callout-sm):not(.callout-bar) > i,
+.callout:has(.callout-title):not(.callout-sm):not(.callout-bar) > svg,
+.callout:has(.callout-title):not(.callout-sm):not(.callout-bar) > .callout-icon {
+  margin-top: calc((var(--fs-md) * var(--lh-tight) - 18px) / 2);
 }
 
 /* content column — wrap title + body + actions for rich callouts */
@@ -173,6 +179,17 @@
 }
 .callout-dismiss:hover { background: color-mix(in srgb, var(--callout-tint) 14%, transparent); color: var(--color-foreground-default); }
 .callout-dismiss > i, .callout-dismiss > svg { width: 16px; height: 16px; stroke-width: var(--icon-stroke); }
+/* Centre the 26px dismiss on the first line (body, or title in a rich callout)
+   and hand the overhang back at the bottom, so it neither sits below the text
+   nor stretches a one-line callout. The bar and the small size own their own. */
+.callout:not(.callout-bar):not(.callout-sm) .callout-dismiss {
+  margin-top: calc((var(--fs-sm) * var(--lh-snug) - 26px) / 2);
+  margin-bottom: calc((var(--fs-sm) * var(--lh-snug) - 26px) / 2);
+}
+.callout:has(.callout-title):not(.callout-bar):not(.callout-sm) .callout-dismiss {
+  margin-top: calc((var(--fs-md) * var(--lh-tight) - 26px) / 2);
+  margin-bottom: calc((var(--fs-md) * var(--lh-tight) - 26px) / 2);
+}
 
 /* ---- tonal variants ---- */
 .callout-warn    { --callout-tint: var(--color-warning-500); --callout-fg: var(--color-feedback-warning-foreground); }
@@ -191,6 +208,39 @@
 .callout-sm > i, .callout-sm > svg, .callout-sm .callout-icon { width: 16px; height: 16px; }
 .callout-sm .callout-body { font-size: var(--fs-xs); }
 .callout-sm .callout-title { font-size: var(--fs-sm); }
+/* Optical alignment for the small size. The base offsets were tuned for an 18px
+   glyph on a ~15.6px line; at sm the line is ~14.3px, so they left the icon 2px
+   and the X 4px below the text, and the 26px dismiss stretched a one-line
+   callout. Each is re-centred on the FIRST line (still flex-start, so a wrapping
+   message keeps them on line one, not the block's middle):
+     the small line is 11px × 1.3 = 14.3px (measured — not --lh-normal)
+     icon: (14.3 − 16) / 2         → −0.85px
+     X:    a 20px box, (14.3 − 20)/2 → −2.85px top
+   The dismiss keeps a 26px hit area through ::before, so the target does not
+   shrink — only its layout footprint does. */
+.callout-sm > i, .callout-sm > svg, .callout-sm .callout-icon {
+  margin-top: calc((var(--fs-xs) * var(--lh-snug) - 16px) / 2);
+}
+.callout-sm .callout-dismiss {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin: calc((var(--fs-xs) * var(--lh-snug) - 20px) / 2) 0 calc((var(--fs-xs) * var(--lh-snug) - 20px) / 2) var(--space-2);
+}
+.callout-sm .callout-dismiss::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: var(--radius-sm);
+}
+.callout-sm .callout-dismiss > i, .callout-sm .callout-dismiss > svg { width: 14px; height: 14px; }
+.callout-sm:has(.callout-title) > i, .callout-sm:has(.callout-title) > svg, .callout-sm:has(.callout-title) .callout-icon {
+  margin-top: calc((var(--fs-sm) * var(--lh-tight) - 16px) / 2);
+}
+.callout-sm:has(.callout-title) .callout-dismiss {
+  margin-top: calc((var(--fs-sm) * var(--lh-tight) - 20px) / 2);
+  margin-bottom: calc((var(--fs-sm) * var(--lh-tight) - 20px) / 2);
+}
 
 /* ---- alert bar — full-width banner, items centered, actions right ---- */
 .callout-bar {

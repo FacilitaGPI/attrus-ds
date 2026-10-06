@@ -1,0 +1,123 @@
+/* ============================================================
+   TABLE FILTERS — components/filters.css
+   DTFilters (apply | live) + DateRangePicker + the apply hint.
+   Sits in DTToolbar's filters zone. Status tabs live OUTSIDE the
+   table and always apply at once; this bar owns search + period.
+   ============================================================ */
+
+.dt-filters { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; }
+.dt-filters-row { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3); min-width: 0; }
+
+/* "Search by [Name | ID | Value]" + the field that opens beside it */
+.dt-filters-scope { display: inline-flex; align-items: center; gap: var(--space-2); min-width: 0; }
+.dt-filters-scope-label { font-size: var(--fs-sm); color: var(--color-foreground-secondary); white-space: nowrap; }
+/* The field animates its WIDTH open (max-width 0 → 320) instead of popping in.
+   The 4px padding and matching negative margin keep the focus ring inside the
+   clip while it is closed. */
+.dt-filters-field {
+  max-width: 0; opacity: 0; overflow: hidden; padding: 4px; margin: -4px;
+  transition: max-width var(--duration-base) var(--ease-entrance), opacity var(--duration-fast) var(--ease-standard);
+}
+.dt-filters-field.is-open { max-width: 320px; opacity: 1; }
+.dt-filters-field > .input { width: 300px; max-width: 100%; }
+
+/* Second row (apply mode) — opens while something is pending or applied.
+   grid 0fr → 1fr animates to the row's own height, not a guessed one. */
+.dt-filters-apply {
+  display: grid; grid-template-rows: 0fr; opacity: 0; overflow: hidden;
+  transition: grid-template-rows var(--duration-base) var(--ease-entrance), opacity var(--duration-base) var(--ease-standard);
+}
+.dt-filters-apply.is-open { grid-template-rows: 1fr; opacity: 1; }
+.dt-filters-apply-inner {
+  min-height: 0; display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2);
+  transition: margin-top var(--duration-base) var(--ease-entrance), padding-top var(--duration-base) var(--ease-entrance);
+}
+/* the hairline between the controls and this row */
+.dt-filters-apply.is-open .dt-filters-apply-inner {
+  margin-top: var(--space-3); padding-top: var(--space-3);
+  border-top: var(--border-hairline) solid var(--color-border-subtle);
+}
+/* the clip must lift once open, or the hint balloon is cut */
+.dt-filters-apply.is-open, .dt-filters-apply.is-open .dt-filters-apply-inner { animation: dt-filters-unclip 0s var(--duration-base) forwards; }
+@keyframes dt-filters-unclip { to { overflow: visible; } }
+.dt-filters-vsep { align-self: stretch; width: var(--border-hairline); min-height: 20px; background: var(--color-border-subtle); margin: 0 var(--space-1); }
+
+/* An applied filter: a 32px pill, the height of the buttons beside it. The ✕ /
+   undo is its own button, so the pill is not one large hit area. */
+.dt-filter-pill {
+  display: inline-flex; align-items: center; gap: var(--space-2); box-sizing: border-box;
+  height: var(--control-h-sm); padding: 0 var(--space-1) 0 var(--space-3);
+  border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--radius-pill);
+  background: var(--color-background-surface); color: var(--color-foreground-secondary);
+  font-size: var(--fs-sm); line-height: 1; white-space: nowrap;
+}
+.dt-filter-pill-label { max-width: 32ch; overflow: hidden; text-overflow: ellipsis; }
+.dt-filter-pill-action {
+  appearance: none; display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; padding: 0; border: 0; border-radius: var(--radius-pill);
+  background: none; color: inherit; font: inherit; cursor: pointer;
+}
+.dt-filter-pill-action > svg { width: var(--icon-xs); height: var(--icon-xs); }
+.dt-filter-pill-action:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+.dt-filter-pill-action:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+/* Marked for removal — still applied until the next Apply. */
+.dt-filter-pill.is-pending { border-style: dashed; color: var(--color-foreground-muted); }
+.dt-filter-pill.is-pending .dt-filter-pill-label { text-decoration: line-through; }
+
+/* Presence — items enter and leave the apply row the same way */
+.dt-filters-item { transition: opacity 180ms var(--ease-standard), transform 180ms var(--ease-entrance); }
+.dt-filters-item.is-entering, .dt-filters-item.is-leaving { opacity: 0; transform: translateX(-6px); }
+
+/* Apply with a hint balloon while anything is pending (and on hover) */
+.dt-filters-applywrap { position: relative; display: inline-flex; }
+.dt-filters-hint {
+  position: absolute; left: 0; bottom: calc(100% + var(--space-2)); z-index: 8000;
+  width: max-content; max-width: 260px; padding: var(--space-2) var(--space-3);
+  background: var(--color-background-inverse); color: var(--color-foreground-inverse-default);
+  border-radius: var(--radius-sm); font-size: var(--fs-xs); line-height: var(--lh-snug);
+  box-shadow: var(--shadow-md); pointer-events: none;
+  opacity: 0; transform: translateY(2px);
+  transition: opacity var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard);
+}
+.dt-filters-hint::after {
+  content: ""; position: absolute; left: var(--space-4); top: 100%;
+  border: 5px solid transparent; border-top-color: var(--color-background-inverse);
+}
+.dt-filters-hint.is-visible, .dt-filters-applywrap:hover .dt-filters-hint { opacity: 1; transform: none; }
+
+/* ------------------------------------------------------------
+   DATE RANGE PICKER
+   ------------------------------------------------------------ */
+.date-range { position: relative; display: inline-flex; }
+.date-range > .date-trigger { width: 300px; max-width: 100%; }
+.date-range-label { display: inline-flex; align-items: center; gap: var(--space-2-5); min-width: 0; }
+.date-range-label > svg, .date-range-label > i { width: var(--icon-sm); height: var(--icon-sm); flex-shrink: 0; stroke-width: var(--icon-stroke); color: var(--color-foreground-muted); }
+.date-range-label > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.date-range-sm > .date-trigger { height: var(--control-h-sm); font-size: var(--fs-sm); }
+.date-range-panel {
+  z-index: 7000; display: flex; gap: var(--space-4); box-sizing: border-box;
+  padding: var(--space-4); width: max-content; max-width: calc(100vw - var(--space-6));
+  background: var(--color-background-surface); color: var(--color-foreground-default);
+  border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-overlay, var(--radius-lg));
+  box-shadow: var(--shadow-lg);
+}
+.date-range:not(.is-portal) .date-range-panel { position: absolute; top: calc(100% + var(--space-2)); left: 0; }
+.date-range-presets { display: flex; flex-direction: column; gap: var(--space-1); min-width: 140px; padding-right: var(--space-4); border-right: var(--border-hairline) solid var(--color-border-subtle); }
+.date-range-preset {
+  appearance: none; text-align: left; padding: var(--space-2) var(--space-3); border: 0; border-radius: var(--radius-sm);
+  background: none; font: inherit; font-size: var(--fs-sm); color: var(--color-foreground-secondary); cursor: pointer;
+}
+.date-range-preset:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+.date-range-preset.is-active { background: var(--color-background-selected); color: var(--color-foreground-brand); }
+.date-range-preset:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+.date-range-fields { display: flex; flex-direction: column; gap: var(--space-3); }
+.date-range-field { display: flex; flex-direction: column; gap: var(--space-1); font-size: var(--fs-xs); color: var(--color-foreground-muted); }
+.date-range-actions { display: flex; justify-content: flex-end; gap: var(--space-2); margin-top: auto; }
+@media (max-width: 640px) {
+  .date-range-panel { flex-direction: column; }
+  .date-range-presets { flex-direction: row; flex-wrap: wrap; border-right: 0; padding-right: 0; border-bottom: var(--border-hairline) solid var(--color-border-subtle); padding-bottom: var(--space-3); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dt-filters-field, .dt-filters-apply, .dt-filters-apply-inner, .dt-filters-item, .dt-filters-hint { transition: none; }
+}
