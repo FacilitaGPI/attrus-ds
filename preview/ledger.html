@@ -246,7 +246,11 @@ lucide.createIcons();
     b.addEventListener('click', function (e) { e.stopPropagation(); setGroup(b, b.getAttribute('aria-expanded') !== 'true'); });
   });
   var out = document.getElementById('opened');
-  function openRow(tr) { out.innerHTML = 'Would open the detail drawer for <strong>' + tr.getAttribute('data-name') + '</strong>.'; }
+  function openRow(tr) {
+    var name = document.createElement('strong');
+    name.textContent = tr.getAttribute('data-name');
+    out.replaceChildren('Would open the detail drawer for ', name, '.');
+  }
   document.querySelectorAll('tr.is-actionable').forEach(function (tr) { tr.addEventListener('click', function () { openRow(tr); }); });
   document.querySelectorAll('.dt-row-button').forEach(function (b) { b.addEventListener('click', function (e) { e.stopPropagation(); openRow(b.closest('tr')); }); });
   var all = document.querySelector('[data-collapse-all]');
