@@ -11,10 +11,11 @@ Package name on npm: `@attrus-ds/core`. Legacy names (`@attrus/cabiros`, Cabiros
 ```bash
 npm install
 npm run build      # scripts/build.mjs → dist/ (gitignored)
+npm test           # jest (jsdom) over test/*.test.tsx — React component contracts
 npm pack           # inspect the published tarball
 ```
 
-There is no `test`, `lint`, `format`, or `dev` server. Verify visually:
+There is no `lint`, `format`, or `dev` server. Verify visually:
 
 1. `npm run build`
 2. Open `preview/components.html` (home) and the relevant spec under `preview/`
