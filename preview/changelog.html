@@ -68,15 +68,33 @@
 
   <header class="doc-header">
     <div class="eyebrow">ATTRUS Design System</div>
-    <h1>Changelog <span class="ver-badge" data-ds-version>v1.2.1</span></h1>
+    <h1>Changelog <span class="ver-badge" data-ds-version>v1.3.0</span></h1>
     <p>Every notable change to the design system, grouped by release. Versioning follows <a href="https://semver.org" style="color:var(--color-foreground-accent)">SemVer</a>; the version number lives in <code style="font-family:var(--font-mono);font-size:0.85em">version.js</code> and is mirrored across the catalog and index pages.</p>
   </header>
+
+  <!-- ============ v1.3.0 ============ -->
+  <section class="release">
+    <div class="release-head"><h2>1.3.0</h2><span class="tag current">Current</span></div>
+    <div class="release-date">2026-10-20 · minor · Combobox search: onSearchChange callback and normalized matching</div>
+    <div class="change-group added">
+      <h3><i data-lucide="plus-circle"></i> Added</h3>
+      <ul>
+        <li><b>Combobox</b> — optional <code>onSearchChange(query)</code>: fires on every keystroke with the raw search text (empty string when the field is cleared or an option is committed). Lets consumers drive server-side searches from the popover; nothing changes for consumers that don't pass it.</li>
+      </ul>
+    </div>
+    <div class="change-group changed">
+      <h3><i data-lucide="refresh-cw"></i> Changed</h3>
+      <ul>
+        <li><b>Combobox</b> — the searchable filter is now case-, accent- and punctuation-insensitive on both sides: a masked document query ("12.345.678/0001-90") matches raw values ("12345678000190") and accented names match unaccented keyboards. Strictly widens matches; queries made only of punctuation now match everything.</li>
+      </ul>
+    </div>
+  </section>
 
   <!-- ============ v1.2.1 ============ -->
   <section class="release">
     <div class="release-head">
       <h2>1.2.1</h2>
-      <span class="tag current">Current</span>
+      <span class="tag">Shipped</span>
     </div>
     <div class="release-date">2026-10-19 · detail cards and icons, from the Portal V3 Payment Reviews drawer; the data table on mobile · published to npm as @attrus-ds/core</div>
 
