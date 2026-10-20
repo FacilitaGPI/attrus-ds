@@ -31,7 +31,8 @@ export interface CardSlotProps extends React.HTMLAttributes<HTMLDivElement> {}
 export declare const Card: React.FC<CardProps>;
 export declare const CardHeader: React.FC<CardSlotProps>;
 export declare const CardBody: React.FC<CardSlotProps>;
-export declare const CardFooter: React.FC<CardSlotProps>;
+/** Footer slot. plain: detail-card action footer — line edge to edge, no fill, actions left. */
+export declare const CardFooter: React.FC<CardSlotProps & { plain?: boolean }>;
 export declare const CardCanvas: React.FC<CardSlotProps>;
 export declare const CardDivider: React.FC<CardSlotProps>;
 export declare const CardStat: React.FC<CardStatProps>;

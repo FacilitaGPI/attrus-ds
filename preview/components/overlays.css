@@ -372,3 +372,66 @@
   .drawer-left { transform: none; }
   .drawer-bottom { transform: none; }
 }
+
+/* ================================================================
+   BOTTOM SHEET — .sheet
+   ================================================================
+   The phone form of a side panel: rises from the bottom edge, within
+   thumb reach, over the shared .scrim. Used by the table below its
+   breakpoint for filters (apply mode), sort and row detail — there is no
+   width to open a drawer or an inline panel into.
+
+   .sheet                 surface, fixed to the bottom edge
+     .sheet-grab          the handle (decorative; drag-to-close is the
+                          consumer's choice)
+     .sheet-head          title + sub + optional close
+     .sheet-body          scrolls when the content outgrows max-height
+     .sheet-footer        two-up actions (secondary · primary)
+     .sheet-opt           one choice row (sort), .is-on marks the current
+   .sheet.is-open         visible; closed it sits below the edge
+   ================================================================ */
+.sheet {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 9200;
+  max-height: 80vh;
+  display: flex; flex-direction: column;
+  background: var(--color-background-surface);
+  border-radius: 22px 22px 0 0;
+  box-shadow: var(--shadow-xl);
+  padding: var(--space-2) var(--space-5) calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
+  transform: translateY(100%);
+  visibility: hidden;
+  transition: transform var(--duration-slow) var(--ease-standard), visibility 0s linear var(--duration-slow);
+}
+.sheet.is-open {
+  transform: none;
+  visibility: visible;
+  transition: transform var(--duration-slow) var(--ease-standard), visibility 0s;
+}
+.sheet-grab { flex-shrink: 0; width: 36px; height: 4px; border-radius: 2px; background: var(--color-border-strong); margin: var(--space-2) auto var(--space-4); }
+.sheet-head { flex-shrink: 0; display: flex; align-items: flex-start; gap: var(--space-3); margin-bottom: var(--space-4); }
+.sheet-head > div { flex: 1; min-width: 0; }
+.sheet-title { margin: 0; font-size: var(--fs-lg); font-weight: var(--w-bold); color: var(--color-foreground-default); }
+.sheet-sub { margin: var(--space-1) 0 0; font-size: var(--fs-sm); color: var(--color-foreground-muted); line-height: var(--lh-relaxed); }
+.sheet-body { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: var(--space-4); }
+.sheet-footer { flex-shrink: 0; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); margin-top: var(--space-5); }
+.sheet-footer .btn { justify-content: center; }
+.sheet-opt {
+  display: flex; align-items: center; gap: var(--space-3);
+  min-height: 48px;
+  padding: 0;
+  border: 0; border-bottom: var(--border-hairline) solid var(--color-border-subtle);
+  background: none;
+  font: inherit; font-size: var(--fs-md); text-align: left;
+  color: var(--color-foreground-default);
+  cursor: pointer;
+}
+.sheet-opt:last-child { border-bottom: 0; }
+.sheet-opt > svg, .sheet-opt > i { width: 18px; height: 18px; flex-shrink: 0; color: var(--color-foreground-muted); }
+.sheet-opt > span { flex: 1; }
+.sheet-opt.is-on { color: var(--color-foreground-brand); }
+.sheet-opt.is-on > svg, .sheet-opt.is-on > i { color: var(--color-foreground-brand); }
+.sheet-opt:focus-visible { outline: none; box-shadow: var(--shadow-focus); border-radius: var(--radius-xs); }
+@media (prefers-reduced-motion: reduce) { .sheet, .sheet.is-open { transition: none; } }

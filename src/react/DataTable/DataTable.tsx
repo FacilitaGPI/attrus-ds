@@ -39,6 +39,11 @@ export interface DataTableColumn<T> {
   sortable?: boolean;
   /** Cell renderer — defaults to String(row[key]). */
   render?: (row: T) => React.ReactNode;
+  /** Slot this column fills in the mobile LIST row (data-m). lead = avatar or
+      icon (left, both lines) · title = name (line 1) · sub = reference/time
+      (line 2) · amount = figure (line 1, right) · meta = status (line 2, right).
+      A column with no slot is dropped below the breakpoint. Ignored by stack. */
+  mobile?: 'lead' | 'title' | 'sub' | 'amount' | 'meta';
 }
 
 export interface DataTableProps<T> {
@@ -56,6 +61,14 @@ export interface DataTableProps<T> {
   onSelectToggle?: (key: string) => void;
   /** Header checkbox — toggle all (checked when every row key is in selectedKeys). */
   onSelectAll?: () => void;
+  /** With selection on, a click anywhere on the row toggles it — the checkbox
+      is only the visible proof. Default true when there is no onRowClick (a row
+      that opens something cannot also select on click). Clicks on links, buttons
+      and inputs inside the row keep their own behaviour. */
+  selectOnRowClick?: boolean;
+  /** Reference tables only: the title column holds a class name, so on a phone
+      it keeps the code face instead of the plain row-title reset (.dt-m-code). */
+  mobileCodeTitle?: boolean;
   /** Loading state — renders `.dt-skeleton` shimmer rows instead of the body. */
   loading?: boolean;
   /** How many skeleton rows. Default 4. */
@@ -75,6 +88,15 @@ export interface DataTableProps<T> {
   wrap?: boolean;
   /** Responsive card-collapse wrapper (.dt-responsive). Default true. */
   responsive?: boolean;
+  /** Mobile shape below the 560px container breakpoint. list (default): two
+      lines per row from each column's `mobile` slot — for anything scanned and
+      tapped. stack: one card per row with label:value lines — when every field
+      of a record must be visible. */
+  mobile?: 'list' | 'stack';
+  /** Bulk actions for selection mode. Below the breakpoint they leave the
+      toolbar and float at the bottom of the table (.dt-selbar); pass a
+      <DTSelectionBar>. Desktop keeps them in the toolbar. */
+  selectionBar?: React.ReactNode;
   /** Zero state when rows is empty. */
   empty?: { icon?: React.ReactNode; title: React.ReactNode; sub?: React.ReactNode };
   /** Controlled sorting (visual). */
@@ -141,6 +163,10 @@ export function DataTable<T>({
   pagination,
   wrap = true,
   responsive = true,
+  mobile = 'list',
+  selectOnRowClick,
+  mobileCodeTitle = false,
+  selectionBar,
   empty,
   sortKey,
   sortDir,
@@ -150,6 +176,7 @@ export function DataTable<T>({
 }: DataTableProps<T>): React.ReactElement {
   const tableCls = [
     'dt',
+    mobileCodeTitle ? 'dt-m-code' : '',
     size ? 'dt-' + size : '',
     bordered ? 'dt-bordered' : '',
     zebra ? 'dt-zebra' : '',
@@ -159,6 +186,7 @@ export function DataTable<T>({
     .join(' ');
 
   const selectable = Boolean(onSelectToggle);
+  const rowSelects = selectable && (selectOnRowClick ?? !onRowClick);
   const colCount = columns.length + (selectable ? 1 : 0);
   const allSelected = selectable && rows.length > 0 && rows.every((r) => (selectedKeys || []).indexOf(rowKey(r)) !== -1);
 
@@ -236,11 +264,14 @@ export function DataTable<T>({
               <tr
                 key={k}
                 className={cls || undefined}
-                onClick={onRowClick ? () => onRowClick(row) : undefined}
-                style={onRowClick ? { cursor: 'pointer' } : undefined}
+                onClick={onRowClick ? () => onRowClick(row) : rowSelects ? (e: React.MouseEvent) => {
+                  if ((e.target as HTMLElement).closest('a, button, input, select, label, [role="button"]')) return;
+                  onSelectToggle!(k);
+                } : undefined}
+                style={onRowClick || rowSelects ? { cursor: 'pointer' } : undefined}
               >
                 {selectable ? (
-                  <td className="col-select" data-label="">
+                  <td className="col-select" data-label="" data-m="lead">
                     <SelectBox
                       checked={(selectedKeys || []).indexOf(k) !== -1}
                       onChange={() => onSelectToggle!(k)}
@@ -251,8 +282,9 @@ export function DataTable<T>({
                 {columns.map((c) => (
                   <td
                     key={c.key}
-                    className={[c.numeric ? 'dt-num' : '', c.id ? 'dt-id' : '', c.isVoid && c.isVoid(row) ? 'is-void' : ''].filter(Boolean).join(' ') || undefined}
+                    className={[c.mobile === 'title' ? 'dt-card-title' : '', c.numeric ? 'dt-num' : '', c.id ? 'dt-id' : '', c.isVoid && c.isVoid(row) ? 'is-void' : ''].filter(Boolean).join(' ') || undefined}
                     data-label={typeof c.header === 'string' ? c.header : undefined}
+                    data-m={c.mobile}
                   >
                     {c.render ? c.render(row) : String((row as Record<string, unknown>)[c.key] ?? '')}
                   </td>
@@ -265,16 +297,22 @@ export function DataTable<T>({
     </table>
   );
 
-  const inner = responsive ? <div className="dt-responsive">{table}</div> : table;
+  /* The container must enclose the toolbar, the pager and the selection bar,
+     not just the table: a container query only reaches descendants, so with the
+     container on an inner div the mobile toolbar and the floating bar never
+     fired. When wrapped, the .dt-wrap itself is the container. */
+  const respCls = responsive ? ['dt-responsive', mobile === 'list' ? 'dt-m-list' : ''].filter(Boolean).join(' ') : '';
+  const inner = responsive && !wrap ? <div className={respCls}>{table}{selectionBar}</div> : table;
 
   if (!wrap) return inner;
 
   return (
-    <div className={['dt-wrap', className || ''].filter(Boolean).join(' ')} style={style}>
+    <div className={['dt-wrap', respCls, className || ''].filter(Boolean).join(' ')} style={style}>
       {/* Same rule as the pagination slot: DTToolbar already IS a .dt-toolbar,
           so wrapping it would nest two bars and the inner one would shrink-wrap. */}
       {toolbar ? (isOwn(toolbar, 'DTToolbar') ? toolbar : <div className="dt-toolbar">{toolbar}</div>) : null}
       {inner}
+      {responsive ? selectionBar : null}
       {/* The slot does NOT wrap: DTPagination already IS a .dt-pagination, and
           wrapping it produced a 958px footer holding a 438px footer — the inner
           one shrink-wrapped and sat left, so the pager looked bunched even though
@@ -535,6 +573,15 @@ export interface DTPaginationProps extends React.HTMLAttributes<HTMLDivElement> 
   pageSizes?: number[];
   pageSize?: number;
   onPageSize?: (size: number) => void;
+  /** Phone form, below the table's breakpoint. arrows (default): range + prev/
+      next only — numbered steps are too small to hit. load-more: one full-width
+      button that appends the next page in place, for lists read top-down. */
+  pager?: 'arrows' | 'load-more';
+  /** @deprecated — use `pager`. */
+  mobile?: 'arrows' | 'load-more';
+  onLoadMore?: () => void;
+  /** e.g. "Load 10 more · 20 of 248". */
+  loadMoreLabel?: React.ReactNode;
 }
 /* Which page numbers to print. Always the first and last step plus the current
    one and its neighbours; an ellipsis stands in for each gap. Under 8 pages
@@ -604,8 +651,15 @@ const PageSizeTabs: React.FC<{
 
 /** Canonical pagination row — `.range` + `.pager` with `.page-btn`s (prev · numbered · next).
     Pass as the DataTable `pagination` slot. */
-export const DTPagination: React.FC<DTPaginationProps> = ({ range, page, pages, onPage, pageSizes, pageSize, onPageSize, className, ...rest }) => (
-  <div className={['dt-pagination', className || ''].filter(Boolean).join(' ')} {...rest}>
+export const DTPagination: React.FC<DTPaginationProps> = ({ range, page, pages, onPage, pageSizes, pageSize, onPageSize, pager, mobile, onLoadMore, loadMoreLabel, className, ...rest }) => {
+  const mode = pager || mobile || 'arrows';
+  return (
+  <div className={['dt-pagination', mode === 'load-more' ? 'is-load-more' : '', className || ''].filter(Boolean).join(' ')} {...rest}>
+    {mode === 'load-more' ? (
+      <button type="button" className="btn btn-secondary dt-loadmore" disabled={page >= pages} onClick={() => onLoadMore && onLoadMore()}>
+        {loadMoreLabel || 'Load more'}
+      </button>
+    ) : null}
     {range != null ? <span className="dt-pagination-range">{range}</span> : null}
     {pageSizes && pageSizes.length ? (
       <PageSizeTabs sizes={pageSizes} value={pageSize} onChange={onPageSize} />
@@ -643,7 +697,8 @@ export const DTPagination: React.FC<DTPaginationProps> = ({ range, page, pages, 
       </button>
     </nav>
   </div>
-);
+  );
+};
 
 /** Cell utilities. `noTab` turns OFF tabular figures — for IDs and codes,
     where fixed-width digits look mechanical; `check` is the selection gutter,
@@ -651,6 +706,83 @@ export const DTPagination: React.FC<DTPaginationProps> = ({ range, page, pages, 
 export const DTId: React.FC<React.HTMLAttributes<HTMLSpanElement>> = ({ children, className, ...rest }) => (
   <span className={['dt-id', 'dt-no-tab', className || ''].filter(Boolean).join(' ')} {...rest}>{children}</span>
 );
+/** A row's detail on a phone. The inline detail panel has no width to open
+    into below the breakpoint, so it opens as a .sheet from the bottom edge.
+    Portaled to <body>: the table is a size container, and a container is the
+    containing block for fixed descendants — a sheet rendered inside it would
+    pin to the table's bottom, not the screen's. Esc and the scrim close it. */
+export const DTDetailSheet: React.FC<{
+  open: boolean;
+  onClose: () => void;
+  title: React.ReactNode;
+  sub?: React.ReactNode;
+  /** Status pill or similar, above the title. */
+  eyebrow?: React.ReactNode;
+  /** Two actions, secondary · primary. */
+  footer?: React.ReactNode;
+  children?: React.ReactNode;
+}> = ({ open, onClose, title, sub, eyebrow, footer, children }) => {
+  React.useEffect(() => {
+    if (!open) return undefined;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
+  if (typeof document === 'undefined') return null;
+  const ReactDOM = (window as unknown as { ReactDOM?: { createPortal: (n: React.ReactNode, el: Element) => React.ReactNode } }).ReactDOM;
+  const node = (
+    <React.Fragment>
+      <div className={['scrim', open ? 'is-open' : ''].filter(Boolean).join(' ')} onClick={onClose} aria-hidden="true" />
+      <div className={['sheet', open ? 'is-open' : ''].filter(Boolean).join(' ')} role="dialog" aria-modal="true" aria-hidden={!open}>
+        <div className="sheet-grab" aria-hidden="true" />
+        <div className="sheet-head">
+          <div>
+            {eyebrow}
+            <h3 className="sheet-title">{title}</h3>
+            {sub != null ? <p className="sheet-sub">{sub}</p> : null}
+          </div>
+          <button type="button" className="btn btn-tertiary btn-sm btn-icon" aria-label="Close" onClick={onClose}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+          </button>
+        </div>
+        <div className="sheet-body">{children}</div>
+        {footer != null ? <div className="sheet-footer">{footer}</div> : null}
+      </div>
+    </React.Fragment>
+  );
+  return ReactDOM && ReactDOM.createPortal ? (ReactDOM.createPortal(node, document.body) as React.ReactElement) : node;
+};
+
+/** Whether a table container is in its phone form (narrower than 560px) —
+    for choosing between the inline detail panel and DTDetailSheet. Watches the
+    element, not the window, so it agrees with the CSS container query. */
+export function useDTCompact(ref: React.RefObject<HTMLElement>): boolean {
+  const [compact, setCompact] = React.useState(false);
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof ResizeObserver === 'undefined') return undefined;
+    const ro = new ResizeObserver((entries) => setCompact(entries[0].contentRect.width < 560));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [ref]);
+  return compact;
+}
+
+/** Floating bulk-action bar for selection mode — rendered via DataTable's
+    `selectionBar` slot. Visible only below the breakpoint; desktop keeps the
+    actions in the toolbar. Actions should be icon buttons with aria-labels. */
+export const DTSelectionBar: React.FC<{ count: React.ReactNode; actions?: React.ReactNode; onClear?: () => void } & React.HTMLAttributes<HTMLDivElement>> = ({ count, actions, onClear, className, ...rest }) => (
+  <div className={['dt-selbar', className || ''].filter(Boolean).join(' ')} role="toolbar" aria-label="Selection actions" {...rest}>
+    <span className="dt-selbar-count">{count}</span>
+    {actions}
+    {onClear ? (
+      <button type="button" className="btn btn-secondary btn-sm btn-icon" aria-label="Clear selection" onClick={onClear}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+      </button>
+    ) : null}
+  </div>
+);
+
 export const DTCheckCell: React.FC<React.TdHTMLAttributes<HTMLTableCellElement>> = ({ children, className, ...rest }) => (
   <td className={['dt-check', className || ''].filter(Boolean).join(' ')} {...rest}>{children}</td>
 );

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta · A-09 a A-14 · card de detalhe e ícones</title>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../themes/index.css?v=1">
+<script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1120px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .eyebrow { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  h1 { margin: var(--space-3) 0; font-size: var(--fs-5xl); letter-spacing: var(--ls-display); }
+  .lead { max-width: 72ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+  section { margin-top: var(--space-12); }
+  section > h2 { font-size: var(--fs-2xl); margin: 0 0 var(--space-2); }
+  section > h2 .id { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-sm); color: var(--color-foreground-muted); margin-right: var(--space-3); }
+  section > p { max-width: 76ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-5); }
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
+  @media (max-width: 860px) { .vs { grid-template-columns: 1fr; } }
+  .col-lbl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; margin-bottom: var(--space-3); color: var(--color-foreground-muted); }
+  .col-lbl.new { color: var(--color-feedback-success-foreground); }
+  .stage { background: var(--color-background-subtle); border-radius: var(--shape-container); padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-4); }
+  .measure { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); line-height: 1.6; }
+  .measure b { color: var(--color-foreground-default); font-weight: var(--w-regular); }
+  .plan { margin-top: var(--space-4); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); background: var(--color-background-surface); }
+  .plan table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  .plan td, .plan th { padding: var(--space-3) var(--space-4); border-bottom: var(--border-hairline) solid var(--color-border-subtle); text-align: left; vertical-align: top; }
+  .plan tr:last-child td { border-bottom: 0; }
+  .plan th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); font-weight: var(--w-regular); background: var(--color-background-subtle); }
+  .plan code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .flag { margin-top: var(--space-4); }
+
+  /* ================= PROPOSAL — scoped to .p, nothing leaks ================= */
+  .p .desc-card-title { margin: 0 0 var(--space-5); font-size: var(--fs-md); font-weight: var(--w-bold); color: var(--color-foreground-default); line-height: var(--lh-snug); }
+  .p .desc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5) var(--space-6); margin: 0; }
+  .p .desc-term { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; margin: 0; }
+  .p .desc-term-label { font-size: var(--fs-sm); font-weight: var(--w-regular); letter-spacing: normal; text-transform: none; color: var(--color-foreground-muted); line-height: var(--lh-snug); margin: 0; }
+  .p .desc-term-value { font-size: var(--fs-md); color: var(--color-foreground-default); line-height: 1.4; overflow-wrap: anywhere; margin: 0; }
+  .p .desc-term-value .money { --money-fs: var(--fs-md); }
+  .p .desc-term-value .money-cur { font-size: var(--fs-sm); letter-spacing: 0; }
+  .p .desc-term-value .mono { font-size: 1em; }
+  .p .desc-term-wide { grid-column: 1 / -1; }
+  .p .desc-group + .desc-group { margin-top: var(--space-5); padding-top: var(--space-5); border-top: var(--border-hairline) solid var(--color-border-subtle); }
+  @media (max-width: 640px) { .p .desc-grid { grid-template-columns: 1fr; } }
+
+  .p .money-sans { font-family: var(--font-sans); font-size-adjust: none; font-variant-numeric: tabular-nums; gap: var(--space-2); }
+  .p .money-sans .money-cur { font-size: 1em; letter-spacing: 0; font-weight: var(--w-regular); color: var(--color-foreground-muted); }
+  .hero-val { border-radius: var(--shape-container); padding: var(--space-5) var(--space-6); background: var(--color-feedback-warning-background); border: var(--border-hairline) solid var(--color-feedback-warning-border); display: flex; flex-direction: column; }
+  .hero-val .lbl { color: var(--color-feedback-warning-foreground); }
+  .hero-val.cur .lbl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-bold); letter-spacing: var(--ls-caps); text-transform: uppercase; margin-bottom: var(--space-1); }
+  .p .hero-val { gap: var(--space-2-5); }
+  .p .hero-val .lbl, .p .hero-val .money { line-height: var(--lh-tight); }
+  .p .hero-val .lbl { font-size: var(--fs-sm); }
+
+  .p .callout-block { padding: var(--space-5) var(--space-6); }
+  .p .callout-block.callout-info { border-color: var(--color-border-default); }
+
+  .p .card-footer-plain { margin: var(--space-5) calc(-1 * var(--space-6)) 0; padding: var(--space-5) var(--space-6) 0; border-top: var(--border-hairline) solid var(--color-border-default); background: transparent; display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .cur .ctas { display: flex; gap: var(--space-3); margin-top: var(--space-3); }
+
+  .p .file-name { font-size: var(--fs-md); }
+  .p .file-sub { font-size: var(--fs-sm); }
+  .tl { display: flex; gap: var(--space-3); }
+  .tl .dotm { width: 8px; height: 8px; border-radius: 50%; background: var(--color-brand-solid); flex-shrink: 0; }
+  .cur .tl .t { font-size: var(--fs-sm); font-weight: var(--w-bold); } .cur .tl .d, .cur .tl .w { font-size: var(--fs-xs); color: var(--color-foreground-muted); }
+  .p .tl .t { font-size: var(--fs-md); font-weight: var(--w-bold); line-height: 1.4; } .p .tl .d, .p .tl .w { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: 1.4; }
+  .p .tl .dotm { margin-top: calc((1.4em - 8px) / 2); }
+
+  .p svg.lucide[stroke-width="2"] { stroke-width: var(--icon-stroke); }
+  .p svg.lucide[stroke-width="2"]:is([width="12"], [width="11"], [width="10"]) { stroke-width: var(--icon-stroke-thin); }
+  .idchip { display: inline-flex; align-items: center; gap: var(--space-2); height: 26px; padding: 0 var(--space-3); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--radius-pill); background: var(--color-background-surface); font-size: var(--fs-sm); }
+  .idchip .k { color: var(--color-foreground-muted); }
+  .idchip .v { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); }
+  .idchip button { all: unset; display: inline-flex; cursor: pointer; color: var(--color-foreground-muted); }
+  .p .idchip button { color: var(--color-neutral-400); transition: color var(--duration-fast) var(--ease-standard); }
+  .p .idchip button:hover { color: var(--color-foreground-default); }
+  .iconrow { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; color: var(--color-foreground-secondary); font-size: var(--fs-sm); }
+  .iconrow span { display: inline-flex; align-items: center; gap: var(--space-2); }
+</style>
+</head>
+<body>
+<main class="doc">
+  <div class="eyebrow">Proposta · aplicada na v1.2.1</div>
+  <h1>Card de detalhe e ícones</h1>
+  <p class="lead">Cada item mostra o DS de hoje à esquerda e a proposta à direita, renderizados com o CSS real do DS. A proposta vive em regras escopadas nesta página. As medidas embaixo de cada exemplo são lidas com <code>getComputedStyle</code> ao carregar.</p>
+
+  <!-- A-09 + A-12 + A-13 -->
+  <section id="a09">
+    <h2><span class="id">A-09 · A-12 · A-13</span>Hierarquia, espaçamento e escala do card</h2>
+    <p>Hoje a label em caixa alta de 10px parece maior que o valor, o título não existe no DS, e e-mail e ID encolhem para 11,96px por causa do <code>.mono</code>. Na proposta: título 13 bold, label 12 muted em caixa normal, valor 13, 4px entre label e valor, 16px entre pares, grupos com linha fina e ID em linha inteira.</p>
+    <div class="vs">
+      <div class="cur">
+        <div class="col-lbl">Hoje</div>
+        <div class="stage"><div class="card" data-m="cur-card">
+          <div class="card-title" style="font-size:var(--fs-sm);margin-bottom:var(--space-3)">Transação</div>
+          <div class="desc-grid-cur" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3) var(--space-5)">
+            <div class="desc-term"><div class="desc-term-label">ID da transação</div><div class="desc-term-value"><span class="mono">5d93c2a8-6e1f-4a7b-9c4d-8b2e5f1a3c69</span></div></div>
+            <div class="desc-term"><div class="desc-term-label">Iniciada em</div><div class="desc-term-value">13 out 2026, 11:42</div></div>
+            <div class="desc-term"><div class="desc-term-label">Valor final</div><div class="desc-term-value"><span class="money"><span class="money-cur">BRL</span>18.425,00</span></div></div>
+            <div class="desc-term"><div class="desc-term-label">E-mail</div><div class="desc-term-value"><span class="mono">ana@globalsupplies.com</span></div></div>
+          </div>
+        </div></div>
+      </div>
+      <div class="p">
+        <div class="col-lbl new">Proposta</div>
+        <div class="stage"><div class="card" data-m="new-card">
+          <h3 class="desc-card-title">Transação</h3>
+          <div class="desc-groups">
+            <dl class="desc-grid desc-group">
+              <div class="desc-term desc-term-wide"><dt class="desc-term-label">ID da transação</dt><dd class="desc-term-value"><span class="mono">5d93c2a8-6e1f-4a7b-9c4d-8b2e5f1a3c69</span></dd></div>
+            </dl>
+            <dl class="desc-grid desc-group">
+              <div class="desc-term"><dt class="desc-term-label">Valor original</dt><dd class="desc-term-value"><span class="money"><span class="money-cur">USD</span>3.500,00</span></dd></div>
+              <div class="desc-term"><dt class="desc-term-label">Valor final</dt><dd class="desc-term-value"><span class="money"><span class="money-cur">BRL</span>18.425,00</span></dd></div>
+              <div class="desc-term"><dt class="desc-term-label">Operação</dt><dd class="desc-term-value">Câmbio de entrada</dd></div>
+              <div class="desc-term"><dt class="desc-term-label">Câmbio</dt><dd class="desc-term-value">5,2643</dd></div>
+            </dl>
+            <dl class="desc-grid desc-group">
+              <div class="desc-term"><dt class="desc-term-label">Conta creditada</dt><dd class="desc-term-value">Itaú ··3391</dd></div>
+              <div class="desc-term"><dt class="desc-term-label">E-mail</dt><dd class="desc-term-value"><span class="mono">ana@globalsupplies.com</span></dd></div>
+            </dl>
+          </div>
+        </div></div>
+      </div>
+    </div>
+    <div class="vs" style="margin-top:var(--space-2)"><div class="measure" id="m-cur"></div><div class="measure" id="m-new"></div></div>
+  </section>
+
+  <!-- A-09 money sans -->
+  <section id="a09b">
+    <h2><span class="id">A-09</span>Bloco de valor em destaque · Money sans</h2>
+    <p>O rótulo segue a regra da label (12px, caixa normal, cor do tom). O valor passa para sans, e a moeda fica do tamanho do número, em peso regular e cinza, sem letter-spacing. Novo modificador <code>.money-sans</code>; tabelas e cards continuam com o Money mono.</p>
+    <div class="vs">
+      <div class="cur"><div class="col-lbl">Hoje</div><div class="stage">
+        <div class="hero-val cur"><span class="lbl">Valor bloqueado</span><span class="money money-xl"><span class="money-cur">BRL</span>18.425,00</span></div>
+      </div></div>
+      <div class="p"><div class="col-lbl new">Proposta</div><div class="stage">
+        <div class="hero-val" data-m="hero"><span class="lbl">Valor bloqueado</span><span class="money money-xl money-sans"><span class="money-cur">BRL</span>18.425,00</span></div>
+      </div></div>
+    </div>
+    <div class="vs" style="margin-top:var(--space-2)"><div></div><div class="measure" id="m-hero"></div></div>
+  </section>
+
+  <!-- A-10 -->
+  <section id="a10">
+    <h2><span class="id">A-10</span>Callout alinhado aos cards</h2>
+    <p>Empilhado com cards, o callout usa o espaço interno do card (16 × 20) e o ícone cai na mesma vertical dos títulos. No tom info, a borda passa a ser a do card. Nova variante <code>.callout-block</code> / <code>&lt;Callout block&gt;</code>; o callout normal não muda.</p>
+    <div class="vs">
+      <div class="cur"><div class="col-lbl">Hoje</div><div class="stage">
+        <div class="callout callout-info" data-m="cur-callout"><i data-lucide="clock"></i><div class="callout-body"><strong>Responda até 21 out.</strong> Depois disso o valor é devolvido.</div></div>
+        <div class="card" data-m="cur-card2"><div class="card-title" style="font-size:var(--fs-md);font-weight:var(--w-bold)">Resumo da revisão</div></div>
+      </div></div>
+      <div class="p"><div class="col-lbl new">Proposta</div><div class="stage">
+        <div class="callout callout-info callout-block" data-m="new-callout"><i data-lucide="clock"></i><div class="callout-body"><strong>Responda até 21 out.</strong> Depois disso o valor é devolvido.</div></div>
+        <div class="callout callout-danger callout-block"><i data-lucide="alert-triangle"></i><div class="callout-body"><strong>Prazo vencido.</strong> O valor será devolvido hoje.</div></div>
+        <div class="card" data-m="new-card2"><h3 class="desc-card-title" style="margin:0">Resumo da revisão</h3></div>
+      </div></div>
+    </div>
+    <div class="vs" style="margin-top:var(--space-2)"><div class="measure" id="m-co-cur"></div><div class="measure" id="m-co-new"></div></div>
+  </section>
+
+  <!-- A-11 -->
+  <section id="a11">
+    <h2><span class="id">A-11</span>Rodapé de ações no card de detalhe</h2>
+    <p>Os botões descem para o rodapé, sob uma linha de borda a borda, sem fundo, alinhados ao texto. Nova variante <code>.card-footer-plain</code> / <code>&lt;CardFooter plain&gt;</code>, que funciona num card de padding único sangrando com margem negativa — não ativa a regra que zera o padding do card.</p>
+    <div class="vs">
+      <div class="cur"><div class="col-lbl">Hoje</div><div class="stage">
+        <div class="card"><div class="card-title" style="font-size:var(--fs-md);font-weight:var(--w-bold)">Descrição do status</div><p style="margin:var(--space-2) 0 0;font-size:var(--fs-sm);color:var(--color-foreground-secondary)">O banco pediu documentos que comprovem a origem do valor.</p><div class="ctas"><button class="btn btn-primary btn-sm">Enviar informações</button><button class="btn btn-secondary btn-sm">Reembolsar</button></div></div>
+      </div></div>
+      <div class="p"><div class="col-lbl new">Proposta</div><div class="stage">
+        <div class="card" data-m="new-foot-card"><h3 class="desc-card-title">Descrição do status</h3><p style="margin:0;font-size:var(--fs-md);color:var(--color-foreground-secondary);line-height:var(--lh-normal)">O banco pediu documentos que comprovem a origem do valor.</p><div class="card-footer-plain" data-m="new-foot"><button class="btn btn-primary btn-sm">Enviar informações</button><button class="btn btn-secondary btn-sm">Reembolsar</button></div></div>
+      </div></div>
+    </div>
+    <div class="vs" style="margin-top:var(--space-2)"><div></div><div class="measure" id="m-foot"></div></div>
+  </section>
+
+  <!-- A-13 extras -->
+  <section id="a13">
+    <h2><span class="id">A-13</span>Arquivo e linha do tempo na mesma escala</h2>
+    <p>Nada abaixo de 12px: nome de arquivo 13, tamanho e data 12; título de item 13 bold, descrição e data 12, com o ponto alinhado à primeira linha.</p>
+    <div class="vs">
+      <div class="cur"><div class="col-lbl">Hoje</div><div class="stage"><div class="card" data-m="cur-scale">
+        <div class="file-row" style="display:flex;flex-direction:column"><span class="file-name">contrato-social.pdf</span><span class="file-sub">2,4 MB · 12 out</span></div>
+        <div class="tl" style="margin-top:var(--space-4)"><span class="dotm"></span><div><div class="t">Documentos enviados</div><div class="d">Por Ana Souza</div><div class="w">12 out, 16:03</div></div></div>
+      </div></div></div>
+      <div class="p"><div class="col-lbl new">Proposta</div><div class="stage"><div class="card" data-m="new-scale">
+        <div class="file-row" style="display:flex;flex-direction:column;gap:var(--space-1)"><span class="file-name">contrato-social.pdf</span><span class="file-sub">2,4 MB · 12 out</span></div>
+        <div class="tl" style="margin-top:var(--space-4)"><span class="dotm"></span><div><div class="t">Documentos enviados</div><div class="d">Por Ana Souza</div><div class="w">12 out, 16:03</div></div></div>
+      </div></div></div>
+    </div>
+    <div class="vs" style="margin-top:var(--space-2)"><div class="measure" id="m-sc-cur"></div><div class="measure" id="m-sc-new"></div></div>
+  </section>
+
+  <!-- A-14 -->
+  <section id="a14">
+    <h2><span class="id">A-14</span>Traço do DS em todo ícone Lucide</h2>
+    <p>Ícone solto no app sai com o traço 2 da Lucide; os de dentro dos componentes saem com 1,75. Uma regra de base corrige só o padrão da biblioteca (1,75; 1,5 em 12px ou menos), e o ícone de ação secundária ao lado de um valor fica em <code>--color-neutral-400</code>, escurecendo no hover.</p>
+    <div class="vs">
+      <div class="cur"><div class="col-lbl">Hoje</div><div class="stage" data-m="cur-icons">
+        <div class="iconrow"><span><i data-lucide="calendar" width="16" height="16"></i>16px</span><span><i data-lucide="file-text" width="14" height="14"></i>14px</span><span><i data-lucide="copy" width="12" height="12"></i>12px</span></div>
+        <div><span class="idchip"><span class="k">ID</span><span class="v">TX-90412</span><button aria-label="Copiar"><i data-lucide="copy" width="12" height="12"></i></button></span></div>
+      </div></div>
+      <div class="p"><div class="col-lbl new">Proposta</div><div class="stage" data-m="new-icons">
+        <div class="iconrow"><span><i data-lucide="calendar" width="16" height="16"></i>16px</span><span><i data-lucide="file-text" width="14" height="14"></i>14px</span><span><i data-lucide="copy" width="12" height="12"></i>12px</span></div>
+        <div><span class="idchip"><span class="k">ID</span><span class="v">TX-90412</span><button aria-label="Copiar"><i data-lucide="copy" width="12" height="12"></i></button></span></div>
+      </div></div>
+    </div>
+    <div class="vs" style="margin-top:var(--space-2)"><div class="measure" id="m-ic-cur"></div><div class="measure" id="m-ic-new"></div></div>
+  </section>
+
+  <!-- PLAN -->
+  <section id="plan">
+    <h2><span class="id">Plano</span>O que muda no DS, por item</h2>
+    <div class="plan"><table>
+      <thead><tr><th>Item</th><th>CSS</th><th>React · .d.ts</th><th>Preview</th></tr></thead>
+      <tbody>
+        <tr><td>A-09</td><td><code>.desc-term-label</code> 12 regular sem caixa alta; <code>.desc-term-value</code> 13; novo <code>.desc-card-title</code>; <code>.money-sans</code></td><td><code>DescCardTitle</code>, <code>Money sans</code></td><td>primitives.html: card de exemplo + bloco de valor</td></tr>
+        <tr><td>A-10</td><td><code>.callout-block</code> 16 × 20; info com borda do card; não combina com <code>-sm</code> / <code>-bar</code></td><td><code>&lt;Callout block&gt;</code></td><td>callout.html: block info e danger empilhados com card</td></tr>
+        <tr><td>A-11</td><td><code>.card-footer-plain</code>, sangra com margem negativa num card de padding único</td><td><code>&lt;CardFooter plain&gt;</code></td><td>cards.html: card de detalhe com dois botões</td></tr>
+        <tr><td>A-12</td><td><code>.desc-term</code> em coluna com gap 4; <code>.desc-grid</code>, <code>.desc-term-wide</code>, <code>.desc-groups</code> / <code>.desc-group</code>; token <code>--lh-data: 1.4</code></td><td><code>DescGrid</code>, <code>DescTerm wide</code>, <code>DescGroups</code> / <code>DescGroup</code></td><td>card "Transação" com 3 grupos + card sem grupos</td></tr>
+        <tr><td>A-13</td><td><code>.mono</code> para de usar <code>.92em</code>; moeda 12 sem tracking no card; <code>.file-name</code> 13, <code>.file-sub</code> 12; <code>.callout-sm</code> no card 13 / 12</td><td>—</td><td>card com e-mail, ID, moeda, arquivo e item de timeline</td></tr>
+        <tr><td>A-14</td><td>regra global <code>svg.lucide[stroke-width="2"]</code> + thin ≤ 12px; token <code>--color-foreground-icon-subtle</code></td><td>—</td><td>iconography.html: quando usar bold / thin e o papel subtle</td></tr>
+      </tbody></table></div>
+
+    <div class="callout callout-warn flag"><i data-lucide="alert-triangle"></i><div class="callout-body">
+      <strong>Quatro pontos para você decidir antes de eu aplicar.</strong>
+      <ol style="margin:var(--space-2) 0 0;padding-left:var(--space-5);line-height:var(--lh-relaxed)">
+        <li><b>Divergências entre A-09 e A-12.</b> A-09 pede 2px entre label e valor e grade 8 × 16; A-12 e a diretriz pedem 4px e 16 × 20. Sigo a diretriz, como o prompt manda.</li>
+        <li><b><code>.mono</code> em todo o DS.</b> Tirar o <code>.92em</code> não afeta só o card: toda célula mono de tabela fica ~8% maior. Hoje ele soma ao <code>--font-mono-adjust</code> e encolhe duas vezes, então o ajuste é coerente com o tamanho óptico que já fizemos — mas é uma mudança visível em todas as tabelas. Alternativa: limitar ao <code>.desc-term-value</code>.</li>
+        <li><b>Linha do tempo.</b> Não é componente no DS hoje. Proponho só documentar a escala na preview, sem criar componente agora.</li>
+        <li><b>Onde aplicar.</b> Edito o Cabiros (a fonte), que é sincronizado para o <code>attrus-ds-npm</code>. Não toco no Portal V3.</li>
+      </ol></div></div>
+  </section>
+</main>
+<script>
+lucide.createIcons();
+(function () {
+  function px(v) { return Math.round(parseFloat(v) * 100) / 100 + 'px'; }
+  function sizes(root) {
+    var s = {};
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    var n; while ((n = w.nextNode())) { if (!n.textContent.trim()) continue; var f = px(getComputedStyle(n.parentElement).fontSize); s[f] = (s[f] || 0) + 1; }
+    return Object.keys(s).sort().map(function (k) { return k + ' ×' + s[k]; }).join(' · ');
+  }
+  function gap(a, b) { return Math.round(b.getBoundingClientRect().top - a.getBoundingClientRect().bottom) + 'px'; }
+  function textRect(el) { var r = document.createRange(); r.selectNodeContents(el); return r.getBoundingClientRect(); }
+  function set(id, html) { var e = document.getElementById(id); if (e) e.innerHTML = html; }
+
+  var cc = document.querySelector('[data-m="cur-card"]'), nc = document.querySelector('[data-m="new-card"]');
+  var cl = cc.querySelector('.desc-term-label'), cv = cc.querySelector('.desc-term-value');
+  var nl = nc.querySelector('.desc-term-label'), nv = nc.querySelector('.desc-term-value');
+  set('m-cur', 'tamanhos: <b>' + sizes(cc) + '</b><br>label: <b>' + px(getComputedStyle(cl).fontSize) + ' ' + getComputedStyle(cl).textTransform + '</b> · label→valor na tela: <b>' + Math.round(textRect(cv).top - textRect(cl).bottom) + 'px</b>');
+  var t = nc.querySelector('.desc-card-title'), terms = nc.querySelectorAll('.desc-group:nth-child(2) .desc-term');
+  var grp = nc.querySelectorAll('.desc-group')[1];
+  set('m-new', 'tamanhos: <b>' + sizes(nc) + '</b><br>título <b>' + px(getComputedStyle(t).fontSize) + ' ' + getComputedStyle(t).fontWeight + '</b> · label <b>' + px(getComputedStyle(nl).fontSize) + ' ' + getComputedStyle(nl).textTransform + '</b> · gap label/valor <b>' + getComputedStyle(nc.querySelector('.desc-term')).rowGap + '</b><br>label→valor na tela <b>' + Math.round(textRect(nv).top - textRect(nl).bottom) + 'px</b> · par→par <b>' + Math.round(terms[2].getBoundingClientRect().top - terms[0].getBoundingClientRect().bottom) + 'px</b> · grupo: <b>' + getComputedStyle(grp).marginTop + ' / ' + getComputedStyle(grp).paddingTop + '</b>');
+
+  var h = document.querySelector('[data-m="hero"]'), hm = h.querySelector('.money'), hc = h.querySelector('.money-cur');
+  set('m-hero', 'label→valor <b>' + getComputedStyle(h).rowGap + '</b> · moeda <b>' + px(getComputedStyle(hc).fontSize) + '</b> = número <b>' + px(getComputedStyle(hm).fontSize) + '</b> · fonte <b>' + getComputedStyle(hm).fontFamily.split(',')[0] + '</b>');
+
+  function inset(callout, card) {
+    var ci = callout.querySelector('svg').getBoundingClientRect().left - callout.getBoundingClientRect().left;
+    var ti = textRect(card.querySelector('.desc-card-title, .card-title')).left - card.getBoundingClientRect().left;
+    return 'ícone do callout <b>' + Math.round(ci) + 'px</b> · título do card <b>' + Math.round(ti) + 'px</b>';
+  }
+  set('m-co-cur', inset(document.querySelector('[data-m="cur-callout"]'), document.querySelector('[data-m="cur-card2"]')));
+  var nco = document.querySelector('[data-m="new-callout"]'), ncard = document.querySelector('[data-m="new-card2"]');
+  set('m-co-new', inset(nco, ncard) + '<br>borda info <b>' + (getComputedStyle(nco).borderTopColor === getComputedStyle(ncard).borderTopColor ? '= borda do card' : 'diferente') + '</b>');
+
+  var fc = document.querySelector('[data-m="new-foot-card"]'), ft = document.querySelector('[data-m="new-foot"]'), fb = ft.querySelector('.btn');
+  var cr = fc.getBoundingClientRect(), fr = ft.getBoundingClientRect(), br = fb.getBoundingClientRect();
+  set('m-foot', 'linha de borda a borda: <b>' + (Math.round(fr.left) === Math.round(cr.left + 1) && Math.round(fr.right) === Math.round(cr.right - 1) ? 'sim' : 'não') + '</b> · linha→botão <b>' + Math.round(br.top - fr.top) + 'px</b> · botão→borda <b>' + Math.round(cr.bottom - br.bottom) + 'px</b> · botão alinhado ao título: <b>' + (Math.abs(br.left - textRect(fc.querySelector('.desc-card-title')).left) < 1.5 ? 'sim' : 'não') + '</b>');
+
+  set('m-sc-cur', 'tamanhos: <b>' + sizes(document.querySelector('[data-m="cur-scale"]')) + '</b>');
+  set('m-sc-new', 'tamanhos: <b>' + sizes(document.querySelector('[data-m="new-scale"]')) + '</b>');
+
+  function strokes(root) { var s = {}; root.querySelectorAll('svg.lucide').forEach(function (v) { var k = getComputedStyle(v).strokeWidth + ' @' + v.getAttribute('width'); s[k] = 1; }); return Object.keys(s).join(' · '); }
+  var ci = document.querySelector('[data-m="cur-icons"]'), ni = document.querySelector('[data-m="new-icons"]');
+  set('m-ic-cur', 'traço: <b>' + strokes(ci) + '</b> · copiar <b>' + getComputedStyle(ci.querySelector('.idchip button')).color + '</b>');
+  set('m-ic-new', 'traço: <b>' + strokes(ni) + '</b> · copiar <b>' + getComputedStyle(ni.querySelector('.idchip button')).color + '</b>');
+})();
+</script>
+</body>
+</html>

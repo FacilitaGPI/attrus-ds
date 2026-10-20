@@ -17,6 +17,8 @@ export interface CalloutProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
   bar?: boolean;
   /** On a bar: re-adds radius + full border for in-container use. */
   rounded?: boolean;
+  /** Callout as a column block beside cards — same inset as Card. Not with small or bar. */
+  block?: boolean;
   /** Content-sized, single line (badges, hero notices). */
   inline?: boolean;
   /** Glassy translucent tint + light text for dark surfaces. */

@@ -7,7 +7,8 @@
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
-<link rel="stylesheet" href="components/cards.css?v=4">
+<link rel="stylesheet" href="components/primitives.css?v=4">
+<link rel="stylesheet" href="components/cards.css?v=6">
 <link rel="stylesheet" href="components/buttons.css?v=3">
 <link rel="stylesheet" href="components/status-pills.css?v=3">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
@@ -318,6 +319,17 @@
         <article class="card"><div class="card-stat"><span class="stat-label">Settlement queue</span><span class="stat-value">847</span><span class="stat-delta down"><i data-lucide="arrow-down-right"></i>-14</span></div></article>
       </div>
     </article>
+  
+    <div class="demo-card">
+      <header class="demo-card-head"><div><h3>Detail card footer <code>.card-footer-plain</code></h3><p>The buttons of a detail card live in its footer, never loose under the text: a 1px line edge to edge, no fill, 16px above and below, left-aligned with the title. Primary first, both sm.</p></div><span class="demo-card-tag">A-11</span></header>
+      <div class="demo-card-canvas">
+        <div class="card" id="foot-demo" style="width:100%;max-width:480px">
+          <h3 class="desc-card-title" style="margin-bottom:var(--space-3)">Descrição do status</h3>
+          <p style="margin:0;font-size:var(--fs-md);line-height:var(--lh-normal);color:var(--color-foreground-secondary)">O banco pediu documentos que comprovem a origem do valor. Envie até 21 out para evitar a devolução.</p>
+          <div class="card-footer-plain"><button class="btn btn-primary btn-sm">Enviar informações</button><button class="btn btn-secondary btn-sm">Reembolsar</button></div>
+        </div>
+      </div>
+    </div>
   </section>
 
 

@@ -102,6 +102,24 @@
 .money-xl { --money-fs: var(--fs-2xl); font-weight: var(--w-bold); letter-spacing: var(--ls-tight); }
 .money-display { --money-fs: var(--fs-4xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); }
 
+/* Money sans — a single highlighted amount (the "blocked amount" hero in a
+   drawer), not a figure in a column. Sans digits, tabular so they don't jitter
+   on update; the currency at the number's own size, regular and muted, with no
+   tracking. Columns and value rows keep the mono Money. */
+.money-sans {
+  font-family: var(--font-sans);
+  font-size-adjust: none;
+  font-variant-numeric: tabular-nums;
+  gap: var(--space-2);
+}
+.money-sans .money-cur {
+  font-size: 1em;
+  font-weight: var(--w-regular);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-foreground-muted);
+}
+
 .money-pos { color: var(--color-feedback-success-foreground); }
 .money-neg { color: var(--color-feedback-danger-foreground); }
 .money-muted { color: var(--color-foreground-muted); font-weight: var(--w-regular); }
@@ -308,15 +326,82 @@
 }
 
 /* =================== DESC TERM =================== */
-/* Labelled term-definition pair (receipts, detail drawers). */
-.desc-term-label {
-  font-size: var(--fs-xxs);
-  font-weight: var(--w-bold);
-  letter-spacing: var(--ls-caps);
-  text-transform: uppercase;
-  color: var(--color-foreground-muted);
-  margin-bottom: var(--space-2-5);
+/* Labelled term-definition pair (receipts, detail drawers).
+   The label sits ABOVE a value of nearly the same size, so colour — not
+   case, weight or tracking — tells them apart. A caps label at 10px read
+   LARGER than a 13px value (a capital is taller than most lowercase
+   letters, and tracking widens it further), and was the loudest text in
+   the card. Caps-mono stays right where a label sits over a large figure:
+   Stat, table header, .overline-mono. */
+/* Proximity groups each pair: 4px from label to its value, 16px to the next
+   pair. With 1.3 / 1.4 line heights that reads ~9px and ~20px on screen — the
+   old 1.65 line height added ~4px of invisible air per line, so a label sat
+   ~11px from its own value and pairs never read as blocks. */
+.desc-term {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
 }
+.desc-term-label {
+  font-size: var(--fs-sm);
+  font-weight: var(--w-regular);
+  line-height: var(--lh-snug);
+  color: var(--color-foreground-muted);
+}
+.desc-term-value {
+  font-size: var(--fs-md);
+  line-height: var(--lh-data);
+  color: var(--color-foreground-default);
+  /* safety net — an ID or a Pix key belongs in a wide term, but must never
+     push the grid wider than its card if one slips through */
+  overflow-wrap: anywhere;
+}
+/* An ID, UUID or key: long and unspaced, it spans both columns */
+.desc-term-wide { grid-column: 1 / -1; }
+
+/* Two-column grid of pairs. One column on narrow screens. */
+.desc-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-5) var(--space-6);
+  margin: 0;
+}
+@media (max-width: 640px) { .desc-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Groups — pairs of one subject together, a hairline between subjects, 16px
+   either side. Optional: use from three subjects up. */
+.desc-group + .desc-group {
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: var(--border-hairline) solid var(--color-border-subtle);
+}
+/* A Money in a value row reads at the value's size, not the table's */
+.desc-term-value .money { font-size: var(--fs-md); }
+
+/* Title of a detail card (a card of label/value pairs). Same size as the
+   values, set apart by weight alone — 14 and 16 were tried and read too
+   large beside the drawer's hero amount. */
+.desc-card-title {
+  margin: 0;
+  /* 16px down to the pairs is set by the sibling rule below, so the title
+     carries no margin of its own inside a card-header */
+  font-size: var(--fs-md);
+  font-weight: var(--w-bold);
+  color: var(--color-foreground-default);
+  line-height: var(--lh-snug);
+}
+/* ONE TYPE SCALE in a detail card — two sizes, nothing under 12px.
+   13px is what is read (values of any kind, titles), 12px is what qualifies
+   (labels, currency, dates). The kind of data does not change the size: an
+   e-mail or an ID beside a name reads 13px like the name. */
+.desc-term-value .mono { font-size: 1em; }              /* was .92em → 11.96px */
+.desc-term-value .money-cur { font-size: var(--fs-sm); letter-spacing: 0; }  /* was .78em + caps → 10.14px */
+.card .callout-sm .callout-title { font-size: var(--fs-md); font-weight: var(--w-bold); }
+.card .callout-sm .callout-body { font-size: var(--fs-sm); }
+
+.desc-card-title + .desc-grid,
+.desc-card-title + .desc-groups { margin-top: var(--space-5); }
 
 /* ----------------------------------------------------------------
    PROGRESS — one tone scale, two shapes

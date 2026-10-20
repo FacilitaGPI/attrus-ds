@@ -303,3 +303,70 @@
    line-height 1 inside a fixed-height flex box, which centres the glyph's em box.
    Heights are unchanged. */
 .demo-card-tag { display: inline-flex; align-items: center; line-height: 1; height: 15px; }
+
+/* ----------------------------------------------------------------
+   PHONE VIEW — .demo-phone (doc chrome, not a component)
+   ----------------------------------------------------------------
+   Puts a demo at phone width so its container queries fire exactly as they
+   would on a device. 375px is the narrowest common phone in points. The
+   screen scrolls, and overlays inside it (.sheet, .scrim) are pinned to the
+   screen instead of the page, so a bottom sheet can be shown in place.
+   ---------------------------------------------------------------- */
+.demo-viewport { display: inline-flex; margin-left: auto; }
+.demo-card-head .demo-viewport + .demo-card-tag { margin-left: var(--space-3); }
+.demo-phone {
+  width: 375px; max-width: 100%;
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: 40px;
+  background: var(--color-ink-deep);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-pure-white) 8%, transparent), var(--shadow-lg);
+  box-sizing: border-box;
+}
+.demo-phone-screen {
+  position: relative;
+  height: 640px;
+  border-radius: 30px;
+  overflow: hidden auto;
+  background: var(--color-background-canvas);
+  scrollbar-width: none;
+}
+.demo-phone-screen::-webkit-scrollbar { display: none; }
+.demo-phone-screen .sheet,
+.demo-phone-screen .scrim { position: absolute; }
+.demo-phone-screen > .dt-wrap { border-radius: 0; border-left: 0; border-right: 0; }
+.demo-phone-row { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-6); }
+.demo-phone-cap { text-align: center; margin-top: var(--space-3); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+
+/* Page-level viewport switch (sits in .view-controls) and side by side */
+.demo-viewport-global .tab { display: inline-flex; align-items: center; gap: var(--space-2); }
+.demo-viewport-global .tab > svg, .demo-viewport-global .tab > i { width: 14px; height: 14px; }
+.demo-side { align-items: flex-start; flex-wrap: nowrap; }
+.demo-side-desk { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: var(--space-4); }
+.demo-side > .demo-phone { flex: 0 0 auto; }
+@media (max-width: 1100px) { .demo-side { flex-wrap: wrap; } .demo-side-desk { flex-basis: 100%; } }
+
+/* PHONE ON INVERSE — a phone preview of an .on-inverse component paints its
+   screen and the table frame in the inverse surface, so the dark demo reads
+   as dark on the phone too instead of a white screen around dark rows. */
+.demo-phone-screen:has(.dt.on-inverse),
+.demo-phone-screen:has(.on-inverse) { background: var(--color-background-inverse); }
+.demo-phone-screen .dt-wrap:has(> .dt.on-inverse),
+.demo-phone-screen .dt-wrap:has(.dt.on-inverse) { background: var(--color-background-inverse); border-color: var(--color-border-inverse); }
+
+/* PHONE · SHEET CORNERS — a sheet or drawer shown inside the phone frame sits
+   on the screen's bottom edge, so its bottom corners follow the screen's own
+   radius instead of poking square past the rounded frame. */
+.demo-phone-screen .scrim,
+.demo-phone-screen .sheet,
+.demo-phone-screen .drawer,
+.demo-phone-screen .drawer-bottom {
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+  overflow: hidden;
+}
+.demo-phone-screen { isolation: isolate; }
+
+/* PHONE · SCRIM CORNERS — the scrim fills the whole screen, so all four of its
+   corners follow the screen's radius; square, its tint showed past the frame. */
+.demo-phone-screen .scrim { border-radius: inherit; }

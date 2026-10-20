@@ -94,6 +94,10 @@
   --color-foreground-default:     var(--color-neutral-800);   /* primary copy / headings */
   --color-foreground-secondary:   var(--color-neutral-600);   /* hierarchy step 2 */
   --color-foreground-muted:       var(--color-neutral-500);   /* captions, helper */
+  /* A secondary action icon beside a value (copy, open): lighter than the text
+     so it does not compete, darkening to default on hover. neutral-400 is ~3.1:1
+     on white — just above 3:1 for a UI icon; go no lighter. */
+  --color-foreground-icon-subtle: var(--color-neutral-400);
   --color-foreground-placeholder: var(--color-neutral-300);   /* disabled + placeholder */
   --color-foreground-accent:      var(--color-brand-accent-700);       /* accent / highlight TEXT — accent-700 #1E6DC4 (5.20:1 on white). NOT Sky-500: that fails AA as text (2.94:1). For decorative Sky fills use --color-brand-accent-500 directly. */
   --color-foreground-brand:       var(--color-brand-primary-500);      /* institutional brand text/icon — Navy */

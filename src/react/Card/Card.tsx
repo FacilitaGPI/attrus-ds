@@ -62,8 +62,11 @@ export const CardHeader: React.FC<CardSlotProps> = ({ className, ...rest }) => (
 export const CardBody: React.FC<CardSlotProps> = ({ className, ...rest }) => (
   <div className={['card-body', className || ''].filter(Boolean).join(' ')} {...rest} />
 );
-export const CardFooter: React.FC<CardSlotProps> = ({ className, ...rest }) => (
-  <div className={['card-footer', className || ''].filter(Boolean).join(' ')} {...rest} />
+/** Footer slot. `plain`: a detail card's action footer — a 1px line edge to
+    edge, no fill, buttons left-aligned with the text. Works on a single-padding
+    card (bleeds through its padding) and on a card built from slots. */
+export const CardFooter: React.FC<CardSlotProps & { plain?: boolean }> = ({ plain, className, ...rest }) => (
+  <div className={[plain ? 'card-footer-plain' : 'card-footer', className || ''].filter(Boolean).join(' ')} {...rest} />
 );
 export const CardCanvas: React.FC<CardSlotProps> = ({ className, ...rest }) => (
   <div className={['card-canvas', className || ''].filter(Boolean).join(' ')} {...rest} />
