@@ -35,7 +35,7 @@ export interface ComboboxProps {
   /** Shows the search header inside the popover. */
   searchable?: boolean;
   searchPlaceholder?: string;
-  /** Fires on every keystroke with the raw search text ('' when cleared or an option is committed). */
+  /** Fires on every keystroke with the raw search text ('' when cleared, an option is committed, or the popover is dismissed). */
   onSearchChange?: (query: string) => void;
   /** Trigger leading icon (`.combobox-trigger-icon`). */
   icon?: React.ReactNode;
@@ -153,16 +153,22 @@ export const Combobox: React.FC<ComboboxProps> = ({
     };
   }, [open, isStatic]);
 
+  const closePopover = () => {
+    setOpen(false);
+    setQ('');
+    if (onSearchChange) onSearchChange('');
+  };
+
   React.useEffect(() => {
     if (!open) return;
     const onDoc = (e: MouseEvent) => {
       const t = e.target as Node;
       if (wrapRef.current && wrapRef.current.contains(t)) return;
       if (popRef.current && popRef.current.contains(t)) return;
-      setOpen(false);
+      closePopover();
     };
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Escape') closePopover();
     };
     document.addEventListener('mousedown', onDoc);
     document.addEventListener('keydown', onKey);
@@ -173,8 +179,11 @@ export const Combobox: React.FC<ComboboxProps> = ({
   }, [open]);
 
   const selected = options.find((o) => o.value === value) || null;
+  const normalizedQ = normalizeSearchText(q);
   const filtered = q
-    ? options.filter((o) => normalizeSearchText(optionText(o)).indexOf(normalizeSearchText(q)) !== -1)
+    ? normalizedQ
+      ? options.filter((o) => normalizeSearchText(optionText(o)).indexOf(normalizedQ) !== -1)
+      : []
     : options;
   const selectable = filtered.filter((o) => !o.disabled);
 
@@ -202,9 +211,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
       if (hit) {
         e.preventDefault();
         if (onChange) onChange(hit.value);
-        setOpen(false);
-        setQ('');
-        if (onSearchChange) onSearchChange('');
+        closePopover();
       }
     }
   };
@@ -234,9 +241,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
         onClick={() => {
           if (o.disabled) return;
           if (onChange) onChange(o.value);
-          setOpen(false);
-          setQ('');
-          if (onSearchChange) onSearchChange('');
+          closePopover();
         }}
       >
         {o.icon != null ? <span className="combobox-option-icon" aria-hidden="true">{o.icon}</span> : null}

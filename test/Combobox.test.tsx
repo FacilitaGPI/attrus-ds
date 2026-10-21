@@ -75,4 +75,23 @@ describe('Combobox searchable', () => {
     openAndType('jose maria');
     expect(optionLabels()).toEqual(['José María Álvarez']);
   });
+
+  it('matches nothing for a punctuation-only query', () => {
+    openAndType('.');
+    expect(optionLabels()).toEqual([]);
+  });
+
+  it('notifies onSearchChange with empty string on Escape dismiss', () => {
+    const { onSearchChange } = openAndType('Bulk 350');
+    onSearchChange.mockClear();
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(onSearchChange).toHaveBeenCalledWith('');
+  });
+
+  it('notifies onSearchChange with empty string on outside-click dismiss', () => {
+    const { onSearchChange } = openAndType('Bulk 350');
+    onSearchChange.mockClear();
+    fireEvent.mouseDown(document.body);
+    expect(onSearchChange).toHaveBeenCalledWith('');
+  });
 });
