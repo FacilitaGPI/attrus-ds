@@ -105,14 +105,6 @@ export interface DataTableProps<T> {
   onSort?: (key: string) => void;
   className?: string;
   style?: React.CSSProperties;
-  /** Row scale. */
-  size?: 'sm' | 'md' | 'lg';
-  /** Vertical rules between columns — for dense numeric grids only. */
-  bordered?: boolean;
-  /** Alternating row tint. Prefer plain rows; zebra competes with row states. */
-  zebra?: boolean;
-  /** Sticky header. Requires a bounded height, so wrap in DTScrollY. */
-  sticky?: boolean;
 }
 
 /* Two arrows stacked in a clipped slot; `.chev-track` slides between them so the
