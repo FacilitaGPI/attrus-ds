@@ -466,7 +466,6 @@
   .progress.is-critical .progress-fill,
   .progress-seg.is-critical > i.is-current { animation: none; }
 }
-}
 /* Sizes */
 .progress.is-sm, .progress-seg.is-sm > i { --progress-h: 4px; }
 .progress.is-lg, .progress-seg.is-lg > i { --progress-h: 10px; }
