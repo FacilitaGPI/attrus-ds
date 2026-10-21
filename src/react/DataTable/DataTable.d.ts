@@ -106,7 +106,7 @@ export interface DTGroupDividerProps extends React.HTMLAttributes<HTMLTableRowEl
 }
 export declare function DTGroupDivider(props: DTGroupDividerProps): React.ReactElement;
 
-export interface DTDetailProps extends React.HTMLAttributes<HTMLTableRowElement> {
+export interface DTDetailProps extends Omit<React.HTMLAttributes<HTMLTableRowElement>, "title"> {
   colSpan: number;
   open?: boolean;
   title?: React.ReactNode;

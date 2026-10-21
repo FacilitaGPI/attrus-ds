@@ -61,7 +61,7 @@ export interface FlagProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement
 }
 export declare const Flag: React.FC<FlagProps>;
 
-export interface IconProps extends React.SVGAttributes<SVGSVGElement> {
+export interface IconProps extends Omit<React.SVGAttributes<SVGSVGElement>, "stroke"> {
   /** Lucide name — kebab-case ("arrow-left-right") or PascalCase. */
   name: string;
   size?: number;

@@ -182,7 +182,7 @@ export const Flag: React.FC<FlagProps> = ({ country, size = 16, shape = 'rounded
 
 /* ---------- Icon — canonical Lucide glyphs ---------- */
 
-export interface IconProps extends React.SVGAttributes<SVGSVGElement> {
+export interface IconProps extends Omit<React.SVGAttributes<SVGSVGElement>, "stroke"> {
   /** Lucide name — kebab-case ("arrow-left-right") or PascalCase. */
   name: string;
   /** Pixel size. Default 18. */

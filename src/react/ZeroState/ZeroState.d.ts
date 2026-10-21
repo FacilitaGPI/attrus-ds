@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export interface ZeroStateProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ZeroStateProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   /** Illustration slot (.empty-illo) — SVG or image. */
   illo?: React.ReactNode;
   /** Heading (h4). */

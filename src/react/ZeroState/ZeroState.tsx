@@ -8,7 +8,7 @@ import * as React from 'react';
  * ui_kits/dashboard/EmptyState.jsx still consumed by the app.)
  */
 
-export interface ZeroStateProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ZeroStateProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   /** Illustration slot (.empty-illo) — SVG or image. */
   illo?: React.ReactNode;
   /** Heading (h4). */

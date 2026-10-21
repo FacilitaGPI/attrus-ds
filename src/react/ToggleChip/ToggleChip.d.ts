@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export interface ToggleChipProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
+export interface ToggleChipProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange' | 'onToggle'> {
   children?: React.ReactNode;
   /** Leading icon. */
   icon?: React.ReactNode;
