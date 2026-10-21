@@ -128,3 +128,16 @@ h6, .h6 { font-weight: var(--w-regular); font-size: var(--fs-lg);  line-height: 
 }
 .doc-back svg, .doc-back i { width: 18px; height: 18px; stroke-width: var(--icon-stroke); }
 
+/* ================================================================
+   ICON STROKE — every Lucide icon takes the DS stroke
+   ================================================================
+   Lucide ships stroke-width="2"; the DS stroke is --icon-stroke (1.75), but it
+   was only applied to icons inside DS components, so a screen mixed both (the
+   V3 home: 85 icons at 2, 134 at 1.75). This corrects ONLY the library default:
+   an icon that asks for its own weight (a check at 3, a hero at 1.5) keeps it.
+   At 12px and under, 1.75 is a 0.87px line that still reads heavy beside
+   11–12px text — those take --icon-stroke-thin. --icon-stroke-bold (2) stays
+   for close buttons and indicators where weight matters. */
+svg.lucide[stroke-width="2"] { stroke-width: var(--icon-stroke); }
+svg.lucide[stroke-width="2"]:is([width="12"], [width="11"], [width="10"]) { stroke-width: var(--icon-stroke-thin); }
+

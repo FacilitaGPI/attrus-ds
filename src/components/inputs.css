@@ -1117,7 +1117,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 }
 .file-name {
   font-family: var(--font-sans);
-  font-size: var(--fs-sm);
+  font-size: var(--fs-md);
   font-weight: var(--w-regular);
   color: var(--color-foreground-default);
   white-space: nowrap;
@@ -1127,7 +1127,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .file-sub {
   font-family: var(--font-mono);
   font-size-adjust: var(--font-mono-adjust);
-  font-size: var(--fs-xxs);
+  font-size: var(--fs-sm);
   color: var(--color-foreground-muted);
 }
 .file-sub.err { color: var(--color-feedback-danger-foreground); }

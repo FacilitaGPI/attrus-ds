@@ -28,6 +28,9 @@ export interface CalloutProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
   bar?: boolean;
   /** On a bar: re-adds radius + full border for in-container use. */
   rounded?: boolean;
+  /** Callout as a column block beside cards — same inset as Card (16 × 20), so
+      the icon lines up with card titles. Not with small or bar. */
+  block?: boolean;
   /** Content-sized, single line (badges, hero notices). */
   inline?: boolean;
   /** Glassy translucent tint + light text for dark surfaces. */
@@ -51,6 +54,7 @@ export const Callout: React.FC<CalloutProps> = ({
   actions,
   bar = false,
   rounded = false,
+  block = false,
   inline = false,
   onInverse = false,
   onDismiss,
@@ -64,6 +68,7 @@ export const Callout: React.FC<CalloutProps> = ({
     small ? 'callout-sm' : '',
     bar ? 'callout-bar' : '',
     bar && rounded ? 'callout-rounded' : '',
+    block && !small && !bar ? 'callout-block' : '',
     inline ? 'callout-inline' : '',
     onInverse ? 'on-inverse' : '',
     className || '',

@@ -275,3 +275,28 @@
   background: var(--color-background-inverse-hover);
   border-color: var(--color-border-inverse-strong);
 }
+
+/* ----------------------------------------------------------------
+   PLAIN FOOTER — the action footer of a detail card
+   ----------------------------------------------------------------
+   A detail card's buttons sit under a 1px line that runs edge to edge, with
+   no fill (a drawer full of cards must not grow a stripe in each), 16px above
+   and below the buttons, left-aligned with the card's text. Primary first.
+
+   It is its OWN class, not a .card-footer modifier, on purpose: the card's
+   :has(> .card-footer) rule drops the card padding for slot composition, and a
+   detail card is a single-padding card. So on a single-padding card the plain
+   footer bleeds through the card's side padding with negative margins; on a
+   card built from slots (.card-body) it pads itself like any slot.
+   ---------------------------------------------------------------- */
+.card-footer-plain {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: var(--space-5) calc(-1 * var(--space-6)) 0;
+  padding: var(--space-5) var(--space-6) 0;
+  border-top: var(--border-hairline) solid var(--color-border-default);
+  background: transparent;
+}
+.card:has(> .card-body) > .card-footer-plain,
+.card:has(> .card-header) > .card-footer-plain { margin: 0; padding: var(--space-5) var(--space-6); }

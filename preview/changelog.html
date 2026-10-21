@@ -68,13 +68,55 @@
 
   <header class="doc-header">
     <div class="eyebrow">ATTRUS Design System</div>
-    <h1>Changelog <span class="ver-badge" data-ds-version>v1.2.0</span></h1>
+    <h1>Changelog <span class="ver-badge" data-ds-version>v1.2.1</span></h1>
     <p>Every notable change to the design system, grouped by release. Versioning follows <a href="https://semver.org" style="color:var(--color-foreground-accent)">SemVer</a>; the version number lives in <code style="font-family:var(--font-mono);font-size:0.85em">version.js</code> and is mirrored across the catalog and index pages.</p>
   </header>
 
+  <!-- ============ v1.2.1 ============ -->
+  <section class="release">
+    <div class="release-head">
+      <h2>1.2.1</h2>
+      <span class="tag current">Current</span>
+    </div>
+    <div class="release-date">2026-10-19 · detail cards and icons, from the Portal V3 Payment Reviews drawer; the data table on mobile · published to npm as @attrus-ds/core</div>
+
+    <div class="change-group added">
+      <h3><i data-lucide="plus-circle"></i> Added</h3>
+      <ul>
+        <li><b>Data table on mobile</b> — below a 560px container a <code>.dt-responsive</code> table collapses to a <b>list</b> (two lines per row, the default) or a <b>stack</b> (label:value cards): <code>&lt;DataTable mobile="list" | "stack"&gt;</code>, each column placed by <code>mobile: 'lead' | 'title' | 'sub' | 'amount' | 'meta'</code> (a column without a slot drops). Status tabs scroll as chips, labelled actions shrink to their icon, group dividers become sticky day headers, subrows, skeleton and empty state have a mobile form.</li>
+        <li><code>DTDetailSheet</code> — a row's detail on a phone, as a bottom sheet portaled to <code>&lt;body&gt;</code>. <code>useDTCompact(ref)</code> tells the JS the table is in its compact form, agreeing with the container query.</li>
+        <li><code>DTSelectionBar</code> / <code>selectionBar</code> — in selection mode on a phone the bulk actions float in an inverse bar at the bottom; the toolbar keeps only the count. <code>selectOnRowClick</code>, <code>mobileCodeTitle</code>.</li>
+        <li><code>DTPagination pager="arrows" | "load-more"</code> with <code>onLoadMore</code> / <code>loadMoreLabel</code> for the phone form. The old <code>mobile</code> prop on the paginator is deprecated in favour of <code>pager</code>.</li>
+        <li><b>Detail card</b> — <code>.desc-card-title</code> (<code>DescCardTitle</code>), <code>.desc-grid</code> (<code>DescGrid</code>), <code>.desc-groups</code> / <code>.desc-group</code> (<code>DescGroups</code> / <code>DescGroup</code>) and <code>.desc-term-wide</code> (<code>DescTerm wide</code>) for long unspaced values. (A-09, A-12)</li>
+        <li><code>.money-sans</code> / <code>&lt;Money sans&gt;</code> — sans digits for one highlighted amount, the currency at the number's size. Columns and value rows stay mono. (A-09)</li>
+        <li><code>.callout-block</code> / <code>&lt;Callout block&gt;</code> — a callout stacked with cards takes the card's 16 × 20 inset, so its icon lines up with card titles. Not with <code>small</code> or <code>bar</code>. (A-10)</li>
+        <li><code>.card-footer-plain</code> / <code>&lt;CardFooter plain&gt;</code> — a detail card's action footer: a hairline edge to edge, no fill, buttons left-aligned with the text. (A-11)</li>
+        <li>Tokens <code>--lh-data: 1.4</code> (a value under a label) and <code>--color-foreground-icon-subtle</code> (neutral-400, a secondary action icon beside a value). (A-12, A-14)</li>
+      </ul>
+    </div>
+
+    <div class="change-group changed">
+      <h3><i data-lucide="refresh-cw"></i> Changed — visible in existing screens</h3>
+      <ul>
+        <li><b>Every <code>DescTerm</code> label loses its caps.</b> 12px regular in normal case, muted; the value is 13px. A 10px caps label read larger than the value beside it. Caps-mono stays for Stat, table headers and <code>.overline-mono</code>. The API is unchanged. (A-09)</li>
+        <li><code>.desc-term</code> is a column with 4px between label and value, at 1.3 / 1.4 line heights; pairs sit 16px apart. (A-12)</li>
+        <li>One type scale in a detail card: <code>.mono</code> and the currency inside a value read 13 / 12px instead of shrinking to 11.96 / 10.14px. <code>.file-name</code> is 13px and <code>.file-sub</code> 12px everywhere. Mono in tables is unchanged. (A-13)</li>
+        <li><b>Every Lucide icon takes the DS stroke</b> — 1.75, or 1.5 at 12px and under — through a base rule that rewrites only the library default. Loose icons in an app get lighter. (A-14)</li>
+      </ul>
+    </div>
+
+    <div class="change-group fixed">
+      <h3><i data-lucide="bug"></i> Fixed</h3>
+      <ul>
+        <li>The info callout inherited the brand navy tint, so its fill and border read grey-neutral beside a blue icon. It now tints with the info hue like the other tones.</li>
+        <li>On an inverse table in its mobile form, a hovered row turned light: the card hover outranked the inverse pair. It now lifts the inverse surface (<code>--color-background-inverse-hover</code>).</li>
+      </ul>
+    </div>
+  </section>
+
   <!-- ============ v1.2.0 ============ -->
   <section class="release">
-    <div class="release-head"><h2>1.2.0</h2><span class="tag current">Current</span></div>
+    <div class="release-head"><h2>1.2.0</h2><span class="tag">Minor</span></div>
     <div class="release-date">2026-10-05 · minor · ledger and table filters, from the Portal Client V3 statement; button hover glow; optical alignment · published to npm as @attrus-ds/core</div>
     <div class="change-group added">
       <h3><i data-lucide="plus-circle"></i> Added</h3>

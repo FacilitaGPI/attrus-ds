@@ -22,11 +22,14 @@ export interface MoneyProps extends React.HTMLAttributes<HTMLSpanElement> {
   frac?: React.ReactNode;
   size?: MoneySize;
   tone?: MoneyTone;
+  /** Sans digits for a single highlighted amount (a drawer's hero value) —
+      currency at the number's size, muted. Columns and value rows stay mono. */
+  sans?: boolean;
 }
 
-export const Money: React.FC<MoneyProps> = ({ cur, amount, frac, size = 'md', tone, className, ...rest }) => (
+export const Money: React.FC<MoneyProps> = ({ cur, amount, frac, size = 'md', tone, sans, className, ...rest }) => (
   <span
-    className={['money', size !== 'md' ? `money-${size}` : '', tone ? `money-${tone}` : '', className || '']
+    className={['money', size !== 'md' ? `money-${size}` : '', tone ? `money-${tone}` : '', sans ? 'money-sans' : '', className || '']
       .filter(Boolean)
       .join(' ')}
     {...rest}
@@ -312,15 +315,38 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({ value, fill, height, s
   </div>
 );
 
+/* ---------- DescCardTitle — the title of a detail card ---------- */
+
+/** Title of a card of label/value pairs: the value's size, set apart by weight. */
+export const DescCardTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement> & { as?: 'h2' | 'h3' | 'h4' }> = ({ as = 'h3', className, children, ...rest }) =>
+  React.createElement(as, { className: ['desc-card-title', className || ''].filter(Boolean).join(' '), ...rest }, children);
+
+/* ---------- DescGrid / DescGroups — layout of a detail card ---------- */
+
+/** Two-column grid of DescTerms (one column under 640px). */
+export const DescGrid: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...rest }) => (
+  <div className={['desc-grid', className || ''].filter(Boolean).join(' ')} {...rest} />
+);
+/** Wraps DescGroups: pairs of one subject together, a hairline between subjects. */
+export const DescGroups: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...rest }) => (
+  <div className={['desc-groups', className || ''].filter(Boolean).join(' ')} {...rest} />
+);
+/** One subject inside DescGroups — itself a DescGrid. */
+export const DescGroup: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...rest }) => (
+  <div className={['desc-grid', 'desc-group', className || ''].filter(Boolean).join(' ')} {...rest} />
+);
+
 /* ---------- DescTerm — labelled term/definition pair ---------- */
 
 export interface DescTermProps extends React.HTMLAttributes<HTMLDivElement> {
   label: React.ReactNode;
   children?: React.ReactNode;
+  /** Span both columns of a DescGrid — for a long unspaced value (ID, UUID, key). */
+  wide?: boolean;
 }
 
-export const DescTerm: React.FC<DescTermProps> = ({ label, className, children, ...rest }) => (
-  <div className={['desc-term', className || ''].filter(Boolean).join(' ')} {...rest}>
+export const DescTerm: React.FC<DescTermProps> = ({ label, wide, className, children, ...rest }) => (
+  <div className={['desc-term', wide ? 'desc-term-wide' : '', className || ''].filter(Boolean).join(' ')} {...rest}>
     <span className="desc-term-label">{label}</span>
     <span className="desc-term-value">{children}</span>
   </div>

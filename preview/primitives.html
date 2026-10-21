@@ -7,7 +7,8 @@
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
-<link rel="stylesheet" href="components/primitives.css?v=3">
+<link rel="stylesheet" href="components/primitives.css?v=6">
+<link rel="stylesheet" href="components/inputs.css?v=12">
 <link rel="stylesheet" href="components/status-pills.css?v=3">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="https://unpkg.com/lucide@latest"></script>
@@ -87,8 +88,9 @@
     <a href="#stat">03 Stat</a>
     <a href="#divider">04 Divider</a>
     <a href="#pill">05 Pill</a>
-    <a href="#donts">06 Don'ts</a>
-    <a href="#tokens">07 Tokens</a>
+    <a href="#desc">06 Description pairs</a>
+    <a href="#donts">07 Don'ts</a>
+    <a href="#tokens">08 Tokens</a>
   </nav>
 
   <!-- INDEX -->
@@ -457,11 +459,74 @@
     </div>
   </section>
 
+  <section class="doc-section" id="desc">
+    <h2><span class="num">06</span>Description pairs</h2>
+    <p class="lead">A label over a value, for receipts and detail drawers. The label is 12px in normal case and the value 13px — colour, not case or weight, tells them apart. The card title is the value's size, set apart by weight alone.</p>
+
+    <div class="demo-card">
+      <header class="demo-card-head"><div><h3>Detail card <code>.desc-card-title</code> · <code>.desc-term</code></h3><p>Title, four pairs, one of them a Money. Every text in the card is 12 or 13px.</p></div><span class="demo-card-tag">A-09</span></header>
+      <div class="demo-card-canvas">
+        <div class="card" id="desc-demo" style="width:100%;max-width:520px">
+          <h3 class="desc-card-title">Resumo da revisão</h3>
+          <div class="desc-grid">
+            <div class="desc-term"><span class="desc-term-label">Iniciada em</span><span class="desc-term-value">13 out 2026, 11:42</span></div>
+            <div class="desc-term"><span class="desc-term-label">Prazo</span><span class="desc-term-value">21 out 2026</span></div>
+            <div class="desc-term"><span class="desc-term-label">Valor bloqueado</span><span class="desc-term-value"><span class="money"><span class="money-cur">BRL</span>18.425,00</span></span></div>
+            <div class="desc-term"><span class="desc-term-label">Motivo</span><span class="desc-term-value">Origem dos recursos</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div class="demo-card">
+      <header class="demo-card-head"><div><h3>Groups and a wide term <code>.desc-groups</code> · <code>.desc-term-wide</code></h3><p>Three subjects — identification, amounts, account — each a grid, with a hairline and 16px either side between them. The ID is long and unspaced, so it spans both columns and never breaks mid-column.</p></div><span class="demo-card-tag">A-12</span></header>
+      <div class="demo-card-canvas">
+        <div class="card" id="group-demo" style="width:100%;max-width:520px">
+          <h3 class="desc-card-title">Transação</h3>
+          <div class="desc-groups">
+            <div class="desc-grid desc-group"><div class="desc-term desc-term-wide"><span class="desc-term-label">ID da transação</span><span class="desc-term-value">5d93c2a8-6e1f-4a7b-9c4d-8b2e5f1a3c69</span></div></div>
+            <div class="desc-grid desc-group"><div class="desc-term"><span class="desc-term-label">Valor original</span><span class="desc-term-value"><span class="money"><span class="money-cur">USD</span>3.500,00</span></span></div><div class="desc-term"><span class="desc-term-label">Valor final</span><span class="desc-term-value"><span class="money"><span class="money-cur">BRL</span>18.425,00</span></span></div><div class="desc-term"><span class="desc-term-label">Operação</span><span class="desc-term-value">Câmbio de entrada</span></div><div class="desc-term"><span class="desc-term-label">Câmbio</span><span class="desc-term-value">5,2643</span></div></div>
+            <div class="desc-grid desc-group"><div class="desc-term"><span class="desc-term-label">Conta creditada</span><span class="desc-term-value">Itaú ··3391</span></div><div class="desc-term"><span class="desc-term-label">Banco</span><span class="desc-term-value">Itaú Unibanco S.A.</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <header class="demo-card-head"><div><h3>One type scale <code>13 / 12</code></h3><p>E-mail, ID, an amount with its currency, a file and a timeline item in one card. 13px for what is read, 12px for what qualifies — nothing smaller. The timeline item has no component yet; its scale is documented here: title 13 bold, description and time 12, the dot on the first line.</p></div><span class="demo-card-tag">A-13</span></header>
+      <div class="demo-card-canvas">
+        <div class="card" id="scale-demo" style="width:100%;max-width:520px">
+          <h3 class="desc-card-title">Remetente</h3>
+          <div class="desc-grid">
+            <div class="desc-term"><span class="desc-term-label">E-mail</span><span class="desc-term-value"><span class="mono">ana@globalsupplies.com</span></span></div>
+            <div class="desc-term"><span class="desc-term-label">Documento</span><span class="desc-term-value"><span class="mono">12.345.678/0001-90</span></span></div>
+            <div class="desc-term"><span class="desc-term-label">Valor</span><span class="desc-term-value"><span class="money"><span class="money-cur">BRL</span>18.425,00</span></span></div>
+            <div class="desc-term"><span class="desc-term-label">Chave Pix</span><span class="desc-term-value"><span class="mono">ana@globalsupplies.com</span></span></div>
+          </div>
+          <div style="margin-top:var(--space-5);padding-top:var(--space-5);border-top:var(--border-hairline) solid var(--color-border-subtle);display:flex;flex-direction:column;gap:var(--space-4)">
+            <div style="display:flex;flex-direction:column;gap:var(--space-1)"><span class="file-name">contrato-social.pdf</span><span class="file-sub">2,4 MB · 12 out 2026</span></div>
+            <div style="display:flex;gap:var(--space-3)"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-brand-solid);flex-shrink:0;margin-top:calc((var(--fs-md) * var(--lh-data) - 8px) / 2)"></span><div style="display:flex;flex-direction:column;gap:var(--space-1)"><span style="font-size:var(--fs-md);font-weight:var(--w-bold);line-height:var(--lh-data)">Documentos enviados</span><span style="font-size:var(--fs-sm);line-height:var(--lh-data);color:var(--color-foreground-secondary)">Por Ana Souza</span><span style="font-size:var(--fs-sm);line-height:var(--lh-data);color:var(--color-foreground-muted)">12 out 2026, 16:03</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <header class="demo-card-head"><div><h3>Hero amount <code>.money-sans</code></h3><p>One highlighted amount, not a figure in a column: sans digits, the currency at the number's size, muted. The label follows the term-label rule in the block's tone, 6px above the value.</p></div><span class="demo-card-tag">A-09</span></header>
+      <div class="demo-card-canvas">
+        <div id="hero-demo" style="display:flex;flex-direction:column;gap:var(--space-2-5);padding:var(--space-5) var(--space-6);border-radius:var(--shape-container);background:var(--color-feedback-warning-background);border:var(--border-hairline) solid var(--color-feedback-warning-border);min-width:280px">
+          <span style="font-size:var(--fs-sm);line-height:var(--lh-tight);color:var(--color-feedback-warning-foreground)">Valor bloqueado</span>
+          <span class="money money-xl money-sans" style="line-height:var(--lh-tight)"><span class="money-cur">BRL</span>18.425,00</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- =====================================================
-       06 · DON'TS
+       07 · DON'TS
        ===================================================== -->
   <section class="doc-section" id="donts">
-    <h2><span class="num">06</span>Don'ts</h2>
+    <h2><span class="num">07</span>Don'ts</h2>
     <p class="lead">Easy ways to break the rhythm these primitives create.</p>
     <div class="dont-grid">
 
@@ -529,7 +594,7 @@
        07 · TOKENS
        ===================================================== -->
   <section class="doc-section" id="tokens">
-    <h2><span class="num">07</span>Tokens</h2>
+    <h2><span class="num">08</span>Tokens</h2>
     <p class="lead">Every property of every primitive resolves to a token. Override at the token layer to retheme; never edit primitive CSS directly.</p>
 
     <table class="token-table">

@@ -192,6 +192,11 @@
 }
 
 /* ---- tonal variants ---- */
+/* Info had no rule of its own and inherited the base tint (brand navy), so
+   its fill and border read grey-neutral while the icon was blue. It now tints
+   with the info hue like every other tone tints with its own. A bare .callout
+   with no tone class keeps the brand tint. */
+.callout-info { --callout-tint: var(--color-info-500); --callout-fg: var(--color-feedback-info-foreground); }
 .callout-warn    { --callout-tint: var(--color-warning-500); --callout-fg: var(--color-feedback-warning-foreground); }
 .callout-success { --callout-tint: var(--color-success-500); --callout-fg: var(--color-feedback-success-foreground); }
 .callout-danger  { --callout-tint: var(--color-danger-500);  --callout-fg: var(--color-feedback-danger-foreground); }
@@ -287,3 +292,24 @@
 .callout-info.on-inverse    { --callout-fg-inv: var(--color-brand-accent-300); }
 .callout-neutral.on-inverse { --callout-fg-inv: var(--color-foreground-inverse-muted); }
 
+
+/* ----------------------------------------------------------------
+   BLOCK — a callout stacked with cards in the same column
+   ----------------------------------------------------------------
+   Beside cards (a detail drawer, a page column) the default 12 × 16 inset
+   started the icon 4px left of every card title, which reads as a step in the
+   column's left edge. .callout-block takes the card's inset, 16 × 20, so the
+   icon and the card titles share one vertical, and only the fill tells the
+   blocks apart. Inside a card or a form, keep the default.
+
+   The icon's first-line offset depends only on the body line height, so it
+   needs no change here.
+
+   Every tone, info included, keeps its tonal border in block mode — the fill
+   is light enough that it stays quiet beside cards.
+
+   Not combined with .callout-sm (a compact notice is the opposite intent) or
+   .callout-bar (a bar spans its container edge to edge, it is not a column
+   block). Block wins neither — the later class decides — so don't pair them.
+   ---------------------------------------------------------------- */
+.callout-block { padding: var(--space-5) var(--space-6); }

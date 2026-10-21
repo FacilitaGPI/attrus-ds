@@ -8,6 +8,8 @@ export interface MoneyProps extends React.HTMLAttributes<HTMLSpanElement> {
   frac?: React.ReactNode;
   size?: MoneySize;
   tone?: MoneyTone;
+  /** Sans digits for a single highlighted amount; currency at the number's size, muted. */
+  sans?: boolean;
 }
 export declare const Money: React.FC<MoneyProps>;
 
@@ -100,6 +102,8 @@ export declare const ProgressBar: React.FC<ProgressBarProps>;
 export interface DescTermProps extends React.HTMLAttributes<HTMLDivElement> {
   label: React.ReactNode;
   children?: React.ReactNode;
+  /** Span both columns of a DescGrid — long unspaced values (ID, UUID, key). */
+  wide?: boolean;
 }
 export declare const DescTerm: React.FC<DescTermProps>;
 
@@ -147,3 +151,6 @@ export declare const Atoms: {
 };
 
 export default Atoms;
+
+/** Title of a detail card (label/value pairs): value size, bold. */
+export declare const DescCardTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement> & { as?: 'h2' | 'h3' | 'h4' }>;

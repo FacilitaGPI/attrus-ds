@@ -862,7 +862,7 @@
 
 /* Mobile — inside the card stack the child becomes a nested block, still
    visibly hanging off its parent card. */
-@media (max-width: 900px) {
+@container (max-width: 560px) {
   .dt-responsive .dt tbody tr.dt-subrow {
     /* Pulls up under its parent card (which now carries a bottom gutter) and
        keeps the same side inset, so parent and child read as one stack. */
@@ -1015,7 +1015,7 @@
 
 /* Mobile: the animation wrapper survives the card layout, but the inner cell
    stacks instead of sitting on one line. */
-@media (max-width: 900px) {
+@container (max-width: 560px) {
   .dt-responsive .dt tbody tr.dt-subrow.is-collapsible > td { padding-top: 0; padding-bottom: 0; }
   .dt-responsive .dt-subrow-cell { flex-wrap: wrap; padding: var(--space-3) 0; }
 }
@@ -1145,9 +1145,9 @@
 .dt tbody tr.has-detail.is-clickable .dt-subrow-toggle { pointer-events: none; }
 .dt tbody tr.has-detail.is-clickable[aria-expanded="true"] .dt-subrow-toggle > svg { transform: rotate(90deg); }
 
-@media (max-width: 900px) {
-  .dt tbody tr.dt-detail > td { padding-left: var(--space-4); }
-  .dt-detail-grid { grid-template-columns: 1fr; }
+@container (max-width: 560px) {
+  .dt-responsive .dt tbody tr.dt-detail > td { padding-left: var(--space-4); }
+  .dt-responsive .dt-detail-grid { grid-template-columns: 1fr; }
 }
 
 .demo-card-canvas .dt-wrap.dt-responsive { border-radius: var(--shape-container); overflow: hidden; }
@@ -1494,3 +1494,686 @@ a.dt-detail-card:focus-visible { outline: none; box-shadow: var(--shadow-focus);
    parent's hairline is the only separator until the group opens. */
 .dt tbody tr.dt-subrow.is-collapsible:not(.is-open),
 .dt tbody tr.dt-subrow.is-collapsible:not(.is-open) > td { border-bottom: 0; border-top: 0; }
+
+/* ----------------------------------------------------------------
+   MOBILE LIST — .dt-responsive.dt-m-list (the mobile default)
+   ----------------------------------------------------------------
+   Two lines per row instead of a label:value card: who and what on the
+   left, the amount and its status on the right. Position carries the
+   meaning, so no column labels are printed. Use Stack (plain
+   .dt-responsive) when the user must see every field of a record.
+
+   Each <td> declares the slot it fills in the row with data-m:
+     lead    avatar / direction icon / checkbox     (left, spans both lines)
+     title   the name                               (line 1)
+     sub     reference, method, time                (line 2)
+     amount  the figure                             (line 1, right)
+     meta    status pill or a mono note             (line 2, right)
+   A cell with no data-m is dropped below the breakpoint — it is a desktop
+   column the list does not need. Same container query as the stack, so a
+   list in a drawer flips at the drawer's width.
+   ---------------------------------------------------------------- */
+@container (max-width: 560px) {
+  .dt-responsive.dt-m-list .dt tbody { padding-top: 0; }
+  .dt-responsive.dt-m-list .dt tbody tr {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "lead title amount" "lead sub meta";
+    align-items: center;
+    column-gap: var(--space-3);
+    row-gap: 2px;
+    min-height: 64px;
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    border: 0;
+    border-bottom: var(--border-hairline) solid var(--color-border-default);
+    border-radius: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+  }
+  .dt-responsive.dt-m-list .dt tbody tr:last-child { margin-bottom: 0; border-bottom: 0; }
+  .dt-responsive.dt-m-list .dt tbody td {
+    display: block;
+    width: auto;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+    background: none;
+  }
+  .dt-responsive.dt-m-list .dt tbody td::before { content: none; }
+  /* The stack's label:value lines right-align every cell; the list reads left
+     to right, so reset it here. Amount and meta keep their own right edge. */
+  .dt-responsive.dt-m-list .dt tbody td { text-align: left; justify-content: flex-start; }
+  .dt-responsive.dt-m-list .dt tbody td[data-m="amount"] { text-align: right; }
+  .dt-responsive.dt-m-list .dt tbody td:not([data-m]) { display: none; }
+  .dt-responsive.dt-m-list .dt tbody td[data-m="lead"] { grid-area: lead; display: flex; align-items: center; }
+  .dt-responsive.dt-m-list .dt tbody td[data-m="title"] {
+    grid-area: title;
+    font-size: var(--fs-md);
+    color: var(--color-foreground-default);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .dt-responsive.dt-m-list .dt tbody td[data-m="sub"] {
+    grid-area: sub;
+    font-size: var(--fs-xs);
+    color: var(--color-foreground-muted);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .dt-responsive.dt-m-list .dt tbody td[data-m="amount"] { grid-area: amount; text-align: right; white-space: nowrap; }
+  .dt-responsive.dt-m-list .dt tbody td[data-m="meta"] { grid-area: meta; justify-self: end; display: flex; align-items: center; }
+  /* A lead cell built for desktop (icon tile + stack) keeps only its tile */
+  .dt-responsive.dt-m-list .dt tbody td[data-m="lead"] .dt-cell-stack { display: none; }
+
+  /* States without a status column: failed needs a mark that is not colour
+     alone, so it gets a left rule; returned/cancelled stays muted + struck. */
+  .dt-responsive.dt-m-list .dt tbody tr { position: relative; }
+  .dt-responsive.dt-m-list .dt tbody tr.is-error::before {
+    content: "";
+    position: absolute; left: 0; top: var(--space-2); bottom: var(--space-2);
+    width: 3px; border-radius: 0 3px 3px 0;
+    background: var(--color-feedback-danger-foreground);
+  }
+  .dt-responsive.dt-m-list .dt tbody tr.is-selected { background: var(--color-background-selected); }
+
+  /* Group divider becomes a sticky day header that rows scroll under */
+  .dt-responsive.dt-m-list .dt tbody tr.dt-row-divider {
+    display: flex; justify-content: space-between;
+    min-height: 0;
+    position: sticky; top: 0; z-index: 2;
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-background-subtle);
+  }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-row-divider td { display: block; }
+}
+
+/* ----------------------------------------------------------------
+   MOBILE TOOLBAR + SELECTION BAR
+   ----------------------------------------------------------------
+   Below the breakpoint the one-line toolbar becomes three short ones:
+   title with icon actions, the search full width, then a chip row that
+   scrolls sideways (the status tabs). Filter and sort live behind 40px
+   icon buttons; .dt-tb-badge on the filter button says how many are on.
+
+   In selection mode the bulk actions leave the toolbar for .dt-selbar,
+   a pill that sticks to the bottom of the table where the thumb is.
+   Sticky, not fixed, so it stays inside the table's own scroll and works
+   in a drawer. Hidden above the breakpoint — desktop keeps them in the bar.
+   ---------------------------------------------------------------- */
+.dt-tb-icon { position: relative; }
+.dt-tb-badge {
+  position: absolute; top: -4px; right: -4px;
+  min-width: 16px; height: 16px; padding: 0 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-brand-solid);
+  color: var(--color-foreground-on-solid);
+  font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);
+  font-size: 10px; font-weight: var(--w-bold); line-height: 16px; text-align: center;
+  box-sizing: border-box; pointer-events: none;
+}
+.dt-selbar { display: none; }
+
+@container (max-width: 560px) {
+  .dt-responsive .dt-toolbar { flex-wrap: wrap; row-gap: var(--space-3); }
+  .dt-responsive .dt-toolbar-lead { flex: 1; min-width: 0; }
+  .dt-responsive .dt-toolbar-actions { order: 1; }
+  .dt-responsive .dt-toolbar-filters { order: 2; flex: 1 1 100%; flex-direction: column; align-items: stretch; gap: var(--space-3); }
+  .dt-responsive .dt-toolbar-filters > .pill-search,
+  .dt-responsive .dt-toolbar-filters > .group,
+  .dt-responsive .dt-toolbar-filters > .input { width: 100%; }
+  /* Status tabs become a chip row that scrolls instead of wrapping */
+  .dt-responsive .dt-toolbar-filters > .tabs-pill {
+    width: auto; max-width: 100%;
+    overflow-x: auto; scrollbar-width: none;
+    justify-content: flex-start;
+  }
+  .dt-responsive .dt-toolbar-filters > .tabs-pill::-webkit-scrollbar { display: none; }
+  .dt-responsive .dt-toolbar-filters > .tabs-pill .tab { flex-shrink: 0; }
+  /* Labelled actions shrink to their icon; the label stays as aria */
+  .dt-responsive .dt-toolbar-actions .btn:not(.btn-icon) > span:not(.dt-tb-badge) { display: none; }
+  .dt-responsive .dt-toolbar-actions .btn:not(.btn-icon) { width: var(--control-h-sm); padding: 0; justify-content: center; }
+
+  /* Selection: the bar floats, the toolbar keeps only the count */
+  .dt-responsive .dt-toolbar.is-selecting .dt-toolbar-actions { display: none; }
+  .dt-responsive .dt-selbar {
+    position: sticky; bottom: var(--space-4); z-index: 3;
+    display: flex; align-items: center; gap: var(--space-2);
+    margin: var(--space-3) var(--space-3) var(--space-4);
+    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4);
+    border-radius: var(--radius-pill);
+    background: var(--color-background-inverse);
+    color: var(--color-foreground-inverse-default);
+    box-shadow: var(--shadow-lg);
+  }
+  .dt-responsive .dt-selbar-count { flex: 1; font-size: var(--fs-sm); font-weight: var(--w-bold); }
+  .dt-responsive .dt-selbar .btn { border-color: var(--color-border-inverse); color: var(--color-foreground-inverse-default); background: transparent; }
+  .dt-responsive .dt-selbar .btn:hover { background: color-mix(in srgb, var(--color-pure-white) 10%, transparent); }
+  .dt-responsive .dt-selbar .btn:focus-visible { box-shadow: var(--shadow-focus-inverse); }
+}
+
+/* ----------------------------------------------------------------
+   MOBILE PAGER — arrows (default) · load-more
+   ----------------------------------------------------------------
+   Numbered steps are too small for a thumb. Below the breakpoint the pager
+   keeps the range and its two arrows; .is-load-more swaps the whole nav for
+   one full-width .dt-loadmore button. Above the breakpoint load-more is
+   hidden and the desktop pager renders as usual.
+   ---------------------------------------------------------------- */
+.dt-loadmore { display: none; }
+@container (max-width: 560px) {
+  .dt-responsive .dt-pagination { flex-wrap: wrap; row-gap: var(--space-3); }
+  .dt-responsive .dt-pagination-nav .page-btn:not(:first-child):not(:last-child),
+  .dt-responsive .dt-pagination-nav .page-gap,
+  .dt-responsive .dt-pagination-size { display: none; }
+  .dt-responsive .dt-pagination.is-load-more .dt-pagination-nav { display: none; }
+  .dt-responsive .dt-pagination.is-load-more .dt-loadmore { display: inline-flex; order: 3; flex: 1 1 100%; justify-content: center; }
+  .dt-responsive .dt-pagination.is-load-more .dt-pagination-range { flex: 1 1 100%; text-align: center; }
+
+  /* Selection: the checkbox takes the lead slot and the avatar steps aside */
+  .dt-responsive.dt-m-list .dt tbody td.col-select { grid-area: lead; display: flex; align-items: center; width: auto; }
+  .dt-responsive.dt-m-list .dt tbody tr:has(> td.col-select) > td[data-m="lead"]:not(.col-select) { display: none; }
+}
+
+/* ----------------------------------------------------------------
+   LIST · SPECIAL ROWS — subrow rail, skeleton, empty, detail
+   ----------------------------------------------------------------
+   The list drops every cell that declares no data-m slot. That rule is right
+   for data rows and wrong for the rows that carry no columns: an empty state
+   and a detail panel live in one colspan cell with no slot, so they vanished
+   in list mode. They are restored here, and the skeleton is drawn in the
+   list's own geometry so nothing jumps when data lands.
+   ---------------------------------------------------------------- */
+@container (max-width: 560px) {
+  /* Subrow — hangs off its parent through a rail, on the subtle surface */
+  .dt-responsive.dt-m-list .dt tbody tr.dt-subrow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "title amount" "sub meta";
+    min-height: 52px;
+    margin: 0;
+    padding: var(--space-2) var(--space-4) var(--space-2) calc(var(--space-4) + 32px + var(--space-3));
+    background: var(--color-background-subtle);
+    border: 0;
+    border-bottom: var(--border-hairline) solid var(--color-border-default);
+    border-radius: 0;
+  }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-subrow::after {
+    content: "";
+    position: absolute;
+    left: calc(var(--space-4) + 15px); top: 0; height: 50%; width: 10px;
+    border-left: var(--border-hairline) solid var(--color-border-strong);
+    border-bottom: var(--border-hairline) solid var(--color-border-strong);
+    border-bottom-left-radius: 6px;
+  }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-subrow > td { padding: 0; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-subrow > td[data-m="lead"] { display: none; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-subrow > td[data-m="title"] { font-size: var(--fs-sm); }
+
+  /* Skeleton — avatar, two lines, amount */
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton {
+    display: grid; min-height: 64px; padding: var(--space-3) var(--space-4);
+    border-bottom: var(--border-hairline) solid var(--color-border-default);
+  }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td { display: none; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td:first-child { display: block; grid-area: lead; width: 32px; height: 32px; border-radius: var(--radius-pill); background: var(--color-background-subtle); }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td:first-child > * { display: none; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td:nth-child(2) { display: block; grid-area: title; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td:nth-child(3) { display: block; grid-area: sub; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td:last-child { display: block; grid-area: amount; width: 72px; }
+
+  /* Empty — one colspan cell, no slot: centre it in the list area */
+  .dt-responsive.dt-m-list .dt tbody tr.dt-empty { display: block; min-height: 0; padding: 0; border: 0; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-empty > td { display: flex; flex-direction: column; align-items: center; text-align: center; padding: var(--space-12) var(--space-6); }
+
+  /* Detail — on a phone the detail opens as a .sheet (see the demo in
+     table.html §15). Here, if a page still renders the inline panel, it is
+     kept visible as a full-width block under its row rather than dropped. */
+  .dt-responsive.dt-m-list .dt tbody tr.dt-detail { display: block; min-height: 0; padding: 0; background: var(--color-background-subtle); }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-detail > td { display: block; padding: 0 var(--space-4); }
+}
+
+/* ----------------------------------------------------------------
+   STACK · FULL-WIDTH ROWS — divider, detail, any colspan cell
+   ----------------------------------------------------------------
+   The stack turns every row into a card and every cell into a label:value
+   line. A row made of one colspan cell is not a record: a group divider is a
+   heading between cards, a detail panel belongs to the card above it. Neither
+   gets a card frame or a label column.
+   ---------------------------------------------------------------- */
+@container (max-width: 560px) {
+  .dt-responsive:not(.dt-m-list) .dt tbody td[colspan]::before { content: none; }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-row-divider {
+    border: 0; border-radius: 0; box-shadow: none; background: none;
+    margin: var(--space-5) 0 var(--space-2); padding: 0;
+  }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-row-divider > td {
+    display: flex; justify-content: space-between;
+    padding: 0 var(--space-1); border: 0; background: none;
+  }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-detail {
+    margin-top: calc(-1 * var(--space-3));
+    border-top: 0;
+    border-top-left-radius: 0; border-top-right-radius: 0;
+    background: var(--color-background-subtle);
+  }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-detail > td { display: block; padding: var(--space-3) var(--space-4); }
+}
+
+/* ----------------------------------------------------------------
+   LIST · LEAD TILE — a fixed round frame
+   ----------------------------------------------------------------
+   The lead cell spans both lines, and a tile with no size of its own took
+   the cell's shape — 24 × 30, a rectangle sitting off the row's centre. In the
+   list the tile is a 32px circle with the glyph centred, so every row's lead
+   is the same object at the same place. In the stack, a lead cell that holds
+   only a tile has no label to sit beside and no title to lead, so it drops —
+   the name in the card title already says who.
+   ---------------------------------------------------------------- */
+@container (max-width: 560px) {
+  .dt-responsive.dt-m-list .dt tbody td[data-m="lead"] { align-self: center; justify-content: center; }
+  .dt-responsive.dt-m-list .dt tbody td[data-m="lead"] .ic-tile,
+  .dt-responsive.dt-m-list .dt tbody td[data-m="lead"] .ic-round {
+    width: 32px; height: 32px; flex: 0 0 32px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-pill);
+    padding: 0;
+    box-sizing: border-box;
+  }
+  .dt-responsive.dt-m-list .dt tbody td[data-m="lead"] .ic-tile > svg,
+  .dt-responsive.dt-m-list .dt tbody td[data-m="lead"] .ic-round > svg { width: 16px; height: 16px; }
+  .dt-responsive:not(.dt-m-list) .dt tbody td[data-m="lead"]:not(:has(.dt-cell-stack, .dt-cell-lead, .check)) { display: none; }
+}
+
+/* ----------------------------------------------------------------
+   STACK · SUBROWS — a line hung under its parent card
+   ----------------------------------------------------------------
+   The stack made every subrow a full card of label:value lines, so a $3 fee
+   weighed as much as the transfer it belongs to, and a closed collapsible
+   subrow left an empty 24px card. A subrow here is one line attached to the
+   bottom of its parent: the fee's name on the left, its amount on the right,
+   on the subtle surface, no labels. A closed group takes no space.
+   ---------------------------------------------------------------- */
+@container (max-width: 560px) {
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-subrow {
+    flex-direction: row; flex-wrap: nowrap; align-items: center; gap: var(--space-3);
+    margin-top: calc(-1 * var(--space-3));
+    padding: var(--space-3) var(--space-4);
+    border-top: var(--border-hairline) solid var(--color-border-subtle);
+    border-top-left-radius: 0; border-top-right-radius: 0;
+    background: var(--color-background-subtle);
+    box-shadow: none;
+  }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-subrow > td { display: none; padding: 0; border: 0; width: auto; }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-subrow > td::before { content: none; }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-subrow > td:first-child { display: block; flex: 1; min-width: 0; font-size: var(--fs-sm); }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-subrow > td.dt-num { display: block; flex: 0 0 auto; text-align: right; }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-subrow > td .dt-subrow-inner { max-height: none; overflow: visible; }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-subrow > td .dt-subrow-cell { padding: 0; opacity: 1; }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-subrow.is-collapsible:not(.is-open) { display: none; }
+  /* the parent card loses its bottom radius when a subrow hangs from it */
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.has-subrows { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+}
+
+/* ----------------------------------------------------------------
+   STACK · EMPTY + SKELETON
+   ----------------------------------------------------------------
+   The empty state is one colspan cell, not a record: in the stack it was
+   framed as a card and squeezed into the label column. It now spans the list
+   area, centred, with no card around it. A skeleton row became a card of
+   label:value bars with no labels; it now draws the stack's own shape — a
+   card with a title bar and two short lines — so nothing jumps when data lands.
+   ---------------------------------------------------------------- */
+@container (max-width: 560px) {
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-empty {
+    display: block; margin: 0; padding: 0;
+    border: 0; border-radius: 0; box-shadow: none; background: none;
+  }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-empty > td {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: var(--space-2); text-align: center;
+    padding: var(--space-12) var(--space-6);
+    border: 0;
+  }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-empty > td::before { content: none; }
+
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-skeleton {
+    display: flex; flex-direction: column; gap: var(--space-3);
+    padding: var(--space-4);
+  }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-skeleton > td { display: none; padding: 0; border: 0; }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-skeleton > td::before { content: none; }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-skeleton > td:nth-child(-n+3) { display: block; }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-skeleton > td:nth-child(1) > * { width: 60%; height: 12px; }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-skeleton > td:nth-child(2) > *,
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-skeleton > td:nth-child(3) > * { width: 40%; height: 10px; }
+}
+/* List skeleton: the bars live in the cells' spans — size them to the row */
+@container (max-width: 560px) {
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td:nth-child(2) > * { display: block; width: 70%; height: 12px; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td:nth-child(3) > * { display: block; width: 45%; height: 10px; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td:last-child > * { display: block; width: 100%; height: 12px; }
+}
+
+/* STACK · RIGHT-TO-LEFT — the card reads the desktop row from its right
+   edge: the rightmost columns (amount, status, actions) come first, at the
+   top, then the rest in right-to-left order. Rows that are not records keep
+   their own order. */
+@container (max-width: 560px) {
+  .dt-responsive:not(.dt-m-list) .dt.dt tbody tr:not(.dt-subrow):not(.dt-empty):not(.dt-skeleton):not(.dt-row-divider):not(.dt-detail) { display: flex; flex-direction: column-reverse; justify-content: flex-end; }
+}
+
+/* The card title stays on top whatever the right-to-left order does */
+@container (max-width: 560px) {
+  .dt-responsive:not(.dt-m-list) .dt tbody tr > td.dt-card-title { order: 99; }
+}
+
+/* LIST · NO LEAD — a row with no avatar/icon cell drops the lead column,
+   instead of leaving an empty track that pushed the name off the left edge */
+@container (max-width: 560px) {
+  .dt-responsive.dt-m-list .dt tbody tr:not(:has(> td[data-m="lead"])):not(.dt-subrow) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "title amount" "sub meta";
+  }
+}
+
+/* LIST · DENSITY — the table's size class keeps its meaning on the phone:
+   sm 52px rows, default 64px, lg 76px; the stack's card spacing follows. */
+@container (max-width: 560px) {
+  .dt-responsive.dt-m-list .dt.dt-sm tbody tr:not(.dt-subrow):not(.dt-row-divider):not(.dt-empty) { min-height: 52px; padding-top: var(--space-2); padding-bottom: var(--space-2); }
+  .dt-responsive.dt-m-list .dt.dt-lg tbody tr:not(.dt-subrow):not(.dt-row-divider):not(.dt-empty) { min-height: 76px; padding-top: var(--space-4); padding-bottom: var(--space-4); }
+  .dt-responsive:not(.dt-m-list) .dt.dt-sm tbody tr { padding: var(--space-3); gap: var(--space-1); }
+  .dt-responsive:not(.dt-m-list) .dt.dt-lg tbody tr { padding: var(--space-5); gap: var(--space-3); }
+}
+
+@container (max-width: 560px) {
+  .dt-responsive.dt-m-list .dt tbody td[data-m="title"] .dt-cell-lead { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+  .dt-responsive.dt-m-list .dt tbody td[data-m="title"] .dt-cell-lead .ic-tile { width: 32px; height: 32px; flex: 0 0 32px; border-radius: var(--radius-pill); display: inline-flex; align-items: center; justify-content: center; }
+  /* The lead cell already stacks the name over its own sub line, so a
+     separate sub column would repeat it — the title spans both lines. */
+  .dt-responsive.dt-m-list .dt tbody tr:has(> td[data-m="title"] .dt-cell-lead) { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "title amount" "title meta"; }
+  .dt-responsive.dt-m-list .dt tbody tr:has(> td[data-m="title"] .dt-cell-lead) > td[data-m="sub"] { display: none; }
+}
+
+/* TITLE · NEVER A CODE CHIP — on the phone the title is the thing the eye
+   reads first, so a value rendered as code (an event id, a mono reference)
+   drops its chip and its mono face there and reads as a plain label. The
+   desktop column keeps the code styling. */
+@container (max-width: 560px) {
+  .dt-responsive .dt tbody td[data-m="title"] :is(code, .mono, .dt-id, .dt-code),
+  .dt-responsive .dt tbody td.dt-card-title :is(code, .mono, .dt-id, .dt-code) {
+    font-family: var(--font-sans);
+    font-size-adjust: none;
+    font-size: inherit;
+    letter-spacing: normal;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+  }
+}
+
+/* STACK · AMOUNT — the stack lays a cell out as a flex row (label · value),
+   so a currency chip and its figure became two flex items pushed apart. The
+   amount cell is a block instead: the label floats left, the figure and its
+   currency sit together on the right. */
+@container (max-width: 560px) {
+  .dt-responsive:not(.dt-m-list) .dt tbody td.dt-num { display: block; text-align: right; }
+  .dt-responsive:not(.dt-m-list) .dt tbody td.dt-num::before { float: left; }
+}
+
+/* TITLE · ONE LINE OF NAME — on the phone the title shows the readable name
+   only; the machine id under it repeats the same thing in code form, so it
+   drops there. The desktop column keeps both. */
+@container (max-width: 560px) {
+  .dt-responsive .dt tbody :is(td[data-m="title"], td.dt-card-title) .dt-cell-stack > .sub.mono { display: none; }
+}
+
+/* COMPACT · BOLD TITLE — at sm the row is short and the title shares its
+   12px with everything else, so weight is what sets it apart */
+@container (max-width: 560px) {
+  .dt-responsive .dt.dt-sm tbody :is(td[data-m="title"], td.dt-card-title),
+  .dt-responsive .dt.dt-sm tbody :is(td[data-m="title"], td.dt-card-title) .pri { font-weight: var(--w-bold); }
+}
+
+/* LIST · EXAMPLE CELL — in a reference list the right slot holds a rendered
+   example, not a figure; it keeps its own layout and never truncates. */
+@container (max-width: 560px) {
+  .dt-responsive.dt-m-list .dt tbody td[data-m="amount"]:not(.dt-num) { display: flex; align-items: center; justify-content: flex-end; grid-row: 1 / span 2; }
+}
+
+/* LIST · CODE TITLE — in a reference table the title IS a class name, so it
+   keeps the code face instead of the plain row-title reset (which would print
+   ".dt-cell-stack" as if it were a sentence). */
+@container (max-width: 560px) {
+  .dt-responsive .dt.dt-m-code tbody :is(td[data-m="title"], td.dt-card-title) .dt-id {
+    font-family: var(--font-mono);
+    font-size-adjust: var(--font-mono-adjust);
+    font-size: var(--fs-sm);
+    color: var(--color-foreground-accent);
+  }
+}
+
+/* MOBILE · SELECTION VISIBLE — the checkbox is the only proof a row is in the
+   selection, so it never drops below the breakpoint: in the list it is the
+   lead, in the stack it rides the card's top-right corner. A selected card is
+   tinted and ringed in brand, so selection reads without finding the box. */
+@container (max-width: 560px) {
+  .dt-responsive:not(.dt-m-list) .dt tbody tr { position: relative; }
+  .dt-responsive:not(.dt-m-list) .dt tbody td.col-select {
+    display: flex !important;
+    position: absolute; top: var(--space-3); right: var(--space-3);
+    width: auto; padding: 0; border: 0;
+  }
+  .dt-responsive:not(.dt-m-list) .dt tbody td.col-select::before { content: none; }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.is-selected {
+    background: var(--color-background-selected);
+    box-shadow: inset 0 0 0 1px var(--color-brand-solid);
+  }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.is-selected > td { background: transparent; }
+}
+
+/* MOBILE · DENSITY HELPERS — zebra carries over to the list; sticky and
+   bordered act on a column header and on columns, neither of which exists
+   below the breakpoint, so they switch off. */
+@container (max-width: 560px) {
+  .dt-responsive.dt-m-list .dt.dt-zebra tbody tr:nth-child(even):not(.is-selected):not(.dt-row-divider) { background: var(--color-background-subtle); }
+  .dt-responsive.dt-m-list .dt.dt-zebra tbody tr:nth-child(even) > td { background: transparent; }
+  .dt-responsive .dt.dt-bordered tbody td { border-left: 0; border-right: 0; }
+  .dt-responsive .dt.dt-sticky thead th { position: static; }
+}
+
+/* MOBILE · SKELETON SHAPE — a loading row is drawn in the shape of the row it
+   becomes, so the data lands without the list moving. In the list: a lead
+   circle, a title bar, a shorter sub bar, a short amount bar on the right —
+   64px, the real row height. In the stack it mimics a label/value card.
+   !important because the list's data-m slot rules would otherwise place the
+   skeleton's cells into the data columns. */
+@container (max-width: 560px) {
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton {
+    display: grid !important;
+    grid-template-columns: 32px minmax(0, 1fr) 72px !important;
+    grid-template-rows: 1fr 1fr !important;
+    grid-template-areas: none !important;
+    column-gap: var(--space-3); row-gap: var(--space-2);
+    align-items: center;
+    height: 64px; min-height: 64px;
+    padding: var(--space-3) var(--space-4);
+    box-sizing: border-box;
+  }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td { padding: 0 !important; border: 0 !important; min-width: 0; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td > * { display: none !important; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td::before { content: none !important; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td:nth-child(n+4) { display: none !important; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton::before,
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton::after,
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td:nth-child(-n+3) {
+    display: block !important;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(90deg, var(--color-background-hover) 0%, var(--color-background-subtle) 50%, var(--color-background-hover) 100%);
+    background-size: 200% 100%;
+    animation: dt-sk-shimmer 1.4s var(--ease-linear) infinite;
+  }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton::before { content: ""; grid-column: 1; grid-row: 1 / span 2; width: 32px; height: 32px; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td:nth-child(1) { grid-area: 1 / 2 !important; height: 10px !important; width: 70% !important; align-self: end; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td:nth-child(2) { grid-area: 2 / 2 !important; height: 8px !important; width: 45% !important; align-self: start; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td:nth-child(3) { grid-area: 1 / 3 !important; height: 10px !important; width: 100% !important; align-self: end; justify-self: end; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton::after { content: ""; grid-area: 2 / 3; height: 8px; width: 60%; justify-self: end; align-self: start; }
+
+  /* Stack: a card of label/value bars */
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-skeleton > td::before {
+    content: ""; display: block; width: 30%; height: 8px; margin-bottom: var(--space-2);
+    border-radius: var(--radius-pill); background: var(--color-background-hover);
+  }
+}
+@keyframes dt-sk-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton::before,
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton::after,
+  .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td { animation: none; }
+}
+
+/* MOBILE PAGER · TARGETS — the load-more button carries .btn, whose display
+   outranks the plain hide, so it is hidden explicitly outside load-more mode;
+   the two arrows grow to a 40px thumb target. */
+.dt-pagination:not(.is-load-more) .dt-loadmore { display: none !important; }
+@container (max-width: 560px) {
+  .dt-responsive .dt-pagination-nav .page-btn { min-width: 40px; height: 40px; }
+  .dt-responsive .dt-pagination:not(.is-load-more) { justify-content: space-between; }
+}
+
+/* MOBILE · GROUP HEADER — a divider is the group's header, not a hairline:
+   day on the left, the summary on the right, on the subtle surface. In the
+   list it sticks while that day's rows scroll under it; in the stack it sits
+   flush between the cards with the same two parts. */
+@container (max-width: 560px) {
+  .dt-responsive .dt tbody tr.dt-row-divider > td {
+    display: flex !important; align-items: baseline; justify-content: space-between; gap: var(--space-3);
+    width: 100%; box-sizing: border-box;
+    padding: var(--space-2) var(--space-4) !important;
+    background: var(--color-background-subtle) !important;
+    font-size: var(--fs-xs); font-weight: var(--w-bold); color: var(--color-foreground-secondary);
+  }
+  .dt-responsive .dt tbody tr.dt-row-divider > td > span:first-child { flex-shrink: 0; white-space: nowrap; }
+  .dt-responsive .dt tbody tr.dt-row-divider > td::before { content: none !important; }
+  .dt-responsive .dt tbody tr.dt-row-divider .dt-row-divider-meta {
+    font-weight: var(--w-regular); color: var(--color-foreground-muted);
+    font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+  }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-row-divider {
+    display: block; margin: 0 0 var(--space-3); padding: 0;
+    border: 0; border-radius: 0; box-shadow: none; background: none;
+  }
+}
+
+/* LIST · COLLAPSIBLE SUBROW — the disclosure collapses the inner cell's
+   height; in the list the row also owns padding and a min height, so those
+   fold with it or a closed group still leaves a 52px strip. */
+@container (max-width: 560px) {
+  .dt-responsive.dt-m-list .dt tbody tr.dt-subrow.is-collapsible {
+    transition: padding var(--duration-base) var(--ease-standard), min-height var(--duration-base) var(--ease-standard);
+  }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-subrow.is-collapsible:not(.is-open) {
+    min-height: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important;
+    border-bottom-width: 0; overflow: hidden;
+  }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-subrow.is-collapsible:not(.is-open)::after { opacity: 0; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-subrow.is-collapsible:not(.is-open) > td { max-height: 0; overflow: hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dt-responsive.dt-m-list .dt tbody tr.dt-subrow.is-collapsible { transition: none; }
+}
+
+/* STACK · COLLAPSIBLE SUBROW — a closed subrow folds away under its card */
+@container (max-width: 560px) {
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-subrow.is-collapsible:not(.is-open) { display: none !important; }
+}
+
+/* STACK · CARD HOVER — the stack paints each row as a card with its own
+   surface, and that rule outranks the row hover, so the card never changed.
+   The whole card takes the hover tint, cells stay transparent over it. */
+@container (max-width: 560px) {
+  .dt-responsive:not(.dt-m-list) .dt tbody tr:is(.hov, .is-clickable, .has-subrows, [data-row]):not(.is-selected):not(.dt-row-divider):not(.dt-empty):not(.dt-skeleton):hover {
+    background: var(--color-background-subtle);
+  }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr:hover > td { background: transparent; }
+  .dt-responsive.dt-m-list .dt tbody tr:is(.hov, .is-clickable, .has-subrows, [data-row]):not(.is-selected):not(.dt-row-divider):hover { background: var(--color-background-subtle); }
+}
+
+/* MOBILE · INVERSE — the list and the stack on a dark surface: rows and cards
+   sit on the inverse surface, hairlines and hover take the inverse pair. */
+@container (max-width: 560px) {
+  .dt-responsive .dt.on-inverse tbody tr { background: var(--color-background-inverse); color: var(--color-foreground-inverse-default); }
+  .dt-responsive.dt-m-list .dt.on-inverse tbody tr { border-bottom-color: var(--color-border-inverse); }
+  .dt-responsive:not(.dt-m-list) .dt.on-inverse tbody tr { border-color: var(--color-border-inverse); }
+  .dt-responsive .dt.on-inverse tbody :is(td[data-m="title"], td.dt-card-title) :is(.pri, .dt-id),
+  .dt-responsive .dt.on-inverse tbody td[data-m="title"] { color: var(--color-foreground-inverse-default) !important; }
+  .dt-responsive .dt.on-inverse tbody td[data-m="title"] .dt-cell-stack .sub { color: var(--color-foreground-inverse-muted) !important; }
+  .dt-responsive .dt.on-inverse tbody td[data-m="sub"],
+  .dt-responsive .dt.on-inverse tbody td::before { color: var(--color-foreground-inverse-muted); }
+  .dt-responsive .dt.on-inverse tbody tr.hov:hover { background: color-mix(in srgb, var(--color-pure-white) 4%, var(--color-background-inverse)); }
+}
+
+/* MOBILE · SEARCH FITS — the search pill carries a desktop min-width, so on a
+   phone it ran 26px past its row and was clipped by the screen edge. Below the
+   breakpoint it takes the row's width and never more. */
+@container (max-width: 560px) {
+  .dt-responsive .dt-toolbar-filters > .pill-search,
+  .dt-responsive .dt-toolbar-filters > .group,
+  .dt-responsive .dt-toolbar-filters > .input {
+    width: 100%; min-width: 0; max-width: 100%; box-sizing: border-box;
+  }
+}
+
+/* MOBILE · LOAD MORE HEIGHT — the pager row has a fixed desktop height; in
+   load-more mode it stacks the range over a full-width button, which ran 15px
+   past that height and was clipped by the table frame. It grows to fit. */
+@container (max-width: 560px) {
+  .dt-responsive .dt-pagination.is-load-more {
+    height: auto; min-height: 0;
+    flex-direction: column; align-items: stretch; gap: var(--space-2);
+    padding-top: var(--space-3); padding-bottom: var(--space-3);
+  }
+  .dt-responsive .dt-pagination.is-load-more .dt-loadmore { width: 100%; justify-content: center; flex-shrink: 0; height: var(--control-h-md); min-height: var(--control-h-md); }
+}
+
+/* MOBILE · DETAIL FITS — the disclosure writes the open height and the panel's
+   inset inline, measured at the desktop width. On a phone the same content
+   wraps taller and the desktop right inset narrows it, so the panel was clipped
+   at its desktop height and short of the row's width. Below the breakpoint an
+   open detail grows to its content and spans the row; closed stays closed. */
+@container (max-width: 560px) {
+  .dt-responsive .dt tbody tr.dt-detail.is-open .dt-subrow-inner { max-height: none !important; }
+  .dt-responsive .dt tbody tr.dt-detail .dt-detail-body { padding: var(--space-3) 0 var(--space-4) !important; }
+  .dt-responsive .dt tbody tr.dt-detail .dt-detail-card,
+  .dt-responsive .dt tbody tr.dt-detail .dt-detail-grid { width: 100%; box-sizing: border-box; }
+}
+
+/* MOBILE · DETAIL ONE WIDTH — the detail card is the same width in both
+   shapes: 12px inside the screen edge. In the stack the detail row used to
+   inherit the record card's own padding and sit two insets deep, 42px
+   narrower than in the list. The open detail row is not a card itself — it
+   hangs off the card above, flush to the table's width. */
+@container (max-width: 560px) {
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-detail {
+    display: block; padding: 0 !important; margin: 0 0 var(--space-3);
+    border: 0; border-radius: 0; box-shadow: none; background: none;
+  }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-detail > td {
+    display: block; width: 100%; padding: 0 var(--space-3) !important; box-sizing: border-box; border: 0;
+  }
+  .dt-responsive:not(.dt-m-list) .dt tbody tr.dt-detail > td::before { content: none; }
+  .dt-responsive.dt-m-list .dt tbody tr.dt-detail > td { padding: 0 var(--space-3) !important; box-sizing: border-box; }
+  .dt-responsive .dt tbody tr.dt-detail .dt-detail-body { padding-left: 0 !important; padding-right: 0 !important; }
+}
+
+/* INVERSE · CARD HOVER — the card/list hover above paints the light subtle
+   surface and outranked the inverse pair, so a dark row hovered to a light
+   tint. On an inverse table the hover lifts the inverse surface instead. */
+@container (max-width: 560px) {
+  .dt-responsive .dt.on-inverse tbody tr:is(.hov, .is-clickable, .has-subrows, [data-row]):not(.is-selected):not(.dt-row-divider):not(.dt-empty):not(.dt-skeleton):hover {
+    background: color-mix(in srgb, var(--color-pure-white) 6%, var(--color-background-inverse));
+  }
+}
+.dt.on-inverse tbody tr:is(.hov, .is-clickable):hover > td { background: transparent; }
+.dt.on-inverse tbody tr:is(.hov, .is-clickable):hover {
+  background: color-mix(in srgb, var(--color-pure-white) 6%, var(--color-background-inverse));
+}

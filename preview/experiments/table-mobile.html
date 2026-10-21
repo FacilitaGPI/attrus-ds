@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Table · mobile proposal · ATTRUS</title>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../themes/index.css?v=1">
+<script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  a { color: var(--color-foreground-accent); } a:hover { color: var(--color-foreground-brand); }
+  .page { max-width: 1320px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-6); margin-bottom: var(--space-8); }
+  .head h1 { margin: 0 0 var(--space-2); font-size: var(--fs-5xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); }
+  .head p { margin: 0; max-width: 72ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-md); text-wrap: pretty; }
+  .eyebrow { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+  .theme-btn { flex-shrink: 0; }
+  h2.sec { font-size: var(--fs-2xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: var(--space-12) 0 var(--space-2); display: flex; gap: var(--space-3); align-items: baseline; }
+  h2.sec .n { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-sm); color: var(--color-foreground-muted); font-weight: var(--w-regular); }
+  p.lead { margin: 0 0 var(--space-6); max-width: 76ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); text-wrap: pretty; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--space-8) var(--space-6); }
+  .shot { display: flex; flex-direction: column; gap: var(--space-4); }
+  .shot h3 { margin: 0; font-size: var(--fs-md); font-weight: var(--w-bold); display: flex; align-items: center; gap: var(--space-2); }
+  .shot p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); text-wrap: pretty; }
+  .tag { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; padding: 2px var(--space-2); border-radius: var(--radius-pill); border: var(--border-hairline) solid var(--color-border-default); color: var(--color-foreground-muted); }
+  .tag.rec { color: var(--color-feedback-success-foreground); border-color: var(--color-feedback-success-border); background: var(--color-feedback-success-background); }
+  .tag.new { color: var(--color-foreground-brand); border-color: var(--color-brand-border); background: var(--color-background-selected); }
+  .verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-6); }
+  .verdict div { background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); padding: var(--space-5); font-size: var(--fs-sm); line-height: var(--lh-relaxed); color: var(--color-foreground-secondary); }
+  .verdict b { display: block; color: var(--color-foreground-default); margin-bottom: var(--space-2); font-size: var(--fs-md); }
+
+  /* ---------- phone frame (mockup only) ---------- */
+  .phone { width: 360px; height: 700px; max-width: 100%; border-radius: 40px; padding: 10px; background: var(--color-ink-deep); box-shadow: 0 1px 0 color-mix(in srgb, white 8%, transparent) inset, var(--shadow-lg); box-sizing: border-box; align-self: center; }
+  .screen { position: relative; height: 100%; border-radius: 30px; overflow: hidden; background: var(--color-background-canvas); display: flex; flex-direction: column; }
+  .sbar { height: 34px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-6); font-size: var(--fs-xs); font-weight: var(--w-bold); color: var(--color-foreground-default); }
+  .sbar i { display: flex; gap: 4px; } .sbar svg { width: 14px; height: 14px; }
+  .scroll { flex: 1; overflow-y: auto; overflow-x: hidden; }
+
+  /* ---------- proposal: mobile table anatomy (prefixed mx-, not DS yet) ---------- */
+  .mx-top { padding: var(--space-2) var(--space-4) var(--space-3); display: flex; flex-direction: column; gap: var(--space-3); background: var(--color-background-canvas); }
+  .mx-titlebar { display: flex; align-items: center; gap: var(--space-2); }
+  .mx-titlebar h4 { margin: 0; flex: 1; font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); }
+  .mx-titlebar .count { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-muted); font-weight: var(--w-regular); margin-left: var(--space-2); }
+  .mx-ib { position: relative; width: 40px; height: 40px; border-radius: var(--radius-pill); border: var(--border-hairline) solid var(--color-border-default); background: var(--color-background-surface); color: var(--color-foreground-secondary); display: inline-flex; align-items: center; justify-content: center; }
+  .mx-ib svg { width: 18px; height: 18px; }
+  .mx-ib .dot { position: absolute; top: 6px; right: 6px; min-width: 16px; height: 16px; border-radius: var(--radius-pill); background: var(--color-brand-solid); color: var(--color-foreground-on-solid); font-size: 10px; font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; padding: 0 4px; box-sizing: border-box; transform: translate(40%, -40%); }
+  .mx-search { height: 40px; border-radius: var(--radius-pill); border: var(--border-hairline) solid var(--color-border-default); background: var(--color-background-surface); display: flex; align-items: center; gap: var(--space-2); padding: 0 var(--space-4); color: var(--color-foreground-muted); font-size: var(--fs-sm); }
+  .mx-search svg { width: 16px; height: 16px; }
+  .mx-chips { display: flex; gap: var(--space-2); overflow-x: auto; margin: 0 calc(-1 * var(--space-4)); padding: 0 var(--space-4); scrollbar-width: none; }
+  .mx-chips::-webkit-scrollbar { display: none; }
+  .mx-chip { flex-shrink: 0; height: 32px; padding: 0 var(--space-4); border-radius: var(--radius-pill); border: var(--border-hairline) solid var(--color-border-default); background: var(--color-background-surface); font-size: var(--fs-sm); display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-foreground-secondary); white-space: nowrap; }
+  .mx-chip.on { background: var(--color-background-inverse); color: var(--color-foreground-inverse-default); border-color: transparent; }
+  .mx-chip b { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); opacity: .7; }
+  .mx-chip.applied { background: var(--color-background-selected); color: var(--color-foreground-brand); border-color: var(--color-brand-border); }
+  .mx-chip svg { width: 13px; height: 13px; }
+
+  .mx-list { background: var(--color-background-surface); border-top: var(--border-hairline) solid var(--color-border-default); border-bottom: var(--border-hairline) solid var(--color-border-default); }
+  .mx-day { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; padding: var(--space-2) var(--space-4); background: var(--color-background-subtle); border-bottom: var(--border-hairline) solid var(--color-border-default); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .mx-day span:last-child { text-transform: none; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+  .mx-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); min-height: 64px; box-sizing: border-box; border-bottom: var(--border-hairline) solid var(--color-border-default); position: relative; }
+  .mx-list > .mx-row:last-child { border-bottom: 0; }
+  .mx-av { width: 36px; height: 36px; border-radius: var(--radius-pill); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .mx-av svg { width: 16px; height: 16px; }
+  .mx-av.in { background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); }
+  .mx-av.out { background: var(--color-background-subtle); color: var(--color-foreground-secondary); }
+  .mx-av.int { background: var(--color-feedback-info-background); color: var(--color-feedback-info-foreground); }
+  .mx-av img { width: 22px; height: 22px; border-radius: var(--radius-pill); }
+  .mx-main { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .mx-name { font-size: var(--fs-md); color: var(--color-foreground-default); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mx-sub { font-size: var(--fs-xs); color: var(--color-foreground-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mx-end { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .mx-amt { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-bold); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .mx-amt.in { color: var(--color-feedback-success-foreground); }
+  .mx-meta { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); font-variant-numeric: tabular-nums; }
+  .mx-chev { color: var(--color-foreground-muted); display: flex; transition: transform var(--duration-base) var(--ease-standard); }
+  .mx-chev svg { width: 16px; height: 16px; }
+  .mx-row.open .mx-chev { transform: rotate(90deg); }
+  /* states */
+  .mx-row.is-selected { background: var(--color-background-selected); }
+  .mx-row.is-error::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; border-radius: 0 3px 3px 0; background: var(--color-feedback-danger-foreground); }
+  .mx-row.is-muted .mx-name, .mx-row.is-muted .mx-amt { color: var(--color-foreground-muted); }
+  .mx-row.is-muted .mx-amt { text-decoration: line-through; text-decoration-thickness: var(--border-hairline); }
+  .mx-check { width: 20px; height: 20px; border-radius: var(--radius-xs); border: 1.5px solid var(--color-border-strong); display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--color-background-surface); }
+  .mx-check.on { background: var(--color-brand-solid); border-color: var(--color-brand-solid); color: var(--color-foreground-on-solid); }
+  .mx-check svg { width: 12px; height: 12px; stroke-width: 3; }
+  /* subrow — hangs off the parent through a rail */
+  .mx-subrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-3); align-items: center; padding: var(--space-2) var(--space-4) var(--space-3) calc(var(--space-4) + 18px + var(--space-3)); background: var(--color-background-subtle); border-bottom: var(--border-hairline) solid var(--color-border-default); position: relative; }
+  .mx-subrow::before { content: ""; position: absolute; left: calc(var(--space-4) + 17px); top: 0; bottom: 50%; width: 10px; border-left: var(--border-hairline) solid var(--color-border-strong); border-bottom: var(--border-hairline) solid var(--color-border-strong); border-bottom-left-radius: 6px; }
+  .mx-subrow .mx-name { font-size: var(--fs-sm); display: flex; align-items: center; gap: var(--space-2); }
+  .mx-subrow .mx-amt { font-size: var(--fs-sm); }
+  .mx-mini { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: 9px; letter-spacing: var(--ls-caps); text-transform: uppercase; padding: 1px 6px; border-radius: var(--radius-pill); border: var(--border-hairline) solid var(--color-border-default); color: var(--color-foreground-muted); }
+  /* card stack (existing .dt-responsive, drawn for comparison) */
+  .mx-card { margin: 0 var(--space-4) var(--space-3); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); padding: var(--space-2) var(--space-4); }
+  .mx-card .t { padding: var(--space-3) 0; border-bottom: var(--border-hairline) solid var(--color-border-subtle); font-size: var(--fs-md); }
+  .mx-kv { display: flex; justify-content: space-between; gap: var(--space-3); padding: var(--space-2) 0; border-bottom: var(--border-hairline) solid var(--color-border-subtle); font-size: var(--fs-sm); }
+  .mx-kv:last-child { border-bottom: 0; }
+  .mx-kv span:first-child { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  /* scroll variant: sticky first column */
+  .mx-scrollx { overflow-x: auto; background: var(--color-background-surface); border-top: var(--border-hairline) solid var(--color-border-default); border-bottom: var(--border-hairline) solid var(--color-border-default); position: relative; }
+  .mx-scrollx table { border-collapse: separate; border-spacing: 0; font-size: var(--fs-sm); min-width: 560px; width: 100%; }
+  .mx-scrollx th, .mx-scrollx td { padding: var(--space-3); text-align: left; border-bottom: var(--border-hairline) solid var(--color-border-default); white-space: nowrap; background: var(--color-background-surface); }
+  .mx-scrollx th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); font-weight: var(--w-regular); background: var(--color-background-subtle); }
+  .mx-scrollx .num { text-align: right; font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-weight: var(--w-bold); font-variant-numeric: tabular-nums; }
+  .mx-scrollx .stick { position: sticky; left: 0; z-index: 1; box-shadow: 1px 0 0 var(--color-border-default), 8px 0 12px -8px color-mix(in srgb, var(--color-ink-base) 18%, transparent); padding-left: var(--space-4); }
+  .mx-hint { display: flex; align-items: center; justify-content: center; gap: var(--space-2); padding: var(--space-2); font-size: var(--fs-xxs); color: var(--color-foreground-muted); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); }
+  .mx-hint svg { width: 12px; height: 12px; }
+  /* pager */
+  .mx-pager { display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-4); font-size: var(--fs-xs); color: var(--color-foreground-muted); font-variant-numeric: tabular-nums; }
+  .mx-more { margin: var(--space-3) var(--space-4) var(--space-5); }
+  .mx-more .btn { width: 100%; justify-content: center; }
+  /* selection bar — pinned bottom */
+  .mx-selbar { position: absolute; left: var(--space-3); right: var(--space-3); bottom: var(--space-5); display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4); border-radius: var(--radius-pill); background: var(--color-background-inverse); color: var(--color-foreground-inverse-default); box-shadow: var(--shadow-lg); }
+  .mx-selbar .c { flex: 1; font-size: var(--fs-sm); font-weight: var(--w-bold); }
+  .mx-selbar .mx-ib { background: transparent; border-color: var(--color-border-inverse); color: var(--color-foreground-inverse-default); width: 36px; height: 36px; }
+  .mx-selhead { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); }
+  .mx-selhead .c { flex: 1; font-weight: var(--w-bold); color: var(--color-foreground-brand); }
+  /* bottom sheet */
+  .mx-scrim { position: absolute; inset: 0; background: var(--color-scrim, color-mix(in srgb, var(--color-ink-deep) 45%, transparent)); }
+  .mx-sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--color-background-surface); border-radius: 22px 22px 0 0; padding: var(--space-2) var(--space-5) var(--space-6); box-shadow: var(--shadow-xl); max-height: 78%; overflow: auto; }
+  .mx-grab { width: 36px; height: 4px; border-radius: 2px; background: var(--color-border-strong); margin: var(--space-2) auto var(--space-4); }
+  .mx-sheet h5 { margin: 0 0 var(--space-1); font-size: var(--fs-lg); font-weight: var(--w-bold); }
+  .mx-sheet .sub { font-size: var(--fs-sm); color: var(--color-foreground-muted); margin-bottom: var(--space-4); }
+  .mx-opt { display: flex; align-items: center; gap: var(--space-3); min-height: 48px; border-bottom: var(--border-hairline) solid var(--color-border-subtle); font-size: var(--fs-md); }
+  .mx-opt svg { width: 18px; height: 18px; color: var(--color-foreground-muted); }
+  .mx-opt .grow { flex: 1; }
+  .mx-opt.on { color: var(--color-foreground-brand); } .mx-opt.on svg { color: var(--color-foreground-brand); }
+  .mx-big { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-3xl); font-weight: var(--w-bold); font-variant-numeric: tabular-nums; margin: var(--space-2) 0 var(--space-1); }
+  .mx-dl { display: grid; grid-template-columns: auto 1fr; gap: var(--space-3) var(--space-4); margin: var(--space-4) 0 var(--space-5); font-size: var(--fs-sm); }
+  .mx-dl dt { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .mx-dl dd { margin: 0; text-align: right; }
+  .mx-actions { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+  .mx-actions .btn { justify-content: center; }
+  /* skeleton */
+  .mx-sk { background: var(--color-background-subtle); border-radius: var(--radius-xs); height: 10px; }
+  .mx-empty { padding: var(--space-12) var(--space-6); text-align: center; display: flex; flex-direction: column; align-items: center; gap: var(--space-3); }
+  .mx-empty .ic { width: 52px; height: 52px; border-radius: var(--radius-pill); background: var(--color-background-subtle); color: var(--color-foreground-muted); display: flex; align-items: center; justify-content: center; }
+  .mx-empty h5 { margin: 0; font-size: var(--fs-lg); font-weight: var(--w-bold); }
+  .mx-empty p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-muted); line-height: var(--lh-relaxed); }
+  .mx-band { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-4); background: var(--color-background-subtle); color: var(--color-foreground-secondary); font-size: var(--fs-xs); border-bottom: var(--border-hairline) solid var(--color-border-subtle); }
+  .mx-band svg { width: 13px; height: 13px; }
+  .mx-band a { margin-left: auto; font-weight: var(--w-bold); text-decoration: none; }
+  .note { margin-top: var(--space-12); padding: var(--space-6); border-radius: var(--shape-container); border: var(--border-hairline) dashed var(--color-border-strong); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .note b { color: var(--color-foreground-default); }
+  .note ul { margin: var(--space-2) 0 0; padding-left: var(--space-5); }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="head">
+    <div>
+      <div class="eyebrow">Proposal · decisions recorded · not in the DS yet</div>
+      <h1>Table on mobile</h1>
+      <p>Today the table has one mobile behaviour — every row becomes a label : value card — and that strategy is applied to everything, from a ledger to a selection list. This proposal makes mobile an explicit mode of each variant: a default list row, the existing card stack kept for record review, horizontal scroll kept for comparison data, and a mobile answer for toolbar, filters, sort, selection, grouping, subrows, detail, pagination and empty states.</p>
+    </div>
+    <button class="btn btn-secondary btn-sm theme-btn" data-theme-toggle><span data-theme-icon aria-hidden="true">☾</span><span data-theme-label>Dark</span></button>
+  </div>
+
+  <h2 class="sec"><span class="n">01</span>Three strategies, chosen per table</h2>
+  <p class="lead">A table does not shrink into a phone — it changes shape. The shape depends on what the user does with the data, so the screen picks one with a single prop: <code>mobile="list" | "stack"</code>. List is the default; Stack is chosen when the user needs every field of a record visible at once.</p>
+  <div class="verdict" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">
+    <div><b>List — default <span class="tag rec">recommended</span></b>Two lines per row: who and what on the left, the amount and status on the right. No column labels — the position carries the meaning. For anything the user scans and taps: transactions, payments, counterparties.</div>
+    <div><b>Stack — option</b>Each row becomes a card with label : value lines. Every field visible, nothing to infer. For record review where the user compares fields of one item, not items against each other.</div>
+  </div>
+  <div class="grid" id="g-strategies"></div>
+
+  <h2 class="sec"><span class="n">02</span>Toolbar, search and filters</h2>
+  <p class="lead">The desktop toolbar puts title, search, filters and actions on one line. On a phone that line becomes three short ones: title with icon actions, a full-width search, and a scrolling chip row for the status tabs. Filters and sort move into bottom sheets reached from icon buttons with a count badge. The four frames are one toolbar in four moments, not alternatives: at rest, the filter sheet open, filters applied, and the sort sheet.</p>
+  <div class="grid" id="g-toolbar"></div>
+
+  <h2 class="sec"><span class="n">03</span>Rows: states and selection</h2>
+  <p class="lead">Row states keep their desktop meaning with marks that survive without columns: selected is a tint, failed is a left rule, returned is muted and struck through. Selection mode swaps the leading avatar for a checkbox and pins the bulk actions to a floating bar, where the thumb is.</p>
+  <div class="grid" id="g-rows"></div>
+
+  <h2 class="sec"><span class="n">04</span>Grouping, subrows and detail</h2>
+  <p class="lead">Day dividers stick to the top while their rows scroll under them. A subrow hangs off its parent through a rail, so a fee still reads as belonging to its transfer without a column grid. The detail panel, which opens inline on desktop, becomes a bottom sheet — there is no width to open into.</p>
+  <div class="grid" id="g-group"></div>
+
+  <h2 class="sec"><span class="n">05</span>Pagination, loading and empty</h2>
+  <p class="lead">Numbered pages are hard to hit with a thumb. Mobile keeps the range and two arrows by default (<code>pager="arrows"</code>), or swaps paging for a full-width Load more (<code>pager="load-more"</code>). Loading and empty states are drawn in the list's own shape, so nothing jumps when data arrives.</p>
+  <div class="grid" id="g-paging"></div>
+
+  <div class="note">
+    <b>What this would change in the DS</b>
+    <ul>
+      <li>A <code>mobile</code> prop on <code>DataTable</code> (<code>list</code> default, <code>stack</code> for full-record review) and a <code>pager</code> prop (<code>arrows</code> default, <code>load-more</code>) — and the breakpoint unified on the container query at 560px. Today the card stack uses a container query while subrows and the detail panel switch on a 900px viewport media query, so they can disagree inside a drawer.</li>
+      <li>New CSS for the list row (<code>.dt-m-row</code>), the sticky day divider, the subrow rail, the floating selection bar, and the mobile toolbar layout.</li>
+      <li>Detail panel and sort open as a bottom sheet below the breakpoint — a <code>Sheet</code> surface the Drawer can share.</li>
+      <li>Every demo on <code>table.html</code> gains a phone view beside the desktop one, so the mobile behaviour of each variant is visible, not implied.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+(function () {
+  var I = function (n) { return '<i data-lucide="' + n + '"></i>'; };
+  var flag = function (c) { return '<img src="../../assets/flags/' + c + '-rounded.svg" alt="">'; };
+  var sbar = '<div class="sbar"><span>9:41</span><i>' + I('signal') + I('wifi') + I('battery-full') + '</i></div>';
+  function phone(inner, extra) { return '<div class="phone"><div class="screen">' + sbar + '<div class="scroll">' + inner + '</div>' + (extra || '') + '</div></div>'; }
+  function shot(title, tag, desc, inner, extra) {
+    return '<div class="shot"><h3>' + title + (tag ? ' <span class="tag ' + (tag === 'recommended' || tag === 'default' ? 'rec' : tag === 'new' ? 'new' : '') + '">' + tag + '</span>' : '') + '</h3><p>' + desc + '</p>' + phone(inner, extra) + '</div>';
+  }
+
+  var TX = [
+    { k: 'out', n: 'Global Supplies LLC', s: 'Wire · TX-90412', a: '−18,425.00', st: ['warning', 'Pending'], t: '11:42' },
+    { k: 'in',  n: 'Meridian Trading Co', s: 'ACH · TX-90387', a: '+40,095.00', st: ['success', 'Settled'], t: '09:15' },
+    { k: 'int', n: 'To Savings ··4410', s: 'Internal · TX-90366', a: '−5,000.00', st: ['success', 'Settled'], t: '08:02' },
+    { k: 'out', n: 'Acme Logistics', s: 'Wire · TX-90351', a: '−2,300.00', st: ['danger', 'Failed'], t: 'Yesterday', cls: 'is-error' },
+    { k: 'in',  n: 'Northwind Imports', s: 'ACH · TX-90344', a: '+12,000.00', st: ['success', 'Settled'], t: 'Yesterday' },
+    { k: 'out', n: 'Contoso Freight', s: 'ACH · TX-90330', a: '−870.40', st: ['neutral', 'Returned'], t: 'Mar 11', cls: 'is-muted' }
+  ];
+  var ICON = { in: 'arrow-down-left', out: 'arrow-up-right', int: 'arrow-left-right' };
+  function pill(st) { return '<span class="pill ' + st[0] + ' sm"><span class="dot"></span><span class="pill-label">' + st[1] + '</span></span>'; }
+  function row(t, o) {
+    o = o || {};
+    var lead = o.check != null ? '<span class="mx-check' + (o.check ? ' on' : '') + '">' + (o.check ? I('check') : '') + '</span>' : '<span class="mx-av ' + t.k + '">' + I(ICON[t.k]) + '</span>';
+    var end = '<div class="mx-end"><span class="mx-amt' + (t.k === 'in' ? ' in' : '') + '">' + t.a + '</span>' + (o.meta ? '<span class="mx-meta">' + o.meta + '</span>' : pill(t.st)) + '</div>';
+    var name = (o.chev ? '' : '') + t.n;
+    return '<div class="mx-row ' + (t.cls || '') + (o.sel ? ' is-selected' : '') + (o.open ? ' open' : '') + '">' + lead +
+      '<div class="mx-main"><span class="mx-name">' + name + '</span><span class="mx-sub">' + (o.sub || (t.s + ' · ' + t.t)) + '</span></div>' + end + '</div>';
+  }
+  function top(o) {
+    o = o || {};
+    var chips = ['All<b>248</b>', 'Pending<b>12</b>', 'Settled<b>221</b>', 'Failed<b>9</b>', 'Returned<b>6</b>'];
+    return '<div class="mx-top"><div class="mx-titlebar"><h4>Transactions<span class="count">' + (o.count || '248') + '</span></h4>' +
+      '<span class="mx-ib">' + I('arrow-down-wide-narrow') + '</span><span class="mx-ib">' + I('sliders-horizontal') + (o.filters ? '<span class="dot">' + o.filters + '</span>' : '') + '</span></div>' +
+      (o.noSearch ? '' : '<div class="mx-search">' + I('search') + (o.q ? '<span style="color:var(--color-foreground-default)">' + o.q + '</span>' : 'Name, reference or amount') + '</div>') +
+      '<div class="mx-chips">' + chips.map(function (c, i) { return '<span class="mx-chip' + (i === (o.tab || 0) ? ' on' : '') + '">' + c + '</span>'; }).join('') + '</div>' +
+      (o.applied ? '<div class="mx-chips">' + o.applied.map(function (c) { return '<span class="mx-chip applied">' + c + I('x') + '</span>'; }).join('') + '</div>' : '') + '</div>';
+  }
+  function list(rows) { return '<div class="mx-list">' + rows + '</div>'; }
+  var pager = '<div class="mx-pager"><span>1–10 of 248</span><span style="display:flex;gap:8px"><span class="mx-ib" style="width:36px;height:36px">' + I('chevron-left') + '</span><span class="mx-ib" style="width:36px;height:36px">' + I('chevron-right') + '</span></span></div>';
+
+  /* 01 strategies */
+  var stack = TX.slice(0, 3).map(function (t) {
+    return '<div class="mx-card"><div class="t">' + t.n + '</div><div class="mx-kv"><span>Reference</span><span>' + t.s.split(' · ')[1] + '</span></div><div class="mx-kv"><span>Method</span><span>' + t.s.split(' · ')[0] + '</span></div><div class="mx-kv"><span>Status</span>' + pill(t.st) + '</div><div class="mx-kv"><span>Amount</span><span class="mx-amt' + (t.k === 'in' ? ' in' : '') + '">' + t.a + '</span></div></div>';
+  }).join('');
+  var scrollTable = '<div class="mx-scrollx"><table><thead><tr><th class="stick">Description</th><th>Date</th><th>Method</th><th class="num">Amount</th><th class="num">Balance</th></tr></thead><tbody>' +
+    [['Global Supplies', 'Mar 13', 'Wire', '−18,425.00', '—'], ['Meridian Trading', 'Mar 13', 'ACH', '+40,095.00', '182,410.22'], ['To Savings', 'Mar 13', 'Internal', '−5,000.00', '142,315.22'], ['Acme Logistics', 'Mar 12', 'Wire', '−2,300.00', '—'], ['Northwind', 'Mar 12', 'ACH', '+12,000.00', '147,315.22'], ['Contoso Freight', 'Mar 11', 'ACH', '−870.40', '135,315.22']]
+      .map(function (r) { return '<tr><td class="stick">' + r[0] + '</td><td>' + r[1] + '</td><td>' + r[2] + '</td><td class="num"' + (r[3][0] === '+' ? ' style="color:var(--color-feedback-success-foreground)"' : '') + '>' + r[3] + '</td><td class="num" style="font-weight:400;color:var(--color-foreground-muted)">' + r[4] + '</td></tr>'; }).join('') +
+    '</tbody></table></div><div class="mx-hint">' + I('move-horizontal') + 'Scroll for balance</div>';
+  document.getElementById('g-strategies').innerHTML =
+    shot('List', 'default', 'Avatar for direction, name and reference on the left, amount and status on the right. 64px rows, the whole row is the tap target.', top() + list(TX.map(function (t) { return row(t); }).join('')) + pager) +
+    shot('Stack', 'option', 'Today\u2019s <code>.dt-responsive</code>. Every field labelled; costs three times the height of a list row, so it suits a handful of records.', top({ noSearch: true }) + stack);
+
+  /* 02 toolbar */
+  var filterSheet = '<div class="mx-scrim"></div><div class="mx-sheet"><div class="mx-grab"></div><h5>Filters</h5><div class="sub">Changes apply when you tap Show results</div>' +
+    '<div class="field" style="margin-bottom:16px"><label>Period</label><div class="date-trigger" style="width:100%;box-sizing:border-box">' + I('calendar') + '<span class="date-trigger-value">Mar 1 – Mar 13, 2026</span>' + I('chevron-down') + '</div></div>' +
+    '<div class="field" style="margin-bottom:16px"><label>Method</label><div class="mx-chips" style="margin:0;padding:0;flex-wrap:wrap"><span class="mx-chip on">Wire</span><span class="mx-chip on">ACH</span><span class="mx-chip">Internal</span><span class="mx-chip">Card</span></div></div>' +
+    '<div class="field" style="margin-bottom:20px"><label>Amount</label><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><input class="input" placeholder="Min" inputmode="decimal"><input class="input" placeholder="Max" inputmode="decimal"></div></div>' +
+    '<div class="mx-actions"><button class="btn btn-secondary">Clear all</button><button class="btn btn-primary">Show 38 results</button></div></div>';
+  var sortSheet = '<div class="mx-scrim"></div><div class="mx-sheet"><div class="mx-grab"></div><h5>Sort by</h5><div class="sub">Sorting by amount hides the day groups</div>' +
+    [['calendar-arrow-down', 'Date, newest first', 1], ['calendar-arrow-up', 'Date, oldest first'], ['arrow-down-wide-narrow', 'Amount, high to low'], ['arrow-up-narrow-wide', 'Amount, low to high']]
+      .map(function (o) { return '<div class="mx-opt' + (o[2] ? ' on' : '') + '">' + I(o[0]) + '<span class="grow">' + o[1] + '</span>' + (o[2] ? I('check') : '') + '</div>'; }).join('') + '</div>';
+  document.getElementById('g-toolbar').innerHTML =
+    shot('Toolbar at rest', 'new', 'Title and count on one line with sort and filter as 40px icon buttons. Search goes full width. Status tabs become a chip row that scrolls sideways.', top() + list(TX.slice(0, 4).map(function (t) { return row(t); }).join(''))) +
+    shot('Filters applied', 'new', 'The filter button shows how many are on. Applied filters sit as removable chips under the tabs, and the band above the list states the result.', top({ filters: 2, tab: 1, applied: ['Mar 1 – 13', 'Wire, ACH'], count: '12' }) + '<div class="mx-band">' + I('filter') + 'Showing 12 of 248<a href="#">Clear</a></div>' + list(TX.slice(0, 1).concat(TX.slice(3, 4)).map(function (t) { return row(t); }).join(''))) +
+    shot('Filter sheet', 'new', 'Desktop\u2019s apply-mode bar becomes a sheet: controls edit a draft, and the primary button shows the result count before committing.', top({ filters: 2 }) + list(TX.slice(0, 3).map(function (t) { return row(t); }).join('')), filterSheet) +
+    shot('Sort sheet', 'new', 'The icon-only sort combobox opens as a sheet of four options with the same icons. The button keeps showing the glyph of the order in use.', top() + list(TX.slice(0, 3).map(function (t) { return row(t); }).join('')), sortSheet);
+
+  /* 03 rows */
+  var selBar = '<div class="mx-selbar"><span class="c">3 selected</span><span class="mx-ib">' + I('download') + '</span><span class="mx-ib">' + I('trash-2') + '</span><span class="mx-ib">' + I('x') + '</span></div>';
+  document.getElementById('g-rows').innerHTML =
+    shot('Row states', '', 'Selected tints the row. Failed adds a danger rule on the left edge — colour alone would vanish in a list without a status column. Returned is muted with a hairline strike.', top() + list(row(TX[0]) + row(TX[1], { sel: true }) + row(TX[3]) + row(TX[5]))) +
+    shot('Selection mode', 'new', 'Entered from a long-press or a Select action. Checkboxes replace the avatars, the toolbar becomes a selection header, and bulk actions float at the bottom within thumb reach.',
+      '<div class="mx-selhead"><span class="mx-check on">' + I('minus') + '</span><span class="c">3 of 248</span><button class="btn btn-tertiary btn-sm">Select all</button></div>' +
+      list(row(TX[0], { check: true, sel: true }) + row(TX[1], { check: false }) + row(TX[2], { check: true, sel: true }) + row(TX[3], { check: false }) + row(TX[4], { check: true, sel: true }) + row(TX[5], { check: false })), selBar);
+
+  /* 04 grouping */
+  var fee = function (n, a, s) { return '<div class="mx-subrow"><div class="mx-main"><span class="mx-name">' + I('receipt').replace('<i', '<i style="width:14px;height:14px;color:var(--color-foreground-muted)"') + n + ' <span class="mx-mini">Fee</span></span><span class="mx-sub">' + s + '</span></div><span class="mx-amt">' + a + '</span></div>'; };
+  var parentRow = function (t, open, total) {
+    return '<div class="mx-row' + (open ? ' open' : '') + '"><span class="mx-av ' + t.k + '">' + I(ICON[t.k]) + '</span><div class="mx-main"><span class="mx-name" style="display:flex;align-items:center;gap:6px">' + t.n + '<span class="mx-chev">' + I('chevron-right') + '</span></span><span class="mx-sub">' + t.s + ' · ' + t.t + '</span></div><div class="mx-end"><span class="mx-amt">' + t.a + '</span><span class="mx-meta">' + total + '</span></div></div>';
+  };
+  var detailSheet = '<div class="mx-scrim"></div><div class="mx-sheet"><div class="mx-grab"></div><div style="display:flex;justify-content:space-between;align-items:center">' + pill(['warning', 'Pending']) + '<span class="mx-ib" style="width:32px;height:32px">' + I('x') + '</span></div>' +
+    '<div class="mx-big">−18,425.00</div><div class="sub">Global Supplies LLC · Wire</div>' +
+    '<dl class="mx-dl"><dt>Reference</dt><dd>TX-90412</dd><dt>Date</dt><dd>Mar 13, 2026 · 11:42</dd><dt>Beneficiary bank</dt><dd>Chase ··3391</dd><dt>Fee</dt><dd>−25.00</dd><dt>Total</dt><dd><b>−18,450.00</b></dd></dl>' +
+    '<div class="mx-actions"><button class="btn btn-secondary">Receipt</button><button class="btn btn-danger-outline">Cancel</button></div></div>';
+  document.getElementById('g-group').innerHTML =
+    shot('Day groups', '', 'The day label and its net stick to the top while their rows scroll under them, so the user never loses which day a row belongs to.',
+      top({ noSearch: true }) + list('<div class="mx-day"><span>Fri, Mar 13</span><span>net +16,670.00</span></div>' + row(TX[0], { sub: TX[0].s }) + row(TX[1], { sub: TX[1].s }) + row(TX[2], { sub: TX[2].s }) +
+        '<div class="mx-day"><span>Thu, Mar 12</span><span>net +9,700.00</span></div>' + row(TX[3], { sub: TX[3].s }) + row(TX[4], { sub: TX[4].s }) + '<div class="mx-day"><span>Wed, Mar 11</span><span>net −870.40</span></div>' + row(TX[5], { sub: TX[5].s }))) +
+    shot('Subrows', 'new', 'A chevron beside the name opens the group. The fee hangs off its transfer through a rail on the subtle surface, and the parent shows the total with the fee.',
+      top({ noSearch: true }) + list(parentRow(TX[0], true, 'total −18,450.00') + fee('Wire fee', '−25.00', 'Charged with the transfer') + parentRow(TX[3], false, 'total −2,315.00') + row(TX[1]) + row(TX[4]))) +
+    shot('Detail as a sheet', 'new', 'Tapping a row opens its detail from the bottom: the amount large, the facts as a definition list, and the two actions the user came for.', top() + list(TX.slice(0, 4).map(function (t) { return row(t); }).join('')), detailSheet);
+
+  /* 05 paging */
+  var sk = '<div class="mx-row"><span class="mx-av out"></span><div class="mx-main" style="gap:8px"><span class="mx-sk" style="width:70%"></span><span class="mx-sk" style="width:45%;height:8px"></span></div><div class="mx-end" style="gap:8px"><span class="mx-sk" style="width:72px"></span><span class="mx-sk" style="width:48px;height:8px"></span></div></div>';
+  document.getElementById('g-paging').innerHTML =
+    shot('Arrows', 'default', 'The range and two 36px arrows. Page numbers are dropped — at phone width they are too small to hit and rarely used.', top({ noSearch: true }) + list(TX.map(function (t) { return row(t); }).join('')) + pager) +
+    shot('Load more', 'option', 'For lists read top-down, a full-width secondary button appends the next page in place. The count says how far the user is.', top({ noSearch: true }) + list(TX.map(function (t) { return row(t); }).join('')) + '<div class="mx-more"><button class="btn btn-secondary">Load 10 more · 6 of 248</button></div>') +
+    shot('Loading', '', 'Skeleton rows in the list\u2019s own geometry — avatar, two lines, amount — so the layout does not jump when data lands.', top({ noSearch: true }) + list(sk + sk + sk + sk + sk + sk)) +
+    shot('Empty', '', 'Centred in the list area, with a reason and one action. A filtered empty state offers to clear filters rather than to create.', top({ filters: 2, tab: 3, count: '0' }) + '<div class="mx-empty"><div class="ic">' + I('search-x') + '</div><h5>No failed transactions</h5><p>Nothing matches these filters for Mar 1 – 13.</p><button class="btn btn-secondary btn-sm">Clear filters</button></div>');
+
+  lucide.createIcons();
+})();
+</script>
+</body>
+</html>

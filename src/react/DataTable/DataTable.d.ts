@@ -20,6 +20,8 @@ export interface DataTableColumn<T> {
   sortable?: boolean;
   /** Cell renderer — defaults to String(row[key]). */
   render?: (row: T) => React.ReactNode;
+  /** Slot in the mobile LIST row (data-m). Columns without one drop below the breakpoint. */
+  mobile?: 'lead' | 'title' | 'sub' | 'amount' | 'meta';
 }
 
 export interface DataTableProps<T> {
@@ -37,6 +39,8 @@ export interface DataTableProps<T> {
   onSelectToggle?: (key: string) => void;
   /** Header checkbox — toggle all. */
   onSelectAll?: () => void;
+  selectOnRowClick?: boolean;
+  mobileCodeTitle?: boolean;
   /** Loading state — `.dt-skeleton` shimmer rows instead of the body. */
   loading?: boolean;
   /** How many skeleton rows. Default 4. */
@@ -56,6 +60,10 @@ export interface DataTableProps<T> {
   wrap?: boolean;
   /** Responsive card-collapse wrapper (.dt-responsive). Default true. */
   responsive?: boolean;
+  /** Mobile shape: list (default, two lines per row) or stack (label:value cards). */
+  mobile?: 'list' | 'stack';
+  /** Bulk actions floating at the bottom in selection mode (<DTSelectionBar>). */
+  selectionBar?: React.ReactNode;
   /** Zero state when rows is empty. */
   empty?: { icon?: React.ReactNode; title: React.ReactNode; sub?: React.ReactNode };
   /** Controlled sorting (visual). */
@@ -151,6 +159,12 @@ export interface DTPaginationProps extends React.HTMLAttributes<HTMLDivElement> 
   pageSizes?: number[];
   pageSize?: number;
   onPageSize?: (size: number) => void;
+  /** Phone form: arrows (default) or load-more. */
+  pager?: 'arrows' | 'load-more';
+  /** @deprecated — use `pager`. */
+  mobile?: 'arrows' | 'load-more';
+  onLoadMore?: () => void;
+  loadMoreLabel?: React.ReactNode;
 }
 export interface DTParentRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
   children?: React.ReactNode;
@@ -187,3 +201,8 @@ export default DataTable;
 export declare const DTOutline: React.FC<{ flag?: string; icon?: React.ReactNode; code?: React.ReactNode; size?: 'sm' | 'md'; children?: React.ReactNode } & React.HTMLAttributes<HTMLSpanElement>>;
 /** Set of outline pills in one cell — .dt-outline-set. */
 export declare const DTOutlineSet: React.FC<React.HTMLAttributes<HTMLSpanElement>>;
+
+/** A row's detail on a phone, as a bottom sheet portaled to <body>. */
+export declare const DTDetailSheet: React.FC<{ open: boolean; onClose: () => void; title: React.ReactNode; sub?: React.ReactNode; eyebrow?: React.ReactNode; footer?: React.ReactNode; children?: React.ReactNode }>;
+/** True when the table container is narrower than 560px — agrees with the CSS container query. */
+export declare function useDTCompact(ref: React.RefObject<HTMLElement>): boolean;

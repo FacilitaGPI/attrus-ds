@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- @dsCard group="Brand" name="Iconography" subtitle="Lucide outline · 5 tamanhos · 3 stroke weights" viewport="1280x900" -->
+<!-- @dsCard group="Brand" name="Iconography" subtitle="Lucide outline · 5 tamanhos · stroke do DS em todo ícone" viewport="1280x900" -->
 <html><head><meta charset="utf-8"><link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
@@ -75,6 +75,19 @@
 <div class="note">
   <strong>Library:</strong> <span class="tag">Lucide 0.469</span> via CDN · stroke-width <span class="tag">1.75</span> · default size <span class="tag">16–20 px</span>.<br>
   Use <code>&lt;i data-lucide="{name}"&gt;</code> and call <code>lucide.createIcons()</code>. Do <strong>not</strong> hand-draw SVGs — the only exception is the country flags in <code>assets/flags/</code>.
+</div>
+
+<div class="note" id="stroke-rules" style="margin-top:16px">
+  <strong>Stroke — set once, by the DS.</strong> Every Lucide icon takes <span class="tag">--icon-stroke</span> 1.75, inside a DS component or not; at 12px and under it takes <span class="tag">--icon-stroke-thin</span> 1.5. A base rule in <code>colors_and_type.css</code> rewrites only the library default (<code>stroke-width="2"</code>), so <strong>do not pass <code>strokeWidth</code></strong> unless you want a different weight on purpose — a check at 3, a large hero glyph at 1.5. Use <span class="tag">--icon-stroke-bold</span> 2 for close buttons and indicators where weight matters.
+  <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin-top:12px" id="stroke-demo">
+    <span style="display:inline-flex;align-items:center;gap:6px"><i data-lucide="calendar" width="16" height="16"></i>16 · 1.75</span>
+    <span style="display:inline-flex;align-items:center;gap:6px"><i data-lucide="file-text" width="14" height="14"></i>14 · 1.75</span>
+    <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px"><i data-lucide="copy" width="12" height="12"></i>12 · 1.5</span>
+  </div>
+</div>
+<div class="note" style="margin-top:16px">
+  <strong>Colour.</strong> An icon that accompanies text takes the text colour (<code>currentColor</code>). A secondary action beside a value — copy, open, view detail — takes <span class="tag">--color-foreground-icon-subtle</span> (neutral-400, ~3.1:1, just above the 3:1 floor for a UI icon) and darkens to default on hover, so it does not compete with the value. A status icon takes its tone (<code>--color-feedback-*-foreground</code>). On a 1× display a stroke thinner than 1px only gets lighter and blurrier, so it is the colour, not the stroke, that makes a small icon recede.
+  <div style="margin-top:12px"><span id="copy-demo" style="display:inline-flex;align-items:center;gap:8px;height:26px;padding:0 10px;border:1px solid var(--color-border-default);border-radius:var(--radius-pill);font-size:12px"><span style="color:var(--color-foreground-muted)">ID</span><span style="font-family:var(--font-mono);font-size-adjust:var(--font-mono-adjust)">TX-90412</span><button type="button" aria-label="Copy ID" style="all:unset;display:inline-flex;cursor:pointer;color:var(--color-foreground-icon-subtle)" onmouseover="this.style.color='var(--color-foreground-default)'" onmouseout="this.style.color='var(--color-foreground-icon-subtle)'"><i data-lucide="copy" width="12" height="12"></i></button></span></div>
 </div>
 <script>lucide.createIcons();</script>
 </body></html>
