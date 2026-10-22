@@ -13,6 +13,7 @@
      import "@attrus-ds/core/css";
    ============================================================ */
 
+export * from "./AnimatedBackdrop/AnimatedBackdrop";
 export * from "./AppSidebar/AppSidebar";
 export * from "./AppTopbar/AppTopbar";
 export * from "./Atoms/Atoms";

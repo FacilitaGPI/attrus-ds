@@ -105,14 +105,6 @@ export interface DataTableProps<T> {
   onSort?: (key: string) => void;
   className?: string;
   style?: React.CSSProperties;
-  /** Row scale. */
-  size?: 'sm' | 'md' | 'lg';
-  /** Vertical rules between columns — for dense numeric grids only. */
-  bordered?: boolean;
-  /** Alternating row tint. Prefer plain rows; zebra competes with row states. */
-  zebra?: boolean;
-  /** Sticky header. Requires a bounded height, so wrap in DTScrollY. */
-  sticky?: boolean;
 }
 
 /* Two arrows stacked in a clipped slot; `.chev-track` slides between them so the
@@ -397,7 +389,7 @@ export function DTGroupDivider(props: DTGroupDividerProps): React.ReactElement {
     (an audit trail under a payment); use a subrow when it does. The parent must
     carry `has-detail` so its bottom border is dropped and the pair reads as
     one block. */
-export interface DTDetailProps extends React.HTMLAttributes<HTMLTableRowElement> {
+export interface DTDetailProps extends Omit<React.HTMLAttributes<HTMLTableRowElement>, "title"> {
   colSpan: number;
   open?: boolean;
   title?: React.ReactNode;

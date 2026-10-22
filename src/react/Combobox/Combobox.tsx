@@ -35,6 +35,8 @@ export interface ComboboxProps {
   /** Shows the search header inside the popover. */
   searchable?: boolean;
   searchPlaceholder?: string;
+  /** Fires on every keystroke with the raw search text ('' when cleared, an option is committed, or the popover is dismissed). */
+  onSearchChange?: (query: string) => void;
   /** Trigger leading icon (`.combobox-trigger-icon`). */
   icon?: React.ReactNode;
   /** Validation state — error ring on the trigger (`.is-invalid`). */
@@ -89,6 +91,17 @@ function optionText(o: ComboOption): string {
   return typeof o.label === 'string' ? o.label : String(o.value);
 }
 
+/* Case/punctuation/accent-insensitive comparison so masked documents
+   ("12.345.678/0001-90") match raw values ("12345678000190") and accented
+   names match unaccented keyboards. */
+function normalizeSearchText(s: string): string {
+  return s
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]/g, '');
+}
+
 export const Combobox: React.FC<ComboboxProps> = ({
   options,
   value = null,
@@ -96,6 +109,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
   placeholder = 'Select…',
   searchable = false,
   searchPlaceholder = 'Search…',
+  onSearchChange,
   icon,
   status = 'default',
   size = 'md',
@@ -139,16 +153,22 @@ export const Combobox: React.FC<ComboboxProps> = ({
     };
   }, [open, isStatic]);
 
+  const closePopover = () => {
+    setOpen(false);
+    setQ('');
+    if (onSearchChange) onSearchChange('');
+  };
+
   React.useEffect(() => {
     if (!open) return;
     const onDoc = (e: MouseEvent) => {
       const t = e.target as Node;
       if (wrapRef.current && wrapRef.current.contains(t)) return;
       if (popRef.current && popRef.current.contains(t)) return;
-      setOpen(false);
+      closePopover();
     };
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Escape') closePopover();
     };
     document.addEventListener('mousedown', onDoc);
     document.addEventListener('keydown', onKey);
@@ -159,8 +179,11 @@ export const Combobox: React.FC<ComboboxProps> = ({
   }, [open]);
 
   const selected = options.find((o) => o.value === value) || null;
+  const normalizedQ = normalizeSearchText(q);
   const filtered = q
-    ? options.filter((o) => optionText(o).toLowerCase().indexOf(q.toLowerCase()) !== -1)
+    ? normalizedQ
+      ? options.filter((o) => normalizeSearchText(optionText(o)).indexOf(normalizedQ) !== -1)
+      : []
     : options;
   const selectable = filtered.filter((o) => !o.disabled);
 
@@ -188,8 +211,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
       if (hit) {
         e.preventDefault();
         if (onChange) onChange(hit.value);
-        setOpen(false);
-        setQ('');
+        closePopover();
       }
     }
   };
@@ -219,8 +241,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
         onClick={() => {
           if (o.disabled) return;
           if (onChange) onChange(o.value);
-          setOpen(false);
-          setQ('');
+          closePopover();
         }}
       >
         {o.icon != null ? <span className="combobox-option-icon" aria-hidden="true">{o.icon}</span> : null}
@@ -241,7 +262,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
           <svg className="combobox-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
           </svg>
-          <input autoFocus placeholder={searchPlaceholder} value={q} onChange={(e) => setQ(e.target.value)} />
+          <input autoFocus placeholder={searchPlaceholder} value={q} onChange={(e) => { setQ(e.target.value); if (onSearchChange) onSearchChange(e.target.value); }} />
         </div>
       ) : null}
       {filters != null ? <div className="combobox-filters">{filters}</div> : null}

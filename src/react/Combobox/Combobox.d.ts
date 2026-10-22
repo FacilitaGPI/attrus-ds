@@ -26,6 +26,8 @@ export interface ComboboxProps {
   /** Shows the search header inside the popover. */
   searchable?: boolean;
   searchPlaceholder?: string;
+  /** Fires on every keystroke with the raw search text ('' when cleared, an option is committed, or the popover is dismissed). */
+  onSearchChange?: (query: string) => void;
   /** Trigger leading icon (`.combobox-trigger-icon`). */
   icon?: React.ReactNode;
   /** Validation state — error ring on the trigger (`.combobox.is-invalid` on the wrapper). */

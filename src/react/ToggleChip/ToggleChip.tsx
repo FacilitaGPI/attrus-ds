@@ -11,7 +11,7 @@ import * as React from 'react';
  * Renders a `<button aria-pressed>` by default — the accessible pattern for a
  * toggle. Provide `name` to render a hidden checkbox instead (form submission).
  */
-export interface ToggleChipProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
+export interface ToggleChipProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange' | 'onToggle'> {
   children?: React.ReactNode;
   /** Leading icon. */
   icon?: React.ReactNode;
