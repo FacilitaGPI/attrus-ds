@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../src/themes/index.css">
 <link rel="stylesheet" href="components/inputs.css?v=10">
 <link rel="stylesheet" href="components/buttons.css?v=10">
-<link rel="stylesheet" href="components/topbar.css?v=10">
+<link rel="stylesheet" href="components/topbar.css?v=12">
 <link rel="stylesheet" href="components/callout.css?v=3">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="../theme-toggle.js"></script>
@@ -30,7 +30,7 @@
     height: 40px; padding: 0 var(--space-4);
     background: var(--color-background-surface); color: var(--color-foreground-secondary);
     border: 1px solid var(--color-border-default); border-radius: var(--radius-pill);
-    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular);
     letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer;
     box-shadow: var(--shadow-sm); transition: var(--transition-fast);
   }
@@ -55,7 +55,7 @@
     border: 1px solid var(--color-feedback-success-border);
     border-radius: var(--radius-pill);
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs);
-    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+    font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase;
     white-space: nowrap;
   }
   .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
@@ -73,7 +73,7 @@
   .doc-nav a {
     padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill);
     color: var(--color-foreground-secondary); text-decoration: none;
-    font-size: var(--fs-sm); font-weight: var(--w-semibold);
+    font-size: var(--fs-sm); font-weight: var(--w-regular);
     transition: var(--transition-fast);
   }
   .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
@@ -88,14 +88,14 @@
   .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
   .spec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
   .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
-  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
   .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
-  .spec-tag { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
+  .spec-tag { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
   .spec-canvas { padding: var(--space-8); background: var(--color-background-canvas); background-image: linear-gradient(var(--color-border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; }
   .spec-canvas.col { display: flex; flex-direction: column; gap: var(--space-6); align-items: flex-start; }
   .spec-canvas.center { display: flex; flex-wrap: wrap; gap: var(--space-5); align-items: center; }
 
-  .demo-label { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+  .demo-label { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
 
   /* full-bar frame — clip the bar so it reads as a real app top edge */
   .bar-frame { width: 100%; border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); background: var(--color-background-surface); }
@@ -105,7 +105,7 @@
   /* class-map table */
   .map { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
   .map th, .map td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
-  .map th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .map th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
   .map td code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
   .map td:last-child { color: var(--color-foreground-secondary); }
 
@@ -113,7 +113,7 @@
 
 
   .doc-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
-  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-regular); }
   .glass-stage { height: 200px; overflow: hidden; position: relative; }
   .glass-stage-scroll { height: 100%; overflow-y: auto; }
   .glass-filler { height: 420px; padding: var(--space-6); display: flex; justify-content: center; font-size: var(--fs-sm); color: var(--color-foreground-muted); background: repeating-linear-gradient(135deg, var(--color-background-subtle) 0 14px, var(--color-background-canvas) 14px 28px); }
@@ -441,7 +441,26 @@
         </div>
       </div>
     </div>
-  </section>
+  
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>Collapse rule <code>data-tb-priority</code> · <code>priority</code></h3><p>Each item carries a priority: <b>3</b> hides below 1180px, <b>2</b> below 760px, <b>1</b> only in the compact phone bar. Search and account never hide — below 760px the account compacts to avatar + chevron. Recommended order: <b>1</b> primary action, notifications · <b>2</b> Live, assistant · <b>3</b> language, status pills.</p></div>
+        <span class="demo-card-tag">A-05</span>
+      </div>
+      <div class="demo-card-canvas is-stacked">
+        <table class="token-table" style="width:100%"><thead><tr><th>Priority</th><th>Hides</th><th>Items</th></tr></thead><tbody>
+          <tr><td><code>—</code></td><td>never</td><td>Search · Account (compacts below 760px)</td></tr>
+          <tr><td><code>1</code></td><td>compact phone bar</td><td>Primary action · Notifications</td></tr>
+          <tr><td><code>2</code></td><td>&lt; 760px</td><td>Live · Assistant</td></tr>
+          <tr><td><code>3</code></td><td>&lt; 1180px</td><td>Language · Status pills</td></tr>
+        </tbody></table>
+        <div style="display:flex;gap:var(--space-5);align-items:center;flex-wrap:wrap">
+          <div><div style="font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);margin-bottom:var(--space-2)">Account · full</div><div class="tb-account-wrap"><button class="tb-account" aria-label="Account menu — Paulo Dourado"><span class="tb-avatar">PD</span><span class="tb-account-id"><span class="nm">Paulo Dourado</span><span class="co">ATTRUS</span></span><span class="chev"><i data-lucide="chevron-down"></i></span></button></div></div>
+          <div><div style="font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);margin-bottom:var(--space-2)">Account · compact</div><div id="a05-compact"><div class="tb-account-wrap"><button class="tb-account is-compact" aria-label="Account menu — Paulo Dourado"><span class="tb-avatar">PD</span><span class="tb-account-id"><span class="nm">Paulo Dourado</span><span class="co">ATTRUS</span></span><span class="chev"><i data-lucide="chevron-down"></i></span></button></div></div></div>
+        </div>
+      </div>
+    </div>
+</section>
 
   <!-- 08 CLASS MAP -->
   <section class="doc-section" id="map">

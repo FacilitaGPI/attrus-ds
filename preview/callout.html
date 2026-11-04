@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="components/buttons.css?v=3">
 <link rel="stylesheet" href="components/primitives.css?v=4">
 <link rel="stylesheet" href="components/cards.css?v=5">
-<link rel="stylesheet" href="components/callout.css?v=15">
+<link rel="stylesheet" href="components/callout.css?v=16">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="../theme-toggle.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
@@ -16,18 +16,18 @@
   body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
   .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
 
-  .page-theme { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition-fast); }
+  .page-theme { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition-fast); }
   .page-theme:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background: var(--color-background-hover); }
   .page-theme [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
 
   .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
   .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
   .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
-  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
   .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
 
   .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
-  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-regular); transition: var(--transition-fast); }
   .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
 
   .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
@@ -38,16 +38,16 @@
   .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
   .spec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
   .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
-  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
   .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
-  .spec-tag { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
+  .spec-tag { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
   .spec-body { padding: var(--space-7) var(--space-6); display: flex; flex-direction: column; gap: var(--space-5); }
 
-  .demo-label { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+  .demo-label { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
 
   .map { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
   .map th, .map td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
-  .map th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .map th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
   .map td code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
   .map td:last-child { color: var(--color-foreground-secondary); }
 
@@ -56,7 +56,7 @@
   .code .c { color: var(--color-foreground-muted); }
 
   .doc-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
-  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-regular); }
   /* API summary + agentic contract tables */
   .api { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-5) var(--space-6); margin-bottom: var(--space-8); box-shadow: var(--shadow-xs); }
   .api-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: var(--space-5) var(--space-6); }
@@ -216,7 +216,7 @@
     <div class="spec">
       <div class="spec-head"><div><h3>Structure</h3></div><span class="spec-tag">Markup</span></div>
       <div class="spec-body">
-        <div class="callout"><i data-lucide="git-merge"></i><div class="callout-body">Defined once in <code>components/callout.css?v=13</code> and consumed by every doc page and product surface — edit the CSS and all callouts move together. See <a href="index.html">the catalog</a>.</div></div>
+        <div class="callout"><i data-lucide="git-merge"></i><div class="callout-body">Defined once in <code>components/callout.css?v=16</code> and consumed by every doc page and product surface — edit the CSS and all callouts move together. See <a href="index.html">the catalog</a>.</div></div>
         <div class="code"><span class="c">&lt;!-- info (default) --&gt;</span>
 <span class="t">&lt;div</span> class=<span class="t">"callout"</span><span class="t">&gt;</span>
   <span class="t">&lt;i</span> data-lucide=<span class="t">"info"</span><span class="t">&gt;&lt;/i&gt;</span>
@@ -330,7 +330,20 @@
         </div>
       </div>
     </div>
-  </section>
+  
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>Bar with a title <code>.callout-bar:has(.callout-title)</code></h3><p><code>bar</code> is for one line. With title + text + actions the icon pins to the title. Shown at 390px, where the content wraps.</p></div>
+        <span class="demo-card-tag">P-08</span>
+      </div>
+      <div class="demo-card-canvas is-stacked">
+        <div style="width:390px;max-width:100%;display:flex;flex-direction:column;gap:var(--space-4)">
+          <div class="callout callout-warn callout-bar" role="status"><i data-lucide="triangle-alert"></i><div class="callout-content"><div class="callout-body"><div class="callout-title">Documents pending review</div>Two counterparties are waiting for KYC documents before their next payout can settle.</div><div class="callout-actions"><button class="btn btn-secondary btn-sm">Later</button><button class="btn btn-primary btn-sm">Review</button></div></div></div>
+          <div class="callout callout-info callout-bar" role="status"><i data-lucide="info"></i><div class="callout-content"><div class="callout-body">Sync paused until 14:00.</div></div></div>
+        </div>
+      </div>
+    </div>
+</section>
 
   <!-- 06 INLINE & ON-INVERSE -->
   <section class="doc-section" id="inline">
@@ -479,7 +492,7 @@
   <!-- 10 CLASS MAP -->
   <section class="doc-section" id="map">
     <h2><span class="num">10</span>Class map</h2>
-    <p class="lead">The full vocabulary, defined in <code>components/callout.css?v=13</code>.</p>
+    <p class="lead">The full vocabulary, defined in <code>components/callout.css?v=16</code>.</p>
     <div class="spec">
       <div class="spec-head"><div><h3>Reference <code>callout.css</code></h3></div><span class="spec-tag">Single source</span></div>
       <div style="padding:var(--space-2) var(--space-2) var(--space-4)">

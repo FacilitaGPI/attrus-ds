@@ -27,7 +27,9 @@ export interface DrawerProps {
   /** 40×40 header lead tile — caller sets bg/color via leadStyle. */
   lead?: React.ReactNode;
   leadStyle?: React.CSSProperties;
-  /** Sticky footer row — canonical Buttons. */
+  /** Sticky footer row — canonical Buttons. 
+   * Footer buttons: default size. On phones they stack, full width, at
+   * `--control-h-lg`. */
   footer?: React.ReactNode;
   /** Left-side footer aux (total, agreement note) — switches the footer to space-between. */
   footerAux?: React.ReactNode;

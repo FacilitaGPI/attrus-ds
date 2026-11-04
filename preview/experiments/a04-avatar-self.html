@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Proposta · A-04</title>
+<link rel="stylesheet" href="../../styles.css"><link rel="stylesheet" href="../../themes/index.css?v=1"><script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root{--color-avatar-self-background:color-mix(in srgb,var(--dataviz-cat-3) 14%,var(--color-background-surface));--color-avatar-self-foreground:color-mix(in srgb,var(--dataviz-cat-3) 70%,var(--color-foreground-default))}
+body{margin:0;background:var(--color-background-canvas);color:var(--color-foreground-default);font-family:var(--font-sans)}
+.doc{max-width:1000px;margin:0 auto;padding:var(--space-10) var(--space-8)}
+.eyebrow{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted)}
+h1{margin:var(--space-2) 0 var(--space-3);font-size:var(--fs-4xl)}p.lead{max-width:76ch;color:var(--color-foreground-secondary);line-height:var(--lh-relaxed)}
+.lbl{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);margin:var(--space-6) 0 var(--space-3)}.lbl.new{color:var(--color-feedback-success-foreground)}
+.list{background:var(--color-background-surface);border:var(--border-hairline) solid var(--color-border-default);border-radius:var(--shape-container);overflow:hidden}
+.row{display:grid;grid-template-columns:auto 1fr auto;gap:var(--space-3);align-items:center;padding:var(--space-3) var(--space-5);border-bottom:var(--border-hairline) solid var(--color-border-subtle);font-size:var(--fs-md)}
+.row:last-child{border-bottom:0}.row .sub{font-size:var(--fs-sm);color:var(--color-foreground-muted)}
+.m{font-family:var(--font-mono);font-size:var(--fs-xxs);color:var(--color-foreground-muted);margin-top:var(--space-3);line-height:1.7}.m b{color:var(--color-foreground-default);font-weight:var(--w-regular)}
+table.imp{width:100%;border-collapse:collapse;font-size:var(--fs-sm);margin-top:var(--space-6)}.imp td,.imp th{text-align:left;padding:var(--space-3);border-bottom:var(--border-hairline) solid var(--color-border-subtle);vertical-align:top}.imp th{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);font-weight:var(--w-regular)}code{font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--color-foreground-accent)}
+/* PROPOSAL */
+/* Optical centring: initials are caps, so the text box is trimmed to cap
+   height → the glyphs (not the line box) are what flex centres. The last
+   letter's trailing tracking is offset so the ink sits on the centre line. */
+.av{line-height:1;text-box:trim-both cap alphabetic;padding-left:var(--ls-caps);box-sizing:border-box}
+.av-self{background:var(--color-avatar-self-background);color:var(--color-avatar-self-foreground);border:0}
+.av-unassigned{background:transparent;color:var(--color-foreground-muted);border:var(--border-hairline) dashed var(--color-border-strong);box-sizing:border-box}
+</style></head><body><main class="doc">
+<div class="eyebrow">Prompt 03 · A-04 · proposta, nada aplicado</div>
+<h1>Avatar "é você" e "sem dono"</h1>
+<p class="lead">Numa lista de tarefas, a pessoa precisa achar as dela de relance, e as sem dono precisam ler como vazias. Teal não é cor de estado nem de interação, então "é você" não compete com "vence hoje" em vermelho na mesma linha. "Sem dono" é um círculo tracejado com um traço.</p>
+<div class="lbl new">Proposta · lista de tarefas</div>
+<div class="list" id="demo">
+ <div class="row"><span class="av av-md av-self" aria-label="You">PD</span><div>Review KYC for Global Supplies<div class="sub">Assigned to you</div></div><span class="pill danger sm"><span class="pill-label">Due today</span></span></div>
+ <div class="row"><span class="av av-md av-brand">AS</span><div>Approve payout batch #418<div class="sub">Ana Souza</div></div><span class="pill neutral sm"><span class="pill-label">Tomorrow</span></span></div>
+ <div class="row"><span class="av av-md av-unassigned" aria-label="Unassigned">–</span><div>Reconcile March statements<div class="sub">No owner</div></div><span class="pill neutral sm"><span class="pill-label">Next week</span></span></div>
+</div>
+<div class="m" id="m"></div>
+<table class="imp"><thead><tr><th>Item</th><th>Proposta</th></tr></thead><tbody>
+<tr><td>"É você"</td><td>Fundo <code>--dataviz-cat-3</code> a 14% sobre a superfície, iniciais em <code>--dataviz-cat-3</code> misturado a 70% com <code>--color-foreground-default</code>, sem borda.</td></tr>
+<tr><td>"Sem dono"</td><td>Sem fundo, borda tracejada de 1px em <code>--color-border-strong</code>, um traço em muted.</td></tr>
+<tr><td>Tokens novos</td><td><code>--color-avatar-self-background</code> e <code>--color-avatar-self-foreground</code>, no <code>:root</code>. Como misturam com a superfície e o texto, acompanham o escuro e os dois produtos sem override.</td></tr>
+<tr><td>Nomes públicos novos</td><td><code>tone="self"</code> → <code>.av-self</code> · <code>tone="unassigned"</code> → <code>.av-unassigned</code>. O prompt sugere <code>tone="none"</code>, mas os outros valores de <code>tone</code> são cores, e "none" leria como "sem cor" — o avatar neutro, que já existe.</td></tr>
+<tr><td>Arquivos</td><td><code>colors_and_type.css</code> (2 tokens) · <code>preview/components/primitives.css</code> · <code>components/Atoms/Atoms.tsx</code> + <code>.d.ts</code> · <code>preview/primitives.html</code></td></tr>
+</tbody></table>
+</main>
+<script>
+lucide.createIcons();
+(async function(){
+ function rgb(c){var m=c.match(/[\d.]+/g).map(Number);return /color\(srgb/.test(c)?[m[0]*255,m[1]*255,m[2]*255]:m;}
+ function lin(v){v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);}
+ function L(c){c=rgb(c);return 0.2126*lin(c[0])+0.7152*lin(c[1])+0.0722*lin(c[2]);}
+ var s=document.querySelector('.av-self'),u=document.querySelector('.av-unassigned'),out=[];
+ for(var th of ['light','dark']){document.documentElement.setAttribute('data-theme',th);await new Promise(function(r){setTimeout(r,200);});var a=L(getComputedStyle(s).color),b=L(getComputedStyle(s).backgroundColor);out.push(th+': "é você" contraste <b>'+((Math.max(a,b)+.05)/(Math.min(a,b)+.05)).toFixed(2)+':1</b>');}
+ document.documentElement.setAttribute('data-theme','light');
+ out.push('"sem dono": borda <b>'+getComputedStyle(u).borderTopStyle+' '+getComputedStyle(u).borderTopWidth+'</b>');
+ document.getElementById('m').innerHTML=out.join('<br>');
+})();
+</script></body></html>

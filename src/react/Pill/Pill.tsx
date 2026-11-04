@@ -72,7 +72,7 @@ export const Pill: React.FC<PillProps> = ({
           className="pill-x"
           role="button"
           tabIndex={0}
-          aria-label="Remove"
+          aria-label={typeof children === 'string' ? 'Remove ' + children : 'Remove'}
           onClick={(e) => { e.stopPropagation(); onRemove(e); }}
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); onRemove(e as unknown as React.MouseEvent); } }}
         >

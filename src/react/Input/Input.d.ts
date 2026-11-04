@@ -24,6 +24,9 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   size?: InputSize;
   /** Leading icon (decorative) — .affix.lead-pad. */
   leadIcon?: React.ReactNode;
+  /** Size of the leading slot. 'icon' (default) is a 14px box for a Lucide icon;
+      'lg' is a 20px box for a flag or an avatar (.affix.lead-pad-lg). */
+  leadSize?: 'icon' | 'lg';
   /** Trailing icon (decorative) — .affix.trail-pad. */
   trailIcon?: React.ReactNode;
   /** Makes the trailing slot a clickable .trail-btn (clear, reveal…). */
@@ -99,6 +102,7 @@ export interface DateTriggerProps extends Omit<React.ButtonHTMLAttributes<HTMLBu
 }
 export declare const DateTrigger: React.FC<DateTriggerProps>;
 
+/** Renders `.chips-input` (`.chips` is a deprecated alias, removed in 2.0). */
 export interface ChipsInputProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   /** Current chips (controlled). */
   values: string[];

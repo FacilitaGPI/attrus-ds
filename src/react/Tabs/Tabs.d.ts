@@ -23,6 +23,8 @@ export interface TabsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'o
   onChange?: (key: string) => void;
   variant?: TabsVariant;
   size?: TabsSize;
+  /** 'badge' (default) filled chip · 'inline' mono muted text on the label's line (.tabs.is-count-inline). */
+  countStyle?: 'badge' | 'inline';
   layout?: TabsLayout;
   /** Sliding indicator (`.is-animated` + `.tab-indicator`), ON by default; false = static indicator. */
   animated?: boolean;

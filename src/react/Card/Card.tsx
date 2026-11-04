@@ -56,8 +56,11 @@ export const Card: React.FC<CardProps> = ({
 
 export interface CardSlotProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export const CardHeader: React.FC<CardSlotProps> = ({ className, ...rest }) => (
-  <div className={['card-header', className || ''].filter(Boolean).join(' ')} {...rest} />
+/** Header slot. `compact`: 54px minimum, title 14 bold and an optional second
+    line (subtitle, or a breadcrumb in .card-crumb) — the header band of a
+    four-band card (.card-header.is-compact). One element fits on the right. */
+export const CardHeader: React.FC<CardSlotProps & { compact?: boolean }> = ({ compact = false, className, ...rest }) => (
+  <div className={['card-header', compact ? 'is-compact' : '', className || ''].filter(Boolean).join(' ')} {...rest} />
 );
 export const CardBody: React.FC<CardSlotProps> = ({ className, ...rest }) => (
   <div className={['card-body', className || ''].filter(Boolean).join(' ')} {...rest} />
@@ -65,9 +68,22 @@ export const CardBody: React.FC<CardSlotProps> = ({ className, ...rest }) => (
 /** Footer slot. `plain`: a detail card's action footer — a 1px line edge to
     edge, no fill, buttons left-aligned with the text. Works on a single-padding
     card (bleeds through its padding) and on a card built from slots. */
-export const CardFooter: React.FC<CardSlotProps & { plain?: boolean }> = ({ plain, className, ...rest }) => (
-  <div className={[plain ? 'card-footer-plain' : 'card-footer', className || ''].filter(Boolean).join(' ')} {...rest} />
-);
+/** `note` + `actions` make a split footer (.card-footer.is-split): subtle fill,
+    52px minimum, the note on the left states the consequence of the action,
+    at most two actions on the right. Children are ignored in that form. */
+export const CardFooter: React.FC<CardSlotProps & { plain?: boolean; note?: React.ReactNode; actions?: React.ReactNode }> = ({ plain, note, actions, className, children, ...rest }) => {
+  const split = !plain && (note != null || actions != null);
+  return (
+    <div className={[plain ? 'card-footer-plain' : 'card-footer', split ? 'is-split' : '', className || ''].filter(Boolean).join(' ')} {...rest}>
+      {split ? (
+        <React.Fragment>
+          {note != null ? <span className="card-footer-note">{note}</span> : null}
+          {actions != null ? <div className="card-footer-actions">{actions}</div> : null}
+        </React.Fragment>
+      ) : children}
+    </div>
+  );
+};
 export const CardCanvas: React.FC<CardSlotProps> = ({ className, ...rest }) => (
   <div className={['card-canvas', className || ''].filter(Boolean).join(' ')} {...rest} />
 );

@@ -17,14 +17,14 @@
   body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); }
   .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
 
-  .page-theme { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); }
+  .page-theme { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); }
   .page-theme [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
 
   .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
   .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
   .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
   .doc-header p code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: 0.85em; background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-accent); padding: 1px var(--space-2); border-radius: var(--radius-2xs); }
-  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
   .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
 
   .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
@@ -36,7 +36,7 @@
   .axes { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); margin-bottom: var(--space-6); }
   @media (max-width: 760px) { .axes { grid-template-columns: 1fr; } }
   .axis-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-xs); }
-  .axis-card .tag { display: inline-flex; align-items: center; gap: var(--space-2); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+  .axis-card .tag { display: inline-flex; align-items: center; gap: var(--space-2); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
   .axis-card h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
   .axis-card p { font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-3); }
   .axis-card ul { margin: 0; padding-left: var(--space-5); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
@@ -46,22 +46,22 @@
   .matrix { display: grid; grid-template-columns: 88px 1fr 1fr; gap: var(--space-3); align-items: stretch; }
   @media (max-width: 760px) { .matrix { grid-template-columns: 1fr; } .matrix .corner, .matrix .col-head { display: none; } }
   .matrix .corner { }
-  .matrix .col-head, .matrix .row-head { display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .matrix .col-head, .matrix .row-head { display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
   .matrix .row-head { writing-mode: vertical-rl; transform: rotate(180deg); }
   .cell { border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-xs); }
-  .cell .cell-cap { padding: var(--space-2) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); }
+  .cell .cell-cap { padding: var(--space-2) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); }
   /* the demo surface inherits the scoped product/theme tokens */
   .cell .demo { padding: var(--space-5); background: var(--color-background-canvas); display: flex; flex-direction: column; gap: var(--space-4); }
   .cell .demo .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
   .cell .demo .tabs { border-bottom: 0; }
 
   .legend-note { font-size: var(--fs-sm); color: var(--color-foreground-muted); margin-top: var(--space-4); line-height: var(--lh-relaxed); }
-  .legend-note b { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+  .legend-note b { color: var(--color-foreground-default); font-weight: var(--w-regular); }
 
   /* token surface table */
   .tk { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; }
   .tk th, .tk td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
-  .tk thead th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); }
+  .tk thead th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); background: var(--color-background-subtle); }
   .tk tr:last-child td { border-bottom: 0; }
   .tk td code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
   .tk td.swatch-cell { width: 52px; }
@@ -80,7 +80,7 @@
   pre.snip .c { color: var(--color-foreground-inverse-muted); }
 
   .doc-foot { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); font-size: var(--fs-sm); color: var(--color-foreground-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
-  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); }
+  .doc-foot a { color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-regular); }
 </style>
 </head>
 <body>
@@ -147,16 +147,16 @@
         <tr><td class="swatch-cell"><div class="sw" style="background:var(--color-foreground-accent)"></div></td><td><code>--color-foreground-accent / -highlight</code></td><td>Accent text, links</td></tr>
         <tr><td class="swatch-cell"><div class="sw" style="background:var(--color-foreground-brand)"></div></td><td><code>--color-foreground-brand</code></td><td>Institutional brand text/icon</td></tr>
 
-        <tr><td colspan="3" style="background:var(--color-background-subtle); font-family:var(--font-mono); font-size:var(--fs-xxs); font-weight:var(--w-semibold); letter-spacing:var(--ls-caps); text-transform:uppercase; color:var(--color-foreground-muted)">Gradients — auto-derive from brand-solid</td></tr>
+        <tr><td colspan="3" style="background:var(--color-background-subtle); font-family:var(--font-mono); font-size:var(--fs-xxs); font-weight:var(--w-regular); letter-spacing:var(--ls-caps); text-transform:uppercase; color:var(--color-foreground-muted)">Gradients — auto-derive from brand-solid</td></tr>
         <tr><td class="swatch-cell"><div class="sw" style="background:var(--grad-hero)"></div></td><td><code>--grad-hero</code></td><td>Page / section hero backdrop</td></tr>
         <tr><td class="swatch-cell"><div class="sw" style="background:var(--grad-brand)"></div></td><td><code>--grad-brand</code></td><td>Brand-weighted panel — tips into accent</td></tr>
         <tr><td class="swatch-cell"><div class="sw" style="background:var(--grad-brand-soft)"></div></td><td><code>--grad-brand-soft / -ink</code></td><td>Soft brand wash / deep ink panel</td></tr>
 
-        <tr><td colspan="3" style="background:var(--color-background-subtle); font-family:var(--font-mono); font-size:var(--fs-xxs); font-weight:var(--w-semibold); letter-spacing:var(--ls-caps); text-transform:uppercase; color:var(--color-foreground-muted)">Inverse layer — tinted by brand-solid</td></tr>
+        <tr><td colspan="3" style="background:var(--color-background-subtle); font-family:var(--font-mono); font-size:var(--fs-xxs); font-weight:var(--w-regular); letter-spacing:var(--ls-caps); text-transform:uppercase; color:var(--color-foreground-muted)">Inverse layer — tinted by brand-solid</td></tr>
         <tr><td class="swatch-cell"><div class="sw" style="background:var(--color-background-inverse)"></div></td><td><code>--color-background-inverse</code></td><td>Dark/premium panels (AI Analyzer, hero CTAs)</td></tr>
         <tr><td class="swatch-cell"><div class="sw" style="background:var(--color-background-inverse-surface)"></div></td><td><code>--color-background-inverse-surface / -subtle</code></td><td>Raised / sunken on the inverse panel</td></tr>
 
-        <tr><td colspan="3" style="background:var(--color-background-subtle); font-family:var(--font-mono); font-size:var(--fs-xxs); font-weight:var(--w-semibold); letter-spacing:var(--ls-caps); text-transform:uppercase; color:var(--color-foreground-muted)">Shape — picks a step from the radius scale</td></tr>
+        <tr><td colspan="3" style="background:var(--color-background-subtle); font-family:var(--font-mono); font-size:var(--fs-xxs); font-weight:var(--w-regular); letter-spacing:var(--ls-caps); text-transform:uppercase; color:var(--color-foreground-muted)">Shape — picks a step from the radius scale</td></tr>
         <tr><td class="swatch-cell"><div class="sw" style="border:2px solid var(--color-brand-solid); background:transparent; border-radius:var(--shape-control)"></div></td><td><code>--shape-control</code></td><td>Inputs, select, segmented, file trigger</td></tr>
         <tr><td class="swatch-cell"><div class="sw" style="border:2px solid var(--color-brand-solid); background:transparent; border-radius:var(--shape-container)"></div></td><td><code>--shape-container</code></td><td>Cards, stat tiles, table, toast</td></tr>
         <tr><td class="swatch-cell"><div class="sw" style="border:2px solid var(--color-brand-solid); background:transparent; border-radius:var(--shape-overlay)"></div></td><td><code>--shape-overlay</code></td><td>Modals, drawer panels</td></tr>

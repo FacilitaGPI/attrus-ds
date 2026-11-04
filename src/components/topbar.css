@@ -307,3 +307,27 @@
 /* Avatar and account keep pace with the bar */
 .topbar.is-sm .tb-avatar { width: var(--control-h-xs); height: var(--control-h-xs); font-size: 10px; }
 .topbar.is-lg .tb-avatar { width: var(--control-h-md); height: var(--control-h-md); font-size: var(--fs-sm); }
+
+/* ================================================================
+   A-05 · COLLAPSE RULE — data-tb-priority on each item
+   A full bar (search, status, Live, assistant, pills, notifications,
+   account) ran past 400px and pushed the account off screen. Items hide
+   by priority; search and account never do — the account compacts to
+   avatar + chevron instead (name and company move to the dropdown head).
+   Recommended order: 1 primary action · notifications — 2 Live ·
+   assistant — 3 language · status pills.
+   ================================================================ */
+.tb-account.is-compact .tb-account-id { display: none; }
+.tb-account.is-compact .chev { margin-left: 0; }
+/* Even ring around avatar + chevron: the trigger's right padding was sized for the name */
+.tb-account.is-compact { padding-right: var(--space-2-5); }
+@media (max-width: 1180px) { .topbar [data-tb-priority="3"] { display: none; } }
+@media (max-width: 760px) {
+  .topbar [data-tb-priority="2"] { display: none; }
+  .topbar .tb-account .tb-account-id { display: none; }
+  .topbar .tb-account .chev { margin-left: 0; }
+  .topbar .tb-account { padding-right: var(--space-2-5); }
+}
+.topbar.is-compact [data-tb-priority="1"],
+.topbar.is-compact [data-tb-priority="2"],
+.topbar.is-compact [data-tb-priority="3"] { display: none; }

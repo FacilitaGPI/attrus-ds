@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Proposta · P-09</title>
+<link rel="stylesheet" href="../../styles.css"><link rel="stylesheet" href="../../themes/index.css?v=1"><script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+body{margin:0;background:var(--color-background-canvas);color:var(--color-foreground-default);font-family:var(--font-sans)}
+.doc{max-width:980px;margin:0 auto;padding:var(--space-10) var(--space-8)}
+.eyebrow{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted)}
+h1{margin:var(--space-2) 0 var(--space-3);font-size:var(--fs-4xl)}p{max-width:70ch;color:var(--color-foreground-secondary);line-height:var(--lh-relaxed)}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);margin-top:var(--space-6)}
+.lbl{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);margin-bottom:var(--space-3)}.lbl.new{color:var(--color-feedback-success-foreground)}
+.stage{background:var(--color-background-surface);border:var(--border-hairline) solid var(--color-border-default);border-radius:var(--shape-container);padding:var(--space-6);display:flex;flex-direction:column;gap:var(--space-5)}
+.m{font-family:var(--font-mono);font-size:var(--fs-xxs);color:var(--color-foreground-muted);margin-top:var(--space-3);line-height:1.7}.m b{color:var(--color-foreground-default);font-weight:var(--w-regular)}
+table{width:100%;border-collapse:collapse;font-size:var(--fs-sm);margin-top:var(--space-6)}td,th{text-align:left;padding:var(--space-3);border-bottom:var(--border-hairline) solid var(--color-border-subtle);vertical-align:top}th{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);font-weight:var(--w-regular)}code{font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--color-foreground-accent)}
+.ring{display:inline-flex;align-items:center;color:var(--color-feedback-success-foreground)}
+/* PROPOSAL — undo the broad rule inside .p, then target only the tab's own icon */
+.p .tab i,.p .tab svg{width:auto;height:auto;stroke-width:var(--icon-stroke)}
+.p .tab > i:first-child,.p .tab > svg:first-child{width:15px;height:15px;stroke-width:var(--icon-stroke)}
+.p .tabs-sm .tab > i:first-child,.p .tabs-sm .tab > svg:first-child{width:13px;height:13px}
+.p .tabs-lg .tab > i:first-child,.p .tabs-lg .tab > svg:first-child{width:17px;height:17px}
+</style></head><body><main class="doc">
+<div class="eyebrow">Prompt 02 · P-09 · proposta, nada aplicado</div>
+<h1>Tabs dimensiona só o ícone da aba</h1>
+<p>Hoje <code>.tab svg</code> pega qualquer SVG dentro da aba e força 15px (13 no sm, 17 no lg), com traço 2. Um indicador de 16px colocado ao lado do rótulo é esticado. Na proposta, só o ícone que abre a aba é dimensionado, e o traço segue <code>--icon-stroke</code> (1,75) como o resto do sistema.</p>
+<div class="vs">
+<div><div class="lbl">Hoje</div><div class="stage" id="cur">
+ <div class="tabs" role="tablist"><button class="tab" role="tab" aria-selected="true"><i data-lucide="inbox"></i><span class="tab-label">Inbox</span></button><button class="tab" role="tab" aria-selected="false"><span class="tab-label">Onboarding</span><span class="ring"><i data-lucide="circle-dashed" width="16" height="16"></i></span></button></div>
+ <div class="tabs tabs-lg" role="tablist"><button class="tab" role="tab" aria-selected="true"><i data-lucide="inbox"></i><span class="tab-label">Inbox</span></button><button class="tab" role="tab" aria-selected="false"><span class="tab-label">Onboarding</span><span class="ring"><i data-lucide="circle-dashed" width="16" height="16"></i></span></button></div>
+</div><div class="m" id="m-cur"></div></div>
+<div class="p"><div class="lbl new">Proposta</div><div class="stage" id="new">
+ <div class="tabs" role="tablist"><button class="tab" role="tab" aria-selected="true"><i data-lucide="inbox"></i><span class="tab-label">Inbox</span></button><button class="tab" role="tab" aria-selected="false"><span class="tab-label">Onboarding</span><span class="ring"><i data-lucide="circle-dashed" width="16" height="16"></i></span></button></div>
+ <div class="tabs tabs-lg" role="tablist"><button class="tab" role="tab" aria-selected="true"><i data-lucide="inbox"></i><span class="tab-label">Inbox</span></button><button class="tab" role="tab" aria-selected="false"><span class="tab-label">Onboarding</span><span class="ring"><i data-lucide="circle-dashed" width="16" height="16"></i></span></button></div>
+</div><div class="m" id="m-new"></div></div>
+</div>
+<table><thead><tr><th>Impacto</th><th>Detalhe</th></tr></thead><tbody>
+<tr><td>Visual</td><td>O ícone que abre cada aba continua 13 / 15 / 17px; o traço passa de 2 para 1,75. Qualquer outro SVG dentro da aba (indicador, anel, check) mantém o tamanho que ele mesmo declara.</td></tr>
+<tr><td>Nome público</td><td>Nenhum. O <code>Tabs.tsx</code> já renderiza o ícone como primeiro filho da aba, então o seletor <code>.tab > svg:first-child</code> cobre o componente sem mudar a API.</td></tr>
+<tr><td>Arquivos</td><td><code>preview/components/tabs.css</code> · <code>preview/tabs.html</code> (aba com indicador de 16px ao lado do rótulo)</td></tr>
+</tbody></table>
+</main>
+<script>
+lucide.createIcons();
+function M(id){return [].slice.call(document.querySelectorAll('#'+id+' .tabs')).map(function(t){var ic=t.querySelector('.tab > svg'),rg=t.querySelector('.ring svg'),a=ic.getBoundingClientRect(),b=rg.getBoundingClientRect();return (t.classList.contains('tabs-lg')?'lg':'md')+': ícone da aba <b>'+Math.round(a.width)+'px</b> traço <b>'+getComputedStyle(ic).strokeWidth+'</b> · indicador <b>'+Math.round(b.width)+'×'+Math.round(b.height)+'</b>';}).join('<br>');}
+document.getElementById('m-cur').innerHTML=M('cur');document.getElementById('m-new').innerHTML=M('new');
+</script></body></html>

@@ -300,3 +300,35 @@
 }
 .card:has(> .card-body) > .card-footer-plain,
 .card:has(> .card-header) > .card-footer-plain { margin: 0; padding: var(--space-5) var(--space-6); }
+
+/* ================================================================
+   A-02 · FOUR BANDS — header · body · numbers · footer, 1px apart
+   Variants only: the default header/footer and the plain footer are
+   unchanged.
+   ================================================================ */
+/* Compact header: 54px minimum, title 14 bold, optional second line
+   (subtitle, or a breadcrumb led by "/"). One element fits on the right. */
+.card-header.is-compact {
+  min-height: 54px;
+  padding: 10px 12px 10px 20px;
+  align-items: center;
+  box-sizing: border-box;
+}
+.card-header.is-compact h3,
+.card-header.is-compact h4 { font-size: var(--fs-base); font-weight: var(--w-bold); }
+.card-header.is-compact p { margin: 2px 0 0; font-size: var(--fs-sm); color: var(--color-foreground-muted); line-height: var(--lh-snug); }
+.card-header.is-compact .card-crumb::before { content: "/ "; color: var(--color-foreground-muted); }
+
+/* Split footer: subtle fill, 52px minimum, a note that states the action's
+   consequence on the left and at most two actions on the right. */
+.card-footer.is-split {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: 52px;
+  padding: var(--space-3) 12px var(--space-3) 20px;   /* same insets as .card-header.is-compact */
+  box-sizing: border-box;
+}
+.card-footer-note { min-width: 0; font-size: var(--fs-sm); color: var(--color-foreground-muted); line-height: var(--lh-snug); }
+.card-footer-actions { display: flex; gap: var(--space-2); flex-shrink: 0; margin-left: auto; }

@@ -7,7 +7,8 @@
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
-<link rel="stylesheet" href="components/toast.css?v=3">
+<link rel="stylesheet" href="components/toast.css?v=6">
+<link rel="stylesheet" href="components/overlays.css?v=30">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
@@ -53,7 +54,7 @@
     border: 1px solid var(--color-feedback-success-border);
     border-radius: var(--radius-pill);
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs);
-    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps);
+    font-weight: var(--w-regular); letter-spacing: var(--ls-caps);
     text-transform: uppercase;
   }
   .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
@@ -73,7 +74,7 @@
     border-radius: var(--radius-pill);
     color: var(--color-foreground-secondary);
     text-decoration: none;
-    font-size: var(--fs-sm); font-weight: var(--w-semibold);
+    font-size: var(--fs-sm); font-weight: var(--w-regular);
     transition: var(--transition-fast);
   }
   .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
@@ -116,7 +117,7 @@
   }
   .spec-head h3 code {
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md);
-    font-weight: var(--w-medium); color: var(--color-foreground-accent);
+    font-weight: var(--w-regular); color: var(--color-foreground-accent);
     background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
     padding: var(--space-1) var(--space-3);
     border-radius: var(--radius-xs);
@@ -132,7 +133,7 @@
     background: var(--color-background-subtle);
     color: var(--color-foreground-secondary);
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs);
-    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps);
+    font-weight: var(--w-regular); letter-spacing: var(--ls-caps);
     text-transform: uppercase;
     border-radius: var(--radius-pill); flex-shrink: 0;
   }
@@ -200,7 +201,7 @@
   }
   .anatomy-list li strong {
     color: var(--color-foreground-default);
-    font-weight: var(--w-semibold);
+    font-weight: var(--w-regular);
     display: block;
     margin-bottom: 1px;
   }
@@ -222,7 +223,7 @@
     background: var(--color-background-subtle);
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);
     font-size: var(--fs-xxs);
-    font-weight: var(--w-semibold);
+    font-weight: var(--w-regular);
     letter-spacing: var(--ls-caps);
     text-transform: uppercase;
     color: var(--color-foreground-muted);
@@ -281,7 +282,7 @@
   .dont-card-body strong {
     display: block;
     color: var(--color-foreground-default);
-    font-weight: var(--w-semibold);
+    font-weight: var(--w-regular);
     margin-bottom: var(--space-1);
   }
 
@@ -300,7 +301,7 @@
     border-radius: var(--radius-pill);
     font-family: var(--font-sans);
     font-size: var(--fs-sm);
-    font-weight: var(--w-semibold);
+    font-weight: var(--w-regular);
     color: var(--color-foreground-default);
     cursor: pointer;
     transition: var(--transition-fast);
@@ -564,7 +565,26 @@
         </tbody>
       </table>
     </div>
-  </section>
+  
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>With a drawer open <code>body:has(.drawer-right.is-open)</code></h3><p>While a right drawer is open, the right-hand stacks sit just left of it (drawer width + 24px), so a toast never covers the drawer's footer and its primary action. On a phone, with the drawer full screen, the bottom stack moves to the top.</p></div>
+        <span class="demo-card-tag">A-07</span>
+      </div>
+      <div class="demo-card-canvas" style="justify-content:center">
+        <div id="a07-demo" style="position:relative;width:100%;max-width:900px;height:380px;border:var(--border-hairline) solid var(--color-border-strong);border-radius:var(--shape-container);overflow:hidden;background:var(--color-background-canvas)">
+          <div style="padding:var(--space-6);font-size:var(--fs-sm);color:var(--color-foreground-muted)">Payments · 248 entries</div>
+          <div class="scrim" style="position:absolute;inset:0;opacity:1;visibility:visible"></div>
+          <aside class="drawer drawer-right drawer-md" style="position:absolute;top:0;right:0;bottom:0;width:440px;opacity:1;visibility:visible;transform:none;display:flex;flex-direction:column">
+            <div class="drawer-header"><div class="drawer-header-text"><h3 class="drawer-title">Transfer TX-90412</h3></div><button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button></div>
+            <div class="drawer-body" style="flex:1">Global Supplies LLC · −18,425.00 · Wire</div>
+            <div class="drawer-footer"><button class="btn btn-secondary">Cancel</button><button class="btn btn-primary">Release funds</button></div>
+          </aside>
+          <div class="toast-stack toast-stack-br" style="position:absolute;z-index:9300;right:calc(440px + var(--space-6))"><div class="toast toast-success" role="status" style="animation:none"><span class="toast-icon"><i data-lucide="circle-check"></i></span><div class="toast-body"><div class="toast-title">Note saved</div></div></div></div>
+        </div>
+      </div>
+    </div>
+</section>
 
   <!-- ========== DURATION ========== -->
   <section class="doc-section" id="duration">

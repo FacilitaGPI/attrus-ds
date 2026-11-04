@@ -14,15 +14,15 @@
   .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
 
   .view-controls { position: fixed; top: var(--space-5); right: var(--space-5); z-index: 100; display: inline-flex; align-items: center; gap: var(--space-2); }
-  .theme-toggle { display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition-fast); }
+  .theme-toggle { display: inline-flex; align-items: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); background: var(--color-background-surface); color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition-fast); }
   .theme-toggle:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background: var(--color-background-hover); }
   .theme-toggle [data-theme-icon] { font-size: var(--fs-md); line-height: 1; }
-  .product-select { height: 40px; padding: 0 var(--space-8) 0 var(--space-4); background: var(--color-background-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right var(--space-3) center; color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition-fast); -webkit-appearance: none; appearance: none; }
+  .product-select { height: 40px; padding: 0 var(--space-8) 0 var(--space-4); background: var(--color-background-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right var(--space-3) center; color: var(--color-foreground-secondary); border: 1px solid var(--color-border-default); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer; box-shadow: var(--shadow-sm); transition: var(--transition-fast); -webkit-appearance: none; appearance: none; }
   .product-select:hover { border-color: var(--color-border-strong); color: var(--color-foreground-default); background-color: var(--color-background-hover); }
   .product-select:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
 
   .doc-header { padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-9); }
-  .doc-header .eyebrow { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-accent); margin-bottom: var(--space-3); }
+  .doc-header .eyebrow { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-accent); margin-bottom: var(--space-3); }
   .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
   .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 64ch; }
   .doc-header p code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: 0.85em; background: var(--color-brand-subtle); color: var(--color-foreground-accent); padding: 1px var(--space-2); border-radius: var(--radius-2xs); }
@@ -47,11 +47,11 @@
   .idx-card .ic { flex-shrink: 0; width: 34px; height: 34px; border-radius: var(--shape-control); background: var(--color-brand-subtle); color: var(--color-foreground-brand); display: inline-flex; align-items: center; justify-content: center; }
   .idx-card .ic i, .idx-card .ic svg { width: 17px; height: 17px; stroke-width: var(--icon-stroke); }
   .idx-card .txt { display: flex; flex-direction: column; min-width: 0; }
-  .idx-card .t { font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); }
+  .idx-card .t { font-size: var(--fs-sm); font-weight: var(--w-regular); color: var(--color-foreground-default); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); }
   .idx-card .d { font-size: var(--fs-xxs); color: var(--color-foreground-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   .doc-foot { margin-top: var(--space-10); padding-top: var(--space-6); border-top: 1px solid var(--color-border-default); display: flex; gap: var(--space-5); flex-wrap: wrap; }
-  .doc-foot a { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-semibold); font-size: var(--fs-sm); }
+  .doc-foot a { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-foreground-accent); text-decoration: none; font-weight: var(--w-regular); font-size: var(--fs-sm); }
   .doc-foot a i, .doc-foot a svg { width: 16px; height: 16px; }
 </style>
 </head>

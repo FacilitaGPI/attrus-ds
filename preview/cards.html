@@ -7,8 +7,8 @@
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
-<link rel="stylesheet" href="components/primitives.css?v=4">
-<link rel="stylesheet" href="components/cards.css?v=6">
+<link rel="stylesheet" href="components/primitives.css?v=5">
+<link rel="stylesheet" href="components/cards.css?v=8">
 <link rel="stylesheet" href="components/buttons.css?v=3">
 <link rel="stylesheet" href="components/status-pills.css?v=3">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
@@ -22,11 +22,11 @@
   .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
   .doc-header p  { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
   .doc-meta { display:flex; gap: var(--space-3); flex-shrink:0; }
-  .doc-meta-pill { display:inline-flex; align-items:center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border:1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill { display:inline-flex; align-items:center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border:1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; }
   .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
 
   .doc-nav { display:flex; flex-wrap:wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
-  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration:none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration:none; font-size: var(--fs-sm); font-weight: var(--w-regular); transition: var(--transition-fast); }
   .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
 
   .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
@@ -39,9 +39,9 @@
   .spec { background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow:hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
   .spec-head { display:flex; align-items:flex-start; justify-content:space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
   .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
-  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: var(--color-background-selected); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-accent); background: var(--color-background-selected); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
   .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
-  .spec-head .tag { display:inline-flex; align-items:center; gap: var(--space-2); padding: var(--space-1) var(--space-3); background: var(--color-background-subtle); color: var(--color-foreground-secondary); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; border-radius: var(--radius-pill); flex-shrink:0; }
+  .spec-head .tag { display:inline-flex; align-items:center; gap: var(--space-2); padding: var(--space-1) var(--space-3); background: var(--color-background-subtle); color: var(--color-foreground-secondary); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; border-radius: var(--radius-pill); flex-shrink:0; }
 
   .spec-canvas { padding: var(--space-7) var(--space-6); background: var(--color-background-canvas); display:flex; flex-wrap:wrap; gap: var(--space-5); align-items:flex-start; border-bottom: 1px solid var(--color-border-subtle); }
   .spec-canvas.col   { flex-direction:column; align-items:stretch; }
@@ -51,7 +51,7 @@
   .spec-canvas.grid-3 { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-5); }
 
   .spec-foot { display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); padding: var(--space-5) var(--space-6); background: var(--color-background-surface); }
-  .spec-foot h4 { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); margin: 0 0 var(--space-3); }
+  .spec-foot h4 { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); margin: 0 0 var(--space-3); }
   .spec-foot ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap: var(--space-2); }
   .spec-foot li { font-size: var(--fs-sm); color: var(--color-foreground-secondary); display:flex; gap: var(--space-2); align-items:flex-start; }
   .spec-foot li i, .spec-foot li svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); flex-shrink:0; margin-top: 2px; }
@@ -63,14 +63,14 @@
   .anatomy-callouts { display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--space-6); width:100%; max-width:880px; }
   .anatomy-callout { display:flex; flex-direction:column; align-items:center; gap: var(--space-2); text-align:center; }
   .anatomy-callout .num { width:22px; height:22px; border-radius: var(--radius-pill); background: var(--color-foreground-accent); color: var(--color-foreground-on-solid); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-bold); display:inline-flex; align-items:center; justify-content:center; }
-  .anatomy-callout .name { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-default); text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-semibold); }
+  .anatomy-callout .name { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-default); text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-regular); }
   .anatomy-callout .desc { font-size: var(--fs-xs); color: var(--color-foreground-muted); line-height: var(--lh-snug); max-width: 22ch; }
 
   /* token table */
   .token-table { width:100%; border-collapse:collapse; background: var(--color-background-surface); border:1px solid var(--color-border-default); border-radius: var(--radius-md); overflow:hidden; box-shadow: var(--shadow-xs); font-size: var(--fs-sm); }
   .token-table th, .token-table td { padding: var(--space-3) var(--space-5); text-align:left; border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
   .token-table tr:last-child td { border-bottom: 0; }
-  .token-table th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); }
+  .token-table th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); background: var(--color-background-subtle); }
   .token-table td.k { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); color: var(--color-foreground-accent); white-space: nowrap; }
   .token-table td.v { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); color: var(--color-foreground-secondary); white-space: nowrap; }
 
@@ -81,7 +81,7 @@
   .dont-card-body { padding: var(--space-4) var(--space-5); display:flex; gap: var(--space-3); align-items:flex-start; }
   .dont-card-body i, .dont-card-body svg { width: var(--icon-md); height: var(--icon-md); stroke-width: var(--icon-stroke); color: var(--color-feedback-danger-foreground); flex-shrink:0; margin-top:1px; }
   .dont-card-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-normal); }
-  .dont-card-body strong { color: var(--color-foreground-default); display:block; margin-bottom: var(--space-1); font-weight: var(--w-semibold); }
+  .dont-card-body strong { color: var(--color-foreground-default); display:block; margin-bottom: var(--space-1); font-weight: var(--w-regular); }
 
   /* surface swatch grid */
   .surface-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--space-5); width:100%; }
@@ -210,7 +210,7 @@
     <article class="spec">
       <header class="spec-head"><div><h3>Sunken <code>.card.sunken</code></h3><p>Inset receipt-style surface. Use for read-only summaries, totals, JSON/code panels — anything that should feel "carved in".</p></div><span class="tag">sunken</span></header>
       <div class="spec-canvas">
-        <div style="width: 100%; max-width: 360px;"><article class="card sunken"><div style="display:flex; flex-direction:column; gap: var(--space-2);"><div style="display:flex; justify-content:space-between; font-size: var(--fs-sm); color: var(--color-foreground-secondary);"><span>Subtotal</span><span class="num-big" style="font-size: var(--fs-md); font-weight: var(--w-medium);">R$ 184,200.00</span></div><div style="display:flex; justify-content:space-between; font-size: var(--fs-sm); color: var(--color-foreground-secondary);"><span>Network fee</span><span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);">R$ 0.00</span></div><div style="height:1px; background: var(--color-border-subtle); margin: var(--space-2) 0;"></div><div style="display:flex; justify-content:space-between; font-size: var(--fs-md); font-weight: var(--w-semibold);"><span>Total</span><span class="num-big" style="font-size: var(--fs-lg);">R$ 184,200.00</span></div></div></article></div>
+        <div style="width: 100%; max-width: 360px;"><article class="card sunken"><div style="display:flex; flex-direction:column; gap: var(--space-2);"><div style="display:flex; justify-content:space-between; font-size: var(--fs-sm); color: var(--color-foreground-secondary);"><span>Subtotal</span><span class="num-big" style="font-size: var(--fs-md); font-weight: var(--w-regular);">R$ 184,200.00</span></div><div style="display:flex; justify-content:space-between; font-size: var(--fs-sm); color: var(--color-foreground-secondary);"><span>Network fee</span><span style="font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);">R$ 0.00</span></div><div style="height:1px; background: var(--color-border-subtle); margin: var(--space-2) 0;"></div><div style="display:flex; justify-content:space-between; font-size: var(--fs-md); font-weight: var(--w-regular);"><span>Total</span><span class="num-big" style="font-size: var(--fs-lg);">R$ 184,200.00</span></div></div></article></div>
       </div>
     </article>
 
@@ -330,7 +330,22 @@
         </div>
       </div>
     </div>
-  </section>
+  
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>Four bands <code>compact · divided · note + actions</code></h3><p>Header, body, a band of figures and a footer, each separated by a 1px line. The compact header is 54px with a 14 bold title and an optional second line; the figures run edge to edge with vertical rules and mono values; the split footer explains the consequence of the action on the left, with at most two actions on the right.</p></div>
+        <span class="demo-card-tag">A-02</span>
+      </div>
+      <div class="demo-card-canvas">
+        <div class="card" id="a02-card" style="padding:0;overflow:hidden;width:100%;max-width:560px">
+          <div class="card-header is-compact"><div><h3>Payout to Global Supplies</h3><p><span class="card-crumb">Payments</span></p></div><button class="btn btn-ghost btn-sm btn-icon" aria-label="More actions"><i data-lucide="ellipsis"></i></button></div>
+          <div class="card-body">The transfer is waiting for the bank's confirmation. Funds are held until it settles.</div>
+          <div class="stat-row is-divided" style="--stat-cols:3"><div class="stat"><span class="stat-label">Amount</span><span class="stat-value">18,425.00</span></div><div class="stat"><span class="stat-label">Fee</span><span class="stat-value">12.00</span></div><div class="stat"><span class="stat-label">Rate</span><span class="stat-value">5.2643</span></div></div>
+          <div class="card-footer is-split"><span class="card-footer-note">Releasing sends the funds now. It cannot be undone.</span><div class="card-footer-actions"><button class="btn btn-secondary btn-sm">Cancel</button><button class="btn btn-primary btn-sm">Release</button></div></div>
+        </div>
+      </div>
+    </div>
+</section>
 
 
   <!-- ========== 04 DENSITY ========== -->
@@ -411,7 +426,7 @@
           <article class="card spacious">
             <div class="card-body" style="text-align:center; padding: var(--space-8) var(--space-7);">
               <div style="width:48px; height:48px; border-radius: var(--radius-pill); background: var(--color-background-subtle); display:inline-flex; align-items:center; justify-content:center; margin-bottom: var(--space-4); color: var(--color-foreground-muted);"><i data-lucide="inbox" style="width:24px; height:24px; stroke-width: var(--icon-stroke);"></i></div>
-              <h3 style="margin:0; font-size: var(--fs-lg); font-weight: var(--w-semibold); letter-spacing: var(--ls-title);">No transactions today</h3>
+              <h3 style="margin:0; font-size: var(--fs-lg); font-weight: var(--w-regular); letter-spacing: var(--ls-title);">No transactions today</h3>
               <p style="margin: var(--space-2) 0 var(--space-5); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed);">Your settlement queue is clear. Inbound transfers will appear here as they arrive.</p>
               <button class="btn btn-tertiary btn-sm">View all transactions<i data-lucide="arrow-right"></i></button>
             </div>
@@ -429,19 +444,19 @@
             <div>
               <div style="display:flex; align-items:center; gap: var(--space-4); padding: var(--space-3) var(--space-6); border-bottom: 1px solid var(--color-border-subtle);">
                 <div style="width:32px; height:32px; border-radius: var(--radius-pill); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="check" style="width:16px; height:16px;"></i></div>
-                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-medium);">TX-19847 · Released</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);">R$ 184,200.00 · 2h ago</div></div>
+                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-regular);">TX-19847 · Released</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);">R$ 184,200.00 · 2h ago</div></div>
               </div>
               <div style="display:flex; align-items:center; gap: var(--space-4); padding: var(--space-3) var(--space-6); border-bottom: 1px solid var(--color-border-subtle);">
                 <div style="width:32px; height:32px; border-radius: var(--radius-pill); background: var(--color-feedback-warning-background); color: var(--color-feedback-warning-foreground); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="clock" style="width:16px; height:16px;"></i></div>
-                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-medium);">TX-19851 · Funds on hold</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);">R$ 42,800.00 · 4h ago</div></div>
+                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-regular);">TX-19851 · Funds on hold</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);">R$ 42,800.00 · 4h ago</div></div>
               </div>
               <div style="display:flex; align-items:center; gap: var(--space-4); padding: var(--space-3) var(--space-6); border-bottom: 1px solid var(--color-border-subtle);">
                 <div style="width:32px; height:32px; border-radius: var(--radius-pill); background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="x" style="width:16px; height:16px;"></i></div>
-                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-medium);">TX-19844 · Bounced</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);">R$ 8,400.00 · 7h ago</div></div>
+                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-regular);">TX-19844 · Bounced</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);">R$ 8,400.00 · 7h ago</div></div>
               </div>
               <div style="display:flex; align-items:center; gap: var(--space-4); padding: var(--space-3) var(--space-6);">
                 <div style="width:32px; height:32px; border-radius: var(--radius-pill); background: var(--color-feedback-info-background); color: var(--color-feedback-info-foreground); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;"><i data-lucide="user-plus" style="width:16px; height:16px;"></i></div>
-                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-medium);">New counterparty added</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);">Açai Brasil S.A. · 12h ago</div></div>
+                <div style="flex:1;"><div style="font-size: var(--fs-sm); font-weight: var(--w-regular);">New counterparty added</div><div style="font-size: var(--fs-xs); color: var(--color-foreground-muted); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);">Açai Brasil S.A. · 12h ago</div></div>
               </div>
             </div>
           </article>
@@ -479,10 +494,10 @@
     <article class="spec">
       <header class="spec-head"><div><h3>Four semantic variants</h3><p>Each carries the variant's bg, border, and tinted shadow. Pair with a leading icon for instant readability.</p></div><span class="tag">accent</span></header>
       <div class="spec-canvas col">
-        <article class="card accent-success" style="display:flex; gap: var(--space-4); align-items:flex-start;"><i data-lucide="check-circle-2" style="width:20px; height:20px; color: var(--color-feedback-success-foreground); flex-shrink:0; margin-top:2px;"></i><div><strong style="font-weight: var(--w-semibold);">Funds released successfully.</strong><p style="margin: var(--space-1) 0 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary);">R$ 184,200.00 to Açai Brasil S.A. · TX-19847</p></div></article>
-        <article class="card accent-warning" style="display:flex; gap: var(--space-4); align-items:flex-start;"><i data-lucide="alert-triangle" style="width:20px; height:20px; color: var(--color-feedback-warning-foreground); flex-shrink:0; margin-top:2px;"></i><div><strong style="font-weight: var(--w-semibold);">3 transactions awaiting your review.</strong><p style="margin: var(--space-1) 0 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary);">All over R$ 100K · auto-released in 24h if not actioned.</p></div></article>
-        <article class="card accent-danger" style="display:flex; gap: var(--space-4); align-items:flex-start;"><i data-lucide="x-circle" style="width:20px; height:20px; color: var(--color-feedback-danger-foreground); flex-shrink:0; margin-top:2px;"></i><div><strong style="font-weight: var(--w-semibold);">Connection to BACEN failed.</strong><p style="margin: var(--space-1) 0 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary);">Outbound transfers are queued. Retry attempted in 5 min.</p></div></article>
-        <article class="card accent-info" style="display:flex; gap: var(--space-4); align-items:flex-start;"><i data-lucide="info" style="width:20px; height:20px; color: var(--color-feedback-info-foreground); flex-shrink:0; margin-top:2px;"></i><div><strong style="font-weight: var(--w-semibold);">PIX cutoff at 22:00 BRT.</strong><p style="margin: var(--space-1) 0 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary);">After cutoff, instant transfers process the next business day.</p></div></article>
+        <article class="card accent-success" style="display:flex; gap: var(--space-4); align-items:flex-start;"><i data-lucide="check-circle-2" style="width:20px; height:20px; color: var(--color-feedback-success-foreground); flex-shrink:0; margin-top:2px;"></i><div><strong style="font-weight: var(--w-regular);">Funds released successfully.</strong><p style="margin: var(--space-1) 0 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary);">R$ 184,200.00 to Açai Brasil S.A. · TX-19847</p></div></article>
+        <article class="card accent-warning" style="display:flex; gap: var(--space-4); align-items:flex-start;"><i data-lucide="alert-triangle" style="width:20px; height:20px; color: var(--color-feedback-warning-foreground); flex-shrink:0; margin-top:2px;"></i><div><strong style="font-weight: var(--w-regular);">3 transactions awaiting your review.</strong><p style="margin: var(--space-1) 0 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary);">All over R$ 100K · auto-released in 24h if not actioned.</p></div></article>
+        <article class="card accent-danger" style="display:flex; gap: var(--space-4); align-items:flex-start;"><i data-lucide="x-circle" style="width:20px; height:20px; color: var(--color-feedback-danger-foreground); flex-shrink:0; margin-top:2px;"></i><div><strong style="font-weight: var(--w-regular);">Connection to BACEN failed.</strong><p style="margin: var(--space-1) 0 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary);">Outbound transfers are queued. Retry attempted in 5 min.</p></div></article>
+        <article class="card accent-info" style="display:flex; gap: var(--space-4); align-items:flex-start;"><i data-lucide="info" style="width:20px; height:20px; color: var(--color-feedback-info-foreground); flex-shrink:0; margin-top:2px;"></i><div><strong style="font-weight: var(--w-regular);">PIX cutoff at 22:00 BRT.</strong><p style="margin: var(--space-1) 0 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary);">After cutoff, instant transfers process the next business day.</p></div></article>
       </div>
     </article>
   </section>

@@ -26,6 +26,9 @@
   --glass-surface-fg:  var(--color-foreground-default);
   --glass-chrome:      var(--glass-white);
   --glass-chrome-fg:   var(--color-foreground-default);
+  /* Border for chrome glass (toast). Light: the white highlight; dark: a quiet
+     10% white — the 45% highlight read as a bright outline on ink glass. */
+  --glass-chrome-border: var(--glass-border);  /* @kind other */
   --glass-overlay:     var(--glass-white-hi);
   --glass-overlay-fg:  var(--color-foreground-default);
   --glass-hero:        var(--glass-ink);

@@ -29,10 +29,12 @@ export interface CardStatProps extends React.HTMLAttributes<HTMLDivElement> {
 export interface CardSlotProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export declare const Card: React.FC<CardProps>;
-export declare const CardHeader: React.FC<CardSlotProps>;
+/** `compact`: 54px minimum, title 14 bold, optional second line (.card-header.is-compact). */
+export declare const CardHeader: React.FC<CardSlotProps & { compact?: boolean }>;
 export declare const CardBody: React.FC<CardSlotProps>;
 /** Footer slot. plain: detail-card action footer — line edge to edge, no fill, actions left. */
-export declare const CardFooter: React.FC<CardSlotProps & { plain?: boolean }>;
+/** `note` + `actions`: split footer (.card-footer.is-split) — note left, at most two actions right. */
+export declare const CardFooter: React.FC<CardSlotProps & { plain?: boolean; note?: React.ReactNode; actions?: React.ReactNode }>;
 export declare const CardCanvas: React.FC<CardSlotProps>;
 export declare const CardDivider: React.FC<CardSlotProps>;
 export declare const CardStat: React.FC<CardStatProps>;

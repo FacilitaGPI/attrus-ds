@@ -41,7 +41,8 @@
      --w-semibold was the most used token in the system (99 rules) and rendered
      BOLD everywhere, which is why the UI read heavier than the scale implied.
      Kept as deprecated aliases so a consuming project does not break; new code
-     must use one of the four real weights above. */
+     must use one of the four real weights above.
+     Removed in 2.0. Do not use. */
   --w-medium: var(--w-regular);     /* DEPRECATED → 400 */
   --w-semibold: var(--w-regular);   /* DEPRECATED → 400 */
   --w-extrabold: var(--w-black);    /* DEPRECATED → 900 */

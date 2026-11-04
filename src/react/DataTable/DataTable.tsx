@@ -51,8 +51,12 @@ export interface DataTableProps<T> {
   rows: T[];
   /** Stable row identity. */
   rowKey: (row: T) => string;
-  /** Makes rows hoverable + clickable (tr.hov). */
+  /** Makes rows hoverable + clickable (tr.hov). The row also joins the Tab
+      order and opens with Enter or Space. */
   onRowClick?: (row: T) => void;
+  /** aria-label for a clickable row — what Enter opens ("Open Global Supplies,
+      −18,425.00"). Without it a screen reader hears only the cells. */
+  rowLabel?: (row: T) => string;
   /** Row tint: 'muted' (cancelled) or 'error' (danger). */
   rowState?: (row: T) => RowState;
   /** Keys of persistently selected rows (.is-selected). */
@@ -65,6 +69,10 @@ export interface DataTableProps<T> {
       is only the visible proof. Default true when there is no onRowClick (a row
       that opens something cannot also select on click). Clicks on links, buttons
       and inputs inside the row keep their own behaviour. */
+  /** Inside a Card: drop the table's own background, border and radius so the
+      card is the only frame (.dt-wrap.is-flush). A table that is a direct child
+      of .card or the only child of .card-body gets this automatically. */
+  flush?: boolean;
   selectOnRowClick?: boolean;
   /** Reference tables only: the title column holds a class name, so on a phone
       it keeps the code face instead of the plain row-title reset (.dt-m-code). */
@@ -73,10 +81,13 @@ export interface DataTableProps<T> {
   loading?: boolean;
   /** How many skeleton rows. Default 4. */
   loadingRows?: number;
-  /** sm | md (default) | lg — .dt-sm / .dt-lg. */
+  /** Row scale — sm | md (default) | lg (.dt-sm / .dt-lg). */
   size?: DataTableSize;
+  /** Alternating row tint. Prefer plain rows; zebra competes with row states. */
   zebra?: boolean;
+  /** Sticky header. Requires a bounded height, so wrap in DTScrollY. */
   sticky?: boolean;
+  /** Vertical rules between columns — for dense numeric grids only. */
   bordered?: boolean;
   /** Dark-surface treatment (.dt.on-inverse). */
   onInverse?: boolean;
@@ -140,6 +151,7 @@ export function DataTable<T>({
   rows,
   rowKey,
   onRowClick,
+  rowLabel,
   rowState,
   selectedKeys,
   onSelectToggle,
@@ -156,6 +168,7 @@ export function DataTable<T>({
   wrap = true,
   responsive = true,
   mobile = 'list',
+  flush = false,
   selectOnRowClick,
   mobileCodeTitle = false,
   selectionBar,
@@ -261,6 +274,12 @@ export function DataTable<T>({
                   onSelectToggle!(k);
                 } : undefined}
                 style={onRowClick || rowSelects ? { cursor: 'pointer' } : undefined}
+                tabIndex={onRowClick ? 0 : undefined}
+                aria-label={onRowClick && rowLabel ? rowLabel(row) : undefined}
+                onKeyDown={onRowClick ? (e: React.KeyboardEvent) => {
+                  if (e.target !== e.currentTarget) return;
+                  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onRowClick(row); }
+                } : undefined}
               >
                 {selectable ? (
                   <td className="col-select" data-label="" data-m="lead">
@@ -299,7 +318,7 @@ export function DataTable<T>({
   if (!wrap) return inner;
 
   return (
-    <div className={['dt-wrap', respCls, className || ''].filter(Boolean).join(' ')} style={style}>
+    <div className={['dt-wrap', respCls, flush ? 'is-flush' : '', className || ''].filter(Boolean).join(' ')} style={style}>
       {/* Same rule as the pagination slot: DTToolbar already IS a .dt-toolbar,
           so wrapping it would nest two bars and the inner one would shrink-wrap. */}
       {toolbar ? (isOwn(toolbar, 'DTToolbar') ? toolbar : <div className="dt-toolbar">{toolbar}</div>) : null}
@@ -389,7 +408,7 @@ export function DTGroupDivider(props: DTGroupDividerProps): React.ReactElement {
     (an audit trail under a payment); use a subrow when it does. The parent must
     carry `has-detail` so its bottom border is dropped and the pair reads as
     one block. */
-export interface DTDetailProps extends Omit<React.HTMLAttributes<HTMLTableRowElement>, "title"> {
+export interface DTDetailProps extends Omit<React.HTMLAttributes<HTMLTableRowElement>, 'title'> {
   colSpan: number;
   open?: boolean;
   title?: React.ReactNode;

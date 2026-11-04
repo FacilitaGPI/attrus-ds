@@ -31,6 +31,8 @@ export interface DataTableProps<T> {
   rowKey: (row: T) => string;
   /** Makes rows hoverable + clickable (tr.hov). */
   onRowClick?: (row: T) => void;
+  /** aria-label for a clickable row — what Enter opens. */
+  rowLabel?: (row: T) => string;
   /** Row tint: 'muted' (cancelled) or 'error' (danger). */
   rowState?: (row: T) => RowState;
   /** Keys of persistently selected rows (.is-selected). */
@@ -39,6 +41,8 @@ export interface DataTableProps<T> {
   onSelectToggle?: (key: string) => void;
   /** Header checkbox — toggle all. */
   onSelectAll?: () => void;
+  /** Inside a Card: drop the table's own frame so the card is the only border (.dt-wrap.is-flush). */
+  flush?: boolean;
   selectOnRowClick?: boolean;
   mobileCodeTitle?: boolean;
   /** Loading state — `.dt-skeleton` shimmer rows instead of the body. */
@@ -106,7 +110,7 @@ export interface DTGroupDividerProps extends React.HTMLAttributes<HTMLTableRowEl
 }
 export declare function DTGroupDivider(props: DTGroupDividerProps): React.ReactElement;
 
-export interface DTDetailProps extends Omit<React.HTMLAttributes<HTMLTableRowElement>, "title"> {
+export interface DTDetailProps extends Omit<React.HTMLAttributes<HTMLTableRowElement>, 'title'> {
   colSpan: number;
   open?: boolean;
   title?: React.ReactNode;

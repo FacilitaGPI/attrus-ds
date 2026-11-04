@@ -28,7 +28,14 @@ export const AppTopbar: React.FC<AppTopbarProps> = ({ primary, search, children,
 
 /* ---------- Generic 36px control ---------- */
 
+/** Collapse rule for an item in a crowded bar: 3 hides below 1180px, 2 below
+    760px, 1 only in the compact phone bar. No priority = never hides (search,
+    account). Rendered as data-tb-priority. */
+export type TopbarPriority = 1 | 2 | 3;
+
 export interface TopbarControlProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  /** Collapse rule — see TopbarPriority. */
+  priority?: TopbarPriority;
   /** Leading slot (icon, flag…). */
   icon?: React.ReactNode;
   /** Square icon-only control (.tb-control.icon). */
@@ -45,9 +52,10 @@ const ChevDown: React.FC = () => (
   </span>
 );
 
-export const TopbarControl: React.FC<TopbarControlProps> = ({ icon, iconOnly = false, chev = false, className, children, ...rest }) => (
+export const TopbarControl: React.FC<TopbarControlProps> = ({ icon, iconOnly = false, chev = false, priority, className, children, ...rest }) => (
   <button
     type="button"
+    data-tb-priority={priority}
     className={['tb-control', iconOnly ? 'icon' : '', className || ''].filter(Boolean).join(' ')}
     {...rest}
   >
@@ -61,12 +69,14 @@ export const TopbarControl: React.FC<TopbarControlProps> = ({ icon, iconOnly = f
 
 export interface TopbarLiveProps {
   label?: React.ReactNode;
+  /** Collapse rule — see TopbarPriority. */
+  priority?: TopbarPriority;
   /** Elapsed mono clock (e.g. "0:19"). */
   clock?: React.ReactNode;
 }
 
-export const TopbarLive: React.FC<TopbarLiveProps> = ({ label = 'Live', clock }) => (
-  <div className="tb-control tb-live">
+export const TopbarLive: React.FC<TopbarLiveProps> = ({ label = 'Live', clock, priority }) => (
+  <div className="tb-control tb-live" data-tb-priority={priority}>
     <span className="dot" />
     <span className="lbl">{label}</span>
     {clock != null ? <span className="tb-clock">{clock}</span> : null}
@@ -78,11 +88,14 @@ export const TopbarLive: React.FC<TopbarLiveProps> = ({ label = 'Live', clock })
 export interface TopbarBellProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Unread red dot. */
   badge?: boolean;
+  /** Collapse rule — see TopbarPriority. */
+  priority?: TopbarPriority;
 }
 
-export const TopbarBell: React.FC<TopbarBellProps> = ({ badge = false, className, ...rest }) => (
+export const TopbarBell: React.FC<TopbarBellProps> = ({ badge = false, priority, className, ...rest }) => (
   <button
     type="button"
+    data-tb-priority={priority}
     className={['tb-control', 'icon', 'tb-bell', className || ''].filter(Boolean).join(' ')}
     aria-label="Notifications"
     {...rest}
@@ -116,7 +129,9 @@ export interface TopbarAccountProps {
   detail?: React.ReactNode;
   items?: TopbarAccountItem[];
   onSelect?: (key: string) => void;
-  /** Hide name/company in the trigger (mobile). */
+  /** Avatar + chevron only — name and company move to the dropdown head
+      (.tb-account.is-compact). Applied automatically below 760px; pass it to
+      force the compact form at any width. The name stays as aria-label. */
   compact?: boolean;
 }
 
@@ -152,20 +167,18 @@ export const TopbarAccount: React.FC<TopbarAccountProps> = ({
     <div className="tb-account-wrap" ref={wrapRef}>
       <button
         type="button"
-        className={['tb-account', open ? 'is-open' : ''].filter(Boolean).join(' ')}
+        className={['tb-account', open ? 'is-open' : '', compact ? 'is-compact' : ''].filter(Boolean).join(' ')}
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-label="Account menu"
+        aria-label={typeof name === 'string' ? 'Account menu — ' + name : 'Account menu'}
         onClick={() => setOpen((o) => !o)}
       >
         <span className="tb-avatar">{initials}</span>
-        {!compact ? (
-          <span className="tb-account-id">
-            <span className="nm">{name}</span>
-            <span className="co">{company}</span>
-          </span>
-        ) : null}
-        {!compact ? <ChevDown /> : null}
+        <span className="tb-account-id">
+          <span className="nm">{name}</span>
+          <span className="co">{company}</span>
+        </span>
+        <ChevDown />
       </button>
       {open ? (
         <div className="tb-account-menu" role="menu">

@@ -370,3 +370,9 @@
 /* PHONE · SCRIM CORNERS — the scrim fills the whole screen, so all four of its
    corners follow the screen's radius; square, its tint showed past the frame. */
 .demo-phone-screen .scrim { border-radius: inherit; }
+
+/* A-01 · flush — the demo frame re-rounds every table in a canvas; a table
+   inside a card (or marked .is-flush) must keep the card as its only frame. */
+.demo-card-canvas .card > .dt-wrap,
+.demo-card-canvas .card-body > .dt-wrap:only-child,
+.demo-card-canvas .dt-wrap.is-flush { background: transparent; border: 0; border-radius: 0; box-shadow: none; }

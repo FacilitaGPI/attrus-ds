@@ -63,6 +63,10 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   size?: InputSize;
   /** Leading icon (decorative) — .affix.lead-pad. */
   leadIcon?: React.ReactNode;
+  /** Size of the leading slot. 'icon' (default) is a 14px box for a Lucide icon;
+      'lg' is a 20px box for a flag or an avatar, and the text recedes with it
+      (.affix.lead-pad-lg). The content is centred in either box. */
+  leadSize?: 'icon' | 'lg';
   /** Trailing icon (decorative) — .affix.trail-pad. */
   trailIcon?: React.ReactNode;
   /** Makes the trailing slot a clickable .trail-btn (clear, reveal…). */
@@ -130,6 +134,7 @@ export const Input: React.FC<InputProps> = ({
   status = 'default',
   size = 'md',
   leadIcon,
+  leadSize = 'icon',
   trailIcon,
   onTrailClick,
   trailLabel,
@@ -185,7 +190,7 @@ export const Input: React.FC<InputProps> = ({
   } else if (leadIcon != null || trailIcon != null || onTrailClick) {
     const affixCls = [
       'affix',
-      leadIcon != null ? 'lead-pad' : '',
+      leadIcon != null ? (leadSize === 'lg' ? 'lead-pad-lg' : 'lead-pad') : '',
       trailIcon != null || onTrailClick ? 'trail-pad' : '',
     ]
       .filter(Boolean)
@@ -383,7 +388,7 @@ export const ChipsInput: React.FC<ChipsInputProps> = ({ values, onAdd, onRemove,
     setDraft('');
   };
   return (
-    <div className={['chips', className || ''].filter(Boolean).join(' ')} {...rest}>
+    <div className={['chips-input', className || ''].filter(Boolean).join(' ')} {...rest}>
       {values.map((v) => (
         <span key={v} className="chip">
           {v}

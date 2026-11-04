@@ -62,6 +62,7 @@
   /* Frosted chrome flips to ink glass on dark (drawer/modal header+footer) */
   --glass-chrome: var(--glass-ink);
   --glass-chrome-fg: var(--color-foreground-inverse-default);
+  --glass-chrome-border: var(--glass-border-dark);
   --glass-surface: var(--glass-ink-lo);
   --glass-surface-fg: var(--color-foreground-default);
   --glass-overlay: var(--glass-ink-hi);

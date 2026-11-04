@@ -29,14 +29,15 @@
   font-family: var(--font-sans);
   font-size: var(--fs-lg);
   font-weight: var(--w-bold);
-  letter-spacing: -.01em;
+  letter-spacing: var(--ls-tight);
   color: var(--color-foreground-default);
   margin: 0;
   max-width: 360px;
 }
 .empty.empty-compact h4 { font-size: var(--fs-md); }
 
-.empty p {
+.empty p,
+.empty .empty-desc {
   font-family: var(--font-sans);
   font-size: var(--fs-sm);
   color: var(--color-foreground-secondary);

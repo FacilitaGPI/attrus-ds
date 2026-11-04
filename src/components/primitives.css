@@ -22,6 +22,14 @@
   user-select: none;
   overflow: hidden;
   position: relative;
+  /* Optical centring. Initials are caps, so the text box is trimmed to cap
+     height and flex centres the glyphs themselves, not the line box (the
+     line box sat the caps ~0.8px off). The left padding offsets the last
+     letter's trailing tracking, which pulled the ink 0.4px left. */
+  line-height: 1;
+  text-box: trim-both cap alphabetic;
+  padding-left: var(--ls-caps);
+  box-sizing: border-box;
 }
 .av img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
@@ -33,12 +41,18 @@
 
 /* Tone — accent-on-tinted-bg uses the same background+foreground pair as feedback pills,
    so an Avatar reads as the same "object" as a status pill that references it. */
-.av-brand   { background: var(--color-brand-subtle-solid);          color: var(--color-brand-text-on-light); }
+/* Brand tint mixed from the theme's brand colour — the old light-only fill
+   (brand-subtle-solid) stayed light in dark mode and read as a hole. */
+.av-brand   { background: color-mix(in srgb, var(--color-brand-solid) 14%, var(--color-background-surface)); color: var(--color-foreground-brand); }
 .av-success { background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); }
 .av-warning { background: var(--color-feedback-warning-background); color: var(--color-feedback-warning-foreground); }
 .av-danger  { background: var(--color-feedback-danger-background);  color: var(--color-feedback-danger-foreground); }
 .av-info    { background: var(--color-feedback-info-background);    color: var(--color-feedback-info-foreground); }
 .av-neutral { background: var(--color-background-subtle);           color: var(--color-foreground-muted); }
+/* "This is you" — find your own items at a glance (see the avatar-self tokens) */
+.av-self { background: var(--color-avatar-self-background); color: var(--color-avatar-self-foreground); }
+/* No owner yet — reads as an empty slot, not a person */
+.av-unassigned { background: transparent; color: var(--color-foreground-muted); border: var(--border-hairline) dashed var(--color-border-strong); }
 
 /* Status dot — overlay for presence/online state */
 .av-dot {
@@ -466,6 +480,12 @@
   .progress.is-critical .progress-fill,
   .progress-seg.is-critical > i.is-current { animation: none; }
 }
-/* Sizes */
-.progress.is-sm, .progress-seg.is-sm > i { --progress-h: 4px; }
-.progress.is-lg, .progress-seg.is-lg > i { --progress-h: 10px; }
+
+/* A-02 · divided stat row — a band of figures that runs edge to edge inside
+   a card: 1px vertical rules, 14 × 20 cells, 12px muted label, mono 18 bold
+   value. The tiles lose their own surface, border and radius. */
+.stat-row.is-divided { gap: 0; border-top: var(--border-hairline) solid var(--color-border-default); }
+.stat-row.is-divided > .stat { padding: 14px 20px; gap: var(--space-1); background: none; border: 0; border-radius: 0; box-shadow: none; }
+.stat-row.is-divided > .stat + .stat { border-left: var(--border-hairline) solid var(--color-border-default); }
+.stat-row.is-divided .stat-label { font-family: var(--font-sans); font-size-adjust: none; font-size: var(--fs-sm); letter-spacing: normal; text-transform: none; color: var(--color-foreground-muted); }
+.stat-row.is-divided .stat-value { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xl); font-weight: var(--w-mono-emphasis); letter-spacing: 0; }

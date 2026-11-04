@@ -24,7 +24,7 @@
      .group   .fix.l | .fix.r  prefix / suffix attached
      .pill-search              ⌘K-style search bar
      .underline                ghost / quiet input
-     .chips                    multi-select with embedded text input
+     .chips-input              multi-select with embedded text input (.chips: deprecated alias, removed in 2.0)
      .otp                      one-time-password digit cells
 
    Other controls (siblings, not .input):
@@ -169,15 +169,20 @@ textarea.input {
 /* ----------------------------------------------------------------
    3. SIZES
    ---------------------------------------------------------------- */
+/* P-01 · one side inset per size, shared by the field and the select chevron,
+   so a small button, select and field side by side start their text at the
+   same distance from the edge. --input-pad-x is local, not a system token. */
 .input-sm {
+  --input-pad-x: var(--space-4);
   height: var(--control-h-sm);
-  padding: 0 var(--space-3);
-  font-size: var(--fs-sm);
-  border-radius: var(--radius-xs);
+  padding: 0 var(--input-pad-x);
+  font-size: var(--fs-md);
+  border-radius: var(--shape-control);
 }
 .input-lg {
+  --input-pad-x: var(--space-5);
   height: var(--control-h-lg);
-  padding: 0 var(--space-5);
+  padding: 0 var(--input-pad-x);
   font-size: var(--fs-lg);
   border-radius: var(--radius-md);
 }
@@ -200,13 +205,23 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   color: var(--color-foreground-muted);
   pointer-events: none;
   flex-shrink: 0;
+  /* P-05 · the box centres whatever it holds — flex, not grid: a grid row grows
+     to the child and the overflow all goes down. A 16px icon or a 20px flag
+     used to sit 1–3px below the field's centre. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+.affix .lead > *, .affix .trail > * { flex-shrink: 0; }
 .affix .lead  { left:  var(--space-4); }
 .affix .trail { right: var(--space-4); }
 
 /* Pad the input to make room for the icon */
 .affix.lead-pad  > .input { padding-left:  calc(var(--space-4) + var(--icon-sm) + var(--space-3)); }
 .affix.trail-pad > .input { padding-right: calc(var(--space-4) + var(--icon-sm) + var(--space-3)); }
+/* Wide lead — a flag or an avatar instead of an icon: 20px box, text follows */
+.affix.lead-pad-lg .lead { width: 20px; height: 20px; }
+.affix.lead-pad-lg > .input { padding-left: calc(var(--space-4) + 20px + var(--space-3)); }
 
 /* Trailing button (e.g. password reveal, clear) — clickable */
 .affix .trail-btn {
@@ -424,7 +439,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
    height inline. */
 .pill-search-sm {
   height: var(--control-h-sm);
-  padding: 0 var(--space-3);
+  padding: 0 var(--space-4);   /* P-01 · same 12px inset as .btn-sm / .input-sm */
   gap: var(--space-2);
 }
 .pill-search-sm > input { font-size: var(--fs-sm); }
@@ -613,7 +628,10 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 /* ----------------------------------------------------------------
    8. CHIPS — multi-select / token input
    ---------------------------------------------------------------- */
-.chips {
+/* .chips-input — the ChipsInput field. `.chips` is a deprecated alias kept for
+   consumers of 1.x: Deprecated — removed in 2.0. A bare `.chips` is too generic
+   (any app div.chips picked up a border, height and focus ring). */
+:is(.chips-input, .chips) {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2-5);
@@ -627,8 +645,8 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
     border-color var(--transition-fast),
     box-shadow var(--transition-fast);
 }
-.chips:hover { border-color: var(--color-border-strong); }
-.chips:focus-within {
+:is(.chips-input, .chips):hover { border-color: var(--color-border-strong); }
+:is(.chips-input, .chips):focus-within {
   border-color: var(--color-border-focus);
   box-shadow: var(--shadow-focus);
 }
@@ -668,7 +686,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 }
 .chip-x svg, .chip-x i { width: 11px; height: 11px; stroke-width: 2.25; }
 .chip-x:hover { background: var(--color-border-default); color: var(--color-foreground-default); }
-.chips > input {
+:is(.chips-input, .chips) > input {
   flex: 1;
   min-width: calc(var(--control-h-md) * 2);
   height: 26px;
@@ -680,27 +698,34 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   padding: 0 6px;
   color: var(--color-foreground-default);
 }
-.chips > input::placeholder { color: var(--color-foreground-placeholder); }
+:is(.chips-input, .chips) > input::placeholder { color: var(--color-foreground-placeholder); }
 
 
 /* ----------------------------------------------------------------
    9. SELECT (native)
    ---------------------------------------------------------------- */
 .select {
+  /* The chevron is the field's sibling, not its child, so it cannot inherit
+     the field's inset — the wrapper declares it per size. */
+  --input-pad-x: var(--space-4);
   position: relative;
   display: block;
 }
+/* lg: the chevron follows the larger inset. Set directly (no custom property
+   under :has, which the token compiler cannot scope). */
+.select:has(> .input-lg) > .chev { right: var(--space-5); }
+.select > select.input.input-lg { padding-right: calc(var(--space-5) + var(--icon-sm) + var(--space-3)); }
 .select > select.input {
   appearance: none;
   -webkit-appearance: none;
   cursor: pointer;
-  padding-right: calc(var(--space-4) + var(--icon-sm) + var(--space-3));
+  padding-right: calc(var(--input-pad-x) + var(--icon-sm) + var(--space-3));
   background-image: none;
 }
 .select > .chev {
   position: absolute;
   top: 50%;
-  right: var(--space-4);
+  right: var(--input-pad-x);
   transform: translateY(-50%);
   width: var(--icon-sm);
   height: var(--icon-sm);
@@ -965,7 +990,11 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .date-trigger.is-error          { border-color: var(--color-border-danger); }
 .date-trigger.is-error:focus,
 .date-trigger.is-error:focus-visible { box-shadow: var(--shadow-focus-danger); }
-.date-trigger .placeholder { color: var(--color-foreground-placeholder); }
+/* The empty trigger's text is the control's ONLY visible label, so it cannot
+   carry placeholder contrast (1.8:1). Muted passes (5.1–5.4:1) and still reads
+   as "not chosen yet". --color-foreground-placeholder itself is untouched: it
+   is also the disabled colour and the real placeholder of labelled fields. */
+.date-trigger .placeholder { color: var(--color-foreground-muted); }
 .date-trigger > i, .date-trigger > svg,
 .date-trigger > svg {
   width: var(--icon-sm);
@@ -1101,7 +1130,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xxs);
   font-weight: var(--w-bold);
-  letter-spacing: 0.04em;
+  letter-spacing: var(--ls-caps);
   line-height: 1;
   color: currentColor;
   background: var(--color-background-surface);
@@ -1275,7 +1304,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .dark .input,
 .dark .group,
 .dark .pill-search,
-.dark .chips,
+.dark :is(.chips-input, .chips),
 .dark .number-input,
 .dark .date-trigger {
   background: color-mix(in srgb, var(--color-pure-white) 6%, transparent);
@@ -1286,12 +1315,12 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .dark .input::placeholder,
 .dark .group > input::placeholder,
 .dark .pill-search > input::placeholder,
-.dark .chips > input::placeholder {
+.dark :is(.chips-input, .chips) > input::placeholder {
   color: var(--color-foreground-inverse-placeholder);
 }
 .dark .group > input,
 .dark .pill-search > input,
-.dark .chips > input,
+.dark :is(.chips-input, .chips) > input,
 .dark .number-input > input,
 .dark .date-trigger { color: var(--color-foreground-inverse-default); }
 .dark .group .fix {
@@ -1308,7 +1337,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .dark .input:focus,
 .dark .group:focus-within,
 .dark .pill-search:focus-within,
-.dark .chips:focus-within,
+.dark :is(.chips-input, .chips):focus-within,
 .dark .number-input:focus-within,
 .dark .date-trigger:focus-visible {
   border-color: var(--color-border-focus);
