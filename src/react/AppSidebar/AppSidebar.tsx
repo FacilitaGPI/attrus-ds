@@ -48,8 +48,23 @@ export interface AppSidebarProps {
   onToggleCollapse?: () => void;
   /** Header brand slot (logo img). */
   logo?: React.ReactNode;
+  /** Product name beside the brand, e.g. "ONE" (L-30). */
+  productName?: React.ReactNode;
+  /** Slot under the header for a context selector, e.g. a track Select (L-30). */
+  context?: React.ReactNode;
   /** Footer slot (.sb-foot markup is the caller's). */
   foot?: React.ReactNode;
+  /** Surface: `glass` (.is-glass) for a rail over an image or gradient — the
+      same option as the topbar's. Default solid. */
+  surface?: 'default' | 'glass';
+  /** Phone drawer. When set (true/false), the rail renders as an off-canvas
+      drawer over a scrim (.sb.is-drawer): focus moves in and is trapped, Esc
+      and a scrim click close, focus returns to the element that opened it.
+      Leave undefined for the docked rail. */
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
+  /** Accessible name of the drawer. Default "Navigation". */
+  drawerLabel?: string;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -74,10 +89,34 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   collapsed = false,
   onToggleCollapse,
   logo,
+  productName,
+  context,
   foot,
+  surface = 'default',
+  mobileOpen,
+  onMobileClose,
+  drawerLabel = 'Navigation',
   className,
   style,
 }) => {
+  const asDrawer = mobileOpen !== undefined;
+  const asideRef = React.useRef<HTMLElement>(null);
+  const openerRef = React.useRef<HTMLElement | null>(null);
+  React.useEffect(() => {
+    if (!asDrawer) return;
+    if (mobileOpen) {
+      openerRef.current = document.activeElement as HTMLElement;
+      const t = window.setTimeout(() => {
+        const el = asideRef.current;
+        const first = el && (el.querySelector<HTMLElement>('.sb-item.active, .sb-subitem.active') || el.querySelector<HTMLElement>('.sb-item:not(.disabled), .sb-subitem, button, a'));
+        first && first.focus();
+      }, 30);
+      return () => window.clearTimeout(t);
+    }
+    const back = openerRef.current;
+    if (back && document.contains(back)) back.focus();
+    openerRef.current = null;
+  }, [asDrawer, mobileOpen]);
   const [openGroups, setOpenGroups] = React.useState<Record<string, boolean>>({});
 
   const toggleGroup = (key: string) =>
@@ -145,11 +184,25 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
     );
   };
 
-  return (
+  const rail = (
     <aside
-      className={['sb', app ? 'sb-app' : '', collapsed ? 'collapsed' : '', className || ''].filter(Boolean).join(' ')}
+      ref={asideRef}
+      className={['sb', app ? 'sb-app' : '', collapsed ? 'collapsed' : '', surface === 'glass' ? 'is-glass' : '', asDrawer ? 'is-drawer' : '', asDrawer && mobileOpen ? 'is-open' : '', className || ''].filter(Boolean).join(' ')}
       style={style}
+      {...(asDrawer ? { role: 'dialog', 'aria-modal': true, 'aria-label': drawerLabel, 'aria-hidden': !mobileOpen || undefined } : {})}
       onKeyDown={(e) => {
+        if (asDrawer && mobileOpen) {
+          if (e.key === 'Escape') { e.preventDefault(); onMobileClose && onMobileClose(); return; }
+          if (e.key === 'Tab') {
+            const f = Array.from(e.currentTarget.querySelectorAll<HTMLElement>('.sb-item:not(.disabled), .sb-subitem, button, a[href], [tabindex="0"]')).filter((el) => el.offsetParent !== null);
+            if (f.length) {
+              const first = f[0], last = f[f.length - 1];
+              if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+              else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+            }
+            return;
+          }
+        }
         // Rail keyboard nav (doc a11y contract): ↑/↓ move between items
         // (wrapping), Home/End jump; Enter/Space activate via role=button.
         const nav = e.currentTarget;
@@ -174,6 +227,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       {(logo != null || onToggleCollapse) && (
         <div className="sb-head">
           {logo}
+          {productName != null ? <span className="sb-product">{productName}</span> : null}
           {onToggleCollapse ? (
             <button type="button" className="toggle" aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'} onClick={onToggleCollapse}>
               <PanelGlyph />
@@ -181,6 +235,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           ) : null}
         </div>
       )}
+      {context != null ? <div className="sb-context">{context}</div> : null}
       <div className="sb-body">
         {sections.map((s, i) => (
           <React.Fragment key={i}>
@@ -191,6 +246,13 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       </div>
       {foot}
     </aside>
+  );
+  if (!asDrawer) return rail;
+  return (
+    <React.Fragment>
+      <div className={['sb-scrim', mobileOpen ? 'is-open' : ''].filter(Boolean).join(' ')} aria-hidden="true" onClick={() => onMobileClose && onMobileClose()} />
+      {rail}
+    </React.Fragment>
   );
 };
 

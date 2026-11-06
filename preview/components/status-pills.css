@@ -224,3 +224,14 @@
    in either case — gets its own lift. */
 .pill.sm > .pill-label,
 .pill.sm > .pill-label.is-caps { transform: translateY(calc(-1 * var(--optical-lift-sm, 0.06em))); }
+
+/* TEAM TONE (L-25) — outline only: a team colour as a contour + dot, text in
+   the full colour. Not on soft or solid, where it would become the fill of a
+   state tag (L-23). */
+.pill.outline[class*="team-"] { background: transparent; color: var(--team); border-color: color-mix(in srgb, var(--team) 45%, transparent); }
+.pill.outline[class*="team-"] .dot { background: var(--team); }
+.pill.team-sales { --team: var(--color-team-sales); }
+.pill.team-compliance { --team: var(--color-team-compliance); }
+.pill.team-implementation { --team: var(--color-team-implementation); }
+.pill.team-payment-desk { --team: var(--color-team-payment-desk); }
+.pill.team-product { --team: var(--color-team-product); }

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Segmented · Menu · StageProgress" subtitle="One choice in a row, the menu it opens, the step strip" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Segmented control, menu and stage progress · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<script src="../theme-toggle.js"></script>
+<script src="../version.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1120px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .ey { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  h1 { margin: var(--space-3) 0; font-size: var(--fs-5xl); letter-spacing: var(--ls-display); }
+  .lead { max-width: 74ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+  section { margin-top: var(--space-12); }
+  section > h2 { font-size: var(--fs-2xl); margin: 0 0 var(--space-2); }
+  section > p { max-width: 76ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-5); }
+  code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  pre { margin: 0; padding: var(--space-5); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); line-height: 1.7; overflow-x: auto; color: var(--color-foreground-secondary); }
+  pre .c { color: var(--color-foreground-muted); }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
+  @media (max-width: 860px) { .pair { grid-template-columns: 1fr; } }
+  .cl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; margin-bottom: var(--space-3); color: var(--color-foreground-muted); }
+  .stage { background: var(--color-background-subtle); border-radius: var(--shape-container); padding: var(--space-6); }
+  .toggle { margin-bottom: var(--space-5); }
+  .m { margin-top: var(--space-4); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); line-height: 1.7; }
+  .m b { color: var(--color-foreground-default); font-weight: var(--w-regular); }
+  .stage{display:flex;flex-wrap:wrap;gap:var(--space-6);align-items:flex-start}
+  .panel{background:var(--color-background-surface);border:var(--border-hairline) solid var(--color-border-default);border-radius:var(--shape-container);padding:var(--space-5);min-width:0}
+  .panel-t{font-size:var(--fs-sm);font-weight:var(--w-bold);margin:0 0 var(--space-4)}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:var(--space-6)}
+  .bench-link{display:inline-flex;gap:var(--space-2);margin-top:var(--space-3);font-size:var(--fs-sm);color:var(--color-foreground-accent)}
+  a{color:var(--color-foreground-accent)} a:hover{color:var(--color-foreground-brand)}
+</style>
+</head>
+<body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<main class="doc">
+  <div class="ey">Components · Controls · new in v1.5.0</div>
+  <h1>Segmented control, menu, stage progress</h1>
+  <p class="lead">Three small controls from the ATTRUS ONE client list: a row of choices with counts, the menu one segment opens, and the step strip in a table row.</p>
+
+  <section id="segmented">
+    <h2>SegmentedControl</h2>
+    <p>One choice among two to four, in a row. Each segment is as wide as its label, so nothing truncates when the text changes. A segment can carry a count (mono, on the label's baseline) or open a menu (chevron). <code>role="radiogroup"</code>; ← and → move the choice, only the selected segment is in the tab order.</p>
+    <div class="stage" style="background:var(--color-background-subtle);border-radius:var(--shape-container);padding:var(--space-6)">
+      <div class="menu-wrap">
+        <div class="seg" role="radiogroup" aria-label="Phase" id="seg">
+          <button class="seg-item" role="radio" aria-checked="true" tabindex="0"><span class="seg-text">In onboarding<span class="seg-count">323</span></span></button>
+          <button class="seg-item" role="radio" aria-checked="false" tabindex="-1" aria-haspopup="menu" aria-expanded="false" id="segmenu"><span class="seg-text">Out of onboarding</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        </div>
+        <div class="menu" role="menu" aria-label="Status" hidden id="menu">
+          <button class="menu-item" role="menuitemradio" aria-checked="false" tabindex="-1"><span class="menu-item-dot" style="background:var(--color-team-implementation)"></span><span><span class="menu-item-title">Live</span><span class="menu-item-desc">Operating normally</span></span><span class="menu-item-meta">1,204</span></button>
+          <button class="menu-item" role="menuitemradio" aria-checked="true" tabindex="-1"><span class="menu-item-dot" style="background:var(--color-team-compliance)"></span><span><span class="menu-item-title">In attention</span><span class="menu-item-desc">Compliance pending</span></span><span class="menu-item-meta">38</span></button>
+          <button class="menu-item" role="menuitemradio" aria-checked="false" tabindex="-1"><span class="menu-item-dot" style="background:var(--color-team-product)"></span><span><span class="menu-item-title">Inactive</span><span class="menu-item-desc">No transactions in 90 days</span></span><span class="menu-item-meta">97</span></button>
+          <div class="menu-sep" role="separator"></div>
+          <button class="menu-item is-danger" role="menuitem" tabindex="-1"><span></span><span class="menu-item-title">Closed</span><span class="menu-item-meta">12</span></button>
+        </div>
+      </div>
+    </div>
+<pre style="margin-top:var(--space-5)">&lt;SegmentedControl aria-label="Phase" value={v} onChange={setV}
+  onMenu={(v, el) =&gt; openMenu(el)}
+  options={[
+    { value: 'in',  label: 'In onboarding', count: 323 },
+    { value: 'out', label: 'Out of onboarding', menu: true },  <span class="c">// chevron; calls onMenu instead of selecting</span>
+  ]} /&gt;</pre>
+    <p style="margin-top:var(--space-4)"><b>Segmented or tabs?</b> Tabs switch between views of different content. The segmented control filters the same list.</p>
+    <a class="bench-link" href="../components/SegmentedControl/SegmentedControl.html">Parity bench →</a>
+  </section>
+
+  <section id="menu">
+    <h2>DropdownMenu · MenuItem · MenuSeparator</h2>
+    <p>A generic menu that opens from any trigger. On open it focuses the selected item (or the first). ↑ and ↓ move and wrap, Esc and an outside click close it and return focus to the trigger. An item has a dot or an icon, a title, an optional description and a mono meta on the right. <code>selected</code> makes it a <code>menuitemradio</code>; <code>danger</code> paints it red. The account menu in the topbar uses the same <code>.menu-item</code> styles.</p>
+<pre>&lt;DropdownMenu open={open} onClose={() =&gt; setOpen(false)} aria-label="Status"&gt;
+  &lt;MenuItem dot="var(--color-team-implementation)" title="Live" description="Operating normally" meta="1,204" selected={s === 'live'} /&gt;
+  &lt;MenuItem dot="var(--color-team-compliance)" title="In attention" meta="38" selected={s === 'att'} /&gt;
+  &lt;MenuSeparator /&gt;
+  &lt;MenuItem title="Closed" danger /&gt;
+&lt;/DropdownMenu&gt;</pre>
+    <a class="bench-link" href="../components/DropdownMenu/DropdownMenu.html">Parity bench →</a>
+  </section>
+
+  <section id="stage">
+    <h2>StageProgress</h2>
+    <p>The step strip in a table row: one 18×3 segment per step, 3px apart. Done steps are green, the current one accent (amber when late), the rest on the track. The accessible name states the step and whether it is late; pass <code>label</code> to translate it.</p>
+    <div class="stage" style="background:var(--color-background-subtle);border-radius:var(--shape-container);padding:var(--space-6);gap:var(--space-8)">
+      <span class="stage-progress" role="img" aria-label="Step 3 of 6"><i class="is-done"></i><i class="is-done"></i><i class="is-current"></i><i></i><i></i><i></i></span>
+      <span class="stage-progress" role="img" aria-label="Step 4 of 6, late"><i class="is-done"></i><i class="is-done"></i><i class="is-done"></i><i class="is-late"></i><i></i><i></i></span>
+    </div>
+<pre style="margin-top:var(--space-5)">&lt;StageProgress steps={6} current={4} late label="Etapa 4 de 6, atrasada" /&gt;</pre>
+    <a class="bench-link" href="../components/StageProgress/StageProgress.html">Parity bench →</a>
+  </section>
+</main>
+<script>
+lucide.createIcons();
+(function () {
+  var seg = document.getElementById('seg'), sm = document.getElementById('segmenu'), menu = document.getElementById('menu');
+  var items = seg.querySelectorAll('.seg-item');
+  function pick(b) { items.forEach(function (x) { x.setAttribute('aria-checked', String(x === b)); x.tabIndex = x === b ? 0 : -1; }); }
+  items[0].addEventListener('click', function () { pick(items[0]); });
+  function close() { menu.hidden = true; sm.setAttribute('aria-expanded', 'false'); sm.focus(); }
+  sm.addEventListener('click', function () { var open = menu.hidden; menu.hidden = !open; sm.setAttribute('aria-expanded', String(open)); if (open) menu.querySelector('[aria-checked="true"]').focus(); });
+  seg.addEventListener('keydown', function (e) { if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return; e.preventDefault(); var i = [].indexOf.call(items, document.activeElement), n = items[(i + (e.key === 'ArrowRight' ? 1 : -1) + items.length) % items.length]; if (n !== sm) pick(n); n.focus(); });
+  menu.addEventListener('keydown', function (e) { var it = [].slice.call(menu.querySelectorAll('.menu-item')), i = it.indexOf(document.activeElement);
+    if (e.key === 'ArrowDown') { e.preventDefault(); it[(i + 1) % it.length].focus(); } else if (e.key === 'ArrowUp') { e.preventDefault(); it[(i - 1 + it.length) % it.length].focus(); } else if (e.key === 'Escape') close(); });
+  menu.querySelectorAll('[role="menuitemradio"]').forEach(function (b) { b.addEventListener('click', function () { menu.querySelectorAll('[role="menuitemradio"]').forEach(function (x) { x.setAttribute('aria-checked', String(x === b)); }); pick(sm); close(); }); });
+  document.addEventListener('mousedown', function (e) { if (!menu.hidden && !menu.contains(e.target) && !sm.contains(e.target)) close(); });
+})();
+</script>
+</body>
+</html>

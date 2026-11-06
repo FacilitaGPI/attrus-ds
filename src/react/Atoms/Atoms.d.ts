@@ -83,6 +83,8 @@ export declare const Divider: React.FC<DividerProps>;
 
 /** Toggle with optional chevron. Not for applied filters — use `Pill` with `onRemove` (default size). */
 export interface FilterChipProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  /** sm = 32px, text 12 (dense bars) · md = 40px (default). */
+  size?: 'sm' | 'md';
   /** Selected state (aria-pressed). */
   selected?: boolean;
   icon?: React.ReactNode;
@@ -92,9 +94,14 @@ export interface FilterChipProps extends React.ButtonHTMLAttributes<HTMLButtonEl
 export declare const FilterChip: React.FC<FilterChipProps>;
 
 export interface ProgressBarProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** brand (default) · success · warning · danger — .progress.is-<tone>. */
+  tone?: 'brand' | 'success' | 'warning' | 'danger';
+  /** sm = 4px · md = 6px (default). */
+  size?: 'sm' | 'md';
   /** 0–100. */
   value: number;
   /** Fill color — any token/var. */
+  /** @deprecated — use `tone`. Free colour, kept for compatibility. */
   fill?: string;
   /** Track height px — feeds `--progress-h` (default 6). */
   height?: number;
@@ -108,6 +115,12 @@ export interface DescTermProps extends React.HTMLAttributes<HTMLDivElement> {
   wide?: boolean;
 }
 export declare const DescTerm: React.FC<DescTermProps>;
+/** Two-column grid of DescTerms (one column under 640px). */
+export declare const DescGrid: React.FC<React.HTMLAttributes<HTMLDivElement>>;
+/** Wraps DescGroup elements: pairs of one subject together, a hairline between subjects. */
+export declare const DescGroups: React.FC<React.HTMLAttributes<HTMLDivElement>>;
+/** One subject inside DescGroups — itself a DescGrid. */
+export declare const DescGroup: React.FC<React.HTMLAttributes<HTMLDivElement>>;
 
 export type StatDeltaDirection = 'up' | 'down' | 'flat';
 export interface StatProps extends React.HTMLAttributes<HTMLDivElement> {

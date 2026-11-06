@@ -80,46 +80,21 @@
   text-wrap: pretty;
 }
 
-/* ---------- Selection marker ---------- */
-.sel-card-mark {
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  border-radius: var(--radius-pill);
-  border: 2px solid var(--color-border-strong);
-  background: var(--color-background-surface);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 1px;
-  transition: border-color var(--transition-fast), background var(--transition-fast);
-}
-.sel-card-mark::after {
-  content: "";
-  width: 10px;
-  height: 10px;
-  border-radius: var(--radius-pill);
-  background: var(--color-brand-solid);
-  transform: scale(0);
-  transition: transform var(--transition-fast) var(--ease-standard);
-}
-/* Multi = square marker with a check glyph instead of a dot */
-.sel-card-multi .sel-card-mark { border-radius: var(--radius-2xs); }
-.sel-card-multi .sel-card-mark::after { border-radius: 1px; }
+
+
+
+
 
 /* ---------- Selected ---------- */
 .sel-card.is-selected {
-  border-color: var(--color-brand-solid);
+  border-color: var(--color-brand-border);  /* 1px light brand; the mark carries the state (L-15) */
   background: var(--color-background-selected);
-  box-shadow: inset 0 0 0 1px var(--color-brand-solid);
+  box-shadow: none;
 }
 .sel-card.is-selected .sel-card-title { color: var(--color-foreground-brand); }
 .sel-card.is-selected .sel-card-index { color: var(--color-foreground-brand); }
-.sel-card.is-selected .sel-card-mark {
-  border-color: var(--color-brand-solid);
-  background: var(--color-background-surface);
-}
-.sel-card.is-selected .sel-card-mark::after { transform: scale(1); }
+
+
 
 /* ---------- Focus ---------- */
 .sel-card:focus-visible,
@@ -146,22 +121,13 @@
 .sel-card[aria-disabled="true"] .sel-card-index,
 .sel-card:has(input:disabled) .sel-card-desc,
 .sel-card:has(input:disabled) .sel-card-index { color: var(--color-foreground-disabled); }
-.sel-card[aria-disabled="true"] .sel-card-mark,
-.sel-card:has(input:disabled) .sel-card-mark {
-  border-color: var(--color-border-default);
-  background: var(--color-background-sunken);
-}
-.sel-card[aria-disabled="true"] .sel-card-mark::after,
-.sel-card:has(input:disabled) .sel-card-mark::after {
-  background: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
-}
 
 /* ---------- Dense ---------- */
 .sel-card-sm { padding: var(--space-4); gap: var(--space-3); }
 .sel-card-sm .sel-card-title { font-size: var(--fs-sm); }
 .sel-card-sm .sel-card-desc  { font-size: var(--fs-xs); }
-.sel-card-sm .sel-card-mark  { width: 18px; height: 18px; }
-.sel-card-sm .sel-card-mark::after { width: 8px; height: 8px; }
+
+
 
 /* ---------- On inverse ---------- */
 .sel-card.on-inverse {
@@ -175,11 +141,8 @@
 .sel-card.on-inverse .sel-card-title { color: var(--color-foreground-inverse-default); }
 .sel-card.on-inverse .sel-card-desc  { color: var(--color-foreground-inverse-secondary); }
 .sel-card.on-inverse .sel-card-index { color: var(--color-foreground-inverse-muted); }
-.sel-card.on-inverse .sel-card-mark {
-  border-color: color-mix(in srgb, var(--color-pure-white) 34%, transparent);
-  background: transparent;
-}
-.sel-card.on-inverse .sel-card-mark::after { background: var(--color-accent-solid); }
+
+
 .sel-card.on-inverse.is-selected {
   border-color: var(--color-accent-solid);
   background: color-mix(in srgb, var(--color-accent-solid) 16%, transparent);
@@ -187,7 +150,7 @@
 }
 .sel-card.on-inverse.is-selected .sel-card-title,
 .sel-card.on-inverse.is-selected .sel-card-index { color: var(--color-foreground-inverse-default); }
-.sel-card.on-inverse.is-selected .sel-card-mark { border-color: var(--color-accent-solid); background: transparent; }
+
 .sel-card.on-inverse:focus-visible,
 .sel-card.on-inverse:has(input:focus-visible) { box-shadow: var(--shadow-focus-inverse); }
 .sel-card.on-inverse[aria-disabled="true"],
@@ -210,3 +173,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
+
+/* TITLE-ONLY CARD (L-16) — with no description the title is one line, so the
+   card centres it against the mark; with a description the mark stays on top. */
+.sel-card:not(:has(.sel-card-desc)) { align-items: center; }

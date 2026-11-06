@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Charts" subtitle="DistributionBar · StageDistribution · BarChart · Sparkline" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Charts · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<script src="../theme-toggle.js"></script>
+<script src="../version.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1120px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .ey { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  h1 { margin: var(--space-3) 0; font-size: var(--fs-5xl); letter-spacing: var(--ls-display); }
+  .lead { max-width: 74ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+  section { margin-top: var(--space-12); }
+  section > h2 { font-size: var(--fs-2xl); margin: 0 0 var(--space-2); }
+  section > p { max-width: 76ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-5); }
+  code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  pre { margin: 0; padding: var(--space-5); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); line-height: 1.7; overflow-x: auto; color: var(--color-foreground-secondary); }
+  pre .c { color: var(--color-foreground-muted); }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
+  @media (max-width: 860px) { .pair { grid-template-columns: 1fr; } }
+  .cl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; margin-bottom: var(--space-3); color: var(--color-foreground-muted); }
+  .stage { background: var(--color-background-subtle); border-radius: var(--shape-container); padding: var(--space-6); }
+  .toggle { margin-bottom: var(--space-5); }
+  .m { margin-top: var(--space-4); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); line-height: 1.7; }
+  .m b { color: var(--color-foreground-default); font-weight: var(--w-regular); }
+  .stage{display:flex;flex-wrap:wrap;gap:var(--space-6);align-items:flex-start}
+  .panel{background:var(--color-background-surface);border:var(--border-hairline) solid var(--color-border-default);border-radius:var(--shape-container);padding:var(--space-5);min-width:0}
+  .panel-t{font-size:var(--fs-sm);font-weight:var(--w-bold);margin:0 0 var(--space-4)}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:var(--space-6)}
+  .bench-link{display:inline-flex;gap:var(--space-2);margin-top:var(--space-3);font-size:var(--fs-sm);color:var(--color-foreground-accent)}
+  a{color:var(--color-foreground-accent)} a:hover{color:var(--color-foreground-brand)}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:var(--space-4)}
+  .kpi{display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-4);background:var(--color-background-surface);border:var(--border-hairline) solid var(--color-border-default);border-radius:var(--shape-container)}
+  .kpi-l{font-size:var(--fs-xs);color:var(--color-foreground-muted)} .kpi-v{font-size:var(--fs-xl);font-weight:var(--w-bold)}
+</style>
+</head>
+<body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<main class="doc">
+  <div class="ey">Components · Data · new in v1.5.0</div>
+  <h1>Charts</h1>
+  <p class="lead">Four chart components built on the <a href="data-viz.html">data-viz tokens</a> and the track and team colours. Each one draws its colours from <code>--seg</code>; on the dark theme every part carries a thin white edge, because the Enterprise track colour (#002142) disappears against the surface.</p>
+
+  <section id="distribution">
+    <h2>DistributionBar</h2>
+    <p>A total split into parts, as one 8px bar with 2px gaps. The legend underneath is a grid (key, name, value, %) so values and percentages line up between rows. A part never draws narrower than 3px, and a non-zero part under 1% reads "&lt;1%". A <code>key</code> of a track renders the TrackBadge.</p>
+    <div class="grid2"><div class="panel"><div class="panel-t">Entries by track</div><div id="d1"></div></div><div class="panel"><div class="panel-t">Live clients by status</div><div id="d2"></div></div></div>
+<pre style="margin-top:var(--space-5)">&lt;DistributionBar segments={[
+  { key: 'corporate', label: 'Corporate', value: 142 },
+  { label: 'Live', value: 1204, color: 'var(--color-team-implementation)' },
+]} legend /&gt;</pre>
+    <a class="bench-link" href="../components/DistributionBar/DistributionBar.html">Bench →</a>
+  </section>
+
+  <section id="stages">
+    <h2>StageDistribution</h2>
+    <p>The compact funnel: one part per stage, as wide as its count, with the stage key and count underneath. Shades of the track colour run from 100% to 32%, mixed with the surface rather than made transparent, so the tone holds on any background. A column is at least 36px so the label fits.</p>
+    <div class="grid2"><div class="panel"><div class="panel-t">Business · by stage</div><div id="s1"></div></div><div class="panel"><div class="panel-t">Corporate · by stage</div><div id="s2"></div></div></div>
+<pre style="margin-top:var(--space-5)">&lt;StageDistribution color="var(--color-track-business)"
+  stages={[{ key: '01', count: 58 }, { key: '02', count: 41 }, …]} /&gt;</pre>
+    <a class="bench-link" href="../components/StageDistribution/StageDistribution.html">Bench →</a>
+  </section>
+
+  <section id="bar">
+    <h2>BarChart</h2>
+    <p>Columns per period, series stacked (or side by side with <code>stacked={false}</code>). The selected period stays at full opacity and the rest drops to 35%. <code>valueLabel</code> puts the last column's total above it, with 15% headroom reserved in the scale. Month axis in mono. No gridlines: the label and the legend carry the reading. A screen-reader-only table repeats every number.</p>
+    <div class="panel"><div class="panel-t">TPV by track · R$ mi</div><div id="b1"></div></div>
+<pre style="margin-top:var(--space-5)">&lt;BarChart label="TPV by track, R$ million" labels={months}
+  series={[{ label: 'Corporate', color: 'var(--color-track-corporate)', values: […] }, …]}
+  highlightRange={[9, 11]} valueLabel format={(v) =&gt; 'R$ ' + v + ' mi'} /&gt;</pre>
+    <a class="bench-link" href="../components/BarChart/BarChart.html">Bench →</a>
+  </section>
+
+  <section id="sparkline">
+    <h2>Sparkline</h2>
+    <p>A mini chart under a KPI. <code>bars</code>: seven 6px bars, 2px apart, up to 18px, only the last in the tone. <code>line</code>: a 1.5px line with a dot on the last value, in the same 54×18 box. Decorative by default (the KPI beside it carries the number); pass <code>label</code> to expose it.</p>
+    <div class="kpis" id="k1"></div>
+<pre style="margin-top:var(--space-5)">&lt;Sparkline values={[30, 34, 29, 38, 41, 36, 48]} tone="brand" /&gt;
+&lt;Sparkline values={…} tone="success" variant="line" /&gt;</pre>
+    <a class="bench-link" href="../components/Sparkline/Sparkline.html">Bench →</a>
+  </section>
+</main>
+<script>
+lucide.createIcons();
+
+(function(){
+var TRACK={corporate:'var(--color-track-corporate)',enterprise:'var(--color-track-enterprise)',business:'var(--color-track-business)'};
+var fmt=function(n){return n.toLocaleString('en')};var pct=function(v,t){var p=Math.round(v/t*100);return v>0&&p<1?'<1%':p+'%'};
+function dist(el,segs){var t=segs.reduce(function(a,s){return a+s.value},0);
+var bar='<div class="chart-dist-bar" role="img" aria-label="'+segs.map(function(s){return s.label+' '+fmt(s.value)}).join(', ')+'">'+segs.map(function(s){return '<span class="chart-seg" style="--seg:'+(s.color||TRACK[s.key])+';flex:'+s.value+' 1 0"></span>'}).join('')+'</div>';
+var leg='<ul class="chart-dist-legend">'+segs.map(function(s){var k=s.key?'<span class="track-badge track-'+s.key+'">'+s.key.slice(0,3)+'</span>':'<span class="chart-dist-dot" style="background:'+s.color+'"></span>';
+return '<li><span class="chart-dist-key">'+k+'</span><span class="chart-dist-name">'+s.label+'</span><span class="chart-dist-val chart-num">'+fmt(s.value)+'</span><span class="chart-dist-pct chart-num">'+pct(s.value,t)+'</span></li>'}).join('')+'</ul>';
+el.innerHTML='<div class="chart-dist">'+bar+leg+'</div>'}
+dist(document.getElementById('d1'),[{key:'corporate',label:'Corporate',value:142},{key:'enterprise',label:'Enterprise',value:58},{key:'business',label:'Business',value:311}]);
+dist(document.getElementById('d2'),[{label:'Live',value:1204,color:'var(--color-team-implementation)'},{label:'In attention',value:38,color:'var(--color-team-compliance)'},{label:'Inactive',value:97,color:'var(--color-team-product)'},{label:'Closed',value:4,color:'var(--color-feedback-danger-foreground)'}]);
+function sd(el,stages,color){var n=stages.length;
+el.innerHTML='<div class="chart-stagedist" role="img" aria-label="'+stages.map(function(s){return 'Stage '+s.key+': '+s.count}).join(', ')+'">'+stages.map(function(s,i){var p=n>1?Math.round(100-(68*i/(n-1))):100;
+return '<div class="chart-stagedist-col" style="flex:'+s.count+' 1 0"><span class="chart-seg" style="--seg:color-mix(in srgb,'+color+' '+p+'%,var(--color-background-surface))"></span><span class="chart-stagedist-lbl chart-num"><span class="k">'+s.key+'</span><span class="v">'+s.count+'</span></span></div>'}).join('')+'</div>'}
+sd(document.getElementById('s1'),[{key:'01',count:58},{key:'02',count:41},{key:'03',count:33},{key:'04',count:19},{key:'05',count:12},{key:'06',count:7}],TRACK.business);
+sd(document.getElementById('s2'),[{key:'01',count:12},{key:'02',count:9},{key:'03',count:2},{key:'04',count:1}],TRACK.corporate);
+var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var series=[{label:'Corporate',color:TRACK.corporate,values:[8,9,9,10,11,11,12,13,13,14,15,16]},{label:'Enterprise',color:TRACK.enterprise,values:[12,12,13,13,14,15,15,16,17,18,18,19]},{label:'Business',color:TRACK.business,values:[6,7,7,8,8,9,10,10,11,12,12,13.2]}];
+function bars(el,o){var n=o.labels.length,tot=o.labels.map(function(_,i){return o.series.reduce(function(a,s){return a+s.values[i]},0)}),max=Math.max.apply(null,tot)*(o.valueLabel?1.15:1),h=o.height||160;
+var r=o.highlightRange,inR=function(i){return !r||(i>=r[0]&&i<=r[1])};
+var plot='<div class="chart-bars-plot" aria-hidden="true" style="height:'+h+'px">'+o.labels.map(function(_,i){
+return '<div class="chart-bars-col'+(inR(i)?'':' is-dim')+'">'+o.series.map(function(s){return '<span class="chart-seg" style="--seg:'+s.color+';height:'+(s.values[i]/max*100)+'%"></span>'}).join('')+(o.valueLabel&&i===n-1?'<span class="chart-bars-vl chart-num" style="bottom:'+(tot[i]/max*100)+'%">'+o.format(tot[i])+'</span>':'')+'</div>'}).join('')+'</div>';
+var axis='<div class="chart-bars-axis chart-num" aria-hidden="true">'+o.labels.map(function(l,i){return '<span'+(inR(i)?'':' class="is-dim"')+'>'+l+'</span>'}).join('')+'</div>';
+var leg='<ul class="chart-legend" aria-hidden="true">'+o.series.map(function(s){return '<li><i class="chart-seg" style="--seg:'+s.color+'"></i>'+s.label+'</li>'}).join('')+'</ul>';
+var tbl='<table class="sr-only"><caption>'+o.label+'</caption><tr><th>Mês</th>'+o.series.map(function(s){return '<th>'+s.label+'</th>'}).join('')+'</tr>'+o.labels.map(function(l,i){return '<tr><th>'+l+'</th>'+o.series.map(function(s){return '<td>'+o.format(s.values[i])+'</td>'}).join('')+'</tr>'}).join('')+'</table>';
+el.innerHTML='<figure class="chart-bars" style="margin:0">'+plot+axis+leg+tbl+'</figure>'}
+bars(document.getElementById('b1'),{labels:months,series:series,highlightRange:[9,11],valueLabel:true,label:'TPV by track, R$ million',format:function(v){return 'R$ '+v.toLocaleString('en',{maximumFractionDigits:1})+' mi'}});
+function spark(v,tone,variant){var max=Math.max.apply(null,v),min=Math.min.apply(null,v);
+if(variant==='line'){var w=54,hh=18,pts=v.map(function(x,i){return [i/(v.length-1)*w,hh-1-((x-min)/((max-min)||1))*(hh-2)]}),l=pts[pts.length-1];
+return '<svg class="chart-spark-line tone-'+tone+'" viewBox="0 0 54 18" aria-hidden="true"><polyline points="'+pts.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1)}).join(' ')+'" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"></polyline><circle cx="'+l[0]+'" cy="'+l[1].toFixed(1)+'" r="2" fill="currentColor"></circle></svg>'}
+return '<span class="chart-spark tone-'+tone+'" aria-hidden="true">'+v.map(function(x){return '<i style="height:'+Math.max(2,Math.round(x/max*18))+'px"></i>'}).join('')+'</span>'}
+var k=[['New clients','48',[30,34,29,38,41,36,48],'brand','chart-bars'],['Activations','31',[22,25,24,27,26,29,31],'success','chart-bars'],['Late','9',[3,4,4,6,5,7,9],'warning','chart-bars'],['Churn','2',[5,4,4,3,3,2,2],'danger','chart-bars'],['TPV · R$ mi','48.2',[39,41,40,43,44,46,48],'brand','line']];
+document.getElementById('k1').innerHTML=k.map(function(x){return '<div class="kpi"><span class="kpi-l">'+x[0]+'</span><span class="kpi-v chart-num">'+x[1]+'</span>'+spark(x[2],x[3],x[4])+'</div>'}).join('');
+})();
+</script>
+</body>
+</html>

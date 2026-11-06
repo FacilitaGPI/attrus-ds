@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Sheet } from '../Sheet/Sheet';
 
 /**
  * ATTRUS DataTable — typed wrapper over the canonical `.dt` system
@@ -467,13 +468,17 @@ export const DTSubrowLead: React.FC<{
   label: React.ReactNode;
   icon?: React.ReactNode;
   parentName?: string;
-} & React.HTMLAttributes<HTMLDivElement>> = ({ label, icon, parentName, className, ...rest }) => (
+} & React.HTMLAttributes<HTMLDivElement>> = ({ label, icon, parentName, className, children, ...rest }) => (
   <div className={['dt-subrow-lead', className || ''].filter(Boolean).join(' ')} {...rest}>
     {icon != null ? <span className="ic-mini">{icon}</span> : null}
     <span className="txt">
       {parentName ? <span className="sr-only">{'Item of ' + parentName + ': '}</span> : null}
       {label}
     </span>
+    {/* After the label: the documented subrow is .txt + .dt-subrow-tag + .dt-subrow-status,
+        e.g. <DTSubrowLead label="Wire fee" icon={…}><DTSubrowMeta tag="Fee" status="Settled" /></DTSubrowLead>.
+        Children used to be dropped because they rode in `rest`. */}
+    {children}
   </div>
 );
 
@@ -513,9 +518,12 @@ export const DTSubrowToggle: React.FC<{
     animated and display:grid on a <td> breaks column alignment, so the height
     transition lives here: a grid going 0fr -> 1fr, which needs no magic pixel
     value and therefore survives a two-line subrow on mobile. */
-export const DTSubrowCell: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className, ...rest }) => (
+/* `className` and `style` land on .dt-subrow-cell (the visible box); other
+   attributes stay on the animated wrapper. In a .dt-num column the cell
+   right-aligns by CSS, so the subrow figure lines up with the parent's. */
+export const DTSubrowCell: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className, style, ...rest }) => (
   <div className="dt-subrow-inner" {...rest}>
-    <div className={['dt-subrow-cell', className || ''].filter(Boolean).join(' ')}>{children}</div>
+    <div className={['dt-subrow-cell', className || ''].filter(Boolean).join(' ')} style={style}>{children}</div>
   </div>
 );
 
@@ -717,11 +725,9 @@ export const DTPagination: React.FC<DTPaginationProps> = ({ range, page, pages, 
 export const DTId: React.FC<React.HTMLAttributes<HTMLSpanElement>> = ({ children, className, ...rest }) => (
   <span className={['dt-id', 'dt-no-tab', className || ''].filter(Boolean).join(' ')} {...rest}>{children}</span>
 );
-/** A row's detail on a phone. The inline detail panel has no width to open
-    into below the breakpoint, so it opens as a .sheet from the bottom edge.
-    Portaled to <body>: the table is a size container, and a container is the
-    containing block for fixed descendants — a sheet rendered inside it would
-    pin to the table's bottom, not the screen's. Esc and the scrim close it. */
+/** A row's detail on a phone — a <Sheet> with the detail layout (eyebrow,
+    title, sub, two-action footer). Kept as its own name so tables keep one
+    import; the dialog behaviour (focus, trap, Esc, scrim, return) is Sheet's. */
 export const DTDetailSheet: React.FC<{
   open: boolean;
   onClose: () => void;
@@ -732,37 +738,7 @@ export const DTDetailSheet: React.FC<{
   /** Two actions, secondary · primary. */
   footer?: React.ReactNode;
   children?: React.ReactNode;
-}> = ({ open, onClose, title, sub, eyebrow, footer, children }) => {
-  React.useEffect(() => {
-    if (!open) return undefined;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [open, onClose]);
-  if (typeof document === 'undefined') return null;
-  const ReactDOM = (window as unknown as { ReactDOM?: { createPortal: (n: React.ReactNode, el: Element) => React.ReactNode } }).ReactDOM;
-  const node = (
-    <React.Fragment>
-      <div className={['scrim', open ? 'is-open' : ''].filter(Boolean).join(' ')} onClick={onClose} aria-hidden="true" />
-      <div className={['sheet', open ? 'is-open' : ''].filter(Boolean).join(' ')} role="dialog" aria-modal="true" aria-hidden={!open}>
-        <div className="sheet-grab" aria-hidden="true" />
-        <div className="sheet-head">
-          <div>
-            {eyebrow}
-            <h3 className="sheet-title">{title}</h3>
-            {sub != null ? <p className="sheet-sub">{sub}</p> : null}
-          </div>
-          <button type="button" className="btn btn-tertiary btn-sm btn-icon" aria-label="Close" onClick={onClose}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
-          </button>
-        </div>
-        <div className="sheet-body">{children}</div>
-        {footer != null ? <div className="sheet-footer">{footer}</div> : null}
-      </div>
-    </React.Fragment>
-  );
-  return ReactDOM && ReactDOM.createPortal ? (ReactDOM.createPortal(node, document.body) as React.ReactElement) : node;
-};
+}> = (props) => <Sheet {...props} />;
 
 /** Whether a table container is in its phone form (narrower than 560px) —
     for choosing between the inline detail panel and DTDetailSheet. Watches the

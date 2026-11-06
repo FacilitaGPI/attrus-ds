@@ -234,3 +234,38 @@
    Heights are unchanged. */
 .sb-count { display: inline-flex; align-items: center; line-height: 1; height: 17px; padding-top: 0; padding-bottom: 0; box-sizing: border-box; }
 .sb-item .badge { display: inline-flex; align-items: center; line-height: 1; height: 15px; padding-top: 0; padding-bottom: 0; box-sizing: border-box; }
+
+/* ================================================================
+   MOBILE DRAWER (L-12) — .sb.is-drawer + .sb-scrim
+   ================================================================
+   The phone form of the rail: off-canvas on the left, over the shared scrim.
+   Fixed to the viewport; inside a positioned frame (docs, a phone mock) it
+   resolves against that frame. Closed it is hidden from the tab order and
+   from assistive tech (visibility), not just moved off screen.
+   ================================================================ */
+.sb.is-drawer {
+  position: fixed; top: 0; left: 0; bottom: 0; z-index: 9100;
+  width: 280px; max-width: 85vw; height: auto; border-radius: 0;
+  box-shadow: var(--shadow-xl);
+  transform: translateX(-100%); visibility: hidden;
+  transition: transform var(--duration-deliberate) var(--ease-emphasis), visibility 0s linear var(--duration-deliberate);
+}
+.sb.is-drawer.is-open {
+  transform: none; visibility: visible;
+  transition: transform var(--duration-deliberate) var(--ease-emphasis), visibility 0s;
+}
+.sb-scrim {
+  position: fixed; inset: 0; z-index: 9000;
+  background: var(--color-scrim);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+.sb-scrim.is-open { opacity: 1; pointer-events: auto; }
+@media (prefers-reduced-motion: reduce) {
+  .sb.is-drawer, .sb.is-drawer.is-open, .sb-scrim { transition: none; }
+}
+
+/* Product name beside the brand and a context slot (L-30) */
+.sb-head .sb-product { margin-left: var(--space-2); font-weight: var(--w-regular); color: var(--color-foreground-muted); }
+.sb-context { padding: 0 var(--space-4) var(--space-3); }
+.sb.collapsed .sb-product, .sb.collapsed .sb-context { display: none; }

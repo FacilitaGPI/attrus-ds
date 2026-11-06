@@ -274,6 +274,8 @@ export const Divider: React.FC<DividerProps> = ({ weight = 'default', dashed = f
 /** Toggle with optional chevron. Not for applied filters — use `Pill` with
     `onRemove` (default size), one per filter, and a "Clear" link to drop all. */
 export interface FilterChipProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  /** sm = 32px, text 12 (dense bars) · md = 40px (default). */
+  size?: 'sm' | 'md';
   /** Selected state (aria-pressed + active styling from CSS). */
   selected?: boolean;
   icon?: React.ReactNode;
@@ -281,8 +283,8 @@ export interface FilterChipProps extends React.ButtonHTMLAttributes<HTMLButtonEl
   chevron?: boolean;
 }
 
-export const FilterChip: React.FC<FilterChipProps> = ({ selected = false, icon, chevron = false, className, children, ...rest }) => (
-  <button type="button" className={['filter-chip', className || ''].filter(Boolean).join(' ')} aria-pressed={selected} {...rest}>
+export const FilterChip: React.FC<FilterChipProps> = ({ selected = false, icon, chevron = false, size = 'md', className, children, ...rest }) => (
+  <button type="button" className={['filter-chip', size === 'sm' ? 'is-sm' : '', className || ''].filter(Boolean).join(' ')} aria-pressed={selected} {...rest}>
     {icon}
     {children}
     {chevron ? (
@@ -296,17 +298,22 @@ export const FilterChip: React.FC<FilterChipProps> = ({ selected = false, icon, 
 /* ---------- ProgressBar — slim track + data-driven fill ---------- */
 
 export interface ProgressBarProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** brand (default) · success · warning · danger — .progress.is-<tone>. */
+  tone?: 'brand' | 'success' | 'warning' | 'danger';
+  /** sm = 4px · md = 6px (default). */
+  size?: 'sm' | 'md';
   /** 0–100. */
   value: number;
   /** Fill color — any token/var; defaults to the CSS fallback. */
+  /** @deprecated — use `tone`. Free colour, kept for compatibility. */
   fill?: string;
   /** Track height px — feeds `--progress-h` (default 6). */
   height?: number;
 }
 
-export const ProgressBar: React.FC<ProgressBarProps> = ({ value, fill, height, style, className, ...rest }) => (
+export const ProgressBar: React.FC<ProgressBarProps> = ({ value, fill, height, tone = 'brand', size = 'md', style, className, ...rest }) => (
   <div
-    className={['progress', className || ''].filter(Boolean).join(' ')}
+    className={['progress', tone !== 'brand' ? 'is-' + tone : '', size === 'sm' ? 'is-sm' : '', className || ''].filter(Boolean).join(' ')}
     role="progressbar"
     aria-valuenow={Math.round(value)}
     aria-valuemin={0}
@@ -330,7 +337,7 @@ export const DescCardTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement> & 
 export const DescGrid: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...rest }) => (
   <div className={['desc-grid', className || ''].filter(Boolean).join(' ')} {...rest} />
 );
-/** Wraps DescGroups: pairs of one subject together, a hairline between subjects. */
+/** Wraps DescGroup elements: pairs of one subject together, a hairline between subjects. */
 export const DescGroups: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...rest }) => (
   <div className={['desc-groups', className || ''].filter(Boolean).join(' ')} {...rest} />
 );

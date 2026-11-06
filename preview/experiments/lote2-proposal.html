@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta · Prompt 06 · Lote 2</title>
+<link rel="stylesheet" href="../../src/index.css">
+<link rel="stylesheet" href="../../themes/index.css?v=1">
+<script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1120px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .eyebrow-doc { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  h1 { margin: var(--space-3) 0; font-size: var(--fs-5xl); letter-spacing: var(--ls-display); }
+  .lead { max-width: 72ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+  section { margin-top: var(--space-12); }
+  section > h2 { font-size: var(--fs-2xl); margin: 0 0 var(--space-2); }
+  section > h2 .id { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-sm); color: var(--color-foreground-muted); margin-right: var(--space-3); }
+  section > p { max-width: 76ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-5); }
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
+  @media (max-width: 860px) { .vs { grid-template-columns: 1fr; } }
+  .col-lbl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; margin-bottom: var(--space-3); color: var(--color-foreground-muted); }
+  .col-lbl.new { color: var(--color-feedback-success-foreground); }
+  .stage { background: var(--color-background-subtle); border-radius: var(--shape-container); padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-4); }
+  .stage.inv { background: var(--color-background-inverse); }
+  .measure { margin-top: var(--space-2); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); line-height: 1.6; }
+  .measure b { color: var(--color-foreground-default); font-weight: var(--w-regular); }
+  .files { margin-top: var(--space-3); font-size: var(--fs-sm); color: var(--color-foreground-secondary); }
+  .files code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .impact { margin-top: var(--space-2); font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+
+  /* ======== PROPOSAL — scoped to .p ======== */
+  .p .combobox-trigger:disabled,
+  .p .combobox-trigger[aria-disabled="true"] { background: var(--color-background-subtle); color: var(--color-foreground-muted); cursor: not-allowed; border-color: var(--color-border-subtle); }
+  .p .card:is(.hero, .inverse) {
+    --color-foreground-default: var(--color-foreground-inverse-default);
+    --color-foreground-secondary: var(--color-foreground-inverse-muted);
+    --color-foreground-muted: var(--color-foreground-inverse-muted);
+    --color-border-default: var(--color-border-inverse);
+    --color-border-subtle: var(--color-border-inverse);
+  }
+</style>
+</head>
+<body>
+<main class="doc">
+  <div class="eyebrow-doc">Proposta · nada aplicado ainda · Prompt 06 · Lote 2</div>
+  <h1>Bugs que mudam o visual</h1>
+  <p class="lead">DS de hoje à esquerda, proposta à direita, os dois com o CSS real do DS. A proposta usa as classes que o TSX vai passar a emitir, mais duas regras escopadas nesta página. As medidas embaixo de cada lado são lidas da tela.</p>
+
+  <section>
+    <h2><span class="id">L-02</span>Input warning pinta a borda</h2>
+    <p>O CSS do <code>.input.is-warning</code> já existe, mas o TSX só aplicava a classe na linha de ajuda. A borda ficava neutra enquanto o texto avisava.</p>
+    <div class="vs">
+      <div><div class="col-lbl">Hoje</div><div class="stage"><div class="field"><label>Valor</label><input class="input" id="w-cur" value="18.425,00"><div class="help is-warning">Acima do limite diário — vai para aprovação.</div></div></div><div class="measure" id="m-w-cur"></div></div>
+      <div class="p"><div class="col-lbl new">Proposta</div><div class="stage"><div class="field"><label>Valor</label><input class="input is-warning" id="w-new" value="18.425,00"><div class="help is-warning">Acima do limite diário — vai para aprovação.</div></div></div><div class="measure" id="m-w-new"></div></div>
+    </div>
+    <div class="files">Arquivos: <code>components/Input/Input.tsx</code> (Input, grupo e Textarea). Sem mudança de CSS.</div>
+    <div class="impact">Impacto: só quem usa <code>status="warning"</code>. Erro e sucesso não mudam.</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-05</span>Combobox desabilitado parece desabilitado</h2>
+    <p>O TSX só punha o atributo <code>disabled</code> no gatilho, e o CSS só estiliza <code>.combobox.is-disabled</code>. Faço as duas coisas: o TSX passa <code>is-disabled</code> e <code>aria-disabled</code>, e o CSS também pega <code>:disabled</code>.</p>
+    <div class="vs">
+      <div><div class="col-lbl">Hoje</div><div class="stage"><div class="combobox" style="max-width:320px"><button class="combobox-trigger" id="c-cur" type="button" disabled><span class="combobox-value">Brasil · BRL</span><i data-lucide="chevron-down" class="chev"></i></button></div></div><div class="measure" id="m-c-cur"></div></div>
+      <div class="p"><div class="col-lbl new">Proposta</div><div class="stage"><div class="combobox is-disabled" style="max-width:320px"><button class="combobox-trigger" id="c-new" type="button" disabled aria-disabled="true"><span class="combobox-value">Brasil · BRL</span><i data-lucide="chevron-down" class="chev"></i></button></div></div><div class="measure" id="m-c-new"></div></div>
+    </div>
+    <div class="files">Arquivos: <code>components/Combobox/Combobox.tsx</code>, <code>preview/components/combobox.css</code>.</div>
+    <div class="impact">Impacto: só comboboxes com <code>disabled</code>.</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-10</span>Input onInverse inverte rótulo e ajuda</h2>
+    <p>O TSX punha <code>on-inverse</code> só no <code>&lt;input&gt;</code>. As regras de rótulo e ajuda estão em <code>.field.on-inverse</code>, que o wrapper nunca recebia. Passo a classe também para o <code>.field</code> e para o <code>.group</code>, e nos campos Textarea e Select.</p>
+    <div class="vs">
+      <div><div class="col-lbl">Hoje</div><div class="stage inv"><div class="field"><label id="l-cur">E-mail do recebedor</label><input class="input on-inverse" value="ana@globalsupplies.com"><div class="help" id="h-cur">Enviamos o comprovante para este endereço.</div></div></div><div class="measure" id="m-l-cur"></div></div>
+      <div class="p"><div class="col-lbl new">Proposta</div><div class="stage inv"><div class="field on-inverse"><label id="l-new">E-mail do recebedor</label><input class="input on-inverse" value="ana@globalsupplies.com"><div class="help" id="h-new">Enviamos o comprovante para este endereço.</div></div></div><div class="measure" id="m-l-new"></div></div>
+    </div>
+    <div class="files">Arquivos: <code>components/Input/Input.tsx</code> (Input, grupo, Textarea e Select). Sem mudança de CSS: as regras já existem.</div>
+    <div class="impact">Impacto: só campos com <code>onInverse</code>.</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-03</span>Conteúdo dentro de card hero e inverse</h2>
+    <p>Título, eyebrow, Money e DescTerm mantinham as cores de superfície clara e sumiam no fundo escuro. Em vez de uma regra por componente, o card escuro redefine os tokens de texto e borda para o par inverse. Qualquer filho que já use os tokens semânticos herda sem regra própria.</p>
+    <div class="vs">
+      <div><div class="col-lbl">Hoje</div><div class="stage"><div class="card inverse" id="k-cur">
+        <span class="eyebrow">Saldo disponível</span>
+        <h3 style="margin:var(--space-2) 0 var(--space-3);font-size:var(--fs-md)">Conta Itaú ··3391</h3>
+        <span class="money money-xl"><span class="money-cur">BRL</span>18.425<span class="money-frac">,00</span></span>
+        <div class="desc-term" style="margin-top:var(--space-4)"><span class="desc-term-label">Atualizado em</span><span class="desc-term-value">4 nov 2026, 11:42</span></div>
+      </div></div><div class="measure" id="m-k-cur"></div></div>
+      <div class="p"><div class="col-lbl new">Proposta</div><div class="stage"><div class="card inverse" id="k-new">
+        <span class="eyebrow">Saldo disponível</span>
+        <h3 style="margin:var(--space-2) 0 var(--space-3);font-size:var(--fs-md)">Conta Itaú ··3391</h3>
+        <span class="money money-xl"><span class="money-cur">BRL</span>18.425<span class="money-frac">,00</span></span>
+        <div class="desc-term" style="margin-top:var(--space-4)"><span class="desc-term-label">Atualizado em</span><span class="desc-term-value">4 nov 2026, 11:42</span></div>
+      </div></div><div class="measure" id="m-k-new"></div></div>
+    </div>
+    <div class="files">Arquivos: <code>preview/components/cards.css</code> (o remapeamento de tokens), <code>preview/cards.html</code> (exemplo hero e inverse com Money, título, Eyebrow e DescTerm).</div>
+    <div class="impact">Impacto: todo filho de um card hero ou inverse que use <code>--color-foreground-default/-secondary/-muted</code> ou as bordas default/subtle. Por isso funciona sem regra por componente — e um botão secondary dentro do card também passa a usar texto e borda claros, que é o certo no fundo escuro. O texto da stat do hero, que já tinha regra própria, não muda.</div>
+  </section>
+</main>
+<script>
+lucide.createIcons();
+(function () {
+  function srgb(v){ v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
+  function rgb(c){ var m = c.match(/[\d.]+/g).map(Number); return /color\(srgb/.test(c) ? m.slice(0,3).map(function(x){ return x * 255; }) : m; }
+  function lum(c){ var m = rgb(c); return 0.2126 * srgb(m[0]) + 0.7152 * srgb(m[1]) + 0.0722 * srgb(m[2]); }
+  function cr(a, b){ var x = lum(a), y = lum(b); return ((Math.max(x, y) + .05) / (Math.min(x, y) + .05)).toFixed(1) + ':1'; }
+  function bgOf(el){ for (var e = el; e; e = e.parentElement) { var c = getComputedStyle(e).backgroundColor; if (!/rgba\(0, 0, 0, 0\)|transparent/.test(c) && !/\/ 0\)/.test(c)) return c; } return 'rgb(255,255,255)'; }
+  function set(id, h){ document.getElementById(id).innerHTML = h; }
+  ['cur', 'new'].forEach(function (k) {
+    var w = document.getElementById('w-' + k);
+    set('m-w-' + k, 'borda <b>' + getComputedStyle(w).borderTopColor + '</b>');
+    var c = document.getElementById('c-' + k), cs = getComputedStyle(c);
+    set('m-c-' + k, 'fundo <b>' + cs.backgroundColor + '</b> · texto <b>' + cs.color + '</b> · cursor <b>' + cs.cursor + '</b>');
+    var l = document.getElementById('l-' + k), hp = document.getElementById('h-' + k), bg = bgOf(l);
+    set('m-l-' + k, 'rótulo <b>' + cr(getComputedStyle(l).color, bg) + '</b> · ajuda <b>' + cr(getComputedStyle(hp).color, bg) + '</b>');
+    var card = document.getElementById('k-' + k), cb = getComputedStyle(card).backgroundColor;
+    var parts = [['eyebrow', '.eyebrow'], ['título', 'h3'], ['moeda', '.money-cur'], ['valor', '.money'], ['fração', '.money-frac'], ['label', '.desc-term-label'], ['valor DescTerm', '.desc-term-value']];
+    set('m-k-' + k, parts.map(function (p) { return p[0] + ' <b>' + cr(getComputedStyle(card.querySelector(p[1])).color, cb) + '</b>'; }).join(' · '));
+  });
+})();
+</script>
+</body>
+</html>

@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
 <link rel="stylesheet" href="components/primitives.css?v=5">
-<link rel="stylesheet" href="components/cards.css?v=8">
+<link rel="stylesheet" href="components/cards.css?v=61041">
 <link rel="stylesheet" href="components/buttons.css?v=3">
 <link rel="stylesheet" href="components/status-pills.css?v=3">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
@@ -524,7 +524,25 @@
         <article class="card inverse"><div class="card-stat"><span class="stat-label" style="color: var(--color-foreground-inverse-muted);">Available · BRL</span><span class="stat-value" style="color: var(--color-foreground-inverse-default);">R$ 6.4M</span><span class="stat-delta flat" style="color: var(--color-foreground-inverse-muted);">Settled 1h ago</span></div></article>
       </div>
     </article>
-  </section>
+  
+    <article class="spec">
+      <header class="spec-head"><div><h3>Content inside a dark card</h3><p>A hero or inverse card redefines the text and border tokens to the inverse pair, so Money, titles, the Eyebrow and DescTerm read on the dark surface with no rule of their own. A rule that sets an explicit colour, like the hero stat, still wins.</p></div><span class="tag">inverse context</span></header>
+      <div class="spec-canvas" style="display:flex;gap:var(--space-5);flex-wrap:wrap">
+        <article class="card inverse" style="width:100%;max-width:340px"><div class="card-body" style="padding:var(--space-6)">
+            <span class="eyebrow">Saldo disponível</span>
+            <h3 style="margin:var(--space-2) 0 var(--space-3);font-size:var(--fs-md)">Conta Itaú ··3391</h3>
+            <span class="money money-xl"><span class="money-cur">BRL</span>18.425<span class="money-frac">,00</span></span>
+            <div class="desc-term" style="margin-top:var(--space-4)"><span class="desc-term-label">Atualizado em</span><span class="desc-term-value">4 nov 2026, 11:42</span></div>
+          </div></article>
+        <article class="card hero" style="width:100%;max-width:340px"><div class="card-body" style="padding:var(--space-6)">
+            <span class="eyebrow">Saldo disponível</span>
+            <h3 style="margin:var(--space-2) 0 var(--space-3);font-size:var(--fs-md)">Conta Itaú ··3391</h3>
+            <span class="money money-xl"><span class="money-cur">BRL</span>18.425<span class="money-frac">,00</span></span>
+            <div class="desc-term" style="margin-top:var(--space-4)"><span class="desc-term-label">Atualizado em</span><span class="desc-term-value">4 nov 2026, 11:42</span></div>
+          </div></article>
+      </div>
+    </article>
+</section>
 
 
   <!-- ========== 09 DON'TS ========== -->
@@ -617,6 +635,22 @@
     </table>
   </section>
 
+
+    <article class="demo-card">
+      <header class="demo-card-head">
+        <div>
+          <h3>Glass <code>glass="surface | chrome | overlay | hero"</code></h3>
+          <p>A frosted card, picked by role. Each role is a theme-aware pair — background and text move together — so the card stays readable in both themes. Put it over an image or a gradient; on a flat surface glass has nothing to blur. <code>hero</code> stays dark in both themes and belongs over the hero or a dark photo.</p>
+        </div>
+        <span class="demo-card-tag">Surface</span>
+      </header>
+      <div class="demo-card-canvas" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--space-4);background:radial-gradient(circle at 15% 30%, var(--color-accent-solid), transparent 45%), radial-gradient(circle at 85% 70%, var(--color-brand-solid), transparent 50%), var(--color-background-subtle)">
+        <div class="card glass-surface"><div class="card-title">surface</div><p style="margin:var(--space-1) 0 0;font-size:var(--fs-sm)">Over imagery, in the content.</p></div>
+        <div class="card glass-chrome"><div class="card-title">chrome</div><p style="margin:var(--space-1) 0 0;font-size:var(--fs-sm)">A bar or panel fixed over it.</p></div>
+        <div class="card glass-overlay"><div class="card-title">overlay</div><p style="margin:var(--space-1) 0 0;font-size:var(--fs-sm)">A popover or menu.</p></div>
+        <div class="card glass-hero"><div class="card-title">hero</div><p style="margin:var(--space-1) 0 0;font-size:var(--fs-sm)">Dark in both themes.</p></div>
+      </div>
+    </article>
 </main>
 
 <script>

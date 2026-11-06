@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta · Prompt 07 · Lote 3</title>
+<link rel="stylesheet" href="../../src/index.css">
+<link rel="stylesheet" href="../../themes/index.css?v=1">
+<script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1120px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .ey { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  h1 { margin: var(--space-3) 0; font-size: var(--fs-5xl); letter-spacing: var(--ls-display); }
+  section { margin-top: var(--space-10); }
+  section > h2 { font-size: var(--fs-2xl); margin: 0 0 var(--space-2); }
+  section > h2 .id { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-sm); color: var(--color-foreground-muted); margin-right: var(--space-3); }
+  section > p { max-width: 78ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-4); }
+  code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .stage { background: var(--color-background-subtle); border-radius: var(--shape-container); padding: var(--space-6); display: flex; flex-wrap: wrap; gap: var(--space-6); align-items: flex-start; min-height: 80px; }
+  .m { margin-top: var(--space-2); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); line-height: 1.6; }
+  .files { margin-top: var(--space-3); font-size: var(--fs-sm); color: var(--color-foreground-secondary); }
+
+  /* ===== PROPOSAL ===== */
+  /* SegmentedControl (L-27) — one row, segments sized by their label */
+  .seg { display: inline-flex; align-items: stretch; height: var(--control-h-sm); padding: 2px; gap: 2px; border-radius: var(--radius-pill); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); box-sizing: border-box; }
+  .seg-item { display: inline-flex; align-items: center; gap: var(--space-2); padding: 0 var(--space-4); border: 0; border-radius: var(--radius-pill); background: transparent; font: inherit; font-size: var(--fs-sm); color: var(--color-foreground-secondary); cursor: pointer; white-space: nowrap; }
+  .seg-item:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+  .seg-item[aria-checked="true"] { background: var(--color-background-selected); color: var(--color-foreground-brand); }
+  .seg-item:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+  .seg-text { display: inline-flex; align-items: baseline; gap: var(--space-2); }
+  .seg-count { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-muted); font-variant-numeric: tabular-nums; }
+  .seg-item[aria-checked="true"] .seg-count { color: inherit; }
+  .seg-item svg { width: 14px; height: 14px; }
+  /* DropdownMenu (L-34) */
+  .menu-wrap { position: relative; display: inline-block; }
+  .menu { position: absolute; top: calc(100% + 6px); left: 0; z-index: 50; min-width: 260px; padding: var(--space-2); border-radius: var(--shape-overlay); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); box-shadow: var(--shadow-lg); }
+  .menu[hidden] { display: none; }
+  .menu-item { display: grid; grid-template-columns: auto 1fr auto; align-items: start; column-gap: var(--space-3); width: 100%; padding: var(--space-2) var(--space-3); border: 0; border-radius: var(--shape-control); background: transparent; font: inherit; text-align: left; color: var(--color-foreground-default); cursor: pointer; }
+  .menu-item:hover, .menu-item:focus-visible { background: var(--color-background-hover); outline: none; }
+  .menu-item-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: calc((var(--fs-sm) * 1.4 - 7px) / 2); }
+  .menu-item-title { display: block; font-size: var(--fs-sm); line-height: 1.4; }
+  .menu-item-desc { display: block; font-size: var(--fs-xs); line-height: 1.4; color: var(--color-foreground-muted); }
+  .menu-item-meta { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-muted); line-height: calc(var(--fs-sm) * 1.4); }
+  .menu-item[aria-checked="true"] .menu-item-title { color: var(--color-foreground-brand); font-weight: var(--w-bold); }
+  .menu-item.is-danger { color: var(--color-feedback-danger-foreground); }
+  .menu-sep { height: 1px; margin: var(--space-2) 0; background: var(--color-border-subtle); }
+  /* StageProgress (L-29) */
+  .stage-progress { display: inline-flex; gap: 3px; }
+  .stage-progress > i { width: 18px; height: 3px; border-radius: 1.5px; background: var(--color-dataviz-track, var(--color-border-default)); }
+  .stage-progress > i.is-done { background: var(--color-feedback-success-foreground); }
+  .stage-progress > i.is-current { background: var(--color-accent-solid); }
+  .stage-progress > i.is-late { background: var(--color-feedback-warning-foreground); }
+  /* Sidebar context + productName (L-30), Topbar lead + language (L-31) */
+  .sb-mini { width: 240px; background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); padding: var(--space-4); }
+  .sb-brand { display: flex; align-items: baseline; gap: var(--space-2); font-weight: var(--w-black); color: var(--color-foreground-brand); }
+  .sb-brand .product { font-weight: var(--w-regular); color: var(--color-foreground-muted); }
+  .sb-context { margin-top: var(--space-4); }
+  .tb-mini { display: flex; align-items: center; gap: var(--space-4); width: 100%; height: 56px; padding: 0 var(--space-5); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); box-sizing: border-box; }
+  .tb-lead { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--fs-sm); color: var(--color-foreground-secondary); }
+  .tb-lead b { color: var(--color-foreground-default); font-weight: var(--w-bold); }
+  .tb-lead svg { width: 16px; height: 16px; }
+  .tb-lang { display: inline-flex; align-items: center; gap: var(--space-2); height: var(--control-h-sm); padding: 0 var(--space-3); border-radius: var(--radius-pill); border: var(--border-hairline) solid var(--color-border-default); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-secondary); background: transparent; }
+  .tb-lang svg { width: 14px; height: 14px; }
+</style>
+</head>
+<body>
+<main class="doc">
+  <div class="ey">Proposta · nada aplicado ainda · Prompt 07 · Lote 3 de 4</div>
+  <h1>Controles novos</h1>
+
+  <section>
+    <h2><span class="id">L-27</span>SegmentedControl · <code>count</code> · item <code>menu</code></h2>
+    <p>Uma escolha entre poucas opções na mesma linha. Cada segmento tem a largura do próprio rótulo (nada trunca ao trocar o texto), pode ter contagem, e um segmento pode abrir um menu (chevron). <code>role="radiogroup"</code>, setas trocam a escolha.</p>
+    <div class="stage">
+      <div class="menu-wrap">
+        <div class="seg" role="radiogroup" aria-label="Fase" id="seg">
+          <button class="seg-item" role="radio" aria-checked="true"><span class="seg-text">Em onboarding<span class="seg-count">323</span></span></button>
+          <button class="seg-item" role="radio" aria-checked="false" aria-haspopup="menu" aria-expanded="false" id="segmenu">Fora do onboarding <i data-lucide="chevron-down"></i></button>
+        </div>
+        <div class="menu" role="menu" hidden id="menu">
+          <button class="menu-item" role="menuitemradio" aria-checked="false"><span class="menu-item-dot" style="background:var(--color-team-implementation)"></span><span><span class="menu-item-title">Live</span><span class="menu-item-desc">Operando normalmente</span></span><span class="menu-item-meta">1.204</span></button>
+          <button class="menu-item" role="menuitemradio" aria-checked="true"><span class="menu-item-dot" style="background:var(--color-team-compliance)"></span><span><span class="menu-item-title">Em atenção</span><span class="menu-item-desc">Pendência de compliance</span></span><span class="menu-item-meta">38</span></button>
+          <button class="menu-item" role="menuitemradio" aria-checked="false"><span class="menu-item-dot" style="background:var(--color-team-product)"></span><span><span class="menu-item-title">Inativo</span><span class="menu-item-desc">Sem transações há 90 dias</span></span><span class="menu-item-meta">97</span></button>
+          <div class="menu-sep" role="separator"></div>
+          <button class="menu-item is-danger" role="menuitem"><span></span><span class="menu-item-title">Encerrados</span><span class="menu-item-meta">12</span></button>
+        </div>
+      </div>
+    </div>
+    <div class="m" id="m27"></div>
+    <div class="files">Arquivos: <code>segmented.css</code> (novo), <code>components/SegmentedControl/</code>. O ajuste das abas do <code>Tabs</code> no Figma (L-27a) é só no Figma.</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-34</span>DropdownMenu · MenuItem <code>dot icon title description meta danger selected</code></h2>
+    <p>O menu aberto pelo segmento acima. Genérico: abre de qualquer gatilho, setas navegam, Esc fecha e devolve o foco, separador entre grupos. <code>selected</code> marca a escolha atual.</p>
+    <div class="m" id="m34"></div>
+    <div class="files">Arquivos: <code>menu.css</code> (novo), <code>components/DropdownMenu/</code> (<code>DropdownMenu</code>, <code>MenuItem</code>, <code>MenuSeparator</code>). O menu do <code>TopbarAccount</code> passa a usar o mesmo CSS.</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-29</span>StageProgress <code>steps current late</code></h2>
+    <p>A barrinha de etapas numa linha de tabela: segmentos de 18×3, gap 3. Feito em verde, atual em accent (âmbar se atrasado), a fazer no trilho.</p>
+    <div class="stage">
+      <span class="stage-progress" role="img" aria-label="Etapa 3 de 6"><i class="is-done"></i><i class="is-done"></i><i class="is-current"></i><i></i><i></i><i></i></span>
+      <span class="stage-progress" role="img" aria-label="Etapa 4 de 6, atrasada"><i class="is-done"></i><i class="is-done"></i><i class="is-done"></i><i class="is-late"></i><i></i><i></i></span>
+    </div>
+    <div class="files">Arquivos: <code>primitives.css</code>, <code>components/StageProgress/</code>. O nome acessível diz a etapa e o atraso.</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-30 · L-31</span>Sidebar <code>productName context</code> · Topbar <code>lead</code> e idioma</h2>
+    <div class="stage">
+      <div class="sb-mini"><div class="sb-brand">ATTRUS <span class="product">ONE</span></div>
+        <div class="sb-context"><label class="select" style="width:100%"><span class="select-lead"><span class="track-badge track-enterprise">Ent</span></span><select class="input input-sm" aria-label="Trilha"><option>Enterprise</option></select><i data-lucide="chevron-down" class="chev"></i></label></div></div>
+      <div style="flex:1;min-width:420px"><div class="tb-mini"><span class="tb-lead"><i data-lucide="users"></i><b>Clientes</b></span><span style="flex:1"></span><button class="tb-lang" aria-label="Idioma: português"><i data-lucide="globe"></i>PT</button></div></div>
+    </div>
+    <div class="files">Arquivos: <code>AppSidebar.tsx</code> e <code>.d.ts</code> (<code>productName</code>, <code>context</code>), <code>sidebar.css</code>; <code>AppTopbar.tsx</code> e <code>.d.ts</code> (<code>lead</code>, <code>TopbarLanguage</code>), <code>topbar.css</code>. Os itens (a), (b) e (e) do L-30 são só no Figma.</div>
+  </section>
+</main>
+<script>
+lucide.createIcons();
+(function () {
+  var sm = document.getElementById('segmenu'), menu = document.getElementById('menu');
+  sm.addEventListener('click', function () { var open = menu.hidden; menu.hidden = !open; sm.setAttribute('aria-expanded', String(open)); if (open) menu.querySelector('[aria-checked="true"]').focus(); });
+  menu.addEventListener('keydown', function (e) { var it = [].slice.call(menu.querySelectorAll('.menu-item')), i = it.indexOf(document.activeElement);
+    if (e.key === 'ArrowDown') { e.preventDefault(); it[(i + 1) % it.length].focus(); } else if (e.key === 'ArrowUp') { e.preventDefault(); it[(i - 1 + it.length) % it.length].focus(); } else if (e.key === 'Escape') { menu.hidden = true; sm.setAttribute('aria-expanded', 'false'); sm.focus(); } });
+  var seg = document.getElementById('seg'), it = seg.querySelectorAll('.seg-item');
+  document.getElementById('m27').textContent = 'altura ' + Math.round(seg.getBoundingClientRect().height) + 'px · segmentos ' + [].map.call(it, function (b) { return Math.round(b.getBoundingClientRect().width) + 'px'; }).join(' / ') + ' · rótulo truncado ' + [].some.call(it, function (b) { return b.scrollWidth > b.clientWidth; });
+  menu.hidden = false; var mi = menu.querySelector('.menu-item'), dot = mi.querySelector('.menu-item-dot'), tt = mi.querySelector('.menu-item-title');
+  var tr = tt.getBoundingClientRect(), dr = dot.getBoundingClientRect();
+  document.getElementById('m34').textContent = 'item ' + Math.round(mi.getBoundingClientRect().height) + 'px · ponto centrado na 1ª linha ' + (Math.abs((dr.top + dr.height / 2) - (tr.top + tr.height / 2)) < 1);
+  menu.hidden = true;
+})();
+</script>
+</body>
+</html>

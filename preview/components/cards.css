@@ -77,6 +77,18 @@
 .card.hero > * { position: relative; z-index: 1; }
 
 /* Inverse — for cards on dark surfaces */
+/* INVERSE CONTEXT — a hero or inverse card is a dark surface, so it redefines
+   the text and border tokens to the inverse pair. Every child that uses the
+   semantic tokens (Money, titles, Eyebrow, DescTerm, a secondary button…)
+   reads correctly without a rule of its own. Rules that set an explicit
+   colour (the hero stat) still win. */
+.card:is(.hero, .inverse) {
+  --color-foreground-default: var(--color-foreground-inverse-default);
+  --color-foreground-secondary: var(--color-foreground-inverse-muted);
+  --color-foreground-muted: var(--color-foreground-inverse-muted);
+  --color-border-default: var(--color-border-inverse);
+  --color-border-subtle: var(--color-border-inverse);
+}
 .card.inverse {
   background: var(--color-background-inverse);
   color: var(--color-foreground-inverse-default);
@@ -332,3 +344,46 @@
 }
 .card-footer-note { min-width: 0; font-size: var(--fs-sm); color: var(--color-foreground-muted); line-height: var(--lh-snug); }
 .card-footer-actions { display: flex; gap: var(--space-2); flex-shrink: 0; margin-left: auto; }
+
+/* ================================================================
+   GLASS CARD (L-08) — .card.glass-surface / -chrome / -overlay / -hero
+   ================================================================
+   A card with a frosted surface, chosen by ROLE, not by intensity: each role
+   is a theme-aware semantic pair (background + its text colour). The raw
+   tones (--glass-white*, --glass-ink*, --glass-tint) stay as tokens for fine
+   tuning but are not Card options — picking by intensity is what put light
+   glass into the dark theme at 1.1:1.
+     surface   a card over an image or gradient, inside the content
+     chrome    a bar or panel fixed over the content
+     overlay   something that floats: popover, menu
+     hero      over the hero or a dark photo — dark in both themes
+   The glass border tokens are full shorthands, so they go on border. A light
+   pane takes the frosted edge (white 45%); in the dark theme, the quiet one.
+   ================================================================ */
+.card[class*="glass-"] { backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); box-shadow: var(--shadow-glass); }
+.card.glass-surface { background: var(--glass-surface); color: var(--glass-surface-fg); border: var(--glass-border); }
+.card.glass-chrome  { background: var(--glass-chrome);  color: var(--glass-chrome-fg);  border: var(--glass-border); }
+.card.glass-overlay { background: var(--glass-overlay); color: var(--glass-overlay-fg); border: var(--glass-border); }
+.card.glass-hero    { background: var(--glass-hero);    color: var(--glass-hero-fg);    border: var(--glass-border-dark); box-shadow: var(--shadow-glass-dark); }
+[data-theme="dark"] .card:is(.glass-surface, .glass-chrome, .glass-overlay) { border: var(--glass-chrome-border); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .card:is(.glass-surface, .glass-chrome, .glass-overlay) { background: var(--color-background-surface); }
+  .card.glass-hero { background: var(--color-background-inverse); }
+}
+
+/* CardHeader title · meta · action (L-36) */
+.card-header.has-aside { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
+.card-header-title { margin: 0; font-size: var(--fs-md); font-weight: var(--w-bold); line-height: var(--lh-snug); color: var(--color-foreground-default); }
+.card-header-aside { display: inline-flex; align-items: baseline; gap: var(--space-3); margin-left: auto; font-size: var(--fs-sm); }
+.card-header-meta { color: var(--color-foreground-muted); }
+/* CardStat tone · foot · footTone (L-37) — the number and the line under it
+   take a state or team tone; delta / deltaDirection keep working. */
+.card-stat .stat-value.tone-success, .card-stat .stat-foot.tone-success { color: var(--color-feedback-success-foreground); }
+.card-stat .stat-value.tone-warning, .card-stat .stat-foot.tone-warning { color: var(--color-feedback-warning-foreground); }
+.card-stat .stat-value.tone-danger,  .card-stat .stat-foot.tone-danger  { color: var(--color-feedback-danger-foreground); }
+.card-stat .stat-foot { font-size: var(--fs-sm); color: var(--color-foreground-muted); }
+.card-stat .stat-value.tone-team-sales { color: var(--color-team-sales); }
+.card-stat .stat-value.tone-team-compliance { color: var(--color-team-compliance); }
+.card-stat .stat-value.tone-team-implementation { color: var(--color-team-implementation); }
+.card-stat .stat-value.tone-team-payment-desk { color: var(--color-team-payment-desk); }
+.card-stat .stat-value.tone-team-product { color: var(--color-team-product); }

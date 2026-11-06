@@ -72,7 +72,16 @@ export const SelectableCard: React.FC<SelectableCardProps> = ({
         <span className="sel-card-title">{title}</span>
         {desc != null ? <span className="sel-card-desc">{desc}</span> : null}
       </span>
-      <span className="sel-card-mark" aria-hidden="true" />
+      {/* The form's own controls (L-20): the hidden input above drives them
+          through the same rules as Radio and Checkbox, so the mark is
+          identical to a form's in every state and theme. */}
+      {multi ? (
+        <span className="check-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+        </span>
+      ) : (
+        <span className="radio-dot" aria-hidden="true" />
+      )}
     </label>
   );
 };

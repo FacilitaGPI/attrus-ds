@@ -72,9 +72,43 @@
     <p>Every notable change to the design system, grouped by release. Versioning follows <a href="https://semver.org" style="color:var(--color-foreground-accent)">SemVer</a>; the version number lives in <code style="font-family:var(--font-mono);font-size:0.85em">version.js</code> and is mirrored across the catalog and index pages.</p>
   </header>
 
+  <!-- ============ v1.5.0 ============ -->
+  <section class="release">
+    <div class="release-head"><h2>1.5.0</h2><span class="tag current">Current</span></div>
+    <div class="release-date">2026-11-06 · minor · ATTRUS ONE components and tokens, gaps found while building the Figma library; synced from Cabiros v1.4.0 + v1.5.0 · published to npm as @attrus-ds/core</div>
+    <div class="change-group added"><h3><i data-lucide="plus-circle"></i> Added</h3><ul>
+      <li><b>Team tokens</b> <code>--color-team-*</code> and <b>track tokens</b> <code>--color-track-corporate|enterprise|business</code>; <b>TrackBadge</b> (CORP · ENT · BIZ, 10px caps in a 15px box). <b>Pill</b> <code>tone="team-*"</code> with the outline appearance.</li>
+      <li>Type classes <code>.body-sm-strong</code>, <code>.caption-strong</code>, <code>.mono-sm</code>.</li>
+      <li><b>SegmentedControl</b> with <code>count</code> and a <code>menu</code> segment; <b>DropdownMenu</b> · <b>MenuItem</b> (dot, icon, description, meta, danger, selected) · <b>MenuSeparator</b>; <b>StageProgress</b> for table rows. See <a href="segmented-menu.html">Segmented &amp; menu</a>.</li>
+      <li><b>Charts</b>: <b>DistributionBar</b>, <b>StageDistribution</b>, <b>BarChart</b> (stacked or grouped, <code>highlightRange</code>, <code>valueLabel</code>, screen-reader table), <b>Sparkline</b> (<code>bars|line</code>, <code>tone</code>). New <code>charts.css</code>. See <a href="charts.html">Charts</a>.</li>
+      <li><b>FilterChip</b> <code>size="sm"</code> (32px). <b>Select</b> <code>lead</code>. <b>CardHeader</b> <code>meta</code> / <code>action</code>. <b>CardStat</b> <code>tone</code> / <code>footTone</code>. <b>ProgressBar</b> numeric <code>value</code>, <code>tone</code>, <code>size="sm"</code>.</li>
+      <li><b>AppSidebar</b> <code>productName</code> and <code>context</code> slot. <b>AppTopbar</b> <code>lead</code> with <code>TopbarLead</code> (breadcrumb) and <code>TopbarLanguage</code>.</li>
+      <li>Parity benches for SegmentedControl, DropdownMenu and StageProgress.</li>
+      <li>React components for patterns that only had CSS: <b>Sheet</b>, <b>Skeleton</b> / <b>SkeletonGroup</b>, <b>Hero</b>, and <b>Card</b> <code>glass="surface|chrome|overlay|hero"</code>.</li>
+      <li><b>Button</b> <code>variant="danger-ghost"</code> in the type. <b>AppSidebar</b> <code>glass</code> and the phone drawer mode.</li>
+      <li>Types and manifest entries for <code>DTSelectionBar</code>, <code>DescGrid</code>, <code>DescGroups</code>, <code>DescGroup</code>.</li>
+      <li>Exported from <code>@attrus-ds/core/react</code>: <code>BarChart</code>, <code>DistributionBar</code>, <code>DropdownMenu</code>, <code>Hero</code>, <code>SegmentedControl</code>, <code>Sheet</code>, <code>Skeleton</code>, <code>Sparkline</code>, <code>StageDistribution</code>, <code>StageProgress</code>, <code>TrackBadge</code> (plus <code>MenuItem</code>, <code>MenuSeparator</code>, <code>SheetOption</code>, <code>SkeletonGroup</code>, <code>HeroTile</code>, <code>TopbarLead</code>, <code>TopbarLanguage</code>). New CSS in the bundle: <code>track-badge.css</code>, <code>hero.css</code>, <code>segmented.css</code>, <code>menu.css</code>, <code>charts.css</code>.</li>
+    </ul></div>
+    <div class="change-group changed"><h3><i data-lucide="refresh-cw"></i> Changed</h3><ul>
+      <li>The <b>TopbarAccount</b> menu uses the shared <code>.menu</code> / <code>.menu-item</code> / <code>.menu-sep</code> styles. <code>.tb-account-menu-item</code> and <code>.tb-account-menu-sep</code> stay as deprecated aliases until 2.0.</li>
+      <li>Implementation and Payment Desk team colours darkened on light for contrast.</li>
+      <li><b>SelectableCard</b> and <b>ToggleChip</b> selected state redesigned. SelectableCard uses the form's own <b>Radio</b> and <b>Checkbox</b> as its marker.</li>
+      <li><b>Checkbox</b> check at 2px. <b>Radio</b> checked: lighter ring, larger dot.</li>
+      <li><b>TopbarAccount</b> <code>sep</code> documented: a hairline before the item; an entry with only <code>sep</code> renders the hairline alone.</li>
+    </ul></div>
+    <div class="change-group fixed"><h3><i data-lucide="bug"></i> Fixed</h3><ul>
+      <li>SegmentedControl count sat about 1px above the label's baseline; label and count now share a baseline and the chevron stays centred.</li>
+      <li>Chart segments in the Enterprise colour disappeared on the dark theme; every segment now has the TrackBadge hairline there.</li>
+      <li><code>Input status="warning"</code> paints its border; <code>Input onInverse</code> inverts label and help; <code>Combobox disabled</code> looks disabled.</li>
+      <li>Content inside <code>Card variant="hero|inverse"</code> inverts (Money, titles, Eyebrow).</li>
+      <li>SelectableCard title and marker aligned when there is no description; ToggleChip count on the label's baseline.</li>
+      <li><code>DTSubrowLead</code> keeps its children; <code>DTSubrowCell</code> applies <code>style</code> to the right wrapper. Combobox card subtitle updated.</li>
+    </ul></div>
+  </section>
+
   <!-- ============ v1.4.0 ============ -->
   <section class="release">
-    <div class="release-head"><h2>1.4.0</h2><span class="tag current">Current</span></div>
+    <div class="release-head"><h2>1.4.0</h2><span class="tag">Minor</span></div>
     <div class="release-date">2026-11-04 · minor · card in four bands, table inside a card, Figma export; synced from Cabiros v1.3.0 · published to npm as @attrus-ds/core</div>
     <div class="change-group added"><h3><i data-lucide="plus-circle"></i> Added</h3><ul>
       <li><b>Card in four bands</b> — <code>CardHeader compact</code>, <code>CardFooter note</code> / <code>actions</code> (<code>.card-footer.is-split</code>), <code>StatRow divided</code>.</li>

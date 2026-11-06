@@ -26,7 +26,7 @@
      .tb-spacer            margin-left:auto group wrapper
      .tb-account           avatar + identity trigger
      .tb-account-id        name / company stack inside the trigger
-     .tb-account-menu      dropdown (head, -sep, -item, -item.is-danger)
+     .tb-account-menu      dropdown position + head; items are .menu-item (menu.css)
 
    The primary action is NOT a topbar class: use the canonical .btn .btn-primary
    .btn-md (buttons.css) so the bar's CTA stays the system's button.
@@ -204,8 +204,8 @@
 .tb-account .chev svg, .tb-account .chev i { width: 12px; height: 12px; }
 
 /* Dropdown */
-.tb-account-menu {
-  position: absolute; top: calc(100% + var(--space-2)); right: 0; z-index: 200;
+.tb-account-menu, .menu.tb-account-menu {
+  position: absolute; top: calc(100% + var(--space-2)); right: 0; left: auto; z-index: 200;
   min-width: 240px; padding: var(--space-2);
   background: var(--color-background-surface);
   border: 1px solid var(--color-border-default);
@@ -216,21 +216,14 @@
 .tb-account-menu-id { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
 .tb-account-menu-id .nm { font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-default); white-space: nowrap; }
 .tb-account-menu-id .co { font-size: var(--fs-xs); color: var(--color-foreground-muted); white-space: nowrap; }
-.tb-account-menu-sep { height: 1px; background: var(--color-border-subtle); margin: var(--space-1) calc(-1 * var(--space-2)); }
-.tb-account-menu-item {
-  display: flex; align-items: center; gap: var(--space-3); width: 100%;
-  padding: var(--space-2-5) var(--space-2); margin: 1px 0;
-  border: 0; border-radius: var(--radius-sm); background: transparent; cursor: pointer;
-  font-family: inherit; font-size: var(--fs-sm); font-weight: var(--w-regular);
-  color: var(--color-foreground-secondary); text-align: left; white-space: nowrap;
-  transition: background var(--transition-fast), color var(--transition-fast);
-}
-.tb-account-menu-item:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+/* Items, separators, icons and danger come from menu.css (.menu-item / .menu-sep) — one menu style across the system.
+   Deprecated aliases (v1.5.0, remove in 2.0): the old .tb-account-menu-item / -sep markup keeps rendering. */
+.tb-account-menu-sep { height: 1px; margin: var(--space-2) 0; background: var(--color-border-subtle); }
+.tb-account-menu-item { display: flex; align-items: center; gap: var(--space-3); width: 100%; padding: var(--space-2) var(--space-3); border: 0; border-radius: var(--shape-control); background: transparent; font: inherit; font-size: var(--fs-sm); line-height: 1.4; text-align: left; color: var(--color-foreground-default); cursor: pointer; }
+.tb-account-menu-item:hover, .tb-account-menu-item:focus-visible { background: var(--color-background-hover); outline: none; }
 .tb-account-menu-item svg, .tb-account-menu-item i { width: 15px; height: 15px; stroke-width: var(--icon-stroke); color: var(--color-foreground-muted); flex-shrink: 0; }
-.tb-account-menu-item:hover svg, .tb-account-menu-item:hover i { color: var(--color-foreground-secondary); }
-.tb-account-menu-item.is-danger { color: var(--color-feedback-danger-foreground); }
-.tb-account-menu-item.is-danger svg, .tb-account-menu-item.is-danger i { color: var(--color-feedback-danger-foreground); }
-.tb-account-menu-item.is-danger:hover { background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); }
+.tb-account-menu-item.is-danger, .tb-account-menu-item.is-danger svg, .tb-account-menu-item.is-danger i { color: var(--color-feedback-danger-foreground); }
+.tb-account-menu-item.is-danger:hover { background: var(--color-feedback-danger-background); }
 
 /* ============================================================
    GLASS VARIANT — .topbar.is-glass
@@ -331,3 +324,10 @@
 .topbar.is-compact [data-tb-priority="1"],
 .topbar.is-compact [data-tb-priority="2"],
 .topbar.is-compact [data-tb-priority="3"] { display: none; }
+
+/* Breadcrumb lead and language control (L-31) */
+.tb-lead { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--fs-sm); color: var(--color-foreground-secondary); }
+  .tb-lead b { color: var(--color-foreground-default); font-weight: var(--w-bold); }
+  .tb-lead svg { width: 16px; height: 16px; }
+  .tb-lang { display: inline-flex; align-items: center; gap: var(--space-2); height: var(--control-h-sm); padding: 0 var(--space-3); border-radius: var(--radius-pill); border: var(--border-hairline) solid var(--color-border-default); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-secondary); background: transparent; }
+  .tb-lang svg { width: 14px; height: 14px; }

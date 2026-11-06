@@ -9,7 +9,8 @@
 <link rel="stylesheet" href="../src/themes/index.css">
 <link rel="stylesheet" href="components/tokens-doc.css?v=3">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
-<link rel="stylesheet" href="components/sel-card.css?v=3">
+<link rel="stylesheet" href="components/sel-card.css?v=86764">
+<link rel="stylesheet" href="components/inputs.css?v=37131">
 <link rel="stylesheet" href="components/buttons.css?v=3">
 <script src="../theme-toggle.js"></script>
 <script src="../version.js"></script>
@@ -85,7 +86,7 @@
       <div><h3>Pick one <code>.sel-card</code></h3><p>Marcador redondo, semântica de radio. Agrupe com <code>name</code>.</p></div>
       <span class="spec-tag">radio</span>
     </div>
-    <div class="spec-canvas"><div class="sel-card-group"><label class="sel-card is-selected"><span class="sel-card-index">01</span><span class="sel-card-body"><span class="sel-card-title">Pessoa jurídica</span><span class="sel-card-desc">CNPJ ativo, faturamento comprovável e conta bancária no titular.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card"><span class="sel-card-index">02</span><span class="sel-card-body"><span class="sel-card-title">Pessoa física</span><span class="sel-card-desc">CPF regular. Limites iniciais menores até a verificação completa.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card"><span class="sel-card-index">03</span><span class="sel-card-body"><span class="sel-card-title">MEI</span><span class="sel-card-desc">Cadastro simplificado com teto de movimentação mensal.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label></div></div>
+    <div class="spec-canvas"><div class="sel-card-group"><label class="sel-card is-selected"><span class="sel-card-index">01</span><span class="sel-card-body"><span class="sel-card-title">Pessoa jurídica</span><span class="sel-card-desc">CNPJ ativo, faturamento comprovável e conta bancária no titular.</span></span><span class="radio-dot" aria-hidden="true"></span></label><label class="sel-card"><span class="sel-card-index">02</span><span class="sel-card-body"><span class="sel-card-title">Pessoa física</span><span class="sel-card-desc">CPF regular. Limites iniciais menores até a verificação completa.</span></span><span class="radio-dot" aria-hidden="true"></span></label><label class="sel-card"><span class="sel-card-index">03</span><span class="sel-card-body"><span class="sel-card-title">MEI</span><span class="sel-card-desc">Cadastro simplificado com teto de movimentação mensal.</span></span><span class="radio-dot" aria-hidden="true"></span></label></div></div>
   </div>
   </section>
   <section class="doc-section">
@@ -96,7 +97,7 @@
       <div><h3>Multi <code>.sel-card-multi</code></h3><p>Semântica de checkbox. Combine com <code>.sel-card-group.is-grid</code> para grade auto-fit.</p></div>
       <span class="spec-tag">checkbox</span>
     </div>
-    <div class="spec-canvas"><div class="sel-card-group is-grid"><label class="sel-card sel-card-multi is-selected"><span class="sel-card-body"><span class="sel-card-title">Pix</span><span class="sel-card-desc">Liquidação instantânea, 24/7.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card sel-card-multi is-selected"><span class="sel-card-body"><span class="sel-card-title">TED</span><span class="sel-card-desc">Mesmo dia, em horário bancário.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card sel-card-multi"><span class="sel-card-body"><span class="sel-card-title">SWIFT</span><span class="sel-card-desc">Internacional, D+1 a D+2.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label></div></div>
+    <div class="spec-canvas"><div class="sel-card-group is-grid"><label class="sel-card sel-card-multi is-selected"><span class="sel-card-body"><span class="sel-card-title">Pix</span><span class="sel-card-desc">Liquidação instantânea, 24/7.</span></span><span class="check-box" aria-hidden="true"><i data-lucide="check"></i></span></label><label class="sel-card sel-card-multi is-selected"><span class="sel-card-body"><span class="sel-card-title">TED</span><span class="sel-card-desc">Mesmo dia, em horário bancário.</span></span><span class="check-box" aria-hidden="true"><i data-lucide="check"></i></span></label><label class="sel-card sel-card-multi"><span class="sel-card-body"><span class="sel-card-title">SWIFT</span><span class="sel-card-desc">Internacional, D+1 a D+2.</span></span><span class="check-box" aria-hidden="true"><i data-lucide="check"></i></span></label></div></div>
   </div>
   </section>
   <section class="doc-section">
@@ -107,13 +108,13 @@
       <div><h3>Dense <code>.sel-card-sm</code></h3><p>Padding e tipo reduzidos — bom para moeda, jurisdição, período.</p></div>
       <span class="spec-tag">size</span>
     </div>
-    <div class="spec-canvas"><div class="sel-card-group is-grid"><label class="sel-card sel-card-sm is-selected"><span class="sel-card-body"><span class="sel-card-title">BRL · Real</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card sel-card-sm"><span class="sel-card-body"><span class="sel-card-title">USD · Dólar</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card sel-card-sm"><span class="sel-card-body"><span class="sel-card-title">EUR · Euro</span></span><span class="sel-card-mark" aria-hidden="true"></span></label></div></div>
+    <div class="spec-canvas"><div class="sel-card-group is-grid"><label class="sel-card sel-card-sm is-selected"><span class="sel-card-body"><span class="sel-card-title">BRL · Real</span></span><span class="radio-dot" aria-hidden="true"></span></label><label class="sel-card sel-card-sm"><span class="sel-card-body"><span class="sel-card-title">USD · Dólar</span></span><span class="radio-dot" aria-hidden="true"></span></label><label class="sel-card sel-card-sm"><span class="sel-card-body"><span class="sel-card-title">EUR · Euro</span></span><span class="radio-dot" aria-hidden="true"></span></label></div></div>
   </div>  <div class="spec">
     <div class="spec-head">
       <div><h3>Disabled <code>[aria-disabled]</code></h3><p>Selecionado + travado permanece distinguível do não-selecionado + travado — o bug que a opacidade causava.</p></div>
       <span class="spec-tag">state</span>
     </div>
-    <div class="spec-canvas"><div class="sel-card-group"><label class="sel-card" aria-disabled="true"><span class="sel-card-body"><span class="sel-card-title">Conta escrow</span><span class="sel-card-desc">Disponível a partir do plano Enterprise.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card is-selected" aria-disabled="true"><span class="sel-card-body"><span class="sel-card-title">Conta corrente</span><span class="sel-card-desc">Selecionada e travada pelo compliance.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label></div></div>
+    <div class="spec-canvas"><div class="sel-card-group"><label class="sel-card" aria-disabled="true"><span class="sel-card-body"><span class="sel-card-title">Conta escrow</span><span class="sel-card-desc">Disponível a partir do plano Enterprise.</span></span><span class="radio-dot" aria-hidden="true"></span></label><label class="sel-card is-selected" aria-disabled="true"><span class="sel-card-body"><span class="sel-card-title">Conta corrente</span><span class="sel-card-desc">Selecionada e travada pelo compliance.</span></span><span class="radio-dot" aria-hidden="true"></span></label></div></div>
   </div>
   </section>
   <section class="doc-section">
@@ -124,12 +125,12 @@
       <div><h3>Dark surface <code>.on-inverse</code></h3><p>O estado selecionado usa <code>--color-accent-solid</code> em vez do brand sólido, que somiria no ink.</p></div>
       <span class="spec-tag">inverse</span>
     </div>
-    <div class="spec-canvas inverse"><div class="sel-card-group"><label class="sel-card on-inverse is-selected"><span class="sel-card-index">01</span><span class="sel-card-body"><span class="sel-card-title">Começar do zero</span><span class="sel-card-desc">Configuramos sua conta em 4 passos guiados.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card on-inverse"><span class="sel-card-index">02</span><span class="sel-card-body"><span class="sel-card-title">Importar de outro provedor</span><span class="sel-card-desc">Traga contrapartes e histórico via CSV.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label><label class="sel-card on-inverse" aria-disabled="true"><span class="sel-card-body"><span class="sel-card-title">Falar com especialista</span><span class="sel-card-desc">Indisponível fora do horário comercial.</span></span><span class="sel-card-mark" aria-hidden="true"></span></label></div></div>
+    <div class="spec-canvas inverse"><div class="sel-card-group"><label class="sel-card on-inverse is-selected"><span class="sel-card-index">01</span><span class="sel-card-body"><span class="sel-card-title">Começar do zero</span><span class="sel-card-desc">Configuramos sua conta em 4 passos guiados.</span></span><span class="radio-dot" aria-hidden="true"></span></label><label class="sel-card on-inverse"><span class="sel-card-index">02</span><span class="sel-card-body"><span class="sel-card-title">Importar de outro provedor</span><span class="sel-card-desc">Traga contrapartes e histórico via CSV.</span></span><span class="radio-dot" aria-hidden="true"></span></label><label class="sel-card on-inverse" aria-disabled="true"><span class="sel-card-body"><span class="sel-card-title">Falar com especialista</span><span class="sel-card-desc">Indisponível fora do horário comercial.</span></span><span class="radio-dot" aria-hidden="true"></span></label></div></div>
   </div>
   </section>
   <section class="doc-section">
     <h2><span class="num">05</span>Referência</h2>
-    <p class="lead">Vocabulário completo, definido em <code>components/sel-card.css</code> e consumido pela camada TSX.</p>
+    <p class="lead">Vocabulário completo, definido em <code>components/sel-card.css?v=86764</code> e consumido pela camada TSX.</p>
   <div class="spec">
     <div class="spec-head">
       <div><h3>Class map</h3><p>Edite o CSS e a doc e o app se movem juntos.</p></div>
@@ -140,7 +141,7 @@
 <tr><td><code>.sel-card-index</code></td><td>Chip de índice mono opcional.</td></tr>
 <tr><td><code>.sel-card-body</code></td><td>Coluna título + descrição.</td></tr>
 <tr><td><code>.sel-card-title</code> · <code>-desc</code></td><td>Linha primária / copy de apoio.</td></tr>
-<tr><td><code>.sel-card-mark</code></td><td>Marcador de seleção (redondo ou quadrado).</td></tr>
+<tr><td><code>.radio-dot</code> · <code>.check-box</code></td><td>O marcador é o próprio Radio (escolha única) ou Checkbox (<code>.sel-card-multi</code>) do formulário, dirigido pelo input oculto do card.</td></tr>
 <tr><td><code>.is-selected</code></td><td>Estado selecionado.</td></tr>
 <tr><td><code>.sel-card-group</code> · <code>.is-grid</code></td><td>Wrapper coluna / grade auto-fit.</td></tr>
 </tbody></table></div>

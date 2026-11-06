@@ -10,6 +10,8 @@ import * as React from 'react';
  */
 
 export interface AppTopbarProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Start of the bar, before the primary action: a <TopbarLead> breadcrumb (L-31). */
+  lead?: React.ReactNode;
   /** Left CTA slot — the canonical Button (primary). */
   primary?: React.ReactNode;
   /** Search slot — the canonical SearchPill (grows to fill). */
@@ -18,12 +20,27 @@ export interface AppTopbarProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
 }
 
-export const AppTopbar: React.FC<AppTopbarProps> = ({ primary, search, children, className, ...rest }) => (
+export const AppTopbar: React.FC<AppTopbarProps> = ({ lead, primary, search, children, className, ...rest }) => (
   <div className={['topbar', className || ''].filter(Boolean).join(' ')} {...rest}>
+    {lead}
     {primary}
     {search}
     <div className="tb-spacer">{children}</div>
   </div>
+);
+
+
+/** Breadcrumb at the start of the bar (L-31): icon + page, or a trail. */
+export interface TopbarLeadProps extends React.HTMLAttributes<HTMLSpanElement> { icon?: React.ReactNode; }
+export const TopbarLead: React.FC<TopbarLeadProps> = ({ icon, className, children, ...rest }) => (
+  <span className={['tb-lead', className || ''].filter(Boolean).join(' ')} {...rest}>{icon}<b>{children}</b></span>
+);
+/** Language control (L-31): globe + language code. `label` is the accessible name, e.g. "Language: Português". */
+export interface TopbarLanguageProps extends React.ButtonHTMLAttributes<HTMLButtonElement> { code: string; label: string; }
+export const TopbarLanguage: React.FC<TopbarLanguageProps> = ({ code, label, className, ...rest }) => (
+  <button type="button" className={['tb-lang', className || ''].filter(Boolean).join(' ')} aria-label={label} {...rest}>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20" /></svg>{code}
+  </button>
 );
 
 /* ---------- Generic 36px control ---------- */
@@ -114,10 +131,13 @@ export const TopbarBell: React.FC<TopbarBellProps> = ({ badge = false, priority,
 
 export interface TopbarAccountItem {
   key: string;
-  label: React.ReactNode;
+  /** Omit only for a separator-only entry ({ key, sep: true }). */
+  label?: React.ReactNode;
   icon?: React.ReactNode;
   danger?: boolean;
-  /** Renders a separator before this item. */
+  /** A hairline BEFORE this item — put it on the first item of a group, e.g.
+      { key: 'logout', label: 'Log out', sep: true }. An entry with sep and no
+      label renders only the hairline (no empty menu row). */
   sep?: boolean;
 }
 
@@ -181,7 +201,7 @@ export const TopbarAccount: React.FC<TopbarAccountProps> = ({
         <ChevDown />
       </button>
       {open ? (
-        <div className="tb-account-menu" role="menu">
+        <div className="menu tb-account-menu" role="menu">
           <div className="tb-account-menu-head">
             <span className="tb-avatar lg">{initials}</span>
             <div className="tb-account-menu-id">
@@ -189,22 +209,23 @@ export const TopbarAccount: React.FC<TopbarAccountProps> = ({
               <span className="co">{detail != null ? detail : company}</span>
             </div>
           </div>
-          <div className="tb-account-menu-sep" />
+          <div className="menu-sep" />
           {items.map((it) => (
             <React.Fragment key={it.key}>
-              {it.sep ? <div className="tb-account-menu-sep" /> : null}
-              <button
+              {it.sep ? <div className="menu-sep" role="separator" /> : null}
+              {it.sep && it.label == null ? null : <button
                 type="button"
-                className={['tb-account-menu-item', it.danger ? 'is-danger' : ''].filter(Boolean).join(' ')}
+                className={['menu-item', it.danger ? 'is-danger' : ''].filter(Boolean).join(' ')}
                 role="menuitem"
                 onClick={() => {
                   setOpen(false);
                   if (onSelect) onSelect(it.key);
                 }}
               >
-                {it.icon}
-                {it.label}
-              </button>
+                {it.icon ? <span className="menu-item-icon">{it.icon}</span> : <span />}
+                <span className="menu-item-title">{it.label}</span>
+                <span />
+              </button>}
             </React.Fragment>
           ))}
         </div>

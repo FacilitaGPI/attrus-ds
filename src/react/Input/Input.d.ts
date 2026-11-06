@@ -59,6 +59,8 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
   status?: InputStatus;
   /** sm / md (default) / lg — maps to textarea.input.input-{size}. */
   inputSize?: InputSize;
+  /** Dark-surface treatment — box, label and help (.on-inverse). */
+  onInverse?: boolean;
 }
 export declare const Textarea: React.FC<TextareaProps>;
 
@@ -67,6 +69,10 @@ export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectE
   help?: React.ReactNode;
   status?: InputStatus;
   inputSize?: InputSize;
+  /** Dark-surface treatment — box, label and help (.on-inverse). */
+  onInverse?: boolean;
+  /** Badge, icon or flag before the value (.select-lead). The native <select> takes no markup in its options, so the lead shows the chosen item; the option text stays the accessible name. */
+  lead?: React.ReactNode;
 }
 export declare const Select: React.FC<SelectProps>;
 

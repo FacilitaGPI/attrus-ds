@@ -2014,7 +2014,7 @@ a.dt-detail-card:focus-visible { outline: none; box-shadow: var(--shadow-focus);
     border-radius: var(--radius-pill);
     background: linear-gradient(90deg, var(--color-background-hover) 0%, var(--color-background-subtle) 50%, var(--color-background-hover) 100%);
     background-size: 200% 100%;
-    animation: dt-sk-shimmer 1.4s var(--ease-linear) infinite;
+    animation: sk-shimmer 1.4s var(--ease-linear) infinite;
   }
   .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton::before { content: ""; grid-column: 1; grid-row: 1 / span 2; width: 32px; height: 32px; }
   .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton > td:nth-child(1) { grid-area: 1 / 2 !important; height: 10px !important; width: 70% !important; align-self: end; }
@@ -2028,7 +2028,7 @@ a.dt-detail-card:focus-visible { outline: none; box-shadow: var(--shadow-focus);
     border-radius: var(--radius-pill); background: var(--color-background-hover);
   }
 }
-@keyframes dt-sk-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+/* dt-sk-shimmer retired — the table uses the system keyframe sk-shimmer (primitives.css) */
 @media (prefers-reduced-motion: reduce) {
   .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton::before,
   .dt-responsive.dt-m-list .dt tbody tr.dt-skeleton::after,
@@ -2194,3 +2194,6 @@ a.dt-detail-card:focus-visible { outline: none; box-shadow: var(--shadow-focus);
    for a hand-built tr.hov given tabindex. */
 .dt tbody tr.hov:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--color-border-focus); }
 .dt tbody tr.hov:focus-visible > td { background: var(--color-background-hover); }
+
+/* L-14 · a subrow figure in a numeric column lines up with the parent's value */
+.dt td.dt-num .dt-subrow-cell { justify-content: flex-end; }

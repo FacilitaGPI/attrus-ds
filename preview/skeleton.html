@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Skeleton" subtitle="Loading placeholder in the shape of the coming content" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skeleton · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<link rel="stylesheet" href="components/primitives.css?v=36171">
+<script src="../theme-toggle.js"></script>
+<script src="../version.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1120px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .ey { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  h1 { margin: var(--space-3) 0; font-size: var(--fs-5xl); letter-spacing: var(--ls-display); }
+  .lead { max-width: 74ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+  section { margin-top: var(--space-12); }
+  section > h2 { font-size: var(--fs-2xl); margin: 0 0 var(--space-2); }
+  section > p { max-width: 76ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-5); }
+  code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  pre { margin: 0; padding: var(--space-5); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); line-height: 1.7; overflow-x: auto; color: var(--color-foreground-secondary); }
+  pre .c { color: var(--color-foreground-muted); }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
+  @media (max-width: 860px) { .pair { grid-template-columns: 1fr; } }
+  .cl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; margin-bottom: var(--space-3); color: var(--color-foreground-muted); }
+  .stage { background: var(--color-background-subtle); border-radius: var(--shape-container); padding: var(--space-6); }
+  .toggle { margin-bottom: var(--space-5); }
+  .m { margin-top: var(--space-4); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); line-height: 1.7; }
+  .m b { color: var(--color-foreground-default); font-weight: var(--w-regular); }
+  .row { display: flex; align-items: center; gap: var(--space-3); min-height: 64px; padding: var(--space-3) var(--space-4); border-bottom: var(--border-hairline) solid var(--color-border-subtle); box-sizing: border-box; }
+  .row:last-child { border-bottom: 0; }
+  .row .tx { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--space-1); }
+  .row .end { display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-1); }
+  .av { width: 32px; height: 32px; border-radius: 50%; background: var(--color-background-selected); color: var(--color-foreground-brand); display: inline-flex; align-items: center; justify-content: center; font-size: var(--fs-xs); font-weight: var(--w-bold); flex-shrink: 0; }
+  .t1 { font-size: var(--fs-md); line-height: 1.4; } .t2 { font-size: var(--fs-sm); line-height: 1.4; color: var(--color-foreground-muted); }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+</style>
+</head>
+<body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<main class="doc">
+  <div class="ey">Components · Feedback · new in this release</div>
+  <h1>Skeleton</h1>
+  <p class="lead">A placeholder for content that is loading, in three shapes — a text line, a circle and a rectangle — for cards and lists. The one rule: build it in the shape of what is coming, so nothing moves when the data lands. The table's <code>.dt-skeleton</code> uses the same shimmer.</p>
+
+  <section>
+    <h2>API</h2>
+<pre>&lt;Skeleton shape="text"   width="70%" /&gt;        <span class="c">// one line; its height comes from the parent font</span>
+&lt;Skeleton shape="text"   lines={3} /&gt;          <span class="c">// a paragraph; the last line ends short</span>
+&lt;Skeleton shape="circle" size={32} /&gt;          <span class="c">// avatar, icon</span>
+&lt;Skeleton shape="rect"   width={120} height={32} /&gt;  <span class="c">// button, image, chart</span>
+
+&lt;SkeletonGroup label="Loading transactions"&gt;   <span class="c">// role=status, aria-busy and a screen-reader label</span>
+  …
+&lt;/SkeletonGroup&gt;</pre>
+  </section>
+
+  <section>
+    <h2>Skeleton beside the real content</h2>
+    <p>Switch between the two: neither the card nor the list changes height or position when the data lands. How: each text line takes the height of a real line (the bar is the x-height, the rest is margin), and the number of lines is that of the typical content — here, a two-line paragraph.</p>
+    <div class="toggle"><button class="btn btn-secondary btn-sm" id="swap">Show content</button></div>
+    <div class="pair">
+      <div><div class="cl">Card</div><div class="stage">
+        <div class="card" id="card-sk" aria-busy="true"><span class="sr-only">Loading summary</span>
+          <div class="skeleton skeleton-text" aria-hidden="true" style="width:40%;font-size:var(--fs-md)"></div>
+          <div style="height:var(--space-4)"></div>
+          <div class="skeleton-lines" aria-hidden="true" style="font-size:var(--fs-sm)"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text"></div></div>
+          <div style="height:var(--space-5)"></div>
+          <div class="skeleton skeleton-rect" aria-hidden="true" style="width:132px;height:var(--control-h-sm)"></div>
+        </div>
+        <div class="card" id="card-real" hidden>
+          <div style="font-size:var(--fs-md);font-weight:var(--w-bold);line-height:1.4">Review summary</div>
+          <div style="height:var(--space-4)"></div>
+          <div style="font-size:var(--fs-sm);line-height:1.4;color:var(--color-foreground-secondary)">The bank asked for documents that prove where the funds came from. Send the contract and the invoice by Friday to release the transfer.</div>
+          <div style="height:var(--space-5)"></div>
+          <button class="btn btn-primary btn-sm">Send documents</button>
+        </div>
+      </div><div class="m" id="m-card"></div></div>
+      <div><div class="cl">List</div><div class="stage" style="padding:0;background:var(--color-background-surface);border:var(--border-hairline) solid var(--color-border-default)">
+        <div id="list-sk" aria-busy="true"><span class="sr-only">Loading transactions</span>
+          <div class="row" aria-hidden="true"><span class="skeleton skeleton-circle" style="width:32px;height:32px"></span><span class="tx"><span class="skeleton skeleton-text" style="width:70%;font-size:var(--fs-md)"></span><span class="skeleton skeleton-text" style="width:45%;font-size:var(--fs-sm)"></span></span><span class="end"><span class="skeleton skeleton-text" style="width:72px;font-size:var(--fs-md)"></span><span class="skeleton skeleton-text" style="width:44px;font-size:var(--fs-sm)"></span></span></div>
+          <div class="row" aria-hidden="true"><span class="skeleton skeleton-circle" style="width:32px;height:32px"></span><span class="tx"><span class="skeleton skeleton-text" style="width:55%;font-size:var(--fs-md)"></span><span class="skeleton skeleton-text" style="width:38%;font-size:var(--fs-sm)"></span></span><span class="end"><span class="skeleton skeleton-text" style="width:64px;font-size:var(--fs-md)"></span><span class="skeleton skeleton-text" style="width:44px;font-size:var(--fs-sm)"></span></span></div>
+        </div>
+        <div id="list-real" hidden>
+          <div class="row"><span class="av">GS</span><span class="tx"><span class="t1">Global Supplies LLC</span><span class="t2">Wire · TX-90412</span></span><span class="end"><span class="t1">−18,425.00</span><span class="t2">Pending</span></span></div>
+          <div class="row"><span class="av">AL</span><span class="tx"><span class="t1">Aurora Logistics</span><span class="t2">Pix · TX-90388</span></span><span class="end"><span class="t1">1,000.00</span><span class="t2">Settled</span></span></div>
+        </div>
+      </div><div class="m" id="m-list"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Rules</h2>
+    <p><b>Match the content.</b> One text line per real line, at the font size the text will use; the same avatar size; the same button size. If the content is usually two lines, draw two.</p>
+    <p><b>Announce once.</b> Wrap the loading region in <code>SkeletonGroup label="Loading …"</code>: it is a status with <code>aria-busy</code>, and the shapes inside are hidden from assistive tech.</p>
+    <p><b>When not to use.</b> For a wait under about 300ms show nothing; for an action the user started (a save, a payment) use the button's loading state; for a full-page first load the skeleton is right.</p>
+  </section>
+</main>
+<script>
+lucide.createIcons();
+(function () {
+  function h(id){ return Math.round(document.getElementById(id).getBoundingClientRect().height); }
+  function measure() {
+    var cs = document.getElementById('card-sk'), cr = document.getElementById('card-real'), ls = document.getElementById('list-sk'), lr = document.getElementById('list-real');
+    var a = { card: 0, list: 0 }, b = { card: 0, list: 0 };
+    cs.hidden = false; cr.hidden = true; ls.hidden = false; lr.hidden = true; a.card = h('card-sk'); a.list = h('list-sk');
+    cs.hidden = true; cr.hidden = false; ls.hidden = true; lr.hidden = false; b.card = h('card-real'); b.list = h('list-real');
+    cs.hidden = false; cr.hidden = true; ls.hidden = false; lr.hidden = true;
+    document.getElementById('m-card').innerHTML = 'skeleton <b>' + a.card + 'px</b> · content <b>' + b.card + 'px</b> · shift <b>' + (b.card - a.card) + 'px</b>';
+    document.getElementById('m-list').innerHTML = 'skeleton <b>' + a.list + 'px</b> · content <b>' + b.list + 'px</b> · shift <b>' + (b.list - a.list) + 'px</b>';
+  }
+  measure();
+  var showing = false;
+  document.getElementById('swap').addEventListener('click', function () {
+    showing = !showing;
+    ['card-sk', 'list-sk'].forEach(function (id) { document.getElementById(id).hidden = showing; });
+    ['card-real', 'list-real'].forEach(function (id) { document.getElementById(id).hidden = !showing; });
+    this.textContent = showing ? 'Show skeleton' : 'Show content';
+  });
+})();
+</script>
+</body>
+</html>

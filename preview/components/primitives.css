@@ -489,3 +489,44 @@
 .stat-row.is-divided > .stat + .stat { border-left: var(--border-hairline) solid var(--color-border-default); }
 .stat-row.is-divided .stat-label { font-family: var(--font-sans); font-size-adjust: none; font-size: var(--fs-sm); letter-spacing: normal; text-transform: none; color: var(--color-foreground-muted); }
 .stat-row.is-divided .stat-value { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xl); font-weight: var(--w-mono-emphasis); letter-spacing: 0; }
+
+/* =================== SKELETON ===================
+   A placeholder in the shape of the content that is coming, so nothing moves
+   when the data lands. Three shapes:
+     .skeleton-text    one line of text — the bar is the x-height, the margins
+                       fill the exact line box the real text will take
+                       (--sk-lh, default the data line-height 1.4)
+     .skeleton-circle  avatar, icon
+     .skeleton-rect    button, image, chart (control radius)
+   .skeleton-lines stacks text lines; the last ends short so it reads as text.
+   Shapes are aria-hidden; the group carries aria-busy and a screen-reader
+   label (.skeleton-group). One keyframe for the whole system, shared with
+   the table's .dt-skeleton. */
+.skeleton {
+  display: block;
+  background: linear-gradient(90deg, var(--color-background-hover) 0%, var(--color-background-subtle) 50%, var(--color-background-hover) 100%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.4s var(--ease-linear) infinite;
+  border-radius: var(--radius-xs);
+}
+.skeleton-text { height: 0.7em; border-radius: var(--radius-pill); margin: calc((var(--sk-lh, 1.4) * 1em - 0.7em) / 2) 0; }
+.skeleton-circle { border-radius: 50%; flex-shrink: 0; }
+.skeleton-rect { border-radius: var(--shape-control); }
+.skeleton-lines { display: flex; flex-direction: column; }
+.skeleton-lines > .skeleton-text:last-child:not(:only-child) { width: 60%; }
+.skeleton-group[aria-busy="true"] { pointer-events: none; }
+@keyframes sk-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+@media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } }
+
+/* FilterChip sm (L-26) — for dense filter bars; on the control scale (32px). */
+.filter-chip.is-sm { height: var(--control-h-sm); padding: 0 var(--space-3); font-size: var(--fs-sm); gap: var(--space-2); }
+.filter-chip.is-sm svg { width: 12px; height: 12px; }
+/* ProgressBar sm (L-38) — 4px. */
+.progress.is-sm { --progress-h: 4px; }
+
+/* STAGE PROGRESS (L-29) — the step strip in a table row: 18×3 segments, gap 3. done success · current accent (warning when late) · todo track. */
+.stage-progress { display: inline-flex; gap: 3px; }
+  .stage-progress > i { width: 18px; height: 3px; border-radius: 1.5px; background: var(--color-dataviz-track, var(--color-border-default)); }
+  .stage-progress > i.is-done { background: var(--color-feedback-success-foreground); }
+  .stage-progress > i.is-current { background: var(--color-accent-solid); }
+  .stage-progress > i.is-late { background: var(--color-feedback-warning-foreground); }

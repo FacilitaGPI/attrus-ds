@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta · Prompt 07 · Lote 1</title>
+<link rel="stylesheet" href="../../src/index.css">
+<link rel="stylesheet" href="../../themes/index.css?v=1">
+<script src="../../theme-toggle.js?v=1"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1120px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .ey { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  h1 { margin: var(--space-3) 0; font-size: var(--fs-5xl); letter-spacing: var(--ls-display); }
+  .lead { max-width: 76ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+  section { margin-top: var(--space-12); }
+  section > h2 { font-size: var(--fs-2xl); margin: 0 0 var(--space-2); }
+  section > h2 .id { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-sm); color: var(--color-foreground-muted); margin-right: var(--space-3); }
+  section > p { max-width: 78ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-5); }
+  code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .stage { background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); padding: var(--space-6); }
+  table.t { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  table.t th, table.t td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: var(--border-hairline) solid var(--color-border-subtle); vertical-align: middle; }
+  table.t th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); font-weight: var(--w-regular); }
+  table.t tr:last-child td { border-bottom: 0; }
+  .mono { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); }
+  .row { display: flex; flex-wrap: wrap; gap: var(--space-5); align-items: center; }
+  .lbl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin: var(--space-6) 0 var(--space-3); }
+  .ok { color: var(--color-feedback-success-foreground); } .bad { color: var(--color-feedback-danger-foreground); }
+
+  /* ================= PROPOSAL — tokens (would live in colors_and_type.css) ================= */
+  .p {
+    --color-team-sales: #4F46E5; --color-team-compliance: #9333C9; --color-team-implementation: #0E9384; --color-team-payment-desk: #6E8B12; --color-team-product: #5E6A82;
+    --color-track-corporate: #0F6B7A; --color-track-enterprise: #002142; --color-track-business: #1E6DC4;
+  }
+  [data-theme="dark"] .p {
+    --color-team-sales: #8B93F8; --color-team-compliance: #C38AF0; --color-team-implementation: #2DD4BF; --color-team-payment-desk: #A9C64A; --color-team-product: #A6B0C4;
+    --color-track-corporate: #3BA7B8; --color-track-enterprise: #2F4F75; --color-track-business: #4A8FE7;
+  }
+  /* team identity — a dot + label, never a fill */
+  .p .team { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--fs-sm); }
+  .p .team::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--team, currentColor); flex-shrink: 0; }
+  /* TrackBadge */
+  /* Caps only, so the label is centred by the line box, not by flex: an
+     inline-block whose line-height equals its height puts the cap height in
+     the middle (measured 5.1px above the caps, 5.0px below the baseline).
+     The flex + line-height:1 version sat the caps 1px from the top. */
+  .p .track-badge { display: inline-block; vertical-align: middle; height: 18px; line-height: 18px; padding: 0 var(--space-2); border-radius: var(--radius-xs); background: var(--track); color: var(--color-pure-white);
+    font-size: 11px; font-weight: var(--w-bold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; box-sizing: border-box; }
+  .p .track-badge.track-corporate { --track: var(--color-track-corporate); }
+  .p .track-badge.track-enterprise { --track: var(--color-track-enterprise); }
+  .p .track-badge.track-business { --track: var(--color-track-business); }
+  /* text styles */
+  .p .body-sm-strong { font-size: var(--fs-sm); line-height: var(--lh-normal); font-weight: var(--w-bold); }
+  .p .caption-strong { font-size: var(--fs-xs); line-height: var(--lh-normal); font-weight: var(--w-bold); }
+  .p .mono-sm { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: 10px; text-transform: none; letter-spacing: 0; }
+  /* Pill tone team-* (outline) */
+  .p .pill.outline[class*="team-"] { color: var(--team); border-color: color-mix(in srgb, var(--team) 45%, transparent); background: transparent; }
+  .p .pill.outline[class*="team-"] .dot { background: var(--team); }
+  .p .team-sales { --team: var(--color-team-sales); } .p .team-compliance { --team: var(--color-team-compliance); } .p .team-implementation { --team: var(--color-team-implementation); } .p .team-payment-desk { --team: var(--color-team-payment-desk); } .p .team-product { --team: var(--color-team-product); }
+</style>
+</head>
+<body>
+<main class="doc p">
+  <div class="ey">Proposta · nada aplicado ainda · Prompt 07 · Lote 1 de 4</div>
+  <h1>Tokens e tipografia</h1>
+  <p class="lead">L-23, L-24, L-32 e L-25. Os valores são os do prompt; troque o tema e o produto no canto para ver os contrastes recalculados. As alçadas e as trilhas não mudam por produto: são identidade, a mesma no Enterprise e no Business.</p>
+
+  <section>
+    <h2><span class="id">L-23</span>Cores de alçada · <code>--color-team-*</code></h2>
+    <p>Identidade de time: ponto de 7px + rótulo, legenda, série de gráfico. Nunca fundo de tag de estado — por isso o ponto e o texto são medidos como elemento gráfico (mínimo 3:1) e como texto (4,5:1) sobre o fundo do card.</p>
+    <div class="stage"><table class="t" id="t23"><thead><tr><th>Token</th><th>Uso</th><th>Claro · escuro</th><th>Ponto (≥3)</th><th>Como texto (≥4,5)</th></tr></thead><tbody>
+      <tr data-v="--color-team-sales"><td class="mono">--color-team-sales</td><td><span class="team team-sales" style="--team:var(--color-team-sales)">Vendas</span></td><td class="mono">#4F46E5 · #8B93F8</td><td></td><td></td></tr>
+      <tr data-v="--color-team-compliance"><td class="mono">--color-team-compliance</td><td><span class="team" style="--team:var(--color-team-compliance)">Compliance</span></td><td class="mono">#9333C9 · #C38AF0</td><td></td><td></td></tr>
+      <tr data-v="--color-team-implementation"><td class="mono">--color-team-implementation</td><td><span class="team" style="--team:var(--color-team-implementation)">Implementação</span></td><td class="mono">#0E9384 · #2DD4BF</td><td></td><td></td></tr>
+      <tr data-v="--color-team-payment-desk"><td class="mono">--color-team-payment-desk</td><td><span class="team" style="--team:var(--color-team-payment-desk)">Payment Desk</span></td><td class="mono">#6E8B12 · #A9C64A</td><td></td><td></td></tr>
+      <tr data-v="--color-team-product"><td class="mono">--color-team-product</td><td><span class="team" style="--team:var(--color-team-product)">Produto</span></td><td class="mono">#5E6A82 · #A6B0C4</td><td></td><td></td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-24</span>Trilha · <code>--color-track-*</code> e <code>&lt;TrackBadge&gt;</code></h2>
+    <p>Selo com texto branco, 11px Bold em caixa-alta (o prompt pedia 9,5px; 11px é o menor tamanho de rótulo do DS, o mesmo do Pill pequeno). Altura 18px, raio 4px.</p>
+    <div class="stage">
+      <div class="row"><span class="track-badge track-corporate" id="tb-c">Corp</span><span class="track-badge track-enterprise" id="tb-e">Ent</span><span class="track-badge track-business" id="tb-b">Biz</span></div>
+      <table class="t" style="margin-top:var(--space-5)"><thead><tr><th>Selo</th><th>Claro · escuro</th><th>Texto branco (≥4,5)</th><th>Selo contra o card (≥3)</th></tr></thead><tbody id="t24"></tbody></table>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-32</span>Estilos de texto · <code>.body-sm-strong</code> · <code>.caption-strong</code> · <code>.mono-sm</code></h2>
+    <p>Os dois primeiros são os estilos existentes em Bold, para nome de empresa, tempo e volume sem override. O <code>.mono-sm</code> é mono 10px em caixa normal, para metadados — diferente do <code>.overline-mono</code>, que é sempre caixa-alta.</p>
+    <div class="stage" style="display:grid;grid-template-columns:200px 1fr;gap:var(--space-4) var(--space-6);align-items:baseline">
+      <span class="mono">.body-sm</span><span class="body-sm" style="font-size:var(--fs-sm)">Global Supplies LLC · 2h atrás · 18.425,00</span>
+      <span class="mono">.body-sm-strong</span><span class="body-sm-strong">Global Supplies LLC · 2h atrás · 18.425,00</span>
+      <span class="mono">.caption-strong</span><span class="caption-strong">Vence hoje · 14:00</span>
+      <span class="mono">.mono-sm</span><span class="mono-sm" style="color:var(--color-foreground-muted)">cli_8f2a91 · atualizado 05/11 14:02</span>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-25</span><code>Pill appearance="outline" tone="team-*"</code></h2>
+    <p>Contorno a 45% e ponto na cor da alçada, texto na cor cheia. Só no <code>outline</code>: no <code>soft</code> e no <code>solid</code> a cor viraria fundo de tag de estado, que o L-23 proíbe.</p>
+    <div class="stage"><div class="row" id="pills">
+      <span class="pill outline team-compliance"><span class="dot"></span><span class="pill-label">Em atenção</span></span>
+      <span class="pill outline team-sales"><span class="dot"></span><span class="pill-label">Vendas</span></span>
+      <span class="pill outline team-implementation"><span class="dot"></span><span class="pill-label">Implementação</span></span>
+      <span class="pill outline team-payment-desk"><span class="dot"></span><span class="pill-label">Payment Desk</span></span>
+      <span class="pill outline team-product"><span class="dot"></span><span class="pill-label">Produto</span></span>
+    </div><div class="lbl">contraste do texto</div><div class="row mono" id="pillm"></div></div>
+  </section>
+
+  <section>
+    <h2>Arquivos</h2>
+    <p><code>colors_and_type.css</code> (8 tokens com claro e escuro; 3 estilos de texto), <code>themes/enterprise.css</code> e <code>business.css</code> não mudam (os tokens são de identidade, não de produto), <code>status-pills.css</code> e <code>Pill</code> (<code>tone</code> aceita <code>team-*</code>), <code>components/TrackBadge/</code> (<code>.tsx</code>, <code>.d.ts</code>, bancada), <code>track-badge.css</code>, <code>colors-semantic.html</code> (seção "Identidade de times e trilhas"), <code>typography.html</code> e o export de tokens.</p>
+  </section>
+</main>
+<script>
+(function () {
+  function srgb(v){ v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
+  function rgb(c){ var m = c.match(/[\d.]+/g).map(Number); return /color\(srgb/.test(c) ? m.slice(0,3).map(function(x){ return x * 255; }) : m.slice(0, 3); }
+  function lum(c){ var m = rgb(c); return 0.2126 * srgb(m[0]) + 0.7152 * srgb(m[1]) + 0.0722 * srgb(m[2]); }
+  function cr(a, b){ var x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); }
+  function esc(t){ return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function tag(v, min){ return '<span class="' + (v >= min ? 'ok' : 'bad') + '">' + v.toFixed(1) + ':1</span>'; }
+  function col(v){ var p = document.createElement('span'); p.style.color = 'var(' + v + ')'; document.querySelector('.p').appendChild(p); var c = getComputedStyle(p).color; p.remove(); return c; }
+  function run() {
+    var surf = getComputedStyle(document.querySelector('.stage')).backgroundColor;
+    document.querySelectorAll('#t23 tbody tr').forEach(function (r) { var c = col(r.getAttribute('data-v')); r.children[3].innerHTML = tag(cr(c, surf), 3); r.children[4].innerHTML = tag(cr(c, surf), 4.5); });
+    var tb = document.getElementById('t24'); tb.innerHTML = '';
+    [['tb-c', 'Corp', '#0F6B7A · #3BA7B8'], ['tb-e', 'Ent', '#002142 · #2F4F75'], ['tb-b', 'Biz', '#1E6DC4 · #4A8FE7']].forEach(function (x) { var b = document.getElementById(x[0]), bg = getComputedStyle(b).backgroundColor;
+      tb.insertAdjacentHTML('beforeend', '<tr><td>' + b.outerHTML + '</td><td class="mono">' + x[2] + '</td><td>' + tag(cr(getComputedStyle(b).color, bg), 4.5) + '</td><td>' + tag(cr(bg, surf), 3) + '</td></tr>'); });
+    document.getElementById('pillm').innerHTML = [].map.call(document.querySelectorAll('#pills .pill'), function (p) { return esc(p.textContent.trim()) + ' ' + tag(cr(getComputedStyle(p).color, surf), 4.5); }).join(' · ');
+  }
+  run(); window.addEventListener('attrus-theme', function () { setTimeout(run, 450); });
+})();
+</script>
+</body>
+</html>

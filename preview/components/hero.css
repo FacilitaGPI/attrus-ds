@@ -1,0 +1,64 @@
+/* ============================================================
+   HERO — preview/components/hero.css
+   The top of a dashboard or a section: eyebrow, display title, sub, actions
+   and optional KPI tiles.
+     .hero.hero-ink        dashboard (default): brand gradient + radial glow;
+                           .hero-ink re-points the text tokens to the inverse pair
+     .hero.is-subtle       light surface, for a section inside the app
+     .hero.is-compact / .is-large   size; .is-large replaces "marketing"
+     .hero-eyebrow · .hero-title (em = accent) · .hero-sub · .hero-actions
+     .hero-tiles > .hero-tile > .hero-tile-k / -v / -d (.is-up / .is-down)
+   On the dark hero the text and border tokens are re-pointed to the inverse
+   pair, so DS children — Button secondary/ghost, Pill, Money — read light
+   with no rule of their own. Actions are the DS Button: inverse + secondary.
+   The hero measures its own width: under 560px tiles go to two columns and
+   the title steps down.
+   The root is .hero:not(.card): .card.hero is the dark stat card (cards.css),
+   an older and different component that shares the word.
+   ============================================================ */
+.hero:not(.card) { position: relative; overflow: hidden; container-type: inline-size;
+  border-radius: var(--shape-overlay); padding: var(--space-8) var(--space-9);
+  background: var(--grad-hero); box-shadow: var(--shadow-lg); color: var(--color-foreground-default); }
+/* The dark hero's token scope is its own single class, .hero-ink (added by
+   <Hero variant="dashboard">): the compiler registers a scope only on a plain
+   class, and the subtle hero simply leaves it off. */
+.hero-ink {
+  /* dark surface: re-point the text and border tokens, so any DS child (Button
+     secondary/ghost, Pill, Money, DescTerm) reads light without its own rule */
+  --color-foreground-default: var(--color-foreground-inverse-default);
+  --color-foreground-secondary: var(--color-foreground-inverse-secondary);
+  --color-foreground-muted: var(--color-foreground-inverse-muted);
+  --color-border-default: var(--color-border-inverse);
+  --color-border-strong: var(--color-border-inverse);
+  --color-background-hover: var(--color-background-inverse-hover); }
+.hero:not(.card)::before { content: ""; position: absolute; inset: 0; background: var(--grad-radial-glow); pointer-events: none; }
+.hero:not(.card) > * { position: relative; z-index: 1; }
+.hero-eyebrow { display: flex; align-items: center; gap: var(--space-2); font-size: var(--fs-sm); color: var(--color-foreground-secondary); margin-bottom: var(--space-3); }
+.hero-title { font-family: var(--font-display); font-size: var(--fs-7xl); font-weight: var(--w-black); letter-spacing: var(--ls-display); line-height: var(--lh-tight); margin: 0 0 var(--space-3); color: var(--color-foreground-default); }
+.hero-title em { font-style: normal; color: var(--color-accent-solid); }
+.hero-sub { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+.hero-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-6); }
+.hero-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-3); margin-top: var(--space-6); }
+.hero-tile { background: var(--color-overlay-white-08); border: var(--border-hairline) solid var(--color-overlay-white-12); border-radius: var(--shape-control); padding: var(--space-3) var(--space-4); display: flex; flex-direction: column; gap: var(--space-1); }
+.hero-tile-k { display: flex; align-items: center; gap: var(--space-2); font-size: var(--fs-sm); color: var(--color-foreground-secondary); }
+.hero-tile-k img { width: 16px; height: 16px; border-radius: 50%; }
+.hero-tile-v { font-size: var(--fs-xl); font-weight: var(--w-bold); font-variant-numeric: tabular-nums; line-height: 1.3; }
+.hero-tile-d { display: inline-flex; align-items: center; gap: var(--space-1); font-size: var(--fs-sm); color: var(--color-foreground-muted); }
+.hero-tile-d.is-up { color: var(--color-feedback-success-foreground-on-inverse); }
+.hero-tile-d.is-down { color: var(--color-feedback-danger-foreground-on-inverse); }
+.hero-tile-d svg { width: 12px; height: 12px; }
+.hero:not(.card).is-subtle { background: var(--color-background-surface); box-shadow: none; border: var(--border-hairline) solid var(--color-border-default); }
+.hero:not(.card).is-subtle::before { display: none; }
+.hero:not(.card).is-subtle .hero-title em { color: var(--color-foreground-accent); }
+.hero:not(.card).is-subtle .hero-tile { background: var(--color-background-subtle); border-color: var(--color-border-subtle); }
+.hero:not(.card).is-subtle .hero-tile-d.is-up { color: var(--color-feedback-success-foreground); }
+.hero:not(.card).is-subtle .hero-tile-d.is-down { color: var(--color-feedback-danger-foreground); }
+.hero:not(.card).is-compact { padding: var(--space-6) var(--space-7); }
+.hero:not(.card).is-compact .hero-title { font-size: var(--fs-5xl); }
+.hero:not(.card).is-large { padding: var(--space-12); }
+.hero:not(.card).is-large .hero-title { font-size: var(--fs-8xl); max-width: 14ch; }
+@container (max-width: 560px) {
+  .hero:not(.card) { padding: var(--space-6) var(--space-5); }
+  .hero:not(.card) .hero-title { font-size: var(--fs-4xl); }
+  .hero-tiles { grid-template-columns: 1fr 1fr; }
+}

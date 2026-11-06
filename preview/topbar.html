@@ -7,7 +7,8 @@
 <link rel="stylesheet" href="../src/themes/index.css">
 <link rel="stylesheet" href="components/inputs.css?v=10">
 <link rel="stylesheet" href="components/buttons.css?v=10">
-<link rel="stylesheet" href="components/topbar.css?v=12">
+<link rel="stylesheet" href="components/topbar.css?v=13">
+<link rel="stylesheet" href="components/menu.css?v=2">
 <link rel="stylesheet" href="components/callout.css?v=3">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="../theme-toggle.js"></script>
@@ -364,17 +365,17 @@
             <span class="tb-account-id"><span class="nm">Julia Dias</span><span class="co">Attrus</span></span>
             <span class="chev"><i data-lucide="chevron-down"></i></span>
           </button>
-          <div class="tb-account-menu" role="menu">
+          <div class="menu tb-account-menu" role="menu">
             <div class="tb-account-menu-head">
               <span class="tb-avatar lg">JD</span>
               <span class="tb-account-menu-id"><span class="nm">Julia Dias</span><span class="co">julia@attrus.com</span></span>
             </div>
-            <div class="tb-account-menu-sep"></div>
-            <button class="tb-account-menu-item" role="menuitem"><i data-lucide="user"></i> Profile</button>
-            <button class="tb-account-menu-item" role="menuitem"><i data-lucide="building-2"></i> Organisation</button>
-            <button class="tb-account-menu-item" role="menuitem"><i data-lucide="settings"></i> Settings</button>
-            <div class="tb-account-menu-sep"></div>
-            <button class="tb-account-menu-item is-danger" role="menuitem"><i data-lucide="log-out"></i> Sign out</button>
+            <div class="menu-sep" role="separator"></div>
+            <button class="menu-item" role="menuitem"><span class="menu-item-icon"><i data-lucide="user"></i></span><span class="menu-item-title">Profile</span><span></span></button>
+            <button class="menu-item" role="menuitem"><span class="menu-item-icon"><i data-lucide="building-2"></i></span><span class="menu-item-title">Organisation</span><span></span></button>
+            <button class="menu-item" role="menuitem"><span class="menu-item-icon"><i data-lucide="settings"></i></span><span class="menu-item-title">Settings</span><span></span></button>
+            <div class="menu-sep" role="separator"></div>
+            <button class="menu-item is-danger" role="menuitem"><span class="menu-item-icon"><i data-lucide="log-out"></i></span><span class="menu-item-title">Sign out</span><span></span></button>
           </div>
         </div>
       </div>

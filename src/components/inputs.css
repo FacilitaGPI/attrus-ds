@@ -850,7 +850,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
     border-color var(--transition-fast),
     box-shadow var(--transition-fast);
 }
-.check-box svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: 3; opacity: 0; transform: scale(0.8); transition: opacity var(--transition-fast), transform var(--transition-fast); }
+.check-box svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: 4;  /* 4 on the 24 grid → 2px at 12px (L-21) */ opacity: 0; transform: scale(0.8); transition: opacity var(--transition-fast), transform var(--transition-fast); }
 .check input:checked ~ .check-box {
   background: var(--color-brand-solid);
   border-color: var(--color-brand-solid);
@@ -932,14 +932,14 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 }
 .radio-dot::after {
   content: '';
-  width: 8px;
-  height: 8px;
+  width: 10px;  /* was 8 (L-22) */
+  height: 10px;
   border-radius: var(--radius-pill);
   background: var(--color-brand-solid);
   transform: scale(0);
   transition: transform var(--transition-fast);
 }
-.radio input:checked ~ .radio-dot { border-color: var(--color-brand-solid); }
+.radio input:checked ~ .radio-dot { border-color: var(--color-brand-border); }  /* lighter ring; the dot carries the state (L-22) */
 .radio input:checked ~ .radio-dot::after { transform: scale(1); }
 .radio input:focus-visible ~ .radio-dot { box-shadow: var(--shadow-focus); }
 /* Disabled — explicit tokens (see .switch rationale) */
@@ -1501,3 +1501,111 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   color: var(--color-foreground-disabled);
   cursor: not-allowed;
 }
+
+/* SELECTABLE CARD · FORM CONTROLS — the card renders the form's own .radio-dot
+   and .check-box (L-20) and its hidden input drives them through the same
+   rules as a form, so the mark is identical in every state and theme. */
+.sel-card > .radio-dot, .sel-card > .check-box { flex-shrink: 0; }
+.sel-card input:checked ~ .check-box {
+  background: var(--color-brand-solid);
+  border-color: var(--color-brand-solid);
+}
+.sel-card input:checked ~ .check-box svg { opacity: 1; transform: scale(1); }
+.sel-card input:checked ~ .check-box::before { opacity: 1; transform: rotate(45deg) scale(1); }
+.sel-card input:indeterminate ~ .check-box::before { content: none; }
+.sel-card input:indeterminate ~ .check-box {
+  background: var(--color-brand-solid);
+  border-color: var(--color-brand-solid);
+}
+.sel-card input:indeterminate ~ .check-box::after {
+  content: '';
+  width: 10px;
+  height: 2px;
+  background: var(--color-pure-white);
+  border-radius: 1px;
+}
+.sel-card input:indeterminate ~ .check-box svg { display: none; }
+.sel-card input:focus-visible ~ .check-box { box-shadow: var(--shadow-focus); }
+.sel-card input:disabled ~ .check-box {
+  background: var(--color-background-sunken);
+  border-color: var(--color-border-default);
+}
+.sel-card input:disabled ~ .check-box svg { color: var(--color-foreground-disabled); }
+.sel-card input:checked:disabled ~ .check-box,
+.sel-card input:indeterminate:disabled ~ .check-box {
+  background: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+  border-color: transparent;
+}
+.sel-card input:checked:disabled ~ .check-box svg { color: var(--color-neutral-100); }
+.sel-card input:checked ~ .radio-dot { border-color: var(--color-brand-border); }
+.sel-card input:checked ~ .radio-dot::after { transform: scale(1); }
+.sel-card input:focus-visible ~ .radio-dot { box-shadow: var(--shadow-focus); }
+.sel-card input:disabled ~ .radio-dot {
+  background: var(--color-background-sunken);
+  border-color: var(--color-border-default);
+}
+.sel-card input:checked:disabled ~ .radio-dot {
+  border-color: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+}
+.sel-card input:checked:disabled ~ .radio-dot::after {
+  background: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+}
+.sel-card.on-inverse input:checked ~ .check-box,
+.sel-card.on-inverse input:indeterminate ~ .check-box {
+  background: var(--color-accent-solid);
+  border-color: var(--color-accent-solid);
+}
+.sel-card.on-inverse input:checked ~ .radio-dot { border-color: var(--color-accent-solid); }
+.sel-card.on-inverse input:checked ~ .radio-dot::after { background: var(--color-accent-solid); }
+.sel-card.on-inverse input:focus-visible ~ .check-box,
+.sel-card.on-inverse input:focus-visible ~ .radio-dot { box-shadow: var(--shadow-focus-inverse); }
+
+/* The same states keyed off the card's classes, for static markup with no
+   input (docs, server-rendered lists): .is-selected = checked,
+   [aria-disabled="true"] = disabled. */
+.sel-card.is-selected > .check-box {
+  background: var(--color-brand-solid);
+  border-color: var(--color-brand-solid);
+}
+.sel-card.is-selected > .check-box svg { opacity: 1; transform: scale(1); }
+.sel-card.is-selected > .check-box::before { opacity: 1; transform: rotate(45deg) scale(1); }
+.sel-card[aria-disabled="true"] > .check-box {
+  background: var(--color-background-sunken);
+  border-color: var(--color-border-default);
+}
+.sel-card[aria-disabled="true"] > .check-box svg { color: var(--color-foreground-disabled); }
+.sel-card.is-selected[aria-disabled="true"] > .check-box {
+  background: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+  border-color: transparent;
+}
+.sel-card.is-selected[aria-disabled="true"] > .check-box svg { color: var(--color-neutral-100); }
+.sel-card.is-selected > .radio-dot { border-color: var(--color-brand-border); }
+.sel-card.is-selected > .radio-dot::after { transform: scale(1); }
+.sel-card[aria-disabled="true"] > .radio-dot {
+  background: var(--color-background-sunken);
+  border-color: var(--color-border-default);
+}
+.sel-card.is-selected[aria-disabled="true"] > .radio-dot {
+  border-color: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+}
+.sel-card.is-selected[aria-disabled="true"] > .radio-dot::after {
+  background: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+}
+.sel-card.on-inverse.is-selected > .check-box {
+  background: var(--color-accent-solid);
+  border-color: var(--color-accent-solid);
+}
+.sel-card.on-inverse.is-selected > .radio-dot { border-color: var(--color-accent-solid); }
+.sel-card.on-inverse.is-selected > .radio-dot::after { background: var(--color-accent-solid); }
+
+/* CHECK TICK OUTRANKS THE LUCIDE DEFAULT — the global svg.lucide[stroke-width]
+   rule (which sets every Lucide icon to the DS stroke) is more specific than
+   .check-box svg, so a Lucide-rendered tick drew 1.75 instead of the 2px the
+   check is specified at (L-21). */
+.check-box svg.lucide[stroke-width] { stroke-width: 4; }
+
+/* Select lead (L-35) — a badge, icon or flag before the value. The native
+   <select> takes no markup in its options, so the lead shows the chosen item
+   and the option text stays the accessible name. */
+.select-lead { position: absolute; left: var(--space-3); top: 50%; transform: translateY(-50%); display: inline-flex; align-items: center; pointer-events: none; z-index: 1; }
+.select:has(> .select-lead) > select.input { padding-left: calc(var(--space-3) + var(--select-lead-w, 32px) + var(--space-3)); }

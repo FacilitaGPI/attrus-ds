@@ -129,6 +129,7 @@ export declare const DTToolbar: React.FC<{
 
 export declare const DTDetailCard: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>>;
 
+/** Subrow lead: icon tile + label, then children (DTSubrowMeta tag/status). */
 export declare const DTSubrowLead: React.FC<{
   label: React.ReactNode;
   icon?: React.ReactNode;
@@ -210,3 +211,8 @@ export declare const DTOutlineSet: React.FC<React.HTMLAttributes<HTMLSpanElement
 export declare const DTDetailSheet: React.FC<{ open: boolean; onClose: () => void; title: React.ReactNode; sub?: React.ReactNode; eyebrow?: React.ReactNode; footer?: React.ReactNode; children?: React.ReactNode }>;
 /** True when the table container is narrower than 560px — agrees with the CSS container query. */
 export declare function useDTCompact(ref: React.RefObject<HTMLElement>): boolean;
+
+/** Floating bulk-action bar for selection mode — DataTable's `selectionBar` slot.
+    Visible only below the breakpoint; desktop keeps the actions in the toolbar.
+    Actions should be icon buttons with aria-labels. */
+export declare const DTSelectionBar: React.FC<{ count: React.ReactNode; actions?: React.ReactNode; onClear?: () => void } & React.HTMLAttributes<HTMLDivElement>>;

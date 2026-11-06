@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta · L-08 · Skeleton</title>
+<link rel="stylesheet" href="../../src/index.css">
+<link rel="stylesheet" href="../../themes/index.css?v=1">
+<script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1120px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .ey { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  h1 { margin: var(--space-3) 0; font-size: var(--fs-5xl); letter-spacing: var(--ls-display); }
+  .lead { max-width: 74ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+  section { margin-top: var(--space-12); }
+  section > h2 { font-size: var(--fs-2xl); margin: 0 0 var(--space-2); }
+  section > p { max-width: 76ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-5); }
+  code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  pre { margin: 0; padding: var(--space-5); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); line-height: 1.7; overflow-x: auto; color: var(--color-foreground-secondary); }
+  pre .c { color: var(--color-foreground-muted); }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
+  @media (max-width: 860px) { .pair { grid-template-columns: 1fr; } }
+  .cl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; margin-bottom: var(--space-3); color: var(--color-foreground-muted); }
+  .stage { background: var(--color-background-subtle); border-radius: var(--shape-container); padding: var(--space-6); }
+  .toggle { margin-bottom: var(--space-5); }
+  .m { margin-top: var(--space-4); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); line-height: 1.7; }
+  .m b { color: var(--color-foreground-default); font-weight: var(--w-regular); }
+  .row { display: flex; align-items: center; gap: var(--space-3); min-height: 64px; padding: var(--space-3) var(--space-4); border-bottom: var(--border-hairline) solid var(--color-border-subtle); box-sizing: border-box; }
+  .row:last-child { border-bottom: 0; }
+  .row .tx { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--space-1); }
+  .row .end { display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-1); }
+  .av { width: 32px; height: 32px; border-radius: 50%; background: var(--color-background-selected); color: var(--color-foreground-brand); display: inline-flex; align-items: center; justify-content: center; font-size: var(--fs-xs); font-weight: var(--w-bold); flex-shrink: 0; }
+  .t1 { font-size: var(--fs-md); line-height: 1.4; } .t2 { font-size: var(--fs-sm); line-height: 1.4; color: var(--color-foreground-muted); }
+
+  /* ================= PROPOSAL — the component's CSS ================= */
+  .skeleton {
+    display: block;
+    background: linear-gradient(90deg, var(--color-background-hover) 0%, var(--color-background-subtle) 50%, var(--color-background-hover) 100%);
+    background-size: 200% 100%;
+    animation: sk-shimmer 1.4s var(--ease-linear) infinite;
+    border-radius: var(--radius-xs);
+  }
+  .skeleton-text { height: 0.7em; border-radius: var(--radius-pill); margin: calc((var(--sk-lh, 1.4) * 1em - 0.7em) / 2) 0; }   /* one text line: the bar is the x-height, the margins fill the exact line box the text will take (--sk-lh, the DS data line-height 1.4) */
+  .skeleton-circle { border-radius: 50%; flex-shrink: 0; }
+  .skeleton-rect { border-radius: var(--shape-control); }
+  .skeleton-lines { display: flex; flex-direction: column; }
+  .skeleton-lines > .skeleton-text:last-child:not(:only-child) { width: 60%; }               /* a paragraph ends short, so it reads as text */
+  [aria-busy="true"] .skeleton { pointer-events: none; }
+  @keyframes sk-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+  @media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+</style>
+</head>
+<body>
+<main class="doc">
+  <div class="ey">Proposta · nada aplicado ainda · Prompt 06 · L-08 · 2 de 3</div>
+  <h1>Skeleton</h1>
+  <p class="lead">Hoje o shimmer só existe dentro da tabela (<code>.dt-skeleton</code>). A proposta é um <code>Skeleton</code> avulso com três formas — linha de texto, círculo e retângulo — para cards e listas. A regra que importa: o esqueleto tem o mesmo formato do conteúdo que vem, para nada pular quando os dados chegam.</p>
+
+  <section>
+    <h2>API</h2>
+<pre>&lt;Skeleton shape="text"   width="70%" /&gt;        <span class="c">// uma linha; altura vem da fonte do pai</span>
+&lt;Skeleton shape="text"   lines={3} /&gt;          <span class="c">// parágrafo; a última linha termina curta</span>
+&lt;Skeleton shape="circle" size={32} /&gt;          <span class="c">// avatar, ícone</span>
+&lt;Skeleton shape="rect"   width={120} height={32} /&gt;  <span class="c">// botão, imagem, gráfico</span>
+
+&lt;SkeletonGroup label="Carregando transações"&gt;   <span class="c">// aria-busy + o rótulo só para leitor de tela</span>
+  …
+&lt;/SkeletonGroup&gt;</pre>
+  </section>
+
+  <section>
+    <h2>Esqueleto ao lado do conteúdo real</h2>
+    <p>Troque entre os dois: o card e a lista não mudam de altura nem de posição quando os dados chegam. A regra para isso: cada linha de texto do esqueleto ocupa a altura de uma linha real (a barra tem a altura-x e o resto é margem), e o número de linhas é o do conteúdo típico — aqui, um parágrafo de duas linhas.</p>
+    <div class="toggle"><button class="btn btn-secondary btn-sm" id="swap">Mostrar conteúdo</button></div>
+    <div class="pair">
+      <div><div class="cl">Card</div><div class="stage">
+        <div class="card" id="card-sk" aria-busy="true"><span class="sr-only">Carregando resumo</span>
+          <div class="skeleton skeleton-text" aria-hidden="true" style="width:40%;font-size:var(--fs-md)"></div>
+          <div style="height:var(--space-4)"></div>
+          <div class="skeleton-lines" aria-hidden="true" style="font-size:var(--fs-sm)"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text"></div></div>
+          <div style="height:var(--space-5)"></div>
+          <div class="skeleton skeleton-rect" aria-hidden="true" style="width:132px;height:var(--control-h-sm)"></div>
+        </div>
+        <div class="card" id="card-real" hidden>
+          <div style="font-size:var(--fs-md);font-weight:var(--w-bold);line-height:1.4">Resumo da revisão</div>
+          <div style="height:var(--space-4)"></div>
+          <div style="font-size:var(--fs-sm);line-height:1.4;color:var(--color-foreground-secondary)">O banco pediu documentos que comprovem a origem do valor. Envie o contrato e a nota fiscal até sexta-feira para liberar a transferência.</div>
+          <div style="height:var(--space-5)"></div>
+          <button class="btn btn-primary btn-sm">Enviar documentos</button>
+        </div>
+      </div><div class="m" id="m-card"></div></div>
+      <div><div class="cl">Lista</div><div class="stage" style="padding:0;background:var(--color-background-surface);border:var(--border-hairline) solid var(--color-border-default)">
+        <div id="list-sk" aria-busy="true"><span class="sr-only">Carregando transações</span>
+          <div class="row" aria-hidden="true"><span class="skeleton skeleton-circle" style="width:32px;height:32px"></span><span class="tx"><span class="skeleton skeleton-text" style="width:70%;font-size:var(--fs-md)"></span><span class="skeleton skeleton-text" style="width:45%;font-size:var(--fs-sm)"></span></span><span class="end"><span class="skeleton skeleton-text" style="width:72px;font-size:var(--fs-md)"></span><span class="skeleton skeleton-text" style="width:44px;font-size:var(--fs-sm)"></span></span></div>
+          <div class="row" aria-hidden="true"><span class="skeleton skeleton-circle" style="width:32px;height:32px"></span><span class="tx"><span class="skeleton skeleton-text" style="width:55%;font-size:var(--fs-md)"></span><span class="skeleton skeleton-text" style="width:38%;font-size:var(--fs-sm)"></span></span><span class="end"><span class="skeleton skeleton-text" style="width:64px;font-size:var(--fs-md)"></span><span class="skeleton skeleton-text" style="width:44px;font-size:var(--fs-sm)"></span></span></div>
+        </div>
+        <div id="list-real" hidden>
+          <div class="row"><span class="av">GS</span><span class="tx"><span class="t1">Global Supplies LLC</span><span class="t2">Wire · TX-90412</span></span><span class="end"><span class="t1">−18.425,00</span><span class="t2">Pendente</span></span></div>
+          <div class="row"><span class="av">AL</span><span class="tx"><span class="t1">Aurora Logistics</span><span class="t2">Pix · TX-90388</span></span><span class="end"><span class="t1">1.000,00</span><span class="t2">Liquidada</span></span></div>
+        </div>
+      </div><div class="m" id="m-list"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>O que muda</h2>
+    <p>Arquivos: <code>primitives.css</code> (o <code>.skeleton</code> e as três formas, com um keyframe só), <code>components/Skeleton/</code> (<code>.tsx</code>, <code>.d.ts</code> e bancada), <code>preview/skeleton.html</code>, entradas no catálogo, no índice e no README. O <code>.dt-skeleton</code> da tabela passa a usar o mesmo keyframe, então os dois shimmers ficam idênticos. A página Motion aponta para o componente.</p>
+    <p>Acessibilidade: as formas são <code>aria-hidden</code>; o grupo tem <code>aria-busy="true"</code> e um rótulo só para leitor de tela, que é o que se anuncia. Sem animação quando o sistema pede movimento reduzido.</p>
+  </section>
+</main>
+<script>
+lucide.createIcons();
+(function () {
+  function h(id){ return Math.round(document.getElementById(id).getBoundingClientRect().height); }
+  function measure() {
+    var cs = document.getElementById('card-sk'), cr = document.getElementById('card-real'), ls = document.getElementById('list-sk'), lr = document.getElementById('list-real');
+    var a = { card: 0, list: 0 }, b = { card: 0, list: 0 };
+    cs.hidden = false; cr.hidden = true; ls.hidden = false; lr.hidden = true; a.card = h('card-sk'); a.list = h('list-sk');
+    cs.hidden = true; cr.hidden = false; ls.hidden = true; lr.hidden = false; b.card = h('card-real'); b.list = h('list-real');
+    cs.hidden = false; cr.hidden = true; ls.hidden = false; lr.hidden = true;
+    document.getElementById('m-card').innerHTML = 'esqueleto <b>' + a.card + 'px</b> · conteúdo <b>' + b.card + 'px</b> · pulo <b>' + (b.card - a.card) + 'px</b>';
+    document.getElementById('m-list').innerHTML = 'esqueleto <b>' + a.list + 'px</b> · conteúdo <b>' + b.list + 'px</b> · pulo <b>' + (b.list - a.list) + 'px</b>';
+  }
+  measure();
+  var showing = false;
+  document.getElementById('swap').addEventListener('click', function () {
+    showing = !showing;
+    ['card-sk', 'list-sk'].forEach(function (id) { document.getElementById(id).hidden = showing; });
+    ['card-real', 'list-real'].forEach(function (id) { document.getElementById(id).hidden = !showing; });
+    this.textContent = showing ? 'Mostrar esqueleto' : 'Mostrar conteúdo';
+  });
+})();
+</script>
+</body>
+</html>

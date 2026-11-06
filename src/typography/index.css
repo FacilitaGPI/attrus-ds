@@ -31,6 +31,12 @@ h6, .h6 { font-weight: var(--w-regular); font-size: var(--fs-lg);  line-height: 
 .body     { font-size: var(--fs-base);line-height: var(--lh-normal);  }
 .body-sm  { font-size: var(--fs-md);  line-height: var(--lh-normal);  }
 .caption  { font-size: var(--fs-sm);  line-height: var(--lh-normal); color: var(--color-foreground-muted); }
+/* Strong and small-mono text styles (L-32) — so a bold company name, a time or
+   a volume is a style, not an override. .mono-sm is metadata in normal case;
+   .overline-mono stays the caps one. */
+.body-sm-strong { font-size: var(--fs-sm); line-height: var(--lh-normal); font-weight: var(--w-bold); }
+.caption-strong { font-size: var(--fs-xs); line-height: var(--lh-normal); font-weight: var(--w-bold); }
+.mono-sm { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: 10px; line-height: var(--lh-normal); letter-spacing: 0; text-transform: none; }
 .overline { font-size: var(--fs-xs);  line-height: var(--lh-normal); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); font-weight: var(--w-regular); }
 .overline-mono { font-family: var(--font-mono);
   font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); line-height: var(--lh-normal); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); font-weight: var(--w-regular); }

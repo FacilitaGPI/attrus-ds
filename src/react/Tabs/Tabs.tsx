@@ -62,9 +62,8 @@ export const Tabs: React.FC<TabsProps> = ({
   onChange,
   variant = 'underline',
   size = 'md',
-  countStyle = 'badge',
   layout = 'auto',
-  animated = true,
+  animated = true, countStyle = 'badge',
   className,
   ...rest
 }) => {

@@ -6,7 +6,7 @@
 <title>Sidebar navigation · ATTRUS Design System</title>
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
-<link rel="stylesheet" href="components/sidebar.css?v=5">
+<link rel="stylesheet" href="components/sidebar.css?v=3983">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="../theme-toggle.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
@@ -76,7 +76,7 @@
   .spec-tag { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
   .spec-canvas { padding: var(--space-8); background: var(--color-background-canvas); background-image: linear-gradient(var(--color-border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; display: flex; justify-content: center; align-items: flex-start; min-height: 280px; }
 
-  /* Sidebar component rules now live in components/sidebar.css?v=5 (single source) */
+  /* Sidebar component rules now live in components/sidebar.css?v=3983 (single source) */
 
   /* ===== Animation preview stages ===== */
   .anim-stage {
@@ -119,31 +119,8 @@
     border-radius: var(--radius-md);
     overflow: hidden;
   }
-  .demo-scrim {
-    position: absolute; inset: 0;
-    background: var(--color-scrim);
-    backdrop-filter: blur(2px);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity var(--duration-base) var(--ease-standard);
-  }
-  .demo-scrim.is-open { opacity: 1; }
-  .demo-drawer {
-    position: absolute; top: 0; left: 0; bottom: 0;
-    width: 220px;
-    background: var(--color-background-surface);
-    box-shadow: var(--shadow-xl);
-    transform: translateX(-100%);
-    transition: transform var(--duration-deliberate) var(--ease-emphasis);
-    padding: var(--space-4);
-  }
-  .demo-drawer.is-open { transform: translateX(0); }
-  .demo-drawer .row {
-    height: 30px; margin-bottom: var(--space-1);
-    border-radius: var(--radius-sm);
-    background: var(--color-background-subtle);
-  }
-  .demo-drawer .row.active { background: var(--color-background-selected); }
+  /* the product drawer is position:fixed; the transform makes this frame its containing block */
+  .demo-stage-window { transform: translateZ(0); }
 
   /* Rail width preview wrapper */
   .demo-rail-wrap { display: flex; gap: var(--space-3); align-items: flex-start; }
@@ -1182,21 +1159,22 @@
       <header class="spec-head">
         <div>
           <h3>Mobile drawer — enter / exit</h3>
-          <p>Slides in from the left with <code>transform: translateX</code>. Scrim fades in simultaneously. <code>--duration-deliberate</code> with <code>--ease-emphasis</code>.</p>
+          <p>The product drawer itself — <code>.sb.is-drawer</code> over <code>.sb-scrim</code>, or <code>&lt;AppSidebar mobileOpen onMobileClose&gt;</code>. Slides in from the left with <code>transform: translateX</code> while the scrim fades in; <code>--duration-deliberate</code> with <code>--ease-emphasis</code>. Focus moves into the drawer and is trapped; Esc and a scrim click close it and return focus to the opener.</p>
         </div>
         <span class="spec-tag">640ms · emphasis</span>
       </header>
       <div class="anim-stage" data-anim="drawer-enter">
         <button class="anim-replay" type="button"><i data-lucide="play"></i>Replay</button>
         <div class="demo-stage-window">
-          <div class="demo-scrim is-open"></div>
-          <div class="demo-drawer is-open">
-            <div class="row active"></div>
-            <div class="row"></div>
-            <div class="row"></div>
-            <div class="row"></div>
-            <div class="row"></div>
-          </div>
+          <div class="sb-scrim is-open"></div>
+          <aside class="sb is-drawer is-open" aria-label="Navigation">
+            <div class="sb-body">
+              <div class="sb-item active"><i data-lucide="home" class="ic"></i><span class="label">Home</span></div>
+              <div class="sb-item"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transactions</span></div>
+              <div class="sb-item"><i data-lucide="users" class="ic"></i><span class="label">Counterparties</span></div>
+              <div class="sb-item"><i data-lucide="wallet" class="ic"></i><span class="label">Accounts</span></div>
+            </div>
+          </aside>
         </div>
       </div>
     </article>
@@ -1278,8 +1256,8 @@
       }
 
       if (kind === 'drawer-enter') {
-        const drawer = stage.querySelector('.demo-drawer');
-        const scrim = stage.querySelector('.demo-scrim');
+        const drawer = stage.querySelector('.sb.is-drawer');
+        const scrim = stage.querySelector('.sb-scrim');
         // Slide out first
         drawer.classList.remove('is-open');
         scrim.classList.remove('is-open');

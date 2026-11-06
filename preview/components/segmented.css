@@ -1,0 +1,11 @@
+/* SEGMENTED CONTROL (L-27) — one choice among few, in a row. Segments are sized by their label (nothing truncates), may carry a count, and one may open a menu. role="radiogroup". */
+.seg { display: inline-flex; align-items: stretch; height: var(--control-h-sm); padding: 2px; gap: 2px; border-radius: var(--radius-pill); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); box-sizing: border-box; }
+  .seg-item { display: inline-flex; align-items: center; gap: var(--space-2); padding: 0 var(--space-4); border: 0; border-radius: var(--radius-pill); background: transparent; font: inherit; font-size: var(--fs-sm); color: var(--color-foreground-secondary); cursor: pointer; white-space: nowrap; }
+  .seg-item:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
+  .seg-item[aria-checked="true"] { background: var(--color-background-selected); color: var(--color-foreground-brand); }
+  .seg-item:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+  /* label + count share a baseline (the mono count centred by box sat ~1px high); the chevron stays centred on the item */
+  .seg-text { display: inline-flex; align-items: baseline; gap: var(--space-2); }
+  .seg-count { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-muted); font-variant-numeric: tabular-nums; }
+  .seg-item[aria-checked="true"] .seg-count { color: inherit; }
+  .seg-item svg { width: 14px; height: 14px; }

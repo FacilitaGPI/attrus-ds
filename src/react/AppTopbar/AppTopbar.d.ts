@@ -1,6 +1,8 @@
 import * as React from 'react';
 
 export interface AppTopbarProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Start of the bar: a <TopbarLead> breadcrumb (L-31). */
+  lead?: React.ReactNode;
   /** Left CTA slot — the canonical Button (primary). */
   primary?: React.ReactNode;
   /** Search slot — the canonical SearchPill (grows to fill). */
@@ -37,10 +39,11 @@ export interface TopbarBellProps extends React.ButtonHTMLAttributes<HTMLButtonEl
 
 export interface TopbarAccountItem {
   key: string;
-  label: React.ReactNode;
+  /** Omit only for a separator-only entry ({ key, sep: true }). */
+  label?: React.ReactNode;
   icon?: React.ReactNode;
   danger?: boolean;
-  /** Renders a separator before this item. */
+  /** A hairline BEFORE this item. With no label, renders only the hairline. */
   sep?: boolean;
 }
 
@@ -62,3 +65,10 @@ export declare const TopbarLive: React.FC<TopbarLiveProps>;
 export declare const TopbarBell: React.FC<TopbarBellProps>;
 export declare const TopbarAccount: React.FC<TopbarAccountProps>;
 export default AppTopbar;
+
+export interface TopbarLeadProps extends React.HTMLAttributes<HTMLSpanElement> { icon?: React.ReactNode; }
+/** Breadcrumb lead: icon + page. */
+export declare const TopbarLead: React.FC<TopbarLeadProps>;
+export interface TopbarLanguageProps extends React.ButtonHTMLAttributes<HTMLButtonElement> { code: string; /** Accessible name. */ label: string; }
+/** Language control: globe + code. */
+export declare const TopbarLanguage: React.FC<TopbarLanguageProps>;

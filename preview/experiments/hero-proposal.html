@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta · L-08 · Hero</title>
+<link rel="stylesheet" href="../../src/index.css">
+<link rel="stylesheet" href="../../themes/index.css?v=1">
+<link rel="stylesheet" href="../components/buttons.css?v=42">
+<script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .ey { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  h1.t { margin: var(--space-3) 0; font-size: var(--fs-5xl); letter-spacing: var(--ls-display); }
+  .lead { max-width: 76ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+  section { margin-top: var(--space-12); }
+  section > h2 { font-size: var(--fs-2xl); margin: 0 0 var(--space-2); }
+  section > p { max-width: 78ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-5); }
+  code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  pre { margin: 0; padding: var(--space-5); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); line-height: 1.7; overflow-x: auto; color: var(--color-foreground-secondary); }
+  pre .c { color: var(--color-foreground-muted); }
+  .cl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; margin: var(--space-5) 0 var(--space-3); color: var(--color-foreground-muted); }
+  .cl.new { color: var(--color-feedback-success-foreground); }
+  .narrow { max-width: 360px; }
+  .m { margin-top: var(--space-2); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); line-height: 1.7; }
+  .m b { color: var(--color-foreground-default); font-weight: var(--w-regular); }
+  table.plan { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); overflow: hidden; }
+  table.plan th, table.plan td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: var(--border-hairline) solid var(--color-border-subtle); vertical-align: top; }
+  table.plan th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); font-weight: var(--w-regular); background: var(--color-background-subtle); }
+  table.plan tr:last-child td { border-bottom: 0; }
+
+  /* ============ TODAY — the doc page's own CSS, scoped ============ */
+.cur .hero-base {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    padding: var(--space-8) var(--space-9);
+    color: var(--color-foreground-inverse-default);
+    background: var(--grad-hero);
+    box-shadow: var(--shadow-lg);
+  }
+.cur .hero-base::before {
+    content: ""; position: absolute; inset: 0;
+    background: var(--grad-radial-glow);
+    pointer-events: none;
+  }
+.cur .hero-base > * { position: relative; z-index: 1; }
+.cur .hero-eyebrow {
+    font-size: var(--fs-xs); font-weight: var(--w-regular);
+    letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-inverse-secondary);
+    margin: 0 0 var(--space-2);
+    display: inline-flex; align-items: center; gap: var(--space-2);
+  }
+.cur .hero-eyebrow .pill {
+    background: var(--color-overlay-white-14);
+    border: 1px solid var(--color-overlay-white-18);
+    border-radius: var(--radius-pill);
+    padding: 2px var(--space-2);
+    font-size: var(--fs-xxs);
+  }
+.cur .hero-title {
+    font-family: var(--font-display);
+    font-size: var(--fs-7xl);
+    font-weight: var(--w-black);
+    letter-spacing: var(--ls-display);
+    line-height: var(--lh-tight);
+    margin: 0 0 var(--space-3);
+  }
+.cur .hero-title em { font-style: normal; color: var(--color-brand-secondary-200); }
+.cur .hero-sub {
+    font-size: var(--fs-md);
+    color: var(--color-foreground-inverse-secondary);
+    line-height: var(--lh-relaxed);
+    margin: 0;
+    max-width: 56ch;
+  }
+.cur .hero-actions {
+    display: inline-flex; gap: var(--space-3); flex-wrap: wrap;
+    margin-top: var(--space-5);
+  }
+.cur .hero-btn {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    height: 40px; padding: 0 var(--space-5);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans); font-weight: var(--w-regular); font-size: var(--fs-sm);
+    border: 1px solid transparent; cursor: pointer; text-decoration: none;
+    transition: var(--transition-fast);
+  }
+.cur .hero-btn-primary { background: var(--color-pure-white); color: var(--color-brand-secondary-700);  }
+.cur .hero-btn-primary:hover { background: var(--color-brand-secondary-50); }
+.cur .hero-btn-ghost {
+    background: var(--color-overlay-white-08);
+    color: var(--color-foreground-inverse-default);
+    border-color: var(--color-overlay-white-22);
+  }
+.cur .hero-btn-ghost:hover { background: var(--color-overlay-white-16); }
+.cur .hero-btn i, .cur .hero-btn svg { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
+.cur .hero-tiles {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+.cur .hero-tile {
+    background: var(--color-overlay-white-08);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    border: 1px solid var(--color-overlay-white-12);
+    border-radius: var(--radius-sm);
+    padding: var(--space-3) var(--space-4);
+  }
+.cur .hero-tile .k {
+    display: flex; align-items: center; gap: var(--space-2);
+    font-size: var(--fs-xxs); font-weight: var(--w-regular);
+    letter-spacing: var(--ls-caps); text-transform: uppercase;
+    color: var(--color-foreground-inverse-secondary);
+  }
+.cur .hero-tile .v {
+    font-family: var(--font-sans); font-weight: var(--w-bold); font-size: var(--fs-lg);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-foreground-inverse-default);
+    margin-top: var(--space-1);
+    letter-spacing: var(--ls-title);
+  }
+.cur .hero-tile .d {
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs);
+    color: var(--color-foreground-inverse-muted);
+    margin-top: 2px; display: flex; align-items: center; gap: 4px;
+  }
+.cur .hero-tile .d.up { color: var(--color-feedback-success-foreground-on-inverse); }
+.cur .hero-tile .d.down { color: var(--color-feedback-danger-foreground-on-inverse); }
+.cur .hero-tile .d svg, .cur .hero-tile .d i { width: 11px; height: 11px; stroke-width: 2.4; }
+.cur .hero-base.is-subtle {
+    background: var(--color-background-subtle);
+    color: var(--color-foreground-default);
+    box-shadow: var(--shadow-xs);
+    border: 1px solid var(--color-border-default);
+  }
+.cur .hero-base.is-subtle::before { display: none; }
+.cur .hero-base.is-subtle .hero-eyebrow { color: var(--color-foreground-muted); }
+.cur .hero-base.is-subtle .hero-eyebrow .pill { background: var(--color-background-surface); border-color: var(--color-border-default); color: var(--color-foreground-secondary); }
+.cur .hero-base.is-subtle .hero-title { color: var(--color-foreground-default); }
+.cur .hero-base.is-subtle .hero-title em { color: var(--color-foreground-accent); }
+.cur .hero-base.is-subtle .hero-sub { color: var(--color-foreground-secondary); }
+.cur .hero-base.is-subtle .hero-btn-primary { background: var(--color-brand-secondary-500); color: var(--color-foreground-on-solid); }
+.cur .hero-base.is-subtle .hero-btn-primary:hover { background: var(--color-brand-secondary-600); }
+.cur .hero-base.is-subtle .hero-btn-ghost { background: transparent; border-color: var(--color-border-default); color: var(--color-foreground-secondary); }
+.cur .hero-base.is-subtle .hero-btn-ghost:hover { background: var(--color-background-hover); }
+.cur .hero-base.is-marketing { padding: var(--space-12) var(--space-12); }
+.cur .hero-base.is-marketing .hero-title { font-size: var(--fs-8xl); max-width: 14ch; }
+.cur .hero-base.is-compact { padding: var(--space-6) var(--space-7); }
+.cur .hero-base.is-compact .hero-title { font-size: var(--fs-5xl); }
+.cur .hero-base.is-compact .hero-sub { font-size: var(--fs-sm); }
+
+  /* ============ PROPOSAL — product CSS (hero.css), scoped to .p ============ */
+  .p .hero { position: relative; overflow: hidden; container-type: inline-size;
+    border-radius: var(--shape-overlay); padding: var(--space-8) var(--space-9);
+    background: var(--grad-hero); box-shadow: var(--shadow-lg); color: var(--color-foreground-default); }
+  .p .hero:not(.is-subtle) {
+    /* dark surface: re-point the text and border tokens, so any DS child (Button
+       secondary/ghost, Pill, Money, DescTerm) reads light without its own rule */
+    --color-foreground-default: var(--color-foreground-inverse-default);
+    --color-foreground-secondary: var(--color-foreground-inverse-secondary);
+    --color-foreground-muted: var(--color-foreground-inverse-muted);
+    --color-border-default: var(--color-border-inverse);
+    --color-border-strong: var(--color-border-inverse);
+    --color-background-hover: var(--color-background-inverse-hover); }
+  .p .hero::before { content: ""; position: absolute; inset: 0; background: var(--grad-radial-glow); pointer-events: none; }
+  .p .hero > * { position: relative; z-index: 1; }
+  .p .hero-eyebrow { display: flex; align-items: center; gap: var(--space-2); font-size: var(--fs-sm); color: var(--color-foreground-secondary); margin-bottom: var(--space-3); }
+  .p .hero-title { font-family: var(--font-display); font-size: var(--fs-7xl); font-weight: var(--w-black); letter-spacing: var(--ls-display); line-height: var(--lh-tight); margin: 0 0 var(--space-3); color: var(--color-foreground-default); }
+  .p .hero-title em { font-style: normal; color: var(--color-accent-solid); }
+  .p .hero-sub { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
+  .p .hero-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-6); }
+  .p .hero-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-3); margin-top: var(--space-6); }
+  .p .hero-tile { background: var(--color-overlay-white-08); border: var(--border-hairline) solid var(--color-overlay-white-12); border-radius: var(--shape-control); padding: var(--space-3) var(--space-4); display: flex; flex-direction: column; gap: var(--space-1); }
+  .p .hero-tile-k { display: flex; align-items: center; gap: var(--space-2); font-size: var(--fs-sm); color: var(--color-foreground-secondary); }
+  .p .hero-tile-k img { width: 16px; height: 16px; border-radius: 50%; }
+  .p .hero-tile-v { font-size: var(--fs-xl); font-weight: var(--w-bold); font-variant-numeric: tabular-nums; line-height: 1.3; }
+  .p .hero-tile-d { display: inline-flex; align-items: center; gap: var(--space-1); font-size: var(--fs-sm); color: var(--color-foreground-muted); }
+  .p .hero-tile-d.is-up { color: var(--color-feedback-success-foreground-on-inverse); }
+  .p .hero-tile-d.is-down { color: var(--color-feedback-danger-foreground-on-inverse); }
+  .p .hero-tile-d svg { width: 12px; height: 12px; }
+  .p .hero.is-subtle { background: var(--color-background-surface); box-shadow: none; border: var(--border-hairline) solid var(--color-border-default); }
+  .p .hero.is-subtle::before { display: none; }
+  .p .hero.is-subtle .hero-title em { color: var(--color-foreground-accent); }
+  .p .hero.is-subtle .hero-tile { background: var(--color-background-subtle); border-color: var(--color-border-subtle); }
+  .p .hero.is-subtle .hero-tile-d.is-up { color: var(--color-feedback-success-foreground); }
+  .p .hero.is-subtle .hero-tile-d.is-down { color: var(--color-feedback-danger-foreground); }
+  .p .hero.is-compact { padding: var(--space-6) var(--space-7); }
+  .p .hero.is-compact .hero-title { font-size: var(--fs-5xl); }
+  .p .hero.is-large { padding: var(--space-12); }
+  .p .hero.is-large .hero-title { font-size: var(--fs-8xl); max-width: 14ch; }
+  @container (max-width: 560px) {
+    .p .hero { padding: var(--space-6) var(--space-5); }
+    .p .hero .hero-title { font-size: var(--fs-4xl); }
+    .p .hero-tiles { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<main class="doc">
+  <div class="ey">Proposta · nada aplicado ainda · Prompt 06 · L-08 · 3 de 3</div>
+  <h1 class="t">Hero</h1>
+  <p class="lead">Hoje o hero só existe dentro da própria página de documentação: as 41 regras de CSS ficam no <code>&lt;style&gt;</code> da <code>hero.html</code>, então nenhum produto consegue usá-lo sem copiar. A proposta leva o CSS para o produto e cria o componente, corrigindo quatro problemas pelo caminho.</p>
+
+  <section>
+    <h2>API</h2>
+<pre>&lt;Hero
+  variant?="dashboard" | "subtle"        <span class="c">// dashboard: gradiente escuro (padrão) · subtle: superfície clara</span>
+  size?="compact" | "default" | "large"  <span class="c">// large = o antigo "marketing"</span>
+  eyebrow?={…}  title={…}  sub?={…}
+  actions?={&lt;Button variant="inverse"/&gt;&lt;Button variant="ghost"/&gt;}
+  tiles?={&lt;HeroTile …/&gt;}
+/&gt;
+&lt;HeroTile label="USD" flag="EUA" value="12,400.00" delta="+2.4% today" trend="up" /&gt;</pre>
+  </section>
+
+  <section>
+    <h2>Dashboard, hoje e proposta</h2>
+    <div class="cl">Hoje</div>
+    <div class="cur"><div class="hero-base" id="h-cur">
+      <div class="hero-eyebrow"><span>ATTRUS</span> <span class="pill"><span class="pill-label">v0.2</span></span></div>
+      <h1 class="hero-title">Hi, <em>John</em></h1>
+      <p class="hero-sub">Pending transactions · 2 · Wires expiring · 3</p>
+      <div class="hero-actions"><a class="hero-btn hero-btn-primary">New transaction <i data-lucide="arrow-right"></i></a><a class="hero-btn hero-btn-ghost">View activity</a></div>
+      <div class="hero-tiles">
+        <div class="hero-tile"><div class="k">🇺🇸 USD</div><div class="v">12,400.00</div><div class="d up"><i data-lucide="arrow-up-right"></i>+2.4% today</div></div>
+        <div class="hero-tile"><div class="k">🇪🇺 EUR</div><div class="v">8,210.55</div><div class="d up"><i data-lucide="arrow-up-right"></i>+0.8% today</div></div>
+        <div class="hero-tile"><div class="k">🇲🇽 MXN</div><div class="v">204,840.00</div><div class="d down"><i data-lucide="arrow-down-right"></i>−0.3% today</div></div>
+        <div class="hero-tile"><div class="k">🇧🇷 BRL</div><div class="v">61,920.10</div><div class="d up"><i data-lucide="arrow-up-right"></i>+1.1% today</div></div>
+      </div>
+    </div></div>
+    <div class="m" id="m-cur"></div>
+
+    <div class="cl new">Proposta</div>
+    <div class="p"><div class="hero" id="h-new">
+      <div class="hero-eyebrow"><span>ATTRUS</span><span class="pill info"><span class="pill-label">v0.2</span></span></div>
+      <h1 class="hero-title">Hi, <em>John</em></h1>
+      <p class="hero-sub">Pending transactions · 2 · Wires expiring · 3</p>
+      <div class="hero-actions"><button class="btn btn-inverse">New transaction <i data-lucide="arrow-right"></i></button><button class="btn btn-secondary">View activity</button></div>
+      <div class="hero-tiles">
+        <div class="hero-tile"><span class="hero-tile-k"><img src="../../assets/flags/EUA-rounded.svg" alt="">USD</span><span class="hero-tile-v">12,400.00</span><span class="hero-tile-d is-up"><i data-lucide="arrow-up-right"></i>+2.4% today</span></div>
+        <div class="hero-tile"><span class="hero-tile-k"><img src="../../assets/flags/EUR-rounded.svg" alt="">EUR</span><span class="hero-tile-v">8,210.55</span><span class="hero-tile-d is-up"><i data-lucide="arrow-up-right"></i>+0.8% today</span></div>
+        <div class="hero-tile"><span class="hero-tile-k"><img src="../../assets/flags/Mexico-rounded.svg" alt="">MXN</span><span class="hero-tile-v">204,840.00</span><span class="hero-tile-d is-down"><i data-lucide="arrow-down-right"></i>−0.3% today</span></div>
+        <div class="hero-tile"><span class="hero-tile-k"><img src="../../assets/flags/Brazil-rounded.svg" alt="">BRL</span><span class="hero-tile-v">61,920.10</span><span class="hero-tile-d is-up"><i data-lucide="arrow-up-right"></i>+1.1% today</span></div>
+      </div>
+    </div></div>
+    <div class="m" id="m-new"></div>
+  </section>
+
+  <section>
+    <h2>Num celular (360px)</h2>
+    <p>Hoje as quatro tiles ficam presas em quatro colunas e o título não diminui. Na proposta, o hero mede a própria largura (container query): abaixo de 560px as tiles vão para duas colunas e o título desce para 28px.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6)">
+      <div><div class="cl">Hoje</div><div class="narrow cur" id="n-cur-wrap"></div><div class="m" id="m-ncur"></div></div>
+      <div><div class="cl new">Proposta</div><div class="narrow p" id="n-new-wrap"></div><div class="m" id="m-nnew"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Subtle, sobre superfície clara</h2>
+    <div class="p"><div class="hero is-subtle is-compact" id="h-sub">
+      <div class="hero-eyebrow"><span>Contas</span></div>
+      <h1 class="hero-title">Saldo <em>consolidado</em></h1>
+      <p class="hero-sub">Atualizado há 2 minutos</p>
+      <div class="hero-actions"><button class="btn btn-primary">Nova transferência</button><button class="btn btn-secondary">Extrato</button></div>
+    </div></div>
+    <div class="m" id="m-sub"></div>
+  </section>
+
+  <section>
+    <h2>Os quatro problemas que a mudança resolve</h2>
+    <table class="plan">
+      <thead><tr><th>Problema</th><th>Hoje</th><th>Proposta</th></tr></thead>
+      <tbody>
+        <tr><td>CSS fora do produto</td><td>41 regras no <code>&lt;style&gt;</code> da página de doc</td><td><code>components/hero.css</code>, importado no <code>styles.css</code></td></tr>
+        <tr><td>Botões próprios</td><td><code>.hero-btn-primary</code> e <code>-ghost</code> repetem o Button, com o navy da marca cravado</td><td>o Button do DS: <code>inverse</code> e <code>secondary</code>. O hero redefine os tokens de texto e borda para o par inverse, como o card escuro do L-03, então o secondary fica claro sem regra própria</td></tr>
+        <tr><td>Bandeiras em emoji</td><td>🇺🇸 renderiza diferente em cada sistema e some no Windows</td><td>as bandeiras SVG do DS, as mesmas do <code>Flag</code></td></tr>
+        <tr><td>Celular</td><td>4 colunas fixas, título de 56px</td><td>2 colunas e título de 28px abaixo de 560px</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:var(--space-4)">Também muda: o rótulo das tiles e o eyebrow saem da caixa alta de 10–11px para 12px em caixa normal (a regra do card de detalhe), o <code>em</code> do título usa o accent do produto em vez do Royal fixo, e o variant <code>marketing</code> vira <code>size="large"</code>, porque só mudava tamanho.</p>
+    <p>Arquivos: <code>preview/components/hero.css</code> (novo), <code>styles.css</code> (import), <code>components/Hero/</code> (<code>.tsx</code>, <code>.d.ts</code>, bancada), <code>preview/hero.html</code> (sai o CSS próprio, os exemplos passam a usar o componente), manifesto, índice e README.</p>
+  </section>
+</main>
+<script>
+lucide.createIcons();
+(function () {
+  function srgb(v){ v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
+  function rgb(c){ var m = c.match(/[\d.]+/g).map(Number); return /color\(srgb/.test(c) ? m.slice(0,3).map(function(x){ return x * 255; }) : m; }
+  function lum(c){ var m = rgb(c); return 0.2126 * srgb(m[0]) + 0.7152 * srgb(m[1]) + 0.0722 * srgb(m[2]); }
+  function cr(a, b){ var x = lum(a), y = lum(b); return ((Math.max(x, y) + .05) / (Math.min(x, y) + .05)).toFixed(1); }
+  var MID = 'rgb(22, 40, 74)';
+  function sizes(el){ var s = {}, w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), n; while ((n = w.nextNode())) { if (!n.textContent.trim()) continue; var f = Math.round(parseFloat(getComputedStyle(n.parentElement).fontSize)) + 'px'; s[f] = 1; } return Object.keys(s).sort(function(a,b){ return parseFloat(a) - parseFloat(b); }).join(' '); }
+  function report(id, out, secBtn) {
+    var h = document.getElementById(id), sb = h.querySelector(secBtn);
+    document.getElementById(out).innerHTML = 'tamanhos de texto <b>' + sizes(h) + '</b> · botão secundário <b>' + cr(getComputedStyle(sb).color, MID) + ':1</b> · rótulo da tile <b>' + cr(getComputedStyle(h.querySelector('.hero-tile .k, .hero-tile-k')).color, MID) + ':1</b>';
+  }
+  report('h-cur', 'm-cur', '.hero-btn-ghost'); report('h-new', 'm-new', '.btn-secondary');
+  var nc = document.getElementById('h-cur').cloneNode(true); nc.id = 'nc'; document.getElementById('n-cur-wrap').appendChild(nc);
+  var nn = document.getElementById('h-new').cloneNode(true); nn.id = 'nn'; document.getElementById('n-new-wrap').appendChild(nn);
+  function narrow(el, out){ var t = el.querySelector('.hero-tiles'), w = el.getBoundingClientRect().width; var over = [].slice.call(el.querySelectorAll('*')).filter(function(e){ var b = e.getBoundingClientRect(); return b.width && b.right > el.getBoundingClientRect().right + 1; }).length;
+    document.getElementById(out).innerHTML = 'colunas <b>' + getComputedStyle(t).gridTemplateColumns.split(' ').length + '</b> · título <b>' + getComputedStyle(el.querySelector('.hero-title')).fontSize + '</b> · elementos passando da borda <b>' + over + '</b>'; }
+  narrow(nc, 'm-ncur'); narrow(nn, 'm-nnew');
+  var s = document.getElementById('h-sub');
+  document.getElementById('m-sub').innerHTML = 'título <b>' + cr(getComputedStyle(s.querySelector('.hero-title')).color, getComputedStyle(s).backgroundColor) + ':1</b> · sub <b>' + cr(getComputedStyle(s.querySelector('.hero-sub')).color, getComputedStyle(s).backgroundColor) + ':1</b>';
+})();
+</script>
+</body>
+</html>
