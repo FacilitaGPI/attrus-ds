@@ -1,0 +1,25 @@
+# Dependabot SCA for JS (npm) — SOC2-36.
+# Weekly schedule; security PRs only (open-pull-requests-limit: 0 + npm-security group),
+# same pattern as mix (SOC2-32) / prototypes npm PR.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+    commit-message:
+      prefix: chore
+    pull-request-branch-name:
+      prefix: chore
+      separator: "/"
+      word-separator: "-"
+      template: "{prefix}/{name}"
+    groups:
+      npm-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
