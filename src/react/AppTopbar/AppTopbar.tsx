@@ -10,6 +10,8 @@ import * as React from 'react';
  */
 
 export interface AppTopbarProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Start of the bar, before the primary action: a <TopbarLead> breadcrumb (L-31). */
+  lead?: React.ReactNode;
   /** Left CTA slot — the canonical Button (primary). */
   primary?: React.ReactNode;
   /** Search slot — the canonical SearchPill (grows to fill). */
@@ -18,17 +20,39 @@ export interface AppTopbarProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
 }
 
-export const AppTopbar: React.FC<AppTopbarProps> = ({ primary, search, children, className, ...rest }) => (
+export const AppTopbar: React.FC<AppTopbarProps> = ({ lead, primary, search, children, className, ...rest }) => (
   <div className={['topbar', className || ''].filter(Boolean).join(' ')} {...rest}>
+    {lead}
     {primary}
     {search}
     <div className="tb-spacer">{children}</div>
   </div>
 );
 
+
+/** Breadcrumb at the start of the bar (L-31): icon + page, or a trail. */
+export interface TopbarLeadProps extends React.HTMLAttributes<HTMLSpanElement> { icon?: React.ReactNode; }
+export const TopbarLead: React.FC<TopbarLeadProps> = ({ icon, className, children, ...rest }) => (
+  <span className={['tb-lead', className || ''].filter(Boolean).join(' ')} {...rest}>{icon}<b>{children}</b></span>
+);
+/** Language control (L-31): globe + language code. `label` is the accessible name, e.g. "Language: Português". */
+export interface TopbarLanguageProps extends React.ButtonHTMLAttributes<HTMLButtonElement> { code: string; label: string; }
+export const TopbarLanguage: React.FC<TopbarLanguageProps> = ({ code, label, className, ...rest }) => (
+  <button type="button" className={['tb-lang', className || ''].filter(Boolean).join(' ')} aria-label={label} {...rest}>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20" /></svg>{code}
+  </button>
+);
+
 /* ---------- Generic 36px control ---------- */
 
+/** Collapse rule for an item in a crowded bar: 3 hides below 1180px, 2 below
+    760px, 1 only in the compact phone bar. No priority = never hides (search,
+    account). Rendered as data-tb-priority. */
+export type TopbarPriority = 1 | 2 | 3;
+
 export interface TopbarControlProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  /** Collapse rule — see TopbarPriority. */
+  priority?: TopbarPriority;
   /** Leading slot (icon, flag…). */
   icon?: React.ReactNode;
   /** Square icon-only control (.tb-control.icon). */
@@ -45,9 +69,10 @@ const ChevDown: React.FC = () => (
   </span>
 );
 
-export const TopbarControl: React.FC<TopbarControlProps> = ({ icon, iconOnly = false, chev = false, className, children, ...rest }) => (
+export const TopbarControl: React.FC<TopbarControlProps> = ({ icon, iconOnly = false, chev = false, priority, className, children, ...rest }) => (
   <button
     type="button"
+    data-tb-priority={priority}
     className={['tb-control', iconOnly ? 'icon' : '', className || ''].filter(Boolean).join(' ')}
     {...rest}
   >
@@ -61,12 +86,14 @@ export const TopbarControl: React.FC<TopbarControlProps> = ({ icon, iconOnly = f
 
 export interface TopbarLiveProps {
   label?: React.ReactNode;
+  /** Collapse rule — see TopbarPriority. */
+  priority?: TopbarPriority;
   /** Elapsed mono clock (e.g. "0:19"). */
   clock?: React.ReactNode;
 }
 
-export const TopbarLive: React.FC<TopbarLiveProps> = ({ label = 'Live', clock }) => (
-  <div className="tb-control tb-live">
+export const TopbarLive: React.FC<TopbarLiveProps> = ({ label = 'Live', clock, priority }) => (
+  <div className="tb-control tb-live" data-tb-priority={priority}>
     <span className="dot" />
     <span className="lbl">{label}</span>
     {clock != null ? <span className="tb-clock">{clock}</span> : null}
@@ -78,11 +105,14 @@ export const TopbarLive: React.FC<TopbarLiveProps> = ({ label = 'Live', clock })
 export interface TopbarBellProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Unread red dot. */
   badge?: boolean;
+  /** Collapse rule — see TopbarPriority. */
+  priority?: TopbarPriority;
 }
 
-export const TopbarBell: React.FC<TopbarBellProps> = ({ badge = false, className, ...rest }) => (
+export const TopbarBell: React.FC<TopbarBellProps> = ({ badge = false, priority, className, ...rest }) => (
   <button
     type="button"
+    data-tb-priority={priority}
     className={['tb-control', 'icon', 'tb-bell', className || ''].filter(Boolean).join(' ')}
     aria-label="Notifications"
     {...rest}
@@ -101,10 +131,13 @@ export const TopbarBell: React.FC<TopbarBellProps> = ({ badge = false, className
 
 export interface TopbarAccountItem {
   key: string;
-  label: React.ReactNode;
+  /** Omit only for a separator-only entry ({ key, sep: true }). */
+  label?: React.ReactNode;
   icon?: React.ReactNode;
   danger?: boolean;
-  /** Renders a separator before this item. */
+  /** A hairline BEFORE this item — put it on the first item of a group, e.g.
+      { key: 'logout', label: 'Log out', sep: true }. An entry with sep and no
+      label renders only the hairline (no empty menu row). */
   sep?: boolean;
 }
 
@@ -116,7 +149,9 @@ export interface TopbarAccountProps {
   detail?: React.ReactNode;
   items?: TopbarAccountItem[];
   onSelect?: (key: string) => void;
-  /** Hide name/company in the trigger (mobile). */
+  /** Avatar + chevron only — name and company move to the dropdown head
+      (.tb-account.is-compact). Applied automatically below 760px; pass it to
+      force the compact form at any width. The name stays as aria-label. */
   compact?: boolean;
 }
 
@@ -152,23 +187,21 @@ export const TopbarAccount: React.FC<TopbarAccountProps> = ({
     <div className="tb-account-wrap" ref={wrapRef}>
       <button
         type="button"
-        className={['tb-account', open ? 'is-open' : ''].filter(Boolean).join(' ')}
+        className={['tb-account', open ? 'is-open' : '', compact ? 'is-compact' : ''].filter(Boolean).join(' ')}
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-label="Account menu"
+        aria-label={typeof name === 'string' ? 'Account menu — ' + name : 'Account menu'}
         onClick={() => setOpen((o) => !o)}
       >
         <span className="tb-avatar">{initials}</span>
-        {!compact ? (
-          <span className="tb-account-id">
-            <span className="nm">{name}</span>
-            <span className="co">{company}</span>
-          </span>
-        ) : null}
-        {!compact ? <ChevDown /> : null}
+        <span className="tb-account-id">
+          <span className="nm">{name}</span>
+          <span className="co">{company}</span>
+        </span>
+        <ChevDown />
       </button>
       {open ? (
-        <div className="tb-account-menu" role="menu">
+        <div className="menu tb-account-menu" role="menu">
           <div className="tb-account-menu-head">
             <span className="tb-avatar lg">{initials}</span>
             <div className="tb-account-menu-id">
@@ -176,22 +209,23 @@ export const TopbarAccount: React.FC<TopbarAccountProps> = ({
               <span className="co">{detail != null ? detail : company}</span>
             </div>
           </div>
-          <div className="tb-account-menu-sep" />
+          <div className="menu-sep" />
           {items.map((it) => (
             <React.Fragment key={it.key}>
-              {it.sep ? <div className="tb-account-menu-sep" /> : null}
-              <button
+              {it.sep ? <div className="menu-sep" role="separator" /> : null}
+              {it.sep && it.label == null ? null : <button
                 type="button"
-                className={['tb-account-menu-item', it.danger ? 'is-danger' : ''].filter(Boolean).join(' ')}
+                className={['menu-item', it.danger ? 'is-danger' : ''].filter(Boolean).join(' ')}
                 role="menuitem"
                 onClick={() => {
                   setOpen(false);
                   if (onSelect) onSelect(it.key);
                 }}
               >
-                {it.icon}
-                {it.label}
-              </button>
+                {it.icon ? <span className="menu-item-icon">{it.icon}</span> : <span />}
+                <span className="menu-item-title">{it.label}</span>
+                <span />
+              </button>}
             </React.Fragment>
           ))}
         </div>

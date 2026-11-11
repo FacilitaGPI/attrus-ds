@@ -25,7 +25,8 @@ export interface MetricProps extends React.HTMLAttributes<HTMLSpanElement> {
 export declare const Metric: React.FC<MetricProps>;
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-export type AvatarTone = 'brand' | 'success' | 'warning' | 'danger' | 'info' | 'neutral';
+/** 'self' marks the current user; 'unassigned' is an empty owner slot. */
+export type AvatarTone = 'brand' | 'success' | 'warning' | 'danger' | 'info' | 'neutral' | 'self' | 'unassigned';
 export type AvatarDot = boolean | 'busy' | 'away' | 'off';
 export interface AvatarProps extends React.HTMLAttributes<HTMLSpanElement> {
   name?: string;
@@ -51,7 +52,7 @@ export interface EyebrowProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 export declare const Eyebrow: React.FC<EyebrowProps>;
 
-export type FlagCountry = 'BR' | 'MX' | 'CO' | 'CL' | 'US' | 'EU';
+export type FlagCountry = 'BR' | 'MX' | 'CO' | 'CL' | 'US' | 'EU' | 'ES';
 export type FlagShape = 'rounded' | 'square';
 export interface FlagProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src'> {
   country: FlagCountry;
@@ -61,7 +62,7 @@ export interface FlagProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement
 }
 export declare const Flag: React.FC<FlagProps>;
 
-export interface IconProps extends Omit<React.SVGAttributes<SVGSVGElement>, "stroke"> {
+export interface IconProps extends Omit<React.SVGAttributes<SVGSVGElement>, 'stroke'> {
   /** Lucide name — kebab-case ("arrow-left-right") or PascalCase. */
   name: string;
   size?: number;
@@ -80,7 +81,10 @@ export interface DividerProps extends React.HTMLAttributes<HTMLElement> {
 }
 export declare const Divider: React.FC<DividerProps>;
 
+/** Toggle with optional chevron. Not for applied filters — use `Pill` with `onRemove` (default size). */
 export interface FilterChipProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  /** sm = 32px, text 12 (dense bars) · md = 40px (default). */
+  size?: 'sm' | 'md';
   /** Selected state (aria-pressed). */
   selected?: boolean;
   icon?: React.ReactNode;
@@ -90,9 +94,14 @@ export interface FilterChipProps extends React.ButtonHTMLAttributes<HTMLButtonEl
 export declare const FilterChip: React.FC<FilterChipProps>;
 
 export interface ProgressBarProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** brand (default) · success · warning · danger — .progress.is-<tone>. */
+  tone?: 'brand' | 'success' | 'warning' | 'danger';
+  /** sm = 4px · md = 6px (default). */
+  size?: 'sm' | 'md';
   /** 0–100. */
   value: number;
   /** Fill color — any token/var. */
+  /** @deprecated — use `tone`. Free colour, kept for compatibility. */
   fill?: string;
   /** Track height px — feeds `--progress-h` (default 6). */
   height?: number;
@@ -106,6 +115,12 @@ export interface DescTermProps extends React.HTMLAttributes<HTMLDivElement> {
   wide?: boolean;
 }
 export declare const DescTerm: React.FC<DescTermProps>;
+/** Two-column grid of DescTerms (one column under 640px). */
+export declare const DescGrid: React.FC<React.HTMLAttributes<HTMLDivElement>>;
+/** Wraps DescGroup elements: pairs of one subject together, a hairline between subjects. */
+export declare const DescGroups: React.FC<React.HTMLAttributes<HTMLDivElement>>;
+/** One subject inside DescGroups — itself a DescGrid. */
+export declare const DescGroup: React.FC<React.HTMLAttributes<HTMLDivElement>>;
 
 export type StatDeltaDirection = 'up' | 'down' | 'flat';
 export interface StatProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -131,6 +146,8 @@ export declare const Stat: React.FC<StatProps>;
 export interface StatRowProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Equal columns — feeds `--stat-cols`. Default 3. */
   cols?: number;
+  /** A band of figures inside a card: edge to edge, 1px vertical rules (.stat-row.is-divided). */
+  divided?: boolean;
 }
 export declare const StatRow: React.FC<StatRowProps>;
 

@@ -6,6 +6,20 @@
      1.  BASE PALETTE  —  raw color tokens
      ============================================================ */
 
+  /* --- Identity: internal teams (L-23) and client tracks (L-24) ---------------
+     Identity, not state and not product: the same in Enterprise and Business.
+     Team colours are a 7px dot + label, a legend, a chart series — never the
+     fill of a state tag. Track colours fill the TrackBadge (white text).
+     Light values are tuned to 4.5:1 as text on the surface. */
+  --color-team-sales:          #4F46E5;
+  --color-team-compliance:     #9333C9;
+  --color-team-implementation: #0B7A6E;
+  --color-team-payment-desk:   #5A7310;
+  --color-team-product:        #5E6A82;
+  --color-track-corporate:     #0F6B7A;
+  --color-track-enterprise:    #002142;
+  --color-track-business:      #1E6DC4;
+
   /* --- Brand (from manual: Lato + 4 HEX stops) --- */
   --brand-attrus-ink:        #0F0F1A;   /* almost-black, blue-tinted */
   --brand-attrus-navy:       #002142;   /* deep navy */

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Proposta · P-05</title>
+<link rel="stylesheet" href="../../src/index.css"><link rel="stylesheet" href="../../themes/index.css?v=1"><script src="../../theme-toggle.js?v=1"></script>
+<style>
+body{margin:0;background:var(--color-background-canvas);color:var(--color-foreground-default);font-family:var(--font-sans)}
+.doc{max-width:980px;margin:0 auto;padding:var(--space-10) var(--space-8)}
+.eyebrow{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted)}
+h1{margin:var(--space-2) 0 var(--space-3);font-size:var(--fs-4xl)}p{max-width:70ch;color:var(--color-foreground-secondary);line-height:var(--lh-relaxed)}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5);margin-top:var(--space-6)}
+.lbl{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);margin-bottom:var(--space-3)}.lbl.new{color:var(--color-feedback-success-foreground)}
+.stage{background:var(--color-background-surface);border:var(--border-hairline) solid var(--color-border-default);border-radius:var(--shape-container);padding:var(--space-6);display:flex;flex-direction:column;gap:var(--space-4)}
+.m{font-family:var(--font-mono);font-size:var(--fs-xxs);color:var(--color-foreground-muted);margin-top:var(--space-3);line-height:1.7}.m b{color:var(--color-foreground-default);font-weight:var(--w-regular)}
+table{width:100%;border-collapse:collapse;font-size:var(--fs-sm);margin-top:var(--space-6)}td,th{text-align:left;padding:var(--space-3);border-bottom:var(--border-hairline) solid var(--color-border-subtle);vertical-align:top}th{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);font-weight:var(--w-regular)}code{font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--color-foreground-accent)}
+.p .affix .lead,.p .affix .trail{display:flex;align-items:center;justify-content:center}
+.p .affix .lead>*,.p .affix .trail>*{flex-shrink:0}
+.p .affix.lead-pad-lg .lead{width:20px;height:20px}
+.p .affix.lead-pad-lg>.input{padding-left:calc(var(--space-4) + 20px + var(--space-3))}
+</style></head><body><main class="doc">
+<div class="eyebrow">Prompt 02 · P-05 · proposta, nada aplicado</div>
+<h1>Ícone do campo centralizado</h1>
+<p>A caixa do ícone tem 14px e não centraliza o que está dentro. Um ícone de 16px ou uma bandeira de 20px fica preso no topo e transborda para baixo. Na proposta a caixa centraliza o conteúdo, e um modificador novo abre espaço para bandeira ou avatar.</p>
+<div class="vs">
+ <div><div class="lbl">Hoje</div><div class="stage" id="cur">
+  <label class="affix lead-pad"><span class="lead"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span><input class="input" placeholder="Search counterparties"></label>
+  <label class="affix lead-pad"><span class="lead"><img src="../../assets/flags/Brazil-rounded.svg" width="20" height="20" alt=""></span><input class="input" value="Brazil"></label>
+ </div><div class="m" id="m-cur"></div></div>
+ <div class="p"><div class="lbl new">Proposta</div><div class="stage" id="new">
+  <label class="affix lead-pad"><span class="lead"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span><input class="input" placeholder="Search counterparties"></label>
+  <label class="affix lead-pad-lg"><span class="lead"><img src="../../assets/flags/Brazil-rounded.svg" width="20" height="20" alt=""></span><input class="input" value="Brazil"></label>
+ </div><div class="m" id="m-new"></div></div>
+</div>
+<table><thead><tr><th>Impacto</th><th>Detalhe</th></tr></thead><tbody>
+<tr><td>Visual</td><td>Todo campo com ícone (<code>.affix .lead</code> / <code>.trail</code>): o ícone desce para o centro exato do campo. Ícone de 14px não muda nada; 16px sobe 1px; conteúdo de 18–20px sobe 2–3px.</td></tr>
+<tr><td>Nome público novo</td><td><code>.affix.lead-pad-lg</code> — segue o padrão de <code>.lead-pad</code> / <code>.trail-pad</code> já existentes: caixa de 20px e o texto do campo recua junto.</td></tr>
+<tr><td>Arquivos</td><td><code>preview/components/inputs.css</code> · <code>preview/inputs.html</code> (campo de país com bandeira) · <code>components/Input/Input.tsx</code> + <code>.d.ts</code> (prop para o lead largo)</td></tr>
+</tbody></table>
+</main>
+<script>
+function M(id){var s=document.getElementById(id);return [].slice.call(s.querySelectorAll('.affix')).map(function(a){var l=a.querySelector('.lead'),c=l.firstElementChild,i=a.querySelector('.input'),cr=c.getBoundingClientRect(),ir=i.getBoundingClientRect();var r=document.createRange();r.selectNodeContents(i);var tc=ir.top+ir.height/2;return (c.tagName==='IMG'?'bandeira 20px':'ícone 16px')+': centro do conteúdo vs. campo <b>'+(cr.top+cr.height/2-tc).toFixed(1)+'px</b> · transborda a caixa <b>'+Math.max(0,Math.round(cr.bottom-l.getBoundingClientRect().bottom))+'px</b> · texto começa em <b>'+getComputedStyle(i).paddingLeft+'</b>';}).join('<br>');}
+document.getElementById('m-cur').innerHTML=M('cur');document.getElementById('m-new').innerHTML=M('new');
+</script></body></html>

@@ -208,11 +208,11 @@
    the only signal. */
 .btn-danger-ghost {
   background: transparent;
-  color: var(--color-danger-500);
+  color: var(--color-feedback-danger-foreground);
   border-color: transparent;
 }
-.btn-danger-ghost:hover { background: var(--color-feedback-danger-background); color: var(--color-danger-600); }
-.btn-danger-ghost:active { background: color-mix(in srgb, var(--color-danger-500) 16%, transparent); }
+.btn-danger-ghost:hover { background: var(--color-feedback-danger-background); color: var(--color-feedback-danger-foreground); }
+.btn-danger-ghost:active { background: color-mix(in srgb, var(--color-feedback-danger-foreground) 16%, transparent); }
 .btn-danger-ghost:focus-visible { box-shadow: var(--shadow-focus-danger); }
 .btn-danger-ghost[disabled] { color: var(--color-foreground-disabled); background: transparent; }
 

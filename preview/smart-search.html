@@ -19,11 +19,11 @@
   .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
   .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
   .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
-  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; }
   .doc-meta-pill svg, .doc-meta-pill i { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
 
   .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
-  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-regular); transition: var(--transition-fast); }
   .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
 
   .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
@@ -35,7 +35,7 @@
   .state-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: var(--space-5); }
   .state-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-xs); display: flex; flex-direction: column; }
   .state-head { padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: baseline; gap: var(--space-3); }
-  .state-head .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  .state-head .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
   .state-head h3 { font-size: var(--fs-md); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0; }
   .state-head p { font-size: var(--fs-sm); color: var(--color-foreground-muted); margin: 0 0 0 auto; }
   .state-canvas { padding: var(--space-7) var(--space-5); background: var(--color-background-subtle); flex: 1; display: flex; justify-content: center; align-items: flex-start; }
@@ -54,10 +54,10 @@
   .anatomy-list ol { padding-left: 0; margin: 0; counter-reset: anat; list-style: none; }
   .anatomy-list li { counter-increment: anat; margin-bottom: var(--space-3); padding-left: var(--space-7); position: relative; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-sm); }
   .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 2px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
-  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-regular); display: block; margin-bottom: 1px; }
 
   .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; margin-top: var(--space-4); }
-  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
   .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
   .token-table tr:last-child td { border-bottom: none; }
   .token-table code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }

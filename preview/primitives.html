@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
-<link rel="stylesheet" href="components/primitives.css?v=6">
+<link rel="stylesheet" href="components/primitives.css?v=7">
 <link rel="stylesheet" href="components/inputs.css?v=12">
 <link rel="stylesheet" href="components/status-pills.css?v=3">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
@@ -19,11 +19,11 @@
   .doc-header { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-8); padding-bottom: var(--space-7); border-bottom: 1px solid var(--color-border-default); margin-bottom: var(--space-10); }
   .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
   .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 60ch; }
-  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; }
   .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
 
   .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
-  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-regular); transition: var(--transition-fast); }
   .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
 
   .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
@@ -34,7 +34,7 @@
   .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
   .spec-head { padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
   .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
-  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
   .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
   .spec-canvas { padding: var(--space-8) var(--space-6); background: var(--color-background-canvas); background-image: linear-gradient(var(--color-border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; display: flex; flex-wrap: wrap; gap: var(--space-6); align-items: center; justify-content: center; }
   .spec-canvas-stack { flex-direction: column; align-items: stretch; }
@@ -43,10 +43,10 @@
   .row { display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; }
   .col { display: flex; flex-direction: column; gap: var(--space-3); align-items: flex-start; }
 
-  .legend { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin: 0 0 var(--space-2); }
+  .legend { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin: 0 0 var(--space-2); }
 
   .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
-  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
   .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
   .token-table tr:last-child td { border-bottom: none; }
   .token-table code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
@@ -57,12 +57,12 @@
   .dont-card-body { padding: var(--space-4) var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
   .dont-card-body i, .dont-card-body svg { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
   .dont-card-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
-  .dont-card-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+  .dont-card-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-regular); margin-bottom: var(--space-1); }
 
   .index-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-3); margin-bottom: var(--space-8); }
   .index-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-5); text-decoration: none; color: var(--color-foreground-default); transition: var(--transition-fast); display: flex; flex-direction: column; gap: var(--space-3); min-height: 120px; }
   .index-card:hover { border-color: var(--color-brand-secondary-300); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
-  .index-card-name { font-size: var(--fs-md); font-weight: var(--w-semibold); letter-spacing: var(--ls-title); }
+  .index-card-name { font-size: var(--fs-md); font-weight: var(--w-regular); letter-spacing: var(--ls-title); }
   .index-card-desc { font-size: var(--fs-xs); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
   .index-card-preview { display: flex; align-items: center; justify-content: center; min-height: 32px; }
 </style>
@@ -198,7 +198,21 @@
         </div>
       </div>
     </div>
-  </section>
+  
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>"This is you" and "no owner" <code>tone="self"</code> · <code>tone="unassigned"</code></h3><p>In a task list the user finds their own items by the teal avatar — teal is neither a status nor an interaction colour, so it never competes with a red "Due today" on the same row. An unowned item shows a dashed ring with a dash, so it reads as an empty slot rather than a person.</p></div>
+        <span class="demo-card-tag">A-04</span>
+      </div>
+      <div class="demo-card-canvas is-stacked" id="a04-demo">
+        <div style="width:100%;max-width:520px;border:var(--border-hairline) solid var(--color-border-default);border-radius:var(--shape-container);overflow:hidden;background:var(--color-background-surface)">
+          <div style="display:grid;grid-template-columns:auto 1fr auto;gap:var(--space-3);align-items:center;padding:var(--space-3) var(--space-5);border-bottom:var(--border-hairline) solid var(--color-border-subtle);font-size:var(--fs-md)"><span class="av av-md av-self" role="img" aria-label="You">PD</span><div>Review KYC for Global Supplies<div style="font-size:var(--fs-sm);color:var(--color-foreground-muted)">Assigned to you</div></div><span class="pill danger sm"><span class="pill-label">Due today</span></span></div>
+          <div style="display:grid;grid-template-columns:auto 1fr auto;gap:var(--space-3);align-items:center;padding:var(--space-3) var(--space-5);border-bottom:var(--border-hairline) solid var(--color-border-subtle);font-size:var(--fs-md)"><span class="av av-md av-brand" role="img" aria-label="Ana Souza">AS</span><div>Approve payout batch #418<div style="font-size:var(--fs-sm);color:var(--color-foreground-muted)">Ana Souza</div></div><span class="pill neutral sm"><span class="pill-label">Tomorrow</span></span></div>
+          <div style="display:grid;grid-template-columns:auto 1fr auto;gap:var(--space-3);align-items:center;padding:var(--space-3) var(--space-5);font-size:var(--fs-md)"><span class="av av-md av-unassigned" role="img" aria-label="Unassigned">–</span><div>Reconcile March statements<div style="font-size:var(--fs-sm);color:var(--color-foreground-muted)">No owner</div></div><span class="pill neutral sm"><span class="pill-label">Next week</span></span></div>
+        </div>
+      </div>
+    </div>
+</section>
 
   <!-- =====================================================
        02 · MONEY
@@ -579,7 +593,7 @@
 
       <div class="dont-card">
         <div class="dont-card-canvas">
-          <span class="pill" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); text-transform: none; font-family: var(--font-sans); font-weight: var(--w-medium); letter-spacing: 0;"><span class="pill-label">Settled successfully</span></span>
+          <span class="pill" style="background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); text-transform: none; font-family: var(--font-sans); font-weight: var(--w-regular); letter-spacing: 0;"><span class="pill-label">Settled successfully</span></span>
         </div>
         <div class="dont-card-body">
           <i data-lucide="x-circle"></i>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta · Prompt 06 · Lote 3</title>
+<link rel="stylesheet" href="../../src/index.css">
+<link rel="stylesheet" href="../../themes/index.css?v=1">
+<script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1120px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .ey { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  h1 { margin: var(--space-3) 0; font-size: var(--fs-5xl); letter-spacing: var(--ls-display); }
+  .lead { max-width: 72ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+  section { margin-top: var(--space-12); }
+  section > h2 { font-size: var(--fs-2xl); margin: 0 0 var(--space-2); }
+  section > h2 .id { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-sm); color: var(--color-foreground-muted); margin-right: var(--space-3); }
+  section > p { max-width: 76ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-5); }
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
+  @media (max-width: 860px) { .vs { grid-template-columns: 1fr; } }
+  .cl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; margin-bottom: var(--space-3); color: var(--color-foreground-muted); }
+  .cl.new { color: var(--color-feedback-success-foreground); }
+  .stage { background: var(--color-background-subtle); border-radius: var(--shape-container); padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-3); }
+  .row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+  .m { margin-top: var(--space-2); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); line-height: 1.6; }
+  .m b { color: var(--color-foreground-default); font-weight: var(--w-regular); }
+  .files { margin-top: var(--space-3); font-size: var(--fs-sm); color: var(--color-foreground-secondary); }
+  .files code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+
+  /* ================= PROPOSAL — scoped to .p ================= */
+  /* L-15 */
+  .p .sel-card.is-selected { border-color: var(--color-brand-border); box-shadow: none; }
+  .p .sel-card.is-selected:has(input:focus-visible) { box-shadow: var(--shadow-focus); }
+  .p .toggle-chip:has(input:checked), .p .toggle-chip[aria-pressed="true"] { border-color: var(--color-brand-border); }
+  /* L-16 */
+  .p .sel-card:not(:has(.sel-card-desc)) { align-items: center; }
+  /* L-18 */
+  /* baseline on a fixed-height flex chip shoves the line to the top. A single-row
+     grid keeps label and count on one baseline and centres that row with
+     align-content, without the wrap a flex line would need. */
+  .p .toggle-chip { display: inline-grid; grid-auto-flow: column; justify-content: center; align-items: baseline; align-content: center; }
+  /* The icon is not text, so it does not ride the baseline: it centres on the
+     label's x-height instead (align-self: center + a nudge equal to half the
+     gap between the line box and the cap height). The count is mono and its
+     baseline sits ~1px below Lato's, so it is lifted 1px optically. */
+  .p .toggle-chip > svg, .p .toggle-chip > i { align-self: center; position: relative; top: var(--tc-icon-nudge, 0px); }
+  .p .toggle-chip-count { margin-top: 0; position: relative; top: var(--tc-count-nudge, 0px); }
+  /* Measured with baseline probes: label and count already share one baseline,
+     so the count needs no nudge. With an icon the row's line box grows to the
+     icon, which lifts the text ~1px above centre and leaves the icon ~1px below
+     the label's cap centre: the icon is lifted 1px and the row lowered 1px. */
+  .p .toggle-chip:has(> svg, > i) { --tc-icon-nudge: -1px; padding-top: 2px; }
+  /* L-21 */
+  .p .check-box svg { stroke-width: 4; }
+  /* L-22 */
+  .p .radio input:checked ~ .radio-dot { border-color: var(--color-brand-border); }
+  .p .radio-dot::after { width: 10px; height: 10px; }
+  .p .radio input:checked:disabled ~ .radio-dot { border-color: var(--color-border-default); }
+  /* L-20 — the card drives the form's own controls */
+  .p .sel-card > .radio-dot, .p .sel-card > .check-box { flex-shrink: 0; }
+  .p .sel-card input:checked ~ .radio-dot { border-color: var(--color-brand-border); }
+  .p .sel-card input:checked ~ .radio-dot::after { transform: scale(1); }
+  .p .sel-card input:checked ~ .check-box { background: var(--color-brand-solid); border-color: var(--color-brand-solid); }
+  .p .sel-card input:checked ~ .check-box svg { opacity: 1; transform: scale(1); }
+</style>
+</head>
+<body>
+<main class="doc">
+  <div class="ey">Proposta · nada aplicado ainda · Prompt 06 · Lote 3</div>
+  <h1>Decisões de design</h1>
+  <p class="lead">DS de hoje à esquerda, proposta à direita, com o CSS real do DS e as mudanças escopadas nesta página. Troque o tema e o produto no canto: as medidas são recalculadas ao recarregar.</p>
+
+  <section>
+    <h2><span class="id">L-15</span>Selecionado com borda fina azul clara</h2>
+    <p>O SelectableCard selecionado tinha borda navy mais um anel interno de 1px, uma borda de 2px escura. O ToggleChip pressionado também era navy. Passam a usar <code>--color-brand-border</code> em 1px; o marcador continua carregando o estado.</p>
+    <div class="vs">
+      <div><div class="cl">Hoje</div><div class="stage">
+        <label class="sel-card is-selected" id="s15c"><input type="radio" name="a" checked><span class="sel-card-body"><span class="sel-card-title">Transferência no mesmo dia</span><span class="sel-card-desc">Tarifa de R$ 3,00</span></span><span class="sel-card-mark" aria-hidden="true"></span></label>
+        <div class="row"><label class="toggle-chip" id="t15c"><input type="checkbox" checked>Wire</label><label class="toggle-chip"><input type="checkbox">Pix</label></div>
+      </div><div class="m" id="m15c"></div></div>
+      <div class="p"><div class="cl new">Proposta</div><div class="stage">
+        <label class="sel-card is-selected" id="s15n"><input type="radio" name="b" checked><span class="sel-card-body"><span class="sel-card-title">Transferência no mesmo dia</span><span class="sel-card-desc">Tarifa de R$ 3,00</span></span><span class="radio-dot" aria-hidden="true"></span></label>
+        <div class="row"><label class="toggle-chip" id="t15n"><input type="checkbox" checked>Wire</label><label class="toggle-chip"><input type="checkbox">Pix</label></div>
+      </div><div class="m" id="m15n"></div></div>
+    </div>
+    <div class="files">Arquivos: <code>sel-card.css</code>, <code>toggle-chip.css</code>. O <code>on-inverse</code> não muda.</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-16</span>Card só com título alinhado ao marcador</h2>
+    <p>Sem descrição, o título ficava no topo e o marcador de 20px descia. Card só com título passa a centralizar; com descrição, o marcador continua no topo.</p>
+    <div class="vs">
+      <div><div class="cl">Hoje</div><div class="stage"><label class="sel-card" id="s16c"><input type="radio" name="c"><span class="sel-card-body"><span class="sel-card-title">Pessoa jurídica</span></span><span class="sel-card-mark" aria-hidden="true"></span></label></div><div class="m" id="m16c"></div></div>
+      <div class="p"><div class="cl new">Proposta</div><div class="stage"><label class="sel-card" id="s16n"><input type="radio" name="d"><span class="sel-card-body"><span class="sel-card-title">Pessoa jurídica</span></span><span class="radio-dot" aria-hidden="true"></span></label></div><div class="m" id="m16n"></div></div>
+    </div>
+    <div class="files">Arquivos: <code>sel-card.css</code>.</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-18</span>Contador do ToggleChip na linha de base</h2>
+    <p>O contador, com fonte menor, ficava centralizado na caixa e subia acima do texto. Rótulo e contador passam a dividir a linha de base; o ícone continua centrado.</p>
+    <div class="vs">
+      <div><div class="cl">Hoje</div><div class="stage"><div class="row"><label class="toggle-chip" id="t18c"><input type="checkbox">Wire<span class="toggle-chip-count">42</span></label><label class="toggle-chip toggle-chip-sm"><input type="checkbox"><i data-lucide="landmark"></i>ACH<span class="toggle-chip-count">7</span></label></div></div><div class="m" id="m18c"></div></div>
+      <div class="p"><div class="cl new">Proposta</div><div class="stage"><div class="row"><label class="toggle-chip" id="t18n"><input type="checkbox">Wire<span class="toggle-chip-count">42</span></label><label class="toggle-chip toggle-chip-sm"><input type="checkbox"><i data-lucide="landmark"></i>ACH<span class="toggle-chip-count">7</span></label></div></div><div class="m" id="m18n"></div></div>
+    </div>
+    <div class="files">Arquivos: <code>toggle-chip.css</code>. Revisei o <code>.tab-count</code> das Tabs: ele já usa a linha de base desde o A-02, então não muda.</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-20</span>O card usa o Radio e o Checkbox do formulário</h2>
+    <p>O card desenhava um marcador próprio. Passa a renderizar o mesmo <code>.radio-dot</code> do Radio (escolha única) e o mesmo <code>.check-box</code> do Checkbox (<code>multi</code>), dirigidos pelo input oculto que o card já tem. As regras do <code>.sel-card-mark</code> saem do <code>sel-card.css</code>.</p>
+    <div class="vs">
+      <div><div class="cl">Hoje</div><div class="stage">
+        <label class="sel-card sel-card-multi is-selected"><input type="checkbox" checked><span class="sel-card-body"><span class="sel-card-title">Recebimentos em dólar</span></span><span class="sel-card-mark" aria-hidden="true"></span></label>
+        <label class="sel-card sel-card-multi"><input type="checkbox"><span class="sel-card-body"><span class="sel-card-title">Recebimentos em euro</span></span><span class="sel-card-mark" aria-hidden="true"></span></label>
+        <div class="row" style="margin-top:var(--space-3)"><label class="check"><input type="checkbox" checked><span class="check-box"><i data-lucide="check"></i></span>Checkbox do formulário</label></div>
+      </div></div>
+      <div class="p"><div class="cl new">Proposta</div><div class="stage">
+        <label class="sel-card sel-card-multi is-selected"><input type="checkbox" checked><span class="sel-card-body"><span class="sel-card-title">Recebimentos em dólar</span></span><span class="check-box" aria-hidden="true"><i data-lucide="check"></i></span></label>
+        <label class="sel-card sel-card-multi"><input type="checkbox"><span class="sel-card-body"><span class="sel-card-title">Recebimentos em euro</span></span><span class="check-box" aria-hidden="true"><i data-lucide="check"></i></span></label>
+        <div class="row" style="margin-top:var(--space-3)"><label class="check"><input type="checkbox" checked><span class="check-box"><i data-lucide="check"></i></span>Checkbox do formulário</label></div>
+      </div></div>
+    </div>
+    <div class="files">Arquivos: <code>SelectableCard.tsx</code> (troca o marcador), <code>sel-card.css</code> (remove o marcador próprio), <code>inputs.css</code> (as regras de checked do Radio e do Checkbox passam a valer também dentro do <code>.sel-card</code>).</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-21 · L-22</span>Check de 2px e Radio mais leve</h2>
+    <p>O check passa de 1,5px para 2px na tela. O Radio marcado troca o anel navy pela borda azul clara, o ponto vai de 8px para 10px, e o desabilitado marcado ganha anel neutro.</p>
+    <div class="vs">
+      <div><div class="cl">Hoje</div><div class="stage"><div class="row">
+        <label class="check" id="c21c"><input type="checkbox" checked><span class="check-box"><i data-lucide="check"></i></span>Marcado</label>
+        <label class="radio" id="r22c"><input type="radio" name="e" checked><span class="radio-dot"></span>Marcado</label>
+        <label class="radio" id="r22dc"><input type="radio" name="f" checked disabled><span class="radio-dot"></span>Desabilitado</label>
+      </div></div><div class="m" id="m21c"></div></div>
+      <div class="p"><div class="cl new">Proposta</div><div class="stage"><div class="row">
+        <label class="check" id="c21n"><input type="checkbox" checked><span class="check-box"><i data-lucide="check"></i></span>Marcado</label>
+        <label class="radio" id="r22n"><input type="radio" name="g" checked><span class="radio-dot"></span>Marcado</label>
+        <label class="radio" id="r22dn"><input type="radio" name="h" checked disabled><span class="radio-dot"></span>Desabilitado</label>
+      </div></div><div class="m" id="m21n"></div></div>
+    </div>
+    <div class="files">Arquivos: <code>inputs.css</code>. Vale em todo Checkbox e Radio do DS, incluindo a seleção da tabela e, pelo L-20, o SelectableCard.</div>
+  </section>
+</main>
+<script>
+lucide.createIcons();
+(function () {
+  function srgb(v){ v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
+  function rgb(c){ var m = c.match(/[\d.]+/g).map(Number); return /color\(srgb/.test(c) ? m.slice(0,3).map(function(x){ return x * 255; }) : m; }
+  function lum(c){ var m = rgb(c); return 0.2126 * srgb(m[0]) + 0.7152 * srgb(m[1]) + 0.0722 * srgb(m[2]); }
+  function cr(a, b){ var x = lum(a), y = lum(b); return ((Math.max(x, y) + .05) / (Math.min(x, y) + .05)).toFixed(2) + ':1'; }
+  function set(id, h){ document.getElementById(id).innerHTML = h; }
+  function ctr(r){ return r.top + r.height / 2; }
+  ['c', 'n'].forEach(function (k) {
+    var s = document.getElementById('s15' + k), cs = getComputedStyle(s), t = document.getElementById('t15' + k), ts = getComputedStyle(t);
+    set('m15' + k, 'card borda <b>' + cs.borderTopColor + '</b> ' + cr(cs.borderTopColor, getComputedStyle(s.parentElement).backgroundColor) + ' · anel <b>' + (cs.boxShadow === 'none' ? 'nenhum' : '1px') + '</b><br>chip borda <b>' + ts.borderTopColor + '</b>');
+    var s16 = document.getElementById('s16' + k), title = s16.querySelector('.sel-card-title'), mark = s16.querySelector('.sel-card-mark, .radio-dot');
+    var rg = document.createRange(); rg.selectNodeContents(title);
+    set('m16' + k, 'centro do título − centro do marcador <b>' + Math.round(ctr(rg.getBoundingClientRect()) - ctr(mark.getBoundingClientRect())) + 'px</b>');
+    var ch = document.getElementById('t18' + k), cnt = ch.querySelector('.toggle-chip-count');
+    var tn = [].slice.call(ch.childNodes).filter(function(n){ return n.nodeType === 3 && n.textContent.trim(); })[0], r2 = document.createRange(); r2.selectNodeContents(tn);
+    set('m18' + k, 'base do rótulo − base do contador <b>' + Math.round(r2.getBoundingClientRect().bottom - cnt.getBoundingClientRect().bottom) + 'px</b>');
+    var cb = document.querySelector('#c21' + k + ' svg'), rd = document.querySelector('#r22' + k + ' .radio-dot'), rdd = document.querySelector('#r22d' + k + ' .radio-dot');
+    var sw = parseFloat(getComputedStyle(cb).strokeWidth), w = cb.getBoundingClientRect().width;
+    set('m21' + k, 'check traço <b>' + (sw * w / 24).toFixed(2) + 'px</b> na tela · radio anel <b>' + getComputedStyle(rd).borderTopColor + '</b> · ponto <b>' + getComputedStyle(rd, '::after').width + '</b> · desabilitado anel <b>' + getComputedStyle(rdd).borderTopColor + '</b>');
+  });
+})();
+</script>
+</body>
+</html>

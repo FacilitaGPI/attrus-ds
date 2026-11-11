@@ -24,7 +24,7 @@
     height: 40px; padding: 0 var(--space-4);
     background: var(--color-background-surface); color: var(--color-foreground-secondary);
     border: 1px solid var(--color-border-default); border-radius: var(--radius-pill);
-    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular);
     letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer;
     box-shadow: var(--shadow-sm); transition: var(--transition-fast);
   }
@@ -37,7 +37,7 @@
     background: var(--color-background-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right var(--space-3) center;
     color: var(--color-foreground-secondary);
     border: 1px solid var(--color-border-default); border-radius: var(--radius-pill);
-    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold);
+    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular);
     letter-spacing: var(--ls-caps); text-transform: uppercase; cursor: pointer;
     box-shadow: var(--shadow-sm); transition: var(--transition-fast);
     -webkit-appearance: none; appearance: none;
@@ -68,7 +68,7 @@
   .ds-hero-eyebrow {
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);
     font-size: var(--fs-xs);
-    font-weight: var(--w-semibold);
+    font-weight: var(--w-regular);
     text-transform: uppercase;
     letter-spacing: var(--ls-caps);
     color: var(--color-foreground-inverse-secondary);
@@ -125,7 +125,7 @@
     padding: 0 var(--space-5);
     border-radius: var(--radius-pill);
     font-family: var(--font-sans);
-    font-weight: var(--w-semibold);
+    font-weight: var(--w-regular);
     font-size: var(--fs-md);
     border: 1px solid transparent;
     cursor: pointer;
@@ -236,7 +236,7 @@
   .ds-card-tag {
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);
     font-size: var(--fs-xxs);
-    font-weight: var(--w-semibold);
+    font-weight: var(--w-regular);
     text-transform: uppercase;
     letter-spacing: var(--ls-caps);
     color: var(--color-foreground-muted);
@@ -337,7 +337,7 @@
   }
   .ds-legend-item strong {
     color: var(--color-foreground-default);
-    font-weight: var(--w-semibold);
+    font-weight: var(--w-regular);
   }
   .ds-legend .dot {
     width: 8px;
@@ -381,7 +381,7 @@
   .ds-template-ic i, .ds-template-ic svg { width: var(--icon-md); height: var(--icon-md); stroke-width: var(--icon-stroke); }
   .ds-template-meta { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
   .ds-template-name {
-    font-weight: var(--w-semibold);
+    font-weight: var(--w-regular);
     font-size: var(--fs-md);
     color: var(--color-foreground-default);
   }
@@ -837,6 +837,42 @@
         </div>
         <h3>Modal</h3>
         <p>Blocking overlay for focused decisions — confirmations, short forms.</p>
+      </a>
+
+      <a class="ds-card" href="sheet.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="panel-bottom"></i></span>
+          <span class="ds-card-tag">Overlay</span>
+        </div>
+        <h3>Sheet</h3>
+        <p>Bottom sheet for phones — row detail, sort, filters. A dialog with focus trap and focus return.</p>
+      </a>
+
+      <a class="ds-card" href="segmented-menu.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="toggle-left"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Segmented &amp; menu</h3>
+        <p>One choice in a row with counts, the menu a segment opens, and the step strip for table rows.</p>
+      </a>
+
+      <a class="ds-card" href="charts.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="chart-column-stacked"></i></span>
+          <span class="ds-card-tag is-new">New</span>
+        </div>
+        <h3>Charts</h3>
+        <p>Distribution bar, stage funnel, stacked bar chart and sparkline on the data-viz tokens.</p>
+      </a>
+
+      <a class="ds-card" href="skeleton.html">
+        <div class="ds-card-top">
+          <span class="ds-card-icon"><i data-lucide="loader"></i></span>
+          <span class="ds-card-tag">Overlay</span>
+        </div>
+        <h3>Skeleton</h3>
+        <p>Loading placeholder in the shape of the coming content — text, circle, rect.</p>
       </a>
 
       <a class="ds-card" href="drawer.html">

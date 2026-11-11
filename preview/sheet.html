@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<!-- @dsCard group="Components" name="Sheet" subtitle="Bottom sheet for phones — detail, sort, filters" viewport="1280x900" -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sheet · ATTRUS Design System</title>
+<link rel="stylesheet" href="../src/index.css">
+<link rel="stylesheet" href="../src/themes/index.css">
+<link rel="stylesheet" href="components/overlays.css?v=41">
+<link rel="stylesheet" href="components/buttons.css?v=41">
+<link rel="stylesheet" href="components/inputs.css?v=41">
+<link rel="stylesheet" href="components/toggle-chip.css?v=41">
+<script src="../theme-toggle.js"></script>
+<script src="../version.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1120px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .ey { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  h1 { margin: var(--space-3) 0; font-size: var(--fs-5xl); letter-spacing: var(--ls-display); }
+  .lead { max-width: 74ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+  section { margin-top: var(--space-12); }
+  section > h2 { font-size: var(--fs-2xl); margin: 0 0 var(--space-2); }
+  section > p { max-width: 76ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-5); }
+  code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  pre { margin: 0; padding: var(--space-5); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); line-height: 1.7; overflow-x: auto; color: var(--color-foreground-secondary); }
+  .phones { display: flex; flex-wrap: wrap; gap: var(--space-6); justify-content: center; }
+  .ph-col { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); }
+  .ph-col h3 { margin: 0; font-size: var(--fs-md); }
+  .ph-col p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-muted); max-width: 30ch; text-align: center; }
+  .phone { position: relative; width: 300px; height: 560px; border-radius: 30px; overflow: hidden; border: 8px solid var(--color-background-inverse); background: var(--color-background-canvas); transform: translateZ(0); }
+  .phone .scr { height: 100%; display: flex; flex-direction: column; }
+  .phone .top { height: 52px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-4); background: var(--color-background-surface); border-bottom: var(--border-hairline) solid var(--color-border-default); font-size: var(--fs-sm); font-weight: var(--w-bold); }
+  .phone .list { padding: var(--space-3) var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
+  .phone .li { height: 52px; border-radius: var(--radius-sm); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); display: flex; align-items: center; padding: 0 var(--space-3); font-size: var(--fs-sm); cursor: pointer; }
+  .phone .scrim, .phone .sheet { position: absolute; }
+  .phone .scrim, .phone .sheet { border-bottom-left-radius: inherit; border-bottom-right-radius: inherit; }
+  .phone .sheet { max-height: 85%; }
+  .kv { display: grid; grid-template-columns: 1fr auto; gap: var(--space-2) var(--space-4); font-size: var(--fs-sm); }
+  .kv dt { color: var(--color-foreground-muted); } .kv dd { margin: 0; text-align: right; }
+  .m { margin-top: var(--space-4); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); line-height: 1.7; }
+  .m b { color: var(--color-foreground-default); font-weight: var(--w-regular); }
+  table.plan { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); overflow: hidden; }
+  table.plan th, table.plan td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: var(--border-hairline) solid var(--color-border-subtle); vertical-align: top; }
+  table.plan th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); font-weight: var(--w-regular); background: var(--color-background-subtle); }
+  table.plan tr:last-child td { border-bottom: 0; }
+</style>
+</head>
+<body>
+<a class="doc-back" href="index.html"><i data-lucide="arrow-left"></i>Design system</a>
+<main class="doc">
+  <div class="ey">Components · Overlays · new in this release</div>
+  <h1>Sheet</h1>
+  <p class="lead">The panel that rises from the bottom edge on a phone, within thumb reach. Use it where a wide screen would open a drawer, a modal or an inline panel: a row's detail, a sort, a set of filters. It is a dialog in full — named by its title, focus moves in and is trapped, Esc and the scrim close it, focus returns to what opened it and the page behind stops scrolling. <code>DTDetailSheet</code> is a Sheet with the detail layout.</p>
+
+  <section>
+    <h2>API</h2>
+    <pre>&lt;Sheet
+  open={boolean}
+  onClose={() =&gt; void}
+  title="Sort by"            <span style="color:var(--color-foreground-muted)">// names the dialog (aria-labelledby)</span>
+  sub?="…"                        <span style="color:var(--color-foreground-muted)">// supporting line under the title</span>
+  eyebrow?={&lt;Pill/&gt;}             <span style="color:var(--color-foreground-muted)">// above the title — status on a detail</span>
+  footer?={&lt;&gt;&lt;Button/&gt;&lt;Button/&gt;&lt;/&gt;}  <span style="color:var(--color-foreground-muted)">// two actions, secondary · primary</span>
+  closeButton?={true}             <span style="color:var(--color-foreground-muted)">// the ✕ in the header</span>
+  dismissible?={true}             <span style="color:var(--color-foreground-muted)">// Esc and scrim close; false for a required flow</span>
+  initialFocus?={ref}             <span style="color:var(--color-foreground-muted)">// default: the .is-on option, else the first control</span>
+&gt;
+  {content}
+&lt;/Sheet&gt;
+
+&lt;SheetOption selected? icon? onSelect&gt;Mais recentes&lt;/SheetOption&gt;   <span style="color:var(--color-foreground-muted)">// .sheet-opt — one choice, 48px</span></pre>
+  </section>
+
+  <section>
+    <h2>Three uses, one component</h2>
+    <p>Tap a row, the sort icon or the filter icon. Try the keyboard too: focus enters the sheet and stays in it, Esc closes it and focus goes back to the control that opened it.</p>
+    <div class="phones">
+      <div class="ph-col"><h3>Detail</h3><p>eyebrow, title, sub and a body of pairs</p>
+        <div class="phone"><div class="scr"><div class="top">Transactions</div><div class="list">
+          <button class="li" data-open="s-detail">Global Supplies LLC · −18.425,00</button><button class="li" data-open="s-detail">Aurora Logistics · 1.000,00</button>
+        </div></div>
+          <div class="scrim" data-for="s-detail"></div>
+          <div class="sheet" id="s-detail" role="dialog" aria-modal="true" aria-labelledby="s-detail-t" aria-hidden="true">
+            <div class="sheet-grab" aria-hidden="true"></div>
+            <div class="sheet-head"><div><span class="pill warning sm"><span class="dot"></span><span class="pill-label">Pending</span></span><h3 class="sheet-title" id="s-detail-t">Global Supplies LLC</h3><p class="sheet-sub">Wire · TX-90412 · today, 11:42</p></div><button class="btn btn-tertiary btn-sm btn-icon" aria-label="Close" data-close><i data-lucide="x"></i></button></div>
+            <div class="sheet-body"><dl class="kv"><dt>Amount</dt><dd>−18.425,00 BRL</dd><dt>Fee</dt><dd>−3,00 BRL</dd><dt>Account</dt><dd>Itaú ··3391</dd></dl></div>
+            <div class="sheet-footer"><button class="btn btn-secondary" data-close>Close</button><button class="btn btn-primary">View receipt</button></div>
+          </div>
+        </div></div>
+      <div class="ph-col"><h3>Sort</h3><p>a list of <code>SheetOption</code>, no footer</p>
+        <div class="phone"><div class="scr"><div class="top">Transactions<button class="btn btn-ghost btn-sm btn-icon" aria-label="Sort" data-open="s-sort"><i data-lucide="arrow-up-down"></i></button></div><div class="list"><div class="li">…</div></div></div>
+          <div class="scrim" data-for="s-sort"></div>
+          <div class="sheet" id="s-sort" role="dialog" aria-modal="true" aria-labelledby="s-sort-t" aria-hidden="true">
+            <div class="sheet-grab" aria-hidden="true"></div>
+            <div class="sheet-head"><div><h3 class="sheet-title" id="s-sort-t">Sort by</h3></div><button class="btn btn-tertiary btn-sm btn-icon" aria-label="Close" data-close><i data-lucide="x"></i></button></div>
+            <div class="sheet-body" role="radiogroup" aria-labelledby="s-sort-t">
+              <button class="sheet-opt is-on" role="radio" aria-checked="true"><i data-lucide="calendar-arrow-down"></i><span>Newest first</span><i data-lucide="check"></i></button>
+              <button class="sheet-opt" role="radio" aria-checked="false"><i data-lucide="calendar-arrow-up"></i><span>Oldest first</span></button>
+              <button class="sheet-opt" role="radio" aria-checked="false"><i data-lucide="arrow-down-wide-narrow"></i><span>Amount, high to low</span></button>
+              <button class="sheet-opt" role="radio" aria-checked="false"><i data-lucide="arrow-up-narrow-wide"></i><span>Amount, low to high</span></button>
+            </div>
+          </div>
+        </div></div>
+      <div class="ph-col"><h3>Filters</h3><p>form controls and a two-action footer</p>
+        <div class="phone"><div class="scr"><div class="top">Transactions<button class="btn btn-ghost btn-sm btn-icon" aria-label="Filters" data-open="s-filter"><i data-lucide="sliders-horizontal"></i></button></div><div class="list"><div class="li">…</div></div></div>
+          <div class="scrim" data-for="s-filter"></div>
+          <div class="sheet" id="s-filter" role="dialog" aria-modal="true" aria-labelledby="s-filter-t" aria-hidden="true">
+            <div class="sheet-grab" aria-hidden="true"></div>
+            <div class="sheet-head"><div><h3 class="sheet-title" id="s-filter-t">Filters</h3><p class="sheet-sub">The list only changes when you apply.</p></div><button class="btn btn-tertiary btn-sm btn-icon" aria-label="Close" data-close><i data-lucide="x"></i></button></div>
+            <div class="sheet-body">
+              <div style="display:flex;flex-wrap:wrap;gap:var(--space-2)"><label class="toggle-chip"><input type="checkbox" checked>Pending</label><label class="toggle-chip"><input type="checkbox">Settled</label><label class="toggle-chip"><input type="checkbox">Failed</label></div>
+              <label class="check"><input type="checkbox" checked><span class="check-box"><i data-lucide="check"></i></span>Only with a fee</label>
+            </div>
+            <div class="sheet-footer"><button class="btn btn-secondary">Clear</button><button class="btn btn-primary" data-close>Show 38</button></div>
+          </div>
+        </div></div>
+    </div>
+    <div class="m" id="m"></div>
+  </section>
+
+  <section>
+    <h2>Behaviour</h2>
+    <table class="plan">
+      <thead><tr><th>Concern</th><th>Before (DTDetailSheet)</th><th>Sheet</th></tr></thead>
+      <tbody>
+        <tr><td>Accessible name</td><td>none</td><td><code>aria-labelledby</code> no título</td></tr>
+        <tr><td>Focus on open</td><td>stays behind the scrim</td><td>moves to the selected option, else the first control</td></tr>
+        <tr><td>Tab</td><td>leaves the sheet for the page behind</td><td>trapped inside the sheet</td></tr>
+        <tr><td>On close</td><td>focus is lost</td><td>returns to the opener</td></tr>
+        <tr><td>Page scroll</td><td>the page scrolls behind</td><td>locked while open</td></tr>
+        <tr><td>Required flow</td><td>not available</td><td><code>dismissible={false}</code> turns off Esc and scrim</td></tr>
+        <tr><td>Portal</td><td>yes, to <code>&lt;body&gt;</code></td><td>same</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:var(--space-4)">When not to use: on a wide screen (open a <code>Drawer</code> or <code>Modal</code>), or for a one-line confirmation (a <code>Toast</code> with an action). Keep the footer to two actions, secondary then primary; a third belongs in the body.</p>
+  </section>
+</main>
+<script>
+lucide.createIcons();
+(function () {
+  var opener = null, lastOpen = null;
+  function foc(sh) { return [].slice.call(sh.querySelectorAll('button, a[href], input, select, textarea')).filter(function (e) { return !e.disabled && e.offsetParent !== null; }); }
+  function scrimOf(id) { return document.querySelector('.scrim[data-for="' + id + '"]'); }
+  function open(id) {
+    var sh = document.getElementById(id); opener = document.activeElement; lastOpen = sh;
+    sh.classList.add('is-open'); sh.setAttribute('aria-hidden', 'false'); scrimOf(id).classList.add('is-open');
+    setTimeout(function () { (sh.querySelector('.sheet-opt.is-on') || sh.querySelector('.sheet-body button, .sheet-body input') || foc(sh)[0]).focus(); }, 60);
+  }
+  function close(sh) {
+    sh.classList.remove('is-open'); sh.setAttribute('aria-hidden', 'true'); scrimOf(sh.id).classList.remove('is-open');
+    if (opener) opener.focus();
+  }
+  document.querySelectorAll('[data-open]').forEach(function (b) { b.addEventListener('click', function () { open(b.getAttribute('data-open')); }); });
+  document.querySelectorAll('.scrim[data-for]').forEach(function (s) { s.addEventListener('click', function () { close(document.getElementById(s.getAttribute('data-for'))); }); });
+  document.querySelectorAll('.sheet').forEach(function (sh) {
+    sh.addEventListener('click', function (e) {
+      var o = e.target.closest('.sheet-opt');
+      if (o) { sh.querySelectorAll('.sheet-opt').forEach(function (x) { var on = x === o; x.classList.toggle('is-on', on); x.setAttribute('aria-checked', String(on)); var ck = x.querySelector('[data-lucide="check"], .lucide-check'); if (ck && !on) ck.remove(); }); if (!o.querySelector('.lucide-check')) { var i = document.createElement('i'); i.setAttribute('data-lucide', 'check'); o.appendChild(i); lucide.createIcons(); } setTimeout(function () { close(sh); }, 160); return; }
+      if (e.target.closest('[data-close]')) close(sh);
+    });
+    sh.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); close(sh); return; }
+      if (e.key !== 'Tab') return;
+      var f = foc(sh), first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+  });
+  window.__sheetProbe = { open: open, close: close };
+})();
+</script>
+</body>
+</html>

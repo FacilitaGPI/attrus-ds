@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Proposta · título do drawer</title>
+<link rel="stylesheet" href="../../src/index.css"><link rel="stylesheet" href="../../themes/index.css?v=1"><script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+body{margin:0;background:var(--color-background-canvas);color:var(--color-foreground-default);font-family:var(--font-sans)}
+.doc{max-width:980px;margin:0 auto;padding:var(--space-10) var(--space-8)}
+.eyebrow{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted)}
+h1{margin:var(--space-2) 0 var(--space-3);font-size:var(--fs-4xl)}p{max-width:72ch;color:var(--color-foreground-secondary);line-height:var(--lh-relaxed)}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);margin-top:var(--space-6)}
+.lbl{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);margin-bottom:var(--space-3)}.lbl.new{color:var(--color-feedback-success-foreground)}
+.box{position:relative;border:var(--border-hairline) solid var(--color-border-default);border-radius:var(--shape-container);overflow:hidden;background:var(--color-background-surface);display:flex;flex-direction:column;gap:0}
+.box .drawer-header{position:static}
+.box + .box{margin-top:var(--space-4)}
+.m{font-family:var(--font-mono);font-size:var(--fs-xxs);color:var(--color-foreground-muted);margin-top:var(--space-3);line-height:1.7}.m b{color:var(--color-foreground-default);font-weight:var(--w-regular)}
+table{width:100%;border-collapse:collapse;font-size:var(--fs-sm);margin-top:var(--space-6)}td,th{text-align:left;padding:var(--space-3);border-bottom:var(--border-hairline) solid var(--color-border-subtle);vertical-align:top}th{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);font-weight:var(--w-regular)}code{font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--color-foreground-accent)}
+.p .drawer-header-text:has(> .drawer-title:only-child){min-height:32px;display:flex;flex-direction:column;justify-content:center}
+.p .drawer-header-text > .drawer-title:only-child{margin:0}
+</style></head><body><main class="doc">
+<div class="eyebrow">Prompt 02 · Portal V3 · proposta, nada aplicado</div>
+<h1>Título do drawer alinhado ao fechar</h1>
+<p>O cabeçalho do drawer alinha pelo topo. O título tem uns 23px de altura de linha e o botão de fechar tem 32px, então sem subtítulo o título fica acima do centro do X. Na proposta, o bloco de texto tem no mínimo a altura do botão e centraliza o título; com subtítulo, nada muda.</p>
+<div class="vs">
+<div><div class="lbl">Hoje</div>
+ <div class="box" id="c1"><div class="drawer-header"><div class="drawer-header-text"><h3 class="drawer-title">Filters</h3></div><button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button></div></div>
+ <div class="box" id="c2"><div class="drawer-header"><div class="drawer-header-text"><h3 class="drawer-title">Transfer TX-90412</h3><p class="drawer-lead">Global Supplies LLC · 12 Aug</p></div><button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button></div></div>
+ <div class="m" id="m-cur"></div></div>
+<div class="p"><div class="lbl new">Proposta</div>
+ <div class="box" id="n1"><div class="drawer-header"><div class="drawer-header-text"><h3 class="drawer-title">Filters</h3></div><button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button></div></div>
+ <div class="box" id="n2"><div class="drawer-header"><div class="drawer-header-text"><h3 class="drawer-title">Transfer TX-90412</h3><p class="drawer-lead">Global Supplies LLC · 12 Aug</p></div><button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button></div></div>
+ <div class="m" id="m-new"></div></div>
+</div>
+<table><thead><tr><th>Impacto</th><th>Detalhe</th></tr></thead><tbody>
+<tr><td>Visual</td><td>Só o drawer com título e sem subtítulo: o título desce para o centro do X. Com subtítulo, o cabeçalho não muda. A altura do cabeçalho não muda (o botão já tem 32px).</td></tr>
+<tr><td>Nome público</td><td>Nenhum.</td></tr>
+<tr><td>Arquivos</td><td><code>preview/components/overlays.css</code> · <code>preview/drawer.html</code> (cabeçalho só com título)</td></tr>
+</tbody></table>
+</main>
+<script>
+lucide.createIcons();
+function M(a,b){function d(id){var h=document.querySelector('#'+id+' .drawer-header'),t=h.querySelector('.drawer-title'),x=h.querySelector('.drawer-close'),r=document.createRange();r.selectNodeContents(t);var tr=r.getBoundingClientRect(),xr=x.getBoundingClientRect();return {off:((tr.top+tr.height/2)-(xr.top+xr.height/2)).toFixed(1),h:Math.round(h.getBoundingClientRect().height)};}var x=d(a),y=d(b);return 'só título: centro do título vs. X <b>'+x.off+'px</b> · cabeçalho <b>'+x.h+'px</b><br>com subtítulo: centro do título vs. X <b>'+y.off+'px</b> · cabeçalho <b>'+y.h+'px</b>';}
+document.getElementById('m-cur').innerHTML=M('c1','c2');document.getElementById('m-new').innerHTML=M('n1','n2');
+</script></body></html>

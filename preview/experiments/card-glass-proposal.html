@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta · L-08 · Card glass</title>
+<link rel="stylesheet" href="../../src/index.css">
+<link rel="stylesheet" href="../../themes/index.css?v=1">
+<script src="../../theme-toggle.js?v=1"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1120px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .ey { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  h1 { margin: var(--space-3) 0; font-size: var(--fs-5xl); letter-spacing: var(--ls-display); }
+  .lead { max-width: 76ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+  section { margin-top: var(--space-12); }
+  section > h2 { font-size: var(--fs-2xl); margin: 0 0 var(--space-2); }
+  section > p { max-width: 78ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-5); }
+  code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  pre { margin: 0; padding: var(--space-5); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); line-height: 1.7; color: var(--color-foreground-secondary); }
+  pre .c { color: var(--color-foreground-muted); }
+  .cl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; margin: var(--space-6) 0 var(--space-3); color: var(--color-foreground-muted); }
+  .cl.new { color: var(--color-feedback-success-foreground); }
+  .stage { position: relative; border-radius: var(--shape-container); padding: var(--space-7); overflow: hidden; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-4);
+    background: radial-gradient(circle at 15% 30%, var(--color-accent-solid), transparent 45%), radial-gradient(circle at 85% 70%, var(--color-brand-solid), transparent 50%), var(--color-background-subtle); }
+  .card .h { font-size: var(--fs-md); font-weight: var(--w-bold); margin-bottom: var(--space-1); }
+  .card .s { font-size: var(--fs-sm); line-height: 1.4; }
+  .m { margin-top: var(--space-1); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); line-height: 1.6; opacity: .9; }
+
+  /* TODAY — the doc page's raw-tone classes */
+  .glass-card { padding: var(--space-5) var(--space-6); border-radius: var(--radius-md); }
+  .glass-card.light { background: var(--glass-white); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: var(--glass-border); box-shadow: var(--shadow-glass); color: var(--color-foreground-default); }
+  .glass-card.light .s { color: var(--color-foreground-secondary); }
+  .glass-card.dark { background: var(--glass-ink); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: var(--glass-border-dark); box-shadow: var(--shadow-glass-dark); color: var(--color-foreground-inverse-default); }
+  .glass-card.dark .s { color: var(--color-foreground-inverse-secondary); }
+
+  /* PROPOSAL — cards.css: .card.glass-<role>, theme-aware semantic pairs */
+  .p .card[class*="glass-"] { backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); box-shadow: var(--shadow-glass); }
+  /* The glass border tokens are full shorthands (1px solid …), so they go on
+     border, not border-color — as border-color they were invalid and the edge
+     fell back to the text colour. A light pane takes the frosted edge
+     (--glass-border, white 45%) that catches light; in the dark theme that
+     edge is the quiet one (--glass-chrome-border, white 10%). */
+  .p .card.glass-surface { background: var(--glass-surface); color: var(--glass-surface-fg); border: var(--glass-border); }
+  .p .card.glass-chrome  { background: var(--glass-chrome);  color: var(--glass-chrome-fg);  border: var(--glass-border); }
+  .p .card.glass-overlay { background: var(--glass-overlay); color: var(--glass-overlay-fg); border: var(--glass-border); }
+  [data-theme="dark"] .p .card:is(.glass-surface, .glass-chrome, .glass-overlay) { border: var(--glass-chrome-border); }
+  .p .card.glass-hero    { background: var(--glass-hero);    color: var(--glass-hero-fg);    border: var(--glass-border-dark); box-shadow: var(--shadow-glass-dark); }
+  .p .card[class*="glass-"] .s { color: inherit; opacity: .82; }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .p .card.glass-surface, .p .card.glass-chrome, .p .card.glass-overlay { background: var(--color-background-surface); }
+    .p .card.glass-hero { background: var(--color-background-inverse); }
+  }
+</style>
+</head>
+<body>
+<main class="doc">
+  <div class="ey">Proposta · nada aplicado ainda · Prompt 06 · L-08 · Glass card</div>
+  <h1>Card com vidro</h1>
+  <p class="lead">Ao montar a proposta achei um problema maior que a falta da prop: as nove combinações do <code>.glass-card</code> usam os tons <b>crus</b> (<code>--glass-white</code>, <code>--glass-ink</code>), que não mudam com o tema. Desde a v1.0.6 o DS tem os papéis <b>semânticos</b>, que mudam com o tema e trazem a cor do texto junto: <code>--glass-surface</code>, <code>-chrome</code>, <code>-overlay</code> e <code>-hero</code>. A proposta é a prop do Card usar esses papéis, e não os tons crus.</p>
+
+  <section>
+    <h2>API</h2>
+<pre>&lt;Card glass="surface" /&gt;   <span class="c">// card sobre imagem ou gradiente, dentro do conteúdo</span>
+&lt;Card glass="chrome" /&gt;    <span class="c">// barra ou painel fixo por cima do conteúdo (topbar, sidebar)</span>
+&lt;Card glass="overlay" /&gt;   <span class="c">// algo que flutua: popover, menu</span>
+&lt;Card glass="hero" /&gt;      <span class="c">// sobre o hero ou uma foto escura — fica escuro nos dois temas</span></pre>
+    <p style="margin-top:var(--space-4)">Os tons crus <code>light</code>, <code>dark</code>, <code>-lo</code>, <code>-hi</code> e <code>tint</code> continuam como tokens e na página Glass, para quem precisa de um ajuste fino, mas não viram opção do Card: escolher pela intensidade, e não pelo papel, foi o que levou ao vidro claro no tema escuro.</p>
+  </section>
+
+  <section>
+    <h2>Hoje e proposta, no tema atual</h2>
+    <p>Troque o tema no canto. O contraste de cada card é medido contra o meio do gradiente atrás dele.</p>
+    <div class="cl">Hoje · <code>.glass-card.light</code> e <code>.dark</code></div>
+    <div class="stage">
+      <div class="glass-card light" data-m><div class="h">light</div><div class="s">58% branco, nos dois temas.</div><div class="m"></div></div>
+      <div class="glass-card dark" data-m><div class="h">dark</div><div class="s">Ink a 62%, nos dois temas.</div><div class="m"></div></div>
+    </div>
+    <div class="cl new">Proposta · <code>&lt;Card glass&gt;</code></div>
+    <div class="stage p">
+      <div class="card glass-surface" data-m><div class="h">surface</div><div class="s">Card sobre imagem, no conteúdo.</div><div class="m"></div></div>
+      <div class="card glass-chrome" data-m><div class="h">chrome</div><div class="s">Barra ou painel fixo por cima.</div><div class="m"></div></div>
+      <div class="card glass-overlay" data-m><div class="h">overlay</div><div class="s">Popover, menu.</div><div class="m"></div></div>
+      <div class="card glass-hero" data-m><div class="h">hero</div><div class="s">Escuro nos dois temas.</div><div class="m"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>O que muda</h2>
+    <p>Arquivos: <code>cards.css</code> (as quatro classes <code>.card.glass-*</code> e o fallback para navegadores sem <code>backdrop-filter</code>), <code>Card.tsx</code> e <code>.d.ts</code> (a prop <code>glass</code>), <code>cards.html</code> (exemplo), <code>glass-layers.html</code> (aponta para o Card e explica os tons crus) e o <code>AI_HANDOFF.md</code>, com o motivo de o Glass card não virar um componente separado.</p>
+  </section>
+</main>
+<script>
+(function () {
+  function srgb(v){ v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
+  function rgba(c){ var m = c.match(/[\d.]+/g).map(Number); if (/color\(srgb/.test(c)) return [m[0]*255, m[1]*255, m[2]*255, m[3] == null ? 1 : m[3]]; return [m[0], m[1], m[2], m[3] == null ? 1 : m[3]]; }
+  function over(fg, bg){ var a = fg[3]; return [fg[0]*a + bg[0]*(1-a), fg[1]*a + bg[1]*(1-a), fg[2]*a + bg[2]*(1-a)]; }
+  function lum(m){ return 0.2126 * srgb(m[0]) + 0.7152 * srgb(m[1]) + 0.0722 * srgb(m[2]); }
+  function cr(a, b){ var x = lum(a), y = lum(b); return ((Math.max(x, y) + .05) / (Math.min(x, y) + .05)).toFixed(1); }
+  function run(){
+    var mid = rgba(getComputedStyle(document.querySelector('.stage')).backgroundColor);
+    var accent = rgba(getComputedStyle(document.documentElement).getPropertyValue('--color-accent-solid').trim() ? (function(){ var p = document.createElement('i'); p.style.color = 'var(--color-accent-solid)'; document.body.appendChild(p); var c = getComputedStyle(p).color; p.remove(); return c; })() : 'rgb(51,153,255)');
+    var behind = over([accent[0], accent[1], accent[2], .5], mid);
+    document.querySelectorAll('[data-m]').forEach(function (c) {
+      var cs = getComputedStyle(c), bg = over(rgba(cs.backgroundColor), behind), t = rgba(getComputedStyle(c.querySelector('.h')).color), s = rgba(getComputedStyle(c.querySelector('.s')).color);
+      var sEff = s[3] < 1 ? over(s, bg) : s; var sOp = parseFloat(getComputedStyle(c.querySelector('.s')).opacity); if (sOp < 1) sEff = over([sEff[0], sEff[1], sEff[2], sOp], bg);
+      c.querySelector('.m').textContent = 'título ' + cr(t, bg) + ':1 · texto ' + cr(sEff, bg) + ':1';
+    });
+  }
+  run(); window.addEventListener('attrus-theme', function () { setTimeout(run, 400); });
+})();
+</script>
+</body>
+</html>

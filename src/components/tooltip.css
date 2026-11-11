@@ -58,8 +58,9 @@
   transform: translateX(-50%) translateY(4px);
 }
 .tooltip-target:hover > .tooltip-top,
-.tooltip-target:focus-within > .tooltip-top { transform: translateX(-50%) translateY(0); }
-.tooltip-top::after { bottom: -3px; left: 50%; margin-left: -4px; }
+.tooltip-target:focus-within > .tooltip-top,
+.tooltip-top.is-open { transform: translateX(calc(-50% + var(--tip-shift, 0px))) translateY(0); }
+.tooltip-top::after { bottom: -3px; left: calc(50% - var(--tip-shift, 0px)); margin-left: -4px; }
 
 .tooltip-bottom {
   top: calc(100% + var(--space-2));
@@ -67,8 +68,9 @@
   transform: translateX(-50%) translateY(-4px);
 }
 .tooltip-target:hover > .tooltip-bottom,
-.tooltip-target:focus-within > .tooltip-bottom { transform: translateX(-50%) translateY(0); }
-.tooltip-bottom::after { top: -3px; left: 50%; margin-left: -4px; }
+.tooltip-target:focus-within > .tooltip-bottom,
+.tooltip-bottom.is-open { transform: translateX(calc(-50% + var(--tip-shift, 0px))) translateY(0); }
+.tooltip-bottom::after { top: -3px; left: calc(50% - var(--tip-shift, 0px)); margin-left: -4px; }
 
 .tooltip-left {
   right: calc(100% + var(--space-2));
@@ -87,6 +89,20 @@
 .tooltip-target:hover > .tooltip-right,
 .tooltip-target:focus-within > .tooltip-right { transform: translateY(-50%) translateX(0); }
 .tooltip-right::after { left: -3px; top: 50%; margin-top: -4px; }
+
+/* P-07 · edge-aligned placements — the balloon starts (or ends) at the
+   target's edge, the arrow 12px in from that edge. */
+.tooltip-top-start, .tooltip-top-end { bottom: calc(100% + var(--space-2)); transform: translateY(4px); }
+.tooltip-bottom-start, .tooltip-bottom-end { top: calc(100% + var(--space-2)); transform: translateY(-4px); }
+.tooltip-top-start, .tooltip-bottom-start { left: 0; }
+.tooltip-top-end, .tooltip-bottom-end { right: 0; }
+.tooltip-target:hover > :is(.tooltip-top-start, .tooltip-top-end, .tooltip-bottom-start, .tooltip-bottom-end),
+.tooltip-target:focus-within > :is(.tooltip-top-start, .tooltip-top-end, .tooltip-bottom-start, .tooltip-bottom-end),
+:is(.tooltip-top-start, .tooltip-top-end, .tooltip-bottom-start, .tooltip-bottom-end).is-open { transform: translateX(var(--tip-shift, 0px)) translateY(0); }
+.tooltip-top-start::after, .tooltip-top-end::after { bottom: -3px; }
+.tooltip-bottom-start::after, .tooltip-bottom-end::after { top: -3px; }
+.tooltip-top-start::after, .tooltip-bottom-start::after { left: calc(var(--space-4) - var(--tip-shift, 0px)); }
+.tooltip-top-end::after, .tooltip-bottom-end::after { right: calc(var(--space-4) + var(--tip-shift, 0px)); }
 
 /* Variants */
 .tooltip-rich {
@@ -230,5 +246,7 @@
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .tooltip { transition: opacity var(--duration-instant) linear; transform: none !important; transition-delay: 0s !important; }
+  /* No slide-in, but keep the positioning transform (centring and the edge
+     shift) — "transform: none" used to drop the balloon off its target. */
+  .tooltip { transition: opacity var(--duration-instant) linear; transition-delay: 0s !important; }
 }

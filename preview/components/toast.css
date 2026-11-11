@@ -12,10 +12,12 @@
   min-width: 320px;
   max-width: 480px;
   padding: var(--space-4) var(--space-5);
-  background: var(--glass-white);
+  /* Theme-aware glass: --glass-white stayed white in dark mode under light
+     text (2.5:1). Same fix as the drawer chrome. */
+  background: var(--glass-chrome);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
-  border: var(--glass-border);
+  border: var(--glass-chrome-border);
   border-radius: var(--shape-container);
   box-shadow: var(--shadow-glass), var(--shadow-lg);
   font-family: var(--font-sans);
@@ -40,7 +42,9 @@
   width: var(--icon-md);
   height: var(--icon-md);
   flex-shrink: 0;
-  margin-top: 2px;
+  /* Centre the icon on the title's first line — computed, not a fixed 2px,
+     which sat it 1.5px low. */
+  margin-top: calc((var(--fs-sm) * var(--lh-normal) - var(--icon-md)) / 2);
 }
 .toast-icon i, .toast-icon svg {
   width: var(--icon-md);
@@ -59,6 +63,9 @@
   margin: 0 0 var(--space-1);
   letter-spacing: var(--ls-tight);
 }
+/* A title with no description has nothing below it — its bottom margin
+   pushed the text 1.5px above the toast's centre. */
+.toast-body > .toast-title:only-child { margin: 0; }
 .toast-desc {
   font-size: var(--fs-sm);
   color: var(--color-foreground-secondary);
@@ -241,3 +248,25 @@
   .toast-stack > .toast { animation: none; }
   .toast-progress::after { animation: none; }
 }
+
+/* ================================================================
+   A-07 · TOASTS STEP AROUND AN OPEN RIGHT DRAWER
+   A bottom-right toast landed on the drawer's footer and covered its
+   primary action. While a right drawer is open the right-hand stacks sit
+   just left of it. One rule per drawer size: the width (--drawer-w) is
+   declared on the drawer, and the stack is not its child, so it cannot
+   read that variable. On a phone the drawer is full screen, so the bottom
+   stack moves to the top.
+   ================================================================ */
+body:has(.drawer-right.is-open) :is(.toast-stack-br, .toast-stack-tr) { right: calc(min(440px, 90vw) + var(--space-6)); }
+body:has(.drawer-right.drawer-sm.is-open) :is(.toast-stack-br, .toast-stack-tr) { right: calc(min(360px, 90vw) + var(--space-6)); }
+body:has(.drawer-right.drawer-md.is-open) :is(.toast-stack-br, .toast-stack-tr) { right: calc(min(440px, 90vw) + var(--space-6)); }
+body:has(.drawer-right.drawer-lg.is-open) :is(.toast-stack-br, .toast-stack-tr) { right: calc(min(560px, 92vw) + var(--space-6)); }
+body:has(.drawer-right.drawer-xl.is-open) :is(.toast-stack-br, .toast-stack-tr) { right: calc(min(720px, 94vw) + var(--space-6)); }
+.toast-stack-br, .toast-stack-tr { transition: right var(--duration-base) var(--ease-standard); }
+@media (max-width: 560px) {
+  body:has(.drawer-right.is-open) .toast-stack-br,
+  body:has(.drawer-right.is-open) .toast-stack-tr { right: var(--space-4); left: var(--space-4); }
+  body:has(.drawer-right.is-open) .toast-stack-br { bottom: auto; top: var(--space-4); flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) { .toast-stack-br, .toast-stack-tr { transition: none; } }

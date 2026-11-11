@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-export type PillTone = 'success' | 'warning' | 'danger' | 'info' | 'neutral' | 'brand';
+/** team-* (L-25) is identity, valid only with appearance="outline". */
+export type PillTone = 'success' | 'warning' | 'danger' | 'info' | 'neutral' | 'brand' | 'team-sales' | 'team-compliance' | 'team-implementation' | 'team-payment-desk' | 'team-product';
 export type PillSize = 'sm' | 'md' | 'lg';
 export type PillAppearance = 'soft' | 'solid' | 'outline';
 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Proposta · A-15</title>
+<link rel="stylesheet" href="../../src/index.css"><link rel="stylesheet" href="../../themes/index.css?v=1"><script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+body{margin:0;background:var(--color-background-canvas);color:var(--color-foreground-default);font-family:var(--font-sans)}
+.doc{max-width:1000px;margin:0 auto;padding:var(--space-10) var(--space-8)}
+.eyebrow{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted)}
+h1{margin:var(--space-2) 0 var(--space-3);font-size:var(--fs-4xl)}p{max-width:72ch;color:var(--color-foreground-secondary);line-height:var(--lh-relaxed)}
+.vs{display:flex;gap:var(--space-8);margin-top:var(--space-6);flex-wrap:wrap}
+.lbl{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);margin-bottom:var(--space-3)}.lbl.new{color:var(--color-feedback-success-foreground)}
+.phone{position:relative;width:390px;height:620px;border-radius:30px;overflow:hidden;background:var(--color-background-canvas);border:var(--border-hairline) solid var(--color-border-strong);box-shadow:var(--shadow-lg)}
+.page{padding:var(--space-6);font-size:var(--fs-sm);color:var(--color-foreground-muted)}
+.phone .scrim{position:absolute;inset:0;opacity:1;visibility:visible}
+.phone .drawer{position:absolute;top:0;right:0;bottom:0;transform:none;visibility:visible;opacity:1;display:flex;flex-direction:column}
+.phone .drawer-body{flex:1;padding:var(--space-5) var(--space-6);font-size:var(--fs-sm);color:var(--color-foreground-secondary)}
+/* the mobile rules a 390px viewport would apply (media queries can't fire in a box) */
+.phone .drawer-footer{flex-direction:column;align-items:stretch;gap:var(--space-2)}
+.phone .drawer-footer .btn{width:100%;justify-content:center;flex-shrink:0}
+.cur .drawer{width:min(440px,90%)}
+/* PROPOSAL */
+.p .drawer{width:100%;border-radius:0}
+.p .drawer-footer .btn,.p .drawer-footer .btn.btn-sm,.p .drawer-footer .btn.btn-xs{height:var(--control-h-lg);font-size:var(--fs-base);padding:0 var(--space-6)}
+.m{font-family:var(--font-mono);font-size:var(--fs-xxs);color:var(--color-foreground-muted);margin-top:var(--space-3);line-height:1.7;max-width:390px}.m b{color:var(--color-foreground-default);font-weight:var(--w-regular)}
+table{width:100%;border-collapse:collapse;font-size:var(--fs-sm);margin-top:var(--space-6)}td,th{text-align:left;padding:var(--space-3);border-bottom:var(--border-hairline) solid var(--color-border-subtle);vertical-align:top}th{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);font-weight:var(--w-regular)}code{font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--color-foreground-accent)}
+</style></head><body><main class="doc">
+<div class="eyebrow">Prompt 02 · A-15 · proposta, nada aplicado</div>
+<h1>Rodapé do drawer no celular</h1>
+<p>No celular o rodapé empilha os botões em largura total, mas não define a altura: com <code>size="sm"</code> cada botão vira uma faixa de 32px, abaixo do alvo de toque de 44px. E o drawer ocupa 90% da largura, deixando uma faixa da página aparecendo atrás. Na proposta os botões empilhados têm sempre 48px e o drawer ocupa a tela toda.</p>
+<div class="vs">
+ <div class="cur"><div class="lbl">Hoje · 390px</div><div class="phone" id="cur">
+  <div class="page">Payments · 248 entries</div><div class="scrim"></div>
+  <aside class="drawer drawer-right drawer-md"><div class="drawer-header"><div class="drawer-header-text"><h3 class="drawer-title">Filters</h3></div><button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button></div>
+   <div class="drawer-body">Status, method, period…</div>
+   <div class="drawer-footer"><button class="btn btn-secondary btn-sm">Clear</button><button class="btn btn-primary btn-sm">Show 38 results</button></div></aside>
+ </div><div class="m" id="m-cur"></div></div>
+ <div class="p"><div class="lbl new">Proposta · 390px</div><div class="phone" id="new">
+  <div class="page">Payments · 248 entries</div><div class="scrim"></div>
+  <aside class="drawer drawer-right drawer-md"><div class="drawer-header"><div class="drawer-header-text"><h3 class="drawer-title">Filters</h3></div><button class="drawer-close" aria-label="Close"><i data-lucide="x"></i></button></div>
+   <div class="drawer-body">Status, method, period…</div>
+   <div class="drawer-footer"><button class="btn btn-secondary btn-sm">Clear</button><button class="btn btn-primary btn-sm">Show 38 results</button></div></aside>
+ </div><div class="m" id="m-new"></div></div>
+</div>
+<table><thead><tr><th>Impacto</th><th>Detalhe</th></tr></thead><tbody>
+<tr><td>Visual · celular</td><td>Abaixo de 560px: botões do rodapé do drawer com 48px e fonte 14px, qualquer que seja o <code>size</code>; drawer de largura total, sem canto arredondado. Secundária em cima, principal embaixo (já é assim).</td></tr>
+<tr><td>Visual · desktop</td><td>Nada muda: botões lado a lado no tamanho que o app passar.</td></tr>
+<tr><td>Modal</td><td>O <code>.modal-footer</code> não empilha no celular hoje, então não mexo.</td></tr>
+<tr><td>Nome público</td><td>Nenhum. Só JSDoc na prop <code>footer</code> do <code>Drawer.d.ts</code> / <code>.tsx</code>.</td></tr>
+<tr><td>Arquivos</td><td><code>preview/components/overlays.css</code> · <code>components/Drawer/Drawer.tsx</code> e <code>.d.ts</code> (JSDoc) · <code>preview/drawer.html</code> (exemplo em 390px)</td></tr>
+</tbody></table>
+</main>
+<script>
+lucide.createIcons();
+function M(id){var p=document.getElementById(id),d=p.querySelector('.drawer'),bs=p.querySelectorAll('.drawer-footer .btn'),pr=p.getBoundingClientRect(),dr=d.getBoundingClientRect(),b=bs[0].getBoundingClientRect();return 'drawer <b>'+Math.round(dr.width)+'px</b> de 390 · página visível atrás <b>'+Math.round(dr.left-pr.left)+'px</b><br>botões <b>'+Math.round(b.width)+' × '+Math.round(b.height)+'px</b> (proporção '+(b.width/b.height).toFixed(1)+':1) · fonte <b>'+getComputedStyle(bs[0]).fontSize+'</b>';}
+document.getElementById('m-cur').innerHTML=M('cur');document.getElementById('m-new').innerHTML=M('new');
+</script></body></html>

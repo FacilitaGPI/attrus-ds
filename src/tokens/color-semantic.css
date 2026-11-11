@@ -146,6 +146,11 @@
 
   /* Semantic fg/bg pairs (status chips, alerts) */
   --color-feedback-success-foreground:        var(--color-success-700);
+  /* Avatar "this is you" — teal is neither a status nor an interaction colour,
+     so it never competes with "due today" red on the same row. Mixed with the
+     surface and the ink, so it follows dark mode and both products as-is. */
+  --color-avatar-self-background: color-mix(in srgb, var(--dataviz-cat-3) 14%, var(--color-background-surface));  /* @kind color */
+  --color-avatar-self-foreground: color-mix(in srgb, var(--dataviz-cat-3) 70%, var(--color-foreground-default));  /* @kind color */
   --color-feedback-success-foreground-muted:  var(--color-success-500);
   --color-feedback-success-foreground-subtle: color-mix(in srgb, var(--color-success-500) 70%, var(--color-foreground-muted));
   --color-feedback-success-background:        var(--color-success-50);

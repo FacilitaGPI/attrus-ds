@@ -31,6 +31,8 @@ export interface DataTableProps<T> {
   rowKey: (row: T) => string;
   /** Makes rows hoverable + clickable (tr.hov). */
   onRowClick?: (row: T) => void;
+  /** aria-label for a clickable row — what Enter opens. */
+  rowLabel?: (row: T) => string;
   /** Row tint: 'muted' (cancelled) or 'error' (danger). */
   rowState?: (row: T) => RowState;
   /** Keys of persistently selected rows (.is-selected). */
@@ -39,6 +41,8 @@ export interface DataTableProps<T> {
   onSelectToggle?: (key: string) => void;
   /** Header checkbox — toggle all. */
   onSelectAll?: () => void;
+  /** Inside a Card: drop the table's own frame so the card is the only border (.dt-wrap.is-flush). */
+  flush?: boolean;
   selectOnRowClick?: boolean;
   mobileCodeTitle?: boolean;
   /** Loading state — `.dt-skeleton` shimmer rows instead of the body. */
@@ -106,7 +110,7 @@ export interface DTGroupDividerProps extends React.HTMLAttributes<HTMLTableRowEl
 }
 export declare function DTGroupDivider(props: DTGroupDividerProps): React.ReactElement;
 
-export interface DTDetailProps extends Omit<React.HTMLAttributes<HTMLTableRowElement>, "title"> {
+export interface DTDetailProps extends Omit<React.HTMLAttributes<HTMLTableRowElement>, 'title'> {
   colSpan: number;
   open?: boolean;
   title?: React.ReactNode;
@@ -125,6 +129,7 @@ export declare const DTToolbar: React.FC<{
 
 export declare const DTDetailCard: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>>;
 
+/** Subrow lead: icon tile + label, then children (DTSubrowMeta tag/status). */
 export declare const DTSubrowLead: React.FC<{
   label: React.ReactNode;
   icon?: React.ReactNode;
@@ -206,3 +211,8 @@ export declare const DTOutlineSet: React.FC<React.HTMLAttributes<HTMLSpanElement
 export declare const DTDetailSheet: React.FC<{ open: boolean; onClose: () => void; title: React.ReactNode; sub?: React.ReactNode; eyebrow?: React.ReactNode; footer?: React.ReactNode; children?: React.ReactNode }>;
 /** True when the table container is narrower than 560px — agrees with the CSS container query. */
 export declare function useDTCompact(ref: React.RefObject<HTMLElement>): boolean;
+
+/** Floating bulk-action bar for selection mode — DataTable's `selectionBar` slot.
+    Visible only below the breakpoint; desktop keeps the actions in the toolbar.
+    Actions should be icon buttons with aria-labels. */
+export declare const DTSelectionBar: React.FC<{ count: React.ReactNode; actions?: React.ReactNode; onClear?: () => void } & React.HTMLAttributes<HTMLDivElement>>;

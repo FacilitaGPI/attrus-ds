@@ -6,7 +6,7 @@
 <title>Sidebar navigation · ATTRUS Design System</title>
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
-<link rel="stylesheet" href="components/sidebar.css?v=5">
+<link rel="stylesheet" href="components/sidebar.css?v=3983">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="../theme-toggle.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
@@ -39,7 +39,7 @@
     border: 1px solid var(--color-feedback-success-border);
     border-radius: var(--radius-pill);
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs);
-    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+    font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase;
   }
   .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
 
@@ -56,7 +56,7 @@
   .doc-nav a {
     padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill);
     color: var(--color-foreground-secondary); text-decoration: none;
-    font-size: var(--fs-sm); font-weight: var(--w-semibold);
+    font-size: var(--fs-sm); font-weight: var(--w-regular);
     transition: var(--transition-fast);
   }
   .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
@@ -71,12 +71,12 @@
   .spec { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-6); box-shadow: var(--shadow-xs); }
   .spec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border-subtle); }
   .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
-  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-medium); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
+  .spec-head h3 code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: var(--space-1) var(--space-3); border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px; }
   .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
-  .spec-tag { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
+  .spec-tag { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0; }
   .spec-canvas { padding: var(--space-8); background: var(--color-background-canvas); background-image: linear-gradient(var(--color-border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; display: flex; justify-content: center; align-items: flex-start; min-height: 280px; }
 
-  /* Sidebar component rules now live in components/sidebar.css?v=5 (single source) */
+  /* Sidebar component rules now live in components/sidebar.css?v=3983 (single source) */
 
   /* ===== Animation preview stages ===== */
   .anim-stage {
@@ -102,7 +102,7 @@
     border: 1px solid var(--color-border-default);
     border-radius: var(--radius-pill);
     color: var(--color-foreground-default);
-    font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: var(--w-semibold);
+    font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: var(--w-regular);
     cursor: pointer;
     box-shadow: var(--shadow-xs);
     transition: var(--transition-fast);
@@ -119,31 +119,8 @@
     border-radius: var(--radius-md);
     overflow: hidden;
   }
-  .demo-scrim {
-    position: absolute; inset: 0;
-    background: var(--color-scrim);
-    backdrop-filter: blur(2px);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity var(--duration-base) var(--ease-standard);
-  }
-  .demo-scrim.is-open { opacity: 1; }
-  .demo-drawer {
-    position: absolute; top: 0; left: 0; bottom: 0;
-    width: 220px;
-    background: var(--color-background-surface);
-    box-shadow: var(--shadow-xl);
-    transform: translateX(-100%);
-    transition: transform var(--duration-deliberate) var(--ease-emphasis);
-    padding: var(--space-4);
-  }
-  .demo-drawer.is-open { transform: translateX(0); }
-  .demo-drawer .row {
-    height: 30px; margin-bottom: var(--space-1);
-    border-radius: var(--radius-sm);
-    background: var(--color-background-subtle);
-  }
-  .demo-drawer .row.active { background: var(--color-background-selected); }
+  /* the product drawer is position:fixed; the transform makes this frame its containing block */
+  .demo-stage-window { transform: translateZ(0); }
 
   /* Rail width preview wrapper */
   .demo-rail-wrap { display: flex; gap: var(--space-3); align-items: flex-start; }
@@ -189,7 +166,7 @@
     display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
   .sb-foot .meta { flex: 1; min-width: 0; }
-  .sb-foot .meta .name { font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sb-foot .meta .name { font-size: var(--fs-sm); font-weight: var(--w-regular); color: var(--color-foreground-default); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .sb-foot .meta .role { font-size: var(--fs-xxs); color: var(--color-foreground-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .sb-foot .logout { color: var(--color-foreground-muted); cursor: pointer; flex-shrink: 0; }
   .sb-foot .logout svg, .sb-foot .logout i { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
@@ -221,13 +198,13 @@
   .anatomy-list li { counter-increment: anat; margin-bottom: var(--space-4); padding-left: var(--space-8); position: relative; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-sm); }
   .anatomy-list li:last-child { margin-bottom: 0; }
   .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
-  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-regular); display: block; margin-bottom: 1px; }
   .anatomy-list li code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
 
   /* States row — show idle/hover/active/disabled side by side */
   .states { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--space-3); padding: var(--space-7); background: var(--color-background-canvas); background-image: linear-gradient(var(--color-border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--color-border-subtle) 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; }
   .state-cell { display: flex; flex-direction: column; gap: var(--space-3); align-items: flex-start; }
-  .state-cell .label { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); text-transform: uppercase; }
+  .state-cell .label { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); text-transform: uppercase; }
   /* Mini standalone row for state demos (no full sidebar around it) */
   .row-demo {
     width: 200px;
@@ -249,7 +226,7 @@
   .ctx-canvas .content .skel-bar.short { width: 40%; }
   .ctx-canvas .content .skel-bar.long { width: 80%; }
   .ctx-meta { padding: var(--space-4) var(--space-5); border-top: 1px solid var(--color-border-subtle); }
-  .ctx-meta strong { display: block; font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); margin-bottom: 2px; }
+  .ctx-meta strong { display: block; font-size: var(--fs-sm); font-weight: var(--w-regular); color: var(--color-foreground-default); margin-bottom: 2px; }
   .ctx-meta p { font-size: var(--fs-xs); color: var(--color-foreground-muted); margin: 0; line-height: var(--lh-relaxed); }
 
   /* don'ts */
@@ -257,21 +234,21 @@
   .dont-card { background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
   .dont-card svg, .dont-card i { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
   .dont-card .body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
-  .dont-card .body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+  .dont-card .body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-regular); margin-bottom: var(--space-1); }
 
   /* token / a11y tables */
   .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
-  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
   .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
   .token-table tr:last-child td { border-bottom: 0; }
   .token-table code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
 
   /* recipe / code box */
   .recipe { background: var(--color-background-subtle); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-sm); padding: var(--space-4) var(--space-5); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-secondary); line-height: 1.7; white-space: pre; overflow-x: auto; }
-  .recipe .key { color: var(--color-foreground-accent); font-weight: var(--w-semibold); }
+  .recipe .key { color: var(--color-foreground-accent); font-weight: var(--w-regular); }
   .recipe .var { color: var(--color-success-700); }
   .recipe .muted { color: var(--color-foreground-muted); font-style: italic; }
-  .pattern-name { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+  .pattern-name { color: var(--color-foreground-default); font-weight: var(--w-regular); }
   .sb-stage { display: flex; height: 260px; overflow: hidden; }
   .sb-stage-rail { flex: 0 0 auto; }
   .sb-stage-rail.is-over { margin-right: -220px; position: relative; z-index: 2; width: 220px; }
@@ -1182,21 +1159,22 @@
       <header class="spec-head">
         <div>
           <h3>Mobile drawer — enter / exit</h3>
-          <p>Slides in from the left with <code>transform: translateX</code>. Scrim fades in simultaneously. <code>--duration-deliberate</code> with <code>--ease-emphasis</code>.</p>
+          <p>The product drawer itself — <code>.sb.is-drawer</code> over <code>.sb-scrim</code>, or <code>&lt;AppSidebar mobileOpen onMobileClose&gt;</code>. Slides in from the left with <code>transform: translateX</code> while the scrim fades in; <code>--duration-deliberate</code> with <code>--ease-emphasis</code>. Focus moves into the drawer and is trapped; Esc and a scrim click close it and return focus to the opener.</p>
         </div>
         <span class="spec-tag">640ms · emphasis</span>
       </header>
       <div class="anim-stage" data-anim="drawer-enter">
         <button class="anim-replay" type="button"><i data-lucide="play"></i>Replay</button>
         <div class="demo-stage-window">
-          <div class="demo-scrim is-open"></div>
-          <div class="demo-drawer is-open">
-            <div class="row active"></div>
-            <div class="row"></div>
-            <div class="row"></div>
-            <div class="row"></div>
-            <div class="row"></div>
-          </div>
+          <div class="sb-scrim is-open"></div>
+          <aside class="sb is-drawer is-open" aria-label="Navigation">
+            <div class="sb-body">
+              <div class="sb-item active"><i data-lucide="home" class="ic"></i><span class="label">Home</span></div>
+              <div class="sb-item"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transactions</span></div>
+              <div class="sb-item"><i data-lucide="users" class="ic"></i><span class="label">Counterparties</span></div>
+              <div class="sb-item"><i data-lucide="wallet" class="ic"></i><span class="label">Accounts</span></div>
+            </div>
+          </aside>
         </div>
       </div>
     </article>
@@ -1278,8 +1256,8 @@
       }
 
       if (kind === 'drawer-enter') {
-        const drawer = stage.querySelector('.demo-drawer');
-        const scrim = stage.querySelector('.demo-scrim');
+        const drawer = stage.querySelector('.sb.is-drawer');
+        const scrim = stage.querySelector('.sb-scrim');
         // Slide out first
         drawer.classList.remove('is-open');
         scrim.classList.remove('is-open');

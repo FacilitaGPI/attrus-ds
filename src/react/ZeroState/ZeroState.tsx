@@ -8,7 +8,7 @@ import * as React from 'react';
  * ui_kits/dashboard/EmptyState.jsx still consumed by the app.)
  */
 
-export interface ZeroStateProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
+export interface ZeroStateProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Illustration slot (.empty-illo) — SVG or image. */
   illo?: React.ReactNode;
   /** Heading (h4). */
@@ -37,7 +37,9 @@ export const ZeroState: React.FC<ZeroStateProps> = ({
   >
     {illo != null ? <span className="empty-illo">{illo}</span> : null}
     <h4>{title}</h4>
-    {children != null ? <p>{children}</p> : null}
+    {/* A div, not a <p>: a block child (div, Card) inside <p> is invalid HTML
+        and breaks hydration in Next. Styled as the paragraph via .empty-desc. */}
+    {children != null ? <div className="empty-desc">{children}</div> : null}
     {actions != null ? <div className="empty-actions">{actions}</div> : null}
   </div>
 );

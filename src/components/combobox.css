@@ -73,14 +73,21 @@
 .combobox-avatar {
   width: var(--control-h-xs); height: var(--control-h-xs);
   border-radius: var(--radius-pill);
-  background: var(--color-brand-subtle-solid);
-  color: var(--color-brand-text-on-light);
+  /* Theme-aware pair: the old fixed-light disc (brand-subtle-solid + on-light
+     text) stayed pale in dark mode and read as a hole in the surface. */
+  background: color-mix(in srgb, var(--color-foreground-brand) 14%, transparent);
+  color: var(--color-foreground-brand);
   display: inline-flex; align-items: center; justify-content: center;
   font-size: var(--fs-xxs);
   font-weight: var(--w-regular);
   flex-shrink: 0;
   margin-left: calc(var(--space-1) * -1);
 }
+/* Tone — the feedback pairs are theme-aware, raw -50/-700 steps are light-only */
+.combobox-avatar.tone-success { background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); }
+.combobox-avatar.tone-warning { background: var(--color-feedback-warning-background); color: var(--color-feedback-warning-foreground); }
+.combobox-avatar.tone-danger  { background: var(--color-feedback-danger-background);  color: var(--color-feedback-danger-foreground); }
+.combobox-avatar.tone-info    { background: var(--color-feedback-info-background);    color: var(--color-feedback-info-foreground); }
 
 /* Listbox popover */
 .combobox-popover {
@@ -298,7 +305,11 @@
 
 /* States */
 .combobox-trigger[aria-disabled="true"],
-.combobox.is-disabled .combobox-trigger {
+/* Also the native attribute: a disabled trigger must read disabled whether the
+   wrapper carries .is-disabled (TSX) or only the button is disabled (markup). */
+.combobox.is-disabled .combobox-trigger,
+.combobox-trigger:disabled,
+.combobox-trigger[aria-disabled="true"] {
   background: var(--color-background-subtle);
   color: var(--color-foreground-muted);
   cursor: not-allowed;

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Proposta · P-08</title>
+<link rel="stylesheet" href="../../src/index.css"><link rel="stylesheet" href="../../themes/index.css?v=1"><script src="../../theme-toggle.js?v=1"></script>
+<style>
+body{margin:0;background:var(--color-background-canvas);color:var(--color-foreground-default);font-family:var(--font-sans)}
+.doc{max-width:980px;margin:0 auto;padding:var(--space-10) var(--space-8)}
+.eyebrow{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted)}
+h1{margin:var(--space-2) 0 var(--space-3);font-size:var(--fs-4xl)}p{max-width:70ch;color:var(--color-foreground-secondary);line-height:var(--lh-relaxed)}
+.vs{display:grid;grid-template-columns:390px 390px;gap:var(--space-6);margin-top:var(--space-6)}
+.lbl{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);margin-bottom:var(--space-3)}.lbl.new{color:var(--color-feedback-success-foreground)}
+.m{font-family:var(--font-mono);font-size:var(--fs-xxs);color:var(--color-foreground-muted);margin-top:var(--space-3);line-height:1.7}.m b{color:var(--color-foreground-default);font-weight:var(--w-regular)}
+table{width:100%;border-collapse:collapse;font-size:var(--fs-sm);margin-top:var(--space-6)}td,th{text-align:left;padding:var(--space-3);border-bottom:var(--border-hairline) solid var(--color-border-subtle);vertical-align:top}th{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);font-weight:var(--w-regular)}code{font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--color-foreground-accent)}
+.p .callout-bar:has(.callout-title) > i,.p .callout-bar:has(.callout-title) > svg,.p .callout-bar:has(.callout-title) .callout-icon{align-self:flex-start;margin-top:calc((var(--fs-md) * var(--lh-tight) - 18px) / 2)}
+</style></head><body><main class="doc">
+<div class="eyebrow">Prompt 02 · P-08 · proposta, nada aplicado</div>
+<h1>Ícone do bar preso ao título</h1>
+<p>A variante <code>bar</code> centraliza o ícone na altura da caixa, o que funciona numa faixa de uma linha. Com título, texto e ações em 390px, o conteúdo quebra e o ícone vai para o meio do bloco. Na proposta, com título, o ícone prende na primeira linha (como a variante rica). Sem título, continua centralizado.</p>
+<div class="vs">
+<div><div class="lbl">Hoje</div><div id="cur">
+ <div class="callout callout-warn callout-bar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3Z"/><path d="M12 9v4M12 17h.01"/></svg><div class="callout-content"><div class="callout-body"><div class="callout-title">Documents pending review</div>Two counterparties are waiting for KYC documents before their next payout can settle.</div><div class="callout-actions"><button class="btn btn-secondary btn-sm">Later</button><button class="btn btn-primary btn-sm">Review</button></div></div></div>
+</div><div class="m" id="m-cur"></div></div>
+<div class="p"><div class="lbl new">Proposta</div><div id="new">
+ <div class="callout callout-warn callout-bar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3Z"/><path d="M12 9v4M12 17h.01"/></svg><div class="callout-content"><div class="callout-body"><div class="callout-title">Documents pending review</div>Two counterparties are waiting for KYC documents before their next payout can settle.</div><div class="callout-actions"><button class="btn btn-secondary btn-sm">Later</button><button class="btn btn-primary btn-sm">Review</button></div></div></div>
+ <div class="callout callout-info callout-bar" style="margin-top:var(--space-4)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg><div class="callout-content"><div class="callout-body">Sync paused until 14:00.</div></div></div>
+</div><div class="m" id="m-new"></div></div>
+</div>
+<table><thead><tr><th>Impacto</th><th>Detalhe</th></tr></thead><tbody>
+<tr><td>Visual</td><td>Só o <code>.callout-bar</code> <b>com</b> <code>.callout-title</code>: o ícone sobe para a primeira linha do título. Bar sem título (uma linha) não muda.</td></tr>
+<tr><td>Nome público</td><td>Nenhum.</td></tr>
+<tr><td>Arquivos</td><td><code>preview/components/callout.css</code> · <code>preview/callout.html</code> (nota "bar is for one line…" e o exemplo em 390px)</td></tr>
+</tbody></table>
+</main>
+<script>
+function M(id){var c=document.querySelector('#'+id+' .callout'),ic=c.querySelector(':scope > svg'),t=c.querySelector('.callout-title');var r=document.createRange();r.selectNodeContents(t.firstChild);var line=r.getClientRects()[0],ir=ic.getBoundingClientRect();return 'caixa <b>'+Math.round(c.getBoundingClientRect().height)+'px</b> · centro do ícone vs. 1ª linha do título <b>'+((ir.top+ir.height/2)-(line.top+line.height/2)).toFixed(1)+'px</b>';}
+document.getElementById('m-cur').innerHTML=M('cur');var n=M('new');var one=document.querySelectorAll('#new .callout')[1],oi=one.querySelector(':scope > svg').getBoundingClientRect(),ob=one.getBoundingClientRect();document.getElementById('m-new').innerHTML=n+'<br>bar sem título: ícone vs. centro da caixa <b>'+((oi.top+oi.height/2)-(ob.top+ob.height/2)).toFixed(1)+'px</b>';
+</script></body></html>

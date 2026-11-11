@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
 <script src="../version.js"></script>
-<link rel="stylesheet" href="components/inputs.css?v=729840">
+<link rel="stylesheet" href="components/inputs.css?v=37131">
 <link rel="stylesheet" href="components/buttons.css?v=20">
 <link rel="stylesheet" href="components/tabs.css?v=6">
 <link rel="stylesheet" href="components/number-input.css?v=6">
@@ -51,7 +51,7 @@
     background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground);
     border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill);
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs);
-    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps);
+    font-weight: var(--w-regular); letter-spacing: var(--ls-caps);
     text-transform: uppercase;
   }
   .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
@@ -66,7 +66,7 @@
   .doc-nav a {
     padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill);
     color: var(--color-foreground-secondary); text-decoration: none;
-    font-size: var(--fs-sm); font-weight: var(--w-semibold);
+    font-size: var(--fs-sm); font-weight: var(--w-regular);
     transition: var(--transition-fast);
   }
   .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
@@ -111,7 +111,7 @@
   }
   .spec-head h3 code {
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md);
-    font-weight: var(--w-medium); color: var(--color-foreground-accent);
+    font-weight: var(--w-regular); color: var(--color-foreground-accent);
     background: var(--color-background-selected); padding: var(--space-1) var(--space-3);
     border-radius: var(--radius-xs); margin-left: var(--space-3);
     vertical-align: 2px;
@@ -125,7 +125,7 @@
     padding: var(--space-1) var(--space-3);
     background: var(--color-background-subtle); color: var(--color-foreground-secondary);
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs);
-    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps);
+    font-weight: var(--w-regular); letter-spacing: var(--ls-caps);
     text-transform: uppercase; border-radius: var(--radius-pill);
     flex-shrink: 0;
   }
@@ -168,7 +168,7 @@
   }
   .spec-foot h4 {
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs);
-    font-weight: var(--w-semibold); color: var(--color-foreground-muted);
+    font-weight: var(--w-regular); color: var(--color-foreground-muted);
     text-transform: uppercase; letter-spacing: var(--ls-caps);
     margin: 0 0 var(--space-3);
   }
@@ -217,7 +217,7 @@
   .anatomy-callout .name {
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs);
     color: var(--color-foreground-default); text-transform: uppercase;
-    letter-spacing: var(--ls-caps); font-weight: var(--w-semibold);
+    letter-spacing: var(--ls-caps); font-weight: var(--w-regular);
   }
   .anatomy-callout .desc {
     font-size: var(--fs-xs); color: var(--color-foreground-muted);
@@ -238,7 +238,7 @@
   .token-table tr:last-child td { border-bottom: 0; }
   .token-table th {
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs);
-    font-weight: var(--w-semibold); color: var(--color-foreground-muted);
+    font-weight: var(--w-regular); color: var(--color-foreground-muted);
     text-transform: uppercase; letter-spacing: var(--ls-caps);
     background: var(--color-background-subtle);
   }
@@ -276,7 +276,7 @@
   }
   .dont-card-body strong {
     color: var(--color-foreground-default); display: block;
-    margin-bottom: var(--space-1); font-weight: var(--w-semibold);
+    margin-bottom: var(--space-1); font-weight: var(--w-regular);
   }
 
   /* helpers */
@@ -295,7 +295,7 @@
   }
   .matrix .h, .matrix .rl {
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs);
-    font-weight: var(--w-semibold); color: var(--color-foreground-muted);
+    font-weight: var(--w-regular); color: var(--color-foreground-muted);
     text-transform: uppercase; letter-spacing: var(--ls-caps);
   }
   .matrix .h { padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border-subtle); }
@@ -944,12 +944,12 @@
       <div class="demo-card-canvas is-col">
         <div class="state-grid">
           <div class="state-cell"><span class="lbl">Empty</span>
-            <div class="chips">
+            <div class="chips-input">
               <input placeholder="Add tag…" />
             </div>
           </div>
           <div class="state-cell"><span class="lbl">Populated</span>
-            <div class="chips">
+            <div class="chips-input">
               <span class="chip">Acme Corp <button type="button" class="chip-x" aria-label="Remove"><i data-lucide="x"></i></button></span>
               <span class="chip">Globex Ltda <button type="button" class="chip-x" aria-label="Remove"><i data-lucide="x"></i></button></span>
               <span class="chip">Initech <button type="button" class="chip-x" aria-label="Remove"><i data-lucide="x"></i></button></span>
@@ -957,13 +957,13 @@
             </div>
           </div>
           <div class="state-cell"><span class="lbl">Focus</span>
-            <div class="chips" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);">
+            <div class="chips-input" style="border-color: var(--color-border-focus); box-shadow: var(--shadow-focus);">
               <span class="chip">Acme Corp <button type="button" class="chip-x" aria-label="Remove"><i data-lucide="x"></i></button></span>
               <input placeholder="Add…" autofocus />
             </div>
           </div>
           <div class="state-cell"><span class="lbl">Many</span>
-            <div class="chips">
+            <div class="chips-input">
               <span class="chip">Operations <button type="button" class="chip-x" aria-label="Remove"><i data-lucide="x"></i></button></span>
               <span class="chip">Legal <button type="button" class="chip-x" aria-label="Remove"><i data-lucide="x"></i></button></span>
               <span class="chip">Finance <button type="button" class="chip-x" aria-label="Remove"><i data-lucide="x"></i></button></span>
@@ -1096,14 +1096,14 @@
         <div class="state-cell" style="width:100%; max-width: 420px;">
           <div style="display:flex; justify-content: space-between;">
             <span class="lbl">Default</span>
-            <span class="lbl" style="color: var(--color-foreground-default); font-weight: var(--w-semibold);">62</span>
+            <span class="lbl" style="color: var(--color-foreground-default); font-weight: var(--w-regular);">62</span>
           </div>
           <input type="range" class="slider" min="0" max="100" value="62" />
         </div>
         <div class="state-cell" style="width:100%; max-width: 420px;">
           <div style="display:flex; justify-content: space-between;">
             <span class="lbl">With ticks</span>
-            <span class="lbl" style="color: var(--color-foreground-default); font-weight: var(--w-semibold);">$ 2,400</span>
+            <span class="lbl" style="color: var(--color-foreground-default); font-weight: var(--w-regular);">$ 2,400</span>
           </div>
           <input type="range" class="slider" min="0" max="10000" step="100" value="2400" />
           <div style="display:flex; justify-content: space-between; font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted);">
@@ -1177,7 +1177,7 @@
       </header>
       <div class="demo-card-canvas is-col">
         <fieldset style="border:0; padding:0; margin:0; display:flex; flex-direction:column; gap: var(--space-3);">
-          <legend style="font-family: var(--font-sans); font-size: var(--fs-sm); font-weight: var(--w-semibold); color: var(--color-foreground-default); margin-bottom: var(--space-2);">Settlement speed</legend>
+          <legend style="font-family: var(--font-sans); font-size: var(--fs-sm); font-weight: var(--w-regular); color: var(--color-foreground-default); margin-bottom: var(--space-2);">Settlement speed</legend>
           <label class="radio"><input type="radio" name="r-demo" /><span class="radio-dot"></span>Instant — within 30 seconds, fee 0.5%</label>
           <label class="radio"><input type="radio" name="r-demo" checked /><span class="radio-dot"></span>Same-day — by 18:00, fee 0.2%</label>
           <label class="radio"><input type="radio" name="r-demo" /><span class="radio-dot"></span>T+1 — next business day, no fee</label>
@@ -1298,7 +1298,9 @@
         </div>
       </div>
     </article>
-  </section>
+  
+    <p class="demo-card-note" style="margin:var(--space-4) 0 0;font-size:var(--fs-sm);color:var(--color-foreground-secondary);line-height:var(--lh-relaxed)"><b>Empty trigger.</b> With nothing chosen, "Period" is the trigger's only visible label, so it uses <code>--color-foreground-muted</code> (5.1–5.4:1) rather than the placeholder colour (1.8:1). The placeholder colour stays for disabled text and for the placeholder of a field that has its own label.</p>
+</section>
 
   <!-- ========== SIZES ========== -->
   <section class="doc-section" id="sizes">
@@ -1339,7 +1341,30 @@
         </table>
       </div>
     </article>
-  </section>
+  
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>Small controls in one row <code>.btn-sm · .select > .input-sm · .input-sm</code></h3><p>A filter row mixes all three. They share one side inset (12px), one font size (13px) and one corner (<code>--shape-control</code>), and the select's chevron sits at that same inset from the right edge — so the text of every control starts at the same distance from its border.</p></div>
+        <span class="demo-card-tag">P-01</span>
+      </div>
+      <div class="demo-card-canvas" id="sm-row">
+        <button class="btn btn-secondary btn-sm">Export</button>
+        <label class="select" style="width:180px"><select class="input input-sm" aria-label="Account"><option>All accounts</option></select><i class="chev" data-lucide="chevron-down"></i></label>
+        <input class="input input-sm" placeholder="Reference" aria-label="Reference" style="width:160px">
+      </div>
+    </div>
+
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>Wide lead <code>.affix.lead-pad-lg</code> · <code>leadSize="lg"</code></h3><p>A flag or an avatar needs more than the 14px icon slot. The wide lead is a 20px box and the text recedes with it. In both slots the content is centred — a 16px Search icon and a 20px flag sit on the field's centre line.</p></div>
+        <span class="demo-card-tag">P-05</span>
+      </div>
+      <div class="demo-card-canvas is-stacked" id="affix-demo">
+        <label class="affix lead-pad" style="max-width:320px"><span class="lead"><i data-lucide="search" width="16" height="16"></i></span><input class="input" placeholder="Search counterparties" aria-label="Search counterparties"></label>
+        <label class="affix lead-pad-lg" style="max-width:320px"><span class="lead"><img src="../assets/flags/Brazil-rounded.svg" width="20" height="20" alt=""></span><input class="input" value="Brazil" aria-label="Country"></label>
+      </div>
+    </div>
+</section>
 
   <!-- ========== STATES MATRIX ========== -->
   <section class="doc-section" id="states">
@@ -1580,7 +1605,7 @@
       <div class="demo-card-canvas is-col is-inverse is-centred">
         <div style="width:100%; max-width: 380px; padding: var(--space-7); background: var(--color-background-inverse-subtle); border: 1px solid var(--color-border-inverse); border-radius: var(--radius-md); display:flex; flex-direction:column; gap: var(--space-5);">
           <div>
-            <div style="font-family: var(--font-display); font-size: var(--fs-xxl); font-weight: var(--w-semibold); color: var(--color-foreground-inverse-default); letter-spacing: var(--ls-tight);">Welcome back</div>
+            <div style="font-family: var(--font-display); font-size: var(--fs-xxl); font-weight: var(--w-regular); color: var(--color-foreground-inverse-default); letter-spacing: var(--ls-tight);">Welcome back</div>
             <div style="font-size: var(--fs-sm); color: var(--color-foreground-inverse-muted); margin-top: var(--space-2);">Sign in to your account</div>
           </div>
           <div class="field on-inverse">

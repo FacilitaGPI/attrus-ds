@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Proposta · A-05</title>
+<link rel="stylesheet" href="../../src/index.css"><link rel="stylesheet" href="../../themes/index.css?v=1"><script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+body{margin:0;background:var(--color-background-canvas);color:var(--color-foreground-default);font-family:var(--font-sans)}
+.doc{max-width:1280px;margin:0 auto;padding:var(--space-10) var(--space-8)}
+.eyebrow{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted)}
+h1{margin:var(--space-2) 0 var(--space-3);font-size:var(--fs-4xl)}p.lead{max-width:80ch;color:var(--color-foreground-secondary);line-height:var(--lh-relaxed)}
+.lbl{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);margin:var(--space-6) 0 var(--space-2);display:flex;gap:var(--space-3)}.lbl.new{color:var(--color-feedback-success-foreground)}
+.frame{container-type:inline-size;border:var(--border-hairline) solid var(--color-border-default);border-radius:var(--shape-container);overflow:hidden;background:var(--color-background-surface)}
+.frame .topbar{position:static}
+.m{font-family:var(--font-mono);font-size:var(--fs-xxs);color:var(--color-foreground-muted);margin-top:var(--space-2);line-height:1.6}.m b{color:var(--color-foreground-default);font-weight:var(--w-regular)}
+table.imp{width:100%;border-collapse:collapse;font-size:var(--fs-sm);margin-top:var(--space-6)}.imp td,.imp th{text-align:left;padding:var(--space-3);border-bottom:var(--border-hairline) solid var(--color-border-subtle);vertical-align:top}.imp th{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);font-weight:var(--w-regular)}code{font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--color-foreground-accent)}
+/* PROPOSAL — container query so the mockup frames can show three widths on one page;
+   the DS rule is the same thresholds on the viewport. */
+.p .frame [data-tb-priority]{transition:none}
+@container (max-width:1180px){.p .frame [data-tb-priority="3"]{display:none}}
+@container (max-width:760px){.p .frame [data-tb-priority="2"]{display:none}}
+</style></head><body><main class="doc">
+<div class="eyebrow">Prompt 03 · A-05 · proposta, nada aplicado</div>
+<h1>Topbar com regra de colapso</h1>
+<p class="lead">Com busca, estado, Live, assistente, pills, notificações e conta, a barra estoura e a conta sai da tela. Na proposta cada item tem uma prioridade: <b>3</b> some abaixo de 1180px, <b>2</b> abaixo de 760px. Busca e conta nunca somem. Mesmo conteúdo, três larguras.</p>
+<div id="frames"></div>
+<table class="imp"><thead><tr><th>Item</th><th>Prioridade recomendada</th><th>Por quê</th></tr></thead><tbody>
+<tr><td>Busca · Conta</td><td>sempre (sem atributo)</td><td>A busca é a entrada principal; a conta é onde se sai e se troca de empresa.</td></tr>
+<tr><td>Ação principal (New transaction)</td><td>1</td><td>Só some quando a barra entra no modo compacto do celular.</td></tr>
+<tr><td>Notificações</td><td>1</td><td>Tem estado (ponto vermelho) que o usuário precisa ver.</td></tr>
+<tr><td>Live · Assistente</td><td>2</td><td>Úteis, mas existem em outro lugar (status na página, atalho de teclado).</td></tr>
+<tr><td>Idioma · pills de estado</td><td>3</td><td>Ambientais: mudam pouco e cabem no menu da conta.</td></tr>
+<tr><td>Nome público novo</td><td colspan="2">Atributo <code>data-tb-priority="1|2|3"</code> · prop <code>priority?: 1 | 2 | 3</code> em <code>TopbarControl</code>, <code>TopbarLive</code>, <code>TopbarBell</code>. Sem a prop, o item nunca some.</td></tr>
+<tr><td>Arquivos</td><td colspan="2"><code>preview/components/topbar.css</code> · <code>components/AppTopbar/AppTopbar.tsx</code> + <code>.d.ts</code> · <code>preview/topbar.html</code> (ordem recomendada e exemplo)</td></tr>
+</tbody></table>
+</main>
+<script>
+var bar = '<header class="topbar">' +
+ '<button class="tb-control icon" aria-label="Menu"><i data-lucide="menu"></i></button>' +
+ '<label class="pill-search" style="flex:1;max-width:320px"><i data-lucide="search"></i><input placeholder="Search payments, counterparties" aria-label="Search"></label>' +
+ '<div class="tb-spacer">' +
+ '<button class="tb-control" data-tb-priority="3"><img src="../../assets/flags/EUA-rounded.svg" width="16" height="16" alt="">ENG</button>' +
+ '<span class="pill success sm" data-tb-priority="3"><span class="dot"></span><span class="pill-label">Bank online</span></span>' +
+ '<div class="tb-control tb-live" data-tb-priority="2"><span class="dot"></span>Live<span class="tb-clock">0:19</span></div>' +
+ '<button class="tb-control icon" data-tb-priority="2" aria-label="Assistant"><i data-lucide="sparkles"></i></button>' +
+ '<button class="tb-control icon tb-bell" data-tb-priority="1" aria-label="Notifications"><i data-lucide="bell"></i><span class="badge"></span></button>' +
+ '<button class="btn btn-primary btn-sm" data-tb-priority="1"><i data-lucide="plus"></i>New transaction</button>' +
+ '<button class="tb-account"><span class="av av-sm av-brand">PD</span><span class="tb-account-text"><span class="tb-account-name">Paulo Dourado</span><span class="tb-account-co">ATTRUS</span></span><i data-lucide="chevron-down"></i></button>' +
+ '</div></header>';
+var html = '';
+[['Hoje', '', 1280], ['Hoje', '', 760], ['Proposta', 'new', 1280], ['Proposta', 'new', 1000], ['Proposta', 'new', 700]].forEach(function (f, i) {
+  var wrap = f[1] ? '<div class="p">' : '<div>';
+  html += wrap + '<div class="lbl ' + f[1] + '"><span>' + f[0] + ' · ' + f[2] + 'px</span></div><div class="frame" style="width:' + Math.min(f[2], 1216) + 'px;max-width:100%" data-w="' + f[2] + '">' + bar + '</div><div class="m" id="m' + i + '"></div></div>';
+});
+document.getElementById('frames').innerHTML = html;
+lucide.createIcons();
+setTimeout(function(){
+  document.querySelectorAll('.frame').forEach(function (fr, i) {
+    var acc = fr.querySelector('.tb-account'), srch = fr.querySelector('.pill-search'), fr_r = fr.getBoundingClientRect(), ar = acc.getBoundingClientRect();
+    var vis = [].slice.call(fr.querySelectorAll('[data-tb-priority]')).filter(function(e){ return getComputedStyle(e).display !== 'none'; }).length;
+    document.getElementById('m' + i).innerHTML = 'conta visível: <b>' + (ar.right <= fr_r.right + 0.5 && ar.width > 0 ? 'sim' : 'não — sai ' + Math.round(ar.right - fr_r.right) + 'px') + '</b> · busca <b>' + Math.round(srch.getBoundingClientRect().width) + 'px</b> · itens com prioridade visíveis <b>' + vis + ' de 6</b>';
+  });
+}, 300);
+</script></body></html>

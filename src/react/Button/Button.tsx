@@ -13,6 +13,7 @@ export type ButtonVariant =
   | 'ghost'          /* nothing until hover — toolbars, table rows */
   | 'danger'         /* destructive solid */
   | 'danger-outline' /* destructive contextual — outline, surface bg */
+  | 'danger-ghost'   /* destructive inside chrome — toolbars, table rows; danger-outline stays for dialogs */
   | 'success'        /* strong positive (rare) */
   | 'link'           /* looks like an inline text link */
   | 'inverse';       /* white on dark/brand panels */

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Proposta · P-01 · controles sm</title>
+<link rel="stylesheet" href="../../src/index.css">
+<link rel="stylesheet" href="../../themes/index.css?v=1">
+<script src="../../theme-toggle.js?v=1"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 980px; margin: 0 auto; padding: var(--space-10) var(--space-8); }
+  .eyebrow { font-family: var(--font-mono); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  h1 { margin: var(--space-2) 0 var(--space-3); font-size: var(--fs-4xl); }
+  p { max-width: 70ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); margin-top: var(--space-6); }
+  .col-lbl { font-family: var(--font-mono); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+  .col-lbl.new { color: var(--color-feedback-success-foreground); }
+  .stage { background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); padding: var(--space-6); display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; }
+  .measure { font-family: var(--font-mono); font-size: var(--fs-xxs); color: var(--color-foreground-muted); margin-top: var(--space-3); line-height: 1.7; }
+  .measure b { color: var(--color-foreground-default); font-weight: var(--w-regular); }
+  table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); margin-top: var(--space-6); }
+  td, th { text-align: left; padding: var(--space-3); border-bottom: var(--border-hairline) solid var(--color-border-subtle); vertical-align: top; }
+  th { font-family: var(--font-mono); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); font-weight: var(--w-regular); }
+  code { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  /* PROPOSAL — scoped */
+  .p .input    { --input-pad-x: var(--space-4); }
+  .p .input-sm { --input-pad-x: var(--space-4); height: var(--control-h-sm); padding: 0 var(--input-pad-x); font-size: var(--fs-md); border-radius: var(--shape-control); }
+  .p .input-lg { --input-pad-x: var(--space-5); }
+  .p .select > select.input { padding-right: calc(var(--input-pad-x) + var(--icon-sm) + var(--space-3)); }
+  .p .select > .chev { right: var(--input-pad-x); }
+  /* the chevron is a sibling of the field, not its child, so it cannot inherit
+     the field's --input-pad-x — the wrapper declares it per size */
+  .p .select { --input-pad-x: var(--space-4); }
+  .p .select:has(> .input-lg) { --input-pad-x: var(--space-5); }
+</style>
+</head>
+<body>
+<main class="doc">
+  <div class="eyebrow">Prompt 02 · P-01 · proposta, nada aplicado</div>
+  <h1>Controles sm com o mesmo respiro</h1>
+  <p>Botão, select e campo pequenos lado a lado. Hoje o texto do campo começa mais perto da borda que o do botão, a fonte é menor e o canto é mais fechado. Na proposta os três começam à mesma distância, com a mesma fonte e o mesmo canto, e o chevron do select acompanha.</p>
+  <div class="vs">
+    <div>
+      <div class="col-lbl">Hoje</div>
+      <div class="stage" id="cur">
+        <button class="btn btn-secondary btn-sm">Export</button>
+        <label class="select"><select class="input input-sm"><option>All accounts</option></select><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="m6 9 6 6 6-6"/></svg></label>
+        <input class="input input-sm" placeholder="Reference" style="width:120px">
+      </div>
+      <div class="measure" id="m-cur"></div>
+    </div>
+    <div class="p">
+      <div class="col-lbl new">Proposta</div>
+      <div class="stage" id="new">
+        <button class="btn btn-secondary btn-sm">Export</button>
+        <label class="select"><select class="input input-sm"><option>All accounts</option></select><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="m6 9 6 6 6-6"/></svg></label>
+        <input class="input input-sm" placeholder="Reference" style="width:120px">
+      </div>
+      <div class="measure" id="m-new"></div>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th>Impacto</th><th>Detalhe</th></tr></thead>
+    <tbody>
+      <tr><td>Visual</td><td>Todo <code>.input-sm</code> do sistema: respiro lateral 8 → 12px, fonte 12 → 13px, canto 4px → <code>--shape-control</code> (6px no Enterprise, 10px no Business). O chevron do select passa a seguir o respiro de cada tamanho.</td></tr>
+      <tr><td>Onde aparece</td><td>Filtros de tabela, toolbar, drawer de filtros, number input pequeno, SearchPill <code>sm</code> (confiro se segue o mesmo respiro).</td></tr>
+      <tr><td>Nome público</td><td>Nenhum renomeado. Entra uma variável local <code>--input-pad-x</code> (não é token do sistema).</td></tr>
+      <tr><td>Arquivos</td><td><code>preview/components/inputs.css</code> · <code>preview/inputs.html</code> (exemplo da linha com os três controles) · se o SearchPill divergir, <code>preview/components/inputs.css</code> também cobre</td></tr>
+    </tbody>
+  </table>
+</main>
+<script>
+(function () {
+  function m(id) {
+    var s = document.getElementById(id), b = s.querySelector('.btn'), sel = s.querySelector('select'), inp = s.querySelector('input'), ch = s.querySelector('.chev');
+    function pad(e) { return getComputedStyle(e).paddingLeft; }
+    var sr = sel.getBoundingClientRect(), cr = ch.getBoundingClientRect();
+    return 'respiro: botão <b>' + pad(b) + '</b> · select <b>' + pad(sel) + '</b> · campo <b>' + pad(inp) + '</b><br>fonte: botão <b>' + getComputedStyle(b).fontSize + '</b> · campo <b>' + getComputedStyle(inp).fontSize + '</b><br>canto do campo <b>' + getComputedStyle(inp).borderTopLeftRadius + '</b> · chevron à <b>' + Math.round(sr.right - cr.right) + 'px</b> da borda';
+  }
+  document.getElementById('m-cur').innerHTML = m('cur');
+  document.getElementById('m-new').innerHTML = m('new');
+})();
+</script>
+</body>
+</html>

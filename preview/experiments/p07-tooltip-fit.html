@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Proposta · P-07</title>
+<link rel="stylesheet" href="../../src/index.css"><link rel="stylesheet" href="../../themes/index.css?v=1"><script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+body{margin:0;background:var(--color-background-canvas);color:var(--color-foreground-default);font-family:var(--font-sans)}
+.doc{max-width:1000px;margin:0 auto;padding:var(--space-10) var(--space-8)}
+.eyebrow{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted)}
+h1{margin:var(--space-2) 0 var(--space-3);font-size:var(--fs-4xl)}p.lead{max-width:78ch;color:var(--color-foreground-secondary);line-height:var(--lh-relaxed)}
+.lbl{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);margin:var(--space-6) 0 var(--space-2)}.lbl.new{color:var(--color-feedback-success-foreground)}
+/* a frame that stands in for the viewport: overflow clips like the screen edge */
+.vp{position:relative;height:230px;border:var(--border-hairline) solid var(--color-border-strong);border-radius:var(--shape-container);overflow:hidden;background:var(--color-background-surface)}
+.vp .anchor{position:absolute;right:40px;bottom:24px}
+.vp .tooltip{opacity:1;visibility:visible}
+.m{font-family:var(--font-mono);font-size:var(--fs-xxs);color:var(--color-foreground-muted);margin-top:var(--space-2);line-height:1.6}.m b{color:var(--color-foreground-default);font-weight:var(--w-regular)}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4);margin-top:var(--space-3)}
+.cell{position:relative;height:150px;border:var(--border-hairline) dashed var(--color-border-default);border-radius:var(--shape-container);display:flex;align-items:center;justify-content:center}
+.cell .tooltip{opacity:1;visibility:visible}
+table.imp{width:100%;border-collapse:collapse;font-size:var(--fs-sm);margin-top:var(--space-6)}.imp td,.imp th{text-align:left;padding:var(--space-3);border-bottom:var(--border-hairline) solid var(--color-border-subtle);vertical-align:top}.imp th{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);font-weight:var(--w-regular)}code{font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--color-foreground-accent)}
+/* PROPOSAL */
+.p .tooltip.tooltip-top,.p .tooltip.tooltip-top.tooltip-rich{transform:translateX(calc(-50% + var(--tip-shift,0px))) translateY(0)}
+.p .tooltip-top::after{left:calc(50% - var(--tip-shift,0px))}
+.p .tooltip-top-start,.p .tooltip-top-end{bottom:calc(100% + var(--space-2))}
+.p .tooltip-bottom-start,.p .tooltip-bottom-end{top:calc(100% + var(--space-2))}
+.p .tooltip-top-start,.p .tooltip-bottom-start{left:0;transform:none}
+.p .tooltip-top-end,.p .tooltip-bottom-end{right:0;left:auto;transform:none}
+.p .tooltip-top-start::after,.p .tooltip-top-end::after{bottom:-3px}
+.p .tooltip-bottom-start::after,.p .tooltip-bottom-end::after{top:-3px}
+.p .tooltip-top-start::after,.p .tooltip-bottom-start::after{left:var(--space-4)}
+.p .tooltip-top-end::after,.p .tooltip-bottom-end::after{right:var(--space-4);left:auto}
+</style></head><body><main class="doc">
+<div class="eyebrow">Prompt 04 · P-07 · proposta, nada aplicado</div>
+<h1>Tooltip não sai da tela</h1>
+<p class="lead">O tooltip centraliza o balão sobre o alvo sem medir a tela. A 40px da borda direita, um balão rico de 280px fica com metade cortada. Na proposta, ao abrir, o balão é medido: se passar da borda ele desliza para dentro (com 8px de margem) e a seta continua apontando para o alvo; se não couber em cima, vira para baixo.</p>
+<div class="lbl">Hoje · alvo a 40px da borda direita</div>
+<div class="vp" id="cur"><span class="tooltip-target anchor" tabindex="0"><button class="btn btn-secondary btn-sm btn-icon" aria-label="Fees"><i data-lucide="info"></i></button><span class="tooltip tooltip-top tooltip-rich" role="tooltip"><div class="tooltip-title">Wire fee</div><p class="tooltip-desc">Charged by the correspondent bank on international transfers, deducted from the amount sent.</p></span></span></div>
+<div class="m" id="m-cur"></div>
+<div class="p"><div class="lbl new">Proposta · mesmo alvo</div>
+<div class="vp" id="new"><span class="tooltip-target anchor" tabindex="0"><button class="btn btn-secondary btn-sm btn-icon" aria-label="Fees"><i data-lucide="info"></i></button><span class="tooltip tooltip-top tooltip-rich" role="tooltip"><div class="tooltip-title">Wire fee</div><p class="tooltip-desc">Charged by the correspondent bank on international transfers, deducted from the amount sent.</p></span></span></div>
+<div class="m" id="m-new"></div>
+<div class="lbl new">Proposta · quatro posições novas</div>
+<div class="grid4">
+ <div class="cell"><span class="tooltip-target" tabindex="0"><button class="btn btn-secondary btn-sm">top-start</button><span class="tooltip tooltip-top-start" role="tooltip">Aligned to the start</span></span></div>
+ <div class="cell"><span class="tooltip-target" tabindex="0"><button class="btn btn-secondary btn-sm">top-end</button><span class="tooltip tooltip-top-end" role="tooltip">Aligned to the end</span></span></div>
+ <div class="cell"><span class="tooltip-target" tabindex="0"><button class="btn btn-secondary btn-sm">bottom-start</button><span class="tooltip tooltip-bottom-start" role="tooltip">Aligned to the start</span></span></div>
+ <div class="cell"><span class="tooltip-target" tabindex="0"><button class="btn btn-secondary btn-sm">bottom-end</button><span class="tooltip tooltip-bottom-end" role="tooltip">Aligned to the end</span></span></div>
+</div></div>
+<table class="imp"><thead><tr><th>Impacto</th><th>Detalhe</th></tr></thead><tbody>
+<tr><td>Visual</td><td>Só quando o balão não caberia: desliza para dentro (8px da borda) ou vira de lado. Longe das bordas, nada muda.</td></tr>
+<tr><td>Como</td><td>Ao abrir (hover/foco), o <code>Tooltip.tsx</code> mede o balão e escreve <code>--tip-shift</code>; o CSS desloca o balão e compensa a seta. Flip troca a classe de lado. Sem dependência nova; a visibilidade continua em CSS.</td></tr>
+<tr><td>Nomes públicos novos</td><td><code>placement</code> aceita <code>'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'</code> (os quatro atuais iguais) · classes <code>.tooltip-top-start</code> etc. · variável <code>--tip-shift</code>.</td></tr>
+<tr><td>Arquivos</td><td><code>preview/components/tooltip.css</code> · <code>components/Tooltip/Tooltip.tsx</code> + <code>.d.ts</code> · <code>preview/tooltip.html</code> (alvo a 40px da borda direita com balão rico)</td></tr>
+</tbody></table>
+</main>
+<script>
+lucide.createIcons();
+function fit(vp){var t=vp.querySelector('.tooltip'),b=vp.getBoundingClientRect();t.style.setProperty('--tip-shift','0px');var r=t.getBoundingClientRect(),m=8,s=0;if(r.right>b.right-m)s=(b.right-m)-r.right;if(r.left+s<b.left+m)s=(b.left+m)-r.left;t.style.setProperty('--tip-shift',s+'px');}
+function M(vp){var t=vp.querySelector('.tooltip'),b=vp.getBoundingClientRect(),r=t.getBoundingClientRect(),tg=vp.querySelector('.btn').getBoundingClientRect(),a=getComputedStyle(t,'::after');var cut=Math.max(0,Math.round(r.right-b.right));var arrowX=r.left+parseFloat(a.left)+4;return 'balão cortado pela borda: <b>'+(cut?cut+'px':'não')+'</b> · margem até a borda <b>'+Math.round(b.right-r.right)+'px</b> · seta vs. centro do alvo <b>'+(arrowX-(tg.left+tg.width/2)).toFixed(1)+'px</b>';}
+setTimeout(function(){fit(document.getElementById('new'));document.getElementById('m-cur').innerHTML=M(document.getElementById('cur'));document.getElementById('m-new').innerHTML=M(document.getElementById('new'));},300);
+</script></body></html>

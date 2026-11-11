@@ -291,7 +291,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
   const tree = (
     <div
       ref={wrapRef}
-      className={['combobox', open ? 'is-open' : '', status === 'error' ? 'is-invalid' : '', size === 'sm' ? 'combobox-sm' : '', iconOnly ? 'is-icon-only' : '', className || ''].filter(Boolean).join(' ')}
+      className={['combobox', open ? 'is-open' : '', status === 'error' ? 'is-invalid' : '', disabled ? 'is-disabled' : '', size === 'sm' ? 'combobox-sm' : '', iconOnly ? 'is-icon-only' : '', className || ''].filter(Boolean).join(' ')}
       style={style}
       onKeyDown={onWrapKeyDown}
     >
@@ -301,6 +301,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
         aria-haspopup="listbox"
         aria-expanded={open}
         disabled={disabled}
+        aria-disabled={disabled || undefined}
         onClick={() => { setOpen((o) => !o); setActive(value); }}
         {...rest}
       >

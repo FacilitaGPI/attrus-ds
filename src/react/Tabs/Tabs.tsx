@@ -38,6 +38,10 @@ export interface TabsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'o
   onChange?: (key: string) => void;
   variant?: TabsVariant;
   size?: TabsSize;
+  /** How counts render. 'badge' (default) is the filled chip; 'inline' is mono
+      muted text on the label's line, for a compact pill beside 32px fields
+      (variant="pill" size="sm" → .tabs.is-count-inline, 32px tall). */
+  countStyle?: 'badge' | 'inline';
   layout?: TabsLayout;
   /** Sliding indicator (`.is-animated` + `.tab-indicator`): underline → sliding bar,
    *  pill → sliding lifted surface. ON by default; pass false for the static indicator.
@@ -59,7 +63,7 @@ export const Tabs: React.FC<TabsProps> = ({
   variant = 'underline',
   size = 'md',
   layout = 'auto',
-  animated = true,
+  animated = true, countStyle = 'badge',
   className,
   ...rest
 }) => {
@@ -91,6 +95,7 @@ export const Tabs: React.FC<TabsProps> = ({
     'tabs',
     variant === 'pill' ? 'tabs-pill' : '',
     size !== 'md' ? `tabs-${size}` : '',
+    countStyle === 'inline' ? 'is-count-inline' : '',
     LAYOUT_CLASS[layout],
     animated ? 'is-animated' : '',
     className || '',

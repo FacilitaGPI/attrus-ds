@@ -1,0 +1,18 @@
+/* DROPDOWN MENU (L-34) — generic menu: dot / icon / title / description / meta, danger, selected, separator. Arrows move, Esc closes and returns focus. */
+.menu-wrap { position: relative; display: inline-block; }
+  .menu { position: absolute; top: calc(100% + 6px); left: 0; z-index: 50; min-width: 260px; padding: var(--space-2); border-radius: var(--shape-overlay); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); box-shadow: var(--shadow-lg); }
+  .menu[hidden] { display: none; }
+  .menu-item { display: grid; grid-template-columns: auto 1fr auto; align-items: start; column-gap: var(--space-3); width: 100%; padding: var(--space-2) var(--space-3); border: 0; border-radius: var(--shape-control); background: transparent; font: inherit; text-align: left; color: var(--color-foreground-default); cursor: pointer; }
+  .menu-item:hover, .menu-item:focus-visible { background: var(--color-background-hover); outline: none; }
+  .menu-item-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: calc((var(--fs-sm) * 1.4 - 7px) / 2); }
+  .menu-item-title { display: block; font-size: var(--fs-sm); line-height: 1.4; }
+  .menu-item-desc { display: block; font-size: var(--fs-xs); line-height: 1.4; color: var(--color-foreground-muted); }
+  .menu-item-meta { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-muted); line-height: calc(var(--fs-sm) * 1.4); }
+  .menu-item[aria-checked="true"] .menu-item-title { color: var(--color-foreground-brand); font-weight: var(--w-bold); }
+  .menu-item-icon { display: inline-flex; height: calc(var(--fs-sm) * 1.4); align-items: center; color: var(--color-foreground-muted); }
+  .menu-item-icon svg, .menu-item-icon i { width: 15px; height: 15px; stroke-width: var(--icon-stroke); }
+  .menu-item:hover .menu-item-icon { color: var(--color-foreground-secondary); }
+  .menu-item.is-danger { color: var(--color-feedback-danger-foreground); }
+  .menu-item.is-danger .menu-item-icon { color: inherit; }
+  .menu-item.is-danger:hover { background: var(--color-feedback-danger-background); }
+  .menu-sep { height: 1px; margin: var(--space-2) 0; background: var(--color-border-subtle); }

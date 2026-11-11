@@ -73,7 +73,8 @@ export const Metric: React.FC<MetricProps> = ({ cur, amount, frac, size = 'md', 
 /* ---------- Avatar ---------- */
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-export type AvatarTone = 'brand' | 'success' | 'warning' | 'danger' | 'info' | 'neutral';
+/** 'self' marks the current user (teal, never a status colour); 'unassigned' is an empty owner slot (dashed ring, pass "–" as the content). */
+export type AvatarTone = 'brand' | 'success' | 'warning' | 'danger' | 'info' | 'neutral' | 'self' | 'unassigned';
 export type AvatarDot = boolean | 'busy' | 'away' | 'off';
 
 export interface AvatarProps extends React.HTMLAttributes<HTMLSpanElement> {
@@ -146,7 +147,7 @@ export const Eyebrow: React.FC<EyebrowProps> = ({ size = 'md', tone = 'muted', i
 
 /* ---------- Flag — brand flag SVGs from assets/flags ---------- */
 
-export type FlagCountry = 'BR' | 'MX' | 'CO' | 'CL' | 'US' | 'EU';
+export type FlagCountry = 'BR' | 'MX' | 'CO' | 'CL' | 'US' | 'EU' | 'ES';
 export type FlagShape = 'rounded' | 'square';
 
 const FLAG_FILE: Record<FlagCountry, string> = {
@@ -155,7 +156,7 @@ const FLAG_FILE: Record<FlagCountry, string> = {
   CO: 'Colombia',
   CL: 'Chile',
   US: 'EUA',
-  EU: 'EUR',
+  EU: 'EUR',  ES: 'Spain',
 };
 
 export interface FlagProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src'> {
@@ -182,7 +183,7 @@ export const Flag: React.FC<FlagProps> = ({ country, size = 16, shape = 'rounded
 
 /* ---------- Icon — canonical Lucide glyphs ---------- */
 
-export interface IconProps extends Omit<React.SVGAttributes<SVGSVGElement>, "stroke"> {
+export interface IconProps extends Omit<React.SVGAttributes<SVGSVGElement>, 'stroke'> {
   /** Lucide name — kebab-case ("arrow-left-right") or PascalCase. */
   name: string;
   /** Pixel size. Default 18. */
@@ -270,7 +271,11 @@ export const Divider: React.FC<DividerProps> = ({ weight = 'default', dashed = f
 
 /* ---------- FilterChip — pill button for filter rows (40px) ---------- */
 
+/** Toggle with optional chevron. Not for applied filters — use `Pill` with
+    `onRemove` (default size), one per filter, and a "Clear" link to drop all. */
 export interface FilterChipProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  /** sm = 32px, text 12 (dense bars) · md = 40px (default). */
+  size?: 'sm' | 'md';
   /** Selected state (aria-pressed + active styling from CSS). */
   selected?: boolean;
   icon?: React.ReactNode;
@@ -278,8 +283,8 @@ export interface FilterChipProps extends React.ButtonHTMLAttributes<HTMLButtonEl
   chevron?: boolean;
 }
 
-export const FilterChip: React.FC<FilterChipProps> = ({ selected = false, icon, chevron = false, className, children, ...rest }) => (
-  <button type="button" className={['filter-chip', className || ''].filter(Boolean).join(' ')} aria-pressed={selected} {...rest}>
+export const FilterChip: React.FC<FilterChipProps> = ({ selected = false, icon, chevron = false, size = 'md', className, children, ...rest }) => (
+  <button type="button" className={['filter-chip', size === 'sm' ? 'is-sm' : '', className || ''].filter(Boolean).join(' ')} aria-pressed={selected} {...rest}>
     {icon}
     {children}
     {chevron ? (
@@ -293,17 +298,22 @@ export const FilterChip: React.FC<FilterChipProps> = ({ selected = false, icon, 
 /* ---------- ProgressBar — slim track + data-driven fill ---------- */
 
 export interface ProgressBarProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** brand (default) · success · warning · danger — .progress.is-<tone>. */
+  tone?: 'brand' | 'success' | 'warning' | 'danger';
+  /** sm = 4px · md = 6px (default). */
+  size?: 'sm' | 'md';
   /** 0–100. */
   value: number;
   /** Fill color — any token/var; defaults to the CSS fallback. */
+  /** @deprecated — use `tone`. Free colour, kept for compatibility. */
   fill?: string;
   /** Track height px — feeds `--progress-h` (default 6). */
   height?: number;
 }
 
-export const ProgressBar: React.FC<ProgressBarProps> = ({ value, fill, height, style, className, ...rest }) => (
+export const ProgressBar: React.FC<ProgressBarProps> = ({ value, fill, height, tone = 'brand', size = 'md', style, className, ...rest }) => (
   <div
-    className={['progress', className || ''].filter(Boolean).join(' ')}
+    className={['progress', tone !== 'brand' ? 'is-' + tone : '', size === 'sm' ? 'is-sm' : '', className || ''].filter(Boolean).join(' ')}
     role="progressbar"
     aria-valuenow={Math.round(value)}
     aria-valuemin={0}
@@ -327,7 +337,7 @@ export const DescCardTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement> & 
 export const DescGrid: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...rest }) => (
   <div className={['desc-grid', className || ''].filter(Boolean).join(' ')} {...rest} />
 );
-/** Wraps DescGroups: pairs of one subject together, a hairline between subjects. */
+/** Wraps DescGroup elements: pairs of one subject together, a hairline between subjects. */
 export const DescGroups: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, ...rest }) => (
   <div className={['desc-groups', className || ''].filter(Boolean).join(' ')} {...rest} />
 );
@@ -415,11 +425,14 @@ export const Stat: React.FC<StatProps> = ({
 export interface StatRowProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Equal columns — feeds `--stat-cols`. Default 3. */
   cols?: number;
+  /** A band of figures inside a card: edge to edge, 1px vertical rules, mono
+      18 bold values (.stat-row.is-divided). Default false — separate tiles. */
+  divided?: boolean;
 }
 
-export const StatRow: React.FC<StatRowProps> = ({ cols, className, style, children, ...rest }) => (
+export const StatRow: React.FC<StatRowProps> = ({ cols, divided = false, className, style, children, ...rest }) => (
   <div
-    className={['stat-row', className || ''].filter(Boolean).join(' ')}
+    className={['stat-row', divided ? 'is-divided' : '', className || ''].filter(Boolean).join(' ')}
     style={cols != null ? ({ '--stat-cols': cols, ...style } as React.CSSProperties) : style}
     {...rest}
   >

@@ -40,8 +40,19 @@ export interface AppSidebarProps {
   onToggleCollapse?: () => void;
   /** Header brand slot (logo img). */
   logo?: React.ReactNode;
+  /** Product name beside the brand, e.g. "ONE" (L-30). */
+  productName?: React.ReactNode;
+  /** Slot under the header for a context selector, e.g. a track Select (L-30). */
+  context?: React.ReactNode;
   /** Footer slot (.sb-foot markup is the caller's). */
   foot?: React.ReactNode;
+  /** `glass` (.is-glass) for a rail over an image or gradient. */
+  surface?: 'default' | 'glass';
+  /** Phone drawer: off-canvas over a scrim, focus trapped, Esc / scrim close. Undefined = docked rail. */
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
+  /** Accessible name of the drawer. Default "Navigation". */
+  drawerLabel?: string;
   className?: string;
   style?: React.CSSProperties;
 }

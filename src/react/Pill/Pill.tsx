@@ -6,7 +6,8 @@ import * as React from 'react';
  * of truth; this component only composes class names.
  */
 
-export type PillTone = 'success' | 'warning' | 'danger' | 'info' | 'neutral' | 'brand';
+/** team-* (L-25) is identity, valid only with appearance="outline". */
+export type PillTone = 'success' | 'warning' | 'danger' | 'info' | 'neutral' | 'brand' | 'team-sales' | 'team-compliance' | 'team-implementation' | 'team-payment-desk' | 'team-product';
 export type PillSize = 'sm' | 'md' | 'lg';
 export type PillAppearance = 'soft' | 'solid' | 'outline';
 
@@ -72,7 +73,7 @@ export const Pill: React.FC<PillProps> = ({
           className="pill-x"
           role="button"
           tabIndex={0}
-          aria-label="Remove"
+          aria-label={typeof children === 'string' ? 'Remove ' + children : 'Remove'}
           onClick={(e) => { e.stopPropagation(); onRemove(e); }}
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); onRemove(e as unknown as React.MouseEvent); } }}
         >

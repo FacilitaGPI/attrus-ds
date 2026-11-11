@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Proposta · A-02</title>
+<link rel="stylesheet" href="../../src/index.css"><link rel="stylesheet" href="../../themes/index.css?v=1"><script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+body{margin:0;background:var(--color-background-canvas);color:var(--color-foreground-default);font-family:var(--font-sans)}
+.doc{max-width:1100px;margin:0 auto;padding:var(--space-10) var(--space-8)}
+.eyebrow{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted)}
+h1{margin:var(--space-2) 0 var(--space-3);font-size:var(--fs-4xl)}p.lead{max-width:76ch;color:var(--color-foreground-secondary);line-height:var(--lh-relaxed)}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);margin-top:var(--space-6);align-items:start}
+.lbl{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);margin-bottom:var(--space-3)}.lbl.new{color:var(--color-feedback-success-foreground)}
+.m{font-family:var(--font-mono);font-size:var(--fs-xxs);color:var(--color-foreground-muted);margin-top:var(--space-3);line-height:1.7}.m b{color:var(--color-foreground-default);font-weight:var(--w-regular)}
+table.imp{width:100%;border-collapse:collapse;font-size:var(--fs-sm);margin-top:var(--space-6)}.imp td,.imp th{text-align:left;padding:var(--space-3);border-bottom:var(--border-hairline) solid var(--color-border-subtle);vertical-align:top}.imp th{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);font-weight:var(--w-regular)}code{font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--color-foreground-accent)}
+.body-txt{padding:var(--space-5) var(--space-6);font-size:var(--fs-md);color:var(--color-foreground-secondary);line-height:var(--lh-normal)}
+/* PROPOSAL — scoped */
+.p .card-header.is-compact{min-height:54px;padding:10px 12px 10px 20px;align-items:center;box-sizing:border-box}
+.p .card-header.is-compact h3{font-size:var(--fs-base);font-weight:var(--w-bold)}
+.p .card-header.is-compact p{margin:2px 0 0;font-size:var(--fs-sm);color:var(--color-foreground-muted);line-height:var(--lh-snug)}
+.p .card-header.is-compact .crumb::before{content:"/ ";color:var(--color-foreground-muted)}
+.p .stat-row.is-divided{display:grid;grid-template-columns:repeat(var(--stat-cols,3),1fr);gap:0;border-top:var(--border-hairline) solid var(--color-border-default)}
+.p .stat-row.is-divided > .stat{padding:14px 20px;background:none;border:0;border-radius:0;box-shadow:none;gap:var(--space-1)}
+.p .stat-row.is-divided > .stat + .stat{border-left:var(--border-hairline) solid var(--color-border-default)}
+.p .stat-row.is-divided .stat-label{font-family:var(--font-sans);font-size-adjust:none;font-size:var(--fs-sm);letter-spacing:normal;text-transform:none;color:var(--color-foreground-muted)}
+.p .stat-row.is-divided .stat-value{font-family:var(--font-mono);font-size-adjust:var(--font-mono-adjust);font-size:var(--fs-xl);font-weight:var(--w-mono-emphasis);letter-spacing:0}
+.p .card-footer.is-split{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);min-height:52px;padding:var(--space-3) var(--space-5);box-sizing:border-box}
+.p .card-footer-note{font-size:var(--fs-sm);color:var(--color-foreground-muted);line-height:var(--lh-snug);min-width:0}
+.p .card-footer-actions{display:flex;gap:var(--space-2);flex-shrink:0}
+</style></head><body><main class="doc">
+<div class="eyebrow">Prompt 03 · A-02 · proposta, nada aplicado</div>
+<h1>Card em quatro faixas</h1>
+<p class="lead">Cabeçalho, corpo, faixa de números e rodapé, separados por linhas de 1px. Hoje o DS tem as peças, mas cada uma com outro ritmo: cabeçalho alto e fino, números em blocos soltos com borda própria, rodapé sem lugar para explicar a ação. Na proposta entram três variantes novas, sem mudar as atuais.</p>
+<div class="vs">
+<div><div class="lbl">Hoje · peças atuais</div>
+ <div class="card" id="cur" style="padding:0;overflow:hidden">
+  <div class="card-header"><div><h3>Payout to Global Supplies</h3><p>Wire · TX-90412</p></div><div class="actions"><button class="btn btn-ghost btn-sm btn-icon" aria-label="More"><i data-lucide="ellipsis"></i></button></div></div>
+  <div class="body-txt">The transfer is waiting for the bank's confirmation. Funds are held until it settles.</div>
+  <div class="stat-row" style="--stat-cols:3;padding:0 var(--space-6) var(--space-5)"><div class="stat"><span class="stat-label">Amount</span><span class="stat-value">18,425</span></div><div class="stat"><span class="stat-label">Fee</span><span class="stat-value">12</span></div><div class="stat"><span class="stat-label">Rate</span><span class="stat-value">5.26</span></div></div>
+  <div class="card-footer"><div style="display:flex;justify-content:flex-end;gap:var(--space-2)"><button class="btn btn-secondary btn-sm">Cancel</button><button class="btn btn-primary btn-sm">Release</button></div></div>
+ </div><div class="m" id="m-cur"></div></div>
+<div class="p"><div class="lbl new">Proposta · quatro faixas</div>
+ <div class="card" id="new" style="padding:0;overflow:hidden">
+  <div class="card-header is-compact"><div><h3>Payout to Global Supplies</h3><p><span class="crumb">Payments</span></p></div><button class="btn btn-ghost btn-sm btn-icon" aria-label="More"><i data-lucide="ellipsis"></i></button></div>
+  <div class="body-txt">The transfer is waiting for the bank's confirmation. Funds are held until it settles.</div>
+  <div class="stat-row is-divided" style="--stat-cols:3"><div class="stat"><span class="stat-label">Amount</span><span class="stat-value">18,425.00</span></div><div class="stat"><span class="stat-label">Fee</span><span class="stat-value">12.00</span></div><div class="stat"><span class="stat-label">Rate</span><span class="stat-value">5.2643</span></div></div>
+  <div class="card-footer is-split"><span class="card-footer-note">Releasing sends the funds now. It cannot be undone.</span><div class="card-footer-actions"><button class="btn btn-secondary btn-sm">Cancel</button><button class="btn btn-primary btn-sm">Release</button></div></div>
+ </div><div class="m" id="m-new"></div></div>
+</div>
+<table class="imp"><thead><tr><th>Peça</th><th>Proposta</th><th>Nome público novo</th></tr></thead><tbody>
+<tr><td>Cabeçalho</td><td>Altura mínima 54px, padding 10 · 12 · 10 · 20, título 14 bold, segunda linha opcional (subtítulo ou migalha com "/"). À direita cabe um único elemento.</td><td><code>.card-header.is-compact</code> · <code>&lt;CardHeader compact&gt;</code></td></tr>
+<tr><td>Faixa de números</td><td>Encosta nas bordas do card, divisórias verticais de 1px, célula 14 × 20, rótulo 12 muted, valor mono 18 bold.</td><td><code>.stat-row.is-divided</code> · <code>&lt;StatRow divided&gt;</code></td></tr>
+<tr><td>Rodapé</td><td>Fundo subtle, altura mínima 52px, <code>note</code> à esquerda (12 muted, a consequência da ação) e <code>actions</code> à direita (no máximo duas). O <code>CardFooter plain</code> da 1.2.1 não muda.</td><td><code>.card-footer.is-split</code> · <code>.card-footer-note</code> · <code>.card-footer-actions</code> · props <code>note</code> e <code>actions</code></td></tr>
+<tr><td>Impacto</td><td colspan="2">Nada que existe muda: as três são variantes. Arquivos: <code>preview/components/cards.css</code>, <code>preview/components/primitives.css</code> (StatRow), <code>components/Card/Card.tsx</code> + <code>.d.ts</code>, o componente do StatRow + <code>.d.ts</code>, <code>preview/cards.html</code> (exemplo das quatro faixas).</td></tr>
+</tbody></table>
+</main>
+<script>
+lucide.createIcons();
+function M(id){var c=document.getElementById(id),h=c.querySelector('.card-header'),t=h.querySelector('h3'),s=c.querySelector('.stat-row'),v=c.querySelector('.stat-value'),l=c.querySelector('.stat-label'),f=c.querySelector('.card-footer');return 'cabeçalho <b>'+Math.round(h.getBoundingClientRect().height)+'px</b> · título <b>'+getComputedStyle(t).fontSize+' '+getComputedStyle(t).fontWeight+'</b><br>números: rótulo <b>'+getComputedStyle(l).fontSize+'</b> · valor <b>'+getComputedStyle(v).fontSize+' '+getComputedStyle(v).fontFamily.split(',')[0]+'</b> · encosta na borda <b>'+(Math.round(s.getBoundingClientRect().left-c.getBoundingClientRect().left)<=1?'sim':'não')+'</b><br>rodapé <b>'+Math.round(f.getBoundingClientRect().height)+'px</b>';}
+document.getElementById('m-cur').innerHTML=M('cur');document.getElementById('m-new').innerHTML=M('new');
+</script></body></html>

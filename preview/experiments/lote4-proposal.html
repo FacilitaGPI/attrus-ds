@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta · Prompt 06 · Lote 4</title>
+<link rel="stylesheet" href="../../src/index.css">
+<link rel="stylesheet" href="../../themes/index.css?v=1">
+<link rel="stylesheet" href="../components/sidebar.css?v=40">
+<link rel="stylesheet" href="../components/buttons.css?v=40">
+<link rel="stylesheet" href="../components/overlays.css?v=40">
+<script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1120px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .ey { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  h1 { margin: var(--space-3) 0; font-size: var(--fs-5xl); letter-spacing: var(--ls-display); }
+  .lead { max-width: 72ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; }
+  section { margin-top: var(--space-12); }
+  section > h2 { font-size: var(--fs-2xl); margin: 0 0 var(--space-2); }
+  section > h2 .id { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-sm); color: var(--color-foreground-muted); margin-right: var(--space-3); }
+  section > p { max-width: 76ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-5); }
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
+  @media (max-width: 860px) { .vs { grid-template-columns: 1fr; } }
+  .cl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; margin-bottom: var(--space-3); color: var(--color-foreground-muted); }
+  .cl.new { color: var(--color-feedback-success-foreground); }
+  .stage { background: var(--color-background-subtle); border-radius: var(--shape-container); padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-3); }
+  .stage.dk { background: var(--color-background-inverse); }
+  .row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-3) var(--space-4); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); font-size: var(--fs-sm); }
+  .m { margin-top: var(--space-2); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); line-height: 1.6; }
+  .m b { color: var(--color-foreground-default); font-weight: var(--w-regular); }
+  .files { margin-top: var(--space-3); font-size: var(--fs-sm); color: var(--color-foreground-secondary); }
+  .files code, section code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .sb-frame { position: relative; height: 340px; border-radius: var(--shape-container); overflow: hidden; background: linear-gradient(135deg, var(--color-brand-solid), var(--color-accent-solid)); display: flex; }
+  .sb-frame .sb { position: relative; height: 100%; }
+  .content { flex: 1; padding: var(--space-6); color: var(--color-pure-white); font-size: var(--fs-sm); }
+  .phone { position: relative; width: 300px; height: 520px; border-radius: 30px; overflow: hidden; border: 8px solid var(--color-background-inverse); background: var(--color-background-canvas); margin: 0 auto; }
+  .phone .top { height: 52px; display: flex; align-items: center; gap: var(--space-3); padding: 0 var(--space-4); background: var(--color-background-surface); border-bottom: var(--border-hairline) solid var(--color-border-default); font-size: var(--fs-sm); }
+  table.plan { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: var(--border-hairline) solid var(--color-border-default); border-radius: var(--shape-container); overflow: hidden; }
+  table.plan th, table.plan td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: var(--border-hairline) solid var(--color-border-subtle); vertical-align: top; }
+  table.plan th { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); font-weight: var(--w-regular); background: var(--color-background-subtle); }
+  table.plan tr:last-child td { border-bottom: 0; }
+
+  /* ================= PROPOSAL — scoped to .p ================= */
+  /* L-07 — theme-aware tone (the raw danger-500/600 stays light in dark) */
+  .p .btn-danger-ghost { color: var(--color-feedback-danger-foreground); }
+  .p .btn-danger-ghost:hover { color: var(--color-feedback-danger-foreground); }
+  .p .btn-danger-ghost:active { background: color-mix(in srgb, var(--color-feedback-danger-foreground) 16%, transparent); }
+
+  /* L-12 — drawer mode as product CSS (was inline demo styles) */
+  .p .sb.is-drawer { position: absolute; top: 0; left: 0; bottom: 0; z-index: 9100; width: 260px; max-width: 85%; height: auto;
+    box-shadow: var(--shadow-xl); transform: translateX(-100%); visibility: hidden;
+    transition: transform var(--duration-deliberate) var(--ease-emphasis), visibility 0s linear var(--duration-deliberate); }
+  .p .sb.is-drawer.is-open { transform: none; visibility: visible; transition: transform var(--duration-deliberate) var(--ease-emphasis), visibility 0s; }
+  .p .sb-scrim { position: absolute; inset: 0; z-index: 9000; background: var(--color-scrim); opacity: 0; pointer-events: none; transition: opacity var(--duration-base) var(--ease-standard); }
+  .p .sb-scrim.is-open { opacity: 1; pointer-events: auto; }
+</style>
+</head>
+<body>
+<main class="doc">
+  <div class="ey">Proposta · nada aplicado ainda · Prompt 06 · Lote 4</div>
+  <h1>Variantes que faltam no React</h1>
+  <p class="lead">L-07, L-11 e L-12 trazem para o componente o que já existe no CSS; o L-08 é uma decisão sobre quais padrões viram componente. As medidas são recalculadas ao trocar o tema.</p>
+
+  <section>
+    <h2><span class="id">L-07</span>Button <code>variant="danger-ghost"</code></h2>
+    <p>A classe <code>.btn-danger-ghost</code> existe, mas não está no tipo <code>ButtonVariant</code>. Ao expor, aparece um problema: ela usa o vermelho cru <code>--color-danger-500</code>, que não muda no tema escuro. A proposta troca pelo tom semântico <code>--color-feedback-danger-foreground</code>.</p>
+    <div class="vs">
+      <div><div class="cl">Hoje</div><div class="stage">
+        <div class="bar"><span>3 selecionados</span><span class="row"><button class="btn btn-ghost btn-sm">Exportar</button><button class="btn btn-danger-ghost btn-sm" id="dg-c">Excluir</button></span></div>
+      </div><div class="m" id="m7c"></div></div>
+      <div class="p"><div class="cl new">Proposta</div><div class="stage">
+        <div class="bar"><span>3 selecionados</span><span class="row"><button class="btn btn-ghost btn-sm">Exportar</button><button class="btn btn-danger-ghost btn-sm" id="dg-n">Excluir</button></span></div>
+      </div><div class="m" id="m7n"></div></div>
+    </div>
+    <div class="files">Arquivos: <code>Button.tsx</code> e <code>.d.ts</code> (tipo e JSDoc: destrutivo em toolbar e linha de tabela; <code>danger-outline</code> continua para diálogos), <code>buttons.css</code> (tom semântico), <code>buttons.html</code> (exemplo).</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-11</span>AppSidebar <code>surface="glass"</code></h2>
+    <p>O <code>.sb.is-glass</code> já existe no CSS; falta a prop. Proponho <code>surface?: 'default' | 'glass'</code> em vez de <code>glass?: boolean</code>, para ficar igual à prop da topbar e aceitar outras superfícies depois.</p>
+    <div class="vs">
+      <div><div class="cl">default</div><div class="sb-frame"><aside class="sb"><div class="sb-head"><b>ATTRUS</b></div><div class="sb-body"><div class="sb-section"><a class="sb-item active"><i data-lucide="home" class="ic"></i><span class="label">Início</span></a><a class="sb-item"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transações</span></a><a class="sb-item"><i data-lucide="users" class="ic"></i><span class="label">Contrapartes</span></a></div></div></aside><div class="content">Conteúdo sobre gradiente</div></div></div>
+      <div><div class="cl new">surface="glass"</div><div class="sb-frame"><aside class="sb is-glass"><div class="sb-head"><b>ATTRUS</b></div><div class="sb-body"><div class="sb-section"><a class="sb-item active"><i data-lucide="home" class="ic"></i><span class="label">Início</span></a><a class="sb-item"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transações</span></a><a class="sb-item"><i data-lucide="users" class="ic"></i><span class="label">Contrapartes</span></a></div></div></aside><div class="content">Conteúdo sobre gradiente</div></div></div>
+    </div>
+    <div class="files">Arquivos: <code>AppSidebar.tsx</code> e <code>.d.ts</code>, bancada do AppSidebar.</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-12</span>AppSidebar no celular: gaveta</h2>
+    <p>A gaveta da documentação era feita com estilos da própria página. Passa a ser CSS do produto (<code>.sb.is-drawer</code> + <code>.sb-scrim</code>) e props no componente: <code>mobileOpen</code>, <code>onMobileClose</code>, foco preso dentro da gaveta, Esc e clique no scrim fecham, e o foco volta ao botão que abriu. Toque no ☰ para testar.</p>
+    <div class="p"><div class="phone">
+      <div class="top"><button class="btn btn-ghost btn-sm btn-icon" id="burger" aria-label="Abrir menu" aria-expanded="false"><i data-lucide="menu"></i></button><b>Transações</b></div>
+      <div class="sb-scrim" id="scrim"></div>
+      <aside class="sb is-drawer" id="drawer" aria-label="Navegação"><div class="sb-head"><b>ATTRUS</b></div><div class="sb-body"><div class="sb-section"><a class="sb-item" href="#"><i data-lucide="home" class="ic"></i><span class="label">Início</span></a><a class="sb-item active" href="#"><i data-lucide="arrow-left-right" class="ic"></i><span class="label">Transações</span></a><a class="sb-item" href="#"><i data-lucide="users" class="ic"></i><span class="label">Contrapartes</span></a></div></div></aside>
+    </div></div>
+    <div class="m" id="m12"></div>
+    <div class="files">Arquivos: <code>sidebar.css</code> (gaveta e scrim), <code>AppSidebar.tsx</code> e <code>.d.ts</code> (props e comportamento), <code>sidebar-nav.html</code> (troca os estilos da página pelo componente), bancada do AppSidebar.</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-08</span>Quais padrões viram componente</h2>
+    <p>O prompt pede avaliar, e só criar o que o produto usa. Minha recomendação:</p>
+    <table class="plan">
+      <thead><tr><th>Padrão</th><th>Recomendação</th><th>Por quê</th></tr></thead>
+      <tbody>
+        <tr><td><b>Sheet</b></td><td>Criar <code>Sheet</code></td><td>O <code>DTDetailSheet</code> já usa o <code>.sheet</code>, e os filtros e a ordenação da tabela no celular também. É o painel inferior genérico do mobile.</td></tr>
+        <tr><td><b>Skeleton</b></td><td>Criar <code>Skeleton</code></td><td>Todo card e lista que carrega precisa, e hoje o shimmer só existe dentro da tabela. Formas: linha de texto, círculo, retângulo.</td></tr>
+        <tr><td><b>Hero</b></td><td>Criar <code>Hero</code></td><td>É o topo da Home e dos dashboards, com 3 variantes e KPI tiles; cada tela remonta à mão.</td></tr>
+        <tr><td><b>Glass card</b></td><td>Não criar componente; virar prop <code>glass</code> do <code>Card</code></td><td>É o mesmo card com outra superfície. Um componente à parte duplicaria slots, padding e acessibilidade do Card.</td></tr>
+      </tbody>
+    </table>
+    <div class="files">Cada componente novo leva <code>.tsx</code>, <code>.d.ts</code>, bancada de paridade e entrada no manifesto. O motivo do Glass card vai para o <code>AI_HANDOFF.md</code>.</div>
+  </section>
+</main>
+<script>
+lucide.createIcons();
+(function () {
+  function srgb(v){ v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
+  function rgb(c){ var m = c.match(/[\d.]+/g).map(Number); return /color\(srgb/.test(c) ? m.slice(0,3).map(function(x){ return x * 255; }) : m; }
+  function lum(c){ var m = rgb(c); return 0.2126 * srgb(m[0]) + 0.7152 * srgb(m[1]) + 0.0722 * srgb(m[2]); }
+  function cr(a, b){ var x = lum(a), y = lum(b); return ((Math.max(x, y) + .05) / (Math.min(x, y) + .05)).toFixed(2); }
+  ['c', 'n'].forEach(function (k) { var b = document.getElementById('dg-' + k), bar = b.closest('.bar'); document.getElementById('m7' + k).innerHTML = 'texto <b>' + getComputedStyle(b).color + '</b> · contraste <b>' + cr(getComputedStyle(b).color, getComputedStyle(bar).backgroundColor) + ':1</b>'; });
+
+  var burger = document.getElementById('burger'), drawer = document.getElementById('drawer'), scrim = document.getElementById('scrim');
+  function focusables() { return [].slice.call(drawer.querySelectorAll('a, button')); }
+  function open() { drawer.classList.add('is-open'); scrim.classList.add('is-open'); burger.setAttribute('aria-expanded', 'true'); setTimeout(function () { (drawer.querySelector('.sb-item.active') || focusables()[0]).focus(); }, 50); }
+  function close() { drawer.classList.remove('is-open'); scrim.classList.remove('is-open'); burger.setAttribute('aria-expanded', 'false'); burger.focus(); }
+  burger.addEventListener('click', open);
+  scrim.addEventListener('click', close);
+  drawer.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+    if (e.key !== 'Tab') return;
+    var f = focusables(), first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+  var dc = getComputedStyle(drawer);
+  document.getElementById('m12').innerHTML = 'fechada: <b>' + dc.visibility + '</b> · largura <b>' + dc.width + '</b> · sem estilo da página: <b>' + !document.querySelector('.demo-drawer') + '</b>';
+})();
+</script>
+</body>
+</html>

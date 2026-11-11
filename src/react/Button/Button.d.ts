@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'ghost' | 'danger' | 'danger-outline' | 'success' | 'link' | 'inverse';
+/** `danger-ghost` — destructive inside chrome (toolbars, table rows); dialogs keep `danger-outline` / `danger`. */
+export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'ghost' | 'danger' | 'danger-outline' | 'danger-ghost' | 'success' | 'link' | 'inverse';
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Sheet } from '../Sheet/Sheet';
 
 /**
  * ATTRUS DataTable — typed wrapper over the canonical `.dt` system
@@ -51,8 +52,12 @@ export interface DataTableProps<T> {
   rows: T[];
   /** Stable row identity. */
   rowKey: (row: T) => string;
-  /** Makes rows hoverable + clickable (tr.hov). */
+  /** Makes rows hoverable + clickable (tr.hov). The row also joins the Tab
+      order and opens with Enter or Space. */
   onRowClick?: (row: T) => void;
+  /** aria-label for a clickable row — what Enter opens ("Open Global Supplies,
+      −18,425.00"). Without it a screen reader hears only the cells. */
+  rowLabel?: (row: T) => string;
   /** Row tint: 'muted' (cancelled) or 'error' (danger). */
   rowState?: (row: T) => RowState;
   /** Keys of persistently selected rows (.is-selected). */
@@ -65,6 +70,10 @@ export interface DataTableProps<T> {
       is only the visible proof. Default true when there is no onRowClick (a row
       that opens something cannot also select on click). Clicks on links, buttons
       and inputs inside the row keep their own behaviour. */
+  /** Inside a Card: drop the table's own background, border and radius so the
+      card is the only frame (.dt-wrap.is-flush). A table that is a direct child
+      of .card or the only child of .card-body gets this automatically. */
+  flush?: boolean;
   selectOnRowClick?: boolean;
   /** Reference tables only: the title column holds a class name, so on a phone
       it keeps the code face instead of the plain row-title reset (.dt-m-code). */
@@ -73,10 +82,13 @@ export interface DataTableProps<T> {
   loading?: boolean;
   /** How many skeleton rows. Default 4. */
   loadingRows?: number;
-  /** sm | md (default) | lg — .dt-sm / .dt-lg. */
+  /** Row scale — sm | md (default) | lg (.dt-sm / .dt-lg). */
   size?: DataTableSize;
+  /** Alternating row tint. Prefer plain rows; zebra competes with row states. */
   zebra?: boolean;
+  /** Sticky header. Requires a bounded height, so wrap in DTScrollY. */
   sticky?: boolean;
+  /** Vertical rules between columns — for dense numeric grids only. */
   bordered?: boolean;
   /** Dark-surface treatment (.dt.on-inverse). */
   onInverse?: boolean;
@@ -140,6 +152,7 @@ export function DataTable<T>({
   rows,
   rowKey,
   onRowClick,
+  rowLabel,
   rowState,
   selectedKeys,
   onSelectToggle,
@@ -156,6 +169,7 @@ export function DataTable<T>({
   wrap = true,
   responsive = true,
   mobile = 'list',
+  flush = false,
   selectOnRowClick,
   mobileCodeTitle = false,
   selectionBar,
@@ -261,6 +275,12 @@ export function DataTable<T>({
                   onSelectToggle!(k);
                 } : undefined}
                 style={onRowClick || rowSelects ? { cursor: 'pointer' } : undefined}
+                tabIndex={onRowClick ? 0 : undefined}
+                aria-label={onRowClick && rowLabel ? rowLabel(row) : undefined}
+                onKeyDown={onRowClick ? (e: React.KeyboardEvent) => {
+                  if (e.target !== e.currentTarget) return;
+                  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onRowClick(row); }
+                } : undefined}
               >
                 {selectable ? (
                   <td className="col-select" data-label="" data-m="lead">
@@ -299,7 +319,7 @@ export function DataTable<T>({
   if (!wrap) return inner;
 
   return (
-    <div className={['dt-wrap', respCls, className || ''].filter(Boolean).join(' ')} style={style}>
+    <div className={['dt-wrap', respCls, flush ? 'is-flush' : '', className || ''].filter(Boolean).join(' ')} style={style}>
       {/* Same rule as the pagination slot: DTToolbar already IS a .dt-toolbar,
           so wrapping it would nest two bars and the inner one would shrink-wrap. */}
       {toolbar ? (isOwn(toolbar, 'DTToolbar') ? toolbar : <div className="dt-toolbar">{toolbar}</div>) : null}
@@ -389,7 +409,7 @@ export function DTGroupDivider(props: DTGroupDividerProps): React.ReactElement {
     (an audit trail under a payment); use a subrow when it does. The parent must
     carry `has-detail` so its bottom border is dropped and the pair reads as
     one block. */
-export interface DTDetailProps extends Omit<React.HTMLAttributes<HTMLTableRowElement>, "title"> {
+export interface DTDetailProps extends Omit<React.HTMLAttributes<HTMLTableRowElement>, 'title'> {
   colSpan: number;
   open?: boolean;
   title?: React.ReactNode;
@@ -448,13 +468,17 @@ export const DTSubrowLead: React.FC<{
   label: React.ReactNode;
   icon?: React.ReactNode;
   parentName?: string;
-} & React.HTMLAttributes<HTMLDivElement>> = ({ label, icon, parentName, className, ...rest }) => (
+} & React.HTMLAttributes<HTMLDivElement>> = ({ label, icon, parentName, className, children, ...rest }) => (
   <div className={['dt-subrow-lead', className || ''].filter(Boolean).join(' ')} {...rest}>
     {icon != null ? <span className="ic-mini">{icon}</span> : null}
     <span className="txt">
       {parentName ? <span className="sr-only">{'Item of ' + parentName + ': '}</span> : null}
       {label}
     </span>
+    {/* After the label: the documented subrow is .txt + .dt-subrow-tag + .dt-subrow-status,
+        e.g. <DTSubrowLead label="Wire fee" icon={…}><DTSubrowMeta tag="Fee" status="Settled" /></DTSubrowLead>.
+        Children used to be dropped because they rode in `rest`. */}
+    {children}
   </div>
 );
 
@@ -494,9 +518,12 @@ export const DTSubrowToggle: React.FC<{
     animated and display:grid on a <td> breaks column alignment, so the height
     transition lives here: a grid going 0fr -> 1fr, which needs no magic pixel
     value and therefore survives a two-line subrow on mobile. */
-export const DTSubrowCell: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className, ...rest }) => (
+/* `className` and `style` land on .dt-subrow-cell (the visible box); other
+   attributes stay on the animated wrapper. In a .dt-num column the cell
+   right-aligns by CSS, so the subrow figure lines up with the parent's. */
+export const DTSubrowCell: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className, style, ...rest }) => (
   <div className="dt-subrow-inner" {...rest}>
-    <div className={['dt-subrow-cell', className || ''].filter(Boolean).join(' ')}>{children}</div>
+    <div className={['dt-subrow-cell', className || ''].filter(Boolean).join(' ')} style={style}>{children}</div>
   </div>
 );
 
@@ -698,11 +725,9 @@ export const DTPagination: React.FC<DTPaginationProps> = ({ range, page, pages, 
 export const DTId: React.FC<React.HTMLAttributes<HTMLSpanElement>> = ({ children, className, ...rest }) => (
   <span className={['dt-id', 'dt-no-tab', className || ''].filter(Boolean).join(' ')} {...rest}>{children}</span>
 );
-/** A row's detail on a phone. The inline detail panel has no width to open
-    into below the breakpoint, so it opens as a .sheet from the bottom edge.
-    Portaled to <body>: the table is a size container, and a container is the
-    containing block for fixed descendants — a sheet rendered inside it would
-    pin to the table's bottom, not the screen's. Esc and the scrim close it. */
+/** A row's detail on a phone — a <Sheet> with the detail layout (eyebrow,
+    title, sub, two-action footer). Kept as its own name so tables keep one
+    import; the dialog behaviour (focus, trap, Esc, scrim, return) is Sheet's. */
 export const DTDetailSheet: React.FC<{
   open: boolean;
   onClose: () => void;
@@ -713,37 +738,7 @@ export const DTDetailSheet: React.FC<{
   /** Two actions, secondary · primary. */
   footer?: React.ReactNode;
   children?: React.ReactNode;
-}> = ({ open, onClose, title, sub, eyebrow, footer, children }) => {
-  React.useEffect(() => {
-    if (!open) return undefined;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [open, onClose]);
-  if (typeof document === 'undefined') return null;
-  const ReactDOM = (window as unknown as { ReactDOM?: { createPortal: (n: React.ReactNode, el: Element) => React.ReactNode } }).ReactDOM;
-  const node = (
-    <React.Fragment>
-      <div className={['scrim', open ? 'is-open' : ''].filter(Boolean).join(' ')} onClick={onClose} aria-hidden="true" />
-      <div className={['sheet', open ? 'is-open' : ''].filter(Boolean).join(' ')} role="dialog" aria-modal="true" aria-hidden={!open}>
-        <div className="sheet-grab" aria-hidden="true" />
-        <div className="sheet-head">
-          <div>
-            {eyebrow}
-            <h3 className="sheet-title">{title}</h3>
-            {sub != null ? <p className="sheet-sub">{sub}</p> : null}
-          </div>
-          <button type="button" className="btn btn-tertiary btn-sm btn-icon" aria-label="Close" onClick={onClose}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
-          </button>
-        </div>
-        <div className="sheet-body">{children}</div>
-        {footer != null ? <div className="sheet-footer">{footer}</div> : null}
-      </div>
-    </React.Fragment>
-  );
-  return ReactDOM && ReactDOM.createPortal ? (ReactDOM.createPortal(node, document.body) as React.ReactElement) : node;
-};
+}> = (props) => <Sheet {...props} />;
 
 /** Whether a table container is in its phone form (narrower than 560px) —
     for choosing between the inline detail panel and DTDetailSheet. Watches the

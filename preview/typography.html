@@ -62,7 +62,7 @@
     <div class="callout callout-warn" style="margin-top: var(--space-5)">
       <div class="callout-icon"><i data-lucide="alert-triangle"></i></div>
       <div class="callout-body">
-        <strong>Three weight tokens are deprecated aliases.</strong> Lato ships Thin, Light, Regular, Bold and Black — there is no Medium and no SemiBold. Asking Google Fonts for 500 or 600 returns nothing and the browser rounds silently, so the scale used to advertise seven steps while rendering four. <code>--w-semibold</code> was the most used token in the system and rendered <em>bold</em> everywhere, which is why the UI read heavier than the scale implied.
+        <strong>ATTRUS uses four Lato weights. There is no Medium or SemiBold; <code>--w-medium</code>, <code>--w-semibold</code> and <code>--w-extrabold</code> are deprecated aliases kept until 2.0.</strong> Lato ships Thin, Light, Regular, Bold and Black — there is no Medium and no SemiBold. Asking Google Fonts for 500 or 600 returns nothing and the browser rounds silently, so the scale used to advertise seven steps while rendering four. <code>--w-semibold</code> was the most used token in the system and rendered <em>bold</em> everywhere, which is why the UI read heavier than the scale implied.
         <div class="alias-table">
           <span class="alias"><code>--w-medium</code> → <code>--w-regular</code> (400)</span>
           <span class="alias"><code>--w-semibold</code> → <code>--w-regular</code> (400)</span>
@@ -138,6 +138,11 @@
         <div class="label"><span class="ttl">Overline</span><span class="px">11px / caps</span></div>
         <div class="sample" style="font-size: var(--fs-xs); color: var(--color-foreground-muted); text-transform: uppercase; letter-spacing: var(--ls-caps); font-weight: var(--w-regular);">Overline label</div>
         <div class="tokens"><span class="k">--fs-xs</span> · <span class="k">--ls-caps</span></div>
+      </div>
+      <div class="type-row">
+        <div class="label"><span class="ttl">Overline mono</span><span class="px">10px / caps</span></div>
+        <div class="sample overline-mono">Mono label · TX-90412</div>
+        <div class="tokens"><span class="k">.overline-mono</span> · <span class="k">--fs-xxs</span> · <span class="k">--ls-caps</span> — Mono labels use <code>.overline-mono</code> (10px · <code>--ls-caps</code>). Do not create in-between sizes.</div>
       </div>
       <div class="type-row">
         <div class="label"><span class="ttl">Micro</span><span class="px">10px</span></div>
@@ -233,6 +238,16 @@
     </div>
   </section>
 
+
+  <section class="doc-section" id="strong-styles">
+    <h2>Strong and small-mono styles</h2>
+    <p class="lead">So a bold company name, a time or a volume is a style, not an override. <code>.mono-sm</code> is metadata in normal case; <code>.overline-mono</code> stays the caps one.</p>
+    <div class="demo-card"><div class="demo-card-canvas" style="display:grid;grid-template-columns:180px 1fr;gap:var(--space-3) var(--space-6);align-items:baseline">
+      <code>.body-sm-strong</code><span class="body-sm-strong">Global Supplies LLC · 2h ago · 18,425.00</span>
+      <code>.caption-strong</code><span class="caption-strong">Due today · 14:00</span>
+      <code>.mono-sm</code><span class="mono-sm" style="color:var(--color-foreground-muted)">cli_8f2a91 · updated 05/11 14:02</span>
+    </div></div>
+  </section>
 </main>
 
 <script>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Proposta · A-06</title>
+<link rel="stylesheet" href="../../src/index.css"><link rel="stylesheet" href="../../themes/index.css?v=1"><script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+body{margin:0;background:var(--color-background-canvas);color:var(--color-foreground-default);font-family:var(--font-sans)}
+.doc{max-width:1000px;margin:0 auto;padding:var(--space-10) var(--space-8)}
+.eyebrow{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted)}
+h1{margin:var(--space-2) 0 var(--space-3);font-size:var(--fs-4xl)}p.lead{max-width:76ch;color:var(--color-foreground-secondary);line-height:var(--lh-relaxed)}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);margin-top:var(--space-6)}
+.lbl{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;margin-bottom:var(--space-3)}.lbl.bad{color:var(--color-feedback-danger-foreground)}.lbl.new{color:var(--color-feedback-success-foreground)}
+.stage{background:var(--color-background-surface);border:var(--border-hairline) solid var(--color-border-default);border-radius:var(--shape-container);padding:var(--space-5);display:flex;gap:var(--space-2);align-items:center;flex-wrap:wrap}
+.note{font-size:var(--fs-sm);color:var(--color-foreground-secondary);margin-top:var(--space-3);line-height:var(--lh-relaxed)}
+.clear{all:unset;cursor:pointer;font-size:var(--fs-sm);color:var(--color-foreground-accent);margin-left:var(--space-2)}
+.clear:hover{text-decoration:underline}
+table.imp{width:100%;border-collapse:collapse;font-size:var(--fs-sm);margin-top:var(--space-6)}.imp td,.imp th{text-align:left;padding:var(--space-3);border-bottom:var(--border-hairline) solid var(--color-border-subtle);vertical-align:top}.imp th{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);font-weight:var(--w-regular)}code{font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--color-foreground-accent)}
+</style></head><body><main class="doc">
+<div class="eyebrow">Prompt 03 · A-06 · proposta, só documentação</div>
+<h1>Filtro aplicado é Pill, não FilterChip</h1>
+<p class="lead">O <code>FilterChip</code> é um botão de alternância (liga/desliga, com chevron opcional para abrir opções) e tem 40px. Usado para mostrar um filtro já aplicado, ele não tem como ser removido e fica do tamanho de um controle. O filtro aplicado é uma <code>Pill</code> pequena com <code>onRemove</code>, e a linha termina num link "Clear".</p>
+<div class="vs">
+<div><div class="lbl bad">Errado · FilterChip como filtro aplicado</div><div class="stage">
+ <button class="filter-chip" aria-pressed="true">Pending</button><button class="filter-chip" aria-pressed="true">USD</button><button class="filter-chip" aria-pressed="true">Last 30 days</button>
+</div><div class="note">40px cada, parecem botões a clicar, e não há como tirar um sem reabrir o filtro.</div></div>
+<div><div class="lbl new">Certo · Pill size="sm" onRemove + Clear</div><div class="stage">
+ <span class="pill neutral sm"><span class="pill-label">Status: Pending</span><span class="pill-x" role="button" tabindex="0" aria-label="Remove Status: Pending"><i data-lucide="x"></i></span></span>
+ <span class="pill neutral sm"><span class="pill-label">Currency: USD</span><span class="pill-x" role="button" tabindex="0" aria-label="Remove Currency: USD"><i data-lucide="x"></i></span></span>
+ <span class="pill neutral sm"><span class="pill-label">Last 30 days</span><span class="pill-x" role="button" tabindex="0" aria-label="Remove Last 30 days"><i data-lucide="x"></i></span></span>
+ <button class="clear">Clear</button>
+</div><div class="note">Cada filtro diz o que é ("Status: Pending") e sai com o ×. "Clear" tira todos.</div></div>
+</div>
+<table class="imp"><thead><tr><th>Impacto</th><th>Detalhe</th></tr></thead><tbody>
+<tr><td>Código</td><td>Nenhum. A <code>Pill</code> já tem <code>onRemove</code> (renderiza o <code>.pill-x</code>).</td></tr>
+<tr><td>Documentação</td><td>JSDoc do <code>FilterChip</code> (<code>.tsx</code> e <code>.d.ts</code>): "Toggle with optional chevron. Not for applied filters — use <code>Pill</code> with <code>onRemove</code>." · card novo em <code>preview/table-filters.html</code> com a linha de pills e o "Clear" · a mesma regra na spec do FilterChip em <code>preview/primitives.html</code>.</td></tr>
+<tr><td>Um ajuste no aria</td><td>O <code>.pill-x</code> do <code>Pill.tsx</code> anuncia só "Remove". Com três pills, o leitor de tela ouve "Remove, Remove, Remove". Proponho <code>aria-label="Remove " + rótulo</code> quando o conteúdo for texto — sem mudar a API.</td></tr>
+<tr><td>Arquivos</td><td><code>components/Atoms/Atoms.tsx</code> + <code>.d.ts</code> (JSDoc) · <code>components/Pill/Pill.tsx</code> (aria) · <code>preview/table-filters.html</code> · <code>preview/primitives.html</code></td></tr>
+</tbody></table>
+</main><script>lucide.createIcons();</script></body></html>

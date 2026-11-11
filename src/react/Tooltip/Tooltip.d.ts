@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
+/** The four sides, plus edge-aligned top/bottom. Near the viewport edge the balloon shifts inside or flips — measured on open. */
+export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right' | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end';
 
 export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'content'> {
   /** Tooltip content — plain label, or rich blocks when rich=true. */

@@ -24,7 +24,7 @@
      .group   .fix.l | .fix.r  prefix / suffix attached
      .pill-search              ⌘K-style search bar
      .underline                ghost / quiet input
-     .chips                    multi-select with embedded text input
+     .chips-input              multi-select with embedded text input (.chips: deprecated alias, removed in 2.0)
      .otp                      one-time-password digit cells
 
    Other controls (siblings, not .input):
@@ -169,15 +169,20 @@ textarea.input {
 /* ----------------------------------------------------------------
    3. SIZES
    ---------------------------------------------------------------- */
+/* P-01 · one side inset per size, shared by the field and the select chevron,
+   so a small button, select and field side by side start their text at the
+   same distance from the edge. --input-pad-x is local, not a system token. */
 .input-sm {
+  --input-pad-x: var(--space-4);
   height: var(--control-h-sm);
-  padding: 0 var(--space-3);
-  font-size: var(--fs-sm);
-  border-radius: var(--radius-xs);
+  padding: 0 var(--input-pad-x);
+  font-size: var(--fs-md);
+  border-radius: var(--shape-control);
 }
 .input-lg {
+  --input-pad-x: var(--space-5);
   height: var(--control-h-lg);
-  padding: 0 var(--space-5);
+  padding: 0 var(--input-pad-x);
   font-size: var(--fs-lg);
   border-radius: var(--radius-md);
 }
@@ -200,13 +205,23 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   color: var(--color-foreground-muted);
   pointer-events: none;
   flex-shrink: 0;
+  /* P-05 · the box centres whatever it holds — flex, not grid: a grid row grows
+     to the child and the overflow all goes down. A 16px icon or a 20px flag
+     used to sit 1–3px below the field's centre. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+.affix .lead > *, .affix .trail > * { flex-shrink: 0; }
 .affix .lead  { left:  var(--space-4); }
 .affix .trail { right: var(--space-4); }
 
 /* Pad the input to make room for the icon */
 .affix.lead-pad  > .input { padding-left:  calc(var(--space-4) + var(--icon-sm) + var(--space-3)); }
 .affix.trail-pad > .input { padding-right: calc(var(--space-4) + var(--icon-sm) + var(--space-3)); }
+/* Wide lead — a flag or an avatar instead of an icon: 20px box, text follows */
+.affix.lead-pad-lg .lead { width: 20px; height: 20px; }
+.affix.lead-pad-lg > .input { padding-left: calc(var(--space-4) + 20px + var(--space-3)); }
 
 /* Trailing button (e.g. password reveal, clear) — clickable */
 .affix .trail-btn {
@@ -424,7 +439,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
    height inline. */
 .pill-search-sm {
   height: var(--control-h-sm);
-  padding: 0 var(--space-3);
+  padding: 0 var(--space-4);   /* P-01 · same 12px inset as .btn-sm / .input-sm */
   gap: var(--space-2);
 }
 .pill-search-sm > input { font-size: var(--fs-sm); }
@@ -613,7 +628,10 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 /* ----------------------------------------------------------------
    8. CHIPS — multi-select / token input
    ---------------------------------------------------------------- */
-.chips {
+/* .chips-input — the ChipsInput field. `.chips` is a deprecated alias kept for
+   consumers of 1.x: Deprecated — removed in 2.0. A bare `.chips` is too generic
+   (any app div.chips picked up a border, height and focus ring). */
+:is(.chips-input, .chips) {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2-5);
@@ -627,8 +645,8 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
     border-color var(--transition-fast),
     box-shadow var(--transition-fast);
 }
-.chips:hover { border-color: var(--color-border-strong); }
-.chips:focus-within {
+:is(.chips-input, .chips):hover { border-color: var(--color-border-strong); }
+:is(.chips-input, .chips):focus-within {
   border-color: var(--color-border-focus);
   box-shadow: var(--shadow-focus);
 }
@@ -668,7 +686,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 }
 .chip-x svg, .chip-x i { width: 11px; height: 11px; stroke-width: 2.25; }
 .chip-x:hover { background: var(--color-border-default); color: var(--color-foreground-default); }
-.chips > input {
+:is(.chips-input, .chips) > input {
   flex: 1;
   min-width: calc(var(--control-h-md) * 2);
   height: 26px;
@@ -680,27 +698,34 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   padding: 0 6px;
   color: var(--color-foreground-default);
 }
-.chips > input::placeholder { color: var(--color-foreground-placeholder); }
+:is(.chips-input, .chips) > input::placeholder { color: var(--color-foreground-placeholder); }
 
 
 /* ----------------------------------------------------------------
    9. SELECT (native)
    ---------------------------------------------------------------- */
 .select {
+  /* The chevron is the field's sibling, not its child, so it cannot inherit
+     the field's inset — the wrapper declares it per size. */
+  --input-pad-x: var(--space-4);
   position: relative;
   display: block;
 }
+/* lg: the chevron follows the larger inset. Set directly (no custom property
+   under :has, which the token compiler cannot scope). */
+.select:has(> .input-lg) > .chev { right: var(--space-5); }
+.select > select.input.input-lg { padding-right: calc(var(--space-5) + var(--icon-sm) + var(--space-3)); }
 .select > select.input {
   appearance: none;
   -webkit-appearance: none;
   cursor: pointer;
-  padding-right: calc(var(--space-4) + var(--icon-sm) + var(--space-3));
+  padding-right: calc(var(--input-pad-x) + var(--icon-sm) + var(--space-3));
   background-image: none;
 }
 .select > .chev {
   position: absolute;
   top: 50%;
-  right: var(--space-4);
+  right: var(--input-pad-x);
   transform: translateY(-50%);
   width: var(--icon-sm);
   height: var(--icon-sm);
@@ -825,7 +850,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
     border-color var(--transition-fast),
     box-shadow var(--transition-fast);
 }
-.check-box svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: 3; opacity: 0; transform: scale(0.8); transition: opacity var(--transition-fast), transform var(--transition-fast); }
+.check-box svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: 4;  /* 4 on the 24 grid → 2px at 12px (L-21) */ opacity: 0; transform: scale(0.8); transition: opacity var(--transition-fast), transform var(--transition-fast); }
 .check input:checked ~ .check-box {
   background: var(--color-brand-solid);
   border-color: var(--color-brand-solid);
@@ -907,14 +932,14 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 }
 .radio-dot::after {
   content: '';
-  width: 8px;
-  height: 8px;
+  width: 10px;  /* was 8 (L-22) */
+  height: 10px;
   border-radius: var(--radius-pill);
   background: var(--color-brand-solid);
   transform: scale(0);
   transition: transform var(--transition-fast);
 }
-.radio input:checked ~ .radio-dot { border-color: var(--color-brand-solid); }
+.radio input:checked ~ .radio-dot { border-color: var(--color-brand-border); }  /* lighter ring; the dot carries the state (L-22) */
 .radio input:checked ~ .radio-dot::after { transform: scale(1); }
 .radio input:focus-visible ~ .radio-dot { box-shadow: var(--shadow-focus); }
 /* Disabled — explicit tokens (see .switch rationale) */
@@ -965,7 +990,11 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .date-trigger.is-error          { border-color: var(--color-border-danger); }
 .date-trigger.is-error:focus,
 .date-trigger.is-error:focus-visible { box-shadow: var(--shadow-focus-danger); }
-.date-trigger .placeholder { color: var(--color-foreground-placeholder); }
+/* The empty trigger's text is the control's ONLY visible label, so it cannot
+   carry placeholder contrast (1.8:1). Muted passes (5.1–5.4:1) and still reads
+   as "not chosen yet". --color-foreground-placeholder itself is untouched: it
+   is also the disabled colour and the real placeholder of labelled fields. */
+.date-trigger .placeholder { color: var(--color-foreground-muted); }
 .date-trigger > i, .date-trigger > svg,
 .date-trigger > svg {
   width: var(--icon-sm);
@@ -1101,7 +1130,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   font-size-adjust: var(--font-mono-adjust);
   font-size: var(--fs-xxs);
   font-weight: var(--w-bold);
-  letter-spacing: 0.04em;
+  letter-spacing: var(--ls-caps);
   line-height: 1;
   color: currentColor;
   background: var(--color-background-surface);
@@ -1275,7 +1304,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .dark .input,
 .dark .group,
 .dark .pill-search,
-.dark .chips,
+.dark :is(.chips-input, .chips),
 .dark .number-input,
 .dark .date-trigger {
   background: color-mix(in srgb, var(--color-pure-white) 6%, transparent);
@@ -1286,12 +1315,12 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .dark .input::placeholder,
 .dark .group > input::placeholder,
 .dark .pill-search > input::placeholder,
-.dark .chips > input::placeholder {
+.dark :is(.chips-input, .chips) > input::placeholder {
   color: var(--color-foreground-inverse-placeholder);
 }
 .dark .group > input,
 .dark .pill-search > input,
-.dark .chips > input,
+.dark :is(.chips-input, .chips) > input,
 .dark .number-input > input,
 .dark .date-trigger { color: var(--color-foreground-inverse-default); }
 .dark .group .fix {
@@ -1308,7 +1337,7 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
 .dark .input:focus,
 .dark .group:focus-within,
 .dark .pill-search:focus-within,
-.dark .chips:focus-within,
+.dark :is(.chips-input, .chips):focus-within,
 .dark .number-input:focus-within,
 .dark .date-trigger:focus-visible {
   border-color: var(--color-border-focus);
@@ -1472,3 +1501,111 @@ textarea.input.input-lg { height: auto; min-height: 120px; padding: var(--space-
   color: var(--color-foreground-disabled);
   cursor: not-allowed;
 }
+
+/* SELECTABLE CARD · FORM CONTROLS — the card renders the form's own .radio-dot
+   and .check-box (L-20) and its hidden input drives them through the same
+   rules as a form, so the mark is identical in every state and theme. */
+.sel-card > .radio-dot, .sel-card > .check-box { flex-shrink: 0; }
+.sel-card input:checked ~ .check-box {
+  background: var(--color-brand-solid);
+  border-color: var(--color-brand-solid);
+}
+.sel-card input:checked ~ .check-box svg { opacity: 1; transform: scale(1); }
+.sel-card input:checked ~ .check-box::before { opacity: 1; transform: rotate(45deg) scale(1); }
+.sel-card input:indeterminate ~ .check-box::before { content: none; }
+.sel-card input:indeterminate ~ .check-box {
+  background: var(--color-brand-solid);
+  border-color: var(--color-brand-solid);
+}
+.sel-card input:indeterminate ~ .check-box::after {
+  content: '';
+  width: 10px;
+  height: 2px;
+  background: var(--color-pure-white);
+  border-radius: 1px;
+}
+.sel-card input:indeterminate ~ .check-box svg { display: none; }
+.sel-card input:focus-visible ~ .check-box { box-shadow: var(--shadow-focus); }
+.sel-card input:disabled ~ .check-box {
+  background: var(--color-background-sunken);
+  border-color: var(--color-border-default);
+}
+.sel-card input:disabled ~ .check-box svg { color: var(--color-foreground-disabled); }
+.sel-card input:checked:disabled ~ .check-box,
+.sel-card input:indeterminate:disabled ~ .check-box {
+  background: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+  border-color: transparent;
+}
+.sel-card input:checked:disabled ~ .check-box svg { color: var(--color-neutral-100); }
+.sel-card input:checked ~ .radio-dot { border-color: var(--color-brand-border); }
+.sel-card input:checked ~ .radio-dot::after { transform: scale(1); }
+.sel-card input:focus-visible ~ .radio-dot { box-shadow: var(--shadow-focus); }
+.sel-card input:disabled ~ .radio-dot {
+  background: var(--color-background-sunken);
+  border-color: var(--color-border-default);
+}
+.sel-card input:checked:disabled ~ .radio-dot {
+  border-color: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+}
+.sel-card input:checked:disabled ~ .radio-dot::after {
+  background: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+}
+.sel-card.on-inverse input:checked ~ .check-box,
+.sel-card.on-inverse input:indeterminate ~ .check-box {
+  background: var(--color-accent-solid);
+  border-color: var(--color-accent-solid);
+}
+.sel-card.on-inverse input:checked ~ .radio-dot { border-color: var(--color-accent-solid); }
+.sel-card.on-inverse input:checked ~ .radio-dot::after { background: var(--color-accent-solid); }
+.sel-card.on-inverse input:focus-visible ~ .check-box,
+.sel-card.on-inverse input:focus-visible ~ .radio-dot { box-shadow: var(--shadow-focus-inverse); }
+
+/* The same states keyed off the card's classes, for static markup with no
+   input (docs, server-rendered lists): .is-selected = checked,
+   [aria-disabled="true"] = disabled. */
+.sel-card.is-selected > .check-box {
+  background: var(--color-brand-solid);
+  border-color: var(--color-brand-solid);
+}
+.sel-card.is-selected > .check-box svg { opacity: 1; transform: scale(1); }
+.sel-card.is-selected > .check-box::before { opacity: 1; transform: rotate(45deg) scale(1); }
+.sel-card[aria-disabled="true"] > .check-box {
+  background: var(--color-background-sunken);
+  border-color: var(--color-border-default);
+}
+.sel-card[aria-disabled="true"] > .check-box svg { color: var(--color-foreground-disabled); }
+.sel-card.is-selected[aria-disabled="true"] > .check-box {
+  background: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+  border-color: transparent;
+}
+.sel-card.is-selected[aria-disabled="true"] > .check-box svg { color: var(--color-neutral-100); }
+.sel-card.is-selected > .radio-dot { border-color: var(--color-brand-border); }
+.sel-card.is-selected > .radio-dot::after { transform: scale(1); }
+.sel-card[aria-disabled="true"] > .radio-dot {
+  background: var(--color-background-sunken);
+  border-color: var(--color-border-default);
+}
+.sel-card.is-selected[aria-disabled="true"] > .radio-dot {
+  border-color: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+}
+.sel-card.is-selected[aria-disabled="true"] > .radio-dot::after {
+  background: color-mix(in srgb, var(--color-brand-solid) 32%, var(--color-background-sunken));
+}
+.sel-card.on-inverse.is-selected > .check-box {
+  background: var(--color-accent-solid);
+  border-color: var(--color-accent-solid);
+}
+.sel-card.on-inverse.is-selected > .radio-dot { border-color: var(--color-accent-solid); }
+.sel-card.on-inverse.is-selected > .radio-dot::after { background: var(--color-accent-solid); }
+
+/* CHECK TICK OUTRANKS THE LUCIDE DEFAULT — the global svg.lucide[stroke-width]
+   rule (which sets every Lucide icon to the DS stroke) is more specific than
+   .check-box svg, so a Lucide-rendered tick drew 1.75 instead of the 2px the
+   check is specified at (L-21). */
+.check-box svg.lucide[stroke-width] { stroke-width: 4; }
+
+/* Select lead (L-35) — a badge, icon or flag before the value. The native
+   <select> takes no markup in its options, so the lead shows the chosen item
+   and the option text stays the accessible name. */
+.select-lead { position: absolute; left: var(--space-3); top: 50%; transform: translateY(-50%); display: inline-flex; align-items: center; pointer-events: none; z-index: 1; }
+.select:has(> .select-lead) > select.input { padding-left: calc(var(--space-3) + var(--select-lead-w, 32px) + var(--space-3)); }

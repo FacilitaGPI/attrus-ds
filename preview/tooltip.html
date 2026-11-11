@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../src/index.css">
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
-<link rel="stylesheet" href="components/tooltip.css?v=3">
+<link rel="stylesheet" href="components/tooltip.css?v=4">
 <link rel="stylesheet" href="components/demo-card.css?v=5">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
@@ -40,7 +40,7 @@
     border: 1px solid var(--color-feedback-success-border);
     border-radius: var(--radius-pill);
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs);
-    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+    font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase;
   }
   .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
 
@@ -57,7 +57,7 @@
   .doc-nav a {
     padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill);
     color: var(--color-foreground-secondary); text-decoration: none;
-    font-size: var(--fs-sm); font-weight: var(--w-semibold);
+    font-size: var(--fs-sm); font-weight: var(--w-regular);
     transition: var(--transition-fast);
   }
   .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
@@ -86,7 +86,7 @@
   .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
   .spec-head h3 code {
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md);
-    font-weight: var(--w-medium); color: var(--color-foreground-accent);
+    font-weight: var(--w-regular); color: var(--color-foreground-accent);
     background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
     padding: var(--space-1) var(--space-3);
     border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px;
@@ -132,7 +132,7 @@
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-bold);
     display: flex; align-items: center; justify-content: center;
   }
-  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-regular); display: block; margin-bottom: 1px; }
 
   /* placements grid */
   .placement-grid {
@@ -192,7 +192,7 @@
     text-align: left; padding: var(--space-3) var(--space-4);
     background: var(--color-background-subtle);
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs);
-    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps);
+    font-weight: var(--w-regular); letter-spacing: var(--ls-caps);
     text-transform: uppercase; color: var(--color-foreground-muted);
     border-bottom: 1px solid var(--color-border-default);
   }
@@ -233,7 +233,7 @@
   }
   .dont-card-body i, .dont-card-body svg { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
   .dont-card-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
-  .dont-card-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+  .dont-card-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-regular); margin-bottom: var(--space-1); }
 </style>
 </head>
 <body>
@@ -331,7 +331,18 @@
         </div>
       </div>
     </div>
-  </section>
+  
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>Near the edge, and edge-aligned <code>--tip-shift</code> · <code>top-start</code> · <code>top-end</code></h3><p>On open the balloon is measured: past the viewport edge it shifts inside with an 8px margin and the arrow keeps pointing at the target; with no room on the chosen side it flips. <code>top-start</code>, <code>top-end</code>, <code>bottom-start</code> and <code>bottom-end</code> align the balloon to the target's edge.</p></div>
+        <span class="demo-card-tag">P-07</span>
+      </div>
+      <div class="demo-card-canvas" id="p07-demo" style="justify-content:space-between;align-items:center;min-height:160px">
+        <span class="tooltip-target" tabindex="0"><button class="btn btn-secondary btn-sm">top-start</button><span class="tooltip tooltip-top-start" role="tooltip">Aligned to the start</span></span>
+        <span class="tooltip-target" tabindex="0"><button class="btn btn-secondary btn-sm">bottom-end</button><span class="tooltip tooltip-bottom-end" role="tooltip">Aligned to the end</span></span>
+      </div>
+    </div>
+</section>
 
   <!-- ========== VARIANTS ========== -->
   <section class="doc-section" id="variants">
@@ -465,7 +476,7 @@
       <div class="dont-card">
         <div class="dont-card-canvas">
           <span class="tooltip-target">
-            <button class="icon-target" style="width: auto; padding: 0 var(--space-3); gap: var(--space-2); display: inline-flex; align-items: center;"><i data-lucide="save"></i><span style="font-size: var(--fs-sm); font-weight: var(--w-semibold);">Save changes</span></button>
+            <button class="icon-target" style="width: auto; padding: 0 var(--space-3); gap: var(--space-2); display: inline-flex; align-items: center;"><i data-lucide="save"></i><span style="font-size: var(--fs-sm); font-weight: var(--w-regular);">Save changes</span></button>
             <span class="tooltip tooltip-top is-open" role="tooltip">Save changes</span>
           </span>
         </div>

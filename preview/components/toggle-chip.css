@@ -64,7 +64,7 @@
 .toggle-chip.is-on,
 .toggle-chip:has(input:checked) {
   background: var(--color-background-selected);
-  border-color: var(--color-brand-solid);
+  border-color: var(--color-brand-border);
   color: var(--color-foreground-brand);
   font-weight: var(--w-regular);
 }
@@ -144,3 +144,12 @@
    the bare label moves. */
 .toggle-chip-sm { padding-bottom: 1px; }
 .toggle-chip-sm > svg, .toggle-chip-sm > i, .toggle-chip-sm > .toggle-chip-count { margin-top: 1px; }
+
+/* LABEL AND COUNT ON ONE BASELINE (L-18) — a fixed-height flex chip cannot use
+   align-items: baseline (it shoves the line to the top), so the chip is a
+   one-row grid: label and count share a baseline and that row is centred.
+   The icon is not text, so it centres on its own; with an icon the line box
+   grows to it, so the icon lifts 1px and the row drops 1px. */
+.toggle-chip { display: inline-grid; grid-auto-flow: column; justify-content: center; align-items: baseline; align-content: center; }
+.toggle-chip > svg, .toggle-chip > i { align-self: center; position: relative; top: -1px; }
+.toggle-chip:has(> svg, > i) { padding-top: 2px; }

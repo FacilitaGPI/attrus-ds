@@ -37,7 +37,7 @@
     border: 1px solid var(--color-feedback-success-border);
     border-radius: var(--radius-pill);
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs);
-    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+    font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase;
   }
   .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
 
@@ -54,7 +54,7 @@
   .doc-nav a {
     padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill);
     color: var(--color-foreground-secondary); text-decoration: none;
-    font-size: var(--fs-sm); font-weight: var(--w-semibold);
+    font-size: var(--fs-sm); font-weight: var(--w-regular);
     transition: var(--transition-fast);
   }
   .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
@@ -83,7 +83,7 @@
   .spec-head h3 { font-size: var(--fs-xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
   .spec-head h3 code {
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md);
-    font-weight: var(--w-medium); color: var(--color-foreground-accent);
+    font-weight: var(--w-regular); color: var(--color-foreground-accent);
     background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent);
     padding: var(--space-1) var(--space-3);
     border-radius: var(--radius-xs); margin-left: var(--space-3); vertical-align: 2px;
@@ -91,7 +91,7 @@
   .spec-head p { font-size: var(--fs-md); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 56ch; }
   .spec-tag {
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs);
-    font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase;
+    font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase;
     color: var(--color-foreground-muted); white-space: nowrap; flex-shrink: 0;
   }
   .spec-canvas {
@@ -126,141 +126,56 @@
     font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-bold);
     display: flex; align-items: center; justify-content: center;
   }
-  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); display: block; margin-bottom: 1px; }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-regular); display: block; margin-bottom: 1px; }
   .anatomy-list li code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
 
-  /* ──────────────────────── HERO COMPONENT ──────────────────────── */
-  .hero-base {
-    position: relative;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    padding: var(--space-8) var(--space-9);
-    color: var(--color-foreground-inverse-default);
-    background: var(--grad-hero);
-    box-shadow: var(--shadow-lg);
-  }
-  .hero-base::before {
-    content: ""; position: absolute; inset: 0;
-    background: var(--grad-radial-glow);
-    pointer-events: none;
-  }
-  .hero-base > * { position: relative; z-index: 1; }
-  .hero-eyebrow {
-    font-size: var(--fs-xs); font-weight: var(--w-semibold);
-    letter-spacing: var(--ls-caps); text-transform: uppercase;
-    color: var(--color-foreground-inverse-secondary);
-    margin: 0 0 var(--space-2);
-    display: inline-flex; align-items: center; gap: var(--space-2);
-  }
-  .hero-eyebrow .pill {
-    background: var(--color-overlay-white-14);
-    border: 1px solid var(--color-overlay-white-18);
-    border-radius: var(--radius-pill);
-    padding: 2px var(--space-2);
-    font-size: var(--fs-xxs);
-  }
-  .hero-title {
-    font-family: var(--font-display);
-    font-size: var(--fs-7xl);
-    font-weight: var(--w-black);
-    letter-spacing: var(--ls-display);
-    line-height: var(--lh-tight);
-    margin: 0 0 var(--space-3);
-  }
-  .hero-title em { font-style: normal; color: var(--color-brand-secondary-200); }
-  .hero-sub {
-    font-size: var(--fs-md);
-    color: var(--color-foreground-inverse-secondary);
-    line-height: var(--lh-relaxed);
-    margin: 0;
-    max-width: 56ch;
-  }
-  .hero-actions {
-    display: inline-flex; gap: var(--space-3); flex-wrap: wrap;
-    margin-top: var(--space-5);
-  }
-  .hero-btn {
-    display: inline-flex; align-items: center; gap: var(--space-2);
-    height: 40px; padding: 0 var(--space-5);
-    border-radius: var(--radius-pill);
-    font-family: var(--font-sans); font-weight: var(--w-semibold); font-size: var(--fs-sm);
-    border: 1px solid transparent; cursor: pointer; text-decoration: none;
-    transition: var(--transition-fast);
-  }
-  .hero-btn-primary { background: var(--color-pure-white); color: var(--color-brand-secondary-700); /* fixed dark — white button on dark hero in BOTH themes */ }
-  .hero-btn-primary:hover { background: var(--color-brand-secondary-50); }
-  .hero-btn-ghost {
-    background: var(--color-overlay-white-08);
-    color: var(--color-foreground-inverse-default);
-    border-color: var(--color-overlay-white-22);
-  }
-  .hero-btn-ghost:hover { background: var(--color-overlay-white-16); }
-  .hero-btn i, .hero-btn svg { width: 14px; height: 14px; stroke-width: var(--icon-stroke); }
+  
 
-  /* Dashboard tiles row */
-  .hero-tiles {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3);
-    margin-top: var(--space-5);
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   @media (max-width: 880px) { .hero-tiles { grid-template-columns: repeat(2, 1fr); } }
-  .hero-tile {
-    background: var(--color-overlay-white-08);
-    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-    border: 1px solid var(--color-overlay-white-12);
-    border-radius: var(--radius-sm);
-    padding: var(--space-3) var(--space-4);
-  }
-  .hero-tile .k {
-    display: flex; align-items: center; gap: var(--space-2);
-    font-size: var(--fs-xxs); font-weight: var(--w-semibold);
-    letter-spacing: var(--ls-caps); text-transform: uppercase;
-    color: var(--color-foreground-inverse-secondary);
-  }
-  .hero-tile .v {
-    font-family: var(--font-sans); font-weight: var(--w-bold); font-size: var(--fs-lg);
-    font-variant-numeric: tabular-nums;
-    color: var(--color-foreground-inverse-default);
-    margin-top: var(--space-1);
-    letter-spacing: var(--ls-title);
-  }
-  .hero-tile .d {
-    font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs);
-    color: var(--color-foreground-inverse-muted);
-    margin-top: 2px; display: flex; align-items: center; gap: 4px;
-  }
-  .hero-tile .d.up { color: var(--color-feedback-success-foreground-on-inverse); }
-  .hero-tile .d.down { color: var(--color-feedback-danger-foreground-on-inverse); }
-  .hero-tile .d svg, .hero-tile .d i { width: 11px; height: 11px; stroke-width: 2.4; }
 
-  /* Subtle variant — light surface */
-  .hero-base.is-subtle {
-    background: var(--color-background-subtle);
-    color: var(--color-foreground-default);
-    box-shadow: var(--shadow-xs);
-    border: 1px solid var(--color-border-default);
-  }
-  .hero-base.is-subtle::before { display: none; }
-  .hero-base.is-subtle .hero-eyebrow { color: var(--color-foreground-muted); }
-  .hero-base.is-subtle .hero-eyebrow .pill { background: var(--color-background-surface); border-color: var(--color-border-default); color: var(--color-foreground-secondary); }
-  .hero-base.is-subtle .hero-title { color: var(--color-foreground-default); }
-  .hero-base.is-subtle .hero-title em { color: var(--color-foreground-accent); }
-  .hero-base.is-subtle .hero-sub { color: var(--color-foreground-secondary); }
-  .hero-base.is-subtle .hero-btn-primary { background: var(--color-brand-secondary-500); color: var(--color-foreground-on-solid); }
-  .hero-base.is-subtle .hero-btn-primary:hover { background: var(--color-brand-secondary-600); }
-  .hero-base.is-subtle .hero-btn-ghost { background: transparent; border-color: var(--color-border-default); color: var(--color-foreground-secondary); }
-  .hero-base.is-subtle .hero-btn-ghost:hover { background: var(--color-background-hover); }
 
-  /* Marketing variant — full-bleed image + headline */
-  .hero-base.is-marketing { padding: var(--space-12) var(--space-12); }
-  .hero-base.is-marketing .hero-title { font-size: var(--fs-8xl); max-width: 14ch; }
 
-  /* Compact variant */
-  .hero-base.is-compact { padding: var(--space-6) var(--space-7); }
-  .hero-base.is-compact .hero-title { font-size: var(--fs-5xl); }
-  .hero-base.is-compact .hero-sub { font-size: var(--fs-sm); }
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
 
   /* Anatomy labels */
-  .anatomy-canvas .hero-base {
+  .anatomy-canvas .hero {
     width: 100%;
     padding: var(--space-7) var(--space-7);
   }
@@ -292,7 +207,7 @@
 
   /* token table */
   .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; }
-  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
   .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
   .token-table tr:last-child td { border-bottom: 0; }
   .token-table code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
@@ -304,8 +219,10 @@
   .dont-body { padding: var(--space-4) var(--space-5); display: flex; gap: var(--space-3); align-items: flex-start; }
   .dont-body i, .dont-body svg { color: var(--color-feedback-danger-foreground); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
   .dont-body p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
-  .dont-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: var(--space-1); }
+  .dont-body strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-regular); margin-bottom: var(--space-1); }
 </style>
+<link rel="stylesheet" href="components/hero.css?v=54736">
+<link rel="stylesheet" href="components/buttons.css?v=54736">
 </head>
 <body>
 
@@ -339,16 +256,16 @@
 
     <div class="anatomy">
       <div class="anatomy-canvas">
-        <div class="hero-base">
+        <div class="hero hero-ink">
           <div class="hero-eyebrow">
             <span>ATTRUS</span>
-            <span class="pill"><span class="pill-label">v0.2</span></span>
+            <span class="pill info"><span class="pill-label">v0.2</span></span>
           </div>
           <h1 class="hero-title">Hi, <em>John</em></h1>
           <p class="hero-sub">Pending transactions · 2 · Wires expiring · 3</p>
           <div class="hero-actions">
-            <a class="hero-btn hero-btn-primary">New transaction <i data-lucide="arrow-right"></i></a>
-            <a class="hero-btn hero-btn-ghost">View activity</a>
+            <a class="btn btn-inverse">New transaction <i data-lucide="arrow-right"></i></a>
+            <a class="btn btn-secondary">View activity</a>
           </div>
         </div>
       </div>
@@ -379,13 +296,13 @@
         <span class="spec-tag">default</span>
       </header>
       <div class="spec-canvas">
-        <div class="hero-base">
+        <div class="hero hero-ink">
           <div class="hero-eyebrow"><span>ATTRUS · Home</span></div>
           <h1 class="hero-title">Welcome back, <em>Maria</em></h1>
           <p class="hero-sub">You have 3 wires awaiting authorisation and 12 receivables expiring in the next 7 days.</p>
           <div class="hero-actions">
-            <a class="hero-btn hero-btn-primary">Authorise wires <i data-lucide="arrow-right"></i></a>
-            <a class="hero-btn hero-btn-ghost">View receivables</a>
+            <a class="btn btn-inverse">Authorise wires <i data-lucide="arrow-right"></i></a>
+            <a class="btn btn-secondary">View receivables</a>
           </div>
         </div>
       </div>
@@ -400,13 +317,13 @@
         <span class="spec-tag">secondary</span>
       </header>
       <div class="spec-canvas">
-        <div class="hero-base is-subtle">
+        <div class="hero is-subtle">
           <div class="hero-eyebrow"><span>Settings · Workspace</span></div>
           <h1 class="hero-title">Workspace <em>preferences</em></h1>
           <p class="hero-sub">Manage how this workspace handles authorisation rules, default currencies and beneficiary approvals.</p>
           <div class="hero-actions">
-            <a class="hero-btn hero-btn-primary">Save changes</a>
-            <a class="hero-btn hero-btn-ghost">Reset to defaults</a>
+            <a class="btn btn-inverse">Save changes</a>
+            <a class="btn btn-secondary">Reset to defaults</a>
           </div>
         </div>
       </div>
@@ -421,13 +338,13 @@
         <span class="spec-tag">unauthenticated</span>
       </header>
       <div class="spec-canvas">
-        <div class="hero-base is-marketing">
+        <div class="hero hero-ink is-large">
           <div class="hero-eyebrow"><span>ATTRUS Platform</span></div>
           <h1 class="hero-title">Powering the <em>flow</em> of global financial services.</h1>
           <p class="hero-sub">Move money across LatAm and the US — one platform, one operations console, one set of compliance rails.</p>
           <div class="hero-actions">
-            <a class="hero-btn hero-btn-primary">Open an account <i data-lucide="arrow-right"></i></a>
-            <a class="hero-btn hero-btn-ghost">Talk to sales</a>
+            <a class="btn btn-inverse">Open an account <i data-lucide="arrow-right"></i></a>
+            <a class="btn btn-secondary">Talk to sales</a>
           </div>
         </div>
       </div>
@@ -448,30 +365,30 @@
         <span class="spec-tag">home</span>
       </header>
       <div class="spec-canvas">
-        <div class="hero-base">
+        <div class="hero hero-ink">
           <div class="hero-eyebrow"><span>Account · Acme S.A.</span></div>
           <h1 class="hero-title">Hi, <em>John</em></h1>
           <p class="hero-sub">All-time balance across linked accounts</p>
           <div class="hero-tiles">
             <div class="hero-tile">
-              <div class="k">🇺🇸 USD</div>
-              <div class="v">12,400.00</div>
-              <div class="d up"><i data-lucide="arrow-up-right"></i>+2.4% today</div>
+              <div class="hero-tile-k"><img src="../assets/flags/EUA-rounded.svg" alt="">USD</div>
+              <div class="hero-tile-v">12,400.00</div>
+              <div class="hero-tile-d is-up"><i data-lucide="arrow-up-right"></i>+2.4% today</div>
             </div>
             <div class="hero-tile">
-              <div class="k">🇪🇺 EUR</div>
-              <div class="v">8,210.55</div>
-              <div class="d up"><i data-lucide="arrow-up-right"></i>+0.8% today</div>
+              <div class="hero-tile-k"><img src="../assets/flags/EUR-rounded.svg" alt="">EUR</div>
+              <div class="hero-tile-v">8,210.55</div>
+              <div class="hero-tile-d is-up"><i data-lucide="arrow-up-right"></i>+0.8% today</div>
             </div>
             <div class="hero-tile">
-              <div class="k">🇲🇽 MXN</div>
-              <div class="v">204,840.00</div>
-              <div class="d down"><i data-lucide="arrow-down-right"></i>−0.3% today</div>
+              <div class="hero-tile-k"><img src="../assets/flags/Mexico-rounded.svg" alt="">MXN</div>
+              <div class="hero-tile-v">204,840.00</div>
+              <div class="hero-tile-d is-down"><i data-lucide="arrow-down-right"></i>−0.3% today</div>
             </div>
             <div class="hero-tile">
-              <div class="k">🇨🇴 COP</div>
-              <div class="v">3,120,500</div>
-              <div class="d">stable</div>
+              <div class="hero-tile-k"><img src="../assets/flags/Colombia-rounded.svg" alt="">COP</div>
+              <div class="hero-tile-v">3,120,500</div>
+              <div class="hero-tile-d">stable</div>
             </div>
           </div>
         </div>
@@ -493,7 +410,7 @@
         <span class="spec-tag">160-200px</span>
       </header>
       <div class="spec-canvas">
-        <div class="hero-base is-compact">
+        <div class="hero hero-ink is-compact">
           <div class="hero-eyebrow"><span>Transaction · TX-9821</span></div>
           <h1 class="hero-title">Wire to <em>Banco Itaú</em></h1>
           <p class="hero-sub">USD 12,400.00 · approved 2 minutes ago</p>
@@ -510,12 +427,12 @@
         <span class="spec-tag">240-280px</span>
       </header>
       <div class="spec-canvas">
-        <div class="hero-base">
+        <div class="hero hero-ink">
           <div class="hero-eyebrow"><span>Receivables · 30 days</span></div>
           <h1 class="hero-title">Expected <em>USD 84,200</em></h1>
           <p class="hero-sub">17 wires expected, 3 expiring in the next 48 hours.</p>
           <div class="hero-actions">
-            <a class="hero-btn hero-btn-primary">View calendar</a>
+            <a class="btn btn-inverse">View calendar</a>
           </div>
         </div>
       </div>
@@ -530,13 +447,13 @@
         <span class="spec-tag">320-400px</span>
       </header>
       <div class="spec-canvas">
-        <div class="hero-base is-marketing">
+        <div class="hero hero-ink is-large">
           <div class="hero-eyebrow"><span>ATTRUS Platform</span></div>
           <h1 class="hero-title">Cross-border payments, <em>simplified</em>.</h1>
           <p class="hero-sub">One operations console for treasury, compliance and payments — across LatAm and the US.</p>
           <div class="hero-actions">
-            <a class="hero-btn hero-btn-primary">Get started <i data-lucide="arrow-right"></i></a>
-            <a class="hero-btn hero-btn-ghost">Read the docs</a>
+            <a class="btn btn-inverse">Get started <i data-lucide="arrow-right"></i></a>
+            <a class="btn btn-secondary">Read the docs</a>
           </div>
         </div>
       </div>
@@ -561,24 +478,24 @@
             <span class="dot"></span><span class="dot"></span><span class="dot"></span>
             <span class="breadcrumb"><i data-lucide="home"></i> Home</span>
           </div>
-          <div class="hero-base">
+          <div class="hero hero-ink">
             <div class="hero-eyebrow"><span>ATTRUS · Home</span></div>
             <h1 class="hero-title">Hi, <em>Maria</em></h1>
             <p class="hero-sub">You have 3 wires awaiting authorisation today.</p>
             <div class="hero-actions">
-              <a class="hero-btn hero-btn-primary">Authorise <i data-lucide="arrow-right"></i></a>
-              <a class="hero-btn hero-btn-ghost">View activity</a>
+              <a class="btn btn-inverse">Authorise <i data-lucide="arrow-right"></i></a>
+              <a class="btn btn-secondary">View activity</a>
             </div>
             <div class="hero-tiles">
-              <div class="hero-tile"><div class="k">🇺🇸 USD</div><div class="v">12,400.00</div><div class="d up"><i data-lucide="arrow-up-right"></i>+2.4%</div></div>
-              <div class="hero-tile"><div class="k">🇪🇺 EUR</div><div class="v">8,210.55</div><div class="d up"><i data-lucide="arrow-up-right"></i>+0.8%</div></div>
-              <div class="hero-tile"><div class="k">🇲🇽 MXN</div><div class="v">204,840.00</div><div class="d down"><i data-lucide="arrow-down-right"></i>−0.3%</div></div>
-              <div class="hero-tile"><div class="k">🇨🇴 COP</div><div class="v">3,120,500</div><div class="d">stable</div></div>
+              <div class="hero-tile"><div class="hero-tile-k"><img src="../assets/flags/EUA-rounded.svg" alt="">USD</div><div class="hero-tile-v">12,400.00</div><div class="hero-tile-d is-up"><i data-lucide="arrow-up-right"></i>+2.4%</div></div>
+              <div class="hero-tile"><div class="hero-tile-k"><img src="../assets/flags/EUR-rounded.svg" alt="">EUR</div><div class="hero-tile-v">8,210.55</div><div class="hero-tile-d is-up"><i data-lucide="arrow-up-right"></i>+0.8%</div></div>
+              <div class="hero-tile"><div class="hero-tile-k"><img src="../assets/flags/Mexico-rounded.svg" alt="">MXN</div><div class="hero-tile-v">204,840.00</div><div class="hero-tile-d is-down"><i data-lucide="arrow-down-right"></i>−0.3%</div></div>
+              <div class="hero-tile"><div class="hero-tile-k"><img src="../assets/flags/Colombia-rounded.svg" alt="">COP</div><div class="hero-tile-v">3,120,500</div><div class="hero-tile-d">stable</div></div>
             </div>
           </div>
           <div style="margin-top: var(--space-5); padding: var(--space-5); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); display: flex; align-items: center; gap: var(--space-3); font-size: var(--fs-sm); color: var(--color-foreground-muted);">
             <i data-lucide="activity" style="width: 16px; height: 16px; color: var(--color-foreground-secondary);"></i>
-            <span><strong style="color: var(--color-foreground-default); font-weight: var(--w-semibold);">Recent activity</strong> · 12 transactions this week</span>
+            <span><strong style="color: var(--color-foreground-default); font-weight: var(--w-regular);">Recent activity</strong> · 12 transactions this week</span>
           </div>
         </div>
       </div>
@@ -632,7 +549,7 @@
     <div class="dont-grid">
       <div class="dont-card">
         <div class="dont-canvas">
-          <div class="hero-base is-compact" style="background: var(--color-pure-black); width: 100%;">
+          <div class="hero hero-ink is-compact" style="background: var(--color-pure-black); width: 100%;">
             <div class="hero-eyebrow"><span>Pure black</span></div>
             <h1 class="hero-title" style="font-size: var(--fs-3xl);">No gradient, no glow</h1>
           </div>
@@ -645,7 +562,7 @@
 
       <div class="dont-card">
         <div class="dont-canvas">
-          <div class="hero-base is-compact" style="width: 100%;">
+          <div class="hero hero-ink is-compact" style="width: 100%;">
             <h1 class="hero-title" style="font-size: var(--fs-3xl);">Tiny title</h1>
           </div>
         </div>
@@ -657,14 +574,14 @@
 
       <div class="dont-card">
         <div class="dont-canvas">
-          <div class="hero-base is-compact" style="width: 100%;">
+          <div class="hero hero-ink is-compact" style="width: 100%;">
             <div class="hero-eyebrow"><span>Page name</span></div>
             <h1 class="hero-title" style="font-size: var(--fs-3xl);">Title</h1>
             <div class="hero-actions">
-              <a class="hero-btn hero-btn-primary">One</a>
-              <a class="hero-btn hero-btn-ghost">Two</a>
-              <a class="hero-btn hero-btn-ghost">Three</a>
-              <a class="hero-btn hero-btn-ghost">Four</a>
+              <a class="btn btn-inverse">One</a>
+              <a class="btn btn-secondary">Two</a>
+              <a class="btn btn-secondary">Three</a>
+              <a class="btn btn-secondary">Four</a>
             </div>
           </div>
         </div>
@@ -676,7 +593,7 @@
 
       <div class="dont-card">
         <div class="dont-canvas">
-          <div class="hero-base is-compact" style="width: 100%;">
+          <div class="hero hero-ink is-compact" style="width: 100%;">
             <div class="hero-eyebrow"><span>Lorem ipsum</span></div>
             <h1 class="hero-title" style="font-size: var(--fs-3xl); max-width: none;">A very long, descriptive headline that wraps across several lines and keeps going just because it can</h1>
           </div>
@@ -689,16 +606,16 @@
 
       <div class="dont-card">
         <div class="dont-canvas">
-          <div class="hero-base is-compact" style="width: 100%;">
+          <div class="hero hero-ink is-compact" style="width: 100%;">
             <div class="hero-eyebrow"><span>Page</span></div>
             <h1 class="hero-title" style="font-size: var(--fs-3xl);">Numbers</h1>
             <div class="hero-tiles" style="grid-template-columns: repeat(6, 1fr);">
-              <div class="hero-tile"><div class="k">A</div><div class="v">1</div></div>
-              <div class="hero-tile"><div class="k">B</div><div class="v">2</div></div>
-              <div class="hero-tile"><div class="k">C</div><div class="v">3</div></div>
-              <div class="hero-tile"><div class="k">D</div><div class="v">4</div></div>
-              <div class="hero-tile"><div class="k">E</div><div class="v">5</div></div>
-              <div class="hero-tile"><div class="k">F</div><div class="v">6</div></div>
+              <div class="hero-tile"><div class="hero-tile-k">A</div><div class="hero-tile-v">1</div></div>
+              <div class="hero-tile"><div class="hero-tile-k">B</div><div class="hero-tile-v">2</div></div>
+              <div class="hero-tile"><div class="hero-tile-k">C</div><div class="hero-tile-v">3</div></div>
+              <div class="hero-tile"><div class="hero-tile-k">D</div><div class="hero-tile-v">4</div></div>
+              <div class="hero-tile"><div class="hero-tile-k">E</div><div class="hero-tile-v">5</div></div>
+              <div class="hero-tile"><div class="hero-tile-k">F</div><div class="hero-tile-v">6</div></div>
             </div>
           </div>
         </div>

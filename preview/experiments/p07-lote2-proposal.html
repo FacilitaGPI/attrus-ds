@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta · Prompt 07 · Lote 2</title>
+<link rel="stylesheet" href="../../src/index.css">
+<link rel="stylesheet" href="../components/track-badge.css?v=15916">
+<link rel="stylesheet" href="../../themes/index.css?v=1">
+<script src="../../theme-toggle.js?v=1"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; background: var(--color-background-canvas); color: var(--color-foreground-default); font-family: var(--font-sans); }
+  .doc { max-width: 1120px; margin: 0 auto; padding: var(--space-10) var(--space-8) var(--space-16); }
+  .ey { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); }
+  h1 { margin: var(--space-3) 0; font-size: var(--fs-5xl); letter-spacing: var(--ls-display); }
+  section { margin-top: var(--space-10); }
+  section > h2 { font-size: var(--fs-2xl); margin: 0 0 var(--space-2); }
+  section > h2 .id { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-sm); color: var(--color-foreground-muted); margin-right: var(--space-3); }
+  section > p { max-width: 78ch; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0 0 var(--space-4); }
+  code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
+  .cl { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); letter-spacing: var(--ls-caps); text-transform: uppercase; margin-bottom: var(--space-3); color: var(--color-foreground-muted); }
+  .cl.new { color: var(--color-feedback-success-foreground); }
+  .stage { background: var(--color-background-subtle); border-radius: var(--shape-container); padding: var(--space-5); display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+  .m { margin-top: var(--space-2); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); color: var(--color-foreground-muted); }
+  .files { margin-top: var(--space-3); font-size: var(--fs-sm); color: var(--color-foreground-secondary); }
+
+  /* ===== PROPOSAL (scoped .p) ===== */
+  .p .filter-chip.is-sm { height: var(--control-h-sm); padding: 0 var(--space-3); font-size: var(--fs-sm); gap: var(--space-2); }
+  .p .filter-chip.is-sm svg { width: 12px; height: 12px; }
+  .p .select-lead { position: absolute; left: var(--space-3); top: 50%; transform: translateY(-50%); display: inline-flex; align-items: center; pointer-events: none; z-index: 1; }
+  .p .select:has(> .select-lead) > select.input { padding-left: calc(var(--space-3) + var(--select-lead-w, 32px) + var(--space-3)); }
+  .p .card-header.has-aside { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
+  .p .card-header-title { margin: 0; font-size: var(--fs-md); font-weight: var(--w-bold); }
+  .p .card-header-aside { display: inline-flex; align-items: baseline; gap: var(--space-3); margin-left: auto; font-size: var(--fs-sm); }
+  .p .card-header-meta { color: var(--color-foreground-muted); }
+  .p .card-stat .stat-value.tone-success { color: var(--color-feedback-success-foreground); }
+  .p .card-stat .stat-value.tone-warning { color: var(--color-feedback-warning-foreground); }
+  .p .card-stat .stat-value.tone-danger  { color: var(--color-feedback-danger-foreground); }
+  .p .card-stat .stat-value[class*="tone-team-"] { color: var(--team); }
+  .p .card-stat .stat-foot { font-size: var(--fs-sm); color: var(--color-foreground-muted); }
+  .p .card-stat .stat-foot.tone-success { color: var(--color-feedback-success-foreground); }
+  .p .card-stat .stat-foot.tone-warning { color: var(--color-feedback-warning-foreground); }
+  .p .card-stat .stat-foot.tone-danger  { color: var(--color-feedback-danger-foreground); }
+  .p .tone-team-compliance { --team: var(--color-team-compliance); }
+  .p .progress.is-sm { --progress-h: 4px; }
+</style>
+</head>
+<body>
+<main class="doc">
+  <div class="ey">Proposta · nada aplicado ainda · Prompt 07 · Lote 2 de 4</div>
+  <h1>Props em componentes que já existem</h1>
+
+  <section>
+    <h2><span class="id">L-26</span>FilterChip <code>size="sm"</code></h2>
+    <p>28px e texto 12px para barras densas; <code>md</code> continua com 40px.</p>
+    <div class="vs">
+      <div><div class="cl">md · hoje</div><div class="stage"><button class="filter-chip" aria-pressed="true">Em onboarding</button><button class="filter-chip">Trilha <i data-lucide="chevron-down"></i></button></div></div>
+      <div class="p"><div class="cl new">sm · proposta</div><div class="stage"><button class="filter-chip is-sm" aria-pressed="true" id="fc">Em onboarding</button><button class="filter-chip is-sm">Trilha <i data-lucide="chevron-down"></i></button></div><div class="m" id="m26"></div></div>
+    </div>
+    <div class="files">Arquivos: <code>primitives.css</code> (<code>.filter-chip.is-sm</code>), <code>Atoms.tsx</code> e <code>.d.ts</code> (<code>size?: 'sm' | 'md'</code>).</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-35</span>Select <code>lead</code></h2>
+    <p>Um selo, ícone ou bandeira antes do texto. O <code>&lt;select&gt;</code> nativo não aceita marcação dentro das opções, então o <code>lead</code> mostra o item escolhido e o texto da opção continua sendo o nome acessível.</p>
+    <div class="vs">
+      <div><div class="cl">Hoje</div><div class="stage"><label class="select" style="width:240px"><select class="input"><option>Enterprise</option></select><i data-lucide="chevron-down" class="chev"></i></label></div></div>
+      <div class="p"><div class="cl new">Proposta</div><div class="stage"><label class="select" style="width:240px" id="sl"><span class="select-lead"><span class="track-badge track-enterprise">Ent</span></span><select class="input" aria-label="Trilha"><option>Enterprise</option></select><i data-lucide="chevron-down" class="chev"></i></label></div><div class="m" id="m35"></div></div>
+    </div>
+    <div class="files">Arquivos: <code>inputs.css</code>, <code>Input.tsx</code> e <code>.d.ts</code> (<code>lead?: React.ReactNode</code> no <code>Select</code>).</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-36</span>CardHeader <code>title</code> · <code>meta</code> · <code>action</code></h2>
+    <p>O título passa a Bold e o cabeçalho ganha lugar para meta e ação à direita. O <code>CardHeader</code> continua aceitando <code>children</code> livres, como hoje.</p>
+    <div class="vs">
+      <div><div class="cl">Hoje</div><div class="card" style="width:100%"><div class="card-header">Transações recentes</div><div class="card-body" style="color:var(--color-foreground-muted);font-size:var(--fs-sm)">…</div></div></div>
+      <div class="p"><div class="cl new">Proposta</div><div class="card" style="width:100%"><div class="card-header has-aside" id="ch"><h3 class="card-header-title">Transações recentes</h3><span class="card-header-aside"><span class="card-header-meta">30 dias</span><a class="btn btn-link btn-sm" href="#">Ver todas</a></span></div><div class="card-body" style="color:var(--color-foreground-muted);font-size:var(--fs-sm)">…</div></div><div class="m" id="m36"></div></div>
+    </div>
+    <div class="files">Arquivos: <code>cards.css</code>, <code>Card.tsx</code> e <code>.d.ts</code>.</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-37</span>CardStat <code>tone</code> · <code>footTone</code> · <code>foot</code></h2>
+    <p><code>tone</code> pinta o número (estado ou alçada); <code>foot</code> é a linha de baixo com <code>footTone</code>. <code>delta</code> e <code>deltaDirection</code> continuam funcionando.</p>
+    <div class="p"><div class="stage" style="background:none;padding:0;gap:var(--space-4)">
+      <div class="card" style="min-width:200px"><div class="card-stat"><span class="stat-label">Parados</span><span class="stat-value tone-warning" id="sv">30</span><span class="stat-foot tone-warning">1 vence hoje</span></div></div>
+      <div class="card" style="min-width:200px"><div class="card-stat"><span class="stat-label">Conversão</span><span class="stat-value tone-success">41%</span><span class="stat-foot">meta 45%</span></div></div>
+      <div class="card" style="min-width:200px"><div class="card-stat"><span class="stat-label">Em atenção</span><span class="stat-value tone-team-compliance">12</span><span class="stat-foot tone-danger">vence 14:00</span></div></div>
+    </div><div class="m" id="m37"></div></div>
+    <div class="files">Arquivos: <code>cards.css</code>, <code>Card.tsx</code> e <code>.d.ts</code>.</div>
+  </section>
+
+  <section>
+    <h2><span class="id">L-38</span>ProgressBar <code>tone</code> · <code>size="sm"</code></h2>
+    <p>O CSS já tem os tons (<code>is-success</code>, <code>-warning</code>, <code>-danger</code>); falta a prop no React, que hoje só aceita uma cor livre (<code>fill</code>). <code>sm</code> tem 4px. <code>fill</code> continua, marcado como obsoleto.</p>
+    <div class="p"><div class="stage" style="flex-direction:column;align-items:stretch;gap:var(--space-4)">
+      <div class="progress" role="progressbar" aria-valuenow="72"><span class="progress-fill" style="width:72%"></span></div>
+      <div class="progress is-success" role="progressbar" aria-valuenow="88"><span class="progress-fill" style="width:88%"></span></div>
+      <div class="progress is-warning" role="progressbar" aria-valuenow="54"><span class="progress-fill" style="width:54%"></span></div>
+      <div class="progress is-danger is-sm" role="progressbar" aria-valuenow="23" id="pb"><span class="progress-fill" style="width:23%"></span></div>
+    </div><div class="m" id="m38"></div></div>
+    <div class="files">Arquivos: <code>primitives.css</code> (<code>.progress.is-sm</code>), <code>Atoms.tsx</code> e <code>.d.ts</code>.</div>
+  </section>
+</main>
+<script>
+lucide.createIcons();
+(function () {
+  function srgb(v){ v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
+  function rgb(c){ var m = c.match(/[\d.]+/g).map(Number); return /color\(srgb/.test(c) ? m.slice(0,3).map(function(x){ return x * 255; }) : m; }
+  function lum(c){ var m = rgb(c); return 0.2126 * srgb(m[0]) + 0.7152 * srgb(m[1]) + 0.0722 * srgb(m[2]); }
+  function cr(a, b){ var x = lum(a), y = lum(b); return ((Math.max(x, y) + .05) / (Math.min(x, y) + .05)).toFixed(1); }
+  var fc = document.getElementById('fc'); document.getElementById('m26').textContent = 'altura ' + Math.round(fc.getBoundingClientRect().height) + 'px · texto ' + getComputedStyle(fc).fontSize;
+  var sl = document.getElementById('sl'), lead = sl.querySelector('.select-lead').getBoundingClientRect(), se = sl.querySelector('select'), sr = se.getBoundingClientRect();
+  document.getElementById('m35').textContent = 'texto começa ' + Math.round(parseFloat(getComputedStyle(se).paddingLeft) - (lead.right - sr.left)) + 'px depois do selo · selo centrado ' + (Math.abs((lead.top + lead.height / 2) - (sr.top + sr.height / 2)) < 1);
+  var ch = document.getElementById('ch'), t = ch.querySelector('.card-header-title');
+  document.getElementById('m36').textContent = 'título ' + getComputedStyle(t).fontWeight + ' ' + getComputedStyle(t).fontSize + ' · meta e ação à direita ' + (ch.querySelector('.card-header-aside').getBoundingClientRect().right >= ch.getBoundingClientRect().right - 30);
+  var bg = 'rgb(255, 255, 255)';
+  document.getElementById('m37').textContent = [].map.call(document.querySelectorAll('.p .stat-value, .p .stat-foot[class*="tone-"]'), function (e) { return e.textContent + ' ' + cr(getComputedStyle(e).color, bg) + ':1'; }).join(' · ');
+  document.getElementById('m38').textContent = 'sm ' + Math.round(document.getElementById('pb').getBoundingClientRect().height) + 'px';
+})();
+</script>
+</body>
+</html>

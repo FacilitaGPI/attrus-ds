@@ -151,7 +151,7 @@
 
 /* Icon-only pill: square segments, label provided via aria-label. */
 .tabs-pill .tab.is-icon { padding-left: var(--space-2); padding-right: var(--space-2); aspect-ratio: 1; justify-content: center; }
-.tabs-pill .tab.is-icon i, .tabs-pill .tab.is-icon svg { width: 16px; height: 16px; }
+.tabs-pill .tab.is-icon > i:first-child, .tabs-pill .tab.is-icon > svg:first-child { width: 16px; height: 16px; }
 
 /* ============================================================
    SIZES — apply on the container; both variants honour them.
@@ -165,7 +165,7 @@
   gap: var(--space-1);
 }
 .tabs-sm .tab-count { min-width: 16px; height: 16px; font-size: 10px; padding: 0 var(--space-1); }
-.tabs-sm .tab i, .tabs-sm .tab svg { width: 13px; height: 13px; }
+.tabs-sm .tab > i:first-child, .tabs-sm .tab > svg:first-child { width: 13px; height: 13px; }
 .tabs-sm.tabs-pill .tab { padding: var(--space-1) var(--space-3); }
 
 .tabs-lg .tab {
@@ -174,7 +174,7 @@
   gap: var(--space-3);
 }
 .tabs-lg .tab-count { min-width: 22px; height: 22px; font-size: var(--fs-xs); }
-.tabs-lg .tab i, .tabs-lg .tab svg { width: 17px; height: 17px; }
+.tabs-lg .tab > i:first-child, .tabs-lg .tab > svg:first-child { width: 17px; height: 17px; }
 .tabs-lg.tabs-pill .tab { padding: var(--space-3) var(--space-5); }
 
 /* Mobile: tabs-lg steps down to the default size so page-level nav
@@ -182,7 +182,7 @@
 @media (max-width: 720px) {
   .tabs-lg .tab { padding: var(--space-3) var(--space-4); font-size: var(--fs-sm); gap: var(--space-2); }
   .tabs-lg .tab-count { min-width: 18px; height: 18px; font-size: var(--fs-xxs); }
-  .tabs-lg .tab i, .tabs-lg .tab svg { width: 15px; height: 15px; }
+  .tabs-lg .tab > i:first-child, .tabs-lg .tab > svg:first-child { width: 15px; height: 15px; }
   .tabs-lg.tabs-pill .tab { padding: var(--space-2) var(--space-4); }
   .tabs-lg .tab[aria-selected="true"]::after,
   .tabs-lg .tab.is-active::after { left: var(--space-3); right: var(--space-3); }
@@ -193,8 +193,10 @@
 .tabs-lg .tab[aria-selected="true"]::after,
 .tabs-lg .tab.is-active::after { left: var(--space-4); right: var(--space-4); }
 
-/* Tab icons inherit the size of the type they sit beside */
-.tab i, .tab svg { width: 15px; height: 15px; stroke-width: 2; }
+/* P-09 · only the tab's own icon — its first child — is sized here. Any other
+   SVG inside the tab (a progress ring, a status check) keeps the size it
+   declares; the old .tab svg rule stretched them all to 13/15/17px. */
+.tab > i:first-child, .tab > svg:first-child { width: 15px; height: 15px; stroke-width: var(--icon-stroke); }
 
 /* Label wrapper: reserves the SEMIBOLD width up front so toggling
    weight between states never reflows the row. The hidden ::after
@@ -319,3 +321,23 @@
   .tab { min-height: 44px; }
   .tabs-pill .tab { min-height: 40px; }
 }
+
+/* ================================================================
+   A-03 · COMPACT PILL WITH AN INLINE COUNT — .tabs-pill.tabs-sm.is-count-inline
+   For "Mine · Team · Unassigned" or "Today · 7 days · 30 days" beside 32px
+   fields: the group is a 32px control, and the count drops its badge for
+   mono --fs-xs muted text on the label's line. The badge count and the
+   default pill are unchanged.
+   ================================================================ */
+.tabs-pill.tabs-sm.is-count-inline { height: var(--control-h-sm); box-sizing: border-box; padding: 2px; align-items: stretch; }
+.tabs-pill.tabs-sm.is-count-inline .tab { display: inline-flex; align-items: center; gap: var(--space-2-5); padding: 0 var(--space-3); line-height: 1; }
+.tabs-pill.tabs-sm.is-count-inline .tab-count {
+  min-width: 0; height: auto; padding: 0;
+  background: none; border: 0; border-radius: 0;
+  font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust);
+  font-size: var(--fs-xs); font-weight: var(--w-regular);
+  color: var(--color-foreground-muted);
+  font-variant-numeric: tabular-nums;
+}
+.tabs-pill.tabs-sm.is-count-inline .tab[aria-selected="true"] .tab-count,
+.tabs-pill.tabs-sm.is-count-inline .tab.is-active .tab-count { background: none; color: var(--color-foreground-muted); }

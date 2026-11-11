@@ -2,6 +2,14 @@
    Edit the source there, then re-run the sync — do not hand-edit this file. */
 
 [data-theme="dark"] {
+  /* Identity (L-23 / L-24) — team colours lift for text on the dark surface;
+     track fills keep the light tone, since they carry white text. */
+  --color-team-sales:          #8B93F8;
+  --color-team-compliance:     #C38AF0;
+  --color-team-implementation: #2DD4BF;
+  --color-team-payment-desk:   #A9C64A;
+  --color-team-product:        #A6B0C4;
+
   color-scheme: dark;
 
   /* Ambient surfaces — dark ink ramp (canvas deepest → surface raised) */
@@ -62,6 +70,7 @@
   /* Frosted chrome flips to ink glass on dark (drawer/modal header+footer) */
   --glass-chrome: var(--glass-ink);
   --glass-chrome-fg: var(--color-foreground-inverse-default);
+  --glass-chrome-border: var(--glass-border-dark);
   --glass-surface: var(--glass-ink-lo);
   --glass-surface-fg: var(--color-foreground-default);
   --glass-overlay: var(--glass-ink-hi);

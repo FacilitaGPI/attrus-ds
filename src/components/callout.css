@@ -262,6 +262,16 @@
    on the container, so without resetting it here the icon stays at the top
    while the text and the actions centre (18px vs 25px in a 50px bar). */
 .callout-bar > i, .callout-bar > svg, .callout-bar .callout-icon { margin-top: 0; align-self: center; }
+/* P-08 · a bar is for one line. With a title the content wraps (title, text,
+   actions), and a centred icon drifted to the middle of the block — 36px
+   below the title in a 103px bar. With a title it pins to the first line,
+   the same offset as the rich variant. */
+.callout-bar:has(.callout-title) > i,
+.callout-bar:has(.callout-title) > svg,
+.callout-bar:has(.callout-title) .callout-icon {
+  align-self: flex-start;
+  margin-top: calc((var(--fs-md) * var(--lh-tight) - 18px) / 2);
+}
 .callout-bar .callout-dismiss { align-self: center; }
 .callout-bar .callout-content { flex-direction: row; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
 .callout-bar .callout-actions { margin-top: 0; margin-left: auto; }

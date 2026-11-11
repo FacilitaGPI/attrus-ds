@@ -1,0 +1,22 @@
+/* ============================================================
+   TRACK BADGE (L-24) — CORP · ENT · BIZ
+   ============================================================
+   The client's track as a small filled tag with white caps. 10px caps in a
+   16px box — smaller than a label because it is a code, not a word.
+   Caps only, so the label is centred by the line box (line-height equal to
+   the height), not by flex: that puts the cap height in the middle.
+   In the dark theme the enterprise fill is close to the card, so it carries a
+   hairline edge.
+   ============================================================ */
+.track-badge {
+  display: inline-block; vertical-align: middle; box-sizing: border-box;
+  height: 15px; line-height: 15px; padding: 0 var(--space-2-5);  /* 15px, not 16: at 10px caps the odd box centres them to 0.2px (16px left them 0.8px high, and the line box only moves in whole pixels) */
+  border-radius: var(--radius-xs);
+  background: var(--track, var(--color-track-enterprise)); color: var(--color-pure-white);
+  font-family: var(--font-sans); font-size: 10px; font-weight: var(--w-bold);
+  letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap;
+}
+.track-badge.track-corporate  { --track: var(--color-track-corporate); }
+.track-badge.track-enterprise { --track: var(--color-track-enterprise); }
+.track-badge.track-business   { --track: var(--color-track-business); }
+[data-theme="dark"] .track-badge.track-enterprise { box-shadow: inset 0 0 0 1px var(--color-overlay-white-18); }

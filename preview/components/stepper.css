@@ -258,6 +258,10 @@ a.step-marker:focus-visible {
 }
 
 .stepper.is-vertical .step-body {
+  /* The horizontal rule centres the body's content (label under marker); in a
+     column that pushed label and helper to the middle of the card, ~110px
+     from the marker. Vertical keeps them beside the marker. */
+  align-items: flex-start;
   padding-top: var(--space-1);
   max-width: none;
   padding-bottom: 0;

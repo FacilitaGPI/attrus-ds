@@ -8,12 +8,13 @@
 <link rel="stylesheet" href="../src/themes/index.css">
 <script src="../theme-toggle.js"></script>
 <script src="../version.js"></script>
-<link rel="stylesheet" href="components/table.css?v=128">
+<link rel="stylesheet" href="components/table.css?v=131">
+<link rel="stylesheet" href="components/cards.css?v=1">
 <link rel="stylesheet" href="components/overlays.css?v=89">
 <link rel="stylesheet" href="components/callout.css?v=53">
-<link rel="stylesheet" href="components/inputs.css?v=58">
+<link rel="stylesheet" href="components/inputs.css?v=37131">
 <link rel="stylesheet" href="components/buttons.css?v=53">
-<link rel="stylesheet" href="components/demo-card.css?v=92">
+<link rel="stylesheet" href="components/demo-card.css?v=93">
 <link rel="stylesheet" href="components/status-pills.css?v=53">
 <link rel="stylesheet" href="components/tabs.css?v=53">
 <link rel="stylesheet" href="components/primitives.css?v=53">
@@ -26,28 +27,28 @@
   .doc-header h1 { font-size: var(--fs-6xl); font-weight: var(--w-bold); letter-spacing: var(--ls-display); margin: 0 0 var(--space-3); }
   .doc-header p { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); margin: 0; max-width: 62ch; }
   .doc-header p code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: 0.85em; background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); color: var(--color-foreground-accent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
-  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
+  .doc-meta-pill { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-feedback-success-background); color: var(--color-feedback-success-foreground); border: 1px solid var(--color-feedback-success-border); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; white-space: nowrap; }
   .doc-meta-pill i, .doc-meta-pill svg { width: var(--icon-xs); height: var(--icon-xs); stroke-width: var(--icon-stroke); }
 
   .doc-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-4); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); margin-bottom: var(--space-10); box-shadow: var(--shadow-xs); }
-  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-semibold); transition: var(--transition-fast); }
+  .doc-nav a { padding: var(--space-2) var(--space-3); border-radius: var(--radius-pill); color: var(--color-foreground-secondary); text-decoration: none; font-size: var(--fs-sm); font-weight: var(--w-regular); transition: var(--transition-fast); }
   .doc-nav a:hover { background: var(--color-background-hover); color: var(--color-foreground-default); }
 
   .doc-section { margin-bottom: var(--space-12); scroll-margin-top: var(--space-8); }
   .doc-section h2 { font-size: var(--fs-3xl); font-weight: var(--w-bold); letter-spacing: var(--ls-title); margin: 0 0 var(--space-2); }
   .doc-section h2 .num { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-md); font-weight: var(--w-regular); color: var(--color-foreground-muted); letter-spacing: var(--ls-caps); margin-right: var(--space-3); vertical-align: 0.25em; }
   .doc-section > p.lead { font-size: var(--fs-lg); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); max-width: 72ch; margin: 0 0 var(--space-7); }
-  .canvas-label { display: block; font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
+  .canvas-label { display: block; font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); margin-bottom: var(--space-3); }
 
   /* Anatomy callout list */
   .anatomy-list ol { padding-left: 0; margin: var(--space-6) 0 0; counter-reset: anat; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3) var(--space-8); }
   .anatomy-list li { counter-increment: anat; padding-left: var(--space-7); position: relative; color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); font-size: var(--fs-sm); }
   .anatomy-list li::before { content: counter(anat); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; background: var(--color-foreground-default); color: var(--color-foreground-on-solid); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-bold); display: flex; align-items: center; justify-content: center; }
-  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-semibold); }
+  .anatomy-list li strong { color: var(--color-foreground-default); font-weight: var(--w-regular); }
   .anatomy-list code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); }
 
   .token-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: var(--color-background-surface); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); overflow: hidden; margin-top: var(--space-4); }
-  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
+  .token-table th { text-align: left; padding: var(--space-3) var(--space-4); background: var(--color-background-subtle); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-foreground-muted); border-bottom: 1px solid var(--color-border-default); }
   .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); vertical-align: top; }
   .token-table tr:last-child td { border-bottom: none; }
   .token-table code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
@@ -58,7 +59,7 @@
   .dont-card.do i, .dont-card.do svg { color: var(--color-feedback-success-foreground); }
   .dont-card.dont i, .dont-card.dont svg { color: var(--color-feedback-danger-foreground); }
   .dont-card p { margin: 0; font-size: var(--fs-sm); color: var(--color-foreground-secondary); line-height: var(--lh-relaxed); }
-  .dont-card strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-semibold); margin-bottom: 2px; }
+  .dont-card strong { display: block; color: var(--color-foreground-default); font-weight: var(--w-regular); margin-bottom: 2px; }
 
   /* flag swatch reused from stub */
   .flag { width: 20px; height: 15px; display: inline-block; vertical-align: middle; border-radius: var(--radius-2xs); flex-shrink: 0; box-shadow: 0 0 0 1px var(--color-border-subtle); }
@@ -81,7 +82,7 @@
   .resp-stage .resp-note code { font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xs); color: var(--color-foreground-accent); background: color-mix(in srgb, var(--color-brand-secondary-500) 12%, transparent); padding: 1px var(--space-2); border-radius: var(--radius-xs); }
   .phone { width: 100%; max-width: 380px; flex: 0 1 380px; min-width: 0; box-sizing: border-box; background: var(--color-neutral-800); border-radius: 40px; padding: 12px; box-shadow: var(--shadow-lg); }
   .phone-screen { background: var(--color-background-canvas); border-radius: 28px; overflow: hidden; height: 620px; display: flex; flex-direction: column; }
-  .phone-statusbar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-2) var(--space-5) var(--space-1); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-semibold); color: var(--color-foreground-secondary); flex-shrink: 0; }
+  .phone-statusbar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-2) var(--space-5) var(--space-1); font-family: var(--font-mono); font-size-adjust: var(--font-mono-adjust); font-size: var(--fs-xxs); font-weight: var(--w-regular); color: var(--color-foreground-secondary); flex-shrink: 0; }
   .phone-statusbar .dots { display: inline-flex; gap: 4px; align-items: center; }
   .phone-statusbar .dots i, .phone-statusbar .dots svg { width: 13px; height: 13px; }
   .phone-appbar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-5); border-bottom: 1px solid var(--color-border-subtle); flex-shrink: 0; background: var(--color-background-surface); }
@@ -147,12 +148,12 @@
     <div class="api-prefer"><i data-lucide="sparkles"></i><span><strong>Prefira:</strong> Toda tabela de dados. Valores monetários/numéricos usam a coluna .dt-num (alinha à direita); linhas empilhadas via DTCellStack.</span></div>
     <div class="api-grid">
       <div class="api-col"><div class="api-k">Import</div><code class="api-v">const { DataTable } = ATTRUS</code><code class="api-v">.dt</code></div>
-      <div class="api-col"><div class="api-k">Variants</div><div class="api-tags"><code>asc</code><code>desc</code><code>sm</code><code>md</code><code>lg</code><code>muted</code><code>error</code><code>selectOnRowClick</code><code>mobileCodeTitle</code><code>loading</code><code>zebra</code><code>sticky</code><code>bordered</code><code>onInverse</code><code>wrap</code><code>responsive</code></div></div>
-      <div class="api-col"><div class="api-k">Props</div><div class="api-tags"><code>columns</code><code>rows</code><code>rowKey</code><code>onRowClick?</code><code>rowState?</code><code>selectedKeys?</code><code>onSelectToggle?</code><code>onSelectAll?</code><code>selectOnRowClick?</code><code>mobileCodeTitle?</code><code>loading?</code><code>loadingRows?</code><code>size?</code><code>zebra?</code><code>sticky?</code><code>bordered?</code><code>onInverse?</code><code>toolbar?</code><code>pagination?</code><code>wrap?</code><code>responsive?</code><code>mobile?</code><code>selectionBar?</code><code>empty?</code><code>sortKey?</code><code>sortDir?</code><code>onSort?</code><code>className?</code><code>style?</code></div></div>
+      <div class="api-col"><div class="api-k">Variants</div><div class="api-tags"><code>asc</code><code>desc</code><code>sm</code><code>md</code><code>lg</code><code>muted</code><code>error</code><code>flush</code><code>selectOnRowClick</code><code>mobileCodeTitle</code><code>loading</code><code>zebra</code><code>sticky</code><code>bordered</code><code>onInverse</code><code>wrap</code><code>responsive</code></div></div>
+      <div class="api-col"><div class="api-k">Props</div><div class="api-tags"><code>columns</code><code>rows</code><code>rowKey</code><code>onRowClick?</code><code>rowLabel?</code><code>rowState?</code><code>selectedKeys?</code><code>onSelectToggle?</code><code>onSelectAll?</code><code>flush?</code><code>selectOnRowClick?</code><code>mobileCodeTitle?</code><code>loading?</code><code>loadingRows?</code><code>size?</code><code>zebra?</code><code>sticky?</code><code>bordered?</code><code>onInverse?</code><code>toolbar?</code><code>pagination?</code><code>wrap?</code><code>responsive?</code><code>mobile?</code><code>selectionBar?</code><code>empty?</code><code>sortKey?</code><code>sortDir?</code><code>onSort?</code><code>className?</code><code>style?</code></div></div>
     </div>
     <a class="api-ai-link" href="for-ai.html"><i data-lucide="bot"></i>Guia de precedência para IA</a>
   </section>
-  <script type="application/json" id="ds-api">{"component":"DataTable","import":"const { DataTable } = ATTRUS","class":".dt","status":"ready","prefer":"Toda tabela de dados. Valores monetários/numéricos usam a coluna .dt-num (alinha à direita); linhas empilhadas via DTCellStack.","variants":["asc","desc","sm","md","lg","muted","error","selectOnRowClick","mobileCodeTitle","loading","zebra","sticky","bordered","onInverse","wrap","responsive"],"props":[{"name":"columns","type":"Array<DataTableColumn<T>>","required":true},{"name":"rows","type":"T[]","required":true},{"name":"rowKey","type":"(row: T) => string","required":true},{"name":"onRowClick","type":"(row: T) => void","required":false},{"name":"rowState","type":"(row: T) => RowState","required":false},{"name":"selectedKeys","type":"string[]","required":false},{"name":"onSelectToggle","type":"(key: string) => void","required":false},{"name":"onSelectAll","type":"() => void","required":false},{"name":"selectOnRowClick","type":"boolean","required":false},{"name":"mobileCodeTitle","type":"boolean","required":false},{"name":"loading","type":"boolean","required":false},{"name":"loadingRows","type":"number","required":false},{"name":"size","type":"DataTableSize","required":false},{"name":"zebra","type":"boolean","required":false},{"name":"sticky","type":"boolean","required":false},{"name":"bordered","type":"boolean","required":false},{"name":"onInverse","type":"boolean","required":false},{"name":"toolbar","type":"React.ReactNode","required":false},{"name":"pagination","type":"React.ReactNode","required":false},{"name":"wrap","type":"boolean","required":false},{"name":"responsive","type":"boolean","required":false},{"name":"mobile","type":"'list' | 'stack'","required":false},{"name":"selectionBar","type":"React.ReactNode","required":false},{"name":"empty","type":"{ icon?: React.ReactNode","required":false},{"name":"sortKey","type":"string","required":false},{"name":"sortDir","type":"SortDir","required":false},{"name":"onSort","type":"(key: string) => void","required":false},{"name":"className","type":"string","required":false},{"name":"style","type":"React.CSSProperties","required":false}]}</script>
+  <script type="application/json" id="ds-api">{"component":"DataTable","import":"const { DataTable } = ATTRUS","class":".dt","status":"ready","prefer":"Toda tabela de dados. Valores monetários/numéricos usam a coluna .dt-num (alinha à direita); linhas empilhadas via DTCellStack.","variants":["asc","desc","sm","md","lg","muted","error","flush","selectOnRowClick","mobileCodeTitle","loading","zebra","sticky","bordered","onInverse","wrap","responsive"],"props":[{"name":"columns","type":"Array<DataTableColumn<T>>","required":true},{"name":"rows","type":"T[]","required":true},{"name":"rowKey","type":"(row: T) => string","required":true},{"name":"onRowClick","type":"(row: T) => void","required":false},{"name":"rowLabel","type":"(row: T) => string","required":false},{"name":"rowState","type":"(row: T) => RowState","required":false},{"name":"selectedKeys","type":"string[]","required":false},{"name":"onSelectToggle","type":"(key: string) => void","required":false},{"name":"onSelectAll","type":"() => void","required":false},{"name":"flush","type":"boolean","required":false},{"name":"selectOnRowClick","type":"boolean","required":false},{"name":"mobileCodeTitle","type":"boolean","required":false},{"name":"loading","type":"boolean","required":false},{"name":"loadingRows","type":"number","required":false},{"name":"size","type":"DataTableSize","required":false},{"name":"zebra","type":"boolean","required":false},{"name":"sticky","type":"boolean","required":false},{"name":"bordered","type":"boolean","required":false},{"name":"onInverse","type":"boolean","required":false},{"name":"toolbar","type":"React.ReactNode","required":false},{"name":"pagination","type":"React.ReactNode","required":false},{"name":"wrap","type":"boolean","required":false},{"name":"responsive","type":"boolean","required":false},{"name":"mobile","type":"'list' | 'stack'","required":false},{"name":"selectionBar","type":"React.ReactNode","required":false},{"name":"empty","type":"{ icon?: React.ReactNode","required":false},{"name":"sortKey","type":"string","required":false},{"name":"sortDir","type":"SortDir","required":false},{"name":"onSort","type":"(key: string) => void","required":false},{"name":"className","type":"string","required":false},{"name":"style","type":"React.CSSProperties","required":false}]}</script>
   <!-- @api-panel:END -->
 
   <nav class="doc-nav">
@@ -316,7 +317,21 @@
     </div>
       </div>
     </div>
-  </section>
+  
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>Table inside a card <code>.dt-wrap.is-flush</code> · <code>flush</code></h3><p>Inside a card the table drops its own background, border and radius, so the card is the only frame and the rows run edge to edge. A table that is a direct child of <code>.card</code> — or the only child of <code>.card-body</code> — gets this without the class.</p></div>
+        <span class="demo-card-tag">A-01</span>
+      </div>
+      <div class="demo-card-canvas">
+        <div class="card" id="a01-card" style="padding:0;overflow:hidden;width:100%;max-width:560px">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-4) var(--space-5);font-weight:var(--w-bold);font-size:var(--fs-md)">Recent payments <span style="font-weight:var(--w-regular);font-size:var(--fs-xs);color:var(--color-foreground-muted)">Last 7 days</span></div>
+          <div class="dt-wrap"><table class="dt"><thead><tr><th>Counterparty</th><th class="dt-num">Amount</th></tr></thead><tbody><tr class="hov"><td>Aurora Logistics</td><td class="dt-num">1,000.00</td></tr><tr class="hov"><td>Meridian Trading</td><td class="dt-num">2,300.00</td></tr></tbody></table></div>
+          <div style="padding:var(--space-3) var(--space-5);font-size:var(--fs-xs);color:var(--color-foreground-muted);border-top:var(--border-hairline) solid var(--color-border-default)">Showing 2 of 38</div>
+        </div>
+      </div>
+    </div>
+</section>
 
   <!-- ─── 04 TOOLBAR & FOOTER ─── -->
   <section class="doc-section" id="chrome">
@@ -850,7 +865,21 @@
     </table>
       </div>
     </div>
-  </section>
+  
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>Stacked amount <code>td.dt-num &gt; .dt-cell-stack</code></h3><p>An amount with a context line under it keeps the cell's emphasis: mono bold, and the tone of <code>.delta-pos</code> / <code>.delta-neg</code>. The line under it stays regular and muted.</p></div>
+        <span class="demo-card-tag">A-16</span>
+      </div>
+      <div class="demo-card-canvas is-flush">
+        <div class="dt-wrap" id="a16-demo"><table class="dt"><thead><tr><th>Counterparty</th><th class="dt-num">Amount</th></tr></thead><tbody>
+          <tr><td data-m="title" class="dt-card-title">Aurora Logistics</td><td data-m="amount" data-label="Amount" class="dt-num delta-pos"><span class="dt-cell-stack"><span class="pri">+1,000.00</span><span class="sub">BRL · Pix</span></span></td></tr>
+          <tr><td data-m="title" class="dt-card-title">Meridian Trading</td><td data-m="amount" data-label="Amount" class="dt-num delta-neg"><span class="dt-cell-stack"><span class="pri">−2,300.00</span><span class="sub">USD · Wire</span></span></td></tr>
+          <tr><td data-m="title" class="dt-card-title">Global Supplies</td><td data-m="amount" data-label="Amount" class="dt-num">18,425.00</td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+</section>
 
   <!-- ─── 07 ROW STATES ─── -->
   <section class="doc-section" id="states">
@@ -1703,7 +1732,20 @@
     </table>
       </div>
     </div>
-  </section>
+  
+    <div class="demo-card">
+      <div class="demo-card-head">
+        <div><h3>Clickable row by keyboard <code>onRowClick</code> · <code>rowLabel</code></h3><p>A clickable row joins the Tab order and opens with Enter or Space; keyboard focus shows a 2px focus ring inside the row. <code>rowLabel</code> gives it an aria-label that says what Enter opens. Tab into the table to try it.</p></div>
+        <span class="demo-card-tag">P-10</span>
+      </div>
+      <div class="demo-card-canvas is-flush">
+        <div class="dt-wrap" id="p10-demo"><table class="dt"><thead><tr><th>Counterparty</th><th class="dt-num">Amount</th></tr></thead><tbody>
+          <tr class="hov" tabindex="0" aria-label="Open Aurora Logistics, 1,000.00" style="cursor:pointer"><td>Aurora Logistics</td><td class="dt-num">1,000.00</td></tr>
+          <tr class="hov" tabindex="0" aria-label="Open Meridian Trading, 2,300.00" style="cursor:pointer"><td>Meridian Trading</td><td class="dt-num">2,300.00</td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+</section>
 
   <!-- ─── 16 TOKENS ─── -->
   <section class="doc-section" id="tokens">

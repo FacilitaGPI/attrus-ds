@@ -11,6 +11,8 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
 </style>
+<link rel="stylesheet" href="components/track-badge.css?v=16161">
+<link rel="stylesheet" href="components/status-pills.css?v=16156">
 </head>
 <body>
 
@@ -166,6 +168,28 @@
     </div>
   </section>
 
+
+  <section class="doc-section" id="identity">
+    <h2>Team and track identity</h2>
+    <p class="lead">Identity colours, not state and not product — the same in Enterprise and Business. Teams are a 7px dot and a label, a legend, a chart series; never the fill of a state tag. Tracks fill the <code>TrackBadge</code>.</p>
+    <div class="demo-card">
+      <header class="demo-card-head"><div><h3>Teams <code>--color-team-*</code></h3><p>Light values are tuned to 4.5:1 as text on the surface, so the label beside the dot can take the colour too.</p></div><span class="demo-card-tag">Identity</span></header>
+      <div class="demo-card-canvas" style="display:flex;flex-wrap:wrap;gap:var(--space-5)">
+        <span style="display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--fs-sm);color:var(--color-team-sales)"><span style="width:7px;height:7px;border-radius:50%;background:var(--color-team-sales)"></span>Vendas <code>--color-team-sales</code></span>
+        <span style="display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--fs-sm);color:var(--color-team-compliance)"><span style="width:7px;height:7px;border-radius:50%;background:var(--color-team-compliance)"></span>Compliance <code>--color-team-compliance</code></span>
+        <span style="display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--fs-sm);color:var(--color-team-implementation)"><span style="width:7px;height:7px;border-radius:50%;background:var(--color-team-implementation)"></span>Implementação <code>--color-team-implementation</code></span>
+        <span style="display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--fs-sm);color:var(--color-team-payment-desk)"><span style="width:7px;height:7px;border-radius:50%;background:var(--color-team-payment-desk)"></span>Payment Desk <code>--color-team-payment-desk</code></span>
+        <span style="display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--fs-sm);color:var(--color-team-product)"><span style="width:7px;height:7px;border-radius:50%;background:var(--color-team-product)"></span>Produto <code>--color-team-product</code></span>
+      </div>
+    </div>
+    <div class="demo-card">
+      <header class="demo-card-head"><div><h3>Tracks <code>--color-track-*</code> · <code>&lt;TrackBadge&gt;</code></h3><p>White caps at 10px on the track colour. The fills keep their light tone in the dark theme, since they carry white text; Enterprise gets a hairline edge there.</p></div><span class="demo-card-tag">Identity</span></header>
+      <div class="demo-card-canvas" style="display:flex;gap:var(--space-4);align-items:center">
+        <span class="track-badge track-corporate" aria-label="Corporate">Corp</span><span class="track-badge track-enterprise" aria-label="Enterprise">Ent</span><span class="track-badge track-business" aria-label="Business">Biz</span>
+        <span class="pill outline team-compliance"><span class="dot"></span><span class="pill-label">Em atenção</span></span>
+      </div>
+    </div>
+  </section>
 </main>
 
 <script>

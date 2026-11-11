@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Proposta · P-10</title>
+<link rel="stylesheet" href="../../src/index.css"><link rel="stylesheet" href="../../themes/index.css?v=1"><script src="../../theme-toggle.js?v=1"></script>
+<style>
+body{margin:0;background:var(--color-background-canvas);color:var(--color-foreground-default);font-family:var(--font-sans)}
+.doc{max-width:900px;margin:0 auto;padding:var(--space-10) var(--space-8)}
+.eyebrow{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted)}
+h1{margin:var(--space-2) 0 var(--space-3);font-size:var(--fs-4xl)}p.lead{max-width:76ch;color:var(--color-foreground-secondary);line-height:var(--lh-relaxed)}
+.lbl{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);margin:var(--space-6) 0 var(--space-2)}.lbl.new{color:var(--color-feedback-success-foreground)}
+.m{font-family:var(--font-mono);font-size:var(--fs-xxs);color:var(--color-foreground-muted);margin-top:var(--space-2);line-height:1.6}.m b{color:var(--color-foreground-default);font-weight:var(--w-regular)}
+table.imp{width:100%;border-collapse:collapse;font-size:var(--fs-sm);margin-top:var(--space-6)}.imp td,.imp th{text-align:left;padding:var(--space-3);border-bottom:var(--border-hairline) solid var(--color-border-subtle);vertical-align:top}.imp th{font-family:var(--font-mono);font-size:var(--fs-xxs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--color-foreground-muted);font-weight:var(--w-regular)}code{font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--color-foreground-accent)}
+.p .dt tbody tr.hov:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--color-border-focus)}
+.p .dt tbody tr.hov:focus-visible > td{background:var(--color-background-hover)}
+</style></head><body><main class="doc">
+<div class="eyebrow">Prompt 04 · P-10 · proposta, nada aplicado</div>
+<h1>Linha clicável pelo teclado</h1>
+<p class="lead">Com <code>onRowClick</code>, a linha só tem clique de mouse: o Tab passa por cima dela e não há como abrir o detalhe pelo teclado. Na proposta a linha entra na ordem do Tab, abre com Enter e Espaço, e mostra o anel de foco. A segunda linha abaixo está focada para mostrar o anel.</p>
+<div class="lbl">Hoje · Tab pula a linha</div>
+<div class="dt-wrap" id="cur"><table class="dt"><thead><tr><th>Counterparty</th><th class="dt-num">Amount</th></tr></thead><tbody>
+<tr class="hov" style="cursor:pointer"><td>Aurora Logistics</td><td class="dt-num">1,000.00</td></tr>
+<tr class="hov" style="cursor:pointer"><td>Meridian Trading</td><td class="dt-num">2,300.00</td></tr></tbody></table></div>
+<div class="m" id="m-cur"></div>
+<div class="p"><div class="lbl new">Proposta · Tab chega na linha, Enter abre</div>
+<div class="dt-wrap" id="new"><table class="dt"><thead><tr><th>Counterparty</th><th class="dt-num">Amount</th></tr></thead><tbody>
+<tr class="hov" tabindex="0" aria-label="Open Aurora Logistics, 1,000.00" style="cursor:pointer"><td>Aurora Logistics</td><td class="dt-num">1,000.00</td></tr>
+<tr class="hov" tabindex="0" aria-label="Open Meridian Trading, 2,300.00" style="cursor:pointer"><td>Meridian Trading</td><td class="dt-num">2,300.00</td></tr></tbody></table></div>
+<div class="m" id="m-new"></div></div>
+<table class="imp"><thead><tr><th>Impacto</th><th>Detalhe</th></tr></thead><tbody>
+<tr><td>Visual</td><td>Só ao navegar por teclado (<code>:focus-visible</code>): anel de 2px na cor de foco por dentro da linha e o fundo de hover. Clique de mouse não mostra o anel.</td></tr>
+<tr><td>Comportamento</td><td>Com <code>onRowClick</code>: <code>tabIndex={0}</code>, Enter e Espaço chamam a ação (Espaço não rola a página). Cliques em botões e links dentro da linha seguem com o próprio comportamento.</td></tr>
+<tr><td>Nome público novo</td><td>Prop <code>rowLabel?: (row) =&gt; string</code> para o <code>aria-label</code> da linha. A mesma regra de foco vale para <code>tr.hov</code> montada à mão com <code>tabindex</code>.</td></tr>
+<tr><td>Arquivos</td><td><code>preview/components/table.css</code> · <code>components/DataTable/DataTable.tsx</code> + <code>.d.ts</code> · <code>preview/table.html</code></td></tr>
+</tbody></table>
+</main>
+<script>
+setTimeout(function(){
+  var rows = document.querySelectorAll('#new tbody tr'); rows[1].focus({ focusVisible: true });
+  var r = rows[1], cs = getComputedStyle(r);
+  document.getElementById('m-cur').innerHTML = 'linhas no Tab: <b>' + [].filter.call(document.querySelectorAll('#cur tbody tr'), function(x){ return x.tabIndex >= 0; }).length + ' de 2</b>';
+  document.getElementById('m-new').innerHTML = 'linhas no Tab: <b>2 de 2</b> · anel na linha focada: <b>' + (cs.boxShadow !== 'none' ? cs.boxShadow.split(' inset')[0].slice(0, 40) : 'nenhum') + '</b>';
+}, 300);
+</script></body></html>

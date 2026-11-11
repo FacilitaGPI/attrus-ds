@@ -63,6 +63,10 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   size?: InputSize;
   /** Leading icon (decorative) — .affix.lead-pad. */
   leadIcon?: React.ReactNode;
+  /** Size of the leading slot. 'icon' (default) is a 14px box for a Lucide icon;
+      'lg' is a 20px box for a flag or an avatar, and the text recedes with it
+      (.affix.lead-pad-lg). The content is centred in either box. */
+  leadSize?: 'icon' | 'lg';
   /** Trailing icon (decorative) — .affix.trail-pad. */
   trailIcon?: React.ReactNode;
   /** Makes the trailing slot a clickable .trail-btn (clear, reveal…). */
@@ -130,6 +134,7 @@ export const Input: React.FC<InputProps> = ({
   status = 'default',
   size = 'md',
   leadIcon,
+  leadSize = 'icon',
   trailIcon,
   onTrailClick,
   trailLabel,
@@ -161,6 +166,7 @@ export const Input: React.FC<InputProps> = ({
     size !== 'md' ? `input-${size}` : '',
     status === 'error' ? 'is-error' : '',
     status === 'success' ? 'is-success' : '',
+    status === 'warning' ? 'is-warning' : '',
     onInverse ? 'on-inverse' : '',
     readOnlyQuiet ? 'is-readonly' : '',
     underline ? 'underline' : '',
@@ -176,7 +182,7 @@ export const Input: React.FC<InputProps> = ({
     // wins over static text on the same side: a cell is either a label or a
     // control, never both.
     control = (
-      <div className={['group', size === 'sm' ? 'group-sm' : '', groupShape === 'pill' ? 'is-pill' : '', groupShape === 'underline' ? 'underline' : '', status === 'error' ? 'is-error' : ''].filter(Boolean).join(' ')}>
+      <div className={['group', size === 'sm' ? 'group-sm' : '', groupShape === 'pill' ? 'is-pill' : '', groupShape === 'underline' ? 'underline' : '', status === 'error' ? 'is-error' : '', status === 'success' ? 'is-success' : '', status === 'warning' ? 'is-warning' : '', onInverse ? 'on-inverse' : ''].filter(Boolean).join(' ')}>
         {before != null ? renderAddon(before, 'l') : prefix != null ? <span className="fix l">{prefix}</span> : null}
         <input id={inputId} readOnly={readOnlyQuiet || rest.readOnly} {...rest} {...a11y} />
         {after != null ? renderAddon(after, 'r') : suffix != null ? <span className="fix r">{suffix}</span> : null}
@@ -185,7 +191,7 @@ export const Input: React.FC<InputProps> = ({
   } else if (leadIcon != null || trailIcon != null || onTrailClick) {
     const affixCls = [
       'affix',
-      leadIcon != null ? 'lead-pad' : '',
+      leadIcon != null ? (leadSize === 'lg' ? 'lead-pad-lg' : 'lead-pad') : '',
       trailIcon != null || onTrailClick ? 'trail-pad' : '',
     ]
       .filter(Boolean)
@@ -219,7 +225,7 @@ export const Input: React.FC<InputProps> = ({
     .join(' ');
 
   return (
-    <div className="field">
+    <div className={onInverse ? 'field on-inverse' : 'field'}>
       {label != null ? <label htmlFor={inputId}>{label}</label> : null}
       {control}
       {help != null ? <div className={helpCls} id={helpId}>{help}</div> : null}
@@ -240,14 +246,15 @@ const fieldWrap = (
   id: string | undefined,
   control: React.ReactNode,
   helpId?: string,
+  onInverse?: boolean,
 ) => {
   if (label == null && help == null) return <React.Fragment>{control}</React.Fragment>;
   const helpCls = ['help', status === 'error' ? 'is-error' : '', status === 'success' ? 'is-success' : '', status === 'warning' ? 'is-warning' : ''].filter(Boolean).join(' ');
   return (
-    <div className="field">
+    <div className={onInverse ? 'field on-inverse' : 'field'}>
       {label != null ? <label htmlFor={id}>{label}</label> : null}
       {control}
-      {help != null ? <div className={helpCls}>{help}</div> : null}
+      {help != null ? <div className={helpCls} id={helpId}>{help}</div> : null}
     </div>
   );
 };
@@ -258,13 +265,16 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
   status?: InputStatus;
   /** sm / md (default) / lg — maps to textarea.input.input-{size}. */
   inputSize?: InputSize;
+  /** Dark-surface treatment — box, label and help (.on-inverse). */
+  onInverse?: boolean;
 }
 /** Multi-line text — `textarea.input` (auto height, min-height per size). */
-export const Textarea: React.FC<TextareaProps> = ({ label, help, status = 'default', inputSize = 'md', className, id, ...rest }) => {
+export const Textarea: React.FC<TextareaProps> = ({ label, help, status = 'default', inputSize = 'md', onInverse = false, className, id, ...rest }) => {
   const autoId = React.useId();
-  const tid = id || (label ? autoId : undefined);
-  const cls = ['input', inputSize !== 'md' ? `input-${inputSize}` : '', status === 'error' ? 'is-error' : '', status === 'success' ? 'is-success' : '', className || ''].filter(Boolean).join(' ');
-  return fieldWrap(label, help, status, tid, <textarea id={tid} className={cls} {...rest} />);
+  const tid = id || (label || help != null ? autoId : undefined);
+  const helpId = help != null ? tid + '-help' : undefined;
+  const cls = ['input', inputSize !== 'md' ? `input-${inputSize}` : '', status === 'error' ? 'is-error' : '', status === 'success' ? 'is-success' : '', status === 'warning' ? 'is-warning' : '', onInverse ? 'on-inverse' : '', className || ''].filter(Boolean).join(' ');
+  return fieldWrap(label, help, status, tid, <textarea id={tid} className={cls} aria-invalid={status === 'error' || undefined} aria-describedby={helpId} {...rest} />, helpId, onInverse);
 };
 
 export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
@@ -272,21 +282,27 @@ export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectE
   help?: React.ReactNode;
   status?: InputStatus;
   inputSize?: InputSize;
+  /** Dark-surface treatment — box, label and help (.on-inverse). */
+  onInverse?: boolean;
+  /** Badge, icon or flag before the value (.select-lead). The native <select> takes no markup in its options, so the lead shows the chosen item; the option text stays the accessible name. */
+  lead?: React.ReactNode;
 }
 /** Native select — `.select` wrapper + chevron glyph. Children = <option>s. */
-export const Select: React.FC<SelectProps> = ({ label, help, status = 'default', inputSize = 'md', className, id, children, ...rest }) => {
+export const Select: React.FC<SelectProps> = ({ label, help, status = 'default', inputSize = 'md', onInverse = false, lead, className, id, children, ...rest }) => {
   const autoId = React.useId();
-  const sid = id || (label ? autoId : undefined);
-  const cls = ['input', inputSize !== 'md' ? `input-${inputSize}` : '', status === 'error' ? 'is-error' : '', className || ''].filter(Boolean).join(' ');
+  const sid = id || (label || help != null ? autoId : undefined);
+  const helpId = help != null ? sid + '-help' : undefined;
+  const cls = ['input', inputSize !== 'md' ? `input-${inputSize}` : '', status === 'error' ? 'is-error' : '', status === 'success' ? 'is-success' : '', status === 'warning' ? 'is-warning' : '', onInverse ? 'on-inverse' : '', className || ''].filter(Boolean).join(' ');
   const control = (
     <div className="select">
-      <select id={sid} className={cls} {...rest}>{children}</select>
+      {lead != null ? <span className="select-lead" aria-hidden="true">{lead}</span> : null}
+      <select id={sid} className={cls} aria-invalid={status === 'error' || undefined} aria-describedby={helpId} {...rest}>{children}</select>
       <span className="chev" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </span>
     </div>
   );
-  return fieldWrap(label, help, status, sid, control);
+  return fieldWrap(label, help, status, sid, control, helpId, onInverse);
 };
 
 export interface SwitchProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
@@ -383,7 +399,7 @@ export const ChipsInput: React.FC<ChipsInputProps> = ({ values, onAdd, onRemove,
     setDraft('');
   };
   return (
-    <div className={['chips', className || ''].filter(Boolean).join(' ')} {...rest}>
+    <div className={['chips-input', className || ''].filter(Boolean).join(' ')} {...rest}>
       {values.map((v) => (
         <span key={v} className="chip">
           {v}
